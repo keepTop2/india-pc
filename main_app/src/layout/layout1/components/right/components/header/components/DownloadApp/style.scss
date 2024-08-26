@@ -1,0 +1,72 @@
+.Task {
+	padding: 20px;
+	padding-top: 0;
+	button {
+		outline: none;
+		border: 0;
+	}
+	.my-header {
+		padding: 28px 32px;
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.my-header {
+		h4 {
+			svg {
+				@include themeify {
+					color: themed('icon');
+				}
+			}
+		}
+	}
+	.task_content {
+		height: 748px;
+		p {
+			margin-bottom: 12px;
+		}
+		.main {
+			margin-bottom: 28px;
+		}
+	}
+	.card {
+		display: flex;
+		height: 132px;
+		align-items: center;
+		justify-content: space-around;
+		margin-bottom: 8px;
+		border-radius: 6px;
+		padding: 16px;
+		box-sizing: border-box;
+		gap: 20px;
+		button {
+			width: 120px;
+			height: 40px;
+		}
+		.percentage-value {
+			display: block;
+			text-align: center;
+			line-height: 72px;
+		}
+		.demo-progress .el-progress--line {
+			margin-bottom: 15px;
+			max-width: 600px;
+		}
+		.demo-progress .el-progress--circle {
+			margin-right: 15px;
+		}
+	}
+	.label {
+		span {
+			display: block;
+			width: 144px;
+			height: 40px;
+			line-height: 40px;
+			text-align: center;
+			margin-right: -20px;
+			border-radius: 4px 0 0 4px;
+			cursor: pointer;
+		}
+	}
+}

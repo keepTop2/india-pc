@@ -1,0 +1,83 @@
+* {
+	box-sizing: border-box;
+}
+
+@include themeify {
+	.bg_Theme {
+		background: themed('Theme');
+	}
+	.Text1 {
+		color: themed('Text1');
+	}
+	.Text_s {
+		color: themed('Text_s');
+	}
+	.Text2_1 {
+		color: themed('Text2_1');
+	}
+	.f1 {
+		color: themed('f1');
+	}
+	.bg3 {
+		background-color: themed('Bg3');
+	}
+	.bg2 {
+		background-color: themed('Bg2');
+	}
+	.bg1 {
+		background-color: themed('Bg1');
+	}
+	.Theme {
+		color: themed('Theme');
+	}
+	.Warn {
+		color: themed('Warn');
+	}
+	.p10 {
+		padding: 10px;
+	}
+	.fs_64 {
+		font-size: 64px;
+	}
+	.fs_24 {
+		font-size: 24px;
+	}
+	.fs_14 {
+		font-size: 14px;
+	}
+	.fs_16 {
+		font-size: 16px;
+	}
+	.fs_20 {
+		font-size: 20px;
+	}
+	.bold {
+		font-weight: bold;
+	}
+	.noBold {
+		font-weight: normal;
+	}
+	button {
+		outline: none;
+		border: 0;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+	.c_green {
+		color: #45d91d;
+	}
+	.c_white {
+		color: themed('Text1');
+	}
+	.default_color {
+		color: #fff;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		li {
+			list-style: none;
+		}
+	}
+}

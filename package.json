@@ -1,0 +1,19 @@
+{
+  "name": "baowang-india-userpc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r dev",
+    "build:prod": "pnpm run bild_demo_app1 && pnpm run bild_sportA && pnpm run bild_main_app && pnpm run bild_demo_app2",
+    "bild_main_app": "cd main_app && npm run build:prod",
+    "bild_demo_app1": "cd childrenApps && cd demo_app1 && npm run build:prod",
+    "bild_demo_app2": "cd childrenApps && cd demo_app2 && npm run build:prod",
+    "bild_sportA": "cd childrenApps && cd sportA && npm run build:prod"
+  },
+  "keywords": [],
+  "author": "ahong",
+  "license": "ISC",
+  "dependencies": {}
+}

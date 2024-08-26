@@ -1,0 +1,148 @@
+.userInfo_box {
+	position: relative;
+	.more {
+		cursor: pointer;
+	}
+	.vipInfo {
+		position: absolute;
+		width: 65px;
+		height: 70px;
+		top: -86px;
+		right: 90px;
+		span {
+			width: 65px;
+			height: 70px;
+			position: absolute;
+			font-size: 18px;
+			font-weight: 900;
+			top: 0px;
+			right: 0px;
+			line-height: 70px;
+			text-align: center;
+		}
+	}
+}
+.userInfo {
+	text-align: center;
+	overflow-y: scroll;
+	height: 636px;
+	box-sizing: border-box;
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+	img {
+		display: block;
+		margin: 0 auto;
+	}
+	.username {
+		margin-top: 20px;
+	}
+	.userIcon {
+		position: relative;
+		.edit {
+			position: absolute;
+			width: 36px;
+			height: 36px;
+			@include flex_center;
+			right: 20px;
+			top: 20px;
+		}
+	}
+	.card {
+		padding: 16px;
+		padding-top: 0;
+		border-radius: 8px;
+		margin-bottom: 8px;
+		.gameList {
+			li {
+				height: 80px;
+				border-radius: 6px;
+				margin-bottom: 8px;
+				padding: 10px;
+				img {
+					width: 64px;
+					height: 64px;
+				}
+				.right {
+					text-align: right;
+					display: flex;
+					flex-direction: column;
+				}
+			}
+		}
+		.title {
+			height: 42px;
+			line-height: 42px;
+			.flex {
+				gap: 12px;
+			}
+			.more {
+				gap: 8px;
+			}
+			.color_Theme {
+				svg {
+					width: 8px;
+					height: 12px;
+				}
+			}
+		}
+		.content {
+			.xunzhang {
+				width: 42px;
+				height: 56px;
+			}
+		}
+	}
+
+	@include themeify {
+		.user_bet_table {
+			border: 1px solid themed('Bg4');
+			// --el-table-border-color: themed('Bg4');
+			// --el-table-border: 1px solid themed('Bg4');
+			--el-table-text-color: themed('Bg4');
+			--el-table-header-text-color: themed('Bg4');
+			--el-table-row-hover-bg-color: themed('Bg4');
+			--el-table-current-row-bg-color: themed('Bg4');
+			--el-table-header-bg-color: themed('Bg4');
+			--el-table-fixed-box-shadow: themed('Bg4');
+			--el-table-bg-color: themed('Bg4');
+			--el-table-tr-bg-color: themed('Bg4');
+			--el-table-expanded-cell-bg-color: themed('Bg4');
+			border-radius: 8px;
+			.el-table__body tr:hover > td.el-table__cell,
+			th.el-table__cell {
+				background-color: themed('Bg1');
+				font-weight: normal;
+				border-color: themed('Bg4');
+			}
+			.el-table__row {
+				background-color: themed('Bg3');
+			}
+			.el-table__inner-wrapper:before {
+				height: 0;
+			}
+			td.el-table__cell {
+				border-color: themed('Bg4');
+			}
+			.el-table__cell:last-child {
+				border-right: 0;
+			}
+			.el-table__row:last-child {
+				td.el-table__cell {
+					border-bottom: 0;
+				}
+			}
+			.el-table__border-bottom-patch,
+			.el-table__border-left-patch,
+			.el-table__inner-wrapper:after,
+			.el-table__inner-wrapper:before {
+				display: none;
+			}
+		}
+		.user_bet_table:before,
+		.user_bet_table:after {
+			display: none;
+		}
+	}
+}

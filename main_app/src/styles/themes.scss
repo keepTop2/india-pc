@@ -1,0 +1,105 @@
+$themes: (
+	default: (
+		//分割线
+		Line: #373a40,
+		//主
+		icon: #67707b,
+
+		//画布背景
+		Bg: #1d1f23,
+		//背景/卡片1
+		Bg1: #24262b,
+		//背景/卡片2
+		Bg2: #1a1c20,
+		//背景/卡片3
+		Bg3: #2e3035,
+		//背景/卡片4
+		Bg4: #1c1e22,
+		//选中卡片背景
+		Bg5: #273d28,
+		//卡片头部背景色
+		Bg6: linear-gradient(180deg, #404040 0%, #292929 100%),
+		//文本/文本1
+		Text1: #98a7b5,
+		//文本/文本2
+		Text2: #4d565e,
+		//文本/文本3
+		Text2_1: #656e78,
+		//选中+标题-文本
+		Text_s: #fff,
+		//激活按钮-文本
+		Text_a: #fff,
+		TB: #fdfdfd,
+		//主色/盈利
+		Theme: #3bc116,
+		// 辅助色
+		f2: #01aff6,
+		//警告
+		Warn: #ff0000,
+		//辅助色1
+		f1: #ffa800,
+		//收藏
+		Favorites: #ff007a,
+		//任务背景色
+		blg1: linear-gradient(261deg, rgba(0, 133, 255, 0.2) 0%, #00e0e0 100%),
+		//抽奖背景色
+		blg2: linear-gradient(261deg, rgba(153, 35, 182, 0.2) 0%, #9923b6 100%),
+		//左侧菜单阴影
+		leftMenuBoxShadow: 0px 0px 12px 0px #0e1013,
+		//右侧顶部阴影
+		rightTopBoxShadow: 0px 0px 12px #17191b,
+		//Popover 阴影
+		popoverShadow: #0e1013,
+	),
+	dark: (
+		//分割线
+		Line: #d4d7e3,
+		//主
+		icon: #9fa5ac,
+
+		//画布背景
+		Bg: #f2f2f6,
+		//背景/卡片1
+		Bg1: #f5f7fd,
+		//背景/卡片2
+		Bg2: #eaecf3,
+		//背景/卡片3
+		Bg3: #e2e5ef,
+		//背景/卡片4
+		Bg4: #ffffff,
+		//选中卡片背景
+		Bg5: #d9efda,
+		//卡片头部背景色
+		Bg6: linear-gradient(180deg, #e1e3e6 0%, #abaeb4 100%),
+		//文本/文本1
+		Text1: #495159,
+		//文本/文本2
+		Text2: #8a97a1,
+		//文本/文本3
+		Text2_1: #656e78,
+		//选中+标题-文本
+		Text_s: #1d1f23,
+		//激活按钮-文本
+		Text_a: #1d1f23,
+		//主色/盈利
+		Theme: #3bc116,
+		// 辅助色
+		f2: #01aff6,
+		//警告
+		Warn: #ff0000,
+		//辅助色1
+		f1: #ffa800,
+		//收藏
+		Favorites: #ff007a,
+		//任务背景色
+		blg1: linear-gradient(261deg, rgba(0, 133, 255, 0.2) 0%, #00e0e0 100%),
+		//抽奖背景色
+		blg2: linear-gradient(261deg, rgba(153, 35, 182, 0.2) 0%, #9923b6 100%),
+		//左侧菜单阴影
+		leftMenuBoxShadow: 0px 0px 12px 0px rgba(14, 16, 19, 0.1),
+		//右侧顶部阴影
+		rightTopBoxShadow: 0px 0px 12px rgba(14, 16, 19, 0.2),
+		//Popover 阴影
+		popoverShadow: rgba(14, 16, 19, 0.2),
+	),
+);

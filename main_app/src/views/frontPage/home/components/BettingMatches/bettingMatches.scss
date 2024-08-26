@@ -1,0 +1,51 @@
+.bettingMatches {
+	.title {
+		display: flex;
+		align-items: center;
+	}
+	@import '../public.scss';
+	@include themeify {
+		.showmore {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 140px;
+				height: 40px;
+				background-color: themed('Bg1');
+				color: themed('Text1');
+				margin: 20px 0 10px 0;
+			}
+		}
+		.tabs {
+			margin: 20px 0;
+			margin-bottom: 25px;
+			ul {
+				width: 480px;
+				border-radius: 8px;
+				background-color: themed('Bg2');
+				overflow: hidden;
+			}
+			li {
+				float: left;
+				width: 160px;
+				height: 56px;
+				line-height: 56px;
+				text-align: center;
+				color: themed('Text1');
+				cursor: pointer;
+			}
+			li:hover {
+				color: themed('Text_s');
+				background-color: themed('Bg3');
+			}
+			li.active {
+				color: themed('Text_s');
+				background-color: themed('Bg3');
+			}
+		}
+	}
+}

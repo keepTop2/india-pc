@@ -1,0 +1,86 @@
+{
+  "hash": "c3f6db97",
+  "browserHash": "4bee9aab",
+  "optimized": {
+    "vue": {
+      "src": "../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "8594c7fc",
+      "needsInterop": false
+    },
+    "element-plus": {
+      "src": "../../node_modules/element-plus/es/index.mjs",
+      "file": "element-plus.js",
+      "fileHash": "2aa5e452",
+      "needsInterop": false
+    },
+    "vue-grid-layout": {
+      "src": "../../node_modules/vue-grid-layout/dist/vue-grid-layout.common.js",
+      "file": "vue-grid-layout.js",
+      "fileHash": "929a1632",
+      "needsInterop": true
+    },
+    "@element-plus/icons-vue": {
+      "src": "../../node_modules/@element-plus/icons-vue/dist/index.js",
+      "file": "@element-plus_icons-vue.js",
+      "fileHash": "81ca98f0",
+      "needsInterop": false
+    },
+    "v-calendar": {
+      "src": "../../node_modules/v-calendar/dist/es/index.js",
+      "file": "v-calendar.js",
+      "fileHash": "0918105b",
+      "needsInterop": false
+    },
+    "pinia": {
+      "src": "../../node_modules/pinia/dist/pinia.mjs",
+      "file": "pinia.js",
+      "fileHash": "bafcd178",
+      "needsInterop": false
+    },
+    "pinia-plugin-persistedstate": {
+      "src": "../../node_modules/pinia-plugin-persistedstate/dist/index.mjs",
+      "file": "pinia-plugin-persistedstate.js",
+      "fileHash": "35b71a23",
+      "needsInterop": false
+    },
+    "vue-router": {
+      "src": "../../node_modules/vue-router/dist/vue-router.mjs",
+      "file": "vue-router.js",
+      "fileHash": "de1b3c94",
+      "needsInterop": false
+    },
+    "vue-i18n": {
+      "src": "../../node_modules/vue-i18n/dist/vue-i18n.mjs",
+      "file": "vue-i18n.js",
+      "fileHash": "dc0ba2b7",
+      "needsInterop": false
+    },
+    "element-plus/es/locale/lang/zh-cn": {
+      "src": "../../node_modules/element-plus/es/locale/lang/zh-cn.mjs",
+      "file": "element-plus_es_locale_lang_zh-cn.js",
+      "fileHash": "6b9338d7",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-3GOOGFKQ": {
+      "file": "chunk-3GOOGFKQ.js"
+    },
+    "chunk-TBD5GUPM": {
+      "file": "chunk-TBD5GUPM.js"
+    },
+    "chunk-RNWUNH7L": {
+      "file": "chunk-RNWUNH7L.js"
+    },
+    "chunk-HKRIUDOA": {
+      "file": "chunk-HKRIUDOA.js"
+    },
+    "chunk-63GWLB4N": {
+      "file": "chunk-63GWLB4N.js"
+    },
+    "chunk-ROME4SDB": {
+      "file": "chunk-ROME4SDB.js"
+    }
+  }
+}

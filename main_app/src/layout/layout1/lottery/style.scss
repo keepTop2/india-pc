@@ -1,0 +1,48 @@
+.content {
+	background: url('/@/assets/zh/default/lottery/content_bg.png') no-repeat;
+	background-size: 100%;
+	// background: linear-gradient(to top right, #2e0a7c 0%, #1d1634 25%, #19132e 50%, #150b35 65%, #130635 75%, #0e0036 100%);
+}
+.lottery {
+	padding-top: 60px;
+	display: flex;
+	justify-content: center;
+}
+.tabs {
+	// margin-bottom: 60px;
+	ul {
+		padding: 0;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		height: 50px;
+		background: linear-gradient(to right, #718a8a 0%, #3d5454 100%);
+	}
+
+	li {
+		list-style: none;
+		width: 25%;
+		text-align: center;
+		height: 100%;
+		line-height: 50px;
+		position: relative;
+		cursor: pointer;
+	}
+	li.active {
+		@include themeify {
+			color: themed('TB');
+		}
+		display: flex;
+		justify-content: center;
+		img {
+			position: absolute;
+			width: 124%;
+			height: 100%;
+		}
+		a {
+			position: absolute;
+		}
+	}
+	li:first-child.active {
+	}
+}

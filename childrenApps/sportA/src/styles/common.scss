@@ -1,0 +1,156 @@
+@for $i from 0 through 200 {
+	.m_#{$i} {
+		margin: $i + 0px !important;
+	}
+	.mt_#{$i} {
+		margin-top: $i + 0px !important;
+	}
+	.ml_#{$i} {
+		margin-left: $i + 0px !important;
+	}
+	.mb_#{$i} {
+		margin-bottom: $i + 0px !important;
+	}
+	.mr_#{$i} {
+		margin-right: $i + 0px !important;
+	}
+	.pt_#{$i} {
+		padding-top: $i + 0px !important;
+	}
+	.pl_#{$i} {
+		padding-left: $i + 0px !important;
+	}
+	.pb_#{$i} {
+		padding-bottom: $i + 0px !important;
+	}
+	.pr_#{$i} {
+		padding-right: $i + 0px !important;
+	}
+	.p_#{$i} {
+		padding: $i + 0px !important;
+	}
+	.fz_#{$i} {
+		font-size: $i + 0px !important;
+	}
+	.br_#{$i} {
+		border-radius: $i + 0px !important;
+	}
+	.size_#{$i} {
+		width: $i + 0px;
+		height: $i + 0px;
+	}
+	.gap_#{$i} {
+		gap: $i + 0px;
+	}
+	.fw_#{$i} {
+		font-weight: $i;
+	}
+	.fs_#{$i} {
+		font-size: $i + 0px;
+	}
+	.lh_#{$i} {
+		line-height: $i + 0px;
+	}
+}
+
+.rotate_180 {
+	transform: rotate(180deg);
+}
+
+.transition_transition_0_2 {
+	transition: transform 0.2s;
+}
+
+.el-popper__arrow {
+	&::before {
+		border: none !important;
+		@include themeify {
+			background-color: themed("Bg1") !important;
+		}
+	}
+}
+
+.mySelectStyle {
+	border: none !important;
+
+	.el-select-dropdown__list {
+		@include themeify {
+			background-color: themed("Bg1") !important;
+		}
+	}
+
+	.el-select-dropdown__header {
+		border: none;
+		@include themeify {
+			background-color: themed("Bg1") !important;
+		}
+
+		.el-input__wrapper {
+			box-shadow: none;
+			border-radius: 8px;
+
+			@include themeify {
+				background-color: themed("Bg2");
+			}
+
+			input {
+				@include themeify {
+					color: themed("Text2_1");
+				}
+			}
+		}
+	}
+
+	.is-hovering {
+		@include themeify {
+			background-color: themed("Theme");
+		}
+
+		.option-box {
+			color: themed("Text_s");
+		}
+	}
+}
+
+.weak-hint {
+	background: #000;
+	border: none;
+	box-shadow: none;
+	padding: 14px;
+	top: 50% !important;
+	transform: translateY(-50%, -50%);
+
+	.el-icon {
+		display: none;
+	}
+
+	.el-message__content {
+		color: #fdfdfd !important;
+	}
+}
+
+@keyframes rotate {
+	0% {
+		transform: rotate(0);
+	}
+
+	25% {
+		transform: rotate(90deg);
+	}
+
+	50% {
+		transform: rotate(180deg);
+	}
+
+	75% {
+		transform: rotate(270deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.cycling {
+	animation: rotate 1s linear infinite;
+}

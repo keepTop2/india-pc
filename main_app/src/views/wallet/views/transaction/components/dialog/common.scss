@@ -1,0 +1,19 @@
+/*
+交易记录弹窗公共样式
+*/
+
+.Theme {
+	@include themeify {
+		color: themed('Theme');
+	}
+}
+.f1 {
+	@include themeify {
+		color: themed('f1');
+	}
+}
+.Warn {
+	@include themeify {
+		color: themed('Warn');
+	}
+}

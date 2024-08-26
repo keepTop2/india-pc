@@ -1,0 +1,13 @@
+.Notification_Self {
+	&.el-notification {
+		padding: 0px;
+		border: none;
+		@include themeify {
+			background-color: themed('Bg3');
+		}
+		.el-notification__group {
+			margin: 0px;
+			width: 100%;
+		}
+	}
+}

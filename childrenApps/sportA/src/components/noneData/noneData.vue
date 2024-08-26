@@ -1,0 +1,84 @@
+<!--
+ * @Author: WangMingxin
+ * @Description: 无数据处理
+-->
+<template>
+	<div class="noneData_container">
+		<div class="center">
+			<div class="icon" v-if="themed == 'default'">
+				<SvgIcon :iconName="iconSvg" size="120" />
+			</div>
+			<div class="icon" v-if="themed == 'dark'">
+				<SvgIcon :iconName="iconSvgLight" size="120" />
+			</div>
+		</div>
+		<div class="text_content">
+			<p v-if="showText">{{ title || $t('common["哎呀"]') }}</p>
+			<p v-if="showText">{{ center || $t('common["还没有数据"]') }}</p>
+			<slot></slot>
+		</div>
+	</div>
+</template>
+
+<script setup lang="ts">
+import { computed } from "vue";
+import { useThemesStore } from "/@/stores/modules/themes";
+const ThemesStore = useThemesStore();
+const themed = computed(() => {
+	return ThemesStore.getTheme;
+});
+/**无数据接口 */
+interface NoneData {
+	/**svg名称 */
+	iconSvg?: string;
+	iconSvgLight?: string;
+	/** 标题 */
+	title?: string;
+	/**内容 */
+	center?: string;
+	showText?: boolean;
+}
+const props = withDefaults(defineProps<NoneData>(), {
+	iconSvg: "kzt_img",
+	iconSvgLight: "kzt_img_light",
+	title: "",
+	center: "",
+	showText: true,
+});
+</script>
+
+<style lang="scss" scoped>
+.noneData_container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	.center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.icon {
+		size: 80px;
+	}
+
+	.text_content {
+		margin-top: 14px;
+
+		p {
+			text-align: center;
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-weight: 400;
+
+			@include themeify {
+				color: themed("Text2_1");
+			}
+		}
+	}
+}
+</style>

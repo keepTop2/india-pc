@@ -1,0 +1,43 @@
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+	margin: 0;
+	padding: 0;
+}
+img {
+	display: block;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+input[type='number'] {
+	-moz-appearance: textfield;
+}
+
+input[type='text']:focus,
+input[type='password']:focus {
+	outline: none;
+}
+
+/* 取消微软浏览器密码眼睛样式 */
+input[type='password']::-ms-reveal {
+	display: none;
+}
+.elimg {
+	width: 100%;
+	border-radius: 15px;
+	overflow: hidden;
+	display: block;
+}
+
+.pointer {
+	cursor: pointer;
+}

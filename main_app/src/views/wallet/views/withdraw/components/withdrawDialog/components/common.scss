@@ -1,0 +1,168 @@
+.from {
+	height: calc(100% - 86px);
+	padding: 10px 32px 10px;
+	overflow: scroll;
+	box-sizing: border-box;
+	.logo {
+		img {
+			margin: 0 auto;
+		}
+	}
+
+	// 资金信息
+	.funds-info {
+		padding: 12px 16px;
+		border-radius: 4px;
+		@include themeify {
+			background: themed('Bg4');
+		}
+	}
+	// 输入框单元格
+	.cell {
+		.label {
+			@include themeify {
+				color: themed('Text1');
+			}
+			font-family: 'PingFang SC';
+			font-size: 14px;
+			font-weight: 400;
+		}
+
+		:deep(input) {
+			@include themeify {
+				color: themed('Text1');
+			}
+		}
+
+		.footer {
+			@include themeify {
+				color: themed('Text2');
+			}
+			text-align: right;
+			font-family: 'PingFang SC';
+			font-size: 14px;
+			font-weight: 400;
+
+			.exchange-rate {
+				@include themeify {
+					color: themed('Theme');
+				}
+			}
+		}
+	}
+
+	// 快捷金额
+	.quick-amount {
+		.label {
+			@include themeify {
+				color: themed('Text1');
+			}
+			font-family: 'PingFang SC';
+			font-size: 14px;
+			font-weight: 400;
+		}
+		.amount-list {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px 14px;
+			.amount-item {
+				width: 72px;
+				height: 32px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 16px;
+				border: 1px solid;
+				@include themeify {
+					background-color: themed('Bg3');
+					border-color: themed('Text2');
+					color: themed('Text1');
+				}
+				box-sizing: border-box;
+				cursor: pointer;
+			}
+			.amount-item-active {
+				@include themeify {
+					background: rgba(59, 193, 22, 0.15);
+					border-color: themed('Theme');
+					color: themed('Text_s');
+				}
+			}
+		}
+	}
+
+	// 提现信息
+	.withdraw-info {
+		margin-top: 24px;
+		padding: 0px 16px;
+		border-radius: 4px;
+		@include themeify {
+			background-color: themed('Bg4');
+		}
+		box-sizing: border-box;
+		.withdraw-cell {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 12px 0px;
+			box-sizing: border-box;
+		}
+	}
+
+	// 提示
+	.tips {
+		margin-top: 5px;
+		.tip {
+			@include themeify {
+				color: themed('Warn');
+			}
+			font-family: 'PingFang SC';
+			font-size: 12px;
+			font-weight: 400;
+		}
+		.text {
+			@include themeify {
+				color: themed('Text2_1');
+			}
+			font-family: 'PingFang SC';
+			font-size: 12px;
+			font-weight: 400;
+		}
+	}
+
+	// 表单按钮
+	.from-button {
+		width: 220px;
+		height: 48px;
+		margin: 30px auto 0px;
+
+		&:disabled {
+			@include themeify {
+				background: themed('Bg3');
+				color: themed('Text2');
+			}
+		}
+	}
+}
+
+.Text_s {
+	@include themeify {
+		color: themed('Text_s');
+	}
+	font-size: 14px;
+	font-weight: 400;
+}
+.Text1 {
+	@include themeify {
+		color: themed('Text1');
+	}
+	font-size: 14px;
+	font-weight: 400;
+}
+.Text2_1 {
+	@include themeify {
+		color: themed('Text2_1');
+	}
+	font-size: 14px;
+	font-weight: 400;
+}

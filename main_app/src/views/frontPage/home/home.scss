@@ -1,0 +1,153 @@
+.home {
+	// min-width: 1200px;
+	width: 1200px;
+	* {
+		box-sizing: border-box;
+	}
+
+	.title {
+		font-weight: 500;
+		margin-top: 56px;
+		line-height: 40px;
+		display: flex;
+		align-items: center;
+	}
+	@include themeify {
+		.bg_Theme {
+			background: themed('Theme');
+		}
+		.Text1 {
+			color: themed('Text1');
+		}
+		.Text_s {
+			color: themed('Text_s');
+		}
+		.f1 {
+			color: themed('f1');
+		}
+		.bg3 {
+			background-color: themed('Bg3');
+		}
+		.Theme {
+			color: themed('Theme');
+		}
+		.Warn {
+			color: themed('Warn');
+		}
+		.fs_64 {
+			font-size: 64px;
+		}
+		.fs_24 {
+			font-size: 24px;
+		}
+		.fs_14 {
+			font-size: 14px;
+		}
+		.fs_16 {
+			font-size: 16px;
+		}
+		.fs_20 {
+			font-size: 20px;
+		}
+		.bold {
+			font-weight: bold;
+		}
+		.noBold {
+			font-weight: normal;
+		}
+		button {
+			outline: none;
+			border: 0;
+			border-radius: 4px;
+		}
+		.showmore {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+		.tables {
+			padding: 14px;
+			background-color: themed('Bg2');
+			text-align: center;
+			button {
+				width: 140px;
+				height: 40px;
+				background-color: themed('Bg1');
+				color: themed('Text1');
+				margin: 20px 0 10px 0;
+			}
+		}
+		.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell,
+		.el-table tr,
+		.el-table th.el-table__cell {
+			background-color: themed('Bg2');
+			// cursor: pointer;
+			font-weight: normal;
+			border: 0;
+		}
+		.el-table__inner-wrapper:before {
+			height: 0;
+		}
+		.el-table td.el-table__cell {
+			border: 0;
+		}
+		.c_green {
+			color: #45d91d;
+		}
+		.c_white {
+			color: themed('Text1');
+		}
+		.default_color {
+			color: #fff;
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			li {
+				list-style: none;
+			}
+		}
+		.content {
+			// padding: 20px;
+			// padding: 0 20px;
+		}
+		.home_footer {
+			display: flex;
+			> div {
+				width: 50%;
+				padding: 20px;
+			}
+			button {
+				width: 120px;
+				height: 44px;
+				margin-right: 16px;
+				border-radius: 4px;
+				outline: none;
+				border: 0;
+			}
+			textarea {
+				background-color: themed('Bg2');
+				color: themed('Text2');
+				width: 100%;
+				border: 0;
+				padding: 10px;
+				font-size: 16px;
+				margin-bottom: 17px;
+				resize: none;
+				outline: none;
+			}
+			h3 {
+				margin-bottom: 24px;
+			}
+			p {
+				margin-bottom: 17px;
+			}
+		}
+	}
+}

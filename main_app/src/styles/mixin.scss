@@ -1,0 +1,64 @@
+@mixin main-lang-bg($width, $height, $preUrl, $posUrl) {
+	width: $width;
+	height: $height;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	@include loop-lang-bg($preUrl, $posUrl);
+}
+// 背景图多语言
+@mixin loop-lang-bg($preUrl, $posUrl) {
+	$list: zh, en;
+	@each $i in $list {
+		&.#{$i} {
+			background-image: url("#{$preUrl}/#{$i}/#{$posUrl}");
+		}
+	}
+}
+
+@mixin flex_center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@mixin flex_justify_center {
+	display: flex;
+	justify-content: center;
+}
+
+@mixin flex_align_center {
+	display: flex;
+	align-items: center;
+}
+
+@mixin flex_space_between {
+	display: flex;
+	justify-content: space-between;
+}
+
+//文字换行
+@mixin text_wrap {
+	white-space: pre-wrap;
+	word-wrap: break-all;
+	word-break: break-all;
+}
+
+//文字不换行
+@mixin text_no_wrap {
+	white-space: nowrap;
+}
+
+//文字溢出隐藏显示省略号
+@mixin ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+//多行溢出隐藏省略号
+@mixin text_ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 2;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+}
