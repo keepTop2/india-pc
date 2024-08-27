@@ -114,8 +114,8 @@
 </template>
 
 <script setup lang="ts">
-import Dialog from "/@/components/Dialog/Dialog.vue";
-import Spin from "/@/components/Spin/Spin.vue";
+// import Dialog from "/@/components/Dialog/Dialog.vue";
+// import Spin from "/@/components/Spin/Spin.vue";
 import { ThemeKey } from "/@/models/commonInterface";
 //图片资源
 import left_imgs from "./left_imgs";

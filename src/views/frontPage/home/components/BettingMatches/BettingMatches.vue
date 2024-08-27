@@ -16,7 +16,7 @@
 			<Table :data="betData" v-if="tabsActiveKey === 0 || tabsActiveKey === 1" />
 
 			<div v-else>
-				<Jackpot :data="betData" />
+				<!-- <Jackpot :data="betData" /> -->
 			</div>
 			<div class="showmore">
 				<button>
@@ -31,7 +31,7 @@
 import { ref } from "vue";
 import { ElTable, ElTableColumn } from "element-plus";
 import Table from "../Table/Table.vue";
-import Jackpot from "./Jackpot/Jackpot.vue";
+// import Jackpot from "./Jackpot/Jackpot.vue";
 import { betData } from "../mock";
 import { ArrowDown } from "@element-plus/icons-vue";
 

@@ -6,7 +6,7 @@ import CaptchaButton from "/@/components/captchaButton/captchaButton.vue";
 import { Notification } from "./Notification";
 import { WImage } from "./wImage";
 const components: {
-	[propName: String]: Component;
+	[propName: string]: Component;
 } = {
 	NoneData,
 	Button,

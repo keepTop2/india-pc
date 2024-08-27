@@ -1,26 +1,25 @@
 <template>
 	<div v-for="(val, index) in chils" :key="index">
-		<el-sub-menu :index="val.path" :key="val.path" v-if="val.children && val.children.length > 0 && !val.meta?.isHide"
-			:expand-close-icon="val.meta?.activeIcon" :expand-open-icon="val.meta?.activeIcon">
+		<el-sub-menu
+			:index="val.path"
+			:key="val.path"
+			v-if="val.children && val.children.length > 0 && !val.meta?.isHide"
+			:expand-close-icon="val.meta?.activeIcon"
+			:expand-open-icon="val.meta?.activeIcon"
+		>
 			<template #title>
 				<template v-if="val.meta?.isServer">
 					<div class="icon" :class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">
 						<SvgIcon :size="18" :iconName="val.meta?.iconCode || `Casino`" @click="show = true" class="iconSvg" />
 					</div>
-					<span class="ml_16"
-						:class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">{{
-							val.meta?.title }}</span>
+					<span class="ml_16" :class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">{{ val.meta?.title }}</span>
 				</template>
 				<template v-else>
 					<div class="menu_title_container" @mouseover="onMouseover(val)" @mouseout="onMouseout()">
-						<img v-show="selectList.includes(val.path) || hoverList.val.includes(val.path)"
-							:src="getIconPath(val.meta?.activeIcon as string, 'activeIcon')" alt="" />
-						<img v-show="!selectList.includes(val.path) && !hoverList.val.includes(val.path)"
-							:src="getIconPath(val.meta?.inactivated as string, 'inactivated')" alt="" />
+						<img v-show="selectList.includes(val.path) || hoverList.val.includes(val.path)" :src="getIconPath(val.meta?.activeIcon as string, 'activeIcon')" alt="" />
+						<img v-show="!selectList.includes(val.path) && !hoverList.val.includes(val.path)" :src="getIconPath(val.meta?.inactivated as string, 'inactivated')" alt="" />
 
-						<span class="ml_16"
-							:class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">{{
-								$t(val.meta?.title) }}</span>
+						<span class="ml_16" :class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">{{ $t(val.meta?.title) }}</span>
 					</div>
 				</template>
 			</template>
@@ -31,22 +30,15 @@
 				<el-menu-item :index="val.path" :key="val.path">
 					<template #title>
 						<template v-if="val.meta?.isServer">
-							<div class="icon"
-								:class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">
+							<div class="icon" :class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">
 								<SvgIcon :size="18" :iconName="val.meta?.iconCode || `Casino`" @click="show = true" class="iconSvg" />
 							</div>
-							<span class="ml_16"
-								:class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">{{
-									val.meta?.title }}</span>
+							<span class="ml_16" :class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">{{ val.meta?.title }}</span>
 						</template>
 						<template v-else>
-							<img v-show="selectList.includes(val.path) || hoverList.val.includes(val.path)"
-								:src="getIconPath(val.meta?.activeIcon as string, 'activeIcon')" alt="" />
-							<img v-show="!selectList.includes(val.path) && !hoverList.val.includes(val.path)"
-								:src="getIconPath(val.meta?.inactivated as string, 'inactivated')" alt="" />
-							<span class="ml_16"
-								:class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">{{
-									$t(val.meta?.title) }}</span>
+							<img v-show="selectList.includes(val.path) || hoverList.val.includes(val.path)" :src="getIconPath(val.meta?.activeIcon as string, 'activeIcon')" alt="" />
+							<img v-show="!selectList.includes(val.path) && !hoverList.val.includes(val.path)" :src="getIconPath(val.meta?.inactivated as string, 'inactivated')" alt="" />
+							<span class="ml_16" :class="{ activeColor: selectList.includes(val.path) || hoverList.val.includes(val.path) }">{{ $t(val.meta?.title) }}</span>
 						</template>
 					</template>
 				</el-menu-item>
@@ -56,9 +48,9 @@
 </template>
 
 <script setup lang="ts" name="subItem">
-import { computed, onMounted, ref } from 'vue';
-import { RouteRecordRaw } from 'vue-router';
-import useMenuHooks from '../useMenuHooks';
+import { computed, onMounted, ref } from "vue";
+import { RouteRecordRaw } from "vue-router";
+import useMenuHooks from "../useMenuHooks";
 
 const { onMouseover, onMouseout, hoverList, getIconPath } = useMenuHooks();
 // 定义父组件传过来的值
@@ -81,11 +73,11 @@ const chils = computed(() => {
 	return <RouteItems>props.chil;
 });
 
-onMounted(() => { });
+onMounted(() => {});
 </script>
 
 <style scoped lang="scss">
-@import '../left.scss';
+@import "../left.scss";
 
 :deep(.el-menu-item) {
 	padding-left: 20px !important;
@@ -93,8 +85,8 @@ onMounted(() => { });
 
 .el-menu-item.is-active {
 	@include themeify {
-		color: themed('Text_s');
-		background-color: themed('Bg3') !important;
+		color: themed("Text_s");
+		background-color: themed("Bg3") !important;
 	}
 }
 

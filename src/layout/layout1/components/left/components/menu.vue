@@ -89,7 +89,7 @@
 <script setup lang="ts">
 import { computed, h, onMounted, reactive, ref, watch, watchEffect, onUnmounted } from "vue";
 import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
-import { deepClone } from "/@/utils/other";
+
 import SubItem from "./subItem.vue";
 import useMenuHooks from "../useMenuHooks";
 import left_imgs from "../left_imgs";

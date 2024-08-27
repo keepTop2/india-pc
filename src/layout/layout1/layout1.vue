@@ -1,21 +1,21 @@
 <template>
 	<div class="layout1" ref="domeRef">
 		<left :is-collapse="state.isCollapse" />
-		<right />
-		<login />
-		<Lottery />
-		<Task />
+		<!-- <right /> -->
+		<!-- <login /> -->
+		<!-- <Lottery /> -->
+		<!-- <Task /> -->
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref } from 'vue';
-import left from './components/left/left.vue';
-import right from './components/right/right.vue';
-import login from './login/index.vue';
-import Lottery from './lottery/lottery.vue';
-import Task from './Task/index.vue';
-import { useMenuStore } from '/@/stores/modules/menu';
+import { onMounted, onUnmounted, reactive, ref } from "vue";
+import left from "./components/left/left.vue";
+// import right from './components/right/right.vue';
+// import login from "./login/index.vue";
+// import Lottery from "./lottery/lottery.vue";
+// import Task from "./Task/index.vue";
+import { useMenuStore } from "/@/stores/modules/menu";
 const MenuStore = useMenuStore();
 const state = reactive({
 	//是否折叠

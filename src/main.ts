@@ -4,13 +4,11 @@ import App from "/@/App.vue";
 import router from "/@/router";
 import "/@/permission";
 import * as directives from "/@/directive/index";
-import { i18n, setElementLang } from "/@/i18n/index";
-import other from "/@/utils/other";
+import { i18n } from "/@/i18n/index";
+
 import "virtual:svg-icons-plugin-register";
 import "/@/styles/app.css";
 import "/@/styles/index.scss";
-
-
 
 const app = createApp(App);
 // 循环注册指令
@@ -20,7 +18,7 @@ Object.keys(directives).forEach((key) => {
 
 // app.use(VCalendar, {});
 app.use(store);
-other.elSvg(app);
+
 app
 	// .use(ElementPlus, {
 	// 	locale: setElementLang(),

@@ -27,11 +27,11 @@ const initTheme = () => {
 };
 //获取语言
 const getLang = async () => {
-	const res: any = await CommonApi.getLanguage().catch((err: any) => err);
-	const { code, data } = res;
-	if (code == Common.ResCode.SUCCESS) {
-		UserStore.setLang(data);
-	}
+	// const res: any = await CommonApi.getLanguage().catch((err: any) => err);
+	// const { code, data } = res;
+	// if (code == Common.ResCode.SUCCESS) {
+	// 	UserStore.setLang(data);
+	// }
 };
 //初始化语言
 const initLang = async () => {

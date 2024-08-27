@@ -1,7 +1,7 @@
 <template>
 	<div class="home">
 		<!-- Banner Section -->
-		<Banner />
+		<!-- <Banner /> -->
 		<!-- Main Content -->
 		<div class="content">
 			<HomeOptions />
@@ -46,12 +46,12 @@
 </template>
 
 <script setup lang="ts">
-import dialogSingleton from "/@/layout/layout1/login/dialogSingleton";
-import { useThemesStore } from "/@/stores/modules/themes";
-import Banner from "./components/Banner/Banner.vue";
+// import dialogSingleton from "/@/layout/layout1/login/dialogSingleton";
+// import { useThemesStore } from "/@/stores/modules/themes";
+// import Banner from "./components/Banner/Banner.vue";
 import HomeOptions from "./components/HomeOptions/HomeOptions.vue";
 import GameSwiper from "./components/GameSwiper/GameSwiper.vue";
-import HotGames from "./components/HotGames/HotGames.vue";
+// import HotGames from "./components/HotGames/HotGames.vue";
 import BettingMatches from "./components/BettingMatches/BettingMatches.vue";
 import { gameList } from "./components/mock";
 
