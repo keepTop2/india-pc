@@ -44,6 +44,8 @@ const viteConfig = defineConfig(({ command, mode }: ConfigEnv) => {
 	const isProduction = command === "build";
 	const env = loadEnv(mode, process.cwd());
 	return {
+		__VUE_OPTIONS_API__: true,
+		__VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
 		base: "./",
 		plugins: [
 			vue(),

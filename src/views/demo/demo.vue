@@ -1,9 +1,9 @@
 <template>
 	<div class="demo_container">
-		<el-radio-group v-model="size" label="size control" size="small">
-			<el-radio-button label="large">large</el-radio-button>
-			<el-radio-button label="default">default</el-radio-button>
-			<el-radio-button label="small">small</el-radio-button>
+		<el-radio-group v-model="size" value="size control" size="small">
+			<el-radio-button value="large">large</el-radio-button>
+			<el-radio-button value="default">default</el-radio-button>
+			<el-radio-button value="small">small</el-radio-button>
 		</el-radio-group>
 		<el-button type="primary">Primary</el-button>
 
@@ -35,20 +35,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from "vue";
 
-const size = ref<'default' | 'large' | 'small'>('default');
+const size = ref<"default" | "large" | "small">("default");
 
-const value1 = ref('');
-const value2 = ref('');
+const value1 = ref("");
+const value2 = ref("");
 
 const shortcuts = [
 	{
-		text: 'Today',
+		text: "Today",
 		value: new Date(),
 	},
 	{
-		text: 'Yesterday',
+		text: "Yesterday",
 		value: () => {
 			const date = new Date();
 			date.setTime(date.getTime() - 3600 * 1000 * 24);
@@ -56,7 +56,7 @@ const shortcuts = [
 		},
 	},
 	{
-		text: 'A week ago',
+		text: "A week ago",
 		value: () => {
 			const date = new Date();
 			date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
@@ -69,28 +69,28 @@ const disabledDate = (time: Date) => {
 	return time.getTime() > Date.now();
 };
 
-import { i18n } from '/@/i18n/index';
-import { useThemesStore } from '/@/stores/modules/themes';
-import { setLang } from '/@/i18n/index';
-import imgs, { bgImgs } from './imgs';
+import { i18n } from "/@/i18n/index";
+import { useThemesStore } from "/@/stores/modules/themes";
+import { setLang } from "/@/i18n/index";
+import imgs, { bgImgs } from "./imgs";
 
 //切换主题
 const changeTheme = () => {
 	const themesStore = useThemesStore();
-	if (themesStore.themeName == 'default') {
-		themesStore.setTheme('dark');
+	if (themesStore.themeName == "default") {
+		themesStore.setTheme("dark");
 	} else {
-		themesStore.setTheme('default');
+		themesStore.setTheme("default");
 	}
 };
 
 //切换语言
 const chageLang = () => {
 	// const;
-	if (localStorage.getItem('lang') == 'en') {
-		setLang('zh');
+	if (localStorage.getItem("lang") == "en") {
+		setLang("zh");
 	} else {
-		setLang('en');
+		setLang("en");
 	}
 	window.location.reload();
 };
@@ -99,12 +99,12 @@ const chageLang = () => {
 <style lang="scss" scoped>
 .demo_container {
 	@include themeify {
-		background-color: themed('Theme');
-		color: themed('Warn');
+		background-color: themed("Theme");
+		color: themed("Warn");
 	}
 	.bg {
 		@include themeify {
-			background: themed('Text1');
+			background: themed("Text1");
 		}
 	}
 	.bg_img {

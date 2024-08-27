@@ -9,7 +9,8 @@ import { i18n } from "/@/i18n/index";
 import "virtual:svg-icons-plugin-register";
 import "/@/styles/app.css";
 import "/@/styles/index.scss";
-
+window.__VUE_PROD_DEVTOOLS__ = false;
+window.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
 const app = createApp(App);
 // 循环注册指令
 Object.keys(directives).forEach((key) => {

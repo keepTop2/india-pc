@@ -29,6 +29,8 @@ declare global {
 		__MICRO_APP_ENVIRONMENT__: boolean;
 		__MICRO_APP_PUBLIC_PATH__: string;
 		SVG_CONFIG: Record<string, string>;
+		__VUE_PROD_DEVTOOLS__: boolean;
+		__VUE_PROD_HYDRATION_MISMATCH_DETAILS__: boolean;
 	}
 }
 // 声明文件，*.vue 后缀的文件交给 vue 模块来处理
