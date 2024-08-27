@@ -36,6 +36,7 @@ const getLang = async () => {
 //初始化语言
 const initLang = async () => {
 	const lang = UserStore.getLang;
+	console.log(lang);
 	if (lang) {
 		UserStore.setLang(lang);
 	} else {

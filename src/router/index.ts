@@ -13,7 +13,7 @@ const routes = [
 		// redirect: ((to: any) => {
 		// 	return { path: '/frontPage/home' }
 		// })
-		redirect: "/frontPage/home",
+		redirect: "/demo",
 	},
 	//登录
 	// login,

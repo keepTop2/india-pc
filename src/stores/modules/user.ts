@@ -12,13 +12,14 @@ interface StoreUser {
 export const useUserStore = defineStore("User", {
 	state: (): StoreUser => {
 		return {
-			lang: "",
+			lang: "zh",
 			token: "",
 			userInfo: {},
 		};
 	},
 	getters: {
 		getLang(): any {
+			console.log(this.lang, "================");
 			return this.lang;
 		},
 		getUserInfo(): any {
