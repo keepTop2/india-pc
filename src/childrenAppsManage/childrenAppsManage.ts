@@ -1,4 +1,4 @@
-import microApp from "@micro-zoe/micro-app";
+// import microApp from "@micro-zoe/micro-app";
 import { RenderAppOptions, UnmountAppParams, ChildrenToMainDataListItem, PreFetchApp } from "/@/childrenAppsManage/childrenAppModels/childrenAppsManageModel";
 import { MainTochildrenCommon, MainToChildrenGlobal } from "/@/childrenAppsManage/childrenAppDTOs/mainToChildren/mainTochildrenCommon";
 import { ChildrenToMainCommon, ChildrenToMainRouterPush, ChildrenToMainLoading } from "/@/childrenAppsManage/childrenAppDTOs/childrenToMain/childrenToMainCommon";
@@ -41,33 +41,33 @@ class ChildrenAppsManage {
 	 * @returns
 	 */
 	public unmountApp(appName: ChildrenAppNameEnum, options?: UnmountAppParams): Promise<boolean> {
-		const that = this;
-		return new Promise((resolve, reject) => {
-			if (!options) {
-				options = {};
-				options["destroy"] = true;
-			}
-			console.log(options, "===========");
-			microApp
-				.unmountApp(appName, { ...options })
-				.then(() => {
-					//解除对应子应用数据监听
-					const idx = that.childrenToMainDataList.findIndex((item) => item.name == appName);
-					if (idx != -1) {
-						microApp.removeDataListener(appName, that.childrenToMainDataList[idx].fn);
-						that.childrenToMainDataList.splice(idx, 1);
-					}
-					//获取子应用
-					const preFetchApp: PreFetchApp = childrenAppsMap.get(appName)?.preFetchApp as PreFetchApp;
-					preFetchApp.level = 3;
-					//卸载后直接执行预加载
-					// microApp.preFetch([preFetchApp], 100);
-					resolve(true);
-				})
-				.catch(() => {
-					reject(false);
-				});
-		});
+		// const that = this;
+		// return new Promise((resolve, reject) => {
+		// 	if (!options) {
+		// 		options = {};
+		// 		options["destroy"] = true;
+		// 	}
+		// 	console.log(options, "===========");
+		// 	microApp
+		// 		.unmountApp(appName, { ...options })
+		// 		.then(() => {
+		// 			//解除对应子应用数据监听
+		// 			const idx = that.childrenToMainDataList.findIndex((item) => item.name == appName);
+		// 			if (idx != -1) {
+		// 				microApp.removeDataListener(appName, that.childrenToMainDataList[idx].fn);
+		// 				that.childrenToMainDataList.splice(idx, 1);
+		// 			}
+		// 			//获取子应用
+		// 			const preFetchApp: PreFetchApp = childrenAppsMap.get(appName)?.preFetchApp as PreFetchApp;
+		// 			preFetchApp.level = 3;
+		// 			//卸载后直接执行预加载
+		// 			// microApp.preFetch([preFetchApp], 100);
+		// 			resolve(true);
+		// 		})
+		// 		.catch(() => {
+		// 			reject(false);
+		// 		});
+		// });
 	}
 
 	/**
@@ -75,29 +75,29 @@ class ChildrenAppsManage {
 	 * @param options 参数
 	 */
 	public unmountAllApps(options?: UnmountAppParams): Promise<boolean> {
-		const that = this;
-		return new Promise((resolve, reject) => {
-			if (options?.destroy !== false) {
-				options!.destroy = true;
-			}
-			const appList: Array<ChildrenAppNameEnum> = microApp.getActiveApps() as Array<ChildrenAppNameEnum>;
-			//去除所有子应用数据监听
-			appList.forEach((item: ChildrenAppNameEnum) => {
-				const idx = that.childrenToMainDataList.findIndex((i) => i.name == item);
-				if (idx != -1) {
-					microApp.removeDataListener(item, that.childrenToMainDataList[idx].fn);
-					that.childrenToMainDataList.splice(idx, 1);
-				}
-			});
-			microApp
-				.unmountAllApps({ ...options })
-				.then(() => {
-					resolve(true);
-				})
-				.catch(() => {
-					reject(false);
-				});
-		});
+		// const that = this;
+		// return new Promise((resolve, reject) => {
+		// 	if (options?.destroy !== false) {
+		// 		options!.destroy = true;
+		// 	}
+		// 	const appList: Array<ChildrenAppNameEnum> = microApp.getActiveApps() as Array<ChildrenAppNameEnum>;
+		// 	//去除所有子应用数据监听
+		// 	appList.forEach((item: ChildrenAppNameEnum) => {
+		// 		const idx = that.childrenToMainDataList.findIndex((i) => i.name == item);
+		// 		if (idx != -1) {
+		// 			microApp.removeDataListener(item, that.childrenToMainDataList[idx].fn);
+		// 			that.childrenToMainDataList.splice(idx, 1);
+		// 		}
+		// 	});
+		// 	microApp
+		// 		.unmountAllApps({ ...options })
+		// 		.then(() => {
+		// 			resolve(true);
+		// 		})
+		// 		.catch(() => {
+		// 			reject(false);
+		// 		});
+		// });
 	}
 
 	/**
@@ -106,16 +106,16 @@ class ChildrenAppsManage {
 	 * @param destroy
 	 */
 	public reload(appName: ChildrenAppNameEnum, destroy?: boolean): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			microApp
-				.reload(appName, destroy)
-				.then(() => {
-					resolve(true);
-				})
-				.catch(() => {
-					reject(false);
-				});
-		});
+		// return new Promise((resolve, reject) => {
+		// 	microApp
+		// 		.reload(appName, destroy)
+		// 		.then(() => {
+		// 			resolve(true);
+		// 		})
+		// 		.catch(() => {
+		// 			reject(false);
+		// 		});
+		// });
 	}
 
 	/**
@@ -124,27 +124,27 @@ class ChildrenAppsManage {
 	 * @returns
 	 */
 	public renderApp(options: RenderAppOptions): Promise<boolean> {
-		const that = this;
-		startLoading();
-		return new Promise((resolve, reject) => {
-			microApp
-				.renderApp({ ...options })
-				.then((res) => {
-					if (res) {
-						that.childrenToMainDataList.push({ name: options.name, fn: that.childrenToMainData.bind(that) });
-						const childrenToMainDataListItem: ChildrenToMainDataListItem = that.childrenToMainDataList.find((item) => item.name == options.name) as ChildrenToMainDataListItem;
-						//添加数据接收
-						microApp.addDataListener(options.name, childrenToMainDataListItem.fn);
-						stopLoading();
-						resolve(res);
-					} else {
-						reject(res);
-					}
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
+		// const that = this;
+		// startLoading();
+		// return new Promise((resolve, reject) => {
+		// 	microApp
+		// 		.renderApp({ ...options })
+		// 		.then((res) => {
+		// 			if (res) {
+		// 				that.childrenToMainDataList.push({ name: options.name, fn: that.childrenToMainData.bind(that) });
+		// 				const childrenToMainDataListItem: ChildrenToMainDataListItem = that.childrenToMainDataList.find((item) => item.name == options.name) as ChildrenToMainDataListItem;
+		// 				//添加数据接收
+		// 				microApp.addDataListener(options.name, childrenToMainDataListItem.fn);
+		// 				stopLoading();
+		// 				resolve(res);
+		// 			} else {
+		// 				reject(res);
+		// 			}
+		// 		})
+		// 		.catch((err) => {
+		// 			reject(err);
+		// 		});
+		// });
 	}
 
 	/**
@@ -154,16 +154,16 @@ class ChildrenAppsManage {
 	 */
 	public forceSetData<Data>(name: ChildrenAppNameEnum, mainTochildrenCommon: MainTochildrenCommon<Data>) {
 		// microApp.forceSetData(name, { ...mainTochildrenCommon });
-		this.observerList.push({ ...mainTochildrenCommon });
+		// this.observerList.push({ ...mainTochildrenCommon });
 	}
 
 	private observerListChange = (newLength: number) => {
-		const that = this;
-		if (newLength > 0) {
-			microApp.forceSetData(that.observerList.getArray()[0].name, { ...that.observerList.getArray()[0] }, () => {
-				that.observerList.shift();
-			});
-		}
+		// const that = this;
+		// if (newLength > 0) {
+		// 	microApp.forceSetData(that.observerList.getArray()[0].name, { ...that.observerList.getArray()[0] }, () => {
+		// 		that.observerList.shift();
+		// 	});
+		// }
 	};
 
 	/**
@@ -171,7 +171,7 @@ class ChildrenAppsManage {
 	 * @param data
 	 */
 	public forceSetGlobalData(data: MainToChildrenGlobal) {
-		microApp.forceSetGlobalData({ ...data });
+		// microApp.forceSetGlobalData({ ...data });
 	}
 
 	/**
@@ -180,7 +180,7 @@ class ChildrenAppsManage {
 	 * @param delay 延迟
 	 */
 	public preFetch(appList: Array<PreFetchApp>, delay: number = 3000) {
-		microApp.preFetch(appList, delay);
+		// microApp.preFetch(appList, delay);
 	}
 
 	/**
@@ -188,46 +188,45 @@ class ChildrenAppsManage {
 	 * @param childrenToMainCommonData 数据
 	 */
 	private childrenToMainData(childrenToMainCommonData: ChildrenToMainCommon): any {
-		// console.log("收到子应用数据", childrenToMainCommonData);
-		//收到子应用通知主应用路由跳转业务(仅限于A应用跳转b应用路由)
-		if (childrenToMainCommonData.transactionName == TransactionNameCommonEnum.routerPush) {
-			this.childrenToMainRouter(childrenToMainCommonData);
-		}
-		//收到子应用通知主营用Loading业务
-		else if (childrenToMainCommonData.transactionName == TransactionNameCommonEnum.childrenAppLoading) {
-			this.childrenToMainLoading(childrenToMainCommonData);
-		}
-		//走 控制器
-		else {
-			const Controller = ControllerFactory.createController(childrenToMainCommonData.transactionName as ControllersEnum);
-			Controller.handleRequest(childrenToMainCommonData);
-		}
-		//收完之后 清空数据缓存
-		microApp.clearData(childrenToMainCommonData.name);
+		// // console.log("收到子应用数据", childrenToMainCommonData);
+		// //收到子应用通知主应用路由跳转业务(仅限于A应用跳转b应用路由)
+		// if (childrenToMainCommonData.transactionName == TransactionNameCommonEnum.routerPush) {
+		// 	this.childrenToMainRouter(childrenToMainCommonData);
+		// }
+		// //收到子应用通知主营用Loading业务
+		// else if (childrenToMainCommonData.transactionName == TransactionNameCommonEnum.childrenAppLoading) {
+		// 	this.childrenToMainLoading(childrenToMainCommonData);
+		// }
+		// //走 控制器
+		// else {
+		// 	const Controller = ControllerFactory.createController(childrenToMainCommonData.transactionName as ControllersEnum);
+		// 	Controller.handleRequest(childrenToMainCommonData);
+		// }
+		// //收完之后 清空数据缓存
+		// microApp.clearData(childrenToMainCommonData.name);
 	}
 
 	/**
 	 * @description 子应用通知主应用跳转子应用路由
 	 */
 	public childrenToMainRouter(childrenToMainCommonData: ChildrenToMainCommon<ChildrenToMainRouterPush>) {
-		console.log("收到子应用路由跳转子应用路由", childrenToMainCommonData, childrenToMainCommonData.data?.path);
-
-		microApp.router.push({
-			name: childrenToMainCommonData.name,
-			path: "#" + childrenToMainCommonData.data?.path,
-		});
+		// console.log("收到子应用路由跳转子应用路由", childrenToMainCommonData, childrenToMainCommonData.data?.path);
+		// microApp.router.push({
+		// 	name: childrenToMainCommonData.name,
+		// 	path: "#" + childrenToMainCommonData.data?.path,
+		// });
 	}
 
 	/**
 	 * @description 子应用通知主应用loading状态改变
 	 */
 	private childrenToMainLoading(childrenToMainCommonData: ChildrenToMainCommon<ChildrenToMainLoading>) {
-		console.log("收到子应用通知主应用loading", childrenToMainCommonData);
-		if (childrenToMainCommonData.data?.loading == "1") {
-			startLoading();
-		} else {
-			stopLoading();
-		}
+		// console.log("收到子应用通知主应用loading", childrenToMainCommonData);
+		// if (childrenToMainCommonData.data?.loading == "1") {
+		// 	startLoading();
+		// } else {
+		// 	stopLoading();
+		// }
 	}
 }
 

@@ -1,7 +1,3 @@
-/*
- * @Author: wangmingxin
- * @Description: 请填写简介
- */
 window.PLATFROM_CONFIG = {
 	//打包编译后的http请求地址(运维专用)
 	productionBaseURL: "http://192.168.30.72:7900",
@@ -11,11 +7,6 @@ window.PLATFROM_CONFIG = {
 	productionSportUrl: "https://apistaging.wx7777.com",
 	/** s128 打包编译后地址(运维专用) */
 	productionS128Url: "https://kss.cfb2.net",
-
-	//运维专用访问子应用1dist包
-	demoApp1Url: "/demo_app1",
-	//运维专用访问子应用2dist包
-	demoApp2Url: "/demo_app2",
 
 	developmentBaseURL: "https://gw.playesoversea.store", //临时使用测试环境
 	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境

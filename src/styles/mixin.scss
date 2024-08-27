@@ -1,20 +1,3 @@
-@mixin main-lang-bg($width, $height, $preUrl, $posUrl) {
-	width: $width;
-	height: $height;
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	@include loop-lang-bg($preUrl, $posUrl);
-}
-// 背景图多语言
-@mixin loop-lang-bg($preUrl, $posUrl) {
-	$list: zh, en;
-	@each $i in $list {
-		&.#{$i} {
-			background-image: url("#{$preUrl}/#{$i}/#{$posUrl}");
-		}
-	}
-}
-
 @mixin flex_center {
 	display: flex;
 	justify-content: center;
