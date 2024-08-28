@@ -11,36 +11,35 @@ import { onBeforeMount } from "vue";
 import Common from "/@/utils/common";
 import { CommonApi } from "/@/api/common";
 import { useUserStore } from "/@/stores/modules/user";
-import zhCn from "element-plus/es/locale/lang/zh-cn";
 
 const UserStore = useUserStore();
 const ThemesStore = useThemesStore();
 
 onBeforeMount(() => {
-	initTheme();
-	initLang();
+	ThemesStore.initTheme();
+	UserStore.userInit();
 });
 
 //初始化主题
-const initTheme = () => {
-	ThemesStore.setTheme(ThemesStore.themeName);
-};
+
 //获取语言
-const getLang = async () => {
-	// const res: any = await CommonApi.getLanguage().catch((err: any) => err);
-	// const { code, data } = res;
-	// if (code == Common.ResCode.SUCCESS) {
-	// 	UserStore.setLang(data);
-	// }
+const getCommonBusinessDownBox = async () => {
+	const res: any = await CommonApi.getCommonBusinessDownBox().catch((err: any) => err);
+	const { code, data } = res;
+	if (code == Common.ResCode.SUCCESS) {
+		console.log(data, 3333);
+
+		// UserStore.setLangs(data);
+	}
 };
 //初始化语言
 const initLang = async () => {
-	const lang = UserStore.getLang;
-	console.log(lang);
+	const lang = UserStore.lang;
+	console.log(lang, 3333);
 	if (lang) {
-		UserStore.setLang(lang);
+		UserStore.setLangs(lang);
 	} else {
-		await getLang();
+		await getCommonBusinessDownBox();
 	}
 };
 </script>

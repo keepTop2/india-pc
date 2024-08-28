@@ -1,17 +1,22 @@
 <template>
-	<div class="layout1" ref="domeRef">
+	<div class="layout" ref="domeRef">
+		<Head />
 		<left :is-collapse="state.isCollapse" />
-		<!-- <right /> -->
-		<!-- <login /> -->
-		<!-- <Lottery /> -->
-		<!-- <Task /> -->
+		<container />
+		<!-- <right />
+		<login />
+		<Lottery />
+		<Task /> -->
 	</div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref } from "vue";
+
+import Head from "./components/header/index.vue";
 import left from "./components/left/left.vue";
-// import right from './components/right/right.vue';
+import container from "./components/container/index.vue";
+// import right from "./components/right/right.vue";
 // import login from "./login/index.vue";
 // import Lottery from "./lottery/lottery.vue";
 // import Task from "./Task/index.vue";

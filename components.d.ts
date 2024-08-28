@@ -54,6 +54,7 @@ declare module 'vue' {
     H5Video: typeof import('./src/components/wVideo/h5Video.vue')['default']
     Hcaptcha: typeof import('./src/components/Hcaptcha/hcaptcha.vue')['default']
     Hot: typeof import('./src/components/Hot/index.vue')['default']
+    Img: typeof import('./src/components/Img/index.vue')['default']
     IndexOrigin: typeof import('./src/components/svgIcon/index-origin.vue')['default']
     InfiniteScroll: typeof import('./src/components/InfiniteScroll/infiniteScroll.vue')['default']
     M3u8Video: typeof import('./src/components/wVideo/m3u8Video.vue')['default']

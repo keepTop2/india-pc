@@ -1,12 +1,12 @@
 $themes: (
-	default: (
+	light: (
 		//分割线
 		Line: #373a40,
 		//主
 		icon: #67707b,
 
 		//画布背景
-		Bg: #1d1f23,
+		Bg: #fff,
 		//背景/卡片1
 		Bg1: #24262b,
 		//背景/卡片2
@@ -20,7 +20,7 @@ $themes: (
 		//卡片头部背景色
 		Bg6: linear-gradient(180deg, #404040 0%, #292929 100%),
 		//文本/文本1
-		Text1: #98a7b5,
+		Text1: red,
 		//文本/文本2
 		Text2: #4d565e,
 		//文本/文本3
@@ -52,37 +52,43 @@ $themes: (
 		popoverShadow: #0e1013,
 	),
 	dark: (
+		//首页
+		Line_1: #111214,
 		//分割线
-		Line: #d4d7e3,
-		//主
-		icon: #9fa5ac,
+		Line_2: #373a40,
+
+		//默认
+		Icon_1: #67707b,
+		//激活
+		Icon_2: #ffffff,
+		//禁用
+		Icon_3: #666869,
 
 		//画布背景
-		Bg: #f2f2f6,
+		Bg: #1d1f23,
 		//背景/卡片1
-		Bg1: #f5f7fd,
+		Bg1: #24262b,
 		//背景/卡片2
-		Bg2: #eaecf3,
+		Bg2: #1a1c20,
 		//背景/卡片3
-		Bg3: #e2e5ef,
+		Bg3: #2e3035,
 		//背景/卡片4
-		Bg4: #ffffff,
+		Bg4: #1c1e22,
 		//选中卡片背景
-		Bg5: #d9efda,
-		//卡片头部背景色
-		Bg6: linear-gradient(180deg, #e1e3e6 0%, #abaeb4 100%),
+		Bg5: #ff284b,
+
 		//文本/文本1
-		Text1: #495159,
+		Text1: #98a7b5,
 		//文本/文本2
-		Text2: #8a97a1,
+		Text2: #4d565e,
 		//文本/文本3
 		Text2_1: #656e78,
 		//选中+标题-文本
-		Text_s: #1d1f23,
+		Text_s: #ffffff,
 		//激活按钮-文本
-		Text_a: #1d1f23,
+		Text_a: #ffffff,
 		//主色/盈利
-		Theme: #3bc116,
+		Theme: #ff284b,
 		// 辅助色
 		f2: #01aff6,
 		//警告
@@ -90,16 +96,17 @@ $themes: (
 		//辅助色1
 		f1: #ffa800,
 		//收藏
-		Favorites: #ff007a,
-		//任务背景色
-		blg1: linear-gradient(261deg, rgba(0, 133, 255, 0.2) 0%, #00e0e0 100%),
-		//抽奖背景色
-		blg2: linear-gradient(261deg, rgba(153, 35, 182, 0.2) 0%, #9923b6 100%),
-		//左侧菜单阴影
-		leftMenuBoxShadow: 0px 0px 12px 0px rgba(14, 16, 19, 0.1),
-		//右侧顶部阴影
-		rightTopBoxShadow: 0px 0px 12px rgba(14, 16, 19, 0.2),
-		//Popover 阴影
-		popoverShadow: rgba(14, 16, 19, 0.2),
+		Favorites: #ff284b,
+
+		// //任务背景色
+		// blg1: linear-gradient(261deg, rgba(0, 133, 255, 0.2) 0%, #00e0e0 100%),
+		// //抽奖背景色
+		// blg2: linear-gradient(261deg, rgba(153, 35, 182, 0.2) 0%, #9923b6 100%),
+		// //左侧菜单阴影
+		// leftMenuBoxShadow: 0px 0px 12px 0px rgba(14, 16, 19, 0.1),
+		// //右侧顶部阴影
+		// rightTopBoxShadow: 0px 0px 12px rgba(14, 16, 19, 0.2),
+		// //Popover 阴影
+		// popoverShadow: rgba(14, 16, 19, 0.2),,,,,,
 	),
 );

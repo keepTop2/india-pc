@@ -19,13 +19,16 @@
 		</div>
 
 		<div class="demo_container">
-			<div @click="changeTheme">点击切换主题</div>
+			<el-button @click="changeTheme(ThemeEnum.light)">{{ $t("common.白天") }} light</el-button>
+			<el-button @click="changeTheme(ThemeEnum.dark)">{{ $t("common.黑夜") }} dark</el-button>
 
-			<el-button @click="chageLang">切换语言</el-button>
+			<el-select v-model="UserStore.lang" placeholder="Select" size="large" style="width: 240px" @change="chageLang">
+				<el-option v-for="item in UserStore.LangList" :key="item.code" :label="item.name" :value="item.code" />
+			</el-select>
 
 			<div class="lang_btn">{{ $t(`common["你好世界"]`) }}</div>
 			<div>
-				<img :src="imgs.demoImgUrl" />
+				<Img src="/demo/demo.png" />
 				<span> img图片</span>
 			</div>
 
@@ -36,12 +39,17 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-
+import { i18n } from "/@/i18n/index";
+import { useThemesStore } from "/@/stores/modules/themes";
+import imgs, { bgImgs } from "./imgs";
+import { ThemeEnum } from "/@/enum/appConfigEnum";
+import { LangEnum } from "/@/enum/appConfigEnum";
+import { useUserStore } from "/@/stores/modules/user";
+import Img from "/@/components/Img/index.vue";
 const size = ref<"default" | "large" | "small">("default");
 
 const value1 = ref("");
 const value2 = ref("");
-
 const shortcuts = [
 	{
 		text: "Today",
@@ -68,43 +76,29 @@ const shortcuts = [
 const disabledDate = (time: Date) => {
 	return time.getTime() > Date.now();
 };
-
-import { i18n } from "/@/i18n/index";
-import { useThemesStore } from "/@/stores/modules/themes";
-import { setLang } from "/@/i18n/index";
-import imgs, { bgImgs } from "./imgs";
-
+const UserStore = useUserStore();
 //切换主题
-const changeTheme = () => {
+const changeTheme = (themeName: ThemeEnum) => {
 	const themesStore = useThemesStore();
-	if (themesStore.themeName == "default") {
-		themesStore.setTheme("dark");
-	} else {
-		themesStore.setTheme("default");
-	}
+	if (themeName == themesStore.getTheme) return;
+	themesStore.setTheme(themeName);
 };
 
 //切换语言
-const chageLang = () => {
-	// const;
-	if (localStorage.getItem("lang") == "en") {
-		setLang("zh");
-	} else {
-		setLang("en");
-	}
-	window.location.reload();
+const chageLang = (value: LangEnum) => {
+	UserStore.setLangs(value);
 };
 </script>
 
 <style lang="scss" scoped>
 .demo_container {
 	@include themeify {
-		background-color: themed("Theme");
-		color: themed("Warn");
+		background: themed("Bg");
+		color: themed("Text1");
 	}
 	.bg {
 		@include themeify {
-			background: themed("Text1");
+			background: themed("Bg");
 		}
 	}
 	.bg_img {
