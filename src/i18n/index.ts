@@ -12,7 +12,6 @@ export function loadLang() {
 		const name = path.replace(/(\.\/lang\/|\.ts)/g, "");
 		langs[name] = modules[path].lang;
 	}
-	console.log(langs, "看看语言列表");
 	return langs;
 }
 

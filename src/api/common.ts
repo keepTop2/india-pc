@@ -1,10 +1,10 @@
-import useAxiosApi from '/@/utils/useAxiosApi';
+import useAxiosApi from "/@/utils/useAxiosApi";
 
 export const CommonApi = {
 	// 手机验证码请求
 	sendSms: (data = {}, headers = {}) => {
 		return useAxiosApi(`/app-foreign/login/api/sendSms`, {
-			method: 'POST',
+			method: "POST",
 			data,
 			headers,
 		});
@@ -13,18 +13,18 @@ export const CommonApi = {
 	// 邮箱验证码请求
 	sendMail: (data = {}, headers = {}) => {
 		return useAxiosApi(`/app-foreign/login/api/sendMail`, {
-			method: 'POST',
+			method: "POST",
 			data,
 			headers,
 		});
 	},
 
 	/**
-	 *@description 根据 ip 获取语言
+	 *@description 获取通用配置
 	 */
-	getLanguage: (data = {}, headers = {}) => {
-		return useAxiosApi(`/app-foreign/lang/api/getLang`, {
-			method: 'POST',
+	getCommonBusinessDownBox: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/common/getCommonBusinessDownBox`, {
+			method: "POST",
 			data,
 			headers,
 		});

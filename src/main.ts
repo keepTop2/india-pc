@@ -21,9 +21,6 @@ Object.keys(directives).forEach((key) => {
 app.use(store);
 
 app
-	// .use(ElementPlus, {
-	// 	locale: setElementLang(),
-	// })
 	.use(i18n)
 	// .use(VueGridLayout)
 	.use(router)
