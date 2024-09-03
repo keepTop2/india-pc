@@ -12,7 +12,10 @@ import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import { visualizer } from "rollup-plugin-visualizer";
-import { createSvgIconsPlugin } from "./plugins/svg-icons-plugin";
+// import { createSvgIconsPlugin } from "./plugins/svg-icons-plugin";
+
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+
 import svgLoader from "vite-svg-loader";
 
 const pathResolve = (dir: string) => {
@@ -58,6 +61,7 @@ const viteConfig = defineConfig(({ command, mode }: ConfigEnv) => {
 				resolvers: [ElementPlusResolver(), IconsResolver()],
 			}),
 			Icons(),
+			svgLoader(),
 			createHtmlPlugin({
 				minify: true,
 				pages: [
@@ -73,15 +77,12 @@ const viteConfig = defineConfig(({ command, mode }: ConfigEnv) => {
 				],
 			}),
 			JSON.parse(env.VITE_OPEN_CDN) ? buildConfig.cdn() : null,
-			svgLoader(),
+
 			createSvgIconsPlugin({
-				iconDirs: [
-					path.resolve(process.cwd(), "src/assets/zh/default/layout/layout1/left"),
-					path.resolve(process.cwd(), "src/assets/zh/default/svg/web"),
-					path.resolve(process.cwd(), "src/assets/zh/default/svg/sever"),
-					// path.resolve(process.cwd(), "src/assets/zh/default/menu/sports"),
-				],
-				symbolId: "[name]",
+				// 指定需要缓存的图标文件夹
+				iconDirs: [path.resolve(process.cwd(), "src/assets/svg")],
+				// 指定symbolId格式
+				symbolId: "[dir]-[name]",
 			}),
 			process.env.npm_lifecycle_event == "build:preview"
 				? visualizer({
@@ -164,7 +165,6 @@ const viteConfig = defineConfig(({ command, mode }: ConfigEnv) => {
 				// css: { charset: false }
 				scss: {
 					// javascriptEnable: true,
-					additionalData: '@import "/@/styles/themeify.scss"; @import "/@/styles/mixin.scss";',
 				},
 			},
 		},

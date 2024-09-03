@@ -9,7 +9,7 @@ interface ThemesStore {
 export const useThemesStore = defineStore("Themes", {
 	state: (): ThemesStore => {
 		return {
-			themeName: "light",
+			themeName: (localStorage.getItem("Themes") as ThemeKey) || "light",
 		};
 	},
 	getters: {
@@ -22,21 +22,22 @@ export const useThemesStore = defineStore("Themes", {
 		 * @deprecated 全局主题切换
 		 * @param str
 		 */
-		setTheme(str: ThemeKey) {
+		setTheme(str: ThemeKey): void {
 			this.themeName = str || "light";
-			//设置scss主题色
-			document.getElementsByTagName("body")[0].setAttribute("data-theme", this.themeName);
-			// const elementThemes: ElementThemes = new ElementThemes();
-			//设置element主题色
-			// elementThemes.setElementThemes(str);
+			const link = document.getElementById("theme-link") as HTMLLinkElement;
+			localStorage.setItem("Themes", str);
+			if (link) {
+				link.href = `/@/styles/themes/${this.themeName}.css`;
+			} else {
+				const newLink = document.createElement("link");
+				newLink.id = "theme-link";
+				newLink.rel = "stylesheet";
+				newLink.href = `/@/styles/themes/${this.themeName}.css`;
+				document.head.appendChild(newLink);
+			}
 		},
 		initTheme() {
 			this.setTheme(this.themeName);
 		},
-	},
-	persist: {
-		key: "Themes",
-		storage: sessionStorage,
-		paths: ["themeName"],
 	},
 });

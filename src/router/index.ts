@@ -5,28 +5,51 @@ import frontPage from "./modules/frontPage";
 import errorPage from "./modules/errorPage";
 
 import layout from "../layout/layout.vue";
+
+import userRoutes from "./modules/userMenu";
 // 登录注册弹窗
 const routes = [
-	// 匹配不到重定向会主页
-	// {
-	// 	// 找不到路由重定向到login页面
-	// 	path: "/:",
-	// 	// redirect: ((to: any) => {
-	// 	// 	return { path: '/frontPage/home' }
-	// 	// })
-	// 	redirect: "/demo",
-	// },
-	//登录
-	// login,
 	//首页模块路由
 	frontPage,
 	// 错误页
 	errorPage,
 	{
 		path: "/",
-		// component: layout,
-		redirect: "/demo",
+		component: layout,
+		redirect: "/",
 		children: [
+			{
+				path: "/",
+				name: "home",
+				layout: true,
+				component: () => import("/@/views/home/index.vue"),
+				meta: {
+					title: "home",
+					idx: 1,
+				},
+			},
+			{
+				path: "/user",
+				name: "user",
+				layout: true,
+				meta: {
+					title: "home",
+					idx: 1,
+				},
+				children: [...userRoutes],
+			},
+			// 用户相关路由页面
+
+			{
+				path: "/helpCenter",
+				name: "helpCenter",
+				layout: true,
+				component: () => import("/@/views/helpCenter/index.vue"),
+				meta: {
+					title: "helpCenter",
+					idx: 1,
+				},
+			},
 			{
 				path: "/demo",
 				name: "demo",

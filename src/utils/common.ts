@@ -1,9 +1,12 @@
 import { ElMessage } from "element-plus";
 import moment from "moment-timezone";
 import Decimal from "decimal.js";
+import { useThemesStore } from "../stores/modules/themes";
+
 // import download from './download.js';
 // 引入复制插件
 import useClipboard from "vue-clipboard3";
+import { i18n } from "../i18n";
 
 // // 全局设置moment时区 (上海)
 moment.tz.setDefault("Pacific/Guadalcanal");
@@ -345,6 +348,22 @@ class Common {
 			formattedNumber = this.formatFloat(Number(absNumber));
 		}
 		return formattedNumber;
+	}
+
+	/**
+	 * @description 获取根据主题语言获取图片
+	 */
+	static getCommonImgPath(path: string) {
+		return new URL(`../assets/${path}`, import.meta.url).href;
+	}
+	static getThemeImgPath(path: string) {
+		const themesStore = useThemesStore();
+
+		return new URL(`../assets/theme/${themesStore.themeName}/${path}`, import.meta.url).href;
+	}
+	static getlangImgPath(path: string) {
+		const themesStore = useThemesStore();
+		return new URL(`../assets/lang/${i18n.global.locale.value}/${themesStore.themeName}/${path}`, import.meta.url).href;
 	}
 }
 

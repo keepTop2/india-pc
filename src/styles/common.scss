@@ -64,9 +64,7 @@
 .el-popper__arrow {
 	&::before {
 		border: none !important;
-		@include themeify {
-			background-color: themed("Bg1") !important;
-		}
+		background-color: var(--Bg1) !important;
 	}
 }
 
@@ -74,38 +72,26 @@
 	border: none !important;
 
 	.el-select-dropdown__list {
-		@include themeify {
-			background-color: themed("Bg1") !important;
-		}
+		background-color: var(--Bg1) !important;
 	}
 
 	.el-select-dropdown__header {
 		border: none;
-		@include themeify {
-			background-color: themed("Bg1") !important;
-		}
-
+		background-color: var(--Bg1) !important;
 		.el-input__wrapper {
 			box-shadow: none;
 			border-radius: 8px;
 
-			@include themeify {
-				background-color: themed("Bg2");
-			}
+			background-color: var(--Bg2) !important;
 
 			input {
-				@include themeify {
-					color: themed("Text2_1");
-				}
+				color: var(--Text2_1);
 			}
 		}
 	}
 
 	.is-hovering {
-		@include themeify {
-			background-color: themed("Theme");
-		}
-
+		background-color: var(--Theme) !important;
 		.option-box {
 			color: themed("Text_s");
 		}

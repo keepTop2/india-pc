@@ -5,8 +5,8 @@ import router from "/@/router";
 import "/@/permission";
 import * as directives from "/@/directive/index";
 import { i18n } from "/@/i18n/index";
-
-import "virtual:svg-icons-plugin-register";
+// svg图标注册
+import "virtual:svg-icons-register";
 import "/@/styles/app.css";
 import "/@/styles/index.scss";
 window.__VUE_PROD_DEVTOOLS__ = false;

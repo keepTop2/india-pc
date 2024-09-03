@@ -32,14 +32,16 @@ const getCommonBusinessDownBox = async () => {
 		// UserStore.setLangs(data);
 	}
 };
-//初始化语言
-const initLang = async () => {
-	const lang = UserStore.lang;
-	console.log(lang, 3333);
-	if (lang) {
-		UserStore.setLangs(lang);
-	} else {
-		await getCommonBusinessDownBox();
-	}
-};
+// //初始化语言
+// const initLang = async () => {
+// 	const lang = UserStore.lang;
+// 	console.log(lang, 3333);
+// 	if (lang) {
+// 		UserStore.setLangs(lang);
+// 	} else {
+// 		await getCommonBusinessDownBox();
+// 	}
+// };
 </script>
+
+<style lang="scss"></style>

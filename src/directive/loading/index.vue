@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import {} from 'vue';
+import {} from "vue";
 </script>
 
 <style scoped lang="scss">
@@ -37,9 +37,7 @@ import {} from 'vue';
 		height: 8px;
 		position: absolute;
 		border-radius: 50%;
-		@include themeify {
-			background-color: themed('Theme');
-		}
+		background-color: var(--Theme);
 		left: 15%;
 		transform-origin: 50%;
 		animation: typing-circle7124 0.5s alternate infinite ease;
