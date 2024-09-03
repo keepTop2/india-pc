@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useThemesStore } from '/@/stores/modules/themes';
+import { computed } from "vue";
+import { useThemesStore } from "/@/stores/modules/themes";
 const ThemesStore = useThemesStore();
 const themed = computed(() => {
 	return ThemesStore.getTheme;
@@ -37,10 +37,10 @@ interface NoneData {
 	center?: string;
 }
 const props = withDefaults(defineProps<NoneData>(), {
-	iconSvg: 'kzt_img',
-	iconSvgLight: 'kzt_img_light',
-	title: '',
-	center: '',
+	iconSvg: "kzt_img",
+	iconSvgLight: "kzt_img_light",
+	title: "",
+	center: "",
 });
 </script>
 
@@ -68,13 +68,10 @@ const props = withDefaults(defineProps<NoneData>(), {
 
 		p {
 			text-align: center;
-			font-family: 'PingFang SC';
+			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
-
-			@include themeify {
-				color: themed('Text2_1');
-			}
+			color: var(--Text2_1);
 		}
 	}
 }

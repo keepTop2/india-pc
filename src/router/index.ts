@@ -7,7 +7,7 @@ import errorPage from "./modules/errorPage";
 import layout from "../layout/layout.vue";
 
 import userRoutes from "./modules/userMenu";
-import sportsRoutes from "./modules/sports";
+import sportsRoutes from "./modules/sports/sports";
 // 登录注册弹窗
 const routes = [
 	//首页模块路由

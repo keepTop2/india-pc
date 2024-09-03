@@ -92,14 +92,10 @@ const chageLang = (value: LangEnum) => {
 
 <style lang="scss" scoped>
 .demo_container {
-	@include themeify {
-		background: themed("Bg");
-		color: themed("Text1");
-	}
+	background-color: var(--Bg);
+	color: var(--Text1);
 	.bg {
-		@include themeify {
-			background: themed("Bg");
-		}
+		background-color: var(--Bg);
 	}
 	.bg_img {
 		width: 300px;
