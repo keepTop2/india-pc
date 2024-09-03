@@ -18,7 +18,7 @@
 				</div>
 
 				<!-- 第二步 -->
-				<div v-if="currentStep === 1">
+				<div v-else-if="currentStep === 1">
 					<p class="Text_s mb_8 mt_8 fs_16">{{ verifyType }}</p>
 					<p class="Theme_text fs_14 text_unline curp"><span @click="changeVerifyType">其他方式</span></p>
 					<div>
@@ -39,7 +39,7 @@
 					<p class="fs_14 Text1 mt_16 fw_200">有效时间：10分钟，未收到验证码？请重新发送或 <span class="Theme_text">联系客服</span></p>
 				</div>
 				<!-- 第二步 -->
-				<div v-if="currentStep === 2">
+				<div v-else-if="currentStep === 2">
 					<p class="Text_s mb_8 mt_8 fs_16">设置新密码</p>
 					<!-- 密码 -->
 					<div>

@@ -39,12 +39,14 @@ onUnmounted(() => {
 	eventBus.off("hide-modal", hide);
 	enableScroll();
 });
-const disableScroll = () => {
-	document.body.style.overflow = "hidden"; // 禁用背景滚动
-};
 
+// 禁用背景滚动
+const disableScroll = () => {
+	document.body.style.overflow = "hidden";
+};
+// 恢复背景滚动
 const enableScroll = () => {
-	document.body.style.overflow = ""; // 恢复背景滚动
+	document.body.style.overflow = "";
 };
 </script>
 
@@ -56,8 +58,8 @@ const enableScroll = () => {
 	right: 0;
 	bottom: 0;
 	background: rgba(0, 0, 0, 0.5);
-	height: 100%;
-	width: 100%;
+	height: 100vh;
+	width: 100vw;
 	z-index: 1000;
 	display: flex;
 	justify-content: center;

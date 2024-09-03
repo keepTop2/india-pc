@@ -51,7 +51,6 @@ const props = defineProps({
 const emit = defineEmits<{
 	(e: "update:modelValue", value: Object): void;
 	(e: "search", query: string): void;
-	(e: "phone", phone: string): void;
 }>();
 
 const searchQuery = ref("");

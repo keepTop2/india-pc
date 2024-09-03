@@ -5,25 +5,27 @@
 			<img src="/@/assets/common/login_left.png" alt="" />
 		</div>
 		<div class="login_right_form">
-			<div class="login_text"><span>注册</span></div>
+			<div class="login_text">
+				<span>{{ $t(`common['注册']`) }}</span>
+			</div>
 			<div class="login_form">
 				<!-- 账号 -->
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_16"><span class="Wran_text">*</span>账号</p>
+					<p class="Text_s mb_8 mt_8 fs_16"><span class="Wran_text">*</span>{{ $t(`common['账号']`) }}</p>
 					<p>
-						<input type="text" :value="payLoad.userAccount" class="common_input" placeholder="输入账号" @input="userOnInput" />
+						<input type="text" :value="payLoad.userAccount" class="common_input" :placeholder="$t(`login['输入账号']`)" @input="userOnInput" />
 					</p>
-					<p v-show="VerifyError.userAccount" class="Wran_text fs_12 mt_2">4-11位，数字 ，字母组成 ，首位必须是字母</p>
+					<p v-show="VerifyError.userAccount" class="Wran_text fs_12 mt_2">{{ $t(`login['账号规则']`) }}</p>
 				</div>
 				<!-- 密码 -->
 				<div>
-					<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>登陆密码</p>
+					<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['登陆密码']`) }}</p>
 					<p class="common_password">
 						<input
 							:type="showPassword ? 'text' : 'password'"
 							:value="payLoad.password"
 							class="common_input"
-							placeholder="输入密码"
+							:placeholder="$t(`login['输入密码']`)"
 							@input="passOnInput"
 							autocomplete="new-password"
 						/>
@@ -31,24 +33,30 @@
 							<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="18px" @click="showPassword = !showPassword" />
 						</span>
 					</p>
-					<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">8-16位，必须包含 数字和字母， 可包含@ _ $</p>
+					<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
 				</div>
 				<!-- 确认密码 -->
 				<div>
-					<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>确认密码</p>
+					<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
 					<p class="common_password">
-						<input :type="showConfirmPassword ? 'text' : 'password'" :value="payLoad.confirmPassword" class="common_input" placeholder="输入密码" @input="confirmOnInput" />
+						<input
+							:type="showConfirmPassword ? 'text' : 'password'"
+							:value="payLoad.confirmPassword"
+							class="common_input"
+							:placeholder="$t(`login['输入确认密码']`)"
+							@input="confirmOnInput"
+						/>
 						<span class="eyes">
 							<svg-icon :name="showConfirmPassword ? 'eyes_on' : 'eyes'" size="18px" @click="showConfirmPassword = !showConfirmPassword" />
 						</span>
 					</p>
-					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">两次输入密码不一致</p>
+					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
 				</div>
 
 				<div>
-					<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>主货币</p>
+					<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['主货币']`) }}</p>
 					<p style="height: 46px">
-						<DropdownSelect :options="options" placeholder="请选择" @update:modelValue="handleSelect" @search="handleSearch" />
+						<DropdownSelect :options="options" :placeholder="$t(`login['选择货币']`)" @update:modelValue="handleSelect" @search="handleSearch" />
 					</p>
 				</div>
 
@@ -195,6 +203,7 @@ const getUserInfo = async () => {
 		}
 	}
 	.login_right_form {
+		height: 720px;
 		padding: 25px 32px;
 		overflow-y: auto;
 		.common_password {

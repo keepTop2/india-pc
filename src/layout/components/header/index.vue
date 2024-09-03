@@ -14,15 +14,17 @@
 					<span class="notice"></span>
 				</div>
 				<div class="lang user">
-					<img :src="LangIcon" alt="" @click="openUserMenu" />
-					<div class="userMenu" v-if="isOpenMenu" ref="userMenu">
-						<div v-for="(route, index) in userRoutes" :key="index" @mouseover="onMouseover('user-' + route.meta.icon)" @mouseout="onMouseout" @click="goToPath(route)">
-							<span><svg-icon :name="'user-' + route.meta.icon" size="18px" :hover="hoverItem"></svg-icon></span>
-							<span>{{ $t(`common[${route.meta.title}]`) }}</span>
-						</div>
-						<div class="mt_6px mb_6px login_out" @mouseover="onMouseover('user-logout')" @mouseout="onMouseout" @click="logOut">
-							<span><svg-icon name="user-logout" size="18px" :hover="hoverItem"></svg-icon></span>
-							<span> {{ $t(`common['退出登陆']`) }}</span>
+					<div>
+						<img :src="LangIcon" alt="" @click="openUserMenu" />
+						<div class="userMenu" v-if="isOpenMenu" ref="userMenu">
+							<div v-for="(route, index) in userRoutes" :key="index" @mouseover="onMouseover('user-' + route.meta.icon)" @mouseout="onMouseout" @click="goToPath(route)">
+								<span><svg-icon :name="'user-' + route.meta.icon" size="18px" :hover="hoverItem"></svg-icon></span>
+								<span>{{ $t(`common['${route.meta.title}']`) }}</span>
+							</div>
+							<div class="mt_6px mb_6px login_out" @mouseover="onMouseover('user-logout')" @mouseout="onMouseout" @click="logOut">
+								<span><svg-icon name="user-logout" size="18px" :hover="hoverItem"></svg-icon></span>
+								<span> {{ $t(`common['退出登陆']`) }}</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -158,15 +160,19 @@ const logOut = () => {
 		}
 		.user {
 			position: relative;
+
 			.userMenu {
 				position: absolute;
 				top: 100%;
 				right: -40px;
 				display: block;
 				width: 220px;
+				overflow-y: auto;
+				overflow-x: hidden;
 				transform: translateY(25px);
 				background: var(--Bg1);
 				border-radius: 4px;
+				max-height: 100vh;
 				box-shadow: 0px 4px 12px 0px rgba(14, 16, 19, 0.25);
 				> div {
 					display: flex;
@@ -185,6 +191,9 @@ const logOut = () => {
 					background: var(--Bg2);
 					color: var(--Text_s);
 				}
+			}
+			.userMenu::-webkit-scrollbar {
+				display: none;
 			}
 		}
 		> div {
