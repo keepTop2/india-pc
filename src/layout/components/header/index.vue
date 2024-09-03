@@ -7,7 +7,7 @@
 						<img src="/@/assets/common/coin.png" alt="" style="height: 16px" class="mr_4" />
 						<span>{{ Common.thousands(123123123123.123) }}</span>
 					</div>
-					<div class="recharge">充值</div>
+					<div class="recharge">{{ $t(`common['充值']`) }}</div>
 				</div>
 				<div class="flex-center message" @mouseover="onMouseover('message')" @mouseout="onMouseout">
 					<svg-icon name="message" size="32px" :hover="hoverItem"></svg-icon>{{}}
@@ -18,19 +18,19 @@
 					<div class="userMenu" v-if="isOpenMenu" ref="userMenu">
 						<div v-for="(route, index) in userRoutes" :key="index" @mouseover="onMouseover('user-' + route.meta.icon)" @mouseout="onMouseout" @click="goToPath(route)">
 							<span><svg-icon :name="'user-' + route.meta.icon" size="18px" :hover="hoverItem"></svg-icon></span>
-							<span>{{ route.meta.title }}</span>
+							<span>{{ $t(`common[${route.meta.title}]`) }}</span>
 						</div>
 						<div class="mt_6px mb_6px login_out" @mouseover="onMouseover('user-logout')" @mouseout="onMouseout" @click="logOut">
 							<span><svg-icon name="user-logout" size="18px" :hover="hoverItem"></svg-icon></span>
-							<span>退出登录</span>
+							<span> {{ $t(`common['退出登陆']`) }}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="flex-center" v-else>
-				<div class="loginBtn btn" @click="openLoginModal">登陆</div>
-				<div class="registerBtn btn" @click="openRegisterModal">注册</div>
+				<div class="loginBtn btn" @click="openLoginModal">{{ $t(`common['登陆']`) }}</div>
+				<div class="registerBtn btn" @click="openRegisterModal">{{ $t(`common['注册']`) }}</div>
 			</div>
 
 			<div class="lang">
