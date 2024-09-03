@@ -1,10 +1,10 @@
-import { useUserStore } from '/@/stores/modules/user';
-import Common from './common';
-import CryptoJS from 'crypto-js';
+import { useUserStore } from "/@/stores/modules/user";
+import Common from "./common";
+import CryptoJS from "crypto-js";
 
 class EncryptionFn {
 	// 盐值
-	static saltValue = 'BSMYJXIA';
+	static saltValue = "BSMYJXIA";
 
 	/**
 	 * @description 加密方法
@@ -12,16 +12,17 @@ class EncryptionFn {
 	 */
 	static encryption = (data?: any) => {
 		const userStore = useUserStore();
+		const token = userStore.getUserInfo.token;
 		const saltValue = this.saltValue;
-		let newToken = '';
+		let newToken = "";
 
 		// 判断是否有参数，没有参数执行拼接盐值逻辑
 		if (!data) {
 			// 判断接口是否携带token
-			if (userStore.token) {
+			if (token) {
 				// 插入位置
 				const insertPositions = [4, 8, 14, -2];
-				newToken = userStore.token;
+				newToken = token;
 				// token拼接盐值
 				for (let i = insertPositions.length - 1; i >= 0; i--) {
 					const insertIndex = insertPositions[i];
@@ -29,17 +30,17 @@ class EncryptionFn {
 					newToken = newToken.slice(0, insertIndex) + saltChars + newToken.slice(insertIndex);
 				}
 				// 拼接好盐值的token + * + 当前时间戳
-				newToken = newToken + '*' + Common.getDateNow();
+				newToken = newToken + "*" + Common.getDateNow();
 			} else {
 				// 没有token拼接盐值 + * + 当前时间戳
-				newToken = saltValue + '*' + Common.getDateNow();
+				newToken = saltValue + "*" + Common.getDateNow();
 			}
 			// console.log('newToken', newToken);
 		}
 
 		// AES加密转化base64
-		const key = CryptoJS.enc.Base64.parse(this.encryptedCiphertextDecrypt(window.PLATFROM_CONFIG.encryptedCiphertext.key));
-		const iv = CryptoJS.enc.Base64.parse(this.encryptedCiphertextDecrypt(window.PLATFROM_CONFIG.encryptedCiphertext.iv));
+		const key = CryptoJS.enc.Base64.parse(this.encryptedCiphertextDecrypt((window as any).PLATFROM_CONFIG.encryptedCiphertext.key));
+		const iv = CryptoJS.enc.Base64.parse(this.encryptedCiphertextDecrypt((window as any).PLATFROM_CONFIG.encryptedCiphertext.iv));
 		// 有参数则用参数 没有参数则是token加密
 		const params = data ? CryptoJS.enc.Utf8.parse(data) : CryptoJS.enc.Utf8.parse(newToken);
 		const encryptedData = CryptoJS.AES.encrypt(params, key, {
@@ -58,16 +59,24 @@ class EncryptionFn {
 	 */
 	static decrypt = (data: any) => {
 		// AES解密转化base64
-		const key = CryptoJS.enc.Base64.parse(this.encryptedCiphertextDecrypt(window.PLATFROM_CONFIG.encryptedCiphertext.key));
-		const iv = CryptoJS.enc.Base64.parse(this.encryptedCiphertextDecrypt(window.PLATFROM_CONFIG.encryptedCiphertext.iv));
-		const decrypted = CryptoJS.AES.decrypt(data.data, key, {
+		console.log("开始解密", data);
+		// 检查 encryptedCiphertext 对象是否存在并包含 key 和 iv
+		const encryptedCiphertext = (window as any).PLATFROM_CONFIG.encryptedCiphertext;
+		console.log(encryptedCiphertext);
+
+		if (!encryptedCiphertext || !encryptedCiphertext.key || !encryptedCiphertext.iv) {
+			console.error("解密配置不完整或未定义");
+		}
+		const key = CryptoJS.enc.Base64.parse(this.encryptedCiphertextDecrypt(encryptedCiphertext.key));
+		const iv = CryptoJS.enc.Base64.parse(this.encryptedCiphertextDecrypt(encryptedCiphertext.iv));
+		const decrypted = CryptoJS.AES.decrypt(data, key, {
 			iv,
 			mode: CryptoJS.mode.CBC,
 			padding: CryptoJS.pad.Pkcs7,
 		});
 		// console.log('decrypted', decrypted);
 		const value = decrypted.toString(CryptoJS.enc.Utf8);
-		// console.log('...解密', JSON.parse(value));
+		console.log("...解密", JSON.parse(value));
 		return JSON.parse(value);
 	};
 
@@ -77,8 +86,8 @@ class EncryptionFn {
 	 */
 	static encryptedCiphertextDecrypt = (data: any) => {
 		// AES解密转化base64
-		const key = CryptoJS.enc.Base64.parse('XzJs3CEW1BDueRq2');
-		const iv = CryptoJS.enc.Base64.parse('jXuX2DDFxen5kHWM');
+		const key = CryptoJS.enc.Base64.parse("XzJs3CEW1BDueRq2");
+		const iv = CryptoJS.enc.Base64.parse("jXuX2DDFxen5kHWM");
 		const decrypted = CryptoJS.AES.decrypt(data, key, {
 			iv,
 			mode: CryptoJS.mode.CBC,

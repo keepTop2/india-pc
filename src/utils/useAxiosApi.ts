@@ -14,9 +14,9 @@ const { handleRequestError } = useRequestError();
 function getUrl() {
 	switch (import.meta.env.VITE_BASEENV) {
 		case "development":
-			return window["PLATFROM_CONFIG"].developmentBaseURL;
+			return (window as any)["PLATFROM_CONFIG"].developmentBaseURL;
 		case "production":
-			return window["PLATFROM_CONFIG"].productionBaseURL;
+			return (window as any)["PLATFROM_CONFIG"].productionBaseURL;
 		default:
 			return "";
 	}
@@ -26,7 +26,7 @@ function getUrl() {
 let LoadingRequestCount = 0;
 
 //显示 loading
-function showLoading(target) {
+function showLoading(target: any) {
 	if (LoadingRequestCount === 0) {
 		startLoading();
 	}
@@ -83,15 +83,14 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
 	(response) => {
-		const UserStore = useUserStore();
-		console.log("请求成功");
 		//判断当前请求是否设置了不显示 Loading（不显示自然无需隐藏）
 		if (response.config.headers.showLoading !== false) {
 			hideLoading();
 		}
 		const res = response.data;
 		// 如果自定义代码不是 200，则判断为错误。
-		if (res.code !== ResCode.SUCCESS) {
+
+		if (res.code !== 200) {
 			if (res.type == "image/png") {
 				return res;
 			}
@@ -99,13 +98,13 @@ instance.interceptors.response.use(
 				name: "mainApp",
 				res,
 			});
-			return Promise.reject("ERR" || "Error");
+			return res;
 		} else {
 			return res;
 		}
 	},
 	(error) => {
-		// console.log("请求失败", error);
+		console.log("请求失败", error);
 		//判断当前请求是否设置了不显示 Loading（不显示自然无需隐藏）
 		if (error.config.headers.showLoading !== false) {
 			hideLoading();

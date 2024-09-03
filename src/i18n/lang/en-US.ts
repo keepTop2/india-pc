@@ -1,10 +1,8 @@
+import common from "./en-US/common";
 export const lang = {
 	// Common translations
 	common: {
-		你好世界: "Hello World",
-		选择单个日期: "Select Single Date",
-		白天: "baitian",
-		黑夜: "heiye",
+		...common,
 	},
 	home: {
 		最近大奖游戏: "最近大奖游戏",
@@ -59,7 +57,7 @@ export const lang = {
 	layout: {
 		layout1: {
 			奖金: "Bonus",
-			任务: "Missions",
+			任务: "Task",
 			抽奖: "Lottery",
 			"请输入推荐/促销码": "Please enter referral/promotional code",
 			提交: "Submit",

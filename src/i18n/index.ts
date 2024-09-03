@@ -28,13 +28,6 @@ export const i18n = createI18n({
  * @param lang
  */
 export function setLang(lang: LangType) {
-	// if (lang) {
-	// 	localStorage.setItem('lang', lang);
-	// }
-	// if (!localStorage.getItem('lang')) {
-	// 	localStorage.setItem('lang', 'zh');
-	// }
-	// i18n.global.locale.value = localStorage.getItem('lang') as string;
 	const LangList = loadLang();
 	if (LangList[lang]) {
 		i18n.global.locale.value = lang;

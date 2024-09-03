@@ -1,114 +1,84 @@
 <template>
-	<el-menu
-		class="elMenu_Plan"
-		:class="collapse ? 'collapse' : ''"
-		router
-		:default-active="activeMenu"
-		:collapse-transition="false"
-		@select="onSelect"
-		@open="onOpen"
-		@close="onClose"
-	>
-		<div v-for="(val, index) in routerObj?.children" :key="index" class="menu_row">
-			<el-sub-menu
-				class="havechildren"
-				:index="val.path"
-				v-if="val.children && val.children.length > 0 && !val.meta?.isHide"
-				:key="val.path"
-				:expand-close-icon="vnode"
-				:expand-open-icon="vnode"
-			>
-				<template #title>
-					<div class="menu_title_container" @mouseover="onMouseover(val)" @mouseout="onMouseout()" @click="onMenuClick(val)">
-						<template v-if="val.meta?.isServer">
-							<div class="menu_title_container">
-								<div class="icon" :class="{ activeColor: state.selectList.includes(val.path) || hoverList.val.includes(val.path) || state.openMenuList.includes(val.path) }">
-									<SvgIcon :size="18" :iconName="val.meta?.iconCode || `Casino`" class="iconSvg" />
-								</div>
-								<span class="ml_16" :class="{ activeColor: state.selectList.includes(val.path) || hoverList.val.includes(val.path) || state.openMenuList.includes(val.path) }">
-									{{ val.meta?.title }}
-								</span>
-							</div>
-						</template>
-						<template v-else>
-							<div class="menu_title_container">
-								<img
-									v-show="state.selectList.includes(val.path) || hoverList.val.includes(val.path) || state.openMenuList.includes(val.path)"
-									:src="getIconPath(val.meta?.activeIcon as string, 'activeIcon')"
-									alt=""
-								/>
-								<img
-									v-show="!state.selectList.includes(val.path) && !hoverList.val.includes(val.path) && !state.openMenuList.includes(val.path)"
-									:src="getIconPath(val.meta?.inactivated as string, 'inactivated')"
-									alt=""
-								/>
-								<span class="ml_16" :class="{ activeColor: state.selectList.includes(val.path) || hoverList.val.includes(val.path) || state.openMenuList.includes(val.path) }">
-									{{ $t(val.meta?.title as string) }}
-								</span>
-							</div>
-						</template>
-
-						<div class="instruct_plan">
-							<img
-								:src="left_imgs.right_2"
-								v-show="state.selectList.includes(val.path) || hoverList.val.includes(val.path) || state.openMenuList.includes(val.path)"
-								alt=""
-								:class="{ rotate_90: state.openMenuList.includes(val.path) }"
-							/>
-							<img :src="left_imgs.right_1" v-show="!state.selectList.includes(val.path) && !hoverList.val.includes(val.path) && !state.openMenuList.includes(val.path)" alt="" />
-						</div>
+	<div class="menu_row" :class="collapse ? 'collapse' : ''">
+		<div>
+			<div v-for="(item, index) in routerObj" :key="index">
+				<div class="menu_item" :class="openMenuIndex == index ? 'activeMenu' : ''" @click="selectMenu(item, index)">
+					<div class="menu_icon"><img :src="item.icon" alt="" /></div>
+					<div class="menu_name ellipsis" v-if="!collapse">{{ item.directoryName }}</div>
+					<div class="arrow" v-if="item.children && !collapse">
+						<svg-icon name="arrow_up" v-if="openMenuIndex == index" height="8px" width="14px" />
+						<svg-icon name="arrow_down" v-else height="8px" width="14px" />
 					</div>
-				</template>
-				<SubItem v-if="!collapse" :chil="val.children" :select-list="state.selectList" />
-			</el-sub-menu>
-			<template v-else>
-				<div v-if="!val.meta?.isHide" @mouseover="onMouseover(val)" @mouseout="onMouseout()" class="menu_row_plan">
-					<el-menu-item :index="val.path" :key="val.path">
-						<template #title>
-							<div class="icon" v-if="val.meta?.isServer" :class="{ activeColor: state.selectList.includes(val.path) || hoverList.val.includes(val.path) }">
-								<SvgIcon :size="18" :iconName="val.meta?.iconCode || `Casino`" class="iconSvg" />
-							</div>
-							<template v-if="!val.meta?.isServer">
-								<img v-show="state.selectList.includes(val.path) || hoverList.val.includes(val.path)" :src="getIconPath(val.meta?.activeIcon as string, 'activeIcon')" alt="" />
-								<img v-show="!state.selectList.includes(val.path) && !hoverList.val.includes(val.path)" :src="getIconPath(val.meta?.inactivated as string, 'inactivated')" alt="" />
-							</template>
-							<span v-if="val.meta?.isServer" class="ml_16" :class="{ activeColor: state.selectList.includes(val.path) || hoverList.val.includes(val.path) }">{{
-								val.meta?.title
-							}}</span>
-							<span v-if="!val.meta?.isServer" class="ml_16" :class="{ activeColor: state.selectList.includes(val.path) || hoverList.val.includes(val.path) }">{{
-								$t(val.meta?.title as string)
-							}}</span>
-						</template>
-					</el-menu-item>
 				</div>
-			</template>
+				<div v-show="openMenuIndex == index && !collapse" v-for="(subItem, subIndex) in item.children" :key="index" class="menu_item subItem" @click="goToPath(subItem)">
+					<div class="menu_icon">
+						<img :src="subItem.icon" alt="" />
+					</div>
+					<div class="menu_name ellipsis">{{ subItem.directoryName }}</div>
+				</div>
+			</div>
 		</div>
-	</el-menu>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, h, onMounted, reactive, ref, watch, watchEffect, onUnmounted } from "vue";
+import { computed, h, Ref, onMounted, reactive, ref, watch, watchEffect, onUnmounted } from "vue";
 import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
 
-import SubItem from "./subItem.vue";
-import useMenuHooks from "../useMenuHooks";
-import left_imgs from "../left_imgs";
 import { useMenuStore } from "/@/stores/modules/menu";
 const MenuStore = useMenuStore();
-const { onMouseover, onMouseout, hoverList, getIconPath } = useMenuHooks();
+import useSvgHoverHooks from "/@/hooks/useSvgHover";
+const { onMouseout, onMouseover, hoverItem } = useSvgHoverHooks();
 const router = useRouter();
 const route = useRoute();
-
+const openMenuIndex: Ref<number | null> = ref(null);
+const currentRoute = ref({});
+const currentHover = ref();
 //菜单从缓存中拉取
-const routerObj = computed(() => {
-	const menuList = MenuStore.getMenu;
-	console.info("菜单从缓存中拉取", menuList);
+const routerObj: any = computed(() => {
+	const menuList: any = MenuStore.getMenu;
 
+	// 测试子菜单数据
+	menuList[0]
+		? (menuList[0].children = [
+				{
+					gameOneClassId: "1828719272336265217",
+					directoryName: "BIZ_GAME_ONE_DIRECTORY_331",
+					homeName: "BIZ_GAME_ONE_HOME_332",
+					icon: "https://oss.playesoversea.store/baowang/80a51ebf125d4468bde116f99d92b89d.jpg",
+					modelCode: "CA",
+					gameInfo: null,
+				},
+				{
+					gameOneClassId: "1828719272336265217",
+					directoryName: "BIZ_GAME_ONE_DIRECTORY_331",
+					homeName: "BIZ_GAME_ONE_HOME_332",
+					icon: "https://oss.playesoversea.store/baowang/80a51ebf125d4468bde116f99d92b89d.jpg",
+					modelCode: "CA",
+					gameInfo: null,
+				},
+		  ])
+		: "";
+	menuList[5]
+		? (menuList[5].children = [
+				{
+					gameOneClassId: "1828719272336265217",
+					directoryName: "BIZ_GAME_ONE_DIRECTORY_331",
+					homeName: "BIZ_GAME_ONE_HOME_332",
+					icon: "https://oss.playesoversea.store/baowang/80a51ebf125d4468bde116f99d92b89d.jpg",
+					modelCode: "CA",
+					gameInfo: null,
+				},
+		  ])
+		: "";
 	return menuList;
 });
 
 const collapse = computed(() => {
 	const val = MenuStore.getCollapse;
+	if (val) {
+	}
+
 	return val;
 });
 
@@ -119,6 +89,10 @@ const activeMenu = computed(() => {
 	}
 	return path;
 });
+
+const goToPath = (path: object) => {
+	console.log(path);
+};
 
 const state = reactive({
 	//选中的菜单数组
@@ -152,153 +126,80 @@ const onMenuClick = (val: any) => {
 	// console.info(val);
 	router.push(val);
 };
+const openMenu = (index: number) => {
+	if (openMenuIndex.value === index) {
+		openMenuIndex.value = null;
+	} else {
+		openMenuIndex.value = index;
+	}
+};
+
+const selectMenu = (item: Object, index: number) => {
+	currentRoute.value = item;
+	if (collapse.value) {
+		MenuStore.setCollapse(false);
+	}
+	openMenu(index);
+};
 </script>
 
 <style lang="scss" scoped>
-@import "../left.scss";
+.menu_row {
+	.menu_item {
+		display: flex;
+		height: 46px;
 
-.el-menu {
-	border-right: none;
-
-	@include themeify {
-		background-color: themed("Bg4") !important;
-	}
-
-	.el-menu-item {
-		@include themeify {
-			background: themed("Bg1");
-			color: themed("Text1");
-			font-size: 14px;
-			margin-bottom: 2px;
-			border-radius: 4px;
-		}
-	}
-
-	.el-menu-item:hover {
-		@include themeify {
-			background-color: themed("Bg3") !important;
-		}
-	}
-
-	.el-sub-menu {
-		@include themeify {
-			background: themed("Bg1");
-		}
-	}
-
-	:deep(.el-sub-menu__title) {
-		padding-right: 20px;
-
-		@include themeify {
-			color: themed("Text1");
-			font-size: 14px;
-		}
-	}
-
-	:deep(.el-sub-menu__title:hover) {
-		@include themeify {
-			background-color: themed("Bg3");
-		}
-	}
-}
-
-.havechildren {
-	:deep(.el-menu) {
-		@include themeify {
-			background-color: themed("Bg4");
-		}
-	}
-
-	:deep(.el-menu-item) {
+		margin: 4px 0;
+		padding: 0 20px;
+		display: flex;
+		box-sizing: border-box;
+		align-items: center;
+		font-size: 14px;
 		border-radius: 4px;
+		background: var(--Bg2);
+		color: var(--Text1);
 
-		@include themeify {
-			color: themed("Text1");
-			font-size: 14px;
+		.menu_name {
+			flex: 4;
+			overflow: hidden;
+			padding: 0 16px;
+			box-sizing: border-box;
+			text-align: left;
+		}
+		img {
+			width: 17px;
+			height: 17px;
+		}
+	}
+	.menu_item.activeMenu,
+	.menu_item:hover {
+		background: linear-gradient(0, rgba(255, 40, 75, 0.8) 0%, rgba(255, 40, 75, 0.1) 100%);
+		color: var(--Text_a);
+		.menu_name {
+			color: var(--Text_a);
 		}
 	}
 
-	:deep(.el-menu-item:hover) {
-		@include themeify {
-			background-color: themed("Bg3") !important;
-		}
+	.subItem {
+		background: var(--Bg4);
+		color: var(--Text1);
 	}
-}
-
-.el-menu-item.is-active {
-	@include themeify {
-		color: themed("Text_s");
-		background-color: themed("Bg3") !important;
-	}
-}
-
-.menu_title_container {
-	width: 100%;
-	height: 100%;
-	@include flex_align_center;
-}
-
-.rotate_90 {
-	transform: rotate(90deg);
-}
-
-.elMenu_Plan {
 	&.collapse {
-		width: 44px;
+		width: 64px;
 
-		.menu_row {
-			margin-bottom: 16px;
+		.menu_item {
+			background: none;
+			width: 46px;
+			margin: 0 auto;
+			padding: 0;
+			justify-content: center;
 		}
-
-		:deep() {
-			.el-menu-item {
-				background-color: transparent;
-				padding: 0px !important;
-
-				span {
-					display: none;
-				}
-
-				width: 44px;
-				height: 44px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-
-			.havechildren {
-				background-color: transparent;
-
-				.el-sub-menu__title {
-					padding: 0px;
-					width: 44px;
-					height: 44px;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					border-radius: 4px;
-
-					.menu_title_container {
-						width: 44px;
-						height: 44px;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						border-radius: 4px;
-
-						span {
-							display: none;
-						}
-					}
-
-					.el-icon {
-						display: none;
-					}
-				}
-
-				.instruct_plan {
-					display: none;
-				}
+		.menu_item.activeMenu,
+		.menu_item:hover {
+			background: linear-gradient(0, rgba(255, 40, 75, 0.8) 0%, rgba(255, 40, 75, 0.1) 100%);
+			color: var(--Text_a);
+			.menu_name {
+				color: var(--Text_a);
 			}
 		}
 	}

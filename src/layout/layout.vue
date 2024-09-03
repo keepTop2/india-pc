@@ -1,26 +1,23 @@
 <template>
 	<div class="layout" ref="domeRef">
-		<Head />
 		<left :is-collapse="state.isCollapse" />
-		<container />
-		<!-- <right />
-		<login />
-		<Lottery />
-		<Task /> -->
+		<div class="container">
+			<Head />
+			<div class="mainArea">
+				<container />
+			</div>
+		</div>
+		<Modal />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref } from "vue";
-
 import Head from "./components/header/index.vue";
 import left from "./components/left/left.vue";
 import container from "./components/container/index.vue";
-// import right from "./components/right/right.vue";
-// import login from "./login/index.vue";
-// import Lottery from "./lottery/lottery.vue";
-// import Task from "./Task/index.vue";
 import { useMenuStore } from "/@/stores/modules/menu";
+import Modal from "/@/components/Modal/index.vue";
 const MenuStore = useMenuStore();
 const state = reactive({
 	//是否折叠
@@ -46,14 +43,25 @@ onMounted(() => {
 onUnmounted(() => {
 	resizeObserver.unobserve(domeRef.value as any);
 });
-
-// const changeCollpase = (val: boolean) => {
-// 	state.isCollapse = val;
-// };
 </script>
 
 <style lang="scss" scoped>
-.layout1 {
+.layout {
 	display: flex;
+}
+.container {
+	height: 100vh;
+	flex: 1;
+	background: var(--Bg);
+}
+.mainArea {
+	flex: 1;
+	justify-content: center;
+	margin: 64px auto 0;
+	overflow-y: auto;
+	height: calc(100vh - 100px);
+}
+.mainArea::-webkit-scrollbar {
+	display: none;
 }
 </style>

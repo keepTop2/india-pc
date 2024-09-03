@@ -31,7 +31,7 @@ interface StoreMenu {
 	/** 左侧菜单是否是缩小*/
 	collapse: Boolean;
 	/** 左侧菜单 */
-	menuList: Object;
+	menuList: Array<Object>;
 	/** 生成的后台路由 */
 	serverMenu: Array<any>;
 	/** 后台数据 */
@@ -44,7 +44,7 @@ export const useMenuStore = defineStore("Menu", {
 	state: (): StoreMenu => {
 		return {
 			collapse: false,
-			menuList: {},
+			menuList: [],
 			serverMenu: [],
 			serverData: [],
 			hallTopMenu: [],
@@ -103,8 +103,8 @@ export const useMenuStore = defineStore("Menu", {
 		 * @description: 设置左侧菜单
 		 * @return {*}
 		 */
-		setMenuList(data?: Object) {
-			this.menuList = data || {};
+		setMenuList(data?: Array<Object>) {
+			this.menuList = data || [];
 		},
 		/**
 		 * @description: 重组的后端路由

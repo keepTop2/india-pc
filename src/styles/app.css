@@ -41,3 +41,10 @@ input[type="password"]::-ms-reveal {
 .pointer {
 	cursor: pointer;
 }
+
+html,
+body {
+	min-height: 800px;
+	background: var(--Bg);
+	overflow: hidden;
+}
