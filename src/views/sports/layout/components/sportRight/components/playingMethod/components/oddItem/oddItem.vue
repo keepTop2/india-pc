@@ -125,15 +125,11 @@ const onSetSportsEventData = () => {
 
 <style scoped lang="scss">
 .up {
-	@include themeify {
-		color: themed("Warn") !important;
-	}
+	color: var(--Warn) !important;
 }
 
 .down {
-	@include themeify {
-		color: themed("Theme") !important;
-	}
+	color: var(--Theme) !important;
 }
 
 .odd-item {
@@ -146,18 +142,13 @@ const onSetSportsEventData = () => {
 	height: 44px;
 	cursor: pointer;
 	border-radius: 4px;
-	@include themeify {
-		background: themed("Bg3");
-
-		&.isCheck {
-			background: themed("Bg5");
-		}
+	background: var(--Bg3);
+	&.isCheck {
+		background: var(--Bg5);
 	}
 
 	&:not(.isCheck):hover {
-		@include themeify {
-			background: themed("Line");
-		}
+		background: var(--Line);
 	}
 
 	&.locked {
@@ -182,9 +173,7 @@ const onSetSportsEventData = () => {
 	.odd-price {
 		font-size: 14px;
 
-		@include themeify {
-			color: themed("Text_s");
-		}
+		color: var(--Text_s);
 	}
 
 	.odd-name-group {
@@ -199,16 +188,12 @@ const onSetSportsEventData = () => {
 			white-space: nowrap;
 			overflow: hidden;
 
-			@include themeify {
-				color: themed("Text1");
-			}
+			color: var(--Text1);
 		}
 
 		.odd-point {
 			padding-left: 4px;
-			@include themeify {
-				color: themed("Text_s");
-			}
+			color: var(--Text_s);
 		}
 	}
 }

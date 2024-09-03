@@ -1,8 +1,7 @@
 <template>
 	<div class="from-input">
 		<slot name="left"></slot>
-		<input @input="emit('update:modelValue', $event.target.value)" :value="props.modelValue" :type="props.type"
-			:readonly="props.readonly" :placeholder="props.placeholder" />
+		<input @input="emit('update:modelValue', $event.target.value)" :value="props.modelValue" :type="props.type" :readonly="props.readonly" :placeholder="props.placeholder" />
 		<slot name="right"></slot>
 	</div>
 </template>
@@ -16,14 +15,14 @@ const props = withDefaults(
 		readonly?: boolean;
 	}>(),
 	{
-		modelValue: '',
-		type: 'text',
-		placeholder: '',
+		modelValue: "",
+		type: "text",
+		placeholder: "",
 		readonly: false,
 	}
 );
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <style scoped lang="scss">
@@ -35,27 +34,21 @@ const emit = defineEmits(['update:modelValue']);
 	padding: 13px 10px;
 	border-radius: 4px;
 
-	@include themeify {
-		background: themed('Bg2');
-	}
+	background: var(--Bg2);
 
 	box-sizing: border-box;
 
 	input {
 		flex: 1;
-		font-family: 'PingFang SC';
+		font-family: "PingFang SC";
 		padding: 0;
 
-		@include themeify {
-			color: themed('Text1');
-			background: themed('Bg1');
-		}
+		color: themed("Text1");
+		background: themed("Bg1");
 
 		font-size: 14px;
 		font-weight: 400;
 		border: 0;
-
-
 
 		font-family: "PingFang SC";
 		font-size: 16px;
@@ -71,9 +64,7 @@ const emit = defineEmits(['update:modelValue']);
 		font-weight: 400;
 		line-height: normal;
 
-		@include themeify {
-			color: themed('Text2');
-		}
+		color: var(--Text2);
 	}
 }
 </style>

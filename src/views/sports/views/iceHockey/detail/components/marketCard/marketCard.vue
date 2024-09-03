@@ -170,15 +170,11 @@ const isBright = () => {
 
 <style scoped lang="scss">
 .oddsUp {
-	@include themeify {
-		color: themed("Warn") !important;
-	}
+	color: var(--Warn) !important;
 }
 
 .oddsDown {
-	@include themeify {
-		color: themed("Theme") !important;
-	}
+	color: var(--Theme) !important;
 }
 
 .card-container {
@@ -193,12 +189,10 @@ const isBright = () => {
 	-webkit-user-drag: none;
 	overflow: hidden;
 
-	@include themeify {
-		background: themed("Bg3");
+	background: var(--Bg3);
 
-		&:hover {
-			background: themed("Line");
-		}
+	&:hover {
+		background: var(--Line);
 	}
 
 	.content-container {
@@ -210,17 +204,13 @@ const isBright = () => {
 		align-items: center;
 		border-radius: 4px;
 
-		@include themeify {
-			&.isBright {
-				background: themed("Bg5");
-			}
+		&.isBright {
+			background: var(--Bg5);
 		}
 
 		.sport_lock {
 			margin-left: 45%;
-			@include themeify {
-				color: themed("icon");
-			}
+			color: var(--icon);
 		}
 	}
 
@@ -232,9 +222,7 @@ const isBright = () => {
 		padding: 0 19px;
 
 		.label {
-			@include themeify {
-				color: themed("Text1");
-			}
+			color: var(--Text1);
 			display: flex;
 
 			text-align: center;
@@ -246,9 +234,7 @@ const isBright = () => {
 		}
 
 		.value {
-			@include themeify {
-				color: themed("Text_s");
-			}
+			color: var(--Text_s);
 
 			font-family: "PingFang SC";
 			font-size: 16px;
@@ -264,15 +250,11 @@ const isBright = () => {
 		width: 14px;
 		height: 1px;
 
-		@include themeify {
-			background: themed("Text1");
-		}
+		background: var(--Text1);
 	}
 }
 
 .item:hover {
-	@include themeify {
-		background: themed("Line");
-	}
+	background: var(--Line);
 }
 </style>

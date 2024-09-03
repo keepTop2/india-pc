@@ -64,10 +64,7 @@ const computedScore = computed(() => {
 		top: 50%;
 		left: 0;
 		transform: translateY(-50%);
-
-		@include themeify {
-			background: themed("Bg3");
-		}
+		background: var(--Bg3);
 
 		&:last-child {
 			right: 0 !important;

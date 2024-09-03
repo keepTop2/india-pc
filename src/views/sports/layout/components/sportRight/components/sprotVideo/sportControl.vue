@@ -165,33 +165,22 @@ const computedTools = computed(() => {
 	align-items: center;
 	justify-content: space-between;
 	padding: 0 24px;
-
-	@include themeify {
-		background: themed("Bg3");
-	}
+	background: var(--Bg3);
 
 	.tools_icon {
-		@include themeify {
-			color: themed("icon");
-		}
+		color: var(--icon);
 
 		&.active {
-			@include themeify {
-				color: themed("Theme");
-			}
+			color: var(--Theme);
 		}
 	}
 
 	.tools_icon:hover {
-		@include themeify {
-			color: themed("Theme");
-		}
+		color: var(--Theme);
 	}
 
 	.refresh {
-		@include themeify {
-			color: themed("icon");
-		}
+		color: var(--icon);
 	}
 
 	.tools {
@@ -204,17 +193,13 @@ const computedTools = computed(() => {
 			display: inline-block;
 			cursor: pointer;
 
-			:deep(.score) {
-				@include themeify {
-					background: themed("icon");
-				}
+			/deep/(.score) {
+				background: var(--icon);
 			}
 
-			:deep(.score) {
+			/deep/(.score) {
 				&:hover {
-					@include themeify {
-						background: themed("Theme");
-					}
+					background: var(--Theme);
 				}
 			}
 
@@ -240,10 +225,8 @@ const computedTools = computed(() => {
 				line-height: normal;
 				border-radius: 4px;
 
-				@include themeify {
-					color: themed("Text1");
-					background: themed("Line");
-				}
+				color: var(--Text1);
+				background: var(--Line);
 			}
 
 			&:hover .tooltip-text {

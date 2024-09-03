@@ -31,18 +31,14 @@ const hintVisible: any = defineModel();
 	font-size: 20px;
 	padding: 20px;
 	text-align: center;
-	@include themeify {
-		color: themed("Text_s");
-	}
+	color: var(--Text_s);
 }
 
 .dialog-body {
 	font-size: 16px;
 	line-height: 26px;
 	padding: 16px 40px;
-	@include themeify {
-		color: themed("Text1");
-	}
+	color: var(--Text1);
 }
 .know {
 	display: flex;
@@ -55,11 +51,9 @@ const hintVisible: any = defineModel();
 		border-radius: 4px;
 		width: 130px;
 		height: 48px;
-		@include themeify {
-			border: 1px solid themed("Theme");
-			background: themed("Theme");
-			color: themed("Text_a");
-		}
+		border: 1px solid var(--Theme);
+		background: var(--Theme);
+		color: var(--Text_a);
 	}
 }
 </style>

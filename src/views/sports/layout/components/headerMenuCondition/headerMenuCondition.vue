@@ -338,11 +338,7 @@ const onExpandAndCollapse = () => {
 				align-items: center;
 				justify-content: center;
 				margin-left: 27px;
-
-				@include themeify {
-					color: themed("icon");
-				}
-
+				color: var(--icon);
 				.iconSvg {
 					width: 100%;
 					height: 100%;

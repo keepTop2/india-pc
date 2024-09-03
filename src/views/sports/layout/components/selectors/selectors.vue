@@ -176,9 +176,7 @@ const popperOptions = {
 	.select {
 		width: 200px;
 		height: 44px;
-		@include themeify {
-			background: themed("Bg1");
-		}
+		background: var(--Bg1);
 		border-radius: 8px;
 		box-sizing: border-box;
 		.el-select {
@@ -193,9 +191,7 @@ const popperOptions = {
 					background-color: unset;
 					box-shadow: none !important;
 					.el-input__inner {
-						@include themeify {
-							color: themed("Text1");
-						}
+						color: var(--Text1);
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 400;
@@ -208,10 +204,8 @@ const popperOptions = {
 			}
 
 			:deep(.el-select__popper) {
-				@include themeify {
-					background-color: themed("Bg1");
-					box-shadow: 0px 0px 8px 0px themed("popoverShadow");
-				}
+				background-color: var(--Bg1);
+				box-shadow: 0px 0px 8px 0px var(--popoverShadow)
 				border-radius: 8px;
 			}
 			:deep(.el-select-dropdown) {
@@ -235,9 +229,7 @@ const popperOptions = {
 						align-items: center;
 						justify-content: space-between;
 						padding: 0px 12px;
-						@include themeify {
-							color: themed("Text1");
-						}
+						color: var(--Text1);
 						overflow: unset;
 						font-family: "PingFang SC";
 						font-size: 14px;
@@ -248,24 +240,18 @@ const popperOptions = {
 
 					.hover {
 						background-color: transparent;
-						@include themeify {
-							color: themed("Text1");
-						}
+						color: var(--Text1);
 					}
 					.selected {
-						@include themeify {
-							background-color: themed("Bg5") !important;
-							color: themed("Text_s") !important;
-						}
+						background-color: var(--Bg5) !important;
+						color: var(--Text_s) !important;
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 500;
 					}
 
 					.el-select-dropdown__item:hover {
-						@include themeify {
-							background-color: themed("Bg3");
-						}
+						background-color: var(--Bg3);
 						border-radius: 4px;
 					}
 				}
@@ -279,9 +265,7 @@ const popperOptions = {
 	.select-date {
 		width: 240px;
 		height: 44px;
-		@include themeify {
-			background: themed("Bg1");
-		}
+		background: var(--Bg1);
 		border-radius: 8px;
 		box-sizing: border-box;
 		:deep(.el-dropdown) {
@@ -295,19 +279,15 @@ const popperOptions = {
 				padding: 12px 20px;
 				cursor: pointer;
 				box-sizing: border-box;
-				@include themeify {
-					color: themed("Text1");
-				}
+				color: var(--Text1);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
 			}
 			.popperClass {
 				width: 160px;
-				@include themeify {
-					background-color: themed("Bg1");
-					box-shadow: 0px 0px 8px 0px themed("popoverShadow");
-				}
+				background-color: var(--Bg1);
+				box-shadow: 0px 0px 8px 0px var(--popoverShadow);
 
 				border-radius: 8px;
 
@@ -324,10 +304,8 @@ const popperOptions = {
 								background-color: transparent;
 
 								.dropdown-item-active {
-									@include themeify {
-										background-color: themed("Bg5") !important;
-										color: themed("Text_s") !important;
-									}
+									background-color: var(--Bg5) !important;
+									color: var(--Text_s) !important;
 									font-family: "PingFang SC";
 									font-size: 14px;
 									font-weight: 500;
@@ -339,9 +317,7 @@ const popperOptions = {
 									align-items: center;
 									justify-content: space-between;
 									padding: 0px 12px;
-									@include themeify {
-										color: themed("Text1");
-									}
+									color: var(--Text1);
 									overflow: unset;
 									white-space: nowrap;
 									text-overflow: ellipsis;
@@ -363,12 +339,9 @@ const popperOptions = {
 											// height: 232px;
 											border-radius: 8px;
 											border: 1px solid;
-											@include themeify {
-												border-color: themed("Line");
-												background-color: themed("Bg4");
-												box-shadow: 0px 0px 8px 0px themed("popoverShadow");
-											}
-
+											border-color: var(--Line);
+												background-color: var(--Bg4);
+												box-shadow: 0px 0px 8px 0px var(--popoverShadow);
 											.vc-pane-container {
 												.vc-header {
 													height: 26px;
@@ -376,9 +349,7 @@ const popperOptions = {
 													padding: 0px;
 													grid-gap: 0px;
 													.vc-title-wrapper {
-														@include themeify {
-															color: themed("Text1");
-														}
+														color: var(--Text1);
 														font-family: "PingFang SC";
 														font-size: 14px;
 														font-weight: 500;
@@ -391,26 +362,20 @@ const popperOptions = {
 													}
 
 													.vc-focus:focus-within {
-														@include themeify {
-															box-shadow: 0 0 0 2px themed("Bg5");
-														}
+														box-shadow: 0 0 0 2px var(--Bg5);
 													}
 												}
 
 												.vc-weeks {
 													.vc-weekdays {
-														@include themeify {
-															color: themed("Text2_1");
-														}
+														color: var(--Text2_1);
 														font-family: "PingFang SC";
 														font-size: 14px;
 														line-height: 22px;
 													}
 
 													.vc-day-content {
-														@include themeify {
-															color: themed("Text1");
-														}
+														color: var(--Text1);
 														font-family: "PingFang SC";
 														font-size: 14px;
 														font-weight: 500;
@@ -418,29 +383,23 @@ const popperOptions = {
 													}
 
 													.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-solid.vc-blue {
-														@include themeify {
-															color: themed("Text_s");
-															background-color: themed("Theme");
-														}
+														color: var(--Text_s);
+														background-color: var(--Theme);
 													}
 													.vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light,
 													.vc-highlight.vc-highlight-base-start.vc-highlight-bg-light,
 													.vc-highlight.vc-highlight-base-end.vc-highlight-bg-light,
 													.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-outline.vc-blue {
-														@include themeify {
-															background-color: themed("Bg5");
-															box-shadow: 0px 0px 0px 1px themed("Bg5");
-														}
+														background-color: var(--Bg5);
+														box-shadow: 0px 0px 0px 1px var(--Bg5);
 													}
 
 													.vc-focus:focus-within {
-														@include themeify {
-															box-shadow: none;
-														}
+														box-shadow: none;
 													}
 
 													.vc-light .vc-attr {
-														background-color: themed("Bg5");
+														background-color: var(--Bg5);
 													}
 												}
 											}
@@ -450,9 +409,7 @@ const popperOptions = {
 							}
 
 							.el-dropdown-menu__item:focus {
-								@include themeify {
-									background-color: themed("Bg3");
-								}
+								background-color: var(--Bg3);
 							}
 						}
 					}

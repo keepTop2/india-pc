@@ -248,9 +248,7 @@ const selectEvent = () => {
 			display: flex;
 			align-items: center;
 			cursor: pointer;
-			@include themeify {
-				color: themed("Text1");
-			}
+			color: var(--Text1);
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-style: normal;
@@ -258,17 +256,13 @@ const selectEvent = () => {
 			line-height: normal;
 			.icon {
 				margin-right: 10px;
-				@include themeify {
-					color: themed("icon");
-				}
+				color: var(--icon);
 			}
 		}
 		.icon2 {
 			width: 24px;
 			height: 24px;
-			@include themeify {
-				color: themed("icon");
-			}
+			color: var(--icon);
 		}
 	}
 

@@ -171,10 +171,7 @@ const handleClick = (action: () => void) => {
 	height: 214px;
 	flex-shrink: 0;
 	border-radius: 0px 0px 8px 8px;
-	@include themeify {
-		background: themed("Bg1");
-	}
-
+	background: var(--Bg1);
 	.information_left {
 		flex: 1;
 		display: flex;
@@ -191,16 +188,12 @@ const handleClick = (action: () => void) => {
 			flex-shrink: 0;
 			// padding: 0 6px;
 
-			@include themeify {
-				background: themed("Bg3");
-			}
+			background: var(--Bg3);
 
 			span {
 				margin-top: 10px;
 
-				@include themeify {
-					color: themed("Theme");
-				}
+				color: var(--Theme);
 
 				text-align: center;
 				font-family: "PingFang SC";
@@ -248,20 +241,14 @@ const handleClick = (action: () => void) => {
 						margin: 8px 4px;
 						border-radius: 8px;
 
-						@include themeify {
-							background: themed("Bg3");
-						}
+						background: var(--Bg3);
 
 						.close {
-							@include themeify {
-								color: themed("icon");
-							}
+							color: var(--icon);
 						}
 
 						.close:hover {
-							@include themeify {
-								color: themed("Theme");
-							}
+							color: var(--Theme);
 						}
 
 						.tooltip-container {
@@ -292,10 +279,8 @@ const handleClick = (action: () => void) => {
 							line-height: normal;
 							border-radius: 4px;
 
-							@include themeify {
-								color: themed("Text1");
-								background: themed("Line");
-							}
+							color: var(--Text1);
+							background: var(--Line);
 						}
 
 						.tooltip-container:hover .tooltip-text {
@@ -309,10 +294,7 @@ const handleClick = (action: () => void) => {
 			.information_bottom {
 				height: 38px;
 				flex-shrink: 0;
-
-				@include themeify {
-					border-top: 1px solid themed("Line");
-				}
+				border-top: 1px solid var(--Line);
 			}
 		}
 	}
@@ -332,10 +314,8 @@ const handleClick = (action: () => void) => {
 	max-height: 214px;
 	overflow: hidden;
 	transition: height 0.5s ease;
-	@include themeify {
-		background: themed("Bg1");
-		border-bottom: 1px solid themed("Line");
-	}
+	background: var(--Bg1);
+	border-bottom: 1px solid var(--Line);
 }
 .fade-enter-active,
 .fade-leave-active {

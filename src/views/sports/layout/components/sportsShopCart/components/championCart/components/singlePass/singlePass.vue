@@ -338,10 +338,7 @@ defineExpose({ PlaceOutrightBet, stake });
 	border-radius: 8px;
 	margin: 5px 0;
 
-	@include themeify {
-		background: themed("Bg3");
-	}
-
+	background: var(--Bg3);
 	.el-input {
 		height: 50px;
 
@@ -350,15 +347,10 @@ defineExpose({ PlaceOutrightBet, stake });
 				box-shadow: none;
 				border: none;
 
-				@include themeify {
-					background: themed("Bg2");
-				}
-
+				background: var(--Bg2);
 				input {
 					&::placeholder {
-						@include themeify {
-							color: themed("Text2");
-						}
+						color: var(--Text2);
 					}
 				}
 			}

@@ -171,9 +171,7 @@ const toggleDisplay = (val?: number) => {
 
 		border: none;
 
-		@include themeify {
-			background-color: themed("Bg1");
-		}
+		background-color: var(--Bg1);
 	}
 
 	:deep(.el-collapse) {
@@ -188,9 +186,7 @@ const toggleDisplay = (val?: number) => {
 	flex-shrink: 0;
 	border-radius: 8px 8px 0px 0px;
 
-	@include themeify {
-		background: themed("Bg6");
-	}
+	background: var(--Bg6);
 
 	i {
 		display: none;

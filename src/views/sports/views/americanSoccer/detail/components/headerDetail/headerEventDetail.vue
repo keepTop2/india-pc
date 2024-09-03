@@ -159,9 +159,7 @@ const formattedGameTime = computed(() => {
 			align-items: center;
 			gap: 4px;
 
-			@include themeify {
-				color: themed("Text1") !important;
-			}
+			color: var(--Text1) !important;
 		}
 
 		:deep() {
@@ -174,16 +172,12 @@ const formattedGameTime = computed(() => {
 			}
 
 			th.el-table__cell {
-				@include themeify {
-					background: themed("Bg3");
-				}
+				background: var(--Bg3);
 			}
 		}
 
 		.col {
-			@include themeify {
-				color: themed("Text_s");
-			}
+			color: var(--Text_s);
 		}
 
 		.title {
@@ -200,9 +194,7 @@ const formattedGameTime = computed(() => {
 		display: flex;
 		gap: 10px;
 		justify-content: space-between;
-		@include themeify {
-			color: themed("Text_s");
-		}
+		color: var(--Text_s);
 
 		.team1,
 		.team2 {

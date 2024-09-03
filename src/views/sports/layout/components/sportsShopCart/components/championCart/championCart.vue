@@ -129,8 +129,6 @@ const { startLoading, stopLoading } = useLoading();
 const ShopCatControlStore = useShopCatControlStore();
 const ChampionShopCartStore = useChampionShopCartStore();
 
-
-
 const { weakOpen, weakClose } = weakHint();
 
 onMounted(() => {
@@ -451,9 +449,7 @@ const saveSetting = async (optionIsAccept: boolean) => {
 
 <style scoped lang="scss">
 .exceed {
-	@include themeify {
-		background: themed("icon");
-	}
+	background: var(--icon);
 }
 
 .shopCart {
@@ -462,10 +458,8 @@ const saveSetting = async (optionIsAccept: boolean) => {
 	box-sizing: border-box;
 	//padding-bottom: 10px;
 
-	@include themeify {
-		background: themed("Bg1");
-		color: themed("Text_s");
-	}
+	background: var(--Bg1);
+	color: var(--Text_s);
 
 	.header-container {
 		padding: 6px 15px 0 15px;
@@ -488,9 +482,7 @@ const saveSetting = async (optionIsAccept: boolean) => {
 				height: 100%;
 
 				& > span:nth-of-type(2) {
-					@include themeify {
-						color: themed("Text1");
-					}
+					color: var(--Text1);
 				}
 
 				.num_total {
@@ -499,7 +491,7 @@ const saveSetting = async (optionIsAccept: boolean) => {
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					background: themed("Theme");
+					background: var(--Theme);
 					// color: themed('Text_a') !important;
 					color: #fff !important;
 					border-radius: 50%;
@@ -523,10 +515,8 @@ const saveSetting = async (optionIsAccept: boolean) => {
 					border-radius: 99px;
 					gap: 10px;
 
-					@include themeify {
-						background: themed("Bg3");
-						color: themed("Theme");
-					}
+					background: var(--Bg3);
+					color: var(--Theme);
 
 					.stake {
 						text-align: right;
@@ -535,9 +525,7 @@ const saveSetting = async (optionIsAccept: boolean) => {
 						font-style: normal;
 						font-weight: 700;
 						line-height: normal;
-						@include themeify {
-							color: themed("Text_s") !important;
-						}
+						color: var(--Text_s) !important;
 					}
 				}
 			}
@@ -555,9 +543,7 @@ const saveSetting = async (optionIsAccept: boolean) => {
 		text-align: center;
 		font-size: 14px;
 
-		@include themeify {
-			color: themed("Text1");
-		}
+		color: var(--Text1);
 	}
 
 	.bottom {
@@ -566,9 +552,7 @@ const saveSetting = async (optionIsAccept: boolean) => {
 		margin: 5px 0;
 		margin-top: 0;
 
-		@include themeify {
-			background: themed("Bg3");
-		}
+		background: var(--Bg3);
 
 		.part2 {
 			margin: 5px 0;
@@ -580,11 +564,9 @@ const saveSetting = async (optionIsAccept: boolean) => {
 
 			.confirming {
 				& > .el-button:last-child {
-					@include themeify {
-						border: 1px solid themed("Theme");
-						background: themed("Bg3");
-						color: themed("Theme");
-					}
+					border: 1px solid var(--Theme);
+					background: var(--Bg3);
+					color: var(--Theme);
 				}
 			}
 		}
@@ -609,20 +591,16 @@ const saveSetting = async (optionIsAccept: boolean) => {
 }
 
 .el-checkbox {
-	@include themeify {
-		--el-checkbox-checked-text-color: themed("Text1");
-		--el-checkbox-bg-color: themed("Bg3");
-		--el-checkbox-checked-bg-color: themed("Bg3");
-	}
+	--el-checkbox-checked-text-color: var(--Text1);
+	--el-checkbox-bg-color: var(--Bg3);
+	--el-checkbox-checked-bg-color: var(--Bg3);
 
 	:deep() {
 		.el-checkbox__inner {
-			@include themeify {
-				border-color: themed(Theme);
-			}
+			border-color: var(--Theme);
 
 			&::after {
-				border-color: themed(Theme);
+				border-color: var(--Theme);
 				border-width: 2px;
 			}
 		}

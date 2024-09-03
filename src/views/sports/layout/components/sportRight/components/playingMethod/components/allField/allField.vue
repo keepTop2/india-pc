@@ -64,10 +64,7 @@ const handleShowItem = () => {
 
 <style scoped lang="scss">
 .field-gallbladder {
-	@include themeify {
-		background: themed("Bg4");
-	}
-
+	background: var(--Bg4);
 	.grid-box {
 		padding: 2px;
 		display: grid;
@@ -94,10 +91,7 @@ const handleShowItem = () => {
 	padding-top: 9px;
 	margin-bottom: 7px;
 
-	@include themeify {
-		color: themed("Text_s");
-	}
-
+	color: var(--Text_s);
 	&::before {
 		content: "";
 		display: inline-block;
@@ -105,9 +99,7 @@ const handleShowItem = () => {
 		width: 4px;
 		height: 22px;
 
-		@include themeify {
-			background-color: themed("Theme");
-		}
+		background-color: var(--Theme);
 	}
 }
 </style>

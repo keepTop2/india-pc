@@ -1,48 +1,45 @@
 <template>
-  <el-tooltip placement="top" popper-class="wTooltip" :content="content" :offset="6">
-    <slot></slot>
-  </el-tooltip>
+	<el-tooltip placement="top" popper-class="wTooltip" :content="content" :offset="6">
+		<slot></slot>
+	</el-tooltip>
 </template>
 
 <script setup lang="ts" name="wTooltip">
-
-const props = withDefaults(defineProps<{
-  /**
-   * @description: 文本内容
-   */
-  content?: string,
-}>(), {
-  content: "",
-});
-
+const props = withDefaults(
+	defineProps<{
+		/**
+		 * @description: 文本内容
+		 */
+		content?: string;
+	}>(),
+	{
+		content: "",
+	}
+);
 </script>
 
 <style lang="scss">
 .wTooltip {
-  &.el-popper {
-    display: inline-flex;
-    padding: 2px 8px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 4px;
-    border: none;
+	&.el-popper {
+		display: inline-flex;
+		padding: 2px 8px;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+		border-radius: 4px;
+		border: none;
 
-    @include themeify {
+		background: var(--Bg2); // var(--Bg2-2, #1A1C20);
+		color: var(--Text_s);
 
-      background: themed('Bg2'); // var(--Bg2-2, #1A1C20);
-      color: themed('Text_s');
-    }
+		.el-popper__arrow {
+			display: none !important;
 
-    .el-popper__arrow {
-      display: none !important;
-
-      ::before {
-        content: none;
-        display: none !important;
-      }
-    }
-  }
-
+			::before {
+				content: none;
+				display: none !important;
+			}
+		}
+	}
 }
 </style>

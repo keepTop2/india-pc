@@ -94,11 +94,8 @@ const onKeepOrder = () => {
 	box-sizing: border-box;
 	//padding-bottom: 10px;
 
-	@include themeify {
-		background: themed("Bg1");
-		color: themed("Text_s");
-	}
-
+	background: var(--Bg1);
+	color: var(--Text_s);
 	.header-container {
 		padding: 6px 15px 0 15px;
 		& > div {
@@ -118,10 +115,7 @@ const onKeepOrder = () => {
 	border-radius: 8px;
 	margin: 5px 0 0;
 	align-items: center;
-
-	@include themeify {
-		background: themed("Bg3");
-	}
+	background: var(--Bg3);
 
 	.bet-info {
 		display: flex;
@@ -139,15 +133,11 @@ const onKeepOrder = () => {
 			}
 
 			& > span:last-child {
-				@include themeify {
-					color: themed("Theme");
-				}
+				color: var(--Theme);
 			}
 
 			.transId {
-				@include themeify {
-					color: themed("Text1");
-				}
+				color: var(--Text1);
 			}
 		}
 	}
@@ -162,10 +152,7 @@ const onKeepOrder = () => {
 	z-index: 99;
 	display: grid;
 	gap: 5px;
-	@include themeify {
-		background: themed("Bg3");
-	}
-
+	background: var(--Bg3);
 	// .el-button {
 	// 	margin: 0;
 	// }
@@ -175,19 +162,15 @@ const onKeepOrder = () => {
 		border-radius: 4px;
 		height: 48px;
 		width: 100%;
-		@include themeify {
-			border: 1px solid themed("Theme");
-			background: themed("Theme");
-			color: themed("Text_a");
-		}
+		border: 1px solid var(--Theme);
+		background: var(--Theme);
+		color: var(--Text_a);
 	}
 
 	.btnKeep {
-		@include themeify {
-			border: 1px solid themed("Theme");
-			background: themed("Bg3");
-			color: themed("Theme");
-		}
+		border: 1px solid var(--Theme);
+		background: var(--Bg3);
+		color: var(--Theme);
 	}
 }
 

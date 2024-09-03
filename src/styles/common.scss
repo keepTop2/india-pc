@@ -93,7 +93,7 @@
 	.is-hovering {
 		background-color: var(--Theme) !important;
 		.option-box {
-			color: themed("Text_s");
+			color: var(--Text_s);
 		}
 	}
 }

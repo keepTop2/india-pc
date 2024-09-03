@@ -229,9 +229,7 @@ defineExpose({ getParams, total, subtotal, marketChange });
 	margin: 5px 0;
 	display: flex;
 	flex-direction: column;
-	@include themeify {
-		background: themed("Bg3");
-	}
+	background: var(--Bg3);
 
 	.singlePass_top {
 		display: flex;
@@ -245,9 +243,7 @@ defineExpose({ getParams, total, subtotal, marketChange });
 		align-items: end;
 		span {
 			font-size: 14px;
-			@include themeify {
-				color: themed("Text1");
-			}
+			color: var(--Text1);
 		}
 	}
 
@@ -256,24 +252,18 @@ defineExpose({ getParams, total, subtotal, marketChange });
 		height: 50px;
 		padding: 19px 10px;
 		border-radius: 8px;
-		@include themeify {
-			background: themed("Bg2");
-		}
+		background: var(--Bg2);
 
 		:deep() {
 			.el-input__wrapper {
 				box-shadow: none;
 				border: none;
 				padding: 0;
-				@include themeify {
-					background: themed("Bg2");
-				}
+				background: var(--Bg2);
 
 				input {
 					&::placeholder {
-						@include themeify {
-							color: themed("Text2");
-						}
+						color: var(--Text2);
 					}
 				}
 			}

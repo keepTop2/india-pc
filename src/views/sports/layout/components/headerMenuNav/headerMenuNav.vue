@@ -200,11 +200,7 @@ const changeBall = () => {
 	flex-direction: row;
 	align-items: center;
 	padding: 0 10px;
-
-	@include themeify {
-		background: themed("Bg1");
-	}
-
+	background: var(--Bg1);
 	.menu-nav {
 		flex: 1;
 		display: flex;
@@ -220,9 +216,7 @@ const changeBall = () => {
 				border-radius: 2px;
 				border: 0px;
 
-				@include themeify {
-					background: themed("Line"); // var(--Line-, #373A40);
-				}
+				background: var(--Line);
 			}
 		}
 
@@ -242,10 +236,7 @@ const changeBall = () => {
 					align-items: center;
 					justify-content: center;
 					overflow: hidden;
-
-					@include themeify {
-						color: themed("icon");
-					}
+					color: var(--icon);
 
 					.iconSvg {
 						width: 100%;
@@ -255,9 +246,7 @@ const changeBall = () => {
 
 				.selected {
 					.icon {
-						@include themeify {
-							color: themed("Theme");
-						}
+						color: var(--Theme);
 					}
 				}
 			}
@@ -274,10 +263,7 @@ const changeBall = () => {
 				width: 100%;
 				height: 100%;
 
-				@include themeify {
-					color: themed("icon");
-				}
-
+				color: var(--icon);
 				.iconSvg {
 					width: 100%;
 					height: 100%;
@@ -286,9 +272,7 @@ const changeBall = () => {
 
 			.selected {
 				.icon {
-					@include themeify {
-						color: themed("Theme");
-					}
+					color: var(--Theme);
 				}
 			}
 		}

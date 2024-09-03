@@ -185,9 +185,7 @@ const attentionEvent = async (isActive: boolean) => {
 	flex-shrink: 0;
 	border-radius: 8px 8px 0px 0px;
 
-	@include themeify {
-		background: themed("Bg6");
-	}
+	background: var(--Bg6);
 
 	box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25) inset;
 	.box_one {
@@ -216,9 +214,7 @@ const attentionEvent = async (isActive: boolean) => {
 			}
 
 			.title {
-				@include themeify {
-					color: themed("Text_s");
-				}
+				color: var(--Text_s);
 				min-width: 70px;
 				flex: 1;
 				position: relative;
@@ -252,9 +248,7 @@ const attentionEvent = async (isActive: boolean) => {
 			align-items: center;
 
 			.text {
-				@include themeify {
-					color: themed("Text1");
-				}
+				color: var(--Text1);
 
 				white-space: nowrap;
 				text-align: center;
@@ -270,13 +264,9 @@ const attentionEvent = async (isActive: boolean) => {
 	}
 	.sports_collection {
 		margin: 0 25px 0 18px;
-		@include themeify {
-			color: themed("icon");
-		}
+		color: var(--icon);
 		.collection2 {
-			@include themeify {
-				color: themed("Warn");
-			}
+			color: var(--Warn);
 		}
 	}
 }

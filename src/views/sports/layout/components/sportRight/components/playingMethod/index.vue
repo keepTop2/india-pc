@@ -154,17 +154,13 @@ const playList = reactive([
 	width: 390px;
 	padding: 12px;
 	box-sizing: border-box;
-	@include themeify {
-		background: themed("Bg1");
-	}
+	background: var(--Bg1);
 	& > * {
 		margin-bottom: 12px;
 	}
 
 	.icon-svg {
-		@include themeify {
-			color: themed("icon");
-		}
+		color: var(--icon);
 	}
 
 	.expand {
@@ -205,16 +201,12 @@ const playList = reactive([
 			transition: 0.2s;
 			cursor: pointer;
 
-			@include themeify {
-				color: themed("Text_s");
-			}
+			color: var(--Text_s);
 		}
 
 		.active {
-			@include themeify {
-				background: themed("Theme");
-				border: 1px solid transparent;
-			}
+			background: var(--Theme);
+			border: 1px solid transparent;
 		}
 
 		img {

@@ -255,17 +255,11 @@ const linkDetail = () => {
 			flex-shrink: 0;
 			// padding: 0 6px;
 
-			@include themeify {
-				background: themed("Bg3");
-			}
-
+			background: var(--Bg3);
 			span {
 				margin-top: 10px;
 
-				@include themeify {
-					color: themed("Theme");
-				}
-
+				color: var(--Theme);
 				text-align: center;
 				font-family: "PingFang SC";
 				font-size: 14px;
@@ -314,15 +308,11 @@ const linkDetail = () => {
 				display: flex;
 				align-items: center;
 				.sports_collection {
-					@include themeify {
-						color: themed("icon");
-					}
+					color: var(--icon);
 				}
 
 				.sports_collection2 {
-					@include themeify {
-						color: themed("Warn");
-					}
+					color: var(--Warn);
 				}
 
 				.number_one {
@@ -330,9 +320,7 @@ const linkDetail = () => {
 					display: flex;
 					align-items: center;
 					cursor: pointer;
-					@include themeify {
-						color: themed("Text1");
-					}
+					color: var(--Text1);
 
 					font-family: "PingFang SC";
 					font-size: 14px;
@@ -343,9 +331,7 @@ const linkDetail = () => {
 						margin-left: 6px;
 						width: 12px;
 						height: 12px;
-						@include themeify {
-							color: themed("icon");
-						}
+						color: var(--icon);
 					}
 				}
 			}
@@ -365,7 +351,7 @@ const linkDetail = () => {
 				// 	justify-content: end;
 				// 	gap: 20px;
 				// 	@include themeify {
-				// 		color: themed("Text1");
+				// 		color: var(--Text1);
 				// 	}
 				// 	font-family: "PingFang SC";
 				// 	font-size: 14px;
@@ -384,20 +370,13 @@ const linkDetail = () => {
 			margin: 8px 4px;
 			border-radius: 8px;
 
-			@include themeify {
-				background: themed("Bg3");
-			}
-
+			background: var(--Bg3);
 			.close {
-				@include themeify {
-					color: themed("icon");
-				}
+				color: var(--icon);
 			}
 
 			.close:hover {
-				@include themeify {
-					color: themed("Theme");
-				}
+				color: var(--Theme);
 			}
 
 			.tooltip-container {
@@ -428,10 +407,8 @@ const linkDetail = () => {
 				line-height: normal;
 				border-radius: 4px;
 
-				@include themeify {
-					color: themed("Text1");
-					background: themed("Line");
-				}
+				color: var(--Text1);
+				background: var(--Line);
 			}
 
 			.tooltip-container:hover .tooltip-text {
@@ -456,10 +433,8 @@ const linkDetail = () => {
 	max-height: 214px;
 	overflow: hidden;
 	transition: height 0.5s ease;
-	@include themeify {
-		background: themed("Bg1");
-		border-bottom: 1px solid themed("Line");
-	}
+	background: var(--Bg1);
+	border-bottom: 1px solid var(--Line);
 }
 .fade-enter-active,
 .fade-leave-active {

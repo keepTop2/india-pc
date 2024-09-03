@@ -90,11 +90,7 @@ const optionsWithAll = computed(() => {
 .select-date {
 	width: 200px;
 	height: 30px;
-
-	@include themeify {
-		background: themed("Bg1");
-	}
-
+	background: var(--Bg1);
 	border-radius: 4px;
 	box-sizing: border-box;
 
@@ -129,9 +125,7 @@ const optionsWithAll = computed(() => {
 			cursor: pointer;
 			box-sizing: border-box;
 
-			@include themeify {
-				color: themed("Text1");
-			}
+			color: var(--Text1);
 
 			font-family: "PingFang SC";
 			font-size: 14px;
@@ -143,11 +137,8 @@ const optionsWithAll = computed(() => {
 			overflow-y: auto; /* 开启垂直滚动条 */
 			width: 200px;
 
-			@include themeify {
-				background-color: themed("Bg1");
-				box-shadow: 0px 0px 8px 0px themed("popoverShadow");
-			}
-
+			background-color: var(--Bg1);
+			box-shadow: 0px 0px 8px 0px var(--popoverShadow);
 			border-radius: 8px;
 
 			.el-scrollbar {
@@ -165,11 +156,8 @@ const optionsWithAll = computed(() => {
 							background-color: transparent;
 
 							.dropdown-item-active {
-								@include themeify {
-									background-color: themed("Bg5") !important;
-									color: themed("Text_s") !important;
-								}
-
+								background-color: var(--Bg5) !important;
+								color: var(--Text_s) !important;
 								font-family: "PingFang SC";
 								font-size: 14px;
 								font-weight: 500;
@@ -181,11 +169,7 @@ const optionsWithAll = computed(() => {
 								align-items: center;
 								justify-content: space-between;
 								padding: 8px 12px;
-
-								@include themeify {
-									color: themed("Text1");
-								}
-
+								color: var(--Text1);
 								font-family: "PingFang SC";
 								font-size: 14px;
 								font-weight: 400;
@@ -215,12 +199,9 @@ const optionsWithAll = computed(() => {
 										border-radius: 8px;
 										border: 1px solid;
 
-										@include themeify {
-											border-color: themed("Line");
-											background-color: themed("Bg4");
-											box-shadow: 0px 0px 8px 0px themed("popoverShadow");
-										}
-
+										border-color: var(--Line);
+										background-color: var(--Bg4);
+										box-shadow: 0px 0px 8px 0px var(--popoverShadow);
 										.vc-pane-container {
 											.vc-header {
 												height: 26px;
@@ -229,9 +210,7 @@ const optionsWithAll = computed(() => {
 												grid-gap: 0px;
 
 												.vc-title-wrapper {
-													@include themeify {
-														color: themed("Text1");
-													}
+													color: var(--Text1);
 
 													font-family: "PingFang SC";
 													font-size: 14px;
@@ -246,17 +225,13 @@ const optionsWithAll = computed(() => {
 												}
 
 												.vc-focus:focus-within {
-													@include themeify {
-														box-shadow: 0 0 0 2px themed("Bg5");
-													}
+													box-shadow: 0 0 0 2px var(--Bg5);
 												}
 											}
 
 											.vc-weeks {
 												.vc-weekdays {
-													@include themeify {
-														color: themed("Text2_1");
-													}
+													color: var(--Text2_1);
 
 													font-family: "PingFang SC";
 													font-size: 14px;
@@ -264,10 +239,7 @@ const optionsWithAll = computed(() => {
 												}
 
 												.vc-day-content {
-													@include themeify {
-														color: themed("Text1");
-													}
-
+													color: var(--Text1);
 													font-family: "PingFang SC";
 													font-size: 14px;
 													font-weight: 500;
@@ -275,30 +247,24 @@ const optionsWithAll = computed(() => {
 												}
 
 												.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-solid.vc-blue {
-													@include themeify {
-														color: themed("Text_s");
-														background-color: themed("Theme");
-													}
+													color: var(--Text_s);
+													background-color: var(--Theme);
 												}
 
 												.vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light,
 												.vc-highlight.vc-highlight-base-start.vc-highlight-bg-light,
 												.vc-highlight.vc-highlight-base-end.vc-highlight-bg-light,
 												.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-outline.vc-blue {
-													@include themeify {
-														background-color: themed("Bg5");
-														box-shadow: 0px 0px 0px 1px themed("Bg5");
-													}
+													background-color: var(--Bg5);
+													box-shadow: 0px 0px 0px 1px var(--Bg5);
 												}
 
 												.vc-focus:focus-within {
-													@include themeify {
-														box-shadow: none;
-													}
+													box-shadow: none;
 												}
 
 												.vc-light .vc-attr {
-													background-color: themed("Bg5");
+													background-color: var(--Bg5);
 												}
 											}
 										}
@@ -308,9 +274,7 @@ const optionsWithAll = computed(() => {
 						}
 
 						.el-dropdown-menu__item:focus {
-							@include themeify {
-								background-color: themed("Bg3");
-							}
+							background-color: var(--Bg3);
 						}
 					}
 				}

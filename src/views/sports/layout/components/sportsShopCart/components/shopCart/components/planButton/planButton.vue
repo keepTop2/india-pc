@@ -221,11 +221,9 @@ watch(
 		margin: 5px 0;
 		border-radius: 4px;
 		height: 48px;
-		@include themeify {
-			border: 1px solid themed("Theme");
-			background: themed("Theme");
-			color: themed("Text_a");
-		}
+		border: 1px solid var(--Theme);
+		background: var(--Theme);
+		color: var(--Text_a);
 	}
 
 	.btn-close,
@@ -242,11 +240,9 @@ watch(
 			border-radius: 4px;
 			height: 48px;
 			width: 100%;
-			@include themeify {
-				border: 1px solid themed("Theme");
-				background: themed("Theme");
-				color: themed("Text_a");
-			}
+			border: 1px solid var(--Theme);
+			background: var(--Theme);
+			color: var(--Text_a);
 		}
 	}
 
@@ -259,10 +255,7 @@ watch(
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-
-		@include themeify {
-			color: themed("Text_a");
-		}
+		color: var(--Text_a);
 
 		& > span:last-child {
 			font-size: 12px;
@@ -278,11 +271,9 @@ watch(
 		border-radius: 4px;
 		height: 48px;
 		width: 100%;
-		@include themeify {
-			border: 1px solid themed("icon") !important ;
-			background: themed("icon") !important ;
-			color: themed("Text_a");
-		}
+		border: 1px solid var(--icon) !important ;
+		background: var(--icon) !important ;
+		color: var(--Text_a);
 	}
 }
 

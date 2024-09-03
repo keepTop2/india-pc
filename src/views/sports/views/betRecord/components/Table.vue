@@ -164,21 +164,15 @@ function formatDateTime(dateTimeStr: Date | string): string {
 
 <style scoped lang="scss">
 .success {
-	@include themeify {
-		color: themed("Theme");
-	}
+	color: var(--Theme);
 }
 
 .fail {
-	@include themeify {
-		color: themed("Warn");
-	}
+	color: var(--Warn);
 }
 
 .cancel {
-	@include themeify {
-		color: themed("Text1");
-	}
+	color: var(--Text1);
 }
 
 .betAmount {
@@ -187,9 +181,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 	gap: 5px;
 
 	& > span:last-child {
-		@include themeify {
-			color: themed("Warn");
-		}
+		color: var(--Warn);
 	}
 }
 
@@ -201,20 +193,14 @@ function formatDateTime(dateTimeStr: Date | string): string {
 	gap: 4px;
 
 	& > div:first-child {
-		@include themeify {
-			color: themed("Text_s");
-		}
+		color: var(--Text_s);
 	}
 
 	& > div:nth-of-type(2) {
-		@include themeify {
-			color: themed("Text_s");
-		}
+		color: var(--Text_s);
 
 		span {
-			@include themeify {
-				color: themed("Theme");
-			}
+			color: var(--Theme);
 		}
 	}
 }
@@ -251,11 +237,9 @@ function formatDateTime(dateTimeStr: Date | string): string {
 		.table-header-cell {
 			height: 44px;
 			min-height: 44px;
-			@include themeify {
-				border-right-color: themed("Bg4");
-				border-bottom-color: themed("Bg3");
-				color: themed("Text1");
-			}
+			border-right-color: var(--Bg4);
+			border-bottom-color: var(--Bg3);
+			color: var(--Text1);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
@@ -264,19 +248,15 @@ function formatDateTime(dateTimeStr: Date | string): string {
 		.table-cell {
 			height: 44px;
 			min-height: 44px;
-			@include themeify {
-				border-color: themed("Bg3");
-				color: themed("Text1");
-			}
+			border-color: var(--Bg3);
+			color: var(--Text1);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
 		}
 
 		th.el-table__cell {
-			@include themeify {
-				background-color: themed("Bg3");
-			}
+			background-color: var(--Bg3);
 		}
 
 		tr {
@@ -292,35 +272,25 @@ function formatDateTime(dateTimeStr: Date | string): string {
 		.el-table__inner-wrapper::after,
 		.el-table__inner-wrapper::before,
 		.el-table__border-left-patch {
-			@include themeify {
-				background-color: themed("Bg3");
-			}
+			background-color: var(--Bg3);
 		}
 	}
 
 	:deep(.el-table--border::after),
 	:deep(.el-table--border::before) {
-		@include themeify {
-			background-color: themed("Bg3");
-		}
+		background-color: var(--Bg3);
 	}
 }
 
 .Success {
-	@include themeify {
-		color: themed("Theme");
-	}
+	color: var(--Theme);
 }
 
 .Warning {
-	@include themeify {
-		color: themed("f1");
-	}
+	color: var(--F1);
 }
 
 .Danger {
-	@include themeify {
-		color: themed("Warn");
-	}
+	color: var(--Warn);
 }
 </style>

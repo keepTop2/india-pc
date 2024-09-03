@@ -147,9 +147,7 @@ const comboTypeName = computed(() => {
 	padding: 10px 15px;
 	box-sizing: border-box;
 	border-radius: 8px;
-	@include themeify {
-		background: themed("Bg3");
-	}
+	background: var(--Bg3);
 
 	.container {
 		display: flex;
@@ -164,16 +162,12 @@ const comboTypeName = computed(() => {
 			gap: 5px;
 
 			& > span:first-child {
-				@include themeify {
-					color: themed("Text_s");
-				}
+				color: var(--Text_s);
 			}
 
 			& > span:last-child {
 				font-size: 14px;
-				@include themeify {
-					color: themed("Text1");
-				}
+				color: var(--Text1);
 			}
 		}
 	}
@@ -184,9 +178,7 @@ const comboTypeName = computed(() => {
 			display: flex;
 			align-items: center;
 			gap: 5px;
-			@include themeify {
-				color: themed("Theme");
-			}
+			color: var(--Theme);
 		}
 
 		.right {
@@ -194,13 +186,9 @@ const comboTypeName = computed(() => {
 			display: flex;
 			align-items: center;
 			gap: 5px;
-			@include themeify {
-				color: themed("Text1");
-			}
+			color: var(--Text1);
 			.right_buttom {
-				@include themeify {
-					color: themed("Text1");
-				}
+				color: var(--Text1);
 				text-align: right;
 				font-family: "PingFang SC";
 				font-size: 14px;

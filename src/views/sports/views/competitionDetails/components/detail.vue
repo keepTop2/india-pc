@@ -195,10 +195,7 @@ const attentionEvent = async (isActive: boolean) => {
 	width: 100%;
 	margin-bottom: 20px;
 	border-radius: 0px 0px 8px 8px;
-
-	@include themeify {
-		background: themed("Bg3");
-	}
+	background: var(--Bg3);
 
 	.top {
 		padding: 15px 12px;
@@ -212,17 +209,12 @@ const attentionEvent = async (isActive: boolean) => {
 			gap: 9px;
 			cursor: pointer;
 
-			@include themeify {
-				color: themed("Text1");
-			}
+			color: var(--Text1);
 		}
 
 		.title {
 			font-size: 16px;
-
-			@include themeify {
-				color: themed("Text_s");
-			}
+			color: var(--Text_s);
 		}
 
 		.handle {
@@ -236,9 +228,7 @@ const attentionEvent = async (isActive: boolean) => {
 				font-size: 14px;
 				gap: 8px;
 
-				@include themeify {
-					color: themed("Text1");
-				}
+				color: var(--Text1);
 
 				img {
 					cursor: pointer;
@@ -246,14 +236,10 @@ const attentionEvent = async (isActive: boolean) => {
 			}
 
 			.unFollow {
-				@include themeify {
-					color: themed("icon");
-				}
+				color: var(--icon);
 			}
 			.saveFollow {
-				@include themeify {
-					color: themed("Warn");
-				}
+				color: var(--Warn);
 			}
 		}
 	}
@@ -281,9 +267,7 @@ const attentionEvent = async (isActive: boolean) => {
 				align-items: center;
 				gap: 4px;
 
-				@include themeify {
-					color: themed("Text1") !important;
-				}
+				color: var(--Text1) !important;
 			}
 
 			:deep() {
@@ -292,16 +276,12 @@ const attentionEvent = async (isActive: boolean) => {
 				}
 
 				th.el-table__cell {
-					@include themeify {
-						background: themed("Bg3");
-					}
+					background: var(--Bg3);
 				}
 			}
 
 			.col {
-				@include themeify {
-					color: themed("Text_s");
-				}
+				color: var(--Text_s);
 			}
 
 			.title {
@@ -329,18 +309,14 @@ const attentionEvent = async (isActive: boolean) => {
 			border: 1px solid var(--Icon, #67707b);
 			padding: 0 20px;
 
-			@include themeify {
-				color: themed("Text1");
-			}
+			color: var(--Text1);
 		}
 
 		.active {
 			border-color: transparent;
 
-			@include themeify {
-				color: themed("Text_a");
-				background: themed("Theme");
-			}
+			color: var(--Text_a);
+			background: var(--Theme);
 		}
 	}
 }

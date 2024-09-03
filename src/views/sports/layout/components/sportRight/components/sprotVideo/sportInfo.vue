@@ -73,10 +73,8 @@ const computedScore = computed(() => {
 	align-items: center;
 	justify-content: space-between;
 
-	@include themeify {
-		background: themed("Bg3");
-		color: themed("Text1");
-	}
+	background: var(--Bg3);
+	color: var(--Text1);
 
 	.left,
 	.right {
@@ -98,10 +96,7 @@ const computedScore = computed(() => {
 					width: 9.8px;
 					height: 12.6px;
 					border-radius: 1px;
-
-					@include themeify {
-						background: themed("Warn");
-					}
+					background: var(--Warn);
 				}
 
 				.warning {
@@ -110,9 +105,7 @@ const computedScore = computed(() => {
 					height: 12.6px;
 					border-radius: 1px;
 
-					@include themeify {
-						background: themed("f1");
-					}
+					background: var(--F1);
 				}
 			}
 		}
@@ -152,10 +145,8 @@ const computedScore = computed(() => {
 			gap: 3px;
 
 			span:last-child {
-				@include themeify {
-					background: themed("Bg3");
-					color: themed("Theme");
-				}
+				background: var(--Bg3);
+				color: var(--Theme);
 			}
 		}
 
@@ -172,9 +163,7 @@ const computedScore = computed(() => {
 				text-align: center;
 				line-height: 28px;
 
-				@include themeify {
-					background: themed("Bg4");
-				}
+				background: var(--Bg4);
 			}
 		}
 	}

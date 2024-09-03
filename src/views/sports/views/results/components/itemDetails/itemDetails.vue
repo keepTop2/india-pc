@@ -4,7 +4,6 @@
 
 <template>
 	<div class="details">
-
 		<div class="tab">
 			<el-button round v-for="(tab, index) in tabList" :class="active === index && 'active'" @click="active = index">
 				{{ tab }}
@@ -13,11 +12,10 @@
 
 		<div class="list">
 			<div class="item" v-for="item in 10">
-				<span>{{ $t(`matchResult['全场大小']`)}}</span>
+				<span>{{ $t(`matchResult['全场大小']`) }}</span>
 				<span></span>
 			</div>
 		</div>
-
 	</div>
 </template>
 
@@ -48,19 +46,15 @@ const list = ref([]);
 			margin: 0;
 			width: 98px;
 			height: 32px;
-			@include themeify {
-				background: themed("Bg1");
-				border: 1px solid themed("Text2");
-				color: themed("Text1");
-			}
+			background: var(--Bg1);
+			border: 1px solid var(--Text2);
+			color: var(--Text1);
 		}
 
 		.active {
-			@include themeify {
-				background: themed("Theme");
-				color: themed("Text_s");
-				border-color: themed("Theme");
-			}
+			background: var(--Theme);
+			color: var(--Text_s);
+			border-color: var(--Theme);
 		}
 	}
 
@@ -77,9 +71,7 @@ const list = ref([]);
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			@include themeify {
-				background: themed("Bg3");
-			}
+			background: var(--Bg3);
 		}
 	}
 }

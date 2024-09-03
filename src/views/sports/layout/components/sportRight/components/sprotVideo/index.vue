@@ -52,10 +52,7 @@ const computedStreamingItem = computed(() => {
 	overflow: hidden;
 	display: grid;
 	grid-template-rows: 40px auto 68px;
-
-	@include themeify {
-		background: themed("Bg1");
-	}
+	background: var(--Bg1);
 
 	.video {
 		min-height: 210px;

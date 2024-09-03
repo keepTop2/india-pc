@@ -115,10 +115,7 @@ const computedSportShowTime = computed(() => (isEmpty(props.sportInfo) ? [] : Sp
 			display: flex;
 			align-items: center;
 			gap: 4px;
-
-			@include themeify {
-				color: themed("Text1") !important;
-			}
+			color: var(--Text1) !important;
 		}
 
 		:deep() {
@@ -144,16 +141,12 @@ const computedSportShowTime = computed(() => (isEmpty(props.sportInfo) ? [] : Sp
 			}
 
 			th.el-table__cell {
-				@include themeify {
-					background: themed("Bg3");
-				}
+				background: var(--Bg3);
 			}
 		}
 
 		.col {
-			@include themeify {
-				color: themed("Text_s");
-			}
+			color: var(--Text_s);
 		}
 
 		.title {
@@ -183,9 +176,7 @@ const computedSportShowTime = computed(() => (isEmpty(props.sportInfo) ? [] : Sp
 	}
 
 	.yellow {
-		@include themeify {
-			color: themed("f1");
-		}
+		color: var(--F1);
 	}
 
 	.teams {
@@ -196,9 +187,7 @@ const computedSportShowTime = computed(() => (isEmpty(props.sportInfo) ? [] : Sp
 		gap: 6px;
 		justify-content: space-between;
 
-		@include themeify {
-			color: themed("Text_s");
-		}
+		color: var(--Text_s);
 
 		.team1,
 		.team2 {

@@ -112,15 +112,11 @@ const onDeleteBetEvent = () => {
 
 <style scoped lang="scss">
 .oddsUp {
-	@include themeify {
-		color: themed("Warn") !important;
-	}
+	color: var(--Warn) !important;
 }
 
 .oddsDown {
-	@include themeify {
-		color: themed("Theme") !important;
-	}
+	color: var(--Theme) !important;
 }
 
 .bet_slip_item {
@@ -130,10 +126,7 @@ const onDeleteBetEvent = () => {
 	margin-top: 5px;
 	border-radius: 8px;
 	padding: 10px 25px;
-
-	@include themeify {
-		background-color: themed("Bg3");
-	}
+	background-color: var(--Bg3);
 
 	.remove_icon {
 		position: absolute;
@@ -145,9 +138,7 @@ const onDeleteBetEvent = () => {
 		cursor: pointer;
 
 		//颜色非动态
-		@include themeify {
-			background-color: rgba(121, 141, 159, 0.2);
-		}
+		background-color: rgba(121, 141, 159, 0.2);
 	}
 
 	.sports_remove {
@@ -165,19 +156,13 @@ const onDeleteBetEvent = () => {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-
-			@include themeify {
-				color: themed("TB");
-			}
-
+			color: var(--TB);
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-weight: 500;
 
 			.value {
-				@include themeify {
-					color: themed("Text_s");
-				}
+				color: var(--Text_s);
 				text-align: right;
 				font-family: "PingFang SC";
 				font-size: 20px;
@@ -202,17 +187,13 @@ const onDeleteBetEvent = () => {
 				padding: 2px 7px;
 				border-radius: 5px;
 
-				@include themeify {
-					background-color: themed("Tag2-P");
-					color: themed("TB");
-				}
+				background-color: var(--Tag2-P);
+				color: var(--TB);
 			}
 
 			& > div:first-child {
 				& > span:first-child {
-					@include themeify {
-						color: themed("Theme");
-					}
+					color: var(--Theme);
 				}
 			}
 		}
@@ -220,9 +201,7 @@ const onDeleteBetEvent = () => {
 		.bet_slip_type,
 		.bet_slip_name,
 		.bet_slip_name {
-			@include themeify {
-				color: themed("Text1");
-			}
+			color: var(--Text1);
 
 			font-family: "PingFang SC";
 			font-size: 14px;

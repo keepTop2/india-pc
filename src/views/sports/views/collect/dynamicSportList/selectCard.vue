@@ -48,9 +48,7 @@ const props = withDefaults(defineProps<teamDataType>(), {
 		line-height: normal;
 		.icon {
 			margin-right: 10px;
-			@include themeify {
-				color: themed("icon");
-			}
+			color: var(--icon);
 		}
 	}
 }

@@ -161,17 +161,13 @@ onUnmounted(() => {
 				height: 40px;
 				margin: 0;
 
-				@include themeify {
-					background: themed("Bg2");
-					color: themed("Text1");
-				}
+				background: var(--Bg2);
+				color: var(--Text1);
 			}
 
 			.active {
-				@include themeify {
-					background: themed("Bg3");
-					color: themed("Theme");
-				}
+				background: var(--Bg3);
+				color: var(--Theme);
 			}
 		}
 
@@ -199,10 +195,7 @@ onUnmounted(() => {
 		align-items: center;
 		justify-content: space-between;
 		//margin-top: 16px;
-		@include themeify {
-			color: themed("Text1");
-		}
-
+		color: var(--Text1);
 		.info {
 			display: flex;
 			gap: 24px;

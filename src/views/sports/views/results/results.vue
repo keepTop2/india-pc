@@ -329,9 +329,7 @@ const getTableData = () => {
 
 	:deep() {
 		.el-table {
-			@include themeify {
-				background: themed("Bg");
-			}
+			background: themed("Bg");
 
 			tr {
 				background: transparent;
@@ -353,20 +351,16 @@ const getTableData = () => {
 				border-radius: 10px;
 
 				th {
-					@include themeify {
-						background: themed("Bg3");
-						color: themed("Text1");
-						font-weight: normal;
-						border: 1px solid themed("Line");
-						border-left: none;
-					}
+					background: var(--Bg3);
+					color: var(--Text1);
+					font-weight: normal;
+					border: 1px solid var(--Line);
+					border-left: none;
 				}
 
 				& > .el-table__cell:first-child {
-					@include themeify {
-						border-left: 1px solid themed("Line");
-						border-right: none;
-					}
+					border-left: 1px solid var(--Line);
+					border-right: none;
 
 					.cell {
 						padding: 0;
@@ -386,28 +380,22 @@ const getTableData = () => {
 			.el-table__row {
 				&:hover {
 					.el-table__cell {
-						@include themeify {
-							background: themed("Bg1");
-						}
+						background: var(--Bg1);
 					}
 				}
 
 				.el-table__cell {
-					@include themeify {
-						border: 1px solid themed("Line");
-						border-left: none;
-						background: themed("Bg1");
-						color: themed("Text1");
-					}
+					border: 1px solid var(--Line);
+					border-left: none;
+					background: var(--Bg1);
+					color: var(--Text1);
 				}
 
 				& > .el-table__cell:first-child {
 					border-radius: 8px 0 0 8px;
 					border-right: none !important;
 
-					@include themeify {
-						border-left: 1px solid themed("Line");
-					}
+					border-left: 1px solid var(--Line);
 
 					.cell {
 						padding: 0;
@@ -443,14 +431,9 @@ const getTableData = () => {
 		.el-table__expanded-cell {
 			border: none;
 			padding: 0;
-			@include themeify {
-				background: themed("Bg1");
-			}
-
+			background: var(--Bg1);
 			&:hover {
-				@include themeify {
-					background: themed("Bg1") !important;
-				}
+				background: var(--Bg1) !important;
 			}
 		}
 	}

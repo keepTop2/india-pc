@@ -55,15 +55,11 @@ const onClick = () => {
 
 <style scoped lang="scss">
 .oddsUp {
-	@include themeify {
-		color: themed("Warn") !important;
-	}
+	color: var(--Warn) !important;
 }
 
 .oddsDown {
-	@include themeify {
-		color: themed("Theme") !important;
-	}
+	color: var(--Theme) !important;
 }
 
 .card-container {
@@ -112,15 +108,11 @@ const onClick = () => {
 		width: 14px;
 		height: 1px;
 
-		@include themeify {
-			background: themed("Text1");
-		}
+		background: var(--Text1);
 	}
 }
 
 .item:hover {
-	@include themeify {
-		background: themed("Line");
-	}
+	background: var(--Line);
 }
 </style>

@@ -68,9 +68,7 @@ const getDisplayText = () => {
 		line-height: normal;
 		.icon {
 			margin-right: 10px;
-			@include themeify {
-				color: themed("icon");
-			}
+			color: var(--icon);
 		}
 	}
 

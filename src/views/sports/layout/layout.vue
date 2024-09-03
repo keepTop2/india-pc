@@ -628,9 +628,7 @@ const unSport = () => {
 			}
 
 			&.back-container {
-				@include themeify {
-					background-color: themed("Bg");
-				}
+				background-color: var(--Bg);
 			}
 		}
 

@@ -74,15 +74,11 @@ const click_clear = () => {
 		position: relative;
 
 		.success {
-			@include themeify {
-				color: themed("Theme");
-			}
+			color: var(--Theme);
 		}
 
 		.fail {
-			@include themeify {
-				color: themed("Warn");
-			}
+			color: var(--Warn);
 		}
 	}
 

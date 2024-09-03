@@ -98,10 +98,7 @@ const GetAnnouncement = async () => {
 		box-sizing: border-box;
 		text-align: center;
 
-		// color: var(--Text1-1, #98A7B5);
-		@include themeify {
-			color: themed("Text1");
-		}
+		color: var(--Text1);
 	}
 
 	.content {
@@ -114,9 +111,7 @@ const GetAnnouncement = async () => {
 		width: 100%;
 
 		// color: var(--Text1-1, #98A7B5);
-		@include themeify {
-			color: themed("Text1");
-		}
+		color: var(--Text1);
 
 		p.ellipsis {
 			width: 100%;

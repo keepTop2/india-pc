@@ -273,14 +273,10 @@ const openEventDetailPush = async () => {
 </script>
 <style scoped lang="scss">
 .oddsUp {
-	@include themeify {
-		color: themed("Warn") !important;
-	}
+	color: var(--Warn) !important;
 }
 .oddsDown {
-	@include themeify {
-		color: themed("Theme") !important;
-	}
+	color: var(--Theme) !important;
 }
 .competition {
 	display: flex;

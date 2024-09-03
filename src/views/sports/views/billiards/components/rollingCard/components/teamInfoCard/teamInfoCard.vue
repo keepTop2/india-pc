@@ -117,10 +117,7 @@ const linkDetail = () => {
 
 			.name {
 				cursor: pointer;
-
-				@include themeify {
-					color: themed("Text1");
-				}
+				color: var(--Text1);
 
 				flex: 1;
 				position: relative;
@@ -174,23 +171,17 @@ const linkDetail = () => {
 				margin-right: 21px;
 				.yellow {
 					margin-left: 10px;
-					@include themeify {
-						background-color: themed("f1");
-					}
+					background-color: var(--F1);
 				}
 				.red {
 					margin-left: 5px;
-					@include themeify {
-						background-color: themed("Warn");
-					}
+					background-color: var(--Warn);
 				}
 				.yellow,
 				.red {
 					padding: 2px;
 					border-radius: 2px;
-					@include themeify {
-						color: themed("Text_s");
-					}
+					color: var(--Text_s);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-style: normal;
@@ -213,11 +204,8 @@ const linkDetail = () => {
 				gap: 10px;
 				flex-shrink: 0;
 				border-radius: 4px;
-
-				@include themeify {
-					color: themed("Text_s");
-					background: themed("Bg4");
-				}
+				color: var(--Text_s);
+				background: var(--Bg4);
 
 				font-family: "DIN Alternate";
 				font-size: 16px;
@@ -234,9 +222,7 @@ const linkDetail = () => {
 				flex-shrink: 0;
 				border-radius: 2px;
 
-				@include themeify {
-					background: themed("Line");
-				}
+				background: var(--Line);
 			}
 		}
 	}

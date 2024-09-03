@@ -74,40 +74,28 @@ const handleSearch = () => {
 
 			.el-input__wrapper {
 				box-shadow: none;
-				@include themeify {
-					background: themed("Bg1");
-				}
+				background: var(--Bg1);
 
 				input {
-					@include themeify {
-						color: themed("Text2_1");
-					}
+					color: var(--Text2_1);
 
 					&::placeholder {
-						@include themeify {
-							color: themed("Text2_1");
-						}
+						color: var(--Text2_1);
 					}
 				}
 			}
 
 			.el-checkbox__inner {
-				@include themeify {
-					background-color: themed("Bg");
-					border-color: themed("Theme");
-				}
+				background-color: themed("Bg");
+				border-color: var(--Theme);
 			}
 
 			.el-checkbox__label {
-				@include themeify {
-					color: themed("Text1");
-				}
+				color: var(--Text1);
 			}
 
 			.el-checkbox__input.is-checked + .el-checkbox__label {
-				@include themeify {
-					color: themed("Theme");
-				}
+				color: var(--Theme);
 			}
 
 			.date-picker {

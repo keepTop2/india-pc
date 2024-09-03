@@ -141,10 +141,8 @@ onMounted(() => {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		@include themeify {
-			border: 2px solid themed("Line");
-			color: themed("TB");
-		}
+		border: 2px solid var(--Line);
+		color: var(--TB);
 		.date {
 			white-space: nowrap;
 			font-size: 22px;
@@ -152,11 +150,9 @@ onMounted(() => {
 		}
 	}
 	.active {
-		@include themeify {
-			background-color: themed("Theme");
-			color: themed("TB-P");
-			border: 0;
-		}
+		background-color: var(--Theme);
+		color: themed("TB-P");
+		border: 0;
 	}
 }
 </style>

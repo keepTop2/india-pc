@@ -196,9 +196,7 @@ const deleteHistory = (index: number) => {
 		}
 
 		.close_svg {
-			@include themeify {
-				color: themed("icon");
-			}
+			color: var(--icon);
 		}
 	}
 
@@ -210,9 +208,7 @@ const deleteHistory = (index: number) => {
 		border-radius: 16px;
 		background: var(--Bg3-3, #2e3035);
 
-		@include themeify {
-			border: 1px solid themed("Text2_1");
-		}
+		border: 1px solid var(--Text2_1);
 
 		span {
 			color: var(--Text1-1, #98a7b5);
@@ -273,9 +269,7 @@ const deleteHistory = (index: number) => {
 			}
 
 			.close_svg {
-				@include themeify {
-					color: themed("icon");
-				}
+				color: var(--icon);
 			}
 		}
 	}
