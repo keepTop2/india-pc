@@ -22,9 +22,9 @@
 			<el-button @click="changeTheme(ThemeEnum.light)">{{ $t("common.白天") }} light</el-button>
 			<el-button @click="changeTheme(ThemeEnum.dark)">{{ $t("common.黑夜") }} dark</el-button>
 
-			<el-select v-model="UserStore.lang" placeholder="Select" size="large" style="width: 240px" @change="chageLang">
+			<!-- <el-select v-model="UserStore.lang" placeholder="Select" size="large" style="width: 240px" @change="chageLang">
 				<el-option v-for="item in UserStore.LangList" :key="item.code" :label="item.name" :value="item.code" />
-			</el-select>
+			</el-select> -->
 
 			<div class="lang_btn">{{ $t(`common["你好世界"]`) }}</div>
 			<div>

@@ -18,7 +18,7 @@ export function loadLang() {
 export const i18n = createI18n({
 	// globalInjection: true,
 	legacy: false,
-	locale: "en-US",
+	locale: JSON.parse(localStorage.getItem("langInfo") || "")?.code || "en-US",
 	fallbackLocale: "en-US",
 	messages: loadLang(),
 });
@@ -28,6 +28,8 @@ export const i18n = createI18n({
  * @param lang
  */
 export function setLang(lang: LangType) {
+	console.log(lang);
+
 	const LangList = loadLang();
 	if (LangList[lang]) {
 		i18n.global.locale.value = lang;

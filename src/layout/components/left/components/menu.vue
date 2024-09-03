@@ -10,12 +10,16 @@
 						<svg-icon name="arrow_down" v-else height="8px" width="14px" />
 					</div>
 				</div>
-				<div v-show="openMenuIndex == index && !collapse" v-for="(subItem, subIndex) in item.children" :key="index" class="menu_item subItem" @click="goToPath(subItem)">
-					<div class="menu_icon">
-						<img :src="subItem.icon" alt="" />
+				<transition name="accordion" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+					<div v-show="openMenuIndex == index && !collapse" class="subMenu">
+						<div v-for="(subItem, subIndex) in item.children" :key="index" class="menu_item subItem" @click="goToPath(subItem)">
+							<div class="menu_icon">
+								<img :src="subItem.icon" alt="" />
+							</div>
+							<div class="menu_name ellipsis">{{ subItem.directoryName }}</div>
+						</div>
 					</div>
-					<div class="menu_name ellipsis">{{ subItem.directoryName }}</div>
-				</div>
+				</transition>
 			</div>
 		</div>
 	</div>
@@ -91,7 +95,7 @@ const activeMenu = computed(() => {
 });
 
 const goToPath = (path: object) => {
-	console.log(path);
+	router.push("/sports");
 };
 
 const state = reactive({
@@ -101,31 +105,6 @@ const state = reactive({
 	openMenuList: [] as Array<string>,
 });
 
-//选中菜单
-const onSelect = (index: string, item: Array<string>) => {
-	state.selectList = item;
-};
-
-//sub-menu 展开的回调
-const onOpen = (index: string, indexPath: Array<string>) => {
-	state.openMenuList.push(index);
-	// console.log(index, indexPath, '展开菜单');
-};
-
-//sub-menu 收起的回调
-const onClose = (index: string, indexPath: Array<string>) => {
-	const idx = state.openMenuList.findIndex((item) => item == index);
-	state.openMenuList.splice(idx, 1);
-	// console.log(index, indexPath, '收起菜单');
-};
-
-//渲染
-const vnode = h("span");
-
-const onMenuClick = (val: any) => {
-	// console.info(val);
-	router.push(val);
-};
 const openMenu = (index: number) => {
 	if (openMenuIndex.value === index) {
 		openMenuIndex.value = null;
@@ -134,12 +113,32 @@ const openMenu = (index: number) => {
 	}
 };
 
-const selectMenu = (item: Object, index: number) => {
-	currentRoute.value = item;
-	if (collapse.value) {
-		MenuStore.setCollapse(false);
+const selectMenu = (item: any, index: number) => {
+	console.log(item);
+	if (item.children) {
+		currentRoute.value = item;
+		if (collapse.value) {
+			MenuStore.setCollapse(false);
+		}
+		openMenu(index);
+	} else {
+		goToPath(item);
 	}
-	openMenu(index);
+};
+
+// 动画
+const beforeEnter = (el: any) => {
+	el.style.maxHeight = "0";
+	el.style.transition = "max-height 0.2s ease";
+};
+
+const enter = (el: any) => {
+	const height = el.scrollHeight;
+	el.style.maxHeight = `${height}px`;
+};
+
+const leave = (el: any) => {
+	el.style.maxHeight = "0";
 };
 </script>
 
@@ -148,7 +147,6 @@ const selectMenu = (item: Object, index: number) => {
 	.menu_item {
 		display: flex;
 		height: 46px;
-
 		margin: 4px 0;
 		padding: 0 20px;
 		display: flex;
@@ -158,7 +156,7 @@ const selectMenu = (item: Object, index: number) => {
 		border-radius: 4px;
 		background: var(--Bg2);
 		color: var(--Text1);
-
+		z-index: 10;
 		.menu_name {
 			flex: 4;
 			overflow: hidden;
