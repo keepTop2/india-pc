@@ -14,11 +14,13 @@ export function loadLang() {
 	}
 	return langs;
 }
-
+const getlang = () => {
+	return localStorage.getItem("langInfo") ? JSON.parse(localStorage.getItem("langInfo") || "{}").code : "en-US";
+};
 export const i18n = createI18n({
 	// globalInjection: true,
 	legacy: false,
-	locale: JSON.parse(localStorage.getItem("langInfo") || "{}")?.code || "en-US",
+	locale: getlang(),
 	fallbackLocale: "en-US",
 	messages: loadLang(),
 });
