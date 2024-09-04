@@ -48,13 +48,13 @@
 
 <script setup lang="ts">
 import { useRouter, useRoute } from "vue-router";
-import { FootballCardApi } from "/@/api/menu/sports/footballCard";
+import { FootballCardApi } from "/@/api/sports/footballCard";
 import { computed } from "vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
-import { useLink } from "/@/hooks/useLink";
-import { SportTypeEnum } from "/@/enum/sportEnum/sportEnum";
+import { useLink } from "/@/views/sports/hooks/useLink";
+import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
 const router = useRouter();

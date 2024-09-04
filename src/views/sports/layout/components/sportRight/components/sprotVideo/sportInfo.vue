@@ -47,8 +47,8 @@ import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { get, isEmpty } from "lodash-es";
 import SportTeam from "./sportTeam.vue";
-import SportsCommonFn from "/@/utils/sports/common";
-// import { SportsRootObject } from "/@/models/interface";
+import SportsCommonFn from "/@/views/sports/utils/common";
+// import { SportsRootObject } from "/@/views/sports/models/interface";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import { useSportEventDetailTool } from "./useSportEventDetailTool";
 

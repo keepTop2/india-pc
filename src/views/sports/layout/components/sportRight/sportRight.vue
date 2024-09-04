@@ -14,13 +14,13 @@ import { onMounted, ref, computed, watch, reactive } from "vue";
 import { storeToRefs } from "pinia";
 import { isEmpty, map } from "lodash-es";
 import { SprotVideo, PlayingMethod } from "./components/index";
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 import { useIntervalFn } from "@vueuse/core";
-import { SportsRootObject } from "/@/models/interface";
-import { formattingSportArrayData } from "/@/utils/sports/formattingViewData";
+import { SportsRootObject } from "/@/views/sports/models/interface";
+import { formattingSportArrayData } from "/@/views/sports/utils/formattingViewData";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import { useSportRightTool } from "./useSportRightTool";
-import { SportControlEnum } from "/@/enum/sportEnum/sportEnum";
+import { SportControlEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { SpinnerWrap } from "/@/components/Spinner";
 
 const SportHotStore = useSportHotStore();

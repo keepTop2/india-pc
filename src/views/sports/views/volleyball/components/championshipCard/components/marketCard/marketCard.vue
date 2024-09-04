@@ -20,10 +20,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import { RiseOrFall } from "/@/components/Sport/index";
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 import { useChampionShopCartStore } from "/@/stores/modules/sports/championShopCart";
-import useSportPubSubEvents from "/@/hooks/sport/useSportPubSubEvents";
-import { WebToPushApi } from "/@/enum/sportEnum/sportEventSourceEnum";
+import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
+import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import pubsub from "/@/pubSub/pubSub";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
@@ -31,7 +31,7 @@ const ShopCatControlStore = useShopCatControlStore();
 
 const { clearSportsOddsChange } = useSportPubSubEvents();
 
-// import { marketsMatchData } from "/@/utils/sports/formattingViewData";
+// import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 const emit = defineEmits(["oddsChange"]);
 
 interface CapotCardType {

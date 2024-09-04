@@ -40,7 +40,7 @@
 import { reactive, ref, onMounted, computed, watch } from "vue";
 import hidden from "/@/assets/zh/default/competition/hidden.png";
 import visible from "/@/assets/zh/default/competition/visible.png";
-import { FootballCardApi } from "/@/api/menu/sports/footballCard";
+import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
@@ -51,7 +51,7 @@ const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
 const router = useRouter();
 
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 
 const emits = defineEmits(["back", "isHidden", "isCollect", "refresh", "filter", "expandAndCollapse", "toggleAll"]);
 

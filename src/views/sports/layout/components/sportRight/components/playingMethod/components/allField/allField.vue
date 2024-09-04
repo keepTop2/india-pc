@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
 import oddItem from "../oddItem/oddItem.vue";
-import { Market, SportsRootObject } from "/@/models/interface";
+import { Market, SportsRootObject } from "/@/views/sports/models/interface";
 
 const emit = defineEmits(["updateCollapse"]);
 

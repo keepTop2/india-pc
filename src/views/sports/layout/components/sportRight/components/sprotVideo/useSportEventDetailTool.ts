@@ -1,6 +1,6 @@
 import { isEmpty, get } from "lodash-es";
-import { SportTypeEnum } from "/@/enum/sportEnum/sportEnum";
-import { SportsRootObject } from "/@/models/interface";
+import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
+import { SportsRootObject } from "/@/views/sports/models/interface";
 
 /**
  * table表头显示类型

@@ -77,6 +77,7 @@ declare module 'vue' {
     RegisterModal: typeof import('./src/components/Modal/components/RegisterModal.vue')['default']
     RegisterModel: typeof import('./src/components/RegisterModel/index.vue')['default']
     Result: typeof import('./src/components/Spin/Result.vue')['default']
+    RiseOrFall: typeof import('./src/components/Sport/RiseOrFall.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Spin: typeof import('./src/components/Spin/Spin.vue')['default']

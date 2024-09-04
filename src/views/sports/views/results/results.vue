@@ -176,9 +176,9 @@ import moment from "moment";
 import itemDetails from "./components/itemDetails/itemDetails.vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { Pagination } from "/@/components/Pagination";
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
-import { QueryFormType, QueryOptionItemType } from "/@/models/sportResultModel";
+import { QueryFormType, QueryOptionItemType } from "/@/views/sports/models/sportResultModel";
 import { useResultHook } from "./useResultHook";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";

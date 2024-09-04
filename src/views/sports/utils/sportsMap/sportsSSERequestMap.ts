@@ -1,8 +1,8 @@
 // import sportEventSource from "/@/eventSource/sportEventSource/sportEventSource";
 import SportsCommonFn from "../common";
 import moment from "moment";
-import { WebToPushApi, SportPushApi } from "/@/enum/sportEnum/sportEventSourceEnum";
-import { OpenSportEventSourceParams } from "/@/models/sportEventSourceModel";
+import { WebToPushApi, SportPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
+import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import { betTypes } from "./sportsBetType";
 
 interface SportPushAction {

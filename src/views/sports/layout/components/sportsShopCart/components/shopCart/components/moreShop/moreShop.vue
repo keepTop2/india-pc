@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, nextTick, onUnmounted } from "vue";
 import { debounce, throttle, cloneDeep, isEmpty, forEach } from "lodash-es";
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 import Common from "/@/utils/common";
 import { Crosstalk } from "./components/index";
 import { ShopCard } from "../index";

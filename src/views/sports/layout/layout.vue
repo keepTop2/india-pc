@@ -41,17 +41,17 @@ import { cloneDeep, isEmpty } from "lodash-es";
 import moment from "moment";
 import workerManage from "/@/webWorker/workerManage";
 import Common from "/@/utils/common";
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 import pubSub from "/@/pubSub/pubSub";
 import { useIntervalFn } from "@vueuse/core";
-import { formattingResultViewData } from "/@/utils/sports/formattingViewData";
-import { sportTabPushActions } from "/@/utils/sports/sportsMap/sportsSSERequestMap";
+import { formattingResultViewData } from "/@/views/sports/utils/formattingViewData";
+import { sportTabPushActions } from "/@/views/sports/utils/sportsMap/sportsSSERequestMap";
 import { useRoute, useRouter } from "vue-router";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 
-import { Sports, SportData, SportViewData } from "/@/models/interface";
-import { ServerData } from "/@/models/commonInterface";
+import { Sports, SportData, SportViewData } from "/@/views/sports/models/interface";
+import { ServerData } from "/@/views/sports/models/commonInterface";
 
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 
@@ -60,25 +60,25 @@ import { useUserStore } from "/@/stores/modules/user";
 
 import { Notification } from "/@/components/index";
 import { WorkerName, SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
-import { OpenSportEventSourceParams } from "/@/models/sportEventSourceModel";
+import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 
 import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, SportRight } from "./components";
 
 import { i18n } from "/@/i18n/index";
 
-import useSportPubSubEvents from "/@/hooks/sport/useSportPubSubEvents";
+import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { useLoading } from "/@/directive/loading/hooks";
-import SportsCommonFn from "/@/utils/sports/common";
+import SportsCommonFn from "/@/views/sports/utils/common";
 
-import { FootballCardApi } from "/@/api/menu/sports/footballCard";
+import { FootballCardApi } from "/@/api/sports/footballCard";
 import PubSub from "/@/pubSub/pubSub";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import viewSportPubSubEventData from "/@/hooks/sport/viewSportPubSubEventData";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
 
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
 import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
-import { betTypes } from "/@/utils/sports/sportsMap/sportsBetType";
+import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 

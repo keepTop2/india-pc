@@ -115,7 +115,7 @@
 import { computed, onMounted, provide, ref, watch, watchEffect, nextTick, onUpdated } from "vue";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { authHintDialog, cardStatus, MoreShop, planButton, SinglePass, SingleOrderStatus, MoreOrderStatus } from "./components/index";
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 import Common from "/@/utils/common";
 import weakHint from "/@/hooks/weakHint";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
@@ -657,17 +657,12 @@ const saveSetting = async (optionIsAccept: boolean) => {
 }
 
 .el-checkbox {
-	--el-checkbox-checked-text-color: var(--Text1);
-	--el-checkbox-bg-color: var(--Bg3);
-	--el-checkbox-checked-bg-color: var(--Bg3);
-	/deep/ {
-		.el-checkbox__inner {
-			border-color: var(--Theme);
+	.el-checkbox__inner {
+		border-color: var(--Theme);
 
-			&::after {
-				border-color: var(--Theme);
-				border-width: 2px;
-			}
+		&::after {
+			border-color: var(--Theme);
+			border-width: 2px;
 		}
 	}
 }

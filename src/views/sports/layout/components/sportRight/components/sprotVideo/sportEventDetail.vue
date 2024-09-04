@@ -44,8 +44,8 @@
 
 <script setup lang="ts">
 import { reactive, computed } from "vue";
-import SportsCommonFn from "/@/utils/sports/common";
-import { SportEventStatusEnum } from "/@/enum/sportEnum/sportEnum";
+import SportsCommonFn from "/@/views/sports/utils/common";
+import { SportEventStatusEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { isEmpty } from "lodash-es";
 import { useSportEventDetailTool, TitleTypeEnum, TableSizeType } from "./useSportEventDetailTool";
 

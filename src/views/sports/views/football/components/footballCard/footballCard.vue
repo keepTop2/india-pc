@@ -49,7 +49,7 @@ import { isExternal } from "util/types";
 import EventItem from "./components/eventItem/eventItem.vue";
 import Common from "/@/utils/common";
 import PubSub from "/@/pubSub/pubSub";
-import { FootballCardApi } from "/@/api/menu/sports/footballCard";
+import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 const SportAttentionStore = useSportAttentionStore();
 const betTypes = ["全场独赢", "全场让球", "全场大小", "半场独赢", "半场让球", "半场大小"];

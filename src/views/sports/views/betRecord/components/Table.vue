@@ -73,8 +73,8 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import copyImg from "/@/assets/zh/default/wallet/copy.png";
-import { SportStatusEnum } from "/@/enum/sportEnum/sportEnum";
-import sportsMap from "/@/utils/sports/sportsMap/sportsMap";
+import { SportStatusEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
+import sportsMap from "/@/views/sports/utils/sportsMap/sportsMap";
 
 const props = withDefaults(
 	defineProps<{

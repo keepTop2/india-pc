@@ -48,12 +48,12 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, watch, computed, onUnmounted } from "vue";
 import { debounce, isEmpty } from "lodash-es";
-import sportsRouter from "/@/router/sports/menuRight";
-import sportsRouterLeft from "/@/router/sports/sportsRouterLeft";
+import sportsRouter from "/@/router/modules/sports/menuRight";
+import sportsRouterLeft from "/@/router/modules/sports/sportsRouterLeft";
 
 import { useRouter, useRoute } from "vue-router";
 import { wTooltip } from "./components/index";
-import viewSportPubSubEventData from "/@/hooks/sport/viewSportPubSubEventData";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 
 const router = useRouter();

@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import { MarketColumn } from "./index";
-import { FootballCardApi } from "/@/api/menu/sports/footballCard";
+import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
 const SportAttentionStore = useSportAttentionStore();

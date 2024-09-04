@@ -1,14 +1,14 @@
 import { reactive, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { merge, map, filter, find, cloneDeep, get } from "lodash-es";
-import { Market } from "/@/models/interface";
-import { formattingSportArrayData, formattingMarkets } from "/@/utils/sports/formattingViewData";
-import { openSingleSportEventSource } from "/@/utils/sports/sseServe";
-import SportsCommonFn from "/@/utils/sports/common";
+import { Market } from "/@/views/sports/models/interface";
+import { formattingSportArrayData, formattingMarkets } from "/@/views/sports/utils/formattingViewData";
+import { openSingleSportEventSource } from "/@/views/sports/utils/sseServe";
+import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
-import { SportControlEnum } from "/@/enum/sportEnum/sportEnum";
-import { ControlListType } from "/@/models/sportResultModel";
+import { SportControlEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
+import { ControlListType } from "/@/views/sports/models/sportResultModel";
 
 type RecodeType = {
 	event: Market;

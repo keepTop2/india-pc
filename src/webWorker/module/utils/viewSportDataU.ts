@@ -1,4 +1,4 @@
-import { SportViewModels, Sports } from "/@/models/sportViewModels";
+import { SportViewModels, Sports } from "/@/views/sports/models/sportViewModels";
 /**
  * @description  实现 SportViewModels接口 单例 工具类
  */

@@ -4,9 +4,9 @@
  */
 import { defineStore } from "pinia";
 import { merge, isEmpty } from "lodash-es";
-import { SportsRootObject } from "/@/models/interface";
-import { ControlListType } from "/@/models/sportResultModel";
-import { SportControlEnum } from "/@/enum/sportEnum/sportEnum";
+import { SportsRootObject } from "/@/views/sports/models/interface";
+import { ControlListType } from "/@/views/sports/models/sportResultModel";
+import { SportControlEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 
 interface SportHotType {
 	originHref: string;

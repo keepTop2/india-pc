@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
-import SportsCommon from "/@/utils/sports/common";
+import SportsCommon from "/@/views/sports/utils/common";
 import Unsettled from "./components/Table.vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import BetRecordApi from "/@/api/menu/sports/betRecord";

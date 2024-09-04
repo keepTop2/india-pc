@@ -24,7 +24,7 @@
 import { ref, watch } from "vue";
 import { RiseOrFall } from "/@/components/Sport/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { marketsMatchData } from "/@/utils/sports/formattingViewData";
+import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 const emit = defineEmits(["oddsChange", "onClick"]);
 
 // /** 市场 (盘口信息) */

@@ -5,9 +5,9 @@ import { VirtualScrollVirtualList } from "/@/components/virtualScrollVirtualList
 // import DateSelector from "./dateSelector/dateSelector.vue";
 import { defineAsyncComponent } from "vue";
 
-const FootballCard = defineAsyncComponent(() => import("/@/views/football/components/footballCard/footballCard.vue"));
-const ChampionshipCard = defineAsyncComponent(() => import("/@/views/football/components/championshipCard/championshipCard.vue"));
-const SelectCard = defineAsyncComponent(() => import("/@/views/football/components/selectCard/selectCard.vue"));
-const DateSelector = defineAsyncComponent(() => import("/@/views/football/components/dateSelector/dateSelector.vue"));
+const FootballCard = defineAsyncComponent(() => import("/@/views/sports/views/football/components/footballCard/footballCard.vue"));
+const ChampionshipCard = defineAsyncComponent(() => import("/@/views/sports/views/football/components/championshipCard/championshipCard.vue"));
+const SelectCard = defineAsyncComponent(() => import("/@/views/sports/views/football/components/selectCard/selectCard.vue"));
+const DateSelector = defineAsyncComponent(() => import("/@/views/sports/views/football/components/dateSelector/dateSelector.vue"));
 
 export { FootballCard, ChampionshipCard, SelectCard, VirtualScrollVirtualList, DateSelector };

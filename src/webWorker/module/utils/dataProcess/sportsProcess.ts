@@ -1,5 +1,5 @@
 // 体育静态文件
-import sportsMap from "/@/utils/sports/sportsMap/sportsMap";
+import sportsMap from "/@/views/sports/utils/sportsMap/sportsMap";
 
 // 每个运动项目的赛事数量及串关赛事数量  数据线程处理 GetSports
 export default (function () {

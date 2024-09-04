@@ -1,8 +1,8 @@
 // 体育静态文件
-import sportsMap from "/@/utils/sports/sportsMap/sportsMap";
+import sportsMap from "/@/views/sports/utils/sportsMap/sportsMap";
 import moment from "moment";
 
-import { formatEvent2League } from "/@/utils/sports/formattingViewData";
+import { formatEvent2League } from "/@/views/sports/utils/formattingViewData";
 
 /**
  * @description 格式化markets数据为对象 以betType为key

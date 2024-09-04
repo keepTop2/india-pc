@@ -1,11 +1,11 @@
 import workerManage from "/@/webWorker/workerManage";
 import { SportShopCartProcessWorkerCommandType, WorkerName } from "/@/enum/workerTransferEnum";
-import { OpenSportEventSourceParams } from "/@/models/sportEventSourceModel";
+import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import SportsCommonFn from "./common";
-import { SportsRootObject, BetMarketInfo } from "/@/models/interface";
+import { SportsRootObject, BetMarketInfo } from "/@/views/sports/models/interface";
 
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
-import { SportPushApi, WebToPushApi } from "/@/enum/sportEnum/sportEventSourceEnum";
+import { SportPushApi, WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 import pubsub from "/@/pubSub/pubSub";
 

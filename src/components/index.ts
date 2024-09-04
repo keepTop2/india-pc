@@ -2,7 +2,6 @@ import type { Component, App } from "vue";
 import { NoneData } from "./noneData";
 import Button from "/@/components/Button/Button.vue";
 import FromInput from "/@/components/Input/fromInput.vue";
-import CaptchaButton from "/@/components/captchaButton/captchaButton.vue";
 import { Notification } from "./Notification";
 import { WImage } from "./wImage";
 const components: {
@@ -11,7 +10,6 @@ const components: {
 	NoneData,
 	Button,
 	FromInput,
-	CaptchaButton,
 };
 
 /**

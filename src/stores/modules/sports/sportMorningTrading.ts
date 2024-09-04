@@ -4,7 +4,7 @@
  */
 import { defineStore } from "pinia";
 import moment from "moment";
-import SportsCommon from "/@/utils/sports/common";
+import SportsCommon from "/@/views/sports/utils/common";
 interface timeIntervalType {
 	startDate: string;
 	endDate: string;

@@ -1,5 +1,5 @@
 import { WebResponse } from "/@/models/commonInterface";
-import { SportEventSourceInstanceModel, OpenSportEventSourceParams, SportEventSourceResponse } from "/@/models/sportEventSourceModel";
+import { SportEventSourceInstanceModel, OpenSportEventSourceParams, SportEventSourceResponse } from "/@/views/sports/models/sportEventSourceModel";
 import ResCode from "/@/utils/resCode";
 import qs from "qs";
 

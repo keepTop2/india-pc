@@ -1,7 +1,7 @@
 import { isEmpty } from "lodash-es";
 // 体育静态文件
 import sportsMap from "./sportsMap/sportsMap";
-import { Market, SportsRootObject } from "/@/models/interface";
+import { Market, SportsRootObject } from "/@/views/sports/models/interface";
 
 /**
  * @description 格式化赛果体育项目数据

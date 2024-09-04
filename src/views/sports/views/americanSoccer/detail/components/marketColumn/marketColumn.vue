@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, watchEffect } from "vue";
 import { MarketCard } from "../index";
-import { marketsMatchData } from "/@/utils/sports/formattingViewData";
+import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 
 const emit = defineEmits(["oddsChange"]);
 

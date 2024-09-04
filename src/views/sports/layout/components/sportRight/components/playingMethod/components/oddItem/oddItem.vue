@@ -18,9 +18,9 @@
 <script setup lang="ts">
 import { computed, watch, ref, onBeforeMount, watchEffect } from "vue";
 import { RiseOrFall } from "/@/components/Sport/index";
-import { Selection, Market, SportsRootObject } from "/@/models/interface";
+import { Selection, Market, SportsRootObject } from "/@/views/sports/models/interface";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { shouldShowPoint } from "/@/utils/sports/formattingViewData";
+import { shouldShowPoint } from "/@/views/sports/utils/formattingViewData";
 
 /**
  * 由于子组件定义的数字，故跟随处理
