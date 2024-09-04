@@ -22,9 +22,9 @@
 			<el-button @click="changeTheme(ThemeEnum.light)">{{ $t("common.白天") }} light</el-button>
 			<el-button @click="changeTheme(ThemeEnum.dark)">{{ $t("common.黑夜") }} dark</el-button>
 
-			<el-select v-model="UserStore.lang" placeholder="Select" size="large" style="width: 240px" @change="chageLang">
+			<!-- <el-select v-model="UserStore.lang" placeholder="Select" size="large" style="width: 240px" @change="chageLang">
 				<el-option v-for="item in UserStore.LangList" :key="item.code" :label="item.name" :value="item.code" />
-			</el-select>
+			</el-select> -->
 
 			<div class="lang_btn">{{ $t(`common["你好世界"]`) }}</div>
 			<div>
@@ -92,21 +92,10 @@ const chageLang = (value: LangEnum) => {
 
 <style lang="scss" scoped>
 .demo_container {
-	@include themeify {
-		background: themed("Bg");
-		color: themed("Text1");
-	}
-	.bg {
-		@include themeify {
-			background: themed("Bg");
-		}
-	}
 	.bg_img {
 		width: 300px;
 		height: 100px;
 		background-size: 100% 100%;
-		background-repeat: no-repeat;
-		background-image: url();
 	}
 }
 </style>

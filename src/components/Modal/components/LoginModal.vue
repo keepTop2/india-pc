@@ -5,50 +5,54 @@
 			<img src="/@/assets/common/login_left.png" alt="" />
 		</div>
 		<div class="login_right_form">
-			<div class="login_text"><span>登陆</span></div>
+			<div class="login_text fs_16 mb_20">
+				<span>{{ $t(`login['登陆']`) }}</span>
+			</div>
 			<div class="login_form">
-				<div>
-					<p class="Text_s mb_8 mt_8 fs_16"><span class="Wran_text">*</span>账号</p>
+				<div class="mb_12">
+					<p class="Text_s fs_12"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
-						<input type="text" :value="payLoad.userAccount" class="common_input" placeholder="输入账号" @input="userOnInput" autocomplete="new-password" />
+						<input type="text" :value="payLoad.userAccount" class="common_input mt_8" :placeholder="$t(`login['输入账号']`)" @input="userOnInput" autocomplete="new-password" />
 					</p>
-					<p v-show="userAccountVerifyError" class="Wran_text fs_12 mt_2">4-11位，数字 ，字母组成 ，首位必须是字母</p>
 				</div>
-				<div>
-					<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>登陆密码</p>
+				<div class="mb_12">
+					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
 					<p class="common_password">
 						<input
 							:type="showPassword ? 'text' : 'password'"
 							:value="payLoad.password"
 							class="common_input"
-							placeholder="输入密码"
+							:placeholder="$t(`login['输入密码']`)"
 							@input="passOnInput"
 							autocomplete="new-password"
 						/>
 						<span class="eyes">
-							<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="18px" @click="showPassword = !showPassword" />
+							<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showPassword = !showPassword" />
 						</span>
 					</p>
-					<p v-show="passWordVerifyError" class="Wran_text fs_12 mt_2">8-16位，必须包含 数字和字母， 可包含@ _ $</p>
 				</div>
-				<div class="flex_space-between fs_14 mt_10">
+				<div class="flex_space-between fs_12 mt_10">
 					<div class="Text1 curp flex-center" style="gap: 6px">
 						<svg-icon
 							:name="rememberPassword ? 'check_icon_on' : 'check_icon'"
-							size="18px"
+							size="14px"
 							@click="rememberPassword = !rememberPassword"
 							:style="{ color: rememberPassword ? 'var(--Theme)' : '' }"
 						/>
-						记住密码
+						{{ $t(`login['记住密码']`) }}
 					</div>
-					<div class="Text_s curp" @click="forgetPassword">忘记密码？</div>
+					<div class="Text_s curp fs_12" @click="forgetPassword">{{ $t(`login['忘记密码']`) }}？</div>
 				</div>
 				<div class="mt_40 mb_12">
-					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onLogin">登陆</button>
+					<button class="common_btn fs_12" type="button" @click="onLogin">{{ $t(`login['登陆']`) }}</button>
 				</div>
-				<div class="flex_space-between fs_14">
-					<div class="Text1">新用户？ <span class="Wran_text">创建账号</span></div>
-					<div><span class="Wran_text">联系客服</span></div>
+				<div class="flex_space-between fs_12">
+					<div class="Text1">
+						{{ $t(`login['新用户']`) }}？ <span class="Wran_text curp" @click="toRegister">{{ $t(`login['创建账号']`) }}</span>
+					</div>
+					<div>
+						<span class="Wran_text fs_12">{{ $t(`login['联系客服']`) }}</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -63,7 +67,6 @@ import { userApi } from "/@/api/user";
 import Common from "/@/utils/common";
 import eventBus from "/@/utils/eventBus";
 import showToast from "/@/hooks/useToast";
-import EncryptionFn from "/@/utils/encryption";
 import { useUserStore } from "/@/stores/modules/user";
 const UserStore = useUserStore();
 
@@ -75,7 +78,9 @@ const payLoad = reactive({
 	userAccount: "",
 	password: "",
 });
+// 记住密码
 const rememberPassword = ref(false);
+
 //账号密码校验规则
 const userAccountRegex = /^[a-zA-Z][a-zA-Z0-9]{3,10}$/;
 const passWordregex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@_$]{8,16}$/;
@@ -84,12 +89,10 @@ const passWordregex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@_$]{8,16}$/;
 const userAccountVerifyError = ref(false);
 const passWordVerifyError = ref(false);
 
-// 校验完成登陆按钮可以点击
-const disabledBtn = ref(true);
-
 // 显示密码
 const showPassword = ref(false);
 
+// 获取是否记住密码
 onMounted(() => {
 	if (UserStore.getLoginInfo) {
 		Object.assign(payLoad, UserStore.getLoginInfo);
@@ -110,17 +113,15 @@ const passOnInput = (e: any) => {
 };
 
 // 表单验证
-const verifyBtn = () => {
-	if (!passWordVerifyError.value && payLoad.password && !userAccountVerifyError.value && payLoad.userAccount) {
-		disabledBtn.value = false;
-	} else {
-		disabledBtn.value = true;
-	}
-};
+const verifyBtn = () => {};
 
 // 点击登录，弹出真人验证
 const onLogin = async () => {
-	hcaptcha.value?.validate();
+	if (userAccountRegex.test(payLoad.userAccount) && passWordregex.test(payLoad.password)) {
+		hcaptcha.value?.validate();
+	} else {
+		showToast("用户名或密码错误", 1500);
+	}
 };
 
 // 前端验证通过，提交表单
@@ -133,6 +134,7 @@ const onSubmit = async (token: string) => {
 		eventBus.emit("hide-modal");
 		await UserStore.setUserInfo(data);
 		getUserInfo();
+
 		// 保存登陆密码
 		if (rememberPassword.value) {
 			UserStore.setLoginInfo({ userAccount: payLoad.userAccount, password: payLoad.password });
@@ -146,6 +148,7 @@ const onSubmit = async (token: string) => {
 	}
 };
 
+// 登录成功获取用户信息
 const getUserInfo = async () => {
 	const res = await userApi.getIndexInfo().catch((err) => err);
 	const { code, data, message } = res;
@@ -158,15 +161,21 @@ const getUserInfo = async () => {
 	}
 };
 
+// 忘记密码
 const forgetPassword = () => {
 	eventBus.emit("show-modal", "ForgetPassword");
+};
+
+// 新用户注册
+const toRegister = () => {
+	eventBus.emit("show-modal", "RegisterModal");
 };
 </script>
 
 <style lang="scss" scoped>
 .loginWrapper {
-	width: 902px;
-	height: 720px;
+	width: 680px;
+	height: 542px;
 	border-radius: 12px;
 	display: flex;
 
@@ -181,7 +190,7 @@ const forgetPassword = () => {
 		}
 	}
 	.login_right_form {
-		padding: 25px 32px;
+		padding: 18px 25px;
 		.common_password {
 			position: relative;
 			.eyes {
@@ -194,9 +203,8 @@ const forgetPassword = () => {
 		}
 		.login_text {
 			color: var(--Text_s);
-			font-size: var(--title-text-size);
 			font-weight: 500;
-			margin-bottom: 33px;
+
 			span {
 				position: relative;
 			}

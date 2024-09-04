@@ -1,11 +1,13 @@
 <!-- src/components/Modal.vue -->
 <template>
-	<div v-if="visible" class="modal-overlay" @click="handleOverlayClick">
-		<div class="modal-content" @click.stop>
-			<button class="close-btn" @click="close">×</button>
-			<component :is="asyncComponent" />
+	<Transition name="slide-fade">
+		<div v-if="visible" class="modal-overlay" @click="handleOverlayClick">
+			<div class="modal-content" @click.stop>
+				<button class="close-btn" @click="close">×</button>
+				<component :is="asyncComponent" />
+			</div>
 		</div>
-	</div>
+	</Transition>
 </template>
 
 <script setup lang="ts">
@@ -39,12 +41,14 @@ onUnmounted(() => {
 	eventBus.off("hide-modal", hide);
 	enableScroll();
 });
-const disableScroll = () => {
-	document.body.style.overflow = "hidden"; // 禁用背景滚动
-};
 
+// 禁用背景滚动
+const disableScroll = () => {
+	document.body.style.overflow = "hidden";
+};
+// 恢复背景滚动
 const enableScroll = () => {
-	document.body.style.overflow = ""; // 恢复背景滚动
+	document.body.style.overflow = "";
 };
 </script>
 
@@ -56,15 +60,17 @@ const enableScroll = () => {
 	right: 0;
 	bottom: 0;
 	background: rgba(0, 0, 0, 0.5);
-	height: 100%;
-	width: 100%;
+	height: 100vh;
+	width: 100vw;
 	z-index: 1000;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	overflow-y: auto;
 }
-
+.modal-overlay::-webkit-scrollbar {
+	display: none;
+}
 .modal-content {
 	border-radius: 8px;
 	top: 0;
@@ -82,5 +88,21 @@ const enableScroll = () => {
 	background: transparent;
 	font-size: 30px;
 	cursor: pointer;
+}
+.slide-fade-enter-active {
+	transition: all 0.2s ease-in;
+}
+
+.slide-fade-leave-active {
+	transition: all 0.2s ease-out;
+}
+
+.slide-fade-enter-from {
+	transform: translateX(-20px);
+	opacity: 0;
+}
+.slide-fade-leave-to {
+	transform: translateX(20px);
+	opacity: 0;
 }
 </style>

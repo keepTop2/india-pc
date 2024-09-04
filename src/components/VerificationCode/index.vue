@@ -2,7 +2,7 @@
 	<div class="verification-code">
 		<div class="input-container">
 			<input placeholder="Enter your phone number" @input="validateInput" class="contact-input common_input" :disabled="sendCodeText == '发送'" />
-			<button @click="sendVerificationCode" class="send-button" :isSending="isSending">
+			<button @click="sendVerificationCode" class="send-button" :isSending="isSending" :disabled="disabled">
 				{{ isSending && isCountingDown ? countdown + "s" : sendCodeText }}
 			</button>
 		</div>
@@ -15,13 +15,15 @@ import { useCountdown } from "/@/hooks/countdown";
 const { countdown, isCountingDown, startCountdown } = useCountdown();
 const sendCodeText = ref("发送");
 const isSending = ref(false);
-const errorMessage = ref<string | null>(null);
-
 const emit = defineEmits<{
 	(e: "update:modelValue", value: string): void;
 	(e: "sendVerificationCode"): void;
 }>();
-
+const props = defineProps({
+	disabled: {
+		type: Boolean,
+	},
+});
 const validateInput = (e: any) => {
 	emit("update:modelValue", e.target.value);
 };
@@ -49,16 +51,20 @@ const sendVerificationCode = async () => {
 .send-button {
 	position: absolute;
 	right: 8px;
-	top: 7px;
-	bottom: 7px;
+	top: 5px;
+	bottom: 5px;
 	padding: 0 10px;
 	border: none;
-	width: 92px;
+	width: 69px;
 	border-radius: 4px;
 	background: var(--Bg1);
 	border: 1px solid var(--Theme);
 	color: var(--Theme);
 	cursor: pointer;
 	z-index: 1;
+	font-size: 10px;
+}
+.send-button:disabled {
+	cursor: not-allowed;
 }
 </style>

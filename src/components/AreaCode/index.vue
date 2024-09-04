@@ -1,16 +1,16 @@
 <template>
 	<div class="dropdown-select" ref="dropdown">
-		<input class="trigger common_input fs_14"  @input="onInput">
-			<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between"  @click="toggleDropdown">
-				<span class="fs_14">+{{ selectedOptionLabel }}</span>
-				<svg-icon name="arrow_down" size="18px" fill="#fff"  class="ml_10 "/>
+		<input class="trigger common_input fs_12"  @input="onInput">
+			<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between "  @click="toggleDropdown">
+				<span class="fs_12">+{{ selectedOptionLabel }}</span>
+				<svg-icon name="arrow_down_on" size="14px" fill="#fff"  class="ml_10 "/>
 			</span>
 		</input>
 		<div v-if="isOpen" class="dropdown-menu">
 			<div class="flex_space-between input">
-				<svg-icon name="search" size="18px" color="#fff" />
-				<input v-model="searchQuery" @input="filterOptions" placeholder="搜索货币名称或简称" class="search-input common_input" />
-				<svg-icon name="close" size="18px" @click="searchQuery = ''"  color="#fff" />
+				<svg-icon name="search" size="14px" color="#fff" />
+				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`login['搜索货币名称或简称']`) " class="search-input common_input" />
+				<svg-icon name="close" size="14px" @click="searchQuery = ''"  color="#fff" />
 			</div>
 			<div class="line"></div>
 			<ul class="options-list">
@@ -18,13 +18,13 @@
 					v-for="option in filteredOptions"
 					:key="option.code"
 					@click="selectOption(option)"
-					class="option-item flex_space-between"
+					class="option-item flex_space-between fs_12"
 					:class="option.code == selectedOption?.code ? 'active' : ''"
 				>
 					<span>{{ option.label }}</span>
 					<span>+{{ option.areaCode }}</span>
 				</li>
-				<li v-if="filteredOptions.length === 0" class="no-results">No results found</li>
+				<li v-if="filteredOptions.length === 0" class="no-results">{{ $t(`login['没有数据']`)  }}</li>
 			</ul>
 		</div>
 	</div>
@@ -51,7 +51,6 @@ const props = defineProps({
 const emit = defineEmits<{
 	(e: "update:modelValue", value: Object): void;
 	(e: "search", query: string): void;
-	(e: "phone", phone: string): void;
 }>();
 
 const searchQuery = ref("");
@@ -138,9 +137,9 @@ onUnmounted(() => {
 	align-items: center;
 	top: 8px;
 	bottom: 8px;
-	left: 16px;
-	width: 80px;
-	padding-right: 10px;
+	left: 12px;
+	width: 60px;
+	padding-right: 8px;
 	color: var(--Text_s);
 	border-right: 1px solid var(--Line_2);
 

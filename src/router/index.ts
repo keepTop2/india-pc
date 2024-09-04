@@ -6,7 +6,8 @@ import errorPage from "./modules/errorPage";
 
 import layout from "../layout/layout.vue";
 
-import userRoutes from "./modules/userMenu";
+import userRoutes from "/@/router/modules/userMenu";
+import sportsRoutes from "/@/router/modules/sports/sports";
 // 登录注册弹窗
 const routes = [
 	//首页模块路由
@@ -37,6 +38,17 @@ const routes = [
 					idx: 1,
 				},
 				children: [...userRoutes],
+			},
+
+			{
+				path: "/sports",
+				name: "sports",
+				layout: true,
+				meta: {
+					title: "sports",
+					idx: 1,
+				},
+				children: [...sportsRoutes],
 			},
 			// 用户相关路由页面
 
