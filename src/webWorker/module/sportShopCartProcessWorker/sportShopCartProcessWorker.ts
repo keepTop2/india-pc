@@ -1,6 +1,6 @@
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 import { SportShopCartProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
-import { OpenSportEventSourceParams } from "/@/models/sportEventSourceModel";
+import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import SportEventSourceController from "/@/webWorker/module/sportShopCartProcessWorker/sportShopCartProcessWorkerControllers/sportsShopCartSSEController";
 /**
  * @description 体育购物车线程

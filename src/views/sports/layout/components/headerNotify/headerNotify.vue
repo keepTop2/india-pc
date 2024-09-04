@@ -21,8 +21,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import sportsApi from "/@/api/menu/sports/sports";
-import SportsCommon from "/@/utils/sports/common";
+import sportsApi from "/@/api/sports/sports";
+import SportsCommon from "/@/views/sports/utils/common";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 
 const modules = ref([Autoplay, Pagination, Navigation]);

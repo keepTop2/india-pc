@@ -1,8 +1,10 @@
 import LoginEvents from "./module/loginEvents/loginEvents";
 
+import SportEvents from "./module/sportEvents/sportEvents";
+
 import LotteryEvents from "./module/lotteryEvents/lotteryEvents";
 import TaskEvents from "./module/taskEvents/taskEvents";
-import SportAEvents from "./module/sportAEvents/sportAEvents";
+import WorkerEvents from "./module/workerEvents/workerEvents";
 import PreFetchViewEvents from "/@/pubSub/pubSubEvents/module/preFetchViewEvents/preFetchViewEvents";
 /**
  * @description 统一订阅事件(主题)出口
@@ -21,9 +23,13 @@ const PubSubEvents = {
 	 */
 	TaskEvents,
 	/**
-	 * @description 体育子应用A事件
+	 * @description -体育事件
 	 */
-	SportAEvents,
+	SportEvents,
+	/**
+	 * @description -线程事件
+	 */
+	WorkerEvents,
 	/**
 	 * @description 子页面预加载页面事件
 	 */

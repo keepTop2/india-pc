@@ -4,7 +4,7 @@ import moment, { Moment } from "moment";
 // import locale from "moment/locale/zh-cn"; // 引入中文语言包
 import sportsMap from "./sportsMap/sportsMap";
 import { i18n } from "/@/i18n/index";
-import { SportsRootObject } from "/@/models/interface";
+import { SportsRootObject } from "/@/views/sports/models/interface";
 import { convertUtcToUtc5AndFormatMD, convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
 const $: any = i18n.global;
 

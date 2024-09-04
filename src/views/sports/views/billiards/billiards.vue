@@ -49,14 +49,14 @@
 import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch, watchEffect } from "vue";
 import { cloneDeep, get } from "lodash-es";
 import pubSub from "/@/pubSub/pubSub";
-import { Sports, SportViewData } from "/@/models/interface";
+import { Sports, SportViewData } from "/@/views/sports/models/interface";
 
 import { useRoute } from "vue-router";
 import { RollingCard, ChampionshipCard, SelectCard, VirtualScrollVirtualList } from "./components/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { SportViewModels } from "/@/models/sportViewModels";
-import useSportPubSubEvents from "/@/hooks/sport/useSportPubSubEvents";
-import viewSportPubSubEventData from "/@/hooks/sport/viewSportPubSubEventData";
+import { SportViewModels } from "/@/views/sports/models/sportViewModels";
+import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 

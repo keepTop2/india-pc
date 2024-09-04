@@ -3,11 +3,11 @@
  * @Description: 冠军-购物车-数据；
  */
 import { defineStore } from "pinia";
-import { SportsRootObject } from "/@/models/interface";
+import { SportsRootObject } from "/@/views/sports/models/interface";
 
 import { i18n } from "/@/i18n";
 
-import { sportsOpenSse, sportsCloseSse, getEventIdCollection } from "/@/utils/sports/sportsBetTool";
+import { sportsOpenSse, sportsCloseSse, getEventIdCollection } from "/@/views/sports/utils/sportsBetTool";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 
 import { ElMessage, MessageHandler } from "element-plus";

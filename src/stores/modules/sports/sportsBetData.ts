@@ -4,8 +4,8 @@
  */
 import { defineStore } from "pinia";
 import { merge } from "lodash-es";
-import { SportsRootObject, BetMarketInfo } from "/@/models/interface";
-import { processingInfo, sportsOpenSse, sportsCloseSse, getEventIdCollection, examineEventsStatus } from "/@/utils/sports/sportsBetTool";
+import { SportsRootObject, BetMarketInfo } from "/@/views/sports/models/interface";
+import { processingInfo, sportsOpenSse, sportsCloseSse, getEventIdCollection, examineEventsStatus } from "/@/views/sports/utils/sportsBetTool";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import { ElMessage, MessageHandler } from "element-plus";

@@ -109,7 +109,7 @@
 import { computed, onMounted, provide, ref, watch } from "vue";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { authHintDialog, cardStatus, MoreShop, planButton, SinglePass, SingleOrderStatus, MoreOrderStatus } from "./components/index";
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 import Common from "/@/utils/common";
 import weakHint from "/@/hooks/weakHint";
 import { useChampionShopCartStore } from "/@/stores/modules/sports/championShopCart";

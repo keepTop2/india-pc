@@ -61,13 +61,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { debounce, throttle, cloneDeep, isEmpty } from "lodash-es";
-import SportsCommonFn from "/@/utils/sports/common";
+import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { RiseOrFall } from "/@/components/Sport/index";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import { i18n } from "/@/i18n/index";
-import { shouldShowPoint } from "/@/utils/sports/formattingViewData";
+import { shouldShowPoint } from "/@/views/sports/utils/formattingViewData";
 
 const $: any = i18n.global;
 

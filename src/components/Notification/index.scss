@@ -1,0 +1,11 @@
+.Notification_Self {
+	&.el-notification {
+		padding: 0px;
+		border: none;
+		background-color: var(--Bg3);
+		.el-notification__group {
+			margin: 0px;
+			width: 100%;
+		}
+	}
+}

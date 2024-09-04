@@ -67,10 +67,10 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import viewSportPubSubEventData from "/@/hooks/sport/viewSportPubSubEventData";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { RiseOrFall } from "/@/components/Sport/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { shouldShowPoint } from "/@/utils/sports/formattingViewData";
+import { shouldShowPoint } from "/@/views/sports/utils/formattingViewData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 
 const emit = defineEmits(["oddsChange"]);

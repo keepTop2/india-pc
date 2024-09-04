@@ -58,7 +58,7 @@ import { computed, inject, onMounted, reactive, ref, watch, nextTick } from "vue
 import { ElButton } from "element-plus";
 import { Delete } from "@element-plus/icons-vue";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 import Common from "/@/utils/common";
 import { useRouter } from "vue-router";
 import { useChampionShopCartStore } from "/@/stores/modules/sports/championShopCart";

@@ -18,7 +18,7 @@ import { WVideo } from "/@/components/wVideo";
 import SportControl from "./sportControl.vue";
 import SportInfo from "./sportInfo.vue";
 import SportEventDetail from "./sportEventDetail.vue";
-import { SportControlEnum } from "/@/enum/sportEnum/sportEnum";
+import { SportControlEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 const SportHotStore = useSportHotStore();
 

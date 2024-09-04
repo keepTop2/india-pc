@@ -1,6 +1,6 @@
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 import { SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
-import { OpenSportEventSourceParams } from "/@/models/sportEventSourceModel";
+import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import sportEventSourceController from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorkerControllers/sportEventSourceController";
 import sportOddsChangeController from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorkerControllers/sportOddsChangeController";
 /**

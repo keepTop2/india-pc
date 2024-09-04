@@ -7,7 +7,7 @@ import eventsProcess from "/@/webWorker/module/utils/dataProcess/eventsProcess";
 import marketsProcess from "/@/webWorker/module/utils/dataProcess/marketsProcess";
 import outrightsProcess from "/@/webWorker/module/utils/dataProcess/outrightsProcess";
 // import shopCartProcess from "/@/webWorker/module/utils/dataProcess/shopCartProcess";
-import { SportViewModels, Sports, WorkerToviewSport } from "/@/models/sportViewModels";
+import { SportViewModels, Sports, WorkerToviewSport } from "/@/views/sports/models/sportViewModels";
 import { SportEventSourceResponse } from "/@/models/sportEventSourceModel";
 
 import { WorkerTransfer } from "/@/models/webWorkerModel";

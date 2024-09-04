@@ -36,8 +36,8 @@ import { wButton, wSwitch } from "./components";
 
 import { useRouter, useRoute } from "vue-router";
 import pubSub from "/@/pubSub/pubSub";
-import sportsApi from "/@/api/menu/sports/sports";
-import SportsCommon from "/@/utils/sports/common";
+import sportsApi from "/@/api/sports/sports";
+import SportsCommon from "/@/views/sports/utils/common";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
 import { useSportSortStore } from "/@/stores/modules/sports/sportSort";

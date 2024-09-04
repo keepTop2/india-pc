@@ -1,4 +1,4 @@
-import { OddsChangeParam } from "/@/models/sportViewModels";
+import { OddsChangeParam } from "/@/views/sports/models/sportViewModels";
 import viewSportDataU from "/@/webWorker/module/utils/viewSportDataU";
 
 /**

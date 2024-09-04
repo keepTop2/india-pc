@@ -27,7 +27,7 @@
 import moment from "moment";
 
 import { ref, onMounted, computed } from "vue";
-import SportsCommon from "/@/utils/sports/common";
+import SportsCommon from "/@/views/sports/utils/common";
 import { i18n } from "/@/i18n/index";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
 

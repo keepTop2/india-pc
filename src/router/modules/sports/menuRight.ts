@@ -19,7 +19,7 @@ const menuRight = [
 			{
 				path: "/sports/1/list",
 				name: "football_list",
-				component: () => import("/@/views/football/football.vue"),
+				component: () => import("/@/views/sports/views/football/football.vue"),
 				meta: {
 					title: "足球",
 					iconCode: "ty_icon_zq",
@@ -30,7 +30,7 @@ const menuRight = [
 			{
 				path: "/sports/1/detail",
 				name: "football_detail",
-				component: () => import("/@/views/football/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/football/detail/detail.vue"),
 				meta: {
 					title: "赛事详细",
 					isServer: false,
@@ -42,7 +42,7 @@ const menuRight = [
 			{
 				path: "/sports/1/sportsLeagueSearch",
 				name: "football_sportsLeagueSearch",
-				component: () => import("/@/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
+				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
 				meta: {
 					title: "联赛搜索",
 					isServer: false,
@@ -69,7 +69,7 @@ const menuRight = [
 			{
 				path: "/sports/2/list",
 				name: "basketball_list",
-				component: () => import("/@/views/basketball/basketball.vue"),
+				component: () => import("/@/views/sports/views/basketball/basketball.vue"),
 				meta: {
 					title: "篮球",
 					iconCode: "ty_icon_lq",
@@ -80,7 +80,7 @@ const menuRight = [
 			{
 				path: "/sports/2/detail",
 				name: "basketball_detail",
-				component: () => import("/@/views/basketball/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/basketball/detail/detail.vue"),
 				meta: {
 					title: "赛事详细",
 					isServer: false,
@@ -92,7 +92,7 @@ const menuRight = [
 			{
 				path: "/sports/2/sportsLeagueSearch",
 				name: "basketball_sportsLeagueSearch",
-				component: () => import("/@/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
+				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
 				meta: {
 					title: "联赛搜索",
 					isServer: false,
@@ -118,7 +118,7 @@ const menuRight = [
 			{
 				path: "/sports/3/list",
 				name: "americanSoccer_list",
-				component: () => import("/@/views/americanSoccer/americanSoccer.vue"),
+				component: () => import("/@/views/sports/views/americanSoccer/americanSoccer.vue"),
 				meta: {
 					title: "美式足球",
 					iconCode: "ty_icon_mszq",
@@ -129,7 +129,7 @@ const menuRight = [
 			{
 				path: "/sports/3/detail",
 				name: "americanSoccer_detail",
-				component: () => import("/@/views/americanSoccer/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/americanSoccer/detail/detail.vue"),
 				meta: {
 					title: "赛事详细",
 					isServer: false,
@@ -141,7 +141,7 @@ const menuRight = [
 			{
 				path: "/sports/3/sportsLeagueSearch",
 				name: "americanSoccer_sportsLeagueSearch",
-				component: () => import("/@/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
+				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
 				meta: {
 					title: "联赛搜索",
 					isServer: false,
@@ -167,7 +167,7 @@ const menuRight = [
 			{
 				path: "/sports/4/list",
 				name: "iceHockey_list",
-				component: () => import("/@/views/iceHockey/iceHockey.vue"),
+				component: () => import("/@/views/sports/views/iceHockey/iceHockey.vue"),
 				meta: {
 					title: "冰上曲棍球",
 					iconCode: "ty_icon_bsqgq",
@@ -178,7 +178,7 @@ const menuRight = [
 			{
 				path: "/sports/4/detail",
 				name: "iceHockey_detail",
-				component: () => import("/@/views/iceHockey/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/iceHockey/detail/detail.vue"),
 				meta: {
 					title: "赛事详细",
 					isServer: false,
@@ -190,7 +190,7 @@ const menuRight = [
 			{
 				path: "/sports/4/sportsLeagueSearch",
 				name: "iceHockey_sportsLeagueSearch",
-				component: () => import("/@/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
+				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
 				meta: {
 					title: "联赛搜索",
 					isServer: false,
@@ -216,7 +216,7 @@ const menuRight = [
 			{
 				path: "/sports/5/list",
 				name: "tennis_list",
-				component: () => import("/@/views/tennis/tennis.vue"),
+				component: () => import("/@/views/sports/views/tennis/tennis.vue"),
 				meta: {
 					title: "网球",
 					iconCode: "ty_icon_wq",
@@ -227,7 +227,7 @@ const menuRight = [
 			{
 				path: "/sports/5/detail",
 				name: "tennis_detail",
-				component: () => import("/@/views/tennis/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/tennis/detail/detail.vue"),
 				meta: {
 					title: "赛事详细",
 					isServer: false,
@@ -239,7 +239,7 @@ const menuRight = [
 			{
 				path: "/sports/5/sportsLeagueSearch",
 				name: "tennis_sportsLeagueSearch",
-				component: () => import("/@/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
+				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
 				meta: {
 					title: "联赛搜索",
 					isServer: false,
@@ -265,7 +265,7 @@ const menuRight = [
 			{
 				path: "/sports/6/list",
 				name: "volleyball_list",
-				component: () => import("/@/views/volleyball/volleyball.vue"),
+				component: () => import("/@/views/sports/views/volleyball/volleyball.vue"),
 				meta: {
 					title: "排球",
 					iconCode: "ty_icon_pq",
@@ -276,7 +276,7 @@ const menuRight = [
 			{
 				path: "/sports/6/detail",
 				name: "volleyball_detail",
-				component: () => import("/@/views/volleyball/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/volleyball/detail/detail.vue"),
 				meta: {
 					title: "赛事详细",
 					isServer: false,
@@ -288,7 +288,7 @@ const menuRight = [
 			{
 				path: "/sports/6/sportsLeagueSearch",
 				name: "volleyball_sportsLeagueSearch",
-				component: () => import("/@/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
+				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
 				meta: {
 					title: "联赛搜索",
 					isServer: false,
@@ -314,7 +314,7 @@ const menuRight = [
 			{
 				path: "/sports/7/list",
 				name: "billiards_list",
-				component: () => import("/@/views/billiards/billiards.vue"),
+				component: () => import("/@/views/sports/views/billiards/billiards.vue"),
 				meta: {
 					title: "斯诺克/台球",
 					iconCode: "ty_icon_snk",
@@ -325,7 +325,7 @@ const menuRight = [
 			{
 				path: "/sports/7/detail",
 				name: "billiards_detail",
-				component: () => import("/@/views/billiards/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/billiards/detail/detail.vue"),
 				meta: {
 					title: "赛事详细",
 					isServer: false,
@@ -337,7 +337,7 @@ const menuRight = [
 			{
 				path: "/sports/7/sportsLeagueSearch",
 				name: "billiards_sportsLeagueSearch",
-				component: () => import("/@/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
+				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
 				meta: {
 					title: "联赛搜索",
 					isServer: false,
@@ -363,7 +363,7 @@ const menuRight = [
 			{
 				path: "/sports/8/list",
 				name: "baseball_list",
-				component: () => import("/@/views/baseball/baseball.vue"),
+				component: () => import("/@/views/sports/views/baseball/baseball.vue"),
 				meta: {
 					title: "棒球",
 					iconCode: "ty_icon_bangq",
@@ -374,7 +374,7 @@ const menuRight = [
 			{
 				path: "/sports/8/detail",
 				name: "baseball_detail",
-				component: () => import("/@/views/baseball/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/baseball/detail/detail.vue"),
 				meta: {
 					title: "赛事详细",
 					isServer: false,
@@ -386,7 +386,7 @@ const menuRight = [
 			{
 				path: "/sports/8/sportsLeagueSearch",
 				name: "baseball_sportsLeagueSearch",
-				component: () => import("/@/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
+				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
 				meta: {
 					title: "联赛搜索",
 					isServer: false,
@@ -412,7 +412,7 @@ const menuRight = [
 			{
 				path: "/sports/9/list",
 				name: "badminton_list",
-				component: () => import("/@/views/badminton/badminton.vue"),
+				component: () => import("/@/views/sports/views/badminton/badminton.vue"),
 				meta: {
 					title: "羽毛球",
 					iconCode: "ty_icon_ymq",
@@ -423,7 +423,7 @@ const menuRight = [
 			{
 				path: "/sports/9/detail",
 				name: "badminton_detail",
-				component: () => import("/@/views/badminton/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/badminton/detail/detail.vue"),
 				meta: {
 					title: "赛事详细",
 					isServer: false,
@@ -435,7 +435,7 @@ const menuRight = [
 			{
 				path: "/sports/9/sportsLeagueSearch",
 				name: "badminton_sportsLeagueSearch",
-				component: () => import("/@/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
+				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
 				meta: {
 					title: "联赛搜索",
 					isServer: false,
@@ -462,7 +462,7 @@ const menuRight = [
 			{
 				path: "/sports/43/list",
 				name: "eSports_list",
-				component: () => import("/@/views/eSports/eSports.vue"),
+				component: () => import("/@/views/sports/views/eSports/eSports.vue"),
 				meta: {
 					title: "电子竞技",
 					iconCode: "ty_icon_dzjj",
@@ -473,7 +473,7 @@ const menuRight = [
 			{
 				path: "/sports/43/detail",
 				name: "eSports_detail",
-				component: () => import("/@/views/eSports/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/eSports/detail/detail.vue"),
 				meta: {
 					title: "赛事详细",
 					isServer: false,
@@ -485,7 +485,7 @@ const menuRight = [
 			{
 				path: "/sports/43/sportsLeagueSearch",
 				name: "eSports_sportsLeagueSearch",
-				component: () => import("/@/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
+				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
 				meta: {
 					title: "联赛搜索",
 					isServer: false,

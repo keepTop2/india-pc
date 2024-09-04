@@ -36,7 +36,7 @@ const sportsRouterLeft = [
 			{
 				path: "/sports/collect/3",
 				name: "collect_americanSoccer_detail",
-				component: () => import("/@/views/americanSoccer/detail/detail.vue"),
+				component: () => import("/@/views/sports/views/americanSoccer/detail/detail.vue"),
 				meta: BaseEventDetailMate,
 			},
 			{

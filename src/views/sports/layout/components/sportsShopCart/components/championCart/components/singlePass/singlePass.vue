@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, watch } from "vue";
 import { throttle, cloneDeep } from "lodash-es";
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 import Common from "/@/utils/common";
 import { ShopCard } from "../index";
 import weakHint from "/@/hooks/weakHint";

@@ -31,7 +31,7 @@ import { computed } from "vue";
 import Score from "./score.vue";
 import pubSub from "/@/pubSub/pubSub";
 import { storeToRefs } from "pinia";
-import { SportControlEnum } from "/@/enum/sportEnum/sportEnum";
+import { SportControlEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 
 const SportHotStore = useSportHotStore();
@@ -193,11 +193,11 @@ const computedTools = computed(() => {
 			display: inline-block;
 			cursor: pointer;
 
-			/deep/(.score) {
+			::v-deep .score {
 				background: var(--icon);
 			}
 
-			/deep/(.score) {
+			::v-deep .score {
 				&:hover {
 					background: var(--Theme);
 				}

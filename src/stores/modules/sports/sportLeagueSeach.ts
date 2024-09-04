@@ -4,7 +4,7 @@
  */
 import { defineStore } from "pinia";
 
-import { SportsRootObject, BetMarketInfo } from "/@/models/interface";
+import { SportsRootObject, BetMarketInfo } from "/@/views/sports/models/interface";
 
 interface sportLeagueSeachType {
 	/** 选择的联赛 */

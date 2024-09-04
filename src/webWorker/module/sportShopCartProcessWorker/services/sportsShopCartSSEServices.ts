@@ -4,7 +4,7 @@
 
 import shopCartProcess from "/@/webWorker/module/utils/dataProcess/shopCartProcess";
 import shopOutrightProcess from "/@/webWorker/module/utils/dataProcess/shopOutrightProcess";
-import { WorkerToViewSportsShopCart } from "/@/models/sportViewModels";
+import { WorkerToViewSportsShopCart } from "/@/views/sports/models/sportViewModels";
 import { SportEventSourceResponse } from "/@/models/sportEventSourceModel";
 
 import { WorkerTransfer } from "/@/models/webWorkerModel";

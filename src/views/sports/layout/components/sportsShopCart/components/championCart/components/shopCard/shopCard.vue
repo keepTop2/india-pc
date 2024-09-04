@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { computed, watch } from "vue";
-import SportsCommonFn from "/@/utils/sports/common";
+import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { RiseOrFall } from "/@/components/Sport/index";
 import { useChampionShopCartStore } from "/@/stores/modules/sports/championShopCart";

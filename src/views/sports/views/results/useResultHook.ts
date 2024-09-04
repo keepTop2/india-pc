@@ -1,10 +1,10 @@
 import { reactive, ref } from "vue";
 import { isArray, filter, map } from "lodash-es";
-import { SportTypeEnum } from "/@/enum/sportEnum/sportEnum";
+import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { formatDateToTimeStamp } from "/@/webWorker/module/utils/formattingChildrenViewData";
-import { QueryFormType, QueryOptionItemType } from "/@/models/sportResultModel";
-import Common from "/@/utils/sports/common";
-import sportsApi from "/@/api/menu/sports/sports";
+import { QueryFormType, QueryOptionItemType } from "/@/views/sports/models/sportResultModel";
+import Common from "/@/views/sports/utils/common";
+import sportsApi from "/@/api/sports/sports";
 import moment from "moment";
 
 type Enum = { [s: number]: string };

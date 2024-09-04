@@ -52,11 +52,11 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
-import { TeamInfoCard, MarketCard, MarketColumn } from "/@/views/football/components/footballCard/index";
-import { marketsMatchData } from "/@/utils/sports/formattingViewData";
+import { TeamInfoCard, MarketCard, MarketColumn } from "/@/views/sports/views/football/components/footballCard/index";
+import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
-import SportsCommonFn from "/@/utils/sports/common";
+import SportsCommonFn from "/@/views/sports/utils/common";
 const SportHotStore = useSportHotStore();
 
 interface teamDataType {

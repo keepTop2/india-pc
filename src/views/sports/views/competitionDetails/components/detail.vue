@@ -112,7 +112,7 @@
 <script setup lang="ts">
 import hidden from "/@/assets/zh/default/competition/hidden.png";
 import visible from "/@/assets/zh/default/competition/visible.png";
-import { FootballCardApi } from "/@/api/menu/sports/footballCard";
+import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
 const SportAttentionStore = useSportAttentionStore();

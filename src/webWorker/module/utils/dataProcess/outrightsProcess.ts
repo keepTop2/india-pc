@@ -1,5 +1,5 @@
 // 体育静态文件
-import sportsMap from "/@/utils/sports/sportsMap/sportsMap";
+import sportsMap from "/@/views/sports/utils/sportsMap/sportsMap";
 import { formattingChildrenViewData } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { merge } from "lodash-es";
 import { SportEventSourceResponse } from "/@/models/sportEventSourceModel";

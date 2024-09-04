@@ -33,8 +33,8 @@ import { reactive, ref, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { isEmpty, get, filter, map, cloneDeep, find } from "lodash-es";
 import { allField } from "./components/index";
-import { SportBetTypeEnum } from "/@/enum/sportEnum/sportEnum";
-import { Market } from "/@/models/interface";
+import { SportBetTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
+import { Market } from "/@/views/sports/models/interface";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 
 const SportHotStore = useSportHotStore();

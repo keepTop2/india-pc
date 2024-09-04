@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { Select } from "/@/components/Select";
-import { QueryFormType, QueryOptionItemType } from "/@/models/sportResultModel";
+import { QueryFormType, QueryOptionItemType } from "/@/views/sports/models/sportResultModel";
 
 type Props = {
 	queryForm: QueryFormType;

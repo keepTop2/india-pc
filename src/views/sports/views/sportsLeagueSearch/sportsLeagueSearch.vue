@@ -59,7 +59,7 @@ import { debounce } from "lodash-es";
 
 // import FromInput from '/@/components/Input/fromInput.vue';
 import { MarketCard, SearchInput } from "./components/index";
-import sportsApi from "/@/api/menu/sports/sports";
+import sportsApi from "/@/api/sports/sports";
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
 import { useRouter, useRoute } from "vue-router";
 const SportLeagueSeachStore = useSportLeagueSeachStore();

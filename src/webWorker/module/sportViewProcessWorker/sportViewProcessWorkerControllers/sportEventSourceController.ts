@@ -1,4 +1,4 @@
-import { SportPushApi, WebToPushApi } from "/@/enum/sportEnum/sportEventSourceEnum";
+import { SportPushApi, WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { SportEventSourceInstanceModel, OpenSportEventSourceParams, SportEventSourceResponse } from "/@/models/sportEventSourceModel";
 import qs from "qs";
 import { WebResponse } from "/@/models/commonInterface";
@@ -129,8 +129,7 @@ class SportEventSourceController {
 				resPonsedata.code = ResCode.ERR;
 
 				reject(resPonsedata);
-			}finally {
-
+			} finally {
 			}
 		});
 	}

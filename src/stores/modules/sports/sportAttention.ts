@@ -4,7 +4,7 @@
  */
 import { defineStore } from "pinia";
 
-import SportsCommonFn from "/@/utils/sports/common";
+import SportsCommonFn from "/@/views/sports/utils/common";
 
 interface sportsBetEvent {
 	/** 关注列表与赛事联赛id存储 */
@@ -69,7 +69,9 @@ export const useSportAttentionStore = defineStore("SportAttention", {
 		 * @param {*} data
 		 * @return {*}
 		 */
-		setAttentionList(data) {
+		setAttentionList(data: any) {
+			console.log("data------------>>>>", data);
+
 			this.attentionList = data;
 			this.clearAttentionList();
 			//筛选出对应的关注列表 赛事或冠军
