@@ -5,7 +5,7 @@
 	--Icon_2: #ffffff;
 	--Icon_3: #666869;
 	--button: #2d2e32;
-	--icon: #9fa5ac,
+	--icon: #9fa5ac;
 	--Bg: #1d1f23;
 	--Bg1: #24262b;
 	--Bg2: #1a1c20;
@@ -23,7 +23,5 @@
 	--Warn: #ff0000;
 	--Favorites: #ff284b;
 	--butter: #2d2e32;
-
-
-	--popoverShadow:rgba(14, 16, 19, 0.2)
+	--popoverShadow: rgba(14, 16, 19, 0.2);
 }

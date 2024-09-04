@@ -36,7 +36,7 @@
 					<div>
 						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['验证码']`) }}</p>
 						<p>
-							<VerificationCode @update:modelValue="VerificationCodeInput" @sendVerificationCode="sendVerificationCode" />
+							<VerificationCode @update:modelValue="VerificationCodeInput" @sendVerificationCode="sendVerificationCode" :disabled="verificationBtn" />
 						</p>
 					</div>
 					<p class="fs_10 Text1 mt_16 fw_200">
@@ -85,6 +85,7 @@ import showToast from "/@/hooks/useToast";
 const UserStore = useUserStore();
 const currentStep = ref(0);
 
+const verificationBtn = ref(true);
 enum verifyTypeEnum {
 	email = "email",
 	phone = "phone",
@@ -134,6 +135,7 @@ const userOnInput = (e: any) => {
 const emailOnInput = (e: any) => {
 	payLoad.email = e.target.value;
 	userEmailRegex.test(payLoad.email) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
+	verificationBtn.value = userVerifyTypeVerifyError.value;
 	verifyBtn();
 };
 
@@ -148,6 +150,17 @@ const confirmOnInput = (e: any) => {
 	verifyBtn();
 };
 
+const areaCodeInput = (data: any) => {
+	const { phone, areaCode } = data;
+	if (phone) {
+		payLoad.phone = phone;
+		userPhoneRegex.test(payLoad.phone) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
+		verificationBtn.value = userVerifyTypeVerifyError.value;
+		verifyBtn();
+	} else {
+		payLoad.areaCode = areaCode;
+	}
+};
 // 表单验证
 const verifyBtn = () => {
 	switch (currentStep.value) {
@@ -216,7 +229,6 @@ const onNextStep = async (step: number) => {
 			showToast(message, 1500);
 		} else {
 			currentStep.value++;
-			showToast(message, 1500);
 		}
 	} else {
 		showToast(message, 1500);
@@ -224,16 +236,6 @@ const onNextStep = async (step: number) => {
 	disabledBtn.value = true;
 };
 
-const areaCodeInput = (data: any) => {
-	const { phone, areaCode } = data;
-	if (phone) {
-		payLoad.phone = phone;
-		userPhoneRegex.test(payLoad.phone) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
-		verifyBtn();
-	} else {
-		payLoad.areaCode = areaCode;
-	}
-};
 const VerificationCodeInput = (verifyCode: string) => {
 	payLoad.verifyCode = verifyCode;
 	verifyBtn();
@@ -243,6 +245,7 @@ const sendVerificationCode = async () => {
 	if (verifyType.value == verifyTypeEnum.email) {
 		if (!userEmailRegex.test(payLoad.email)) {
 			showToast("邮箱格式不正确", 1500);
+			verificationBtn.value = true;
 		} else {
 			const params = {
 				userAccount: payLoad.userAccount,
@@ -254,11 +257,13 @@ const sendVerificationCode = async () => {
 				showToast(message, 1500);
 			} else {
 				showToast(message, 1500);
+				verificationBtn.value = true;
 			}
 		}
 	} else {
 		if (!userPhoneRegex.test(payLoad.phone)) {
 			showToast("手机号不正确", 1500);
+			verificationBtn.value = true;
 			return;
 		} else {
 			const params = {
@@ -271,6 +276,7 @@ const sendVerificationCode = async () => {
 				showToast(message, 1500);
 			} else {
 				showToast(message, 1500);
+				verificationBtn.value = true;
 			}
 		}
 	}

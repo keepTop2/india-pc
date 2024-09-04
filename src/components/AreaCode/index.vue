@@ -1,8 +1,8 @@
 <template>
 	<div class="dropdown-select" ref="dropdown">
 		<input class="trigger common_input fs_12"  @input="onInput">
-			<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between"  @click="toggleDropdown">
-				<span class="fs_14">+{{ selectedOptionLabel }}</span>
+			<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between "  @click="toggleDropdown">
+				<span class="fs_12">+{{ selectedOptionLabel }}</span>
 				<svg-icon name="arrow_down_on" size="14px" fill="#fff"  class="ml_10 "/>
 			</span>
 		</input>
@@ -137,9 +137,9 @@ onUnmounted(() => {
 	align-items: center;
 	top: 8px;
 	bottom: 8px;
-	left: 16px;
-	width: 70px;
-	padding-right: 10px;
+	left: 12px;
+	width: 60px;
+	padding-right: 8px;
 	color: var(--Text_s);
 	border-right: 1px solid var(--Line_2);
 

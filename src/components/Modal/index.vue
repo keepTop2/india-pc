@@ -68,7 +68,9 @@ const enableScroll = () => {
 	align-items: center;
 	overflow-y: auto;
 }
-
+.modal-overlay::-webkit-scrollbar {
+	display: none;
+}
 .modal-content {
 	border-radius: 8px;
 	top: 0;

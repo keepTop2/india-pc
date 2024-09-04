@@ -92,20 +92,10 @@ const chageLang = (value: LangEnum) => {
 
 <style lang="scss" scoped>
 .demo_container {
-<<<<<<< HEAD
-	background-color: var(--Bg);
-	color: var(--Text1);
-	.bg {
-		background-color: var(--Bg);
-	}
-=======
->>>>>>> ebfb3004cf7eaac46309baa5ae03bd1d66a47a8d
 	.bg_img {
 		width: 300px;
 		height: 100px;
 		background-size: 100% 100%;
-		background-repeat: no-repeat;
-		background-image: url();
 	}
 }
 </style>

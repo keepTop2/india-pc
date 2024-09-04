@@ -2,7 +2,7 @@
 	<div class="verification-code">
 		<div class="input-container">
 			<input placeholder="Enter your phone number" @input="validateInput" class="contact-input common_input" :disabled="sendCodeText == '发送'" />
-			<button @click="sendVerificationCode" class="send-button" :isSending="isSending">
+			<button @click="sendVerificationCode" class="send-button" :isSending="isSending" :disabled="disabled">
 				{{ isSending && isCountingDown ? countdown + "s" : sendCodeText }}
 			</button>
 		</div>
@@ -19,7 +19,11 @@ const emit = defineEmits<{
 	(e: "update:modelValue", value: string): void;
 	(e: "sendVerificationCode"): void;
 }>();
-
+const props = defineProps({
+	disabled: {
+		type: Boolean,
+	},
+});
 const validateInput = (e: any) => {
 	emit("update:modelValue", e.target.value);
 };
@@ -59,5 +63,8 @@ const sendVerificationCode = async () => {
 	cursor: pointer;
 	z-index: 1;
 	font-size: 10px;
+}
+.send-button:disabled {
+	cursor: not-allowed;
 }
 </style>
