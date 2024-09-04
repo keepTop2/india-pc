@@ -5,61 +5,66 @@
 			<img src="/@/assets/common/login_left.png" alt="" />
 		</div>
 		<div class="login_right_form">
-			<div class="login_text"><span>忘记密码</span></div>
+			<div class="login_text fs_16 mb_20">
+				<span> {{ $t(`login['忘记密码']`) }}</span>
+			</div>
 
 			<div class="login_form">
 				<!-- 第一步 -->
 				<div v-if="currentStep === 0">
-					<p class="Text_s mb_8 mt_8 fs_16"><span class="Wran_text">*</span>账号</p>
+					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
-						<input type="text" :value="payLoad.userAccount" class="common_input" placeholder="输入账号" @input="userOnInput" />
+						<input type="text" :value="payLoad.userAccount" class="common_input" :placeholder="$t(`login['输入账号']`)" @input="userOnInput" />
 					</p>
-					<p v-show="userAccountVerifyError" class="Wran_text fs_12 mt_2">4-11位，数字 ，字母组成 ，首位必须是字母</p>
+					<p v-show="userAccountVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`login['账号规则']`) }}</p>
 				</div>
 
 				<!-- 第二步 -->
 				<div v-else-if="currentStep === 1">
-					<p class="Text_s mb_8 mt_8 fs_16">{{ verifyType }}</p>
-					<p class="Theme_text fs_14 text_unline curp"><span @click="changeVerifyType">其他方式</span></p>
+					<p class="Text_s mb_8 mt_8 fs_14">{{ verifyType == "email" ? $t(`login['邮箱验证']`) : $t(`login['手机号验证']`) }}</p>
+					<p class="Theme_text fs_12 text_unline curp">
+						<span @click="changeVerifyType">{{ $t(`login['其他方式']`) }}</span>
+					</p>
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_16"><span class="Wran_text">*</span>{{ verifyType }}</p>
+						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
 						<p>
-							<input type="text" :value="payLoad.email" class="common_input" placeholder="输入账号" @input="emailOnInput" v-if="verifyType == 'email'" />
+							<input type="text" :value="payLoad.email" class="common_input" :placeholder="$t(`login['输入账号']`)" @input="emailOnInput" v-if="verifyType == 'email'" />
 							<AreaCode v-else @update:modelValue="areaCodeInput" :options="options"></AreaCode>
 						</p>
-						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ verifyType }}格式不正确</p>
+						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ verifyType == "email" ? $t(`login['电子邮箱不正确']`) : $t(`login['电话号码不正确']`) }}</p>
 					</div>
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_16"><span class="Wran_text">*</span>验证码</p>
+						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['验证码']`) }}</p>
 						<p>
 							<VerificationCode @update:modelValue="VerificationCodeInput" @sendVerificationCode="sendVerificationCode" />
 						</p>
-						<p v-show="userAccountVerifyError" class="Wran_text fs_12 mt_2">4-11位，数字 ，字母组成 ，首位必须是字母</p>
 					</div>
-					<p class="fs_14 Text1 mt_16 fw_200">有效时间：10分钟，未收到验证码？请重新发送或 <span class="Theme_text">联系客服</span></p>
+					<p class="fs_10 Text1 mt_16 fw_200">
+						{{ $t(`login['有效时间']`) }}<span class="Theme_text">{{ $t(`login['联系客服']`) }}</span>
+					</p>
 				</div>
-				<!-- 第二步 -->
+				<!-- 第三步 -->
 				<div v-else-if="currentStep === 2">
-					<p class="Text_s mb_8 mt_8 fs_16">设置新密码</p>
+					<p class="Text_s mb_8 mt_8 fs_16">{{ $t(`login['新密码']`) }}</p>
 					<!-- 密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>登陆密码</p>
+						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['密码']`) }}</p>
 						<p class="common_password">
-							<input type="password" :value="payLoad.password" class="common_input" placeholder="输入密码" @input="passOnInput" />
+							<input type="password" :value="payLoad.password" class="common_input" :placeholder="$t(`login['输入密码']`)" @input="passOnInput" />
 						</p>
-						<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">8-16位，必须包含 数字和字母， 可包含@ _ $</p>
+						<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
 					</div>
 					<!-- 确认密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>确认密码</p>
+						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
 						<p class="common_password">
-							<input type="password" :value="payLoad.confirmPassword" class="common_input" placeholder="输入密码" @input="confirmOnInput" />
+							<input type="password" :value="payLoad.confirmPassword" class="common_input" :placeholder="$t(`login['输入密码']`)" @input="confirmOnInput" />
 						</p>
-						<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">两次输入密码不一致</p>
+						<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
 					</div>
 				</div>
 				<div class="mt_40 mb_12">
-					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onNextStep(currentStep)">下一步</button>
+					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onNextStep(currentStep)">{{ $t(`login['下一步']`) }}</button>
 				</div>
 			</div>
 		</div>
@@ -235,25 +240,39 @@ const VerificationCodeInput = (verifyCode: string) => {
 };
 
 const sendVerificationCode = async () => {
-	let res = null;
 	if (verifyType.value == verifyTypeEnum.email) {
-		const params = {
-			userAccount: payLoad.userAccount,
-			email: payLoad.email,
-		};
-		res = await loginApi.sendMail(params).catch((err) => err);
+		if (!userEmailRegex.test(payLoad.email)) {
+			showToast("邮箱格式不正确", 1500);
+		} else {
+			const params = {
+				userAccount: payLoad.userAccount,
+				email: payLoad.email,
+			};
+			const res = await loginApi.sendMail(params).catch((err) => err);
+			const { code, message } = res;
+			if (code == Common.ResCode.SUCCESS) {
+				showToast(message, 1500);
+			} else {
+				showToast(message, 1500);
+			}
+		}
 	} else {
-		const params = {
-			userAccount: payLoad.userAccount,
-			email: payLoad.phone,
-		};
-		res = await loginApi.sendSms(params).catch((err) => err);
-	}
-	const { code, message } = res;
-	if (code == Common.ResCode.SUCCESS) {
-		showToast(message, 1500);
-	} else {
-		showToast(message, 1500);
+		if (!userPhoneRegex.test(payLoad.phone)) {
+			showToast("手机号不正确", 1500);
+			return;
+		} else {
+			const params = {
+				userAccount: payLoad.userAccount,
+				email: payLoad.phone,
+			};
+			const res = await loginApi.sendSms(params).catch((err) => err);
+			const { code, message } = res;
+			if (code == Common.ResCode.SUCCESS) {
+				showToast(message, 1500);
+			} else {
+				showToast(message, 1500);
+			}
+		}
 	}
 };
 const onSubmit = async (token: string) => {
@@ -273,8 +292,8 @@ const onSubmit = async (token: string) => {
 
 <style lang="scss" scoped>
 .loginWrapper {
-	width: 902px;
-	height: 720px;
+	width: 680px;
+	height: 542px;
 	display: flex;
 	border-radius: 12px;
 
@@ -293,9 +312,7 @@ const onSubmit = async (token: string) => {
 
 		.login_text {
 			color: var(--Text_s);
-			font-size: var(--title-text-size);
 			font-weight: 500;
-			margin-bottom: 33px;
 			span {
 				position: relative;
 			}

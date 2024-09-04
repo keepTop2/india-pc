@@ -1,11 +1,13 @@
 <!-- src/components/Modal.vue -->
 <template>
-	<div v-if="visible" class="modal-overlay" @click="handleOverlayClick">
-		<div class="modal-content" @click.stop>
-			<button class="close-btn" @click="close">×</button>
-			<component :is="asyncComponent" />
+	<Transition name="slide-fade">
+		<div v-if="visible" class="modal-overlay" @click="handleOverlayClick">
+			<div class="modal-content" @click.stop>
+				<button class="close-btn" @click="close">×</button>
+				<component :is="asyncComponent" />
+			</div>
 		</div>
-	</div>
+	</Transition>
 </template>
 
 <script setup lang="ts">
@@ -84,5 +86,21 @@ const enableScroll = () => {
 	background: transparent;
 	font-size: 30px;
 	cursor: pointer;
+}
+.slide-fade-enter-active {
+	transition: all 0.2s ease-in;
+}
+
+.slide-fade-leave-active {
+	transition: all 0.2s ease-out;
+}
+
+.slide-fade-enter-from {
+	transform: translateX(-20px);
+	opacity: 0;
+}
+.slide-fade-leave-to {
+	transform: translateX(20px);
+	opacity: 0;
 }
 </style>
