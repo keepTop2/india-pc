@@ -48,11 +48,3 @@ body {
 	background: var(--Bg);
 	overflow: hidden;
 }
-/* .accordion-enter-active,
-.accordion-leave-active {
-	transition: max-height 0.3s ease; 
-}
-
-.accordion-enter, .accordion-leave-to  {
-	max-height: 0;
-} */

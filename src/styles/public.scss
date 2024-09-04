@@ -42,7 +42,7 @@
 	}
 	.common_input {
 		width: 100%;
-		height: 46px;
+		height: 34px;
 		background: var(--Bg1);
 		border: none;
 		padding: 0 16px;
@@ -54,14 +54,13 @@
 	}
 	.common_btn {
 		width: 100%;
-		height: 48px;
+		height: 36px;
 		border-radius: 4px;
 		outline: none;
 		border: none;
 		cursor: pointer;
 		background: var(--Theme);
 		color: var(--Text_s);
-		font-size: 16px;
 	}
 	.common_btn:disabled {
 		background: var(--butter);
