@@ -96,13 +96,4 @@ const enableScroll = () => {
 .slide-fade-leave-active {
 	transition: all 0.2s ease-out;
 }
-
-.slide-fade-enter-from {
-	transform: translateX(-20px);
-	opacity: 0;
-}
-.slide-fade-leave-to {
-	transform: translateX(20px);
-	opacity: 0;
-}
 </style>

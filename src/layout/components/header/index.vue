@@ -163,7 +163,6 @@ const logOut = () => {
 
 			.userMenu {
 				position: absolute;
-				top: 100%;
 				right: -40px;
 				display: block;
 				width: 220px;
@@ -172,7 +171,7 @@ const logOut = () => {
 				transform: translateY(25px);
 				background: var(--Bg1);
 				border-radius: 4px;
-				max-height: 100vh;
+				z-index: 100;
 				box-shadow: 0px 4px 12px 0px rgba(14, 16, 19, 0.25);
 				> div {
 					display: flex;
