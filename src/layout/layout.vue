@@ -3,9 +3,11 @@
 		<left :is-collapse="state.isCollapse" />
 		<div class="container">
 			<Head />
-			<div class="mainArea">
-				<container />
-			</div>
+			<transition name="slide-fade">
+				<div class="mainArea">
+					<container />
+				</div>
+			</transition>
 		</div>
 		<Modal />
 	</div>
