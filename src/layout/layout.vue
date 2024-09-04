@@ -1,6 +1,6 @@
 <template>
-	<div class="layout" ref="domeRef">
-		<left :is-collapse="state.isCollapse" />
+	<div class="layout" ref="domeRef" :class="collapse ? 'collapse' : ''">
+		<left :is-collapse="collapse" />
 		<div class="container">
 			<Head />
 			<transition name="slide-fade">
@@ -14,16 +14,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import Head from "./components/header/index.vue";
 import left from "./components/left/left.vue";
 import container from "./components/container/index.vue";
 import { useMenuStore } from "/@/stores/modules/menu";
 import Modal from "/@/components/Modal/index.vue";
 const MenuStore = useMenuStore();
-const state = reactive({
-	//是否折叠
-	isCollapse: false,
+
+const collapse = computed(() => {
+	return MenuStore.getCollapse;
 });
 const domeRef = ref(null);
 //监听div大小改变；
@@ -51,11 +51,21 @@ onUnmounted(() => {
 .layout {
 	display: flex;
 }
+
 .container {
 	height: 100vh;
 	flex: 1;
 	background: var(--Bg);
+	width: calc(100vw - 260px);
+	margin-left: 260px;
 }
+.collapse {
+	.container {
+		width: calc(100% - 64px);
+		margin-left: 64px;
+	}
+}
+
 .mainArea {
 	flex: 1;
 	justify-content: center;
@@ -63,6 +73,7 @@ onUnmounted(() => {
 	overflow-y: auto;
 	height: calc(100vh - 100px);
 }
+
 .mainArea::-webkit-scrollbar {
 	display: none;
 }

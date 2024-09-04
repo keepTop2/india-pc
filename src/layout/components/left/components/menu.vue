@@ -10,7 +10,7 @@
 						<svg-icon name="arrow_down" v-else height="8px" width="14px" />
 					</div>
 				</div>
-				<transition name="accordion" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+				<transition @before-enter="beforeEnter" @enter="enter" @leave="leave">
 					<div v-show="openMenuIndex == index && !collapse" class="subMenu">
 						<div v-for="(subItem, subIndex) in item.children" :key="index" class="menu_item subItem" @click="goToPath(subItem)">
 							<div class="menu_icon">
@@ -128,7 +128,7 @@ const selectMenu = (item: any, index: number) => {
 // 动画
 const beforeEnter = (el: any) => {
 	el.style.maxHeight = "0";
-	el.style.transition = "max-height 0.2s ease";
+	el.style.transition = "all 0.2s ease";
 };
 
 const enter = (el: any) => {
@@ -138,6 +138,7 @@ const enter = (el: any) => {
 
 const leave = (el: any) => {
 	el.style.maxHeight = "0";
+	el.style.transition = "all 0.2s ease";
 };
 </script>
 

@@ -584,11 +584,8 @@ const unSport = () => {
 
 <style lang="scss" scoped>
 .base-body {
-	display: block;
-	position: relative;
 	flex: 1;
 	flex-shrink: 0;
-	width: 100%;
 
 	display: flex;
 	flex-direction: column;
@@ -599,7 +596,8 @@ const unSport = () => {
 
 .base-container {
 	display: flex;
-	justify-content: center;
+	width: 100%;
+	justify-content: flex-start;
 
 	&.main-container {
 		// height: calc(100vh - 104px);
@@ -614,7 +612,6 @@ const unSport = () => {
 				flex-shrink: 0;
 				// padding-top: 36px;
 				box-sizing: border-box;
-				background-color: transparent;
 				// background: #ccc;
 				display: flex;
 				flex-direction: column;
