@@ -4,17 +4,23 @@
 			<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''">
 				{{ selectedOptionLabel || placeholder }}
 			</span>
-			<svg-icon name="arrow_right" size="18px" />
+			<svg-icon name="arrow_right" size="14px" />
 		</button>
 		<div v-if="isOpen" class="dropdown-menu">
 			<div class="flex_space-between input">
-				<svg-icon name="search" size="18px" />
-				<input v-model="searchQuery" @input="filterOptions" placeholder="搜索货币名称或简称" class="search-input common_input" />
-				<svg-icon name="close" size="18px" @click="searchQuery = ''" />
+				<svg-icon name="search" size="14px" />
+				<input v-model="searchQuery" @input="filterOptions" placeholder="搜索货币名称或简称" class="search-input common_input fs_12" />
+				<svg-icon name="close" size="14px" @click="searchQuery = ''" />
 			</div>
 			<div class="line"></div>
 			<ul class="options-list">
-				<li v-for="option in filteredOptions" :key="option.code" @click="selectOption(option)" class="option-item" :class="option.code == selectedOption?.code ? 'active' : ''">
+				<li
+					v-for="option in filteredOptions"
+					:key="option.code"
+					@click="selectOption(option)"
+					class="option-item fs_10"
+					:class="option.code == selectedOption?.code ? 'active' : ''"
+				>
 					{{ option.code }}
 				</li>
 				<li v-if="filteredOptions.length === 0" class="no-results">No results found</li>
@@ -102,7 +108,7 @@ onUnmounted(() => {
 
 .trigger {
 	width: 100%;
-	padding: 8px 16px;
+	padding: 8px 12px;
 	border: none;
 	height: 100%;
 	border-radius: 4px;

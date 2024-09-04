@@ -37,7 +37,6 @@ const router = useRouter();
 const route = useRoute();
 const openMenuIndex: Ref<number | null> = ref(null);
 const currentRoute = ref({});
-const currentHover = ref();
 //菜单从缓存中拉取
 const routerObj: any = computed(() => {
 	const menuList: any = MenuStore.getMenu;
