@@ -139,7 +139,7 @@ const optionsWithAll = computed(() => {
 			width: 200px;
 
 			background-color: var(--Bg1);
-			box-shadow: 0px 0px 8px 0px var(--popoverShadow);
+			box-shadow: var(--popoverShadow);
 
 			border-radius: 8px;
 
@@ -206,7 +206,7 @@ const optionsWithAll = computed(() => {
 
 										border-color: var(--Line);
 										background-color: var(--Bg4);
-										box-shadow: 0px 0px 8px 0px var(--popoverShadow);
+										box-shadow: var(--popoverShadow);
 
 										.vc-pane-container {
 											.vc-header {

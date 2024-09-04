@@ -64,7 +64,7 @@ import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import { convertUtcToUtc5AndFormatMD, convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { SportViewProcessWorkerCommandType, WorkerName } from "/@/enum/workerTransferEnum";
-import { sportsEventDetailPush } from "/@/utils/sports/sportsMap/sportsSSERequestMap";
+import { sportsEventDetailPush } from "/@/views/sports/utils//sportsMap/sportsSSERequestMap";
 import sportsApi from "/@/api/sports/sports";
 import workerManage from "/@/webWorker/workerManage";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";

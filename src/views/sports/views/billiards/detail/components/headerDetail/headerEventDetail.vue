@@ -137,7 +137,7 @@ const formattedGameTime = computed(() => {
 
 <style scoped lang="scss">
 .main {
-	background-image: url(/@/assets/zh/default/competition/detailBg.png);
+	// background-image: url(/@/assets/zh/default/competition/detailBg.png);;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	width: 100%;

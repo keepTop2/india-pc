@@ -3,8 +3,8 @@
 // import HeaderDetail from "./headerDetail/headerDetail.vue"; // 头部数据
 import { defineAsyncComponent } from "vue";
 
-const MarketCard = defineAsyncComponent(() => import("/@/views/badminton/detail/components/marketCard/marketCard.vue"));
-const MarketColumn = defineAsyncComponent(() => import("/@/views/badminton/detail/components/marketColumn/marketColumn.vue"));
-const HeaderDetail = defineAsyncComponent(() => import("/@/views/badminton/detail/components/headerDetail/headerDetail.vue"));
+const MarketCard = defineAsyncComponent(() => import("/@/views/sports/views/badminton/detail/components/marketCard/marketCard.vue"));
+const MarketColumn = defineAsyncComponent(() => import("/@/views/sports/views/badminton/detail/components/marketColumn/marketColumn.vue"));
+const HeaderDetail = defineAsyncComponent(() => import("/@/views/sports/views/badminton/detail/components/headerDetail/headerDetail.vue"));
 
 export { MarketCard, HeaderDetail, MarketColumn };

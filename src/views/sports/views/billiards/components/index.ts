@@ -4,8 +4,8 @@
 import { VirtualScrollVirtualList } from "/@/components/virtualScrollVirtualList/index";
 import { defineAsyncComponent } from "vue";
 
-const RollingCard = defineAsyncComponent(() => import("/@/views/billiards/components/rollingCard/rollingCard.vue"));
-const ChampionshipCard = defineAsyncComponent(() => import("/@/views/billiards/components/championshipCard/championshipCard.vue"));
-const SelectCard = defineAsyncComponent(() => import("/@/views/billiards/components/selectCard/selectCard.vue"));
+const RollingCard = defineAsyncComponent(() => import("/@/views/sports/views/billiards/components/rollingCard/rollingCard.vue"));
+const ChampionshipCard = defineAsyncComponent(() => import("/@/views/sports/views/billiards/components/championshipCard/championshipCard.vue"));
+const SelectCard = defineAsyncComponent(() => import("/@/views/sports/views/billiards/components/selectCard/selectCard.vue"));
 
 export { RollingCard, ChampionshipCard, SelectCard, VirtualScrollVirtualList };

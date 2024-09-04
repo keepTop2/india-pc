@@ -10,11 +10,11 @@ import SportsShopCart from "./sportsShopCart/sportsShopCart.vue";
 import SportRight from "./sportRight/sportRight.vue";
 
 import { defineAsyncComponent } from "vue";
-// const HeaderMenuNav = defineAsyncComponent(() => import("/@/layout/components/headerMenuNav/headerMenuNav.vue"));
-// const HeaderMenuCondition = defineAsyncComponent(() => import("/@/layout/components/headerMenuCondition/headerMenuCondition.vue"));
-// const HeaderNotify = defineAsyncComponent(() => import("/@/layout/components/headerNotify/headerNotify.vue"));
-// const SportsShopCart = defineAsyncComponent(() => import("/@/layout/components/sportsShopCart/sportsShopCart.vue"));
-// const SportRight = defineAsyncComponent(() => import("/@/layout/components/sportRight/sportRight.vue"));
+// const HeaderMenuNav = defineAsyncComponent(() => import("/@/views/sports/layout/components/headerMenuNav/headerMenuNav.vue"));
+// const HeaderMenuCondition = defineAsyncComponent(() => import("/@/views/sports/layout/components/headerMenuCondition/headerMenuCondition.vue"));
+// const HeaderNotify = defineAsyncComponent(() => import("/@/views/sports/layout/components/headerNotify/headerNotify.vue"));
+// const SportsShopCart = defineAsyncComponent(() => import("/@/views/sports/layout/components/sportsShopCart/sportsShopCart.vue"));
+// const SportRight = defineAsyncComponent(() => import("/@/views/sports/layout/components/sportRight/sportRight.vue"));
 
 export {
 	/** 体育球内导航*/

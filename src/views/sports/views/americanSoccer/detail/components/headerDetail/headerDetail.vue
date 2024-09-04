@@ -45,7 +45,7 @@ import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention"
 import PubSub from "/@/pubSub/pubSub";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import { useRouter } from "vue-router";
-import SportEventDetail from "/@/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
+import SportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
 
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
@@ -257,7 +257,7 @@ const handleGoBack = () => {
 }
 
 .content {
-	background-image: url(/@/assets/zh/default/competition/detailBg.png);
+	// // background-image: url(/@/assets/zh/default/competition/detailBg.png);;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	width: 100%;

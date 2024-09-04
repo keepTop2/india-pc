@@ -71,7 +71,7 @@ import SuffixIcon from "./components/suffix-icon.vue";
 import Common from "/@/utils/common";
 import moment from "moment-timezone";
 import { defineAsyncComponent } from "vue";
-// const SuffixIcon = defineAsyncComponent(() => import("/@/layout/components/selectors/components/suffix-icon.vue"));
+// const SuffixIcon = defineAsyncComponent(() => import("/@/views/sports/layout/components/selectors/components/suffix-icon.vue"));
 const type = [
 	{ label: "充值", value: 0 },
 	{ label: "提现", value: 1 },
@@ -205,7 +205,7 @@ const popperOptions = {
 
 			:deep(.el-select__popper) {
 				background-color: var(--Bg1);
-				box-shadow: 0px 0px 8px 0px var(--popoverShadow)
+				box-shadow: var(--popoverShadow);
 				border-radius: 8px;
 			}
 			:deep(.el-select-dropdown) {
@@ -287,7 +287,7 @@ const popperOptions = {
 			.popperClass {
 				width: 160px;
 				background-color: var(--Bg1);
-				box-shadow: 0px 0px 8px 0px var(--popoverShadow);
+				box-shadow: var(--popoverShadow);
 
 				border-radius: 8px;
 
@@ -340,8 +340,8 @@ const popperOptions = {
 											border-radius: 8px;
 											border: 1px solid;
 											border-color: var(--Line);
-												background-color: var(--Bg4);
-												box-shadow: 0px 0px 8px 0px var(--popoverShadow);
+											background-color: var(--Bg4);
+											box-shadow: var(--popoverShadow);
 											.vc-pane-container {
 												.vc-header {
 													height: 26px;

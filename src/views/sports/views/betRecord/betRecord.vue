@@ -35,7 +35,7 @@ import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import SportsCommon from "/@/views/sports/utils/common";
 import Unsettled from "./components/Table.vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-import BetRecordApi from "/@/api/menu/sports/betRecord";
+import BetRecordApi from "/@/api/sports/betRecord";
 import { Pagination } from "/@/components/Pagination";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 import { pick, debounce } from "lodash-es";

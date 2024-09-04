@@ -15,7 +15,7 @@
 					</template>
 					<div class="date" v-else>
 						<div>{{ formatDateTime(row.transTime) }}</div>
-						<div>{{ row.transId }} <img :src="copyImg" alt="" @click="copyText(row.order)" /></div>
+						<!-- <div>{{ row.transId }} <img :src="copyImg" alt="" @click="copyText(row.order)" /></div> -->
 					</div>
 				</template>
 			</el-table-column>
@@ -72,7 +72,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import copyImg from "/@/assets/zh/default/wallet/copy.png";
+// import copyImg from "/@/assets/zh/default/wallet/copy.png";
 import { SportStatusEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import sportsMap from "/@/views/sports/utils/sportsMap/sportsMap";
 

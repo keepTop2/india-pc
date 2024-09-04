@@ -56,7 +56,7 @@ const computedStreamingItem = computed(() => {
 
 	.video {
 		min-height: 210px;
-		background-image: url(/@/assets/zh/default/menu/sports/football_bg.png);
+		// background-image: url("/@/assets/zh/default/menu/sports/football_bg.png");
 		background-repeat: no-repeat;
 		background-size: 100% auto;
 		display: flex;

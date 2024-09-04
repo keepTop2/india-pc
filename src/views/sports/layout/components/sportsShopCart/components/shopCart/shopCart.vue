@@ -58,7 +58,7 @@
 					</template>
 				</div>
 				<!-- 到底部的箭头 -->
-				<img class="left_arrow" :src="left_arrow" alt="" v-show="showArrow" @click="scrollToBottom" />
+				<!-- <img class="left_arrow" :src="left_arrow" alt="" v-show="showArrow" @click="scrollToBottom" /> -->
 
 				<div class="bottom">
 					<div class="part1">
@@ -121,7 +121,7 @@ import weakHint from "/@/hooks/weakHint";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import { debounce, throttle, isEmpty } from "lodash-es";
 import { useLoading } from "/@/directive/loading/hooks";
-import left_arrow from "/@/assets/zh/default/menu/sports/left_arrow.gif";
+// import left_arrow from "/@/assets/zh/default/menu/sports/left_arrow.gif";
 
 import { useUserStore } from "/@/stores/modules/user";
 const UserStore = useUserStore();

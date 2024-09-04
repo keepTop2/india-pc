@@ -1,0 +1,17 @@
+<svg width="234" height="10" viewBox="0 0 234 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="tjjlgz_left">
+<path id="Rectangle 190" d="M228 0H225L231 10H234L228 0Z" fill="#8A97A1"/>
+<rect id="Rectangle 191" width="227" height="2" transform="matrix(-1 0 0 1 227 0)" fill="url(#paint0_linear_2432_607)"/>
+<rect id="Rectangle 192" width="77" height="2" transform="matrix(-1 0 0 1 230 5)" fill="url(#paint1_linear_2432_607)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_2432_607" x1="0" y1="1.00007" x2="227" y2="1.00024" gradientUnits="userSpaceOnUse">
+<stop stop-color="#4D565E"/>
+<stop offset="1" stop-color="#4D565E" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_2432_607" x1="0" y1="1.00007" x2="77" y2="1.00009" gradientUnits="userSpaceOnUse">
+<stop stop-color="#4D565E"/>
+<stop offset="1" stop-color="#4D565E" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>

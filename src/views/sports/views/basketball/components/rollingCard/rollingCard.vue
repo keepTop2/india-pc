@@ -49,7 +49,7 @@ import { isExternal } from "util/types";
 import { defineAsyncComponent } from "vue";
 // import EventItem from "./components/eventItem/eventItem.vue";
 import Common from "/@/utils/common";
-const EventItem = defineAsyncComponent(() => import("/@/views/basketball/components/rollingCard/components/eventItem/eventItem.vue"));
+const EventItem = defineAsyncComponent(() => import("/@/views/sports/views/basketball/components/rollingCard/components/eventItem/eventItem.vue"));
 const betTypes = ["全场独赢", "让分", "总分"];
 
 interface teamDataType {
