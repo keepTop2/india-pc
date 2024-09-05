@@ -26,7 +26,7 @@ const collapse = computed(() => {
 	return MenuStore.getCollapse;
 });
 const domeRef = ref(null);
-//监听div大小改变；
+// 监听div大小改变；
 const resizeObserver = new ResizeObserver((entries) => {
 	for (const entry of entries) {
 		const domWidth = (entry.target as any)?.offsetWidth;
@@ -71,7 +71,7 @@ onUnmounted(() => {
 	justify-content: center;
 	margin: 64px auto 0;
 	overflow-y: auto;
-	height: calc(100vh - 100px);
+	height: calc(100vh - 70px);
 }
 
 .mainArea::-webkit-scrollbar {

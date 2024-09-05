@@ -47,50 +47,49 @@
 				<div class="left_scroll_conatiner2">
 					<Menu />
 				</div>
-			</div>
-		</div>
+				<!-- 左侧底步功能区 -->
+				<div class="sidebar_bttom">
+					<!-- 帮助中心 -->
+					<div class="helpcenter_container" @click="to('/helpCenter')">
+						<svg-icon name="help_icon" size="17px" />
+						<span class="left_text1">
+							{{ $t(`layout['layout1']['帮助中心']`) }}
+						</span>
+					</div>
 
-		<!-- 左侧底步功能区 -->
-		<div class="sidebar_bttom">
-			<!-- 帮助中心 -->
-			<div class="helpcenter_container" @click="to('/helpCenter')">
-				<svg-icon name="help_icon" size="17px" />
-				<span class="left_text1">
-					{{ $t(`layout['layout1']['帮助中心']`) }}
-				</span>
-			</div>
+					<!-- 推荐码 -->
+					<div class="referralcode_conatiner">
+						<div class="referralcode_row1 br_4">
+							<input class="referralcode_input1 fz_14 br_4" type="text" :placeholder="$t(`layout['layout1']['请输入推荐/促销码']`)" />
+							<div class="referralcode_btn1 fz_14 br_4">{{ $t(`layout['layout1']['提交']`) }}</div>
+						</div>
+						<div class="referralcode_row2 fz_12 mt_4">{{ $t(`layout['layout1']['注:注册后24小时内有效']`) }}</div>
+					</div>
+					<!-- 白天黑夜  打开侧边栏状态-->
+					<div class="dayOrNight mt_12 mb_10" v-if="!collapse">
+						<!-- 白天 -->
+						<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('light')">
+							<svg-icon name="light_icon" size="17px" class="mr_8" />
+							<span class="left_text1" :class="{ activeColor: ThemesStore.themeName == 'light' }"> {{ $t(`layout['layout1']['白天']`) }}</span>
+						</div>
+						<!-- 黑夜 -->
+						<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('dark')">
+							<svg-icon name="dark_icon" size="17px" class="mr_8" />
+							<span class="left_text1" :class="{ activeColor: ThemesStore.themeName == 'dark' }"> {{ $t(`layout['layout1']['黑夜']`) }}</span>
+						</div>
+					</div>
 
-			<!-- 推荐码 -->
-			<div class="referralcode_conatiner">
-				<div class="referralcode_row1 br_4">
-					<input class="referralcode_input1 fz_14 br_4" type="text" :placeholder="$t(`layout['layout1']['请输入推荐/促销码']`)" />
-					<div class="referralcode_btn1 fz_14 br_4">{{ $t(`layout['layout1']['提交']`) }}</div>
-				</div>
-				<div class="referralcode_row2 fz_12 mt_4">{{ $t(`layout['layout1']['注:注册后24小时内有效']`) }}</div>
-			</div>
-			<!-- 白天黑夜  打开侧边栏状态-->
-			<div class="dayOrNight mt_12 mb_10" v-if="!collapse">
-				<!-- 白天 -->
-				<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('light')">
-					<svg-icon name="light_icon" size="17px" class="mr_8" />
-					<span class="left_text1" :class="{ activeColor: ThemesStore.themeName == 'light' }"> {{ $t(`layout['layout1']['白天']`) }}</span>
-				</div>
-				<!-- 黑夜 -->
-				<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('dark')">
-					<svg-icon name="dark_icon" size="17px" class="mr_8" />
-					<span class="left_text1" :class="{ activeColor: ThemesStore.themeName == 'dark' }"> {{ $t(`layout['layout1']['黑夜']`) }}</span>
-				</div>
-			</div>
-
-			<!-- 白天黑夜  关闭侧边栏状态-->
-			<div class="dayOrNight mt_12 mb_10" v-else>
-				<!-- 白天 -->
-				<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('light')" v-if="ThemesStore.themeName == 'dark'">
-					<svg-icon name="light_icon" size="17px" />
-				</div>
-				<!-- 白天 -->
-				<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('dark')" v-else>
-					<svg-icon name="dark_icon" size="17px" />
+					<!-- 白天黑夜  关闭侧边栏状态-->
+					<div class="dayOrNight mt_12 mb_10" v-else>
+						<!-- 白天 -->
+						<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('light')" v-if="ThemesStore.themeName == 'dark'">
+							<svg-icon name="light_icon" size="17px" />
+						</div>
+						<!-- 白天 -->
+						<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('dark')" v-else>
+							<svg-icon name="dark_icon" size="17px" />
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -123,15 +122,13 @@ const showTask = () => {
 };
 const onSetTheme = (str: ThemeKey) => {
 	ThemesStore.setTheme(str);
-	let html = document.documentElement;
-	str === "light" ? (html.className = "dark") : (html.className = "");
 };
 
 const collapse = computed(() => {
 	const val = MenuStore.getCollapse;
 	return val;
 });
-//改变是否缩小状态；
+
 const changeCollpase = () => {
 	const status = collapse.value;
 	MenuStore.setCollapse(!status);
@@ -154,13 +151,12 @@ const changeCollpase = () => {
 	position: relative;
 	width: 260px;
 	transition: all 0.2s ease;
-	height: 100vh;
 	box-sizing: border-box;
 	z-index: 1;
+
 	.left_main_header {
 		width: 260px;
 		height: 64px;
-		position: fixed;
 		z-index: 10;
 		display: flex;
 		align-items: center;
@@ -204,12 +200,9 @@ const changeCollpase = () => {
 		width: 260px;
 		box-sizing: border-box;
 		cursor: pointer;
-		position: fixed;
-		top: 64px;
-		left: 0;
-		height: calc(100% - 307px);
 		overflow-y: auto;
 		transition: all 0.2s ease;
+		height: calc(100vh - 64px);
 		.left_scroll_conatiner1 {
 			padding: 8px;
 			margin: 16px auto;
@@ -252,14 +245,6 @@ const changeCollpase = () => {
 	}
 
 	.sidebar_bttom {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		width: 260px;
-		padding: 10px;
-		box-sizing: border-box;
-		transition: width 0.2s ease;
 		background: var(--Bg1);
 		color: var(--Text1);
 
@@ -392,6 +377,7 @@ const changeCollpase = () => {
 						img {
 							height: auto;
 							width: 38px;
+							margin: 0 auto;
 						}
 					}
 					.task_lottery_item:first-child {

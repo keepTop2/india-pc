@@ -44,9 +44,10 @@ input[type="password"]::-ms-reveal {
 
 html,
 body {
-	min-height: 800px;
+	min-height: 100vh;
 	background: var(--Bg);
 	overflow: hidden;
+	min-width: 1350px;
 }
 
 .slide-fade-enter-from {
