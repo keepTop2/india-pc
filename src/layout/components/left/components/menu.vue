@@ -3,20 +3,20 @@
 		<div>
 			<div v-for="(item, index) in routerObj" :key="index">
 				<div class="menu_item" :class="openMenuIndex == index ? 'activeMenu' : ''" @click="selectMenu(item, index)">
-					<div class="menu_icon"><img :src="item.icon" alt="" /></div>
-					<div class="menu_name ellipsis" v-if="!collapse">{{ item.directoryName }}</div>
-					<div class="arrow" v-if="item.children && !collapse">
+					<span class="menu_icon"><img :src="item.icon" alt="" /></span>
+					<span class="menu_name ellipsis">{{ item.directoryName }}</span>
+					<span class="arrow" v-if="item.children && !collapse">
 						<svg-icon name="arrow_up" v-if="openMenuIndex == index" height="8px" width="14px" />
 						<svg-icon name="arrow_down" v-else height="8px" width="14px" />
-					</div>
+					</span>
 				</div>
 				<transition @before-enter="beforeEnter" @enter="enter" @leave="leave">
-					<div v-show="openMenuIndex == index && !collapse" class="subMenu">
+					<div v-show="openMenuIndex == index" class="subMenu">
 						<div v-for="(subItem, subIndex) in item.children" :key="index" class="menu_item subItem" @click="goToPath(subItem)">
-							<div class="menu_icon">
+							<span class="menu_icon">
 								<img :src="subItem.icon" alt="" />
-							</div>
-							<div class="menu_name ellipsis">{{ subItem.directoryName }}</div>
+							</span>
+							<span class="menu_name ellipsis">{{ subItem.directoryName }}</span>
 						</div>
 					</div>
 				</transition>
@@ -145,18 +145,21 @@ const leave = (el: any) => {
 <style lang="scss" scoped>
 .menu_row {
 	.menu_item {
-		display: flex;
 		height: 46px;
 		margin: 4px 0;
 		padding: 0 20px;
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
 		align-items: center;
+		overflow: hidden;
+		flex-wrap: wrap;
 		font-size: 14px;
 		border-radius: 4px;
 		background: var(--Bg2);
 		color: var(--Text1);
 		z-index: 10;
+		line-height: 46px;
+
 		.menu_name {
 			flex: 4;
 			overflow: hidden;
@@ -185,12 +188,21 @@ const leave = (el: any) => {
 	&.collapse {
 		width: 64px;
 
-		.menu_item {
+		.menu_item,
+		.subItem {
 			background: none;
 			width: 46px;
 			margin: 0 auto;
 			padding: 0;
 			justify-content: center;
+		}
+		.menu_icon {
+			width: 46px;
+			height: 100%;
+			img {
+				margin: 0 auto;
+				vertical-align: middle;
+			}
 		}
 		.menu_item.activeMenu,
 		.menu_item:hover {

@@ -21,6 +21,7 @@
 								<span><svg-icon :name="'user-' + route.meta.icon" size="18px" :hover="hoverItem"></svg-icon></span>
 								<span>{{ $t(`common['${route.meta.title}']`) }}</span>
 							</div>
+
 							<div class="mt_6px mb_6px login_out" @mouseover="onMouseover('user-logout')" @mouseout="onMouseout" @click="logOut">
 								<span><svg-icon name="user-logout" size="18px" :hover="hoverItem"></svg-icon></span>
 								<span> {{ $t(`common['退出登陆']`) }}</span>
@@ -116,6 +117,7 @@ const logOut = () => {
 	background: var(--Bg1);
 	box-shadow: 0px 4px 12px 0px rgba(14, 16, 19, 0.25);
 	color: var(--Text1);
+	z-index: 100;
 	&.collapse {
 		left: 64px;
 		width: calc(100% - 64px);

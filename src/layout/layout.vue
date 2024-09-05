@@ -27,24 +27,24 @@ const collapse = computed(() => {
 });
 const domeRef = ref(null);
 //监听div大小改变；
-const resizeObserver = new ResizeObserver((entries) => {
-	for (const entry of entries) {
-		const domWidth = (entry.target as any)?.offsetWidth;
-		if (domWidth < 1460) {
-			MenuStore.setCollapse(true);
-		} else {
-			MenuStore.setCollapse(false);
-		}
-	}
-});
+// const resizeObserver = new ResizeObserver((entries) => {
+// 	for (const entry of entries) {
+// 		const domWidth = (entry.target as any)?.offsetWidth;
+// 		if (domWidth < 1460) {
+// 			MenuStore.setCollapse(true);
+// 		} else {
+// 			MenuStore.setCollapse(false);
+// 		}
+// 	}
+// });
 
-onMounted(() => {
-	resizeObserver.observe(domeRef.value as any);
-});
+// onMounted(() => {
+// 	resizeObserver.observe(domeRef.value as any);
+// });
 
-onUnmounted(() => {
-	resizeObserver.unobserve(domeRef.value as any);
-});
+// onUnmounted(() => {
+// 	resizeObserver.unobserve(domeRef.value as any);
+// });
 </script>
 
 <style lang="scss" scoped>
