@@ -199,9 +199,9 @@ const leave = (el: any) => {
 		.menu_icon {
 			width: 46px;
 			height: 100%;
+			align-items: center;
 			img {
-				margin: 0 auto;
-				vertical-align: middle;
+				margin: 13px auto;
 			}
 		}
 		.menu_item.activeMenu,
