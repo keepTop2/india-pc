@@ -3,7 +3,7 @@
 		class="left_main"
 		:class="collapse ? 'collapse' : ''"
 		:style="{
-			backgroundImage: !collapse ? `url(${Common.getThemeImgPath('layout/sideBar_open.png')})` : `url(${Common.getThemeImgPath('layout/sideBar_close.png')})`,
+			backgroundImage: !collapse ? `url(${Common.getCommonImgPath('sideBar_open.png')})` : `url(${Common.getCommonImgPath('sideBar_close.png')})`,
 		}"
 	>
 		<!-- 左侧头 -->
@@ -29,17 +29,13 @@
 
 				<!-- 任务 抽奖-->
 				<div class="task_lottery mt_10">
-					<div
-						class="task_lottery_item"
-						@click="showTask"
-						:style="{ backgroundImage: !collapse ? `url(${Common.getThemeImgPath('layout/task_bg.png')})` : '', marginRight: '5px' }"
-					>
-						<img :src="Common.getThemeImgPath('layout/task_icon.png')" alt="" />
+					<div class="task_lottery_item" @click="showTask" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('task_bg.png')})` : '', marginRight: '5px' }">
+						<img :src="Common.getCommonImgPath('task_icon.png')" alt="" />
 						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['任务']`) }} </span>
 					</div>
 
-					<div class="task_lottery_item" @click="showLottery" :style="{ backgroundImage: !collapse ? `url(${Common.getThemeImgPath('layout/lottery_bg.png')})` : '' }">
-						<img :src="Common.getThemeImgPath('layout/lottery_icon.png')" alt="" />
+					<div class="task_lottery_item" @click="showLottery" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('lottery_bg.png')})` : '' }">
+						<img :src="Common.getCommonImgPath('lottery_icon.png')" alt="" />
 						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['抽奖']`) }}</span>
 					</div>
 				</div>
