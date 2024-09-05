@@ -14,16 +14,12 @@
 			<div class="left-container">
 				<div class="header">
 					<HeaderMenuNav :sportsActive="tabActive"></HeaderMenuNav>
+					<div class="line"></div>
 					<HeaderMenuCondition :sportsActive="tabActive" v-if="$route?.meta?.isSportSort" @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
 				</div>
-				<div class="base-container back-container">
-					<div class="container-main">
-						<!-- 主体路由页面 -->
-						<router-view v-cloak />
-					</div>
-				</div>
-				<div class="base-container">
-					<div class="footer"></div>
+				<div class="back-container">
+					<!-- 主体路由页面 -->
+					<router-view v-cloak />
 				</div>
 			</div>
 			<!-- 体育热门（视频）显示 -->
@@ -607,13 +603,15 @@ const unSport = () => {
 				width: 100%;
 				border-radius: 8px;
 				background: var(--Bg1);
+				overflow: hidden;
 				box-sizing: border-box;
-			}
 
-			.container-main {
-				// width: 1200px;
-				width: 100%;
-				background: none;
+				.line {
+					width: 100%;
+					height: 1px;
+					background: var(--Line_1);
+					box-shadow: 0px 1px 0px 0px #343d48;
+				}
 			}
 
 			&.back-container {

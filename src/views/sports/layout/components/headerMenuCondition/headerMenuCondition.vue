@@ -16,15 +16,12 @@
 			</template>
 		</div>
 		<div class="right">
-			<wSwitch v-if="isShowTime" :switchObj="switchObjRight" :disabled="switchDisable.right" @selected="wSwitchSelectRight"></wSwitch>
-			<div class="btnIcon">
-				<div class="icon" @click="onRefresh">
-					<SvgIcon iconName="refresh_sports" class="iconSvg" />
-				</div>
-				<div class="icon" @click="onExpandAndCollapse">
-					<SvgIcon iconName="doubleArrowUp_sports" class="iconSvg" :class="{ doubleArrowUp_sports: isFold }" />
-				</div>
+			<div class="filter_operation">
+				<div>搜索框待定，需要确认是否支持筛选</div>
+				<wSwitch v-if="isShowTime" :switchObj="switchObjRight" :disabled="switchDisable.right" @selected="wSwitchSelectRight"></wSwitch>
 			</div>
+			<span class="icon" @click="onRefresh"><svg-icon name="sports-screening" size="20px"></svg-icon></span>
+			<span class="icon" @click="onExpandAndCollapse"><svg-icon name="sports-tutorial" size="20px"></svg-icon></span>
 		</div>
 	</div>
 </template>
@@ -41,12 +38,7 @@ import SportsCommon from "/@/views/sports/utils/common";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
 import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
-import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
-
-const SportAttentionStore = useSportAttentionStore();
-const isFold = computed(() => SportAttentionStore.isFold);
 
 const router = useRouter();
 const route = useRoute();
@@ -58,14 +50,7 @@ const SportMorningTradingStore = useSportMorningTradingStore();
 
 /*展示热门联赛*/
 popularLeague.showPopularLeague();
-// [
-// 	{ label: "滚球", path: "rollingBall" },
-// 	{ label: "今日", path: "todayContest" },
-// 	{ label: "早盘", path: "morningTrading" },
-// 	{ label: "冠军", path: "champion" },
-// 	{ label: "关注", path: "attention" },
-// 	{ label: "赛果", path: "matchResult" },
-// ];
+
 const props = withDefaults(
 	defineProps<{
 		/**
@@ -290,7 +275,6 @@ const onExpandAndCollapse = () => {
 		//收缩
 		SportAttentionStore.setIsFold(true);
 	}
-
 	pubSub.publish(pubSub.PubSubEvents.SportEvents.onExpandAngCollapse.eventName, !isFold.value);
 };
 </script>
@@ -298,8 +282,7 @@ const onExpandAndCollapse = () => {
 <style scoped lang="scss">
 .heaerMenuCondition-container {
 	width: 100%;
-	height: 72px;
-	// background: rgb(254, 253, 220);
+	height: 50px;
 	display: flex;
 	align-items: center;
 
@@ -308,47 +291,31 @@ const onExpandAndCollapse = () => {
 		height: 100%;
 		display: flex;
 		align-items: center;
-		padding-left: 6px;
-		padding-right: 6px;
-
-		:deep() {
-			.wbutton {
-				margin: 0 6px;
-			}
-
-			.btn-container {
-				margin: 0 6px;
-			}
-		}
+		gap: 10px;
+		padding-left: 24px;
 	}
 
 	.right {
 		height: 100%;
 		display: flex;
 		align-items: center;
-
-		.btnIcon {
+		gap: 24px;
+		padding-right: 20px;
+		.filter_operation {
 			display: flex;
-			justify-content: center;
-
-			.icon {
-				width: 24px;
-				height: 24px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-left: 27px;
-				color: var(--icon);
-				.iconSvg {
-					width: 100%;
-					height: 100%;
-				}
-				.doubleArrowUp_sports {
-					width: 100%;
-					height: 100%;
-					transform: rotate(-180deg);
-				}
+			align-items: center;
+			div {
+				color: var(--Text1, #98a7b5);
+				text-align: center;
+				font-family: "PingFang SC";
+				font-size: 14px;
+				font-weight: 400;
 			}
+		}
+		.icon {
+			width: 20px;
+			height: 20px;
+			cursor: pointer;
 		}
 	}
 }
