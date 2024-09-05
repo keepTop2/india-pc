@@ -346,7 +346,7 @@ const changeCollpase = () => {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			height: calc(100% - 167px);
+
 			.left_scroll_conatiner1 {
 				margin: 0px;
 				width: 100%;

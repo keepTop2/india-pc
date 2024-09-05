@@ -165,6 +165,7 @@ const computedTools = computed(() => {
 	align-items: center;
 	justify-content: space-between;
 	padding: 0 24px;
+	height: 40px;
 	background: var(--Bg3);
 
 	.tools_icon {

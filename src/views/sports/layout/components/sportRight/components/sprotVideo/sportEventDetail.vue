@@ -4,7 +4,9 @@
 			<el-table-column>
 				<template #header>
 					<div class="col1">
-						<span v-for="item in computedSportShowTime" :key="item">{{ item }}</span>
+						<span>{{ sportInfo?.teamInfo?.homeName }}</span>
+						<span> VS </span>
+						<span>{{ sportInfo?.teamInfo?.awayName }}</span>
 					</div>
 				</template>
 				<template #default="{ row }">

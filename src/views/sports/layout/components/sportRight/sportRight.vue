@@ -3,10 +3,10 @@
  * @Description: 体育-右侧-热门
 -->
 <template>
-	<spinner-wrap :model-value="loading" :top="200" v-if="computedHasEvent">
+	<div v-if="computedHasEvent">
 		<SprotVideo :eventDetail="currentEventInfo" :videoStreamingUrl="videoStreamingUrl" @refresh="refresh" :loading="loading" />
 		<PlayingMethod :sportEvent="currentEventInfo" />
-	</spinner-wrap>
+	</div>
 </template>
 
 <script setup lang="ts">
