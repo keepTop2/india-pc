@@ -113,12 +113,8 @@ const openMenu = (index: number) => {
 };
 
 const selectMenu = (item: any, index: number) => {
-	console.log(item);
 	if (item.children) {
 		currentRoute.value = item;
-		if (collapse.value) {
-			MenuStore.setCollapse(false);
-		}
 		openMenu(index);
 	} else {
 		goToPath(item);

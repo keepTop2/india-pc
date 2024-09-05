@@ -81,11 +81,11 @@ const changeDome = throttle(() => {
 	emit("handleScroll");
 }, 300);
 //监听div大小改变；
-const resizeObserver = new ResizeObserver((entries) => {
-	for (const entry of entries) {
-		changeDome();
-	}
-});
+// const resizeObserver = new ResizeObserver((entries) => {
+// 	for (const entry of entries) {
+// 		changeDome();
+// 	}
+// });
 
 /** 所有下注额度组件 */
 const CrosstalkRefs = ref([]);
