@@ -17,6 +17,10 @@
 					<router-link :to="{ name: item.name, query: { sportsActive: sportsActive } }">{{ item.meta.title }}</router-link>
 					<div class="value">1</div>
 				</div>
+
+				<div class="arrow_content">
+					<svg-icon name="user-logout" size="18px"></svg-icon>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -154,12 +158,22 @@ const changeBall = () => {
 
 <style scoped lang="scss">
 .header-container {
+	position: relative;
 	border-radius: 8px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	padding: 0 24px;
+	padding-left: 24px;
 	background: var(--Bg1);
+	overflow: hidden;
+	.arrow_content {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		width: 40px;
+		height: 48px;
+		background-color: var(--butter);
+	}
 	.menu-nav {
 		height: 100%;
 		flex: 1;
@@ -186,7 +200,7 @@ const changeBall = () => {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background-color: var(--butter);
+				background: var(--butter);
 				border-radius: 4px;
 				box-sizing: border-box;
 
@@ -210,6 +224,7 @@ const changeBall = () => {
 			gap: 12px;
 		}
 		.right {
+			flex: 1;
 			gap: 8px;
 			.nva-item {
 				gap: 6px;
