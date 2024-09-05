@@ -3,11 +3,11 @@
 		<div class="title">公告</div>
 		<div class="content">
 			<!-- direction="vertical" -->
-			<Swiper @swiper="setBigwinsSwiper" :autoplay="true" :slidesPerView="1" :spaceBetween="300" :slidesPerGroup="1" :loop="true" :noSwiping="true" :modules="modules">
+			<!-- <Swiper @swiper="setBigwinsSwiper" :autoplay="true" :slidesPerView="1" :spaceBetween="300" :slidesPerGroup="1" :loop="true" :noSwiping="true" :modules="modules">
 				<SwiperSlide v-for="(item, index) in announcementList" :key="index">
 					<p class="ellipsis">{{ item.message }}</p>
 				</SwiperSlide>
-			</Swiper>
+			</Swiper> -->
 		</div>
 	</div>
 </template>
@@ -87,30 +87,27 @@ const GetAnnouncement = async () => {
 	height: 40px;
 	display: flex;
 	align-items: center;
+	background-color: var(--Bg);
 
 	.title {
+		display: flex;
+		align-items: center;
+		height: 100%;
+		padding: 0px 24px;
 		font-family: "PingFang SC";
 		font-size: 14px;
-		font-style: normal;
 		font-weight: 400;
 		line-height: normal;
-		min-width: 75px;
 		box-sizing: border-box;
-		text-align: center;
-
 		color: var(--Text1);
 	}
 
 	.content {
 		flex: 1;
+		height: 100%;
 		font-family: "PingFang SC";
 		font-size: 12px;
-		font-style: normal;
 		font-weight: 400;
-		line-height: normal;
-		width: 100%;
-
-		// color: var(--Text1-1, #98A7B5);
 		color: var(--Text1);
 
 		p.ellipsis {
