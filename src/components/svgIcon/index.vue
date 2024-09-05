@@ -9,6 +9,7 @@
 <script setup>
 import { computed, watch } from "vue";
 import { useThemesStore } from "/@/stores/modules/themes";
+import { i18n } from "/@/i18n";
 const themesStore = useThemesStore();
 const props = defineProps({
 	size: {
@@ -38,6 +39,6 @@ const props = defineProps({
 
 // svg icon引入的格式
 const symbolId = computed(() => {
-	return `#${themesStore.getTheme}-${props.name}${props.hover == props.name ? "_on" : ""}`;
+	return `#${i18n.global.locale.value}-svg-${themesStore.getTheme}-${props.name}${props.hover == props.name ? "_on" : ""}`;
 });
 </script>

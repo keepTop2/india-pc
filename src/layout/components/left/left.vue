@@ -123,15 +123,13 @@ const showTask = () => {
 };
 const onSetTheme = (str: ThemeKey) => {
 	ThemesStore.setTheme(str);
-	let html = document.documentElement;
-	str === "light" ? (html.className = "dark") : (html.className = "");
 };
 
 const collapse = computed(() => {
 	const val = MenuStore.getCollapse;
 	return val;
 });
-//改变是否缩小状态；
+
 const changeCollpase = () => {
 	const status = collapse.value;
 	MenuStore.setCollapse(!status);
@@ -154,13 +152,11 @@ const changeCollpase = () => {
 	position: relative;
 	width: 260px;
 	transition: all 0.2s ease;
-	height: 100vh;
 	box-sizing: border-box;
 	z-index: 1;
 	.left_main_header {
 		width: 260px;
 		height: 64px;
-		position: fixed;
 		z-index: 10;
 		display: flex;
 		align-items: center;
@@ -204,12 +200,8 @@ const changeCollpase = () => {
 		width: 260px;
 		box-sizing: border-box;
 		cursor: pointer;
-		position: fixed;
-		top: 64px;
-		left: 0;
-		height: calc(100% - 307px);
-		overflow-y: auto;
 		transition: all 0.2s ease;
+
 		.left_scroll_conatiner1 {
 			padding: 8px;
 			margin: 16px auto;
@@ -252,10 +244,6 @@ const changeCollpase = () => {
 	}
 
 	.sidebar_bttom {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
 		width: 260px;
 		padding: 10px;
 		box-sizing: border-box;
@@ -392,6 +380,7 @@ const changeCollpase = () => {
 						img {
 							height: auto;
 							width: 38px;
+							margin: 0 auto;
 						}
 					}
 					.task_lottery_item:first-child {
