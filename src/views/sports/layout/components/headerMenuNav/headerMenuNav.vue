@@ -6,19 +6,17 @@
 	<div class="header-container">
 		<div class="menu-nav">
 			<div class="left">
-				<template v-for="(item, index) in left" :key="index">
-					<div class="nva-item">
-						<router-link :to="{ name: item.name }">{{ item.meta.title }}</router-link>
-					</div>
-				</template>
+				<div class="nva-item" v-for="(item, index) in left" :key="index">
+					<router-link :to="{ name: item.name }">{{ item.meta.title }}</router-link>
+				</div>
 			</div>
-			<i class="icon"></i>
+			<i class="line"></i>
 			<div class="right">
-				<template v-for="(item, index) in navRight" :key="index">
-					<div class="nva-item">
-						<router-link :to="{ name: item.name, query: { sportsActive: sportsActive } }" @click="changeBall"> </router-link>
-					</div>
-				</template>
+				<div class="nva-item" v-for="(item, index) in navRight" :key="index">
+					<img class="icon" :src="item.meta.iconCode" alt="" />
+					<router-link :to="{ name: item.name, query: { sportsActive: sportsActive } }">{{ item.meta.title }}</router-link>
+					<div class="value">1</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -67,7 +65,7 @@ const sports = computed(() => viewSportPubSubEventData.viewSportData.sports);
  * @description 球类导航列表
  */
 const sportList = computed(() => {
-	let newRight = [];
+	let newRight: any[] = [];
 	right.value.forEach((item) => {
 		const type = item.path.replace(/[^\d]/g, "");
 		sports.value.forEach((sp) => {
@@ -94,6 +92,7 @@ const sportList = computed(() => {
  */
 const getSportList = debounce(() => {
 	navRight.value = sportList.value;
+	console.log("navRight.value", navRight.value);
 }, 3000);
 /** 查询获取右侧导航数据 */
 watch(
@@ -168,7 +167,7 @@ const changeBall = () => {
 		align-items: center;
 		padding: 10px 0px;
 
-		.icon {
+		.line {
 			width: 1px;
 			height: 34px;
 			margin: 0px 12px;
@@ -190,19 +189,20 @@ const changeBall = () => {
 				background-color: var(--butter);
 				border-radius: 4px;
 				box-sizing: border-box;
-				.icon {
-					width: 100%;
-					height: 100%;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					overflow: hidden;
-					color: var(--icon);
 
-					.iconSvg {
-						width: 100%;
-						height: 100%;
-					}
+				.icon {
+					width: 16px;
+					height: 16px;
+				}
+
+				a,
+				.value {
+					color: var(--Text1, #98a7b5);
+					text-align: center;
+					font-family: "PingFang SC";
+					font-size: 14px;
+					font-weight: 400;
+					text-decoration: none;
 				}
 			}
 		}
@@ -211,30 +211,9 @@ const changeBall = () => {
 		}
 		.right {
 			gap: 8px;
-		}
-	}
-
-	.seach {
-		.nva-item {
-			width: 24px;
-			height: 24px;
-			margin: 0 12px;
-
-			.icon {
-				width: 100%;
-				height: 100%;
-
-				color: var(--icon);
-				.iconSvg {
-					width: 100%;
-					height: 100%;
-				}
-			}
-
-			.selected {
-				.icon {
-					color: var(--Theme);
-				}
+			.nva-item {
+				gap: 6px;
+				padding: 0px 12px;
 			}
 		}
 	}
