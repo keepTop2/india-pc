@@ -18,14 +18,9 @@
 						<div class="line"></div>
 						<HeaderMenuCondition :sportsActive="tabActive" v-if="$route?.meta?.isSportSort" @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
 					</div>
-					<div class="base-container back-container">
-						<div class="container-main">
-							<!-- 主体路由页面 -->
-							<router-view v-cloak />
-						</div>
-					</div>
-					<div class="base-container">
-						<div class="footer"></div>
+					<div class="back-container">
+						<!-- 主体路由页面 -->
+						<router-view v-cloak />
 					</div>
 				</div>
 				<!-- 体育热门（视频）显示 -->
