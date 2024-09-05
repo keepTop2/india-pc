@@ -1,11 +1,24 @@
 import { defineStore } from "pinia";
-// import ElementThemes from '/@/styles/elementTheme';
 import { ThemeKey } from "/@/models/commonInterface";
-
+import light from "../../styles/themes/light.css?raw";
+import dark from "../../styles/themes/dark.css?raw";
 interface ThemesStore {
 	themeName: ThemeKey;
 }
+function applyTheme(cssContent: string) {
+	// Remove any existing theme style tag
+	const existingStyle = document.querySelector("style[data-theme]");
+	if (existingStyle) {
+		existingStyle.remove();
+	}
 
+	// Create a new style tag and set its content
+	const style = document.createElement("style");
+	style.type = "text/css";
+	style.setAttribute("data-theme", "true");
+	style.textContent = cssContent;
+	document.head.appendChild(style);
+}
 export const useThemesStore = defineStore("Themes", {
 	state: (): ThemesStore => {
 		return {
@@ -24,16 +37,11 @@ export const useThemesStore = defineStore("Themes", {
 		 */
 		setTheme(str: ThemeKey): void {
 			this.themeName = str || "light";
-			const link = document.getElementById("theme-link") as HTMLLinkElement;
 			localStorage.setItem("Themes", str);
-			if (link) {
-				link.href = `/@/styles/themes/${this.themeName}.css`;
-			} else {
-				const newLink = document.createElement("link");
-				newLink.id = "theme-link";
-				newLink.rel = "stylesheet";
-				newLink.href = `/@/styles/themes/${this.themeName}.css`;
-				document.head.appendChild(newLink);
+			if (str === "light") {
+				applyTheme(light);
+			} else if (str === "dark") {
+				applyTheme(dark);
 			}
 		},
 		initTheme() {

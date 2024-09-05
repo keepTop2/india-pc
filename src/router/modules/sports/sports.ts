@@ -1,4 +1,3 @@
-import Layout from "/@/views/sports/layout/layout.vue";
 import sportsRouterLeft from "./sportsRouterLeft";
 import menuRight from "./menuRight";
 /**
@@ -8,7 +7,7 @@ const Sports = [
 	{
 		path: "/sports",
 		name: "sports",
-		component: Layout,
+		component: () => import("/@/views/sports/layout/layout.vue"),
 		redirect: "/sports/1",
 		children: [...menuRight, ...sportsRouterLeft],
 	},

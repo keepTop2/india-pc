@@ -7,40 +7,19 @@
 		<div class="menu-nav">
 			<div class="left">
 				<template v-for="(item, index) in left" :key="index">
-					<wTooltip class="box-item" :content="item?.meta?.title">
-						<div class="nva-item">
-							<router-link :to="{ name: item.name }" active-class="selected">
-								<div class="icon">
-									<SvgIcon :size="18" :iconName="item?.meta?.iconCode || `Casino`" class="iconSvg" />
-								</div>
-							</router-link>
-						</div>
-					</wTooltip>
+					<div class="nva-item">
+						<router-link :to="{ name: item.name }">{{ item.meta.title }}</router-link>
+					</div>
 				</template>
 			</div>
-			<el-divider direction="vertical" />
+			<i class="icon"></i>
 			<div class="right">
 				<template v-for="(item, index) in navRight" :key="index">
-					<wTooltip class="box-item" v-if="!item?.meta?.isHide" :content="item?.meta?.title">
-						<div class="nva-item">
-							<router-link :to="{ name: item.name, query: { sportsActive: sportsActive } }" active-class="selected" @click="changeBall">
-								<div class="icon">
-									<SvgIcon :size="18" :iconName="item?.meta?.iconCode || `Casino`" class="iconSvg" />
-								</div>
-							</router-link>
-						</div>
-					</wTooltip>
+					<div class="nva-item">
+						<router-link :to="{ name: item.name, query: { sportsActive: sportsActive } }" @click="changeBall"> </router-link>
+					</div>
 				</template>
 			</div>
-		</div>
-		<div class="seach">
-			<wTooltip class="box-item" content="搜索">
-				<div class="nva-item">
-					<div class="icon">
-						<SvgIcon @click="onSeach" :size="18" iconName="ty_icon_ss" class="iconSvg" />
-					</div>
-				</div>
-			</wTooltip>
 		</div>
 	</div>
 </template>
@@ -169,22 +148,6 @@ const isSeach = computed(() => {
 
 onMounted(() => {});
 
-const onSeach = () => {
-	// 使用正则表达式匹配数字部分
-	const match = route.path.match(/\/sports\/(\d+)\/list/);
-	const sportType = parseInt(match[1]);
-	const params = {
-		sportType: sportType,
-		// eventId: props?.teamData?.eventId,
-		// dataIndex: props?.dataIndex,
-	};
-	/** 路由地址处理 */
-	const splArr = route.path.split("/");
-	const getLastStr = splArr[splArr.length - 1];
-	const path = route.path.replace(getLastStr, "sportsLeagueSearch");
-	router.push({ path: path, query: params });
-};
-
 const changeBall = () => {
 	// sportsBetEvent.clearShopCart();
 };
@@ -192,32 +155,25 @@ const changeBall = () => {
 
 <style scoped lang="scss">
 .header-container {
-	// width: 100%;
-	// width: 1246px;
-	height: 68px;
 	border-radius: 8px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	padding: 0 10px;
+	padding: 0 24px;
 	background: var(--Bg1);
 	.menu-nav {
+		height: 100%;
 		flex: 1;
 		display: flex;
-		flex-direction: row;
 		align-items: center;
-		height: 100%;
+		padding: 10px 0px;
 
-		.el-divider {
-			&.el-divider--vertical {
-				width: 2px;
-				height: 48px;
-				flex-shrink: 0;
-				border-radius: 2px;
-				border: 0px;
-
-				background: var(--Line);
-			}
+		.icon {
+			width: 1px;
+			height: 34px;
+			margin: 0px 12px;
+			background: var(--Line_1);
+			box-shadow: 1px 0px 0px 0px #343d48;
 		}
 
 		.left,
@@ -225,10 +181,15 @@ const changeBall = () => {
 			display: flex;
 
 			.nva-item {
-				width: 32px;
-				height: 32px;
-				margin: 0px 12px;
-
+				min-width: 80px;
+				height: 30px;
+				padding: 10px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: var(--butter);
+				border-radius: 4px;
+				box-sizing: border-box;
 				.icon {
 					width: 100%;
 					height: 100%;
@@ -243,13 +204,13 @@ const changeBall = () => {
 						height: 100%;
 					}
 				}
-
-				.selected {
-					.icon {
-						color: var(--Theme);
-					}
-				}
 			}
+		}
+		.left {
+			gap: 12px;
+		}
+		.right {
+			gap: 8px;
 		}
 	}
 

@@ -12,7 +12,7 @@
 		<div class="base-container main-container">
 			<!-- 体育游戏列表 -->
 			<div class="left-container">
-				<div class="base-container header">
+				<div class="header">
 					<HeaderMenuNav :sportsActive="tabActive"></HeaderMenuNav>
 					<HeaderMenuCondition :sportsActive="tabActive" v-if="$route?.meta?.isSportSort" @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
 				</div>
@@ -584,22 +584,17 @@ const unSport = () => {
 
 <style lang="scss" scoped>
 .base-body {
-	display: block;
-	position: relative;
 	flex: 1;
 	flex-shrink: 0;
-	width: 100%;
-
 	display: flex;
 	flex-direction: column;
-	padding: 0px 12px;
-	padding-bottom: 26px;
 	box-sizing: border-box;
 }
 
 .base-container {
 	display: flex;
-	justify-content: center;
+	width: 100%;
+	justify-content: flex-start;
 
 	&.main-container {
 		// height: calc(100vh - 104px);
@@ -607,18 +602,12 @@ const unSport = () => {
 
 		.left-container {
 			flex: 1;
-
+			margin: 0px 12px;
 			.header {
 				width: 100%;
-				// height: 232px;
-				flex-shrink: 0;
-				// padding-top: 36px;
+				border-radius: 8px;
+				background: var(--Bg1);
 				box-sizing: border-box;
-				background-color: transparent;
-				// background: #ccc;
-				display: flex;
-				flex-direction: column;
-				justify-content: start;
 			}
 
 			.container-main {
@@ -635,7 +624,6 @@ const unSport = () => {
 		.right-container {
 			flex: 1;
 			max-width: 390px;
-			margin-left: 10px;
 			height: 1036px;
 
 			// min-height: calc(100vh - 64px);
