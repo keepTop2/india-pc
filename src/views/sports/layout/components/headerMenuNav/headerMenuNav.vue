@@ -19,7 +19,7 @@
 				</div>
 
 				<div class="arrow_content">
-					<svg-icon name="user-logout" size="18px"></svg-icon>
+					<span class="icon"><svg-icon name="sports-arrow_big" size="20px"></svg-icon></span>
 				</div>
 			</div>
 		</div>
@@ -159,20 +159,28 @@ const changeBall = () => {
 <style scoped lang="scss">
 .header-container {
 	position: relative;
-	border-radius: 8px;
+	height: 48px;
 	display: flex;
-	flex-direction: row;
 	align-items: center;
 	padding-left: 24px;
 	background: var(--Bg1);
 	overflow: hidden;
+	box-sizing: border-box;
 	.arrow_content {
 		position: absolute;
 		top: 0px;
 		right: 0px;
 		width: 40px;
 		height: 48px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		background-color: var(--butter);
+
+		.icon {
+			transform: rotate(90deg);
+			color: var(--Icon_1);
+		}
 	}
 	.menu-nav {
 		height: 100%;
@@ -180,6 +188,7 @@ const changeBall = () => {
 		display: flex;
 		align-items: center;
 		padding: 10px 0px;
+		box-sizing: border-box;
 
 		.line {
 			width: 1px;

@@ -31,26 +31,19 @@ const props = withDefaults(
 
 <style scoped lang="scss">
 .wbutton {
-	display: flex;
-	width: 100px;
-	height: 40px;
+	min-width: 80px;
+	height: 30px;
 	padding: 10px;
+	display: flex;
 	justify-content: center;
 	align-items: center;
-	gap: 10px;
 	border-radius: 4px;
 	box-sizing: border-box;
 	font-family: "PingFang SC";
 	font-size: 14px;
-	font-style: normal;
 	font-weight: 400;
-	line-height: normal;
-	text-transform: lowercase;
 	cursor: pointer;
-	/* 禁止用户选择文本 */
-	user-select: none;
-	-webkit-user-drag: none;
-	background-color: var(--Bg3);
+	background-color: var(--butter);
 	color: var(--Text1);
 
 	&.active {
