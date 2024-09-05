@@ -231,6 +231,6 @@ const logOut = () => {
 	display: inline-block;
 	height: 14px;
 	width: 14px;
-	background: url("/@/assets/svg/dark/lang_down_icon.svg");
+	background: url("/@/assets/zh-CN/svg/dark/lang_down_icon.svg");
 }
 </style>
