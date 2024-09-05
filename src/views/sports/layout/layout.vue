@@ -8,7 +8,7 @@
 		<div class="base-container">
 			<HeaderNotify></HeaderNotify>
 		</div>
-		<el-affix :offset="120" style="width: 100%">
+		<el-affix :offset="104" style="width: 100%">
 			<!-- 体育 主体内容区域  -->
 			<div class="base-container main-container">
 				<!-- 体育游戏列表 -->

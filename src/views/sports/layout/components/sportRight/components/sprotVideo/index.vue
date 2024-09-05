@@ -1,7 +1,9 @@
 <template>
 	<div class="video-container" v-if="!isEmpty(eventDetail)">
 		<SportControl :eventDetail="eventDetail" @refresh="$emit('refresh')" :loading="loading" />
-		<div class="line1"></div>
+		<div style="height: 3px">
+			<div class="line1"></div>
+		</div>
 		<!-- 视频内容 -->
 		<div class="video">
 			<SportEventDetail v-if="controlType === SportControlEnum.Info" :sportInfo="eventDetail" />
@@ -51,12 +53,12 @@ const computedStreamingItem = computed(() => {
 	border-radius: 8px;
 	overflow: hidden;
 	background: var(--Bg1);
+
 	.line1 {
-		background: var(--Line_1);
-		box-shadow: 0px 1px 0px 0px #343d48;
 		width: 100%;
 		height: 1px;
-		flex-shrink: 0;
+		background: var(--Line_1);
+		box-shadow: 0px 1px 0px 0px #343d48;
 	}
 	.video {
 		min-height: 210px;
@@ -66,6 +68,7 @@ const computedStreamingItem = computed(() => {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex-wrap: wrap;
 	}
 }
 </style>
