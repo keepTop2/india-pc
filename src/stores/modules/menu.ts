@@ -97,8 +97,6 @@ export const useMenuStore = defineStore("Menu", {
 		 * @return {*}
 		 */
 		setCollapse(data?: Boolean) {
-			console.log(data);
-
 			this.collapse = data || false;
 		},
 		/**

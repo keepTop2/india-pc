@@ -28,7 +28,7 @@
 				</div>
 
 				<!-- 任务 抽奖-->
-				<div class="task_lottery mt_10">
+				<div class="task_lottery mt_15">
 					<div class="task_lottery_item" @click="showTask" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('task_bg.png')})` : '', marginRight: '5px' }">
 						<img :src="Common.getCommonImgPath('task_icon.png')" alt="" />
 						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['任务']`) }} </span>
@@ -127,8 +127,6 @@ const collapse = computed(() => {
 
 const changeCollpase = () => {
 	const status = collapse.value;
-	console.log(status);
-
 	MenuStore.setCollapse(!status);
 };
 </script>
@@ -150,7 +148,7 @@ const changeCollpase = () => {
 	width: 260px;
 	transition: all 0.2s ease;
 	box-sizing: border-box;
-	z-index: 1;
+	z-index: 120;
 
 	.left_main_header {
 		width: 260px;
@@ -203,7 +201,7 @@ const changeCollpase = () => {
 		height: calc(100vh - 64px);
 		.left_scroll_conatiner1 {
 			padding: 8px;
-			margin: 16px auto;
+			margin: 8px auto;
 			border-radius: 5px;
 			.left_bonus {
 				height: 46px;

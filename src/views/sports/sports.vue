@@ -1,19 +1,10 @@
 <template>
-	<el-config-provider :locale="zhCn">
-		<router-view />
-	</el-config-provider>
+	<router-view />
 </template>
 
 <script setup lang="ts" name="app">
 // import Common from '/@/utils/common';
-import { useThemesStore } from "/@/stores/modules/themes";
-import { onBeforeMount, onBeforeUnmount, onMounted } from "vue";
-import Common from "/@/utils/common";
-import { CommonApi } from "/@/api/common";
-import { useUserStore } from "/@/stores/modules/user";
-import zhCn from "element-plus/es/locale/lang/zh-cn";
-import pubsub from "/@/pubSub/pubSub";
-import { useRouter } from "vue-router";
+import { onBeforeMount, onBeforeUnmount } from "vue";
 import { useLoading } from "/@/directive/loading/hooks";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
@@ -27,7 +18,7 @@ const ChampionShopCartStore = useChampionShopCartStore();
 const SportSortStore = useSportSortStore();
 
 const { startLoading, stopLoading } = useLoading();
-const router = useRouter();
+
 onBeforeMount(() => {
 	window.addEventListener("appstate-change", appstateChange);
 });
