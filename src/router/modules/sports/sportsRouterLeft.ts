@@ -16,7 +16,7 @@ const sportsRouterLeft = [
 		name: "sportsCollect",
 		component: () => import("/@/views/sports/views/collect/collect.vue"),
 		meta: {
-			title: "关注",
+			title: "收藏",
 			isServer: false,
 			iconCode: "ty_icon_sc",
 		},
@@ -88,7 +88,7 @@ const sportsRouterLeft = [
 		name: "sportsBetRecord",
 		component: () => import("/@/views/sports/views/betRecord/betRecord.vue"),
 		meta: {
-			title: "注单记录",
+			title: "注单",
 			isServer: false,
 			iconCode: "ty_icon_jl",
 		},
@@ -103,7 +103,7 @@ const sportsRouterLeft = [
 			iconCode: "ty_icon_bf",
 		},
 	},
-	{
+	/*{
 		path: "/sports/bettingRules",
 		name: "sportsBettingRules",
 		component: () => import("/@/views/sports/views/bettingRules/bettingRules.vue"),
@@ -213,7 +213,7 @@ const sportsRouterLeft = [
 				meta: { title: "电子竞技" },
 			},
 		],
-	},
+	},*/
 ];
 
 export default sportsRouterLeft;
