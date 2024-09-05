@@ -30,9 +30,11 @@ const domeRef = ref(null);
 const resizeObserver = new ResizeObserver((entries) => {
 	for (const entry of entries) {
 		const domWidth = (entry.target as any)?.offsetWidth;
+
 		if (domWidth < 1460) {
 			MenuStore.setCollapse(true);
 		} else {
+			console.log(123);
 			MenuStore.setCollapse(false);
 		}
 	}

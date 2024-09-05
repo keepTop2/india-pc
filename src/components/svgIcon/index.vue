@@ -39,6 +39,6 @@ const props = defineProps({
 
 // svg icon引入的格式
 const symbolId = computed(() => {
-	return `#${i18n.global.locale.value}-svg-${themesStore.getTheme}-${props.name}${props.hover == props.name ? "_on" : ""}`;
+	return `#${themesStore.getTheme}-${props.name}${props.hover == props.name ? "_on" : ""}`;
 });
 </script>

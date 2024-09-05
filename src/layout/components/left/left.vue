@@ -131,6 +131,8 @@ const collapse = computed(() => {
 
 const changeCollpase = () => {
 	const status = collapse.value;
+	console.log(status);
+
 	MenuStore.setCollapse(!status);
 };
 </script>
