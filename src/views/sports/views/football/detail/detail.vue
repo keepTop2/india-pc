@@ -282,6 +282,11 @@ const openEventDetailPush = async () => {
 	display: flex;
 	flex-direction: column;
 	min-height: 400px;
+	overflow-y: auto;
+	height: calc(100vh - 155px);
+}
+.competition::-webkit-scrollbar {
+	display: none;
 }
 .header-plan {
 	height: 300px;

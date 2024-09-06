@@ -1,17 +1,20 @@
 <template>
 	<div class="video-container" v-if="!isEmpty(eventDetail)">
-		<SportControl :eventDetail="eventDetail" @refresh="$emit('refresh')" :loading="loading" />
+		<SportControl :eventDetail="eventDetail" @refresh="$emit('refresh')" :loading="loading" @closeVideoWrapper="closeVideoWrapper" :isShowVideoWrapper="isShowVideoWrapper" />
+		<div style="height: 3px">
+			<div class="line1"></div>
+		</div>
 		<!-- 视频内容 -->
-		<div class="video">
+		<div class="video" :class="isShowVideoWrapper ? '' : 'close'">
 			<SportEventDetail v-if="controlType === SportControlEnum.Info" :sportInfo="eventDetail" />
 			<WVideo v-else :videoStreamingItem="computedStreamingItem"></WVideo>
 		</div>
-		<SportInfo />
+		<SportInfo v-if="isShowVideoWrapper" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { isEmpty, find } from "lodash-es";
 import { WVideo } from "/@/components/wVideo";
@@ -37,6 +40,11 @@ const props = withDefaults(
 	}
 );
 
+const isShowVideoWrapper = ref(true);
+const closeVideoWrapper = () => {
+	isShowVideoWrapper.value = !isShowVideoWrapper.value;
+};
+
 const { controlType, useControlList } = storeToRefs(SportHotStore);
 
 const computedStreamingItem = computed(() => {
@@ -46,14 +54,17 @@ const computedStreamingItem = computed(() => {
 
 <style lang="scss" scoped>
 .video-container {
-	width: 390px;
 	// height: 340px;
 	border-radius: 8px;
 	overflow: hidden;
-	display: grid;
-	grid-template-rows: 40px auto 68px;
 	background: var(--Bg1);
 
+	.line1 {
+		width: 100%;
+		height: 1px;
+		background: var(--Line_1);
+		box-shadow: 0px 1px 0px 0px #343d48;
+	}
 	.video {
 		min-height: 210px;
 		// background-image: url("/@/assets/zh/default/menu/sports/football_bg.png");
@@ -62,6 +73,12 @@ const computedStreamingItem = computed(() => {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex-wrap: wrap;
+		transition: all 0.2s linear;
+	}
+	.video.close {
+		height: 24px;
+		min-height: 0;
 	}
 }
 </style>

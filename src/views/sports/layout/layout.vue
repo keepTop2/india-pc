@@ -8,25 +8,27 @@
 		<div class="base-container">
 			<HeaderNotify></HeaderNotify>
 		</div>
-		<!-- 体育 主体内容区域  -->
-		<div class="base-container main-container">
-			<!-- 体育游戏列表 -->
-			<div class="left-container">
-				<div class="header">
-					<HeaderMenuNav :sportsActive="tabActive"></HeaderMenuNav>
-					<div class="line"></div>
-					<HeaderMenuCondition :sportsActive="tabActive" v-if="$route?.meta?.isSportSort" @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
+		<el-affix :offset="104" style="width: 100%">
+			<!-- 体育 主体内容区域  -->
+			<div class="base-container main-container">
+				<!-- 体育游戏列表 -->
+				<div class="left-container">
+					<div class="header">
+						<HeaderMenuNav :sportsActive="tabActive"></HeaderMenuNav>
+						<div class="line"></div>
+						<HeaderMenuCondition :sportsActive="tabActive" v-if="$route?.meta?.isSportSort" @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
+					</div>
+					<div class="back-container">
+						<!-- 主体路由页面 -->
+						<router-view v-cloak />
+					</div>
 				</div>
-				<div class="back-container">
-					<!-- 主体路由页面 -->
-					<router-view v-cloak />
+				<!-- 体育热门（视频）显示 -->
+				<div class="right-container mr_12" v-if="popularLeague.visible">
+					<SportRight v-if="SportsInfoStore.getSportsToken"></SportRight>
 				</div>
 			</div>
-			<!-- 体育热门（视频）显示 -->
-			<div class="right-container" v-if="popularLeague.visible">
-				<SportRight v-if="SportsInfoStore.getSportsToken"></SportRight>
-			</div>
-		</div>
+		</el-affix>
 		<SportsShopCart></SportsShopCart>
 	</div>
 </template>
@@ -585,6 +587,8 @@ const unSport = () => {
 	display: flex;
 	flex-direction: column;
 	box-sizing: border-box;
+	max-width: 1660px;
+	margin: 0 auto;
 }
 
 .base-container {
@@ -593,9 +597,7 @@ const unSport = () => {
 	justify-content: flex-start;
 
 	&.main-container {
-		// height: calc(100vh - 104px);
-		// background: #9bb5a6;
-
+		height: calc(100vh - 104px);
 		.left-container {
 			flex: 1;
 			margin: 0px 12px;
@@ -622,9 +624,7 @@ const unSport = () => {
 		.right-container {
 			flex: 1;
 			max-width: 390px;
-			height: 1036px;
 
-			// min-height: calc(100vh - 64px);
 			/* 设置溢出时显示滚动条 */
 			overflow-y: auto;
 		}

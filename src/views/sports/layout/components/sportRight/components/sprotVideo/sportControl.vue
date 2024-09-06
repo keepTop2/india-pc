@@ -1,27 +1,31 @@
 <template>
 	<div class="handler">
-		<SvgIcon
-			iconName="tv"
-			:size="24"
-			@click="() => handleActions(ActionsEnum.TV)"
-			:style="{
-				// visibility: computedShowFullScreen ? 'visible' : 'hidden'
-				visibility: 'hidden',
-			}"
-		/>
+		<span class="flex-center curp">
+			<svg-icon
+				:name="isShowVideoWrapper ? 'sports-tv_icon_on' : 'sports-tv_icon'"
+				size="24px"
+				@click="() => handleActions(ActionsEnum.TV)"
+				:style="{
+					visibility: !computedShowFullScreen ? 'visible' : 'hidden',
+				}"
+			></svg-icon
+		></span>
 
 		<!-- 右侧 比分板 视频源 动画直播  -->
 		<div class="tools">
 			<div v-for="tool in computedTools" :key="tool.iconName" class="tooltip-container">
-				<Score v-if="tool.type === 'img'" :eventDetail="eventDetail" :class="tool.className" @click="tool.actions" />
-				<SvgIcon v-else :class="tool.className" :iconName="tool.iconName" :size="23" @click="tool.actions" />
-				<span class="tooltip-text">{{ tool.tooltipText }}</span>
+				<!-- <Score v-if="tool.type === 'img'" :eventDetail="eventDetail" :class="tool.className" @click="tool.actions" /> -->
+				<svg-icon :name="'sports-' + tool.iconName" :size="23" @click="tool.actions"> </svg-icon>
+				<!-- <SvgIcon v-else :class="tool.className" :iconName="tool.iconName" :size="23" @click="tool.actions" /> -->
+				<!-- <span class="tooltip-text">{{ tool.tooltipText }}</span> -->
 			</div>
 		</div>
 
-		<div class="utils">
-			<SvgIcon v-if="computedShowFullScreen" iconName="full_screen" :size="16" @click="() => handleActions(ActionsEnum.FullScreen)" />
-			<SvgIcon iconName="refresh_sports" class="refresh" :class="{ cycling: loading }" :size="18" @click="() => handleActions(ActionsEnum.Refresh)" />
+		<div class="utils curp">
+			<!-- <SvgIcon v-if="computedShowFullScreen" iconName="full_screen" :size="16" @click="() => handleActions(ActionsEnum.FullScreen)" /> -->
+			<!-- <SvgIcon iconName="refresh_sports" class="refresh" :class="{ cycling: loading }" :size="18" @click="() => handleActions(ActionsEnum.Refresh)" /> -->
+			<svg-icon name="sports-quanping" :size="18" @click="() => handleActions(ActionsEnum.FullScreen)" v-if="controlType == SportControlEnum.Info"></svg-icon>
+			<svg-icon name="sports-shuaxin" :size="18" @click="() => handleActions(ActionsEnum.Refresh)" :class="{ cycling: loading }"></svg-icon>
 		</div>
 	</div>
 </template>
@@ -31,14 +35,14 @@ import { computed } from "vue";
 import Score from "./score.vue";
 import pubSub from "/@/pubSub/pubSub";
 import { storeToRefs } from "pinia";
-import { SportControlEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
+import { SportControlEnum, SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 
 const SportHotStore = useSportHotStore();
-
-const { useControlList, controlType } = storeToRefs(SportHotStore);
-
-const emit = defineEmits(["refresh"]);
+const { useControlList, controlType, currentEventInfo } = storeToRefs(SportHotStore);
+import { useLink } from "/@/views/sports/hooks/useLink";
+const { gotoEventDetail } = useLink();
+const emit = defineEmits(["refresh", "closeVideoWrapper"]);
 
 enum ActionsEnum {
 	/**
@@ -72,6 +76,7 @@ const props = withDefaults(
 		/** 体育Event对象 */
 		eventDetail: any;
 		loading?: boolean;
+		isShowVideoWrapper: Boolean;
 	}>(),
 	{
 		eventDetail: () => {
@@ -86,6 +91,11 @@ const props = withDefaults(
  */
 const handleActions = (type: ActionsEnum) => {
 	switch (type) {
+		// 折叠
+		case ActionsEnum.TV: {
+			emit("closeVideoWrapper");
+			break;
+		}
 		// 刷新
 		case ActionsEnum.Refresh: {
 			emit("refresh");
@@ -94,7 +104,16 @@ const handleActions = (type: ActionsEnum) => {
 
 		// 全屏
 		case ActionsEnum.FullScreen: {
-			pubSub.publish(pubSub.PubSubEvents.SportEvents.onFullScreenOrExit.eventName, { isFullScreen: true });
+			const params = {
+				eventId: currentEventInfo.value?.eventId,
+				leagueId: currentEventInfo.value?.leagueId,
+				dataIndex: 0,
+				marketCount: currentEventInfo.value?.marketCount,
+			};
+
+			SportHotStore.setCurrentEvent(currentEventInfo.value);
+			gotoEventDetail(params, SportTypeEnum.FootBall);
+			// pubSub.publish(pubSub.PubSubEvents.SportEvents.onFullScreenOrExit.eventName, { isFullScreen: true });
 			break;
 		}
 
@@ -120,38 +139,23 @@ const computedShowFullScreen = computed(() => {
 });
 
 /**
- * 根据类型render样式name
- */
-const getClassName = (type: SportControlEnum) => {
-	return type === controlType.value ? `tools_icon active` : `tools_icon`;
-};
-
-/**
  * 工具tool
  */
+
 const computedTools = computed(() => {
 	return [
 		{
-			className: getClassName(SportControlEnum.Info),
-			type: "svg",
-			iconName: "score",
-			tooltipText: "比分板",
+			iconName: "bifenban",
 			actions: () => handleActions(ActionsEnum.Score),
 			show: useControlList.value.some((item) => item.type === SportControlEnum.Info),
 		},
 		{
-			className: getClassName(SportControlEnum.Video),
-			type: "svg",
-			iconName: "video",
-			tooltipText: "视频源",
+			iconName: "live",
 			actions: () => handleActions(ActionsEnum.Video),
 			show: useControlList.value.some((item) => item.type === SportControlEnum.Video),
 		},
 		{
-			className: getClassName(SportControlEnum.Animation),
-			type: "svg",
-			iconName: "live_animation",
-			tooltipText: "动画",
+			iconName: "donghua",
 			actions: () => handleActions(ActionsEnum.Animation),
 			show: useControlList.value.some((item) => item.type === SportControlEnum.Animation),
 		},
@@ -165,7 +169,8 @@ const computedTools = computed(() => {
 	align-items: center;
 	justify-content: space-between;
 	padding: 0 24px;
-	background: var(--Bg3);
+	height: 40px;
+	background: var(--Bg1);
 
 	.tools_icon {
 		color: var(--icon);
@@ -190,7 +195,7 @@ const computedTools = computed(() => {
 
 		.tooltip-container {
 			position: relative;
-			display: inline-block;
+			display: flex;
 			cursor: pointer;
 
 			::v-deep .score {

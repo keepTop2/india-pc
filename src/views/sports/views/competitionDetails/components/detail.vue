@@ -7,7 +7,7 @@
 		<div class="top">
 			<div class="back" @click="$router.back()">
 				<el-icon>
-					<ArrowLeftBold />
+					<arrow_leftBold />
 				</el-icon>
 				返回
 			</div>
