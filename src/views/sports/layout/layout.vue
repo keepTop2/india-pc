@@ -521,6 +521,7 @@ const openAttentionSSE = async () => {
 
 // 切换tab时 根据path处理对应的获取数据逻辑
 const onTab = (path: any) => {
+	console.log(path, "=====path");
 	ShopCatControlStore.setShopCatShow(false);
 	clearStroe();
 	if (tabActive.value == path.type) {
