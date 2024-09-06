@@ -595,6 +595,7 @@ const unSport = () => {
 	// height: calc(100vh - 104px);
 	.left-container {
 		width: 1246px;
+		// flex: 1;
 		margin: 0px 12px;
 		.header {
 			width: 100%;

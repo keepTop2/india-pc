@@ -24,15 +24,9 @@
 				<span class="icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 			</div>
 		</div>
-
-		<EventItem
-			:IfOffTheBat="IfOffTheBat"
-			v-for="(event, index) in teamData.events"
-			:key="index"
-			:event="event"
-			:displayContent="displayContent"
-			:dataIndex="props.dataIndex"
-		></EventItem>
+		<template v-if="displayContent">
+			<EventItem :IfOffTheBat="IfOffTheBat" v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
+		</template>
 	</div>
 </template>
 
