@@ -119,7 +119,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .card-container {
-	margin-bottom: 16px;
 }
 .box_one {
 	display: flex;

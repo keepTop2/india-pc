@@ -172,9 +172,7 @@ const toggleDisplay = (val?: number) => {
 
 	:deep(.el-collapse-item__wrap) {
 		width: 100%;
-
 		border: none;
-
 		background-color: var(--Bg1);
 	}
 
@@ -189,9 +187,7 @@ const toggleDisplay = (val?: number) => {
 	height: 40px;
 	flex-shrink: 0;
 	border-radius: 8px 8px 0px 0px;
-
 	background: var(--Bg6);
-
 	i {
 		display: none;
 	}
@@ -203,7 +199,7 @@ const toggleDisplay = (val?: number) => {
 }
 
 .card-container {
-	margin-bottom: 16px;
+	margin-bottom: 5px;
 }
 .nonedata {
 	margin-top: 20%;
