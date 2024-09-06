@@ -167,7 +167,7 @@ const attentionEvent = async (isActive: boolean) => {
 
 <style scoped lang="scss">
 .card-container {
-	// width: 1246px;
+	width: 1246px;
 	border-radius: 8px;
 	overflow: hidden;
 	.card—header {
@@ -185,6 +185,7 @@ const attentionEvent = async (isActive: boolean) => {
 			align-items: center;
 			gap: 12px;
 			padding-left: 24px;
+			box-sizing: border-box;
 			.collection {
 				width: 16px;
 				height: 16px;
@@ -205,6 +206,8 @@ const attentionEvent = async (isActive: boolean) => {
 			.market-name-list {
 				height: 100%;
 				display: flex;
+				gap: 4px;
+				padding-right: 4px;
 				.label {
 					flex: 1;
 					height: 100%;

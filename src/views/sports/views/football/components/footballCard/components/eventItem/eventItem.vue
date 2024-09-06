@@ -121,7 +121,7 @@ const handleClick = (action: () => void) => {
 		width: 804px;
 		display: flex;
 		gap: 4px;
-		padding: 8px 0px;
+		padding: 8px 4px 8px 0px;
 	}
 	.league-option {
 		width: 58px;

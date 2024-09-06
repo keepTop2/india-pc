@@ -8,27 +8,25 @@
 		<div class="base-container">
 			<HeaderNotify></HeaderNotify>
 		</div>
-		<el-affix :offset="104" style="width: 100%">
-			<!-- 体育 主体内容区域  -->
-			<div class="base-container main-container">
-				<!-- 体育游戏列表 -->
-				<div class="left-container">
-					<div class="header">
-						<HeaderMenuNav :sportsActive="tabActive"></HeaderMenuNav>
-						<div class="line"></div>
-						<HeaderMenuCondition :sportsActive="tabActive" v-if="$route?.meta?.isSportSort" @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
-					</div>
-					<div class="back-container">
-						<!-- 主体路由页面 -->
-						<router-view v-cloak />
-					</div>
+		<!-- 体育 主体内容区域  -->
+		<div class="main-container">
+			<!-- 体育游戏列表 -->
+			<div class="left-container">
+				<div class="header">
+					<HeaderMenuNav :sportsActive="tabActive"></HeaderMenuNav>
+					<div class="line"></div>
+					<HeaderMenuCondition :sportsActive="tabActive" v-if="$route?.meta?.isSportSort" @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
 				</div>
-				<!-- 体育热门（视频）显示 -->
-				<div class="right-container mr_12" v-if="popularLeague.visible">
-					<SportRight v-if="SportsInfoStore.getSportsToken"></SportRight>
+				<div class="back-container">
+					<!-- 主体路由页面 -->
+					<router-view v-cloak />
 				</div>
 			</div>
-		</el-affix>
+			<!-- 体育热门（视频）显示 -->
+			<div class="right-container" v-if="popularLeague.visible">
+				<SportRight v-if="SportsInfoStore.getSportsToken"></SportRight>
+			</div>
+		</div>
 		<SportsShopCart></SportsShopCart>
 	</div>
 </template>
@@ -582,60 +580,43 @@ const unSport = () => {
 
 <style lang="scss" scoped>
 .base-body {
-	flex: 1;
-	flex-shrink: 0;
-	display: flex;
-	flex-direction: column;
-	box-sizing: border-box;
-	max-width: 1660px;
+	// max-width: 1660px;
+	width: 1660px;
+	height: 100%;
 	margin: 0 auto;
 }
 
 .base-container {
-	display: flex;
 	width: 100%;
-	justify-content: flex-start;
+}
+.main-container {
+	display: flex;
+	// height: calc(100vh - 104px);
+	.left-container {
+		width: 1246px;
+		margin: 0px 12px;
+		.header {
+			width: 100%;
+			border-radius: 8px;
+			background: var(--Bg1);
+			overflow: hidden;
+			box-sizing: border-box;
 
-	&.main-container {
-		height: calc(100vh - 104px);
-		.left-container {
-			flex: 1;
-			margin: 0px 12px;
-			.header {
+			.line {
 				width: 100%;
-				border-radius: 8px;
-				background: var(--Bg1);
-				overflow: hidden;
-				box-sizing: border-box;
-
-				.line {
-					width: 100%;
-					height: 1px;
-					background: var(--Line_1);
-					box-shadow: 0px 1px 0px 0px #343d48;
-				}
-			}
-
-			&.back-container {
-				background-color: var(--Bg);
+				height: 1px;
+				background: var(--Line_1);
+				box-shadow: 0px 1px 0px 0px #343d48;
 			}
 		}
 
-		.right-container {
-			flex: 1;
-			max-width: 390px;
-
-			/* 设置溢出时显示滚动条 */
-			overflow-y: auto;
+		&.back-container {
+			background-color: var(--Bg);
 		}
+	}
 
-		.right-container::-webkit-scrollbar {
-			width: 0; /* 设置滚动条宽度 */
-		}
-
-		.right-container::-webkit-scrollbar-track {
-			background-color: transparent; /* 设置滚动条轨道背景色 */
-		}
+	.right-container {
+		max-width: 390px;
 	}
 }
 </style>
