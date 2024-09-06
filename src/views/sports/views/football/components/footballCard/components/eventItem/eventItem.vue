@@ -1,62 +1,36 @@
 <template>
-	<div class="box_two" :class="[!props.displayContent ? 'hideToggle' : 'showToggle']">
-		<div class="information_left">
-			<!-- 左侧时间 -->
-			<div class="session">
-				<span>{{ livePeriod }}</span>
-				<span v-if="(event.gameInfo.livePeriod == 2 || event.gameInfo.livePeriod == 1) && !event.gameInfo.delayLive && !event.gameInfo.isHt">{{ formattedGameTime }}</span>
-			</div>
-			<div class="information">
-				<!-- 卡片数据 -->
-				<div class="information_top">
-					<!-- 左侧 队伍名称 比分 -->
-					<TeamInfoCard :IfOffTheBat="IfOffTheBat" :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
-					<div class="information_left">
-						<!-- 全场卡片数据 -->
-						<div class="game_stats">
-							<div class="content">
-								<!-- 全场独赢 -->
-								<MarketColumn cardType="capot" :sportInfo="event" :betType="5" :selectionsLength="3" @oddsChange="oddsChange"></MarketColumn>
-								<!-- 全场让球 -->
-								<MarketColumn cardType="handicap" :sportInfo="event" :betType="1" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-								<!-- 全场大小 -->
-								<MarketColumn cardType="magnitude" :sportInfo="event" :betType="3" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-							</div>
-						</div>
-						<!-- 半场卡片数据 -->
-						<div class="game_stats_two">
-							<div class="content">
-								<!-- 半场独赢 -->
-								<MarketColumn cardType="capot" :sportInfo="event" :betType="15" :selectionsLength="3" @oddsChange="oddsChange"></MarketColumn>
-								<!-- 半场让球 -->
-								<MarketColumn cardType="handicap" :sportInfo="event" :betType="7" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-								<!-- 半场大小 -->
-								<MarketColumn cardType="magnitude" :sportInfo="event" :betType="8" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-							</div>
-						</div>
-						<!-- 右侧 比分板 视频源 动画直播  -->
-						<div class="game_stats_three">
-							<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool.action)">
-								<SvgIcon :class="tool.className" :iconName="tool.iconName" :size="23" />
-								<span class="tooltip-text">{{ tool.tooltipText }}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- 卡片底部 角球 特色组合等 -->
-				<div class="information_bottom"></div>
+	<div class="league-content">
+		<!-- 队伍信息 -->
+		<TeamInfoCard :IfOffTheBat="IfOffTheBat" :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
+		<!-- 盘口信息 -->
+		<div class="league-markets">
+			<!-- 全场独赢 -->
+			<MarketColumn cardType="capot" :sportInfo="event" :betType="5" :selectionsLength="3" @oddsChange="oddsChange"></MarketColumn>
+			<!-- 全场让球 -->
+			<MarketColumn cardType="handicap" :sportInfo="event" :betType="1" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+			<!-- 全场大小 -->
+			<MarketColumn cardType="magnitude" :sportInfo="event" :betType="3" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+			<!-- 半场独赢 -->
+			<MarketColumn cardType="capot" :sportInfo="event" :betType="15" :selectionsLength="3" @oddsChange="oddsChange"></MarketColumn>
+			<!-- 半场让球 -->
+			<MarketColumn cardType="handicap" :sportInfo="event" :betType="7" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+			<!-- 半场大小 -->
+			<MarketColumn cardType="magnitude" :sportInfo="event" :betType="8" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+		</div>
+		<!-- 其他信息 -->
+		<div class="league-option">
+			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool.action)">
+				<span class="icon"><svg-icon :name="tool.iconName" width="23px" height="16px"></svg-icon></span>
+				<!-- <span class="tooltip-text">{{ tool.tooltipText }}</span> -->
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
-import { TeamInfoCard, MarketCard, MarketColumn } from "/@/views/sports/views/football/components/footballCard/index";
-import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
-import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
+import { computed } from "vue";
+import { TeamInfoCard, MarketColumn } from "/@/views/sports/views/football/components/footballCard/index";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
-import SportsCommonFn from "/@/views/sports/utils/common";
 const SportHotStore = useSportHotStore();
 
 interface teamDataType {
@@ -80,13 +54,6 @@ const props = withDefaults(defineProps<teamDataType>(), {
 	},
 });
 
-// 定义计算属性 格式化比赛开始时间
-const formattedGameTime = computed(() => {
-	const minutes = Math.floor(props.event.gameInfo.seconds / 60);
-	const seconds = props.event.gameInfo.seconds % 60;
-	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-});
-
 const emit = defineEmits(["oddsChange"]);
 /**
  * @description 动画结束删除oddsChange字段状态
@@ -94,28 +61,6 @@ const emit = defineEmits(["oddsChange"]);
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
-
-/**
- * @description 计算是上半场还是下半场 根据 livePeriod 判断当前是第几节
- */
-const livePeriod = computed(() => {
-	const gameInfo = SportsCommonFn.safeAccess(props.event, ["gameInfo"]);
-	const { livePeriod, delayLive, isHt } = gameInfo;
-	if (livePeriod == 0 && !delayLive && isHt) {
-		return "中场休息";
-	}
-	if (livePeriod == 0 && delayLive && !isHt) {
-		return "延迟开赛";
-	}
-	if (livePeriod == 1 && !delayLive && !isHt) {
-		return "上半场";
-	}
-	if (livePeriod == 2 && !delayLive && !isHt) {
-		return "下半场";
-	}
-	const globalShowTime = SportsCommonFn.safeAccess(props.event, ["globalShowTime"]);
-	return convertUtcToUtc5AndFormatMD(globalShowTime);
-});
 
 const openPage = () => {
 	SportHotStore.setCurrentEvent(props.event);
@@ -136,8 +81,7 @@ const tools = computed(() => {
 	// 判断 是否在未开赛页面
 	if (props.IfOffTheBat !== "todayContest") {
 		baseTools.push({
-			className: "close",
-			iconName: "score",
+			iconName: "sports-score_icon",
 			tooltipText: "比分板",
 			action: openPage,
 		});
@@ -146,8 +90,7 @@ const tools = computed(() => {
 	// 判断是否有视频源
 	if (props.event.streamingOption != 0 && props.event.channelCode) {
 		baseTools.push({
-			className: "close",
-			iconName: "video",
+			iconName: "sports-live_icon",
 			tooltipText: "视频源",
 			action: toggleFullScreen,
 		});
@@ -166,168 +109,37 @@ const handleClick = (action: () => void) => {
 </script>
 
 <style scoped lang="scss">
-.box_two {
+.league-content {
 	display: flex;
-	height: 214px;
-	flex-shrink: 0;
-	border-radius: 0px 0px 8px 8px;
-	background: var(--Bg1);
-	.information_left {
-		flex: 1;
+	background-color: var(--Bg1);
+	border-bottom: 1px solid var(--Line_2);
+	&:last-child {
+		border-bottom: 0px;
+	}
+
+	.league-markets {
+		width: 804px;
 		display: flex;
-		justify-content: flex-end;
-
-		.session {
-			display: flex;
-			// min-width: 54px;
-			width: 58px;
-			// height: 214px;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			flex-shrink: 0;
-			// padding: 0 6px;
-
-			background: var(--Bg3);
-
-			span {
-				margin-top: 10px;
-
-				color: var(--Theme);
-
-				text-align: center;
-				font-family: "PingFang SC";
-				font-size: 14px;
-				font-style: normal;
-				font-weight: 400;
-				line-height: normal;
-			}
-		}
-
-		.information {
-			width: 100%;
-
-			.information_top {
+		gap: 4px;
+		padding: 8px 0px;
+	}
+	.league-option {
+		width: 58px;
+		display: flex;
+		gap: 16px;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		border-left: 1px solid var(--Line_2);
+		overflow: hidden;
+		.tooltip-container {
+			.icon {
+				width: 23px;
+				height: 16px;
 				display: flex;
-
-				.information_left {
-					.game_stats {
-						display: flex;
-						justify-content: center;
-						align-items: center;
-					}
-
-					.content {
-						display: grid;
-						grid-template-columns: repeat(3, 130px);
-						gap: 4px;
-						height: 100%;
-						margin: 8px 0px;
-					}
-
-					.game_stats_two {
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						margin-left: 4px;
-					}
-
-					.game_stats_three {
-						display: flex;
-						flex-direction: column;
-						align-items: center;
-						justify-content: center;
-						width: 54px;
-						margin: 8px 4px;
-						border-radius: 8px;
-
-						background: var(--Bg3);
-
-						.close {
-							color: var(--icon);
-						}
-
-						.close:hover {
-							color: var(--Theme);
-						}
-
-						.tooltip-container {
-							position: relative;
-							display: inline-block;
-							cursor: pointer;
-						}
-
-						.tooltip-text {
-							visibility: hidden;
-							text-align: center;
-							position: absolute;
-							z-index: 1;
-							bottom: 110%;
-							/* 调整这个值以适应您的图标大小 */
-							left: 50%;
-							transform: translateX(-50%);
-							opacity: 0;
-							transition: opacity 0.3s;
-							white-space: nowrap;
-
-							padding: 2px 4px;
-							text-align: center;
-							font-family: "PingFang SC";
-							font-size: 12px;
-							font-style: normal;
-							font-weight: 400;
-							line-height: normal;
-							border-radius: 4px;
-
-							color: var(--Text1);
-							background: var(--Line);
-						}
-
-						.tooltip-container:hover .tooltip-text {
-							visibility: visible;
-							opacity: 1;
-						}
-					}
-				}
-			}
-
-			.information_bottom {
-				height: 38px;
-				flex-shrink: 0;
-				border-top: 1px solid var(--Line);
+				align-items: center;
 			}
 		}
 	}
-}
-.sticky {
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0;
-	z-index: 1;
-}
-.hideToggle {
-	height: 0;
-	overflow: hidden;
-	transition: height 0.5s ease;
-}
-.showToggle {
-	max-height: 214px;
-	overflow: hidden;
-	transition: height 0.5s ease;
-	background: var(--Bg1);
-	border-bottom: 1px solid var(--Line);
-}
-.fade-enter-active,
-.fade-leave-active {
-	transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-	opacity: 0;
-}
-
-.toggle {
-	border-radius: 8px;
-	transition: border-radius 0.8s ease;
 }
 </style>

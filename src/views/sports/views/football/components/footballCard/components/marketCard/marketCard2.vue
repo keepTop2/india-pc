@@ -1,50 +1,46 @@
 <template>
-	<div class="market-content">
-		<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }">
-			<!-- 独赢 -->
-			<template v-if="cardType == `capot`">
-				<div class="label">{{ cardData?.keyName }}</div>
-				<!-- 状态正常 -->
-				<div class="value" v-if="market.marketStatus == 'running'">
-					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+	<div class="card-container">
+		<div class="content-container" v-if="cardData" :class="{ isBright: isBright() }">
+			<div class="content-container" @click="onSetSportsEventData">
+				<div class="text-container">
+					<!-- 独赢 -->
+					<template v-if="cardType == `capot`">
+						<div class="label">{{ cardData?.keyName }}</div>
+						<div v-if="market.marketStatus == 'running'">
+							<div class="value" :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</div>
+							<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+						</div>
+						<SvgIcon v-else class="sport_lock2" iconName="sport_lock" :size="20" />
+					</template>
+					<!-- 让球 -->
+					<template v-else-if="cardType == `handicap`">
+						<div class="label">
+							<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
+						</div>
+						<div v-if="market.marketStatus == 'running'">
+							<div class="value" :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</div>
+							<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+						</div>
+						<SvgIcon v-else class="sport_lock2" iconName="sport_lock" :size="20" />
+					</template>
+					<!-- 大小 -->
+					<template v-else-if="cardType == `magnitude`">
+						<div class="label">
+							<span>{{ cardData.keyName }}</span>
+							<span>{{ cardData?.point }}</span>
+						</div>
+						<div v-if="market.marketStatus == 'running'">
+							<div class="value" :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</div>
+							<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+						</div>
+						<SvgIcon v-else class="sport_lock2" iconName="sport_lock" :size="20" />
+					</template>
 				</div>
-				<!-- 锁 -->
-				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
-			</template>
-
-			<!-- 独赢 -->
-			<template v-else-if="cardType == `handicap`">
-				<div class="label">
-					<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
-				</div>
-				<!-- 状态正常 -->
-				<div class="value" v-if="market.marketStatus == 'running'">
-					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
-				</div>
-				<!-- 锁 -->
-				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
-			</template>
-
-			<!-- 独赢 -->
-			<template v-else-if="cardType == `magnitude`">
-				<div class="label">
-					<span>{{ cardData.keyName }}</span>
-					<span>{{ cardData?.point }}</span>
-				</div>
-				<!-- 状态正常 -->
-				<div class="value" v-if="market.marketStatus == 'running'">
-					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
-				</div>
-				<!-- 锁 -->
-				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
-			</template>
+			</div>
 		</div>
-		<div v-else class="market-item">
-			<div class="noData">-</div>
-		</div>
+		<template v-else>
+			<i class="noData"></i>
+		</template>
 	</div>
 </template>
 
@@ -204,64 +200,92 @@ const isBright = () => {
 </script>
 
 <style scoped lang="scss">
-.market-content {
-	width: 100%;
-	height: 34px;
-	.market-item {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 7px 18px 7px 14px;
-		border-radius: 4px;
-		background: var(--Bg3);
-		box-sizing: border-box;
-
-		.label {
-			color: var(--Text1);
-			font-family: "PingFang SC";
-			font-size: 14px;
-			font-weight: 400;
-		}
-		.value {
-			color: var(--Text_a);
-			font-family: "PingFang SC";
-			font-size: 16px;
-			font-weight: 400;
-		}
-		&:hover {
-			background-color: rgba(255, 255, 255, 0.05);
-		}
-
-		.lock {
-			width: 16px;
-			height: 16px;
-		}
-
-		.noData {
-			width: 100%;
-			height: 100%;
-			text-align: center;
-			color: var(--Text1);
-			font-family: "PingFang SC";
-			font-size: 14px;
-			font-weight: 400;
-		}
-	}
-
-	.isBright {
-		background: var(--Bg5);
-		.label {
-			color: var(--Text_a);
-		}
-	}
-}
-
 .oddsUp {
 	color: var(--Warn) !important;
 }
+
 .oddsDown {
 	color: var(--Theme) !important;
+}
+
+.card-container {
+	display: flex;
+	align-items: center;
+	margin-top: 4px;
+	width: 130px;
+	height: 34px;
+	flex-shrink: 0;
+	border-radius: 4px;
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-drag: none;
+	overflow: hidden;
+
+	background: var(--Bg3);
+
+	&:hover {
+		background: var(--Line);
+	}
+
+	.content-container {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		border-radius: 4px;
+
+		&.isBright {
+			background: var(--Bg5);
+		}
+	}
+
+	.text-container {
+		display: flex;
+		align-items: center;
+
+		.label {
+			margin: 0 18px;
+			color: var(--Text1);
+
+			text-align: center;
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+		}
+
+		.value {
+			color: var(--Text_s);
+
+			font-family: "PingFang SC";
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+		}
+
+		.sport_lock2 {
+			margin-left: 15px;
+			color: var(--icon);
+		}
+		.sport_lock {
+			margin-left: 68px;
+			color: var(--icon);
+		}
+	}
+
+	.noData {
+		margin: 0 auto;
+		width: 14px;
+		height: 1px;
+		background: var(--Text1);
+	}
+}
+
+.item:hover {
+	background: var(--Line);
 }
 </style>

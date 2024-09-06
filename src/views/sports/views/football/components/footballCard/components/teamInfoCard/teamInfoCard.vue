@@ -3,54 +3,46 @@
  * @Description: 体育-足球-队伍卡片
 -->
 <template>
-	<div class="card-container">
-		<div class="information_team">
-			<!-- 队伍名称 -->
-			<div class="team" @click="linkDetail">
-				<div class="team_one">
-					<div class="team_name">
-						<img class="icon" :src="teamData.teamInfo?.homeIconUrl" />
-						<div class="name">
-							<span>{{ teamData.teamInfo.homeName }}</span>
-						</div>
-					</div>
-					<!-- 红牌黄牌数量 -->
-					<div class="foul-info">
-						<span v-if="teamData.soccerInfo?.homeRedCard > 0" class="red">{{ teamData.soccerInfo?.homeRedCard }}</span>
-						<span v-if="teamData.soccerInfo?.homeYellowCard > 0" class="yellow">{{ teamData.soccerInfo?.homeYellowCard }}</span>
-					</div>
+	<div class="league-info">
+		<!-- 队伍信息 -->
+		<div class="league-team-info">
+			<!-- 主队 -->
+			<div class="team">
+				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.homeIconUrl" /></div>
+				<div class="team-name">{{ teamData.teamInfo.homeName }}</div>
+				<!-- 红牌黄牌数量 -->
+				<div class="foul-info" v-if="teamData.soccerInfo?.homeRedCard > 0 || teamData.soccerInfo?.homeYellowCard > 0">
+					<span v-if="teamData.soccerInfo?.homeRedCard > 0" class="red">{{ teamData.soccerInfo?.homeRedCard }}</span>
+					<span v-if="teamData.soccerInfo?.homeYellowCard > 0" class="yellow">{{ teamData.soccerInfo?.homeYellowCard }}</span>
 				</div>
-				<!-- 队伍名称 -->
-				<div class="team_two">
-					<div class="team_name">
-						<img class="icon" :src="teamData.teamInfo?.awayIconUrl" />
-						<div class="name">
-							<span>{{ teamData.teamInfo.awayName }}</span>
-						</div>
-					</div>
-
-					<!-- 红牌黄牌数量 -->
-					<div class="foul-info">
-						<span v-if="teamData.soccerInfo?.awayRedCard > 0" class="red">{{ teamData.soccerInfo?.awayRedCard }}</span>
-						<span v-if="teamData.soccerInfo?.awayYellowCard > 0" class="yellow">{{ teamData.soccerInfo?.awayYellowCard }}</span>
-					</div>
+				<!-- 得分 -->
+				<div class="score">{{ teamData.gameInfo?.liveHomeScore }}</div>
+			</div>
+			<!-- 客队 -->
+			<div class="team">
+				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.awayIconUrl" /></div>
+				<div class="team-name">{{ teamData.teamInfo.awayName }}</div>
+				<!-- 红牌黄牌数量 -->
+				<div class="foul-info" v-if="teamData.soccerInfo?.awayRedCard > 0 || teamData.soccerInfo?.awayYellowCard > 0">
+					<span v-if="teamData.soccerInfo?.awayRedCard > 0" class="red">{{ teamData.soccerInfo?.awayRedCard }}</span>
+					<span v-if="teamData.soccerInfo?.awayYellowCard > 0" class="yellow">{{ teamData.soccerInfo?.awayYellowCard }}</span>
 				</div>
+				<!-- 得分 -->
+				<div class="score">{{ teamData.gameInfo?.liveAwayScore }}</div>
 			</div>
-			<!-- 队伍比分 -->
-			<div :class="[IfOffTheBat == 'rollingBall' ? 'score' : ' is_show ']">
-				<span>{{ teamData.gameInfo?.liveHomeScore }}</span>
-				<i class="icon"></i>
-				<span>{{ teamData.gameInfo?.liveAwayScore }}</span>
+		</div>
+		<div class="other-info">
+			<div class="date">
+				<span>{{ livePeriod }}</span>
+				<span v-if="(teamData.gameInfo.livePeriod == 2 || teamData.gameInfo.livePeriod == 1) && !teamData.gameInfo.delayLive && !teamData.gameInfo.isHt">{{
+					formattedGameTime
+				}}</span>
 			</div>
-			<!-- 收藏 -->
-			<div class="number">
-				<!-- 关注 -->
-				<SvgIcon v-if="isAttention" class="sports_collection2" iconName="sports_collection_two" :size="16" @click="attentionEvent(true)" />
-				<!-- 取消关注 -->
-				<SvgIcon v-else class="sports_collection" iconName="sports_collection" :size="16" @click="attentionEvent(false)" />
-				<div class="number_one" @click="linkDetail">
-					<span>+</span><span>{{ teamData.marketCount }}</span>
-					<SvgIcon class="icon" iconName="arrowRight" />
+			<div class="info-list">
+				<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px"></svg-icon>
+				<div class="markets-stats">
+					<span>+{{ teamData.marketCount }}</span>
+					<svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon>
 				</div>
 			</div>
 		</div>
@@ -66,6 +58,8 @@ import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import PubSub from "/@/pubSub/pubSub";
 import { useLink } from "/@/views/sports/hooks/useLink";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
+import SportsCommonFn from "/@/views/sports/utils/common";
+import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
 const router = useRouter();
@@ -89,6 +83,36 @@ const props = withDefaults(defineProps<teamDataType>(), {
 		return {};
 	},
 });
+
+/**
+ * @description 计算是上半场还是下半场 根据 livePeriod 判断当前是第几节
+ */
+const livePeriod = computed(() => {
+	const gameInfo = SportsCommonFn.safeAccess(props.teamData, ["gameInfo"]);
+	const { livePeriod, delayLive, isHt } = gameInfo;
+	if (livePeriod == 0 && !delayLive && isHt) {
+		return "中场休息";
+	}
+	if (livePeriod == 0 && delayLive && !isHt) {
+		return "延迟开赛";
+	}
+	if (livePeriod == 1 && !delayLive && !isHt) {
+		return "上半场";
+	}
+	if (livePeriod == 2 && !delayLive && !isHt) {
+		return "下半场";
+	}
+	const globalShowTime = SportsCommonFn.safeAccess(props.teamData, ["globalShowTime"]);
+	return convertUtcToUtc5AndFormatMD(globalShowTime);
+});
+
+// 定义计算属性 格式化比赛开始时间
+const formattedGameTime = computed(() => {
+	const minutes = Math.floor(props.teamData.gameInfo.seconds / 60);
+	const seconds = props.teamData.gameInfo.seconds % 60;
+	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+});
+
 /**
  * @description: 跳转到比赛详细
  */
@@ -124,175 +148,99 @@ const attentionEvent = async (isActive: boolean) => {
 </script>
 
 <style scoped lang="scss">
-.is_show {
-	display: none;
-}
-.card-container {
-	width: 100%;
-	display: flex;
-	.information_team {
-		flex: 1;
-		margin-left: 12px;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
+.league-info {
+	flex: 1;
+	padding: 8px 10px 8px 24px;
+	.league-team-info {
+		display: grid;
+		row-gap: 4px;
 		.team {
-			flex: 1;
 			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-			padding: 14px 0;
-
-			.icon {
-				-webkit-user-drag: none;
+			align-items: center;
+			gap: 6px;
+			.team-icon {
 				width: 20px;
 				height: 20px;
-			}
-
-			.name {
-				cursor: pointer;
-
-				color: var(--Text1);
-
-				flex: 1;
-				position: relative;
-				overflow: hidden;
-				display: flex;
-				// height: 100%;
-				height: 24px;
-				margin-left: 8px;
-				box-sizing: border-box;
-
-				span {
+				.icon {
 					width: 100%;
-					// height: 100%;
-					white-space: nowrap;
-					/* 不允许换行 */
-					overflow: hidden;
-					/* 超出部分隐藏 */
-					text-overflow: ellipsis;
-					/* 显示省略号 */
-					font-family: "PingFang SC";
-					font-size: 16px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: normal;
-					margin-left: 8px;
-					top: 0;
-					position: absolute;
+					height: 100%;
 				}
 			}
-			.team_one {
+			.team-name {
 				flex: 1;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-			}
-			.team_two {
-				flex: 1;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-top: 22px;
-			}
-			.team_name {
-				flex: 1;
-				display: flex;
-				align-items: center;
+				color: var(--Text_s);
+				font-family: "PingFang SC";
+				font-size: 14px;
+				font-weight: 400;
 			}
 			.foul-info {
 				display: flex;
-				align-items: center;
-				margin-right: 21px;
+				gap: 10px;
+
+				.red,
 				.yellow {
-					margin-left: 10px;
-					background-color: var(--F1);
-				}
-				.red {
-					margin-left: 5px;
-					background-color: var(--Warn);
-				}
-				.yellow,
-				.red {
+					min-width: 14px;
+					height: 18px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
 					padding: 2px;
 					border-radius: 2px;
-					color: var(--Text_s);
+					color: var(--Text_a, #fff);
 					font-family: "PingFang SC";
 					font-size: 14px;
-					font-style: normal;
 					font-weight: 400;
-					line-height: 14px; /* 100% */
+					line-height: 14px;
+				}
+				.red {
+					background: var(--Theme);
+				}
+				.yellow {
+					background: var(--F1);
 				}
 			}
-		}
-
-		.score {
-			display: flex;
-			align-items: center;
-
-			span {
+			.score {
+				min-width: 32px;
+				height: 34px;
 				display: flex;
-				padding: 10px;
-				flex-direction: column;
-				justify-content: center;
 				align-items: center;
-				gap: 10px;
-				flex-shrink: 0;
-				border-radius: 4px;
-
-				color: var(--Text_s);
-				background: var(--Bg4);
-
+				justify-content: center;
+				color: var(--Theme);
 				font-family: "DIN Alternate";
 				font-size: 16px;
-				font-style: normal;
 				font-weight: 700;
-				line-height: normal;
-			}
-
-			.icon {
-				padding: 0;
-				margin: 0 4px;
-				width: 16px;
-				height: 2px;
-				flex-shrink: 0;
-				border-radius: 2px;
-
-				background: var(--Line);
 			}
 		}
-
-		.number {
+	}
+	.other-info {
+		margin-top: 18px;
+		padding-right: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.date {
 			display: flex;
+			gap: 6px;
+			color: var(--Theme);
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-weight: 400;
+		}
+		.info-list {
+			display: flex;
+			gap: 10px;
 			align-items: center;
-			margin: 16px 0 6px 0;
 
-			.sports_collection {
-				color: var(--icon);
-			}
-
-			.sports_collection2 {
-				color: var(--Warn);
-			}
-
-			.number_one {
-				margin-left: 20px;
+			.markets-stats {
+				min-width: 50px;
 				display: flex;
 				align-items: center;
-				cursor: pointer;
-				color: var(--Text1);
-
+				justify-content: flex-end;
+				gap: 6px;
+				color: var(--Text1, #98a7b5);
 				font-family: "PingFang SC";
 				font-size: 14px;
-				font-style: normal;
 				font-weight: 400;
-				line-height: normal;
-				.icon {
-					margin-left: 6px;
-					width: 12px;
-					height: 12px;
-					color: var(--icon);
-				}
 			}
 		}
 	}

@@ -39,7 +39,9 @@ import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
 import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
+import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 
+const SportAttentionStore = useSportAttentionStore();
 const router = useRouter();
 const route = useRoute();
 
