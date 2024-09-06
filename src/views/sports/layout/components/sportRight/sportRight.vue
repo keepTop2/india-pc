@@ -111,7 +111,6 @@ const getStreaming = async () => {
 	if (status == 200) {
 		videoStreamingUrl.value = data;
 		const list = getVideoUrl(data);
-
 		const hasVideo = list.some((item) => item.type === SportControlEnum.Video);
 		const hasH5 = list.some((item) => item.type === SportControlEnum.Animation);
 		const type = hasVideo ? SportControlEnum.Video : hasH5 ? SportControlEnum.Animation : SportControlEnum.Info;

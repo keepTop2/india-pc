@@ -8,7 +8,7 @@
 					</div>
 				</div>
 			</div>
-			<div style="padding-top: 6px">
+			<div class="pt_6 curp" style="width: 60px">
 				<svg-icon :class="['icon-svg', { expand: computedExpand }]" name="sports-double_arrow_up" @click="onExpandAndCollapse" :size="18" />
 			</div>
 		</div>
@@ -203,7 +203,7 @@ const playList = reactive([
 		align-items: flex-start;
 		justify-content: space-between;
 		// flex-wrap: wrap;
-		gap: 14px;
+
 		margin-bottom: 12px;
 
 		& > * {
@@ -211,9 +211,10 @@ const playList = reactive([
 		}
 
 		.scorllbar {
-			width: 340px;
+			width: 345px;
 			overflow-x: auto;
 			padding-bottom: 8px;
+			margin-right: 7px;
 		}
 		.scorllbar::-webkit-scrollbar {
 			width: 10px;
@@ -231,13 +232,13 @@ const playList = reactive([
 			display: flex;
 			align-items: center;
 			width: max-content;
-			gap: 6px;
+			gap: 10px;
 		}
 
 		.item {
 			padding: 4px 10px;
 			border: 1px solid var(--Icon, #67707b);
-			border-radius: 99px;
+			border-radius: 4px;
 			font-size: 12px;
 			transition: 0.2s;
 			cursor: pointer;

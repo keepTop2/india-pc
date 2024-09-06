@@ -27,6 +27,7 @@
 	.ellipsis {
 		overflow: hidden;
 		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.Wran_text {
 		color: var(--Warn);

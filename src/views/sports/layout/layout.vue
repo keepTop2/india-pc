@@ -587,6 +587,8 @@ const unSport = () => {
 	display: flex;
 	flex-direction: column;
 	box-sizing: border-box;
+	max-width: 1660px;
+	margin: 0 auto;
 }
 
 .base-container {

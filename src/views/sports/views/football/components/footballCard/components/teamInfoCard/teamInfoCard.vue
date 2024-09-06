@@ -99,6 +99,7 @@ const linkDetail = () => {
 		dataIndex: props?.dataIndex,
 		marketCount: props?.teamData.marketCount,
 	};
+
 	SportHotStore.setCurrentEvent(props.teamData);
 	gotoEventDetail(params, SportTypeEnum.FootBall);
 };

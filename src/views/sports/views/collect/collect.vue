@@ -7,7 +7,7 @@
 	<div class="box-content" v-show="isShowCollect">
 		<div class="box_navigation">
 			<div class="navigation_left" @click="$router.back()">
-				<SvgIcon class="icon" iconName="arrowLeft" :size="14" />
+				<SvgIcon class="icon" iconName="arrow_left" :size="14" />
 				<div>返回</div>
 			</div>
 
