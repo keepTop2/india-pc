@@ -16,8 +16,8 @@
 			v-if="sportsActive !== `champion`"
 			ref="VirtualScrollVirtualListRef"
 			bottomClass="card-container"
-			minDivClass="box"
-			childrenDivClass="box_two"
+			minDivClass="card—header"
+			childrenDivClass="league-content"
 			:list-data="state.targetEventList"
 		>
 			<template #default="{ item, index, isExpand }">
@@ -30,8 +30,8 @@
 			v-else
 			ref="VirtualScrollVirtualListRef"
 			bottomClass="card-container"
-			minDivClass="box"
-			childrenDivClass="box_two"
+			minDivClass="card—header"
+			childrenDivClass="league-content"
 			:list-data="state.targetEvents"
 			:childrenKey="'teams'"
 		>

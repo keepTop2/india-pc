@@ -581,10 +581,10 @@ const unSport = () => {
 
 <style lang="scss" scoped>
 .base-body {
-	// max-width: 1660px;
-	width: 1660px;
 	height: 100%;
+	max-width: 1660px;
 	margin: 0 auto;
+	overflow-x: auto;
 }
 
 .base-container {
@@ -593,15 +593,20 @@ const unSport = () => {
 .main-container {
 	display: flex;
 	height: calc(100% - 40px);
+
+	width: 1660px;
+	overflow: hidden;
+	overflow-x: auto;
+	justify-content: center;
 	.left-container {
+		margin: 0px 0;
 		width: 1246px;
-		height: 100%;
-		margin: 0px 12px;
+
 		.header {
 			width: 100%;
 			border-radius: 8px;
 			background: var(--Bg1);
-			overflow: hidden;
+
 			box-sizing: border-box;
 
 			.line {
@@ -618,8 +623,13 @@ const unSport = () => {
 	}
 
 	.right-container {
-		max-width: 390px;
+		width: 390px;
 		height: 100%;
+		margin: 0 10px;
+		overflow-y: auto;
+	}
+	.right-container::-webkit-scrollbar {
+		display: none;
 	}
 }
 </style>

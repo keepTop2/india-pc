@@ -1,7 +1,3 @@
-<!--
- * @Author: Relax
- * @Description: 体育-足球-卡片
--->
 <template>
 	<div class="card-container">
 		<!--  头部 -->
@@ -15,8 +11,8 @@
 				<div class="league_name">{{ teamData.leagueName }}</div>
 			</div>
 			<!-- 盘口表头 -->
-			<div class="market-name-info">
-				<div class="market-name-list" v-if="displayContent">
+			<div class="market-name-info" v-if="displayContent">
+				<div class="market-name-list">
 					<div class="label" v-for="betType in betTypes" :key="betType">{{ betType }}</div>
 				</div>
 			</div>
@@ -31,14 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
-import { isExternal } from "util/types";
+import { computed, onMounted, ref, watch } from "vue";
 import EventItem from "./components/eventItem/eventItem.vue";
-import Common from "/@/utils/common";
 import PubSub from "/@/pubSub/pubSub";
 import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 const SportAttentionStore = useSportAttentionStore();
+
 const betTypes = ["全场独赢", "全场让球", "全场大小", "半场独赢", "半场让球", "半场大小"];
 
 interface teamDataType {
