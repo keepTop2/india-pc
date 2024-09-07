@@ -1,30 +1,60 @@
 <template>
 	<div class="main" :class="size" v-if="computedHasSportInfo">
-		<el-table :data="computedTableData" v-if="sportIsRunning">
-			<el-table-column>
-				<template #header>
-					<div class="col1">
-						<span v-for="item in computedSportShowTime" :key="item">{{ item }}</span>
-					</div>
-				</template>
-				<template #default="{ row }">
-					<div class="title">
-						<img :src="row.icon" alt="" :style="{ width: '18px', height: 'auto' }" />
-						{{ row.title }}
-					</div>
-				</template>
-			</el-table-column>
-
-			<el-table-column v-for="item in computedTableColumn" :key="item.dataIndex" :width="item.width" :prop="item.dataIndex">
-				<template #header>
-					<SvgIcon v-if="item.type === TitleTypeEnum.Svg" :iconName="item.iconName" :size="item.size" />
-					<span v-if="item.type === TitleTypeEnum.Text" :size="item.size" :class="item.className ?? ''">{{ item.title }}</span>
-				</template>
-				<template #default="{ row }">
-					<span class="col" :class="item.className ?? ''">{{ row[item.dataIndex] ?? "" }}</span>
-				</template>
-			</el-table-column>
-		</el-table>
+		<div class="col1 fs_14" v-if="size == 'small'">
+			<span class="svg_icon"><svg-icon name="sports-football_icon" size="14px"></svg-icon></span>
+			<span>{{ sportInfo?.teamInfo?.homeName }}</span>
+			<span class="mr_8 ml_8"> VS </span>
+			<span>{{ sportInfo?.teamInfo?.awayName }}</span>
+		</div>
+		<div
+			v-if="sportIsRunning"
+			class="scoreboard"
+			:style="{
+				backgroundImage: size == 'small' ? `url(${Common.getCommonImgPath('scoreboard_bg.png')})` : `url(${Common.getCommonImgPath('scoreboard_bg_2.png')})`,
+			}"
+		>
+			<div class="scoreboard_content fs_14">
+				<div class="scoreboard_header">
+					<span>
+						<span class="fs_12 mr_15">上半场</span>
+						<span class="fs_12">88:23</span>
+					</span>
+					<span>
+						<svg-icon name="sports-jiaoqiu" size="20px"></svg-icon>
+					</span>
+					<span><svg-icon name="sports-hongpai" size="20px"></svg-icon></span>
+					<span><svg-icon name="sports-huangpai" size="20px"></svg-icon></span>
+					<span><svg-icon name="sports-dianqiu" size="20px"></svg-icon></span>
+					<span><svg-icon name="sports-banchangjinqiu" size="20px"></svg-icon></span>
+					<span><svg-icon name="sports-quanchangjinqiu" size="20px"></svg-icon></span>
+				</div>
+				<div class="scoreboard_info">
+					<span class="teamName">
+						<img v-if="sportInfo?.teamInfo?.homeIconUrl" :src="sportInfo?.teamInfo?.homeIconUrl" alt="" />
+						<span class="ellipsis">{{ sportInfo?.teamInfo?.homeName }}</span>
+					</span>
+					<span>1</span>
+					<span>2</span>
+					<span>3</span>
+					<span>3</span>
+					<span>3</span>
+					<span>3</span>
+				</div>
+				<div class="line"></div>
+				<div class="scoreboard_info">
+					<span class="teamName">
+						<img v-if="sportInfo?.teamInfo?.homeIconUrl" :src="sportInfo?.teamInfo?.homeIconUrl" alt="" />
+						<span class="ellipsis"> {{ sportInfo?.teamInfo?.awayName }} </span>
+					</span>
+					<span>1</span>
+					<span>2</span>
+					<span>3</span>
+					<span>3</span>
+					<span>3</span>
+					<span>3</span>
+				</div>
+			</div>
+		</div>
 		<div v-else class="teams">
 			<div class="team1">
 				<span>{{ sportInfo?.teamInfo?.homeName }}</span>
@@ -48,7 +78,7 @@ import SportsCommonFn from "/@/views/sports/utils/common";
 import { SportEventStatusEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { isEmpty } from "lodash-es";
 import { useSportEventDetailTool, TitleTypeEnum, TableSizeType } from "./useSportEventDetailTool";
-
+import Common from "/@/utils/common";
 const { getSportTableData, getSportTableColumn } = useSportEventDetailTool();
 
 // 定义props类型
@@ -98,83 +128,115 @@ const computedSportShowTime = computed(() => (isEmpty(props.sportInfo) ? [] : Sp
 
 <style scoped lang="scss">
 .main {
-	width: calc(100% - 30px);
-	height: 150px;
+	min-width: 390px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
-	.el-table {
+	flex-wrap: wrap;
+	background: var(--Bg1);
+	.col1 {
+		font-weight: 500;
 		width: 100%;
-		--el-table-row-hover-bg-color: transparent;
-		--el-table-bg-color: transparent;
-		--el-table-border-color: transparent;
-
-		.col1 {
-			font-weight: 500;
+		text-align: left;
+		padding: 0 12px;
+		height: 26px;
+		line-height: 26px;
+		display: flex;
+		align-items: center;
+		color: var(--Text1) !important;
+		.svg_icon {
+			margin: 4px 5px;
 			display: flex;
 			align-items: center;
-			gap: 4px;
-			color: var(--Text1) !important;
 		}
+	}
+	.scoreboard {
+		height: 208px;
+		width: 100%;
+		background-size: 100% 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--Text_s);
+		.scoreboard_content {
+			width: 100%;
+			padding: 12px;
+			display: flex;
+			flex-wrap: wrap;
+			border-radius: 8px;
+			overflow: hidden;
+			> div {
+				display: flex;
+				width: 100%;
+				justify-content: space-between;
+				align-items: center;
+				span {
+					text-align: center;
+				}
+				.teamName {
+					display: flex;
+					padding: 0 10px;
+					width: 100%;
 
-		:deep() {
-			tr {
-				background: rgba(0, 0, 0, 0.4);
-
-				td {
-					height: 65px;
+					img {
+						height: 20px;
+						margin-right: 5px;
+					}
 				}
 			}
-
-			th .cell,
-			td .cell {
-				padding: 0;
-				text-align: center;
+			.scoreboard_header {
+				background: var(--Bg2);
+				padding: 9px 0;
+				border-radius: 8px 8px 0px 0px;
+				align-items: center;
+				> span {
+					flex: 1;
+				}
+				> span:first-child {
+					flex: 3;
+				}
 			}
-
-			th:first-child .cell,
-			th:last-child .cell,
-			td:first-child .cell,
-			td:last-child .cell {
-				padding: 0 8px;
+			.scoreboard_info {
+				height: 51px;
+				background: rgba(26, 28, 32, 0.7);
+				> span {
+					flex: 1;
+				}
+				> span:first-child {
+					max-width: 120px;
+					text-align: left;
+					flex: 3;
+				}
 			}
-
-			th.el-table__cell {
-				background: var(--Bg3);
+			.scoreboard_info:nth-child(2) {
+				border-radius: 0px 0px 8px 8px;
+			}
+			.line {
+				height: 1px;
+				flex-shrink: 0;
+				opacity: 0.5;
+				padding: 0 12px;
+				background: var(--Line_2);
 			}
 		}
+		table {
+			width: 100%;
+			border: none;
+			text-align: center;
+			border-radius: 8px;
 
-		.col {
-			color: var(--Text_s);
-		}
-
-		.title {
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			text-overflow: ellipsis;
-			white-space: nowrap;
+			thead {
+				height: 36px;
+				background: var(--Bg2);
+				padding: 9px 12px;
+				border-radius: 8px 8px 0px 0px;
+			}
+			tbody {
+				height: 102px;
+				background: rgba(26, 28, 32, 0.7);
+			}
 		}
 	}
-
-	&.large .el-table {
-		:deep() {
-			th .cell,
-			td .cell {
-				padding: 0 12px;
-				text-align: center;
-			}
-
-			th:first-child .cell,
-			th:last-child .cell,
-			td:first-child .cell,
-			td:last-child .cell {
-				padding: 0 12px;
-			}
-		}
-	}
-
 	.yellow {
 		color: var(--F1);
 	}
@@ -229,7 +291,31 @@ const computedSportShowTime = computed(() => (isEmpty(props.sportInfo) ? [] : Sp
 			}
 		}
 	}
-
+	&.large {
+		width: 100%;
+		flex: 1;
+		.scoreboard {
+			height: 276px;
+			.scoreboard_content {
+				width: 892px;
+				.scoreboard_header {
+					> span:first-child {
+						flex: 3;
+						text-align: left;
+						max-width: 300px;
+						padding: 0 10px;
+					}
+				}
+				.scoreboard_info {
+					height: 65px;
+					> span:first-child {
+						max-width: 300px;
+						flex: 3;
+					}
+				}
+			}
+		}
+	}
 	&.large .teams .time {
 		min-width: 300px;
 		max-width: 400px;

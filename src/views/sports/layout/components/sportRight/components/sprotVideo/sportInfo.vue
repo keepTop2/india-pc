@@ -6,9 +6,14 @@
 			<!-- 比分信息 -->
 			<div>
 				<div>
+					<svg-icon name="sports-jiaoqiu" size="14px"></svg-icon>
+					{{ get(currentEventInfo.soccerInfo, "homeRedCard", 0) }}
+				</div>
+				<div>
 					<span class="danger"></span>
 					{{ get(currentEventInfo.soccerInfo, "homeRedCard", 0) }}
 				</div>
+
 				<div>
 					<span class="warning"></span>
 					{{ get(currentEventInfo.soccerInfo, "homeYellowCard", 0) }}
@@ -17,11 +22,12 @@
 		</div>
 		<!-- 当前比赛时间信息 -->
 		<div class="time">
-			<div>
+			<div class="Text_s">
 				<span v-for="item in computedSportShowTime" :key="item">{{ item }}</span>
 			</div>
 			<div>
 				<span>{{ computedScore.home }}</span>
+				<div class="line2"></div>
 				<span>{{ computedScore.away }}</span>
 			</div>
 		</div>
@@ -29,6 +35,10 @@
 		<div class="right">
 			<SportTeam :team-name="get(currentEventInfo.teamInfo, 'awayName', '')" :team-icon="get(currentEventInfo.teamInfo, 'awayIconUrl', '')" :is-left="false" />
 			<div>
+				<div>
+					<svg-icon name="sports-jiaoqiu" size="14px"></svg-icon>
+					{{ get(currentEventInfo.soccerInfo, "homeRedCard", 0) }}
+				</div>
 				<div>
 					<span class="warning"></span>
 					{{ get(currentEventInfo.soccerInfo, "awayYellowCard", 0) }}
@@ -68,11 +78,11 @@ const computedScore = computed(() => {
 
 <style lang="scss" scoped>
 .info {
-	padding: 0 12px;
+	padding: 8px 12px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-
+	border-radius: 0px 0px 8px 8px;
 	background: var(--Bg3);
 	color: var(--Text1);
 
@@ -156,16 +166,22 @@ const computedScore = computed(() => {
 			justify-content: space-between;
 			font-size: 14px !important;
 			padding: 0 8px;
-
+			margin: 0 6px;
 			span {
-				width: 22px;
+				min-width: 22px;
 				height: 28px;
+				border-radius: 4px;
 				text-align: center;
 				line-height: 28px;
 
 				background: var(--Bg4);
 			}
 		}
+	}
+	.line2 {
+		width: 16px;
+		height: 2px;
+		background: var(--Line_2);
 	}
 }
 </style>

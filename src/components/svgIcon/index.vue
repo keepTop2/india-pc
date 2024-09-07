@@ -1,8 +1,8 @@
 <template>
 	<!--svg外层容器，需要配置子元素use使用-->
-	<svg :style="{ width: size ? size : width, height: size ? size : height, color: color }">
+	<svg :style="{ width: size ? size : width, height: size ? size : height }">
 		<!--xlink:href引用的svg图标，#icon-图标名 -->
-		<use :xlink:href="symbolId" :fill="fill" />
+		<use :xlink:href="symbolId" />
 	</svg>
 </template>
 
@@ -39,6 +39,6 @@ const props = defineProps({
 
 // svg icon引入的格式
 const symbolId = computed(() => {
-	return `#${i18n.global.locale.value}-svg-${themesStore.getTheme}-${props.name}${props.hover == props.name ? "_on" : ""}`;
+	return `#${themesStore.getTheme}-${props.name}${props.hover == props.name ? "_on" : ""}`;
 });
 </script>

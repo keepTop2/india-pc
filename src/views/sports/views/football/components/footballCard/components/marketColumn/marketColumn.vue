@@ -1,17 +1,20 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育-足球-赔率卡片列；
--->
 <template>
-	<div class="columns marketColumn" v-if="market?.selections">
-		<template v-for="(item, index) in market?.selections" :key="index">
-			<MarketCard :cardType="cardType" :cardData="item" :sportInfo="sportInfo" :market="market" :betType="betType" @oddsChange="oddsChange"></MarketCard>
-		</template>
+	<div class="marketColumn" v-if="market?.selections">
+		<MarketCard
+			v-for="(item, index) in market?.selections"
+			:key="index"
+			:cardType="cardType"
+			:cardData="item"
+			:sportInfo="sportInfo"
+			:market="market"
+			:betType="betType"
+			@oddsChange="oddsChange"
+		/>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import MarketCard from "../marketCard/marketCard.vue";
 import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 
@@ -47,6 +50,7 @@ onMounted(() => {
 /** 设置market */
 const setMarket = () => {
 	market.value = marketsMatchData(props.sportInfo.markets, props.betType, props.selectionsLength);
+	// console.log("market----------->", market);
 };
 
 /**
@@ -59,7 +63,9 @@ const oddsChange = (obj: any) => {
 
 <style scoped lang="scss">
 .marketColumn {
-	/* width: 100%;
-	height: 100%; */
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 </style>

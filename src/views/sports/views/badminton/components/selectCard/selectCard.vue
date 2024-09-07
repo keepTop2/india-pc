@@ -51,29 +51,5 @@ const getDisplayText = () => {
 </script>
 
 <style lang="scss" scoped>
-.box_select {
-	margin-bottom: 16px;
-	display: flex;
-	align-items: center;
-	padding: 5px 24px;
-
-	.select_left {
-		display: flex;
-		align-items: center;
-		color: var(--text-s, #fff);
-		font-family: "PingFang SC";
-		font-size: 16px;
-		font-style: normal;
-		font-weight: 500;
-		line-height: normal;
-		.icon {
-			margin-right: 10px;
-			color: var(--icon);
-		}
-	}
-
-	.select_right {
-		margin-left: 32px;
-	}
-}
+@import "/@/views/sports/views/styles/selectCard.scss";
 </style>

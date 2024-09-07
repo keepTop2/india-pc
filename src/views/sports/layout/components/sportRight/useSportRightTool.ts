@@ -34,6 +34,8 @@ export const useSportRightTool = () => {
 	 */
 	const formatEvents = (events: any) => {
 		const { add, change, remove } = events;
+		console.log(events, 999999999);
+
 		if (add.length) {
 			recode.event = add[0];
 			SportHotStore.updateCurrentEvent(add[0]);

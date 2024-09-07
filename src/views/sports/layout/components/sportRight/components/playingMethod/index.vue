@@ -8,8 +8,8 @@
 					</div>
 				</div>
 			</div>
-			<div>
-				<SvgIcon :class="['icon-svg', { expand: computedExpand }]" iconName="doubleArrowUp_sports" @click="onExpandAndCollapse" :size="18" />
+			<div class="pt_6 curp" style="width: 60px">
+				<svg-icon :class="['icon-svg', { expand: computedExpand }]" name="sports-double_arrow_up" @click="onExpandAndCollapse" :size="18" />
 			</div>
 		</div>
 		<template v-for="marketItem in computedMarketsList" :key="marketItem.marketId" v-if="!isEmpty(computedMarketsList)">
@@ -146,6 +146,34 @@ const playList = reactive([
 		label: "全部玩法",
 		value: 0,
 	},
+	{
+		label: "全部玩法",
+		value: 1,
+	},
+	{
+		label: "全部玩法",
+		value: 2,
+	},
+	{
+		label: "全部玩法",
+		value: 3,
+	},
+	{
+		label: "全部玩法",
+		value: 4,
+	},
+	{
+		label: "全部玩法",
+		value: 2,
+	},
+	{
+		label: "全部玩法",
+		value: 3,
+	},
+	{
+		label: "全部玩法",
+		value: 4,
+	},
 ]);
 </script>
 
@@ -153,6 +181,7 @@ const playList = reactive([
 .playing-method {
 	width: 390px;
 	padding: 12px;
+	margin-top: -5px;
 	box-sizing: border-box;
 	background: var(--Bg1);
 	& > * {
@@ -171,9 +200,10 @@ const playList = reactive([
 
 	.play-list {
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
+		justify-content: space-between;
 		// flex-wrap: wrap;
-		gap: 14px;
+
 		margin-bottom: 12px;
 
 		& > * {
@@ -181,22 +211,34 @@ const playList = reactive([
 		}
 
 		.scorllbar {
-			width: 314px;
+			width: 345px;
 			overflow-x: auto;
 			padding-bottom: 8px;
+			margin-right: 7px;
+		}
+		.scorllbar::-webkit-scrollbar {
+			width: 10px;
 		}
 
+		.scorllbar::-webkit-scrollbar {
+			background-color: transparent;
+		}
+		.scorllbar::-webkit-scrollbar-thumb {
+			background: var(--Bg3);
+			border-radius: 25px;
+			height: 5px;
+		}
 		.scorllbar-content {
 			display: flex;
 			align-items: center;
 			width: max-content;
-			gap: 6px;
+			gap: 10px;
 		}
 
 		.item {
 			padding: 4px 10px;
 			border: 1px solid var(--Icon, #67707b);
-			border-radius: 99px;
+			border-radius: 4px;
 			font-size: 12px;
 			transition: 0.2s;
 			cursor: pointer;

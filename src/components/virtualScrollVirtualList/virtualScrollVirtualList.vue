@@ -3,9 +3,13 @@
  * @Description: 虚拟滚动组件-真实滚动高度
 -->
 <template>
+	<!-- 可视化根节点 -->
 	<div ref="listRef" class="infinite-list-container">
+		<!-- 真实列表高度 -->
 		<div ref="phantomRef" class="infinite-list-phantom" :style="{ height: `${listHeight}px` }"></div>
+		<!-- 在真实高度内的 可视化浮动面板（保证数据在可以区域） -->
 		<div ref="centerRef" class="infinite-list" v-if="listRef">
+			<!-- 每一行内容 -->
 			<div
 				class="infinite-list-item"
 				ref="itemsRef"
@@ -14,7 +18,7 @@
 				:h-bottom="state.positions[row?._key]?.bottom"
 				:data-key="row?._key"
 				:key="row?._key"
-				v-for="row in  (visibleData as Array<ListRowType>) "
+				v-for="row in (visibleData as Array<ListRowType>) "
 			>
 				<CententItem :_key="row._key" :root="listRef" @InView="onDomeInView" @OutView="onDomeOutView" @domeUnmount="domeUnmount" @domeResize="changeUpdated">
 					<slot :item="row.value" :index="row._key" :isExpand="state.positions[row._key]?.isExpand"></slot>
@@ -25,17 +29,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, onUpdated, reactive, ref, watch, watchEffect } from "vue";
-// import listWorker from "./virtualScrollVirtualWorker.ts?worker&url";
-import listWorker from "./virtualScrollVirtualWorker.ts?worker&inline";
+import { computed, defineAsyncComponent, nextTick, onBeforeMount, onBeforeUnmount, onMounted, onUpdated, reactive, ref, watch, watchEffect } from "vue";
+import listWorker from "./virtualScrollVirtualWorker.ts?worker&url";
+// import listWorker from "./virtualScrollVirtualWorker.ts?worker&inline";
 import { debounce, throttle, cloneDeep, isEmpty } from "lodash-es";
-import CententItem from "./cententItem/cententItem.vue";
+// import CententItem from "./cententItem/cententItem.vue";
 import Common from "/@/utils/common";
 import pubSub from "/@/pubSub/pubSub";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
+const CententItem = defineAsyncComponent(() => import("/@/components/virtualScrollVirtualList/cententItem/cententItem.vue"));
 const SportAttentionStore = useSportAttentionStore();
 const centerRef = ref();
-
 interface VirtualListType {
 	/** 所有列表数据 */
 	listData: Array<any>;
@@ -86,7 +90,10 @@ export interface PositionType {
 /** position (定位参数修改) 的参数类型  */
 type basisParamsType = ListItemType | Array<PositionType>;
 /** worker引用 */
-const worker = new listWorker();
+// const worker =  new listWorker();
+// const url = new URL(listWorker);
+// console.info("wor看地址", listWorker);
+const worker = new Worker(listWorker, { type: "module" });
 const listRef = ref();
 const phantomRef = ref();
 const itemsRef = ref();
@@ -161,22 +168,6 @@ watch(
 	}
 );
 
-/** 最大高度集合 （用于计算平均最大高度值）  */
-const maxHegiht = ref([]);
-/** 平均高度 */
-const averageHeight = computed(() => {
-	if (maxHegiht.value && maxHegiht.value.length) {
-		let sum = maxHegiht.value.reduce((acc, val) => {
-			return Common.add(acc, val);
-		}, 0);
-		// 将总和除以数组长度
-		let ave = Common.div(sum, maxHegiht.value.length);
-		return ave;
-	} else {
-		return props.itemMaxSize;
-	}
-});
-
 /** 格式化后的所有数据 list-序列 */
 const _listData = ref([]);
 watchEffect(() => {
@@ -215,6 +206,9 @@ const visibleData = computed(() => {
 		start = loadStart;
 	}
 	let end = state.end + props.belowCount;
+
+	// console.info("显示数据 =======>", start, end);
+
 	const viewData = _listData.value.slice(start, end);
 	return viewData;
 });
@@ -260,16 +254,6 @@ watch(
 			/** 每一次数据更新时都进行一次数据最小高度获取*/
 			findMinHeight();
 			findMaxHeight();
-		}
-	}
-);
-
-watch(
-	() => state.itemMinSize,
-	(newValue, oldValue) => {
-		/** 监听最小值变化 ，最小值小于默认高度且不和前一次相等时；重新调用数据渲染及数据量更改 */
-		if (newValue && newValue < averageHeight.value && newValue != oldValue) {
-			scrollEvent();
 		}
 	}
 );
@@ -362,21 +346,20 @@ const setStartOffset = () => {
 	if (state.start >= 1) {
 		try {
 			/**头部缓存 定位 */
-			let abovePosit = state.positions[state.start - props.aboveCount];
+			const abovePosit = state.positions[state.start - props.aboveCount];
 			/**开始是索引 定位 */
 			const startPosit = state.positions[state.start];
 			/** 开始位置的顶部距离 - 缓存区的距离  */
 			let size = startPosit?.top - (abovePosit ? abovePosit.top : 0);
 			/**开始是索引 的 前一位 */
 			const startPositBefore = state.positions[state.start - 1];
-			let sum = startPositBefore?.bottom - size;
+			const sum = startPositBefore?.bottom - size;
 			if (sum >= 0) {
 				startOffset = sum;
 			} else {
 				startOffset = 0;
 			}
 		} catch (error) {
-			console.warn(error, state.start);
 			/** 偏移高度信息获取错误强制偏移顶部 */
 			startOffset = 0;
 			listRef.value.scrollTop = 0;
@@ -400,13 +383,9 @@ const scrollDebounce = debounce(() => {
 	let scrollTop = listRef.value.scrollTop;
 	//此时的开始索引
 	let loadStart = getStartIndex(scrollTop);
-	// console.info("此时的开始索引", loadStart);
-	// console.info("数据长度", state.positions.length);
 	if (loadStart || loadStart == 0) {
-		// console.info("此时的可视化", visibleCount.value);
 		//此时的结束索引
 		let loadEnd = loadStart + visibleCount.value;
-		// console.info("此时的结束索引", loadEnd, loadStart, state.positions.length);
 		if (loadEnd > state.positions.length - 1) {
 			loadEnd = state.positions.length - 1;
 		}
@@ -450,9 +429,6 @@ const findMaxHeight = () => {
 		if (maxValueObject && maxValueObject?.height) {
 			const height: number = maxValueObject.height;
 			state.itemMaxSize = height;
-			if (maxHegiht.value.indexOf(height) == -1) {
-				maxHegiht.value.push(height);
-			}
 		}
 	} catch (error) {
 		console.info(error);
@@ -471,6 +447,10 @@ const setlistDataEisExpand = (obj: any) => {
 
 	// 设置折叠状态并更新计数
 	foldCount.value += obj.isExpand ? -1 : 1;
+
+	if (obj.isExpand == true) {
+		SportAttentionStore.setIsFold(false);
+	}
 
 	// 判断是否需要切换全部折叠状态或更新折叠计数
 	const isAllExpanded = foldCount.value === 0;
@@ -506,7 +486,6 @@ const onDomeInView = (obj: ListItemType) => {
 		listHeight.value = height;
 		phantomRef.value.setAttribute("data-custom", height);
 	}
-	/**每个组件进入时从自身开始进行后续的dome计算 */
 	changeUpdated();
 	scrollEvent();
 };
@@ -567,6 +546,8 @@ const setAllIsExpand = (isExpand: boolean) => {
 	}
 	state.positions = newOptions;
 	state.isInitOption = false;
+	foldCount.value = (!isExpand && state.positions.length) || 0;
+	SportAttentionStore.setIsFold(!isExpand);
 	nextTick(() => {
 		if (!state.isExpand) {
 			setScollTop();
@@ -610,9 +591,11 @@ const selfPostMessage = (type, data) => {
 const getWorkMessage = () => {
 	worker.onmessage = (e) => {
 		const obj = JSON.parse(e.data);
+		// console.info("option 获取work消息 ", obj.data);
 		switch (obj.type) {
 			case "setPositions":
 				state.positions = obj.data;
+				getStateDomeHeight();
 				break;
 			default:
 				break;
@@ -639,6 +622,7 @@ const changeUpdated = throttle(
 			childrenKey: props.childrenKey,
 			_listData: _listData.value,
 		};
+		// console.info("option 发生变化更新 ", data);
 		selfPostMessage("infoPage", data);
 	},
 	300,
@@ -646,16 +630,16 @@ const changeUpdated = throttle(
 );
 
 onMounted(() => {
-	if (listRef.value) {
-		state.screenHeight = listRef.value.clientHeight;
-		state.start = 0;
-		state.end = state.start + visibleCount.value;
-		changeUpdated();
-		nextTick(async () => {
-			await getStateDomeHeight();
+	nextTick(async () => {
+		if (listRef.value) {
+			state.screenHeight = listRef.value.clientHeight;
+			state.start = 0;
+			state.end = state.start + visibleCount.value;
 			changeUpdated();
-		});
-	}
+			await getStateDomeHeight();
+			// changeUpdated();
+		}
+	});
 });
 onBeforeUnmount(() => {
 	worker.terminate();

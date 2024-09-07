@@ -25,11 +25,15 @@ const MenuStore = useMenuStore();
 const collapse = computed(() => {
 	return MenuStore.getCollapse;
 });
+const lastWidth = ref(0);
 const domeRef = ref(null);
 // 监听div大小改变；
 const resizeObserver = new ResizeObserver((entries) => {
 	for (const entry of entries) {
 		const domWidth = (entry.target as any)?.offsetWidth;
+		if (domWidth === lastWidth.value) return;
+		lastWidth.value = domWidth;
+
 		if (domWidth < 1460) {
 			MenuStore.setCollapse(true);
 		} else {

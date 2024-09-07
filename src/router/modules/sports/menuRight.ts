@@ -3,6 +3,9 @@
  * @Description: 体育右侧路由路由-静态结构
  */
 
+import ty_icon_zq from "/@/assets/sports/icons/ty_icon_zq.png";
+import ty_icon_active_zq from "/@/assets/sports/icons/ty_icon_active_zq.png";
+
 const menuRight = [
 	{
 		path: "/sports/1",
@@ -11,7 +14,8 @@ const menuRight = [
 		meta: {
 			title: "足球",
 			isServer: false,
-			iconCode: "ty_icon_zq",
+			iconCode: ty_icon_zq,
+			iconActive: ty_icon_active_zq,
 			isSportSort: true,
 			isHide: false,
 		},

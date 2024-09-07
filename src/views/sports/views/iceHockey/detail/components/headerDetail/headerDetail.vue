@@ -6,7 +6,7 @@
 	<div class="detail-container">
 		<div class="top">
 			<div class="back" @click="handleGoBack">
-				<SvgIcon class="icon" iconName="arrowLeft" :size="13" />
+				<SvgIcon class="icon" iconName="arrow_left" :size="13" />
 				<span> 返回 </span>
 			</div>
 			<div class="title">{{ sportInfo.leagueName }}</div>

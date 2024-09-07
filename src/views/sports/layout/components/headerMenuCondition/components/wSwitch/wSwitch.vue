@@ -1,218 +1,81 @@
-<!--
- * @Author: WangMingxin
- * @Description: 自定义体育-switch组件；
--->
 <template>
-	<div class="btn-container" :class="disabled ? 'disabled' : ''">
-		<label class="switch btn-color-mode-switch">
-			<input value="1" ref="colorModeRef" :id="domeId" :name="domeId" type="checkbox" @click="getValue" :disabled="disabled" />
-			<label class="btn-color-mode-switch-inner" :data-off="switchObj?.off?.label" :data-on="switchObj?.on?.label" :for="domeId"> </label>
-		</label>
+	<div class="tabs_content">
+		<div
+			v-for="(key, index) in ['on', 'off']"
+			:key="index"
+			:disable="true"
+			:class="['tab', { tab_active: switchObj[key].active ,disabled: disabled }]"
+			@click="handleSwitch(key)"
+		>
+			{{ switchObj[key].label }}
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs, watch } from "vue";
-import { v4 as uuidv4 } from "uuid";
-export interface onOffType {
+import { defineProps, defineEmits } from 'vue';
+
+interface SwitchItem {
 	label: string;
 	type: string;
 	active: boolean;
 }
 
-export interface SwitchObjType {
-	/**
-	 * @description: 状态为true时显示对象
-	 */
-	on?: onOffType;
-	/**
-	 * @description: 状态为false时显示对象
-	 */
-	off?: onOffType;
+interface SwitchObject {
+	on: SwitchItem;
+	off: SwitchItem;
 }
-export interface wSwitchType {
-	/** @description: 选中状态*/
+
+const props = defineProps<{
+	switchObj: SwitchObject;
 	disabled?: boolean;
-	/** @description: 开关选可选者对象*/
-	switchObj?: SwitchObjType;
-}
+}>();
 
-const props = withDefaults(defineProps<wSwitchType>(), {
-	disabled: false,
-	switchObj: () => ({
-		on: { label: "未开赛", type: "rollingBall", active: true },
-		off: { label: "滚球", type: "todayContest", active: false },
-	}),
-});
+const emit = defineEmits(['selected']);
 
-/**
- * @description: 生成指定长度的UUID；
- * @param {*} length
- * @return {*}
- */
-const generateShortUUID = (length: number): string => {
-	const fullUUID: string = uuidv4(); // 生成完整的 UUID
-	return fullUUID.replace(/-/g, "").substring(0, length); // 删除连接符，并截取指定长度的子串
+const handleSwitch = (key: string) => {
+  if (props.disabled) return;
+  emit('selected', key);
 };
-
-const uuidDiv = generateShortUUID(8);
-
-const domeId = ref("color_mode" + uuidDiv);
-
-const colorModeRef = ref();
-const emit = defineEmits(["selected"]);
-
-const getValue = () => {
-	if (colorModeRef.value && !props.disabled) {
-		const val = colorModeRef.value?.checked;
-		emit("selected", val);
-	}
-};
-
-/**
- * @description: 上层对象改动时响应变动值
- * @return {*}
- */
-const setSwicthVal = () => {
-	if (colorModeRef.value) {
-		if (props.switchObj?.on?.active) {
-			colorModeRef.value.checked = true;
-		} else {
-			colorModeRef.value.checked = false;
-		}
-	}
-};
-
-watch(
-	() => props.switchObj,
-	(newValue, oldValue) => {
-		setSwicthVal();
-	},
-	{
-		deep: true,
-	}
-);
-
-onMounted(() => {
-	setSwicthVal();
-});
 </script>
 
 <style scoped lang="scss">
-.btn-color-mode-switch input[type="checkbox"] {
-	cursor: pointer;
-	width: 90px;
-	height: 40px;
-	opacity: 0;
-	position: absolute;
-	top: 0;
-	z-index: 1;
-	margin: 0px;
-}
+.tabs_content {
+	width: 141px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 3px;
+	padding: 3px;
+	background: var(--Bg2);
 
-.btn-color-mode-switch input[type="checkbox"]:checked + label.btn-color-mode-switch-inner {
-	// background-color: #fcce8a;
-	background-color: var(--Bg3);
-	color: var(--Text1);
-}
+	.tab {
+		min-width: 66px;
+		height: 24px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 3px;
+		background: var(--butter);
+		color: var(--Text1);
+		font-family: "PingFang SC";
+		font-size: 12px;
+		font-weight: 400;
+		cursor: pointer;
 
-.btn-color-mode-switch input[type="checkbox"]:checked + label.btn-color-mode-switch-inner:after {
-	content: attr(data-on);
-	left: 90px;
-}
-
-.btn-color-mode-switch input[type="checkbox"]:checked + label.btn-color-mode-switch-inner:before {
-	content: attr(data-off);
-	right: auto;
-	top: 50%;
-	transform: translateY(-50%);
-	left: 15%;
-}
-
-.btn-container {
-	display: table-cell;
-	vertical-align: middle;
-	text-align: center;
-	height: 40px;
-	overflow: hidden;
-
-	.btn-color-mode-switch {
-		display: inline-block;
-		margin: 0px;
-		position: relative;
-
-		> label.btn-color-mode-switch-inner {
-			margin: 0px;
-			width: 180px;
-			height: 40px;
-			border-radius: 20px;
-			overflow: hidden;
-			position: relative;
-			transition: all 0.3s ease;
-			display: block;
-			cursor: pointer;
-
-			background-color: var(--Bg3);
-			color: var(--Text1);
-
-			&:before {
-				content: attr(data-on);
-				position: absolute;
-				font-size: 14px;
-				font-weight: 400;
-				top: 50%;
-				transform: translateY(-50%);
-				right: 15%;
-
-				color: var(--Text1);
-			}
-
-			&:after {
-				content: attr(data-off);
-				width: 90px;
-				height: 40px;
-				// background: #fff;
-				border-radius: 26px;
-				position: absolute;
-				font-size: 14px;
-				display: flex;
-				justify-content: center;
-				left: 0px;
-				top: 0px;
-				text-align: center;
-				transition: all 0.3s ease;
-				// box-shadow: 0px 0px 6px -2px #111;
-				// padding: 5px 0px;
-				// color: #222;
-				font-weight: 400;
-				line-height: 40px;
-
-				background-color: var(--Theme);
-				color: var(--Text_a);
-			}
+		&.disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
 		}
 	}
 
-	&.disabled {
-		.btn-color-mode-switch {
-			> label.btn-color-mode-switch-inner {
-				cursor: not-allowed;
-
-				&:after {
-					background-color: var(--Bg3);
-					color: var(--Text1);
-				}
-			}
-
-			input[type="checkbox"] {
-				cursor: not-allowed;
-			}
-
-			input[type="checkbox"]:checked + label.btn-color-mode-switch-inner {
-				background-color: var(--Bg3);
-				color: var(--Text1);
-			}
-		}
+	.tab_active {
+		background: var(--Theme);
+		color: var(--Text_a);
+	}
+	.disabled{
+		cursor: not-allowed;
 	}
 }
 </style>

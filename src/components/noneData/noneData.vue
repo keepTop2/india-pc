@@ -6,10 +6,10 @@
 	<div class="noneData_container">
 		<div class="center">
 			<div class="icon" v-if="themed == 'default'">
-				<SvgIcon :iconName="iconSvg" size="120" />
+				<SvgIcon :iconName="iconSvg" size="120px" />
 			</div>
 			<div class="icon" v-if="themed == 'dark'">
-				<SvgIcon :iconName="iconSvgLight" size="120" />
+				<SvgIcon :iconName="iconSvgLight" size="120px" />
 			</div>
 		</div>
 		<div class="text_content">

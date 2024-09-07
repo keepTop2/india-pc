@@ -108,19 +108,19 @@ const logOut = () => {
 	position: fixed;
 	height: 64px;
 	top: 0;
-	left: 260px;
-	width: calc(100% - 260px);
+	left: 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
+	width: 100%;
 	background: var(--Bg1);
 	box-shadow: 0px 4px 12px 0px rgba(14, 16, 19, 0.25);
 	color: var(--Text1);
 	z-index: 100;
+	padding-left: 260px;
+	transition: all 0.2s ease;
 	&.collapse {
-		left: 64px;
-		width: calc(100% - 64px);
+		padding-left: 64px;
 	}
 	> div {
 		flex: 1;
@@ -233,6 +233,6 @@ const logOut = () => {
 	display: inline-block;
 	height: 14px;
 	width: 14px;
-	background: url("/@/assets/zh-CN/svg/dark/lang_down_icon.svg");
+	background: url("/@/assets/svg/dark/lang_down_icon.svg");
 }
 </style>
