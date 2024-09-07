@@ -1,4 +1,5 @@
 <template>
+	<!-- 行内容装载；以及变化读取 -->
 	<div class="list-item" ref="itemsRef">
 		<slot></slot>
 	</div>

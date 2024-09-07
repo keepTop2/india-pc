@@ -7,7 +7,9 @@
 				<!-- 状态正常 -->
 				<div class="value" v-if="market.marketStatus == 'running'">
 					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					<div class="arrow-icon">
+						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					</div>
 				</div>
 				<!-- 锁 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
@@ -21,7 +23,9 @@
 				<!-- 状态正常 -->
 				<div class="value" v-if="market.marketStatus == 'running'">
 					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					<div class="arrow-icon">
+						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					</div>
 				</div>
 				<!-- 锁 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
@@ -36,7 +40,9 @@
 				<!-- 状态正常 -->
 				<div class="value" v-if="market.marketStatus == 'running'">
 					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					<div class="arrow-icon">
+						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					</div>
 				</div>
 				<!-- 锁 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
@@ -207,6 +213,7 @@ const isBright = () => {
 .market-content {
 	width: 100%;
 	height: 34px;
+	cursor: pointer;
 	.market-item {
 		width: 100%;
 		height: 100%;
@@ -225,10 +232,18 @@ const isBright = () => {
 			font-weight: 400;
 		}
 		.value {
+			position: relative;
 			color: var(--Text_a);
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-weight: 400;
+
+			.arrow-icon {
+				position: absolute;
+				top: 50%;
+				transform: translate(0px, -50%);
+				right: -16px;
+			}
 		}
 		&:hover {
 			background-color: rgba(255, 255, 255, 0.05);

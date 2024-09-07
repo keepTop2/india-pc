@@ -157,47 +157,13 @@ const toggleDisplay = (val?: number) => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.el-collapse-item__content) {
-	padding: 0;
-}
-
 .box-content {
 	width: 100%;
-	height: 840px;
-
-	:deep(.el-collapse-item__wrap) {
-		width: 100%;
-
-		border: none;
-
-		background-color: var(--Bg1);
-	}
-
-	:deep(.el-collapse) {
-		border: none;
-	}
-}
-
-:deep(.el-collapse-item__header) {
-	padding: 0;
-	border: none;
-	height: 40px;
-	flex-shrink: 0;
-	border-radius: 8px 8px 0px 0px;
-	background: var(--Bg6);
-
-	i {
-		display: none;
-	}
-}
-
-.box {
-	width: 100%;
-	margin-bottom: 16px;
+	height: 100vh;
 }
 
 .card-container {
-	margin-bottom: 16px;
+	margin-bottom: 5px;
 }
 .nonedata {
 	margin-top: 20%;

@@ -121,11 +121,11 @@ defineExpose({ state });
 
 <style scoped lang="scss">
 .RiseOrFall-container {
-	position: absolute;
-	right: 1px;
-	top: 0px;
-	height: 100%;
-	width: 12px;
+	// position: absolute;
+	// right: 1px;
+	// top: 0px;
+	// height: 100%;
+	// width: 12px;
 
 	.centent {
 		height: 100%;

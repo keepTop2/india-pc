@@ -592,10 +592,10 @@ const unSport = () => {
 }
 .main-container {
 	display: flex;
-	// height: calc(100vh - 104px);
+	height: calc(100% - 40px);
 	.left-container {
 		width: 1246px;
-		// flex: 1;
+		height: 100%;
 		margin: 0px 12px;
 		.header {
 			width: 100%;
@@ -619,6 +619,7 @@ const unSport = () => {
 
 	.right-container {
 		max-width: 390px;
+		height: 100%;
 	}
 }
 </style>
