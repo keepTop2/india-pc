@@ -6,7 +6,7 @@
 	<div class="header-container">
 		<div class="menu-nav">
 			<div class="left">
-				<div class="nva-item" v-for="(item, index) in left" :key="index">
+				<div class="nva-item" :class="{ active: item.name == route.name }" v-for="(item, index) in left" :key="index">
 					<router-link :to="{ name: item.name }">{{ item.meta.title }}</router-link>
 				</div>
 			</div>
@@ -51,6 +51,8 @@ const props = withDefaults(
 		sportsActive: "",
 	}
 );
+console.log(route.name, "===sportsActive==", props.sportsActive);
+
 const sportsBetEvent = useSportsBetEventStore();
 
 const left = ref(sportsRouterLeft);
@@ -70,9 +72,11 @@ const sports = computed(() => viewSportPubSubEventData.viewSportData.sports);
  */
 const sportList = computed(() => {
 	let newRight: any[] = [];
+	console.log(right.value,'====right.value',sports.value)
 	right.value.forEach((item) => {
 		const type = item.path.replace(/[^\d]/g, "");
 		sports.value.forEach((sp) => {
+			console.log(item,'=====item',sp,'===sp')
 			if (props.sportsActive == "todayContest") {
 				if (Number(sp.sportType) == Number(type) && sp?.gameCount) {
 					newRight.push(item);
@@ -102,6 +106,7 @@ const getSportList = debounce(() => {
 watch(
 	() => sportList.value,
 	(newValue, oldValue) => {
+		console.log(newValue,'===newValue')
 		if (newValue && newValue.length) {
 			navRight.value = newValue;
 		} else {
@@ -226,6 +231,12 @@ const changeBall = () => {
 					font-size: 14px;
 					font-weight: 400;
 					text-decoration: none;
+				}
+			}
+			.active {
+				background-color: var(--Theme);
+				a {
+					color: var(--Text_a);
 				}
 			}
 		}

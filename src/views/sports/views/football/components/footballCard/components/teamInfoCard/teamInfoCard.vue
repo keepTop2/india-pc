@@ -39,7 +39,7 @@
 				}}</span>
 			</div>
 			<div class="info-list">
-				<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px"></svg-icon>
+				<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px" @click="attentionEvent(!isAttention ? false : true)"></svg-icon>
 				<div class="markets-stats">
 					<span>+{{ teamData.marketCount }}</span>
 					<svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon>

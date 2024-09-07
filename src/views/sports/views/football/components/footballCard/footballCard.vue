@@ -8,9 +8,9 @@
 		<div class="card—header" :class="[!displayContent ? 'toggle' : '']" @click="toggleDisplay">
 			<!-- 联赛信息 -->
 			<div class="league-info">
-				<span class="collection" @click="attentionEvent(!isAttention ? false : true)">
+				<!-- <span class="collection" @click="attentionEvent(!isAttention ? false : true)">
 					<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px"></svg-icon>
-				</span>
+				</span> -->
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
 				<div class="league_name">{{ teamData.leagueName }}</div>
 			</div>

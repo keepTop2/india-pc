@@ -5,7 +5,7 @@
 
 <template>
 	<div class="box-content" v-show="isShowCollect">
-		<div class="box_navigation">
+		<!-- <div class="box_navigation">
 			<div class="navigation_left" @click="$router.back()">
 				<SvgIcon class="icon" iconName="arrow_left" :size="14" />
 				<div>返回</div>
@@ -14,7 +14,7 @@
 			<div class="icon2" @click="onExpandAndCollapse">
 				<SvgIcon iconName="doubleArrowUp_sports" class="iconSvg" />
 			</div>
-		</div>
+		</div> -->
 
 		<div v-for="(sport, index) in computedSportComponent" v-if="computedSportComponent.length" :key="index">
 			<DynamicSportList :teamName="sport.name" :teamData="sport.data" :listComponent="sport.component" @oddsChange="oddsChange" :isExpand="expandAndCollapse" />
