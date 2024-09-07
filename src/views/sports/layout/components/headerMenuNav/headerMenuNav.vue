@@ -15,7 +15,7 @@
 				<div class="nva-item" v-for="(item, index) in navRight" :key="index">
 					<img class="icon" :src="item.meta.iconCode" alt="" />
 					<router-link :to="{ name: item.name, query: { sportsActive: sportsActive } }">{{ item.meta.title }}</router-link>
-					<div class="value">1</div>
+					<div class="value">{{ item.count }}</div>
 				</div>
 
 				<div class="arrow_content">
@@ -51,7 +51,6 @@ const props = withDefaults(
 		sportsActive: "",
 	}
 );
-console.log(route.name, "===sportsActive==", props.sportsActive);
 
 const sportsBetEvent = useSportsBetEventStore();
 
@@ -72,22 +71,21 @@ const sports = computed(() => viewSportPubSubEventData.viewSportData.sports);
  */
 const sportList = computed(() => {
 	let newRight: any[] = [];
-	console.log(right.value,'====right.value',sports.value)
 	right.value.forEach((item) => {
 		const type = item.path.replace(/[^\d]/g, "");
 		sports.value.forEach((sp) => {
-			console.log(item,'=====item',sp,'===sp')
 			if (props.sportsActive == "todayContest") {
 				if (Number(sp.sportType) == Number(type) && sp?.gameCount) {
-					newRight.push(item);
+					newRight.push({...item,count:sp?.gameCount});
 				}
 			} else if (props.sportsActive == "rollingBall") {
 				if (Number(sp.sportType) == Number(type) && sp?.liveGameCount) {
-					newRight.push(item);
+					newRight.push({...item,count:sp?.liveGameCount});
 				}
-			} else {
+			}
+			else if(props.sportsActive == "morningTrading" || props.sportsActive == "champion"){
 				if (Number(sp.sportType) == Number(type) && sp?.count) {
-					newRight.push(item);
+					newRight.push({...item,count:sp?.count});
 				}
 			}
 		});
@@ -106,7 +104,6 @@ const getSportList = debounce(() => {
 watch(
 	() => sportList.value,
 	(newValue, oldValue) => {
-		console.log(newValue,'===newValue')
 		if (newValue && newValue.length) {
 			navRight.value = newValue;
 		} else {
@@ -122,6 +119,9 @@ const cSportsActive = computed(() => {
 
 /** 根据体育查询类型；过滤选中  */
 watch([cSportsActive, sports], ([newActive, newSports], [prevActive, prevSports]) => {
+	if (!/^\/sports\/\d+\/list$/.test(route.path)) {
+		return false;
+	}
 	if (newSports && newSports.length) {
 		const sportsType = route.path.replace(/[^\d]/g, "");
 		const sports = viewSportPubSubEventData.viewSportData.sports;

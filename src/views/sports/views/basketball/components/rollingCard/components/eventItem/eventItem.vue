@@ -25,7 +25,7 @@
 						<span v-if="[1, 2, 3, 4, 99].includes(event.gameInfo.livePeriod) && !event.gameInfo.delayLive && !event.gameInfo.isHt">{{ formattedGameTime }}</span>
 					</div>
 					<div class="info-list">
-						<span class="collection"><svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px"></svg-icon></span>
+					<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px" @click="attentionEvent(!isAttention ? false : true)"></svg-icon>
 						<div class="markets-stats">
 							<span>+{{ event.marketCount }}</span>
 							<span class="arrow-icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>

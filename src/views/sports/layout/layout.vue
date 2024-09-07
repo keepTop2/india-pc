@@ -269,15 +269,72 @@ const getAttention = async (isLogin = true) => {
 //初始化体育
 const initSport = async () => {
 	initSportPubsub();
-
 	openSportPush();
+};
+
+const initSportPush = () => {
+	
+	//打开冠军页面  loading不停 所以注释
+	startLoading();
+	//线程名称 体育视图处理线程
+	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
+	//console.warn("第二步 准备发送指令到线程管理器", pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName);
+	//线程指令 体育eventSource 指令
+	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
+	//console.warn("第二步 准备发送指令到线程管理器", pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType);
+	const params = {
+		apiUrl: SportsCommonFn.getSportPushApiUrl(),
+		token: SportsInfoStore.getSportsToken,
+		language: SportsCommonFn.getSportLanguage(),
+	};
+
+	if (tabActive.value == "rollingBall") {
+		//清空参数
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
+		//参数赋值
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.rollingBall.openSport, params);
+		//发送SSE指令到线程管理器
+		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
+	}
+
+	//如果当前激活的tab是 今日
+	else if (tabActive.value == "todayContest") {
+		//清空参数
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
+		//参数赋值
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.todayContest.openSport, params);
+		//发送SSE指令到线程管理器
+		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
+	}
+
+	//如果当前激活的tab是 早盘
+	else if (tabActive.value == "morningTrading") {
+		//清空参数
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
+		//参数赋值
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.morningTrading.openSport, params);
+		//发送SSE指令到线程管理器
+		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
+	}
+
+	//如果当前激活的tab是 冠军
+	else if (tabActive.value == "champion") {
+		//清空参数
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
+
+		//参数赋值
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.champion.openSport, params);
+		//发送SSE指令到线程管理器
+		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
+	}
+	
 };
 
 /**
  * @description 发送指令到体育视图处理线程 开启SSE推送
  */
 const openSportPush = async () => {
-	// 开启体育线程
+	// 关闭体育线程
 	closeSportViewProcessWorker();
 	// 开启体育线程
 	openSportViewProcessWorker();
@@ -301,18 +358,13 @@ const openSportPush = async () => {
 		token: SportsInfoStore.getSportsToken,
 		language: SportsCommonFn.getSportLanguage(),
 	};
-
+	console.log(tabActive.value, '==tabActive.value ')
+	initSportPush();
 	if (route?.meta?.isSportSort) {
 		// router.push({ path: route.path, query: { sportsActive: tabActive.value } });
 		//console.warn("第二步 准备发送指令到线程管理器", params);
 		//如果当前激活的tab是 滚球
 		if (tabActive.value == "rollingBall") {
-			//清空参数
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-			//参数赋值
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.rollingBall.openSport, params);
-			//发送SSE指令到线程管理器
-			pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 			//清空参数
 			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
 			//参数赋值
@@ -323,13 +375,6 @@ const openSportPush = async () => {
 
 		//如果当前激活的tab是 今日
 		else if (tabActive.value == "todayContest") {
-			//清空参数
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-			//参数赋值
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.todayContest.openSport, params);
-			//发送SSE指令到线程管理器
-			pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-
 			//清空参数
 			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
 			//参数赋值
@@ -347,13 +392,6 @@ const openSportPush = async () => {
 			// //清空参数
 			// pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
 			// //参数赋值
-			// pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.morningTrading.openSport, params);
-			// //发送SSE指令到线程管理器
-			// pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-
-			// //清空参数
-			// pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-			// //参数赋值
 			// pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.morningTrading.openEvents, params);
 			// //发送SSE指令到线程管理器
 			// pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
@@ -362,14 +400,6 @@ const openSportPush = async () => {
 
 		//如果当前激活的tab是 冠军
 		else if (tabActive.value == "champion") {
-			//清空参数
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-
-			//参数赋值
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.champion.openSport, params);
-			//发送SSE指令到线程管理器
-			pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-
 			//清空参数
 			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
 			//参数赋值
@@ -429,12 +459,12 @@ const openMorningTradingSSE = () => {
 				.format("YYYY-MM-DDTHH:mm:ss"),
 		};
 	}
-	// startLoading();
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-	//参数赋值
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.morningTrading.openSport, params);
-	//发送SSE指令到线程管理器
-	pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
+	// // startLoading();
+	// pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
+	// //参数赋值
+	// pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.morningTrading.openSport, params);
+	// //发送SSE指令到线程管理器
+	// pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 	//清空参数
 	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
 	//参数赋值
@@ -509,9 +539,10 @@ const openAttentionOutrightSSE = async () => {
  * @return {*}
  */
 const openAttentionSSE = async () => {
-	clearState();
+	// clearState();
 	closeSportViewProcessWorker();
 	openSportViewProcessWorker();
+	initSportPush();
 	if (attentionSwitch.value == "event") {
 		openAttentionEventSSE();
 	} else {

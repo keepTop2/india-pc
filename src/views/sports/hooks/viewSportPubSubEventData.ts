@@ -72,7 +72,7 @@ export default (function () {
 				// 使用Object.assign来确保响应式数据的正确更新
 				// console.log("viewSportData", viewSportData);
 				Object.assign(this.viewSportData, viewSportData);
-				console.info("this.viewSportData--------------->", this.viewSportData);
+				// console.info("this.viewSportData--------------->", this.viewSportData);
 			} catch (error) {
 				console.error("Error occurred while setting sport data:", error);
 			}

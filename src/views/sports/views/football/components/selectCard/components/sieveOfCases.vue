@@ -37,7 +37,10 @@
 import { ref, computed } from "vue";
 import { defineProps, withDefaults } from "vue";
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import { useRoute } from "vue-router";
 const SportLeagueSeachStore = useSportLeagueSeachStore();
+const route = useRoute();
 interface Option {
 	leagueId: number | null;
 	leagueName: string;
@@ -71,8 +74,23 @@ const handleCommand = (command: { index: number; value: string | null; label: st
 	}
 };
 
+// 计算所有联赛的总事件数量
 const totalEvents = computed(() => {
-	return props.options.reduce((sum, item) => sum + (item.events?.length ?? item.teams?.length ?? 0), 0);
+
+	/**
+	 * @description 球类列表
+	 */
+	const sports = viewSportPubSubEventData.viewSportData.sports;
+	
+	const sport = sports.filter((item) => item.sportType == 1)[0] as unknown as { gameCount: number; liveGameCount: number; count: number };
+	if (route.query.sportsActive == "todayContest") {
+		return sport?.gameCount;
+	} else if (route.query.sportsActive == "rollingBall") {
+		return sport?.liveGameCount
+	}
+	else{
+		return sport?.count
+	}
 });
 
 const optionsWithAll = computed(() => {
