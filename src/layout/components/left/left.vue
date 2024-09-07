@@ -328,7 +328,6 @@ const changeCollpase = () => {
 
 	&.collapse {
 		width: 64px;
-		overflow-x: hidden;
 		.left_main_header {
 			.collapse_icon {
 				color: var(--Text_a);
