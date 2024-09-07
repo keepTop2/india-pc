@@ -3,10 +3,17 @@
  * @Description: 体育-足球-赔率卡片列；
 -->
 <template>
-	<div class="columns" :class="{ marketColumn: betType == 401 || betType == 402 }" v-if="market?.selections">
-		<template v-for="(item, index) in market?.selections" :key="index">
-			<MarketCard :cardType="cardType" :cardData="item" :sportInfo="sportInfo" :market="market" :betType="betType" @oddsChange="oddsChange"></MarketCard>
-		</template>
+	<div class="marketColumn" v-if="market?.selections">
+		<MarketCard
+			v-for="(item, index) in market?.selections"
+			:key="index"
+			:cardType="cardType"
+			:cardData="item"
+			:sportInfo="sportInfo"
+			:market="market"
+			:betType="betType"
+			@oddsChange="oddsChange"
+		/>
 	</div>
 </template>
 
@@ -58,7 +65,9 @@ const oddsChange = (obj: any) => {
 
 <style scoped lang="scss">
 .marketColumn {
+	flex: 1;
 	display: flex;
-	align-items: center;
+	flex-direction: column;
+	gap: 4px;
 }
 </style>

@@ -1,3 +1,7 @@
+<!--
+ * @Author: WangMingxin
+ * @Description: 体育-篮球-赔率卡片
+-->
 <template>
 	<div class="card-container">
 		<div class="content-container" v-if="cardData" :class="{ isBright: isBright() }">
@@ -5,12 +9,11 @@
 				<div class="text-container">
 					<!-- 独赢 -->
 					<template v-if="cardType == `capot`">
-						<div class="label">{{ cardData?.keyName }}</div>
 						<div v-if="market.marketStatus == 'running'">
-							<div class="value" :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</div>
+							<div class="capot_value" :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</div>
 							<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
 						</div>
-						<SvgIcon v-else class="sport_lock2" iconName="sport_lock" :size="20" />
+						<SvgIcon v-else class="sport_lock" iconName="sport_lock" :size="22" />
 					</template>
 					<!-- 让球 -->
 					<template v-else-if="cardType == `handicap`">
@@ -27,6 +30,7 @@
 					<template v-else-if="cardType == `magnitude`">
 						<div class="label">
 							<span>{{ cardData.keyName }}</span>
+
 							<span>{{ cardData?.point }}</span>
 						</div>
 						<div v-if="market.marketStatus == 'running'">
@@ -209,18 +213,19 @@ const isBright = () => {
 }
 
 .card-container {
+	margin-right: 4px;
 	display: flex;
+	// justify-content: center;
 	align-items: center;
 	margin-top: 4px;
-	width: 130px;
-	height: 34px;
+	width: 157px;
+	height: 50px;
 	flex-shrink: 0;
 	border-radius: 4px;
 	cursor: pointer;
 	user-select: none;
 	-webkit-user-drag: none;
 	overflow: hidden;
-
 	background: var(--Bg3);
 
 	&:hover {
@@ -247,6 +252,7 @@ const isBright = () => {
 
 		.label {
 			margin: 0 18px;
+
 			color: var(--Text1);
 
 			text-align: center;
@@ -257,9 +263,18 @@ const isBright = () => {
 			line-height: normal;
 		}
 
-		.value {
+		.capot_value {
 			color: var(--Text_s);
 
+			font-family: "PingFang SC";
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+			margin-left: 60px;
+		}
+		.value {
+			color: var(--Text_s);
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-style: normal;
@@ -268,6 +283,10 @@ const isBright = () => {
 		}
 
 		.sport_lock2 {
+			// position: absolute;
+			// right: 30px;
+			// top: 0px;
+			// height: 100%;
 			margin-left: 15px;
 			color: var(--icon);
 		}
@@ -281,6 +300,7 @@ const isBright = () => {
 		margin: 0 auto;
 		width: 14px;
 		height: 1px;
+
 		background: var(--Text1);
 	}
 }

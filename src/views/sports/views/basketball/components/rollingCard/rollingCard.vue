@@ -1,55 +1,37 @@
-<!--
- * @Author: Relax
- * @Description: 体育-篮球-卡片
--->
 <template>
 	<div class="card-container">
 		<!--  头部 -->
-		<div class="box sticky" :class="[!displayContent ? 'toggle' : '']">
-			<div class="box_one" @click="toggleDisplay">
-				<!-- 联赛信息 -->
-				<div class="top_left">
-					<img :src="teamData.leagueIconUrl" alt="" />
-					<div class="title">
-						<span>{{ teamData.leagueName }}</span>
-					</div>
-				</div>
-				<!-- 投注类型 -->
-				<div class="top_right">
-					<transition name="fade">
-						<div class="box_top_right">
-							<div class="top_right_one" v-if="displayContent">
-								<div class="text" v-for="betType in betTypes" :key="betType">{{ betType }}</div>
-							</div>
-							<div class="top_right_two" v-if="displayContent">
-								<div class="text">球队总分</div>
-							</div>
-						</div>
-					</transition>
+		<div class="card—header" :class="[!displayContent ? 'toggle' : '']" @click="toggleDisplay">
+			<!-- 联赛信息 -->
+			<div class="league-info">
+				<span class="collection">
+					<svg-icon name="sports-collection" size="16px"></svg-icon>
+				</span>
+				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
+				<div class="league_name">{{ teamData.leagueName }}</div>
+			</div>
+			<!-- 盘口表头 -->
+			<div class="market-name-info" v-if="displayContent">
+				<div class="market-name-list">
+					<div class="label" v-for="betType in betTypes" :key="betType">{{ betType }}</div>
+					<div class="label large">球队总分</div>
 				</div>
 			</div>
-			<!-- 收藏 -->
-			<!-- <SvgIcon class="sports_collection" iconName="sports_collection" :size="20" /> -->
+			<div class="header-icon">
+				<span class="icon" :class="{ rotate: displayContent }"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
+			</div>
 		</div>
-
-		<EventItem
-			:IfOffTheBat="IfOffTheBat"
-			v-for="(event, index) in teamData.events"
-			:key="index"
-			:event="event"
-			:displayContent="displayContent"
-			:dataIndex="props.dataIndex"
-		></EventItem>
+		<template v-if="displayContent">
+			<EventItem :IfOffTheBat="IfOffTheBat" v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
+		</template>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
-import { isExternal } from "util/types";
+import { onMounted, watch, ref } from "vue";
 import { defineAsyncComponent } from "vue";
-// import EventItem from "./components/eventItem/eventItem.vue";
-import Common from "/@/utils/common";
 const EventItem = defineAsyncComponent(() => import("/@/views/sports/views/basketball/components/rollingCard/components/eventItem/eventItem.vue"));
+
 const betTypes = ["全场独赢", "让分", "总分"];
 
 interface teamDataType {
@@ -74,10 +56,7 @@ const props = withDefaults(defineProps<teamDataType>(), {
 	},
 });
 
-// console.log("props", props.teamData);
-
 const displayContent = ref(true);
-
 const emit = defineEmits(["toggleDisplay"]);
 /**
  * @description: 展开折叠处理
@@ -92,6 +71,7 @@ const toggleDisplay = () => {
 	};
 	emit("toggleDisplay", params);
 };
+
 watch(
 	() => props.isExpand,
 	(newValue, oldValue) => {
@@ -104,160 +84,83 @@ watch(
 
 onMounted(() => {
 	displayContent.value = props.isExpand;
-	// console.log(props.teamData, 45612);
 });
 </script>
 
 <style scoped lang="scss">
 .card-container {
-	margin-bottom: 16px;
-}
-.box {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 40px;
-	flex-shrink: 0;
-	border-radius: 8px 8px 0px 0px;
-
-	background: var(--Bg6);
-
-	box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25) inset;
-	.box_one {
-		flex: 1;
+	width: 1246px;
+	border-radius: 8px;
+	overflow: hidden;
+	.card—header {
 		display: flex;
-		align-items: center;
-		height: 100%;
-		margin-right: 63px;
-		// overflow: hidden;
-		// position: relative;
-		// width: 100%;
-		.top_left {
+		width: 100%;
+		height: 34px;
+		background: var(--Bg6);
+		box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25) inset;
+		border-radius: 8px 8px 0px 0px;
+
+		.league-info {
+			// width: 384px;
 			flex: 1;
-			margin: 0 24px;
 			display: flex;
 			align-items: center;
-			overflow: hidden;
-			position: relative;
-			// width: 100%;
-			height: 100%;
-
-			img {
-				-webkit-user-drag: none;
+			gap: 12px;
+			padding-left: 24px;
+			box-sizing: border-box;
+			.collection {
+				width: 16px;
+				height: 16px;
+			}
+			.league_icon {
 				width: 20px;
 				height: 20px;
 			}
-
-			.title {
+			.league_name {
 				color: var(--Text_s);
-				min-width: 70px;
-				flex: 1;
-				position: relative;
-				overflow: hidden;
-				display: flex;
-				height: 100%;
-				margin-left: 12px;
-				box-sizing: border-box;
-
-				span {
-					display: inline-block;
-					width: 100%;
-					height: 100%;
-					font-family: "PingFang SC";
-					font-size: 16px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 40px;
-					overflow: hidden;
-					white-space: nowrap;
-					text-overflow: ellipsis;
-					top: 0;
-					position: absolute;
-				}
-			}
-		}
-		.top_right {
-			.box_top_right {
-				display: flex;
-				align-items: center;
-				.top_right_one {
-					display: grid;
-					grid-template-columns: repeat(3, 157px);
-					gap: 4px;
-
-					.text {
-						color: var(--Text1);
-						white-space: nowrap;
-						text-align: center;
-						font-family: "PingFang SC";
-						font-size: 14px;
-						font-style: normal;
-						font-weight: 400;
-						line-height: normal;
-						// width: 134px;
-						padding: 0 39px;
-					}
-				}
-				.top_right_two {
-					display: grid;
-					grid-template-columns: repeat(1, 322px);
-					gap: 4px;
-
-					.text {
-						color: var(--Text1);
-						white-space: nowrap;
-						text-align: center;
-						font-family: "PingFang SC";
-						font-size: 14px;
-						font-style: normal;
-						font-weight: 400;
-						line-height: normal;
-						// width: 134px;
-						padding: 0 39px;
-					}
-				}
-			}
-		}
-
-		.top_right_one {
-			display: grid;
-			grid-template-columns: repeat(3, 157px);
-			gap: 4px;
-
-			.text {
-				color: var(--Text1);
-				white-space: nowrap;
-				text-align: center;
 				font-family: "PingFang SC";
-				font-size: 14px;
-				font-style: normal;
+				font-size: 16px;
 				font-weight: 400;
-				line-height: normal;
-				// width: 134px;
-				padding: 0 39px;
+			}
+		}
+		.market-name-info {
+			width: 804px;
+			.market-name-list {
+				height: 100%;
+				display: flex;
+				gap: 4px;
+				padding-right: 4px;
+				.label {
+					// flex: 1;
+					width: 20%;
+					height: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					color: var(--Text1);
+					text-align: center;
+					font-family: "PingFang SC";
+					font-size: 14px;
+					font-weight: 400;
+				}
+				.large {
+					width: 40%;
+				}
+			}
+		}
+		.header-icon {
+			width: 58px;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.icon {
+				transform: rotate(90deg);
+			}
+			.rotate {
+				transform: rotate(-90deg);
 			}
 		}
 	}
-	.sports_collection {
-		margin: 0 25px 0 18px;
-		color: var(--icon);
-	}
-}
-
-.sticky {
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0;
-	z-index: 1;
-}
-.fade-enter,
-.fade-leave-to {
-	opacity: 0;
-}
-
-.toggle {
-	border-radius: 8px;
-	transition: border-radius 0.8s ease;
 }
 </style>

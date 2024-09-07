@@ -1,78 +1,59 @@
 <template>
-	<div class="box_two" :class="[!props.displayContent ? 'hideToggle' : 'showToggle']">
-		<div class="information_left">
-			<!-- 左侧时间 -->
-			<div class="session">
-				<span>{{ livePeriod }}</span>
-				<span v-if="[1, 2, 3, 4, 99].includes(event.gameInfo.livePeriod) && !event.gameInfo.delayLive && !event.gameInfo.isHt">{{ formattedGameTime }}</span>
+	<div class="league-content">
+		<div class="content">
+			<div class="main">
+				<!-- 队伍信息 -->
+				<TeamInfoCard :IfOffTheBat="IfOffTheBat" :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
+				<!-- 盘口信息 -->
+				<div class="league-markets">
+					<!-- 全场独赢 -->
+					<MarketColumn cardType="capot" :sportInfo="event" :betType="20" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+					<!-- 让分 -->
+					<MarketColumn cardType="handicap" :sportInfo="event" :betType="1" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+					<!-- 总分 -->
+					<MarketColumn cardType="magnitude" :sportInfo="event" :betType="3" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+					<!-- 球队总分 -->
+					<MarketColumn cardType="magnitude" :sportInfo="event" :betType="401" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+					<!-- 球队总分 -->
+					<MarketColumn cardType="magnitude" :sportInfo="event" :betType="402" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+				</div>
 			</div>
-			<div class="information">
-				<!-- 卡片数据 -->
-				<div class="information_top">
-					<!-- 左侧 队伍名称 比分 -->
-					<TeamInfoCard :IfOffTheBat="IfOffTheBat" :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
-					<div class="information_left">
-						<!-- 全场卡片数据 -->
-						<div class="game_stats">
-							<div class="content">
-								<!-- 全场独赢 -->
-								<MarketColumn cardType="capot" :sportInfo="event" :betType="20" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-								<!-- 让分 -->
-								<MarketColumn cardType="handicap" :sportInfo="event" :betType="1" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-								<!-- 总分 -->
-								<MarketColumn cardType="magnitude" :sportInfo="event" :betType="3" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-							</div>
-						</div>
-						<!-- 球队总分 -->
-						<div class="game_stats_two">
-							<div class="content2">
-								<!-- 球队总分 -->
-								<MarketColumn cardType="magnitude" :sportInfo="event" :betType="401" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-								<!-- 球队总分 -->
-								<MarketColumn cardType="magnitude" :sportInfo="event" :betType="402" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-							</div>
+			<div class="league-footer">
+				<div class="other-info">
+					<div class="date">
+						<span>{{ livePeriod }}</span>
+						<span v-if="[1, 2, 3, 4, 99].includes(event.gameInfo.livePeriod) && !event.gameInfo.delayLive && !event.gameInfo.isHt">{{ formattedGameTime }}</span>
+					</div>
+					<div class="info-list">
+						<span class="collection"><svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px"></svg-icon></span>
+						<div class="markets-stats">
+							<span>+{{ event.marketCount }}</span>
+							<span class="arrow-icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 						</div>
 					</div>
 				</div>
-				<!-- 收藏 -->
-				<div class="number">
-					<div class="number_left">
-						<!-- 关注 -->
-						<SvgIcon v-if="isAttention" class="sports_collection2" iconName="sports_collection_two" :size="16" @click="attentionEvent(true)" />
-						<!-- 取消关注 -->
-						<SvgIcon v-else class="sports_collection" iconName="sports_collection" :size="16" @click="attentionEvent(false)" />
-						<div class="number_one" @click="linkDetail">
-							<span>+</span><span>{{ event.marketCount }}</span>
-							<SvgIcon class="icon" iconName="arrowRight" />
-						</div>
+				<div class="score-list" v-if="event.basketballInfo?.latestLivePeriod > 0">
+					<div class="item" :class="{ theme: event.basketballInfo?.latestLivePeriod == item }" v-for="(item, index) in event.basketballInfo?.latestLivePeriod" :key="item">
+						{{ event.basketballInfo.homeGameScore[index] }}-{{ event.basketballInfo.awayGameScore[index] }}
 					</div>
+				</div>
+			</div>
+		</div>
 
-					<div class="number_right">
-						<!-- 节数比分 -->
-						<div class="score-list" v-if="event.basketballInfo?.latestLivePeriod > 0">
-							<div class="item" :class="{ theme: event.basketballInfo?.latestLivePeriod == item }" v-for="(item, index) in event.basketballInfo?.latestLivePeriod" :key="item">
-								{{ event.basketballInfo.homeGameScore[index] }}-{{ event.basketballInfo.awayGameScore[index] }}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- 右侧 比分板 视频源 动画直播  -->
-			<div class="game_stats_three">
-				<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool.action)">
-					<SvgIcon :class="tool.className" :iconName="tool.iconName" :size="23" />
-					<span class="tooltip-text">{{ tool.tooltipText }}</span>
-				</div>
+		<!-- 其他信息 -->
+		<div class="league-option">
+			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool.action)">
+				<span class="icon"><svg-icon :name="tool.iconName" width="23px" height="16px"></svg-icon></span>
+				<!-- <span class="tooltip-text">{{ tool.tooltipText }}</span> -->
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
+import { computed } from "vue";
 import TeamInfoCard from "../teamInfoCard/teamInfoCard.vue";
 import MarketColumn from "../marketColumn/marketColumn.vue";
-import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
 const SportAttentionStore = useSportAttentionStore();
@@ -174,8 +155,7 @@ const tools = computed(() => {
 	// 判断 是否在未开赛页面
 	if (props.IfOffTheBat !== "todayContest") {
 		baseTools.push({
-			className: "close",
-			iconName: "score",
+			iconName: "sports-score_icon",
 			tooltipText: "比分板",
 			action: openPage,
 		});
@@ -184,8 +164,7 @@ const tools = computed(() => {
 	// 判断是否有视频源
 	if (props.event.streamingOption != 0 && props.event.channelCode) {
 		baseTools.push({
-			className: "close",
-			iconName: "video",
+			iconName: "sports-live_icon",
 			tooltipText: "视频源",
 			action: toggleFullScreen,
 		});
@@ -235,222 +214,120 @@ const linkDetail = () => {
 </script>
 
 <style scoped lang="scss">
-.box_two {
+.league-content {
 	display: flex;
-	height: 194px;
-	flex-shrink: 0;
-	border-radius: 0px 0px 8px 8px;
-	background: var(--Bg1);
+	background-color: var(--Bg1);
+	&:last-child {
+		border-bottom: 0px;
+	}
 
-	.information_left {
+	.content {
 		flex: 1;
-		height: 100%;
-		display: flex;
-		justify-content: flex-end;
 
-		.session {
+		.main {
 			display: flex;
-			// min-width: 54px;
-			width: 58px;
-			// height: 214px;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			flex-shrink: 0;
-			// padding: 0 6px;
-
+			.league-markets {
+				width: 804px;
+				display: flex;
+				gap: 4px;
+				padding: 8px 4px 8px 0px;
+			}
+		}
+		.league-footer {
+			width: 100%;
+			height: 30px;
+			display: flex;
 			background: var(--Bg3);
 
-			span {
-				margin-top: 10px;
-				color: var(--Theme);
-				text-align: center;
-				font-family: "PingFang SC";
-				font-size: 14px;
-				font-style: normal;
-				font-weight: 400;
-				line-height: normal;
-			}
-		}
-
-		.information {
-			width: 100%;
-			margin: 6px 0;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-			.information_top {
-				display: flex;
-
-				.information_left {
-					.game_stats {
-						// display: flex;
-						// justify-content: center;
-						// align-items: center;
-					}
-
-					.content {
-						display: grid;
-						grid-template-columns: repeat(3, 157px);
-						gap: 4px;
-					}
-					.content2 {
-						// display: grid;
-						// grid-template-columns: repeat(2, 157px);
-						// gap: 4px;
-					}
-
-					.game_stats_two {
-						// display: flex;
-						// justify-content: center;
-						// align-items: center;
-						margin-left: 4px;
-					}
-				}
-			}
-		}
-		.number {
-			margin-left: 12px;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			padding: 18px 0 8px 0;
-			border-top: 1px solid var(--Line);
-			.number_left {
+			.other-info {
+				// flex: 1;
+				width: calc(100% - 804px);
+				padding: 0px 14px 0px 24px;
 				display: flex;
 				align-items: center;
-				.sports_collection {
-					color: var(--icon);
-				}
-
-				.sports_collection2 {
-					color: var(--Warn);
-				}
-
-				.number_one {
-					margin-left: 20px;
+				justify-content: space-between;
+				.date {
+					height: 100%;
 					display: flex;
 					align-items: center;
-					cursor: pointer;
-					color: var(--Text1);
-
+					gap: 6px;
+					color: var(--Theme);
 					font-family: "PingFang SC";
 					font-size: 14px;
-					font-style: normal;
 					font-weight: 400;
-					line-height: normal;
-					.icon {
-						margin-left: 6px;
-						width: 12px;
-						height: 12px;
-						color: var(--icon);
+				}
+				.info-list {
+					height: 100%;
+					display: flex;
+					gap: 10px;
+					align-items: center;
+
+					.collection {
+						width: 20px;
+						height: 20px;
+						// display: flex;
+						// align-items: center;
+						// justify-content: center;
+						cursor: pointer;
+					}
+
+					.markets-stats {
+						min-width: 50px;
+						display: flex;
+						align-items: center;
+						justify-content: flex-end;
+						color: var(--Text1, #98a7b5);
+						font-family: "PingFang SC";
+						font-size: 14px;
+						line-height: 20px;
+						font-weight: 400;
+						cursor: pointer;
+						.arrow-icon {
+							width: 20px;
+							height: 20px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+						}
 					}
 				}
 			}
-			.number_right {
-				width: 806px;
+			.score-list {
+				width: 804px;
 				display: flex;
-				justify-content: flex-start;
-				.score-list {
-					display: flex;
-					align-items: center;
-					justify-content: end;
-					gap: 20px;
+				align-items: center;
+				gap: 20px;
+				.item {
 					color: var(--Text1);
 					font-family: "PingFang SC";
 					font-size: 14px;
-					font-style: normal;
 					font-weight: 400;
-					line-height: normal;
 				}
-			}
-		}
-		.game_stats_three {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			width: 54px;
-			margin: 8px 4px 8px 0;
-			border-radius: 8px;
-
-			background: var(--Bg3);
-			.close {
-				color: var(--icon);
-			}
-
-			.close:hover {
-				color: var(--Theme);
-			}
-
-			.tooltip-container {
-				position: relative;
-				display: inline-block;
-				cursor: pointer;
-			}
-
-			.tooltip-text {
-				visibility: hidden;
-				text-align: center;
-				position: absolute;
-				z-index: 1;
-				bottom: 110%;
-				/* 调整这个值以适应您的图标大小 */
-				left: 50%;
-				transform: translateX(-50%);
-				opacity: 0;
-				transition: opacity 0.3s;
-				white-space: nowrap;
-
-				padding: 2px 4px;
-				text-align: center;
-				font-family: "PingFang SC";
-				font-size: 12px;
-				font-style: normal;
-				font-weight: 400;
-				line-height: normal;
-				border-radius: 4px;
-
-				color: var(--Text1);
-				background: var(--Line);
-			}
-
-			.tooltip-container:hover .tooltip-text {
-				visibility: visible;
-				opacity: 1;
+				.theme {
+					color: var(--Theme);
+				}
 			}
 		}
 	}
-}
-.sticky {
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0;
-	z-index: 1;
-}
-.hideToggle {
-	height: 0;
-	overflow: hidden;
-	transition: height 0.5s ease;
-}
-.showToggle {
-	max-height: 214px;
-	overflow: hidden;
-	transition: height 0.5s ease;
-	background: var(--Bg1);
-	border-bottom: 1px solid var(--Line);
-}
-.fade-enter-active,
-.fade-leave-active {
-	transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-	opacity: 0;
-}
 
-.toggle {
-	border-radius: 8px;
-	transition: border-radius 0.8s ease;
+	.league-option {
+		width: 58px;
+		display: flex;
+		gap: 16px;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		border-left: 1px solid var(--Line_2);
+		border-bottom: 1px solid var(--Line_2);
+		overflow: hidden;
+		.tooltip-container {
+			.icon {
+				width: 23px;
+				height: 16px;
+				display: flex;
+				align-items: center;
+			}
+		}
+	}
 }
 </style>

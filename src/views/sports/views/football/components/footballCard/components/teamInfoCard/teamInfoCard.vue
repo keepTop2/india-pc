@@ -39,10 +39,10 @@
 				}}</span>
 			</div>
 			<div class="info-list">
-				<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px"></svg-icon>
+				<span class="collection"><svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px"></svg-icon></span>
 				<div class="markets-stats">
 					<span>+{{ teamData.marketCount }}</span>
-					<svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon>
+					<span class="arrow-icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 				</div>
 			</div>
 		</div>
@@ -215,7 +215,7 @@ const attentionEvent = async (isActive: boolean) => {
 	}
 	.other-info {
 		margin-top: 18px;
-		padding-right: 10px;
+		padding-right: 6px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -232,16 +232,32 @@ const attentionEvent = async (isActive: boolean) => {
 			gap: 10px;
 			align-items: center;
 
+			.collection {
+				width: 20px;
+				height: 20px;
+				// display: flex;
+				// align-items: center;
+				// justify-content: center;
+				cursor: pointer;
+			}
+
 			.markets-stats {
 				min-width: 50px;
 				display: flex;
 				align-items: center;
 				justify-content: flex-end;
-				gap: 6px;
 				color: var(--Text1, #98a7b5);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
+				cursor: pointer;
+				.arrow-icon {
+					width: 20px;
+					height: 20px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
 			}
 		}
 	}
