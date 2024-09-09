@@ -34,8 +34,8 @@
 						<span class="ellipsis">{{ sportInfo?.teamInfo?.homeName }}</span>
 					</span>
 					<span>1</span>
-					<span>2</span>
-					<span>3</span>
+					<span>{{ sportInfo?.soccerInfo?.homeRedCard }}</span>
+					<span>{{ sportInfo?.soccerInfo?.homeYellowCard }}</span>
 					<span>3</span>
 					<span>3</span>
 					<span>3</span>
@@ -43,12 +43,13 @@
 				<div class="line"></div>
 				<div class="scoreboard_info">
 					<span class="teamName">
-						<img v-if="sportInfo?.teamInfo?.homeIconUrl" :src="sportInfo?.teamInfo?.homeIconUrl" alt="" />
+						<img v-if="sportInfo?.teamInfo?.homeIconUrl" :src="sportInfo?.teamInfo?.awayIconUrl" alt="" />
 						<span class="ellipsis"> {{ sportInfo?.teamInfo?.awayName }} </span>
 					</span>
 					<span>1</span>
-					<span>2</span>
-					<span>3</span>
+					<span>{{ sportInfo?.soccerInfo?.homeRedCard }}</span>
+					<span>{{ sportInfo?.soccerInfo?.awayYellowCard }}</span>
+
 					<span>3</span>
 					<span>3</span>
 					<span>3</span>
@@ -244,7 +245,6 @@ const computedSportShowTime = computed(() => (isEmpty(props.sportInfo) ? [] : Sp
 	.teams {
 		width: 100%;
 		height: 100%;
-		background: rgba(0, 0, 0, 0.4);
 		display: flex;
 		gap: 6px;
 		justify-content: space-between;
