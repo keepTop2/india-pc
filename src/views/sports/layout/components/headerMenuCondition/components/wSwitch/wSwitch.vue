@@ -1,19 +1,13 @@
 <template>
 	<div class="tabs_content">
-		<div
-			v-for="(key, index) in ['on', 'off']"
-			:key="index"
-			:disable="true"
-			:class="['tab', { tab_active: switchObj[key].active ,disabled: disabled }]"
-			@click="handleSwitch(key)"
-		>
+		<div v-for="(key, index) in ['on', 'off']" :key="index" :disable="true" :class="['tab', { tab_active: switchObj[key].active, disabled: disabled }]" @click="handleSwitch(key)">
 			{{ switchObj[key].label }}
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits } from "vue";
 
 interface SwitchItem {
 	label: string;
@@ -22,6 +16,7 @@ interface SwitchItem {
 }
 
 interface SwitchObject {
+	[key: string]: { active: boolean; label: string };
 	on: SwitchItem;
 	off: SwitchItem;
 }
@@ -31,11 +26,11 @@ const props = defineProps<{
 	disabled?: boolean;
 }>();
 
-const emit = defineEmits(['selected']);
+const emit = defineEmits(["selected"]);
 
 const handleSwitch = (key: string) => {
-  if (props.disabled) return;
-  emit('selected', key);
+	if (props.disabled) return;
+	emit("selected", key);
 };
 </script>
 
@@ -74,7 +69,7 @@ const handleSwitch = (key: string) => {
 		background: var(--Theme);
 		color: var(--Text_a);
 	}
-	.disabled{
+	.disabled {
 		cursor: not-allowed;
 	}
 }

@@ -76,16 +76,15 @@ const sportList = computed(() => {
 		sports.value.forEach((sp) => {
 			if (props.sportsActive == "todayContest") {
 				if (Number(sp.sportType) == Number(type) && sp?.gameCount) {
-					newRight.push({...item,count:sp?.gameCount});
+					newRight.push({ ...item, count: sp?.gameCount });
 				}
 			} else if (props.sportsActive == "rollingBall") {
 				if (Number(sp.sportType) == Number(type) && sp?.liveGameCount) {
-					newRight.push({...item,count:sp?.liveGameCount});
+					newRight.push({ ...item, count: sp?.liveGameCount });
 				}
-			}
-			else if(props.sportsActive == "morningTrading" || props.sportsActive == "champion"){
+			} else if (props.sportsActive == "morningTrading" || props.sportsActive == "champion") {
 				if (Number(sp.sportType) == Number(type) && sp?.count) {
-					newRight.push({...item,count:sp?.count});
+					newRight.push({ ...item, count: sp?.count });
 				}
 			}
 		});
