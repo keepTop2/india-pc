@@ -7,7 +7,7 @@
 		<!-- 队伍信息 -->
 		<div class="league-team-info">
 			<!-- 主队 -->
-			<div class="team">
+			<div class="team" @click="linkDetail">
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.homeIconUrl" /></div>
 				<div class="team-name">{{ teamData.teamInfo.homeName }}</div>
 				<!-- 红牌黄牌数量 -->
