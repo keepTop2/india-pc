@@ -148,12 +148,16 @@ onBeforeUnmount(() => {
 	unSport();
 	pause();
 });
-
-onMounted(() => {
+onBeforeMount(() => {
 	LayoutStore.setBigScreen(true);
 	PubSub.subscribe(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
 	initSportRequest();
 });
+// onMounted(() => {
+// 	LayoutStore.setBigScreen(true);
+// 	PubSub.subscribe(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
+// 	initSportRequest();
+// });
 
 const initSportRequest = async () => {
 	/**请求数据前清除数据 */
@@ -273,7 +277,6 @@ const initSport = async () => {
 };
 
 const initSportPush = () => {
-	
 	//打开冠军页面  loading不停 所以注释
 	startLoading();
 	//线程名称 体育视图处理线程
@@ -327,7 +330,6 @@ const initSportPush = () => {
 		//发送SSE指令到线程管理器
 		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 	}
-	
 };
 
 /**
@@ -358,7 +360,7 @@ const openSportPush = async () => {
 		token: SportsInfoStore.getSportsToken,
 		language: SportsCommonFn.getSportLanguage(),
 	};
-	console.log(tabActive.value, '==tabActive.value ')
+	console.log(tabActive.value, "==tabActive.value ");
 	initSportPush();
 	if (route?.meta?.isSportSort) {
 		// router.push({ path: route.path, query: { sportsActive: tabActive.value } });
