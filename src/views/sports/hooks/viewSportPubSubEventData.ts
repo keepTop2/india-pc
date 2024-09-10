@@ -1,13 +1,4 @@
-/*
- * @Author: Hida
- * @Date: 2024-06-07 15:28:39
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-15 18:50:32
- * @Description: 视图 viewSportData 单例
- *
- */
 import { reactive } from "vue";
-
 import _ from "lodash-es";
 import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import Common from "/@/views/sports/utils/common";
@@ -72,7 +63,7 @@ export default (function () {
 				// 使用Object.assign来确保响应式数据的正确更新
 				// console.log("viewSportData", viewSportData);
 				Object.assign(this.viewSportData, viewSportData);
-				console.info("this.viewSportData--------------->", this.viewSportData);
+				// console.info("this.viewSportData--------------->", this.viewSportData);
 			} catch (error) {
 				console.error("Error occurred while setting sport data:", error);
 			}
