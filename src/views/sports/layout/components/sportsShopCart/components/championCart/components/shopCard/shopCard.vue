@@ -1,7 +1,8 @@
 <template>
 	<div class="bet_slip_item">
-		<div v-if="hasClose" class="remove_icon" @click="onDeleteBetEvent()">
-			<SvgIcon class="sports_remove" iconName="sports_remove" color="#798D9F" />
+		<!-- 投注成功卡片不显示删除图标 -->
+		<div v-if="hasClose" class="remove" @click="onDeleteBetEvent()">
+			<span class="delete_icon"><svg-icon name="sports-delete" size="18px"></svg-icon></span>
 		</div>
 		<div class="bet_slip_info" :style="{ opacity: opacityFn() }">
 			<div class="bet_slip_label">
@@ -16,7 +17,7 @@
 					</div>
 				</div> -->
 			</div>
-			<div class="bet_slip_type mt_2">
+			<div class="bet_slip_type">
 				<div>
 					<span v-if="shopData.isLive" class="mr_6">[滚球]</span>
 					<!-- <span class="mr_6">{{ SportsCommonFn.betTypeMap[shopData.betMarketInfo?.betType] }}</span> -->
@@ -25,11 +26,11 @@
 					<span>[欧洲盘]</span>
 				</div>
 
-				<div>
+				<div v-if="examineEventsStatus">
 					<span class="tip"> {{ examineEventsStatus }}</span>
 				</div>
 			</div>
-			<div class="bet_slip_name mt_4">
+			<div class="bet_slip_name mt_2">
 				<span>{{ shopData.leagueName }}</span>
 				<!-- v
 				<span>{{ shopData.teamInfo.awayName }}</span>
@@ -121,36 +122,30 @@ const onDeleteBetEvent = () => {
 
 .bet_slip_item {
 	position: relative;
-	display: flex;
-	align-items: center;
-	margin-top: 5px;
 	border-radius: 8px;
-	padding: 10px 25px;
-	background-color: var(--Bg3);
+	background-color: var(--Bg4);
 
-	.remove_icon {
+	.remove {
 		position: absolute;
-		width: 40px;
-		height: 24px;
 		bottom: 0px;
 		right: 0px;
+		width: 40px;
+		height: 24px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		border-radius: 8px 0px;
+		z-index: 2;
 		cursor: pointer;
-
-		//颜色非动态
-		background-color: rgba(121, 141, 159, 0.2);
-	}
-
-	.sports_remove {
-		position: absolute;
-		height: 18px;
-		bottom: 3px;
-		right: 8px;
-		z-index: 10;
+		background-color: var(--Bg2);
+		.delete_icon {
+			width: 18px;
+			height: 18px;
+		}
 	}
 
 	.bet_slip_info {
-		flex: 1;
+		padding: 10px 25px;
 
 		.bet_slip_label {
 			display: flex;
@@ -160,6 +155,7 @@ const onDeleteBetEvent = () => {
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-weight: 500;
+			line-height: 22px;
 
 			.value {
 				color: var(--Text_s);
@@ -169,6 +165,7 @@ const onDeleteBetEvent = () => {
 				font-style: normal;
 				font-weight: 500;
 				line-height: normal;
+				line-height: 22px;
 			}
 			.change-icon {
 				position: absolute;
@@ -184,17 +181,14 @@ const onDeleteBetEvent = () => {
 
 			.tip {
 				display: block;
-				padding: 2px 7px;
-				border-radius: 5px;
-
-				background-color: var(--Tag2-P);
-				color: var(--TB);
-			}
-
-			& > div:first-child {
-				& > span:first-child {
-					color: var(--Theme);
-				}
+				height: 20px;
+				padding: 0px 5px;
+				border-radius: 4px;
+				background-color: var(--Bg3);
+				color: var(--Text1);
+				font-family: "PingFang SC";
+				font-size: 14px;
+				font-weight: 400;
 			}
 		}
 
@@ -202,10 +196,10 @@ const onDeleteBetEvent = () => {
 		.bet_slip_name,
 		.bet_slip_name {
 			color: var(--Text1);
-
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
+			line-height: 20px;
 		}
 	}
 }

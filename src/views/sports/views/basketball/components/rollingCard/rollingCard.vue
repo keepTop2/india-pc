@@ -8,13 +8,12 @@
 					<svg-icon name="sports-collection" size="16px"></svg-icon>
 				</span>
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
-				<div class="league_name">{{ teamData.leagueName }}</div>
+				<div class="league_name" :style="displayContent ? `max-width:328px` : ''">{{ teamData.leagueName }}</div>
 			</div>
 			<!-- 盘口表头 -->
 			<div class="market-name-info" v-if="displayContent">
 				<div class="market-name-list">
-					<div class="label" v-for="betType in betTypes" :key="betType">{{ betType }}</div>
-					<div class="label large">球队总分</div>
+					<div class="label" :class="{ large: index == 3 }" v-for="(betType, index) in SportsCommonFn.betTypeMap[2]" :key="betType">{{ betType }}</div>
 				</div>
 			</div>
 			<div class="header-icon">
@@ -30,9 +29,9 @@
 <script setup lang="ts">
 import { onMounted, watch, ref } from "vue";
 import { defineAsyncComponent } from "vue";
-const EventItem = defineAsyncComponent(() => import("/@/views/sports/views/basketball/components/rollingCard/components/eventItem/eventItem.vue"));
+import SportsCommonFn from "/@/views/sports/utils/common";
 
-const betTypes = ["全场独赢", "让分", "总分"];
+const EventItem = defineAsyncComponent(() => import("/@/views/sports/views/basketball/components/rollingCard/components/eventItem/eventItem.vue"));
 
 interface teamDataType {
 	/** 数据索引 */
@@ -121,6 +120,9 @@ onMounted(() => {
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;
+				white-space: nowrap; /* 单行文本不换行 */
+				overflow: hidden; /* 隐藏超出容器的文本 */
+				text-overflow: ellipsis; /* 超出部分显示省略号 */
 			}
 		}
 		.market-name-info {

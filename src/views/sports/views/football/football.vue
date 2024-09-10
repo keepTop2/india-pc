@@ -1,7 +1,3 @@
-<!--
- * @Author: WangMingxin
- * @Description: 足球
--->
 <template>
 	<div class="box-content">
 		<!-- 日期选择区间 -->
@@ -9,12 +5,13 @@
 		<template v-if="state.targetEvents?.length">
 			<!-- 联赛数据统计 -->
 			<SelectCard :sportsActive="sportsActive" :teamData="state.targetEvents"></SelectCard>
-			<!-- /** 可获取间隔-底部边距 class    */
-	bottomClass: "card-item",
-	/** 可获取缩小时展示的-标题高度 class    */
-	minDivClass: "tournament-header",
-	/** 可获取展开时-子集卡片高度 class    */
-	childrenDivClass: "content", -->
+
+			<!-- 滚球虚拟列表 -->
+			<!--
+				bottomClass: 可获取间隔-底部边距,
+				minDivClass: 可获取缩小时展示的-标题高度,
+				childrenDivClass: 可获取展开时-子集卡片高度,
+			-->
 			<VirtualScrollVirtualList
 				v-if="sportsActive !== `champion`"
 				ref="VirtualScrollVirtualListRef"
@@ -29,6 +26,12 @@
 				</template>
 			</VirtualScrollVirtualList>
 
+			<!-- 冠军虚拟列表 -->
+			<!--
+				bottomClass: 可获取间隔-底部边距,
+				minDivClass: 可获取缩小时展示的-标题高度,
+				childrenDivClass: 可获取展开时-子集卡片高度,
+			-->
 			<VirtualScrollVirtualList
 				v-else
 				ref="VirtualScrollVirtualListRef"
@@ -45,21 +48,18 @@
 			</VirtualScrollVirtualList>
 		</template>
 		<!-- 无数据 -->
-		<div class="nonedata" v-if="!state.targetEvents?.length">
+		<div class="noData" v-if="!state.targetEvents?.length">
 			<NoneData></NoneData>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch, watchEffect } from "vue";
+import { onBeforeMount, onBeforeUnmount, reactive, ref, watchEffect } from "vue";
 import { cloneDeep, get } from "lodash-es";
-import pubSub from "/@/pubSub/pubSub";
 import { Sports, SportViewData } from "/@/views/sports/models/interface";
-
 import { useRoute } from "vue-router";
 import { FootballCard, ChampionshipCard, SelectCard, VirtualScrollVirtualList, DateSelector } from "./components/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
@@ -79,36 +79,27 @@ const SportsBetEvent = useSportsBetEventStore();
 const sportsActive = ref("rollingBall");
 
 const state = reactive({
-	/**
-	 * @description Sports视图数据
-	 */
+	// 体育数据集合
 	viewSportData: {
-		/**
-		 * @description 外层Sports组件视图数据
-		 */
-		sports: [] as Sports[],
-		leagues: [],
-		events: [],
-		markets: [],
-		outrights: [],
-		results: [],
-		/**
-		 * @description 各个子路由视图数据
-		 */
-		childrenViewData: {},
+		sports: [] as Sports[], // 球类tab数据
+		leagues: [], // 联赛数据
+		events: [], // 赛况数据
+		markets: [], // 盘口数据
+		outrights: [], // 冠军数据
+		results: [], // 赛果数据
+		childrenViewData: {}, // 处理好的视图数据
 	} as SportViewData,
 	targetEvents: [], // 添加这个字段来保存目标事件数据数组
-	/**赛选后的额数据（展示） */
-	targetEventList: [],
+	targetEventList: [], // 赛选后的额数据（展示）
 });
 
 onBeforeMount(() => {
 	state.targetEvents = [];
 	/** 进入时获取一次页面数据 */
 	state.targetEvents = viewSportPubSubEventData.getSportData(1);
-	console.log(state.targetEvents,'===state.targetEvents')
+	console.log(state.targetEvents, "===state.targetEvents");
 	state.targetEventList = getList();
-	setInitsportsActive();
+	setInitSportsActive();
 
 	/** 只注重过程不在意结果的数据 响应获取  */
 	watchEffect(() => {
@@ -116,11 +107,9 @@ onBeforeMount(() => {
 		state.targetEvents = viewSportPubSubEventData.getSportData(1);
 
 		state.targetEventList = getList();
-		setInitsportsActive();
+		setInitSportsActive();
 	});
 });
-
-onBeforeUnmount(() => {});
 
 /**
  * @description: 获取筛选后的列表数据；
@@ -131,33 +120,34 @@ const getList = () => {
 	const SportLeagueSeachStore = useSportLeagueSeachStore();
 	const leagueSelect = SportLeagueSeachStore.getLeagueSelect;
 	// 如果有筛选 则处理数据，只给出筛选的联赛列表。
-	let newleagues: never[] = [];
+	let newLeagues: never[] = [];
 	if (leagues && leagueSelect.length > 0) {
 		for (let index = 0; index < leagues.length; index++) {
 			const item = leagues[index];
 			let bool = leagueSelect.includes(item.leagueId);
 			if (bool) {
-				newleagues.push(item);
+				newLeagues.push(item);
 			}
 		}
-		leagues = newleagues;
+		leagues = newLeagues;
 	}
 	sportHotStore.setInitEvent(get(leagues, "[0].events.[0]", {}) as any);
 	return leagues;
 };
 
 /**设置初始化分类选中值; */
-const setInitsportsActive = () => {
+const setInitSportsActive = () => {
 	sportsActive.value = route.query.sportsActive as string;
 };
 
 /**
- * @description 赔率发生变化后 3秒动画 清理掉oddsChange状态
+ * @description 赔率发生变化后 3秒动画结束后清理掉oddsChange状态
  */
 const oddsChange = ({ marketId, selections }) => {
 	clearSportsOddsChange({ webToPushApi: WebToPushApi.rollingBall, marketId, selection: selections });
 };
 
+// 卡片收起
 const toggleDisplay = (val?: number) => {
 	VirtualScrollVirtualListRef.value.setlistDataEisExpand(val);
 };
@@ -171,7 +161,7 @@ const toggleDisplay = (val?: number) => {
 .card-container {
 	margin-bottom: 5px;
 }
-.nonedata {
+.noData {
 	margin-top: 20%;
 }
 </style>

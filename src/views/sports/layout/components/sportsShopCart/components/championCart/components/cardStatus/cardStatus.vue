@@ -1,26 +1,19 @@
 <template>
 	<div class="card-status-container">
-		<SvgIcon iconName="close2" size="20" class="icon close-bunch" @click="click_clear" />
-
 		<div class="status">
-			<SvgIcon iconName="success" size="30" v-if="betStatus == 0" />
-			<SvgIcon iconName="fail" size="30" v-else />
-			<span v-if="betStatus == 0" class="success">投注成功</span>
-			<span v-else class="fail">投注失败</span>
+			<template v-if="betStatus == 0">
+				<span class="icon"><svg-icon name="sports-success" size="22px"></svg-icon></span>
+				<span class="success">投注成功</span>
+			</template>
+			<template v-else>
+				<span class="icon"><svg-icon name="sports-error" size="22px"></svg-icon></span>
+				<span class="fail">投注失败</span>
+			</template>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-
-import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
-import { useChampionShopCartStore } from "/@/stores/modules/sports/championShopCart";
-const ChampionShopCartStore = useChampionShopCartStore();
-const ShopCatControlStore = useShopCatControlStore();
-//  betStatus 注单状态
-// 0 ：下注成功 ；1 ：下注失败
-
 const props = withDefaults(
 	defineProps<{
 		/** 注单状态  0 ：下注成功 ；1 ：下注失败  */
@@ -32,16 +25,6 @@ const props = withDefaults(
 );
 
 const emits = defineEmits(["changeOrderStatus"]);
-
-const sportsBetEvent = useSportsBetEventStore();
-/**
- * @description 头部清空icon 事件
- */
-const click_clear = () => {
-	ChampionShopCartStore.clearOutrightShopCart();
-	ShopCatControlStore.setShopCatShow(false);
-	emits("changeOrderStatus", false);
-};
 </script>
 
 <style scoped lang="scss">

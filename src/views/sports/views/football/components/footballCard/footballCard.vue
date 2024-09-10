@@ -8,12 +8,12 @@
 					<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px"></svg-icon>
 				</span> -->
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
-				<div class="league_name">{{ teamData.leagueName }}</div>
+				<div class="league_name" :style="displayContent ? `max-width:328px` : ''">{{ teamData.leagueName }}</div>
 			</div>
 			<!-- 盘口表头 -->
 			<div class="market-name-info" v-if="displayContent">
 				<div class="market-name-list">
-					<div class="label" v-for="betType in betTypes" :key="betType">{{ betType }}</div>
+					<div class="label" v-for="betType in SportsCommonFn.betTypeMap[1]" :key="betType">{{ betType }}</div>
 				</div>
 			</div>
 			<div class="header-icon">
@@ -32,9 +32,8 @@ import EventItem from "./components/eventItem/eventItem.vue";
 import PubSub from "/@/pubSub/pubSub";
 import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
+import SportsCommonFn from "/@/views/sports/utils/common";
 const SportAttentionStore = useSportAttentionStore();
-
-const betTypes = ["全场独赢", "全场让球", "全场大小", "半场独赢", "半场让球", "半场大小"];
 
 interface teamDataType {
 	/** 数据索引 */
@@ -57,8 +56,6 @@ const props = withDefaults(defineProps<teamDataType>(), {
 		return {};
 	},
 });
-
-// console.log("props", props.teamData);
 
 const displayContent = ref(true);
 
@@ -184,10 +181,14 @@ const attentionEvent = async (isActive: boolean) => {
 				height: 20px;
 			}
 			.league_name {
+				// max-width: 328px;
 				color: var(--Text_s);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;
+				white-space: nowrap; /* 防止文本换行 */
+				overflow: hidden; /* 超出部分隐藏 */
+				text-overflow: ellipsis; /* 超出部分显示省略号 */
 			}
 		}
 		.market-name-info {

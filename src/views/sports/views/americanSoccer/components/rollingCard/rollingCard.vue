@@ -1,50 +1,35 @@
-<!--
- * @Author: Relax
- * @Description: 体育-美式足球-卡片
--->
 <template>
 	<div class="card-container">
 		<!--  头部 -->
-		<div class="box sticky" :class="[!displayContent ? 'toggle' : '']">
-			<div class="box_one" @click="toggleDisplay">
-				<!-- 联赛信息 -->
-				<div class="top_left">
-					<img :src="teamData.leagueIconUrl" alt="" />
-					<div class="title">
-						<span>{{ teamData.leagueName }}</span>
-					</div>
-				</div>
-				<!-- 投注类型 -->
-				<div class="top_right">
-					<transition name="fade">
-						<div class="top_right_one" v-if="displayContent">
-							<div class="text" v-for="betType in betTypes" :key="betType">{{ betType }}</div>
-						</div>
-					</transition>
+		<div class="card—header" :class="[!displayContent ? 'toggle' : '']" @click="toggleDisplay">
+			<!-- 联赛信息 -->
+			<div class="league-info">
+				<span class="collection">
+					<svg-icon name="sports-collection" size="16px"></svg-icon>
+				</span>
+				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
+				<div class="league_name" :style="displayContent ? `max-width:328px` : ''">{{ teamData.leagueName }}</div>
+			</div>
+			<!-- 盘口表头 -->
+			<div class="market-name-info" v-if="displayContent">
+				<div class="market-name-list">
+					<div class="label" v-for="betType in SportsCommonFn.betTypeMap[3]" :key="betType">{{ betType }}</div>
 				</div>
 			</div>
-			<!-- 收藏 -->
-			<!-- <SvgIcon class="sports_collection" iconName="sports_collection" :size="20" /> -->
+			<div class="header-icon">
+				<span class="icon" :class="{ rotate: displayContent }"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
+			</div>
 		</div>
-
-		<EventItem
-			:IfOffTheBat="IfOffTheBat"
-			v-for="(event, index) in teamData.events"
-			:key="index"
-			:event="event"
-			:displayContent="displayContent"
-			:dataIndex="props.dataIndex"
-		></EventItem>
+		<template v-if="displayContent">
+			<EventItem :IfOffTheBat="IfOffTheBat" v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
+		</template>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
-import { isExternal } from "util/types";
+import { onMounted, ref, watch } from "vue";
 import EventItem from "./components/eventItem/eventItem.vue";
-import Common from "/@/utils/common";
-const betTypes = ["全场独赢", "全场让球", "全场大小"];
-
+import SportsCommonFn from "/@/views/sports/utils/common";
 interface teamDataType {
 	/** 数据索引 */
 	dataIndex: number;
@@ -103,109 +88,77 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .card-container {
-	margin-bottom: 16px;
-}
-.box {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 40px;
-	flex-shrink: 0;
-	border-radius: 8px 8px 0px 0px;
-	background: var(--Bg6);
-
-	box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25) inset;
-	.box_one {
-		flex: 1;
+	width: 1246px;
+	border-radius: 8px;
+	overflow: hidden;
+	.card—header {
 		display: flex;
-		align-items: center;
-		height: 100%;
-		margin-right: 58px;
+		width: 100%;
+		height: 34px;
+		background: var(--Bg6);
+		box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25) inset;
+		border-radius: 8px 8px 0px 0px;
 
-		.top_left {
+		.league-info {
+			// width: 384px;
 			flex: 1;
-			margin: 0 24px;
 			display: flex;
 			align-items: center;
-			overflow: hidden;
-			position: relative;
-			// width: 100%;
-			height: 100%;
-
-			img {
-				-webkit-user-drag: none;
+			gap: 12px;
+			padding-left: 24px;
+			box-sizing: border-box;
+			.collection {
+				width: 16px;
+				height: 16px;
+			}
+			.league_icon {
 				width: 20px;
 				height: 20px;
 			}
-
-			.title {
+			.league_name {
 				color: var(--Text_s);
-				min-width: 70px;
-				flex: 1;
-				position: relative;
-				overflow: hidden;
-				display: flex;
-				height: 100%;
-				margin-left: 12px;
-				box-sizing: border-box;
-
-				span {
-					display: inline-block;
-					width: 100%;
-					height: 100%;
-					font-family: "PingFang SC";
-					font-size: 16px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 40px;
-					overflow: hidden;
-					white-space: nowrap;
-					text-overflow: ellipsis;
-					top: 0;
-					position: absolute;
-				}
+				font-family: "PingFang SC";
+				font-size: 16px;
+				font-weight: 400;
+				white-space: nowrap; /* 单行文本不换行 */
+				overflow: hidden; /* 隐藏超出容器的文本 */
+				text-overflow: ellipsis; /* 超出部分显示省略号 */
 			}
 		}
-		.top_right {
-			.top_right_one {
-				display: grid;
-				grid-template-columns: repeat(3, 264px);
+		.market-name-info {
+			width: 804px;
+			.market-name-list {
+				height: 100%;
+				display: flex;
 				gap: 4px;
-
-				.text {
+				padding-right: 4px;
+				.label {
+					flex: 1;
+					height: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
 					color: var(--Text1);
-					white-space: nowrap;
 					text-align: center;
 					font-family: "PingFang SC";
 					font-size: 14px;
-					font-style: normal;
 					font-weight: 400;
-					line-height: normal;
-					padding: 0 39px;
 				}
 			}
 		}
+		.header-icon {
+			width: 58px;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.icon {
+				transform: rotate(90deg);
+			}
+			.rotate {
+				transform: rotate(-90deg);
+			}
+		}
 	}
-	.sports_collection {
-		margin: 0 25px 0 18px;
-		color: var(--icon);
-	}
-}
-
-.sticky {
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0;
-	z-index: 1;
-}
-.fade-enter,
-.fade-leave-to {
-	opacity: 0;
-}
-
-.toggle {
-	border-radius: 8px;
-	transition: border-radius 0.8s ease;
 }
 </style>

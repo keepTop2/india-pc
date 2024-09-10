@@ -5,7 +5,9 @@
 <template>
 	<div class="shopCart">
 		<div class="header-container">
-			<cardStatus :betStatus="placeBetRes.betStatus" @changeOrderStatus="changeOrderStatus" />
+			<span class="close_icon" @click.stop="click_clear"><svg-icon name="sports-close" size="30px"></svg-icon></span>
+
+			<cardStatus :betStatus="placeBetRes.betStatus" />
 		</div>
 		<!-- 购物车卡片 -->
 		<div class="container-main">
@@ -14,17 +16,17 @@
 			<div class="singlePass">
 				<!--投注信息-->
 				<div class="bet-info">
-					<div>
-						<span>投注金额</span>
-						<span>{{ Common.formatFloat(betInfo?.stake) || "0.00" }}</span>
+					<div class="cell">
+						<span class="label">投注金额</span>
+						<span class="value success">{{ Common.formatFloat(betInfo?.stake) || "0.00" }}</span>
 					</div>
-					<div>
-						<span>可赢金额</span>
-						<span>{{ Common.formatFloat(betInfo?.winnable) }}</span>
+					<div class="cell">
+						<span class="label">可赢金额</span>
+						<span class="value success">{{ Common.formatFloat(betInfo?.winnable) }}</span>
 					</div>
-					<div>
-						<span>注单号</span>
-						<span class="transId">{{ vendorTransId }}</span>
+					<div class="cell">
+						<span class="label">注单号</span>
+						<span class="value">{{ vendorTransId }}</span>
 					</div>
 				</div>
 				<el-button @click="onOrderEnd">确认</el-button>
@@ -34,14 +36,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
 import Common from "/@/utils/common";
 import { cardStatus, ShopCard } from "../index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
+const sportsBetEvent = useSportsBetEventStore();
+const ShopCatControlStore = useShopCatControlStore();
 
 const emits = defineEmits(["onOrderEnd", "onKeepOrder", "refreshBalance"]);
-const sportsBetEvent = useSportsBetEventStore();
-// const props = defineProps(["betInfo", "maxWin", "placeBetRes"]);
 
 const props = withDefaults(
 	defineProps<{
@@ -61,12 +63,9 @@ const props = withDefaults(
 	}
 );
 
-/**
- * @description: 更改订单状态；
- * @param {*} status 订单状态值
- * @return {*}
- */
-const changeOrderStatus = (status: boolean) => {
+const click_clear = () => {
+	sportsBetEvent.clearShopCart();
+	ShopCatControlStore.setShopCatShow(false);
 	onOrderEnd();
 };
 
@@ -84,33 +83,54 @@ const onOrderEnd = () => {
 .shopCart {
 	width: 100%;
 	min-height: 100%;
-	box-sizing: border-box;
-	//padding-bottom: 10px;
-
 	background: var(--Bg1);
 	color: var(--Text_s);
+	box-sizing: border-box;
+
 	.header-container {
-		padding: 6px 15px 0 15px;
-		& > div {
-			padding: 9px 0;
+		position: relative;
+		height: 52px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0px 15px;
+		.close_icon {
+			position: absolute;
+			top: 50%;
+			right: 15px;
+			transform: translate(0px, -50%);
+			width: 30px;
+			height: 30px;
+			cursor: pointer;
+			z-index: 999;
 		}
 	}
 
 	.container-main {
+		position: relative;
 		overflow-y: hidden;
-		padding: 0 15px;
-		margin-bottom: 10px;
+		padding: 10px 15px 15px;
+		&::after {
+			position: absolute;
+			content: "";
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 1px;
+			background-color: var(--Line_1);
+			box-shadow: 0px 1px 0px 0px #343d48;
+		}
 	}
 }
 
 .singlePass {
-	padding: 15px;
+	margin-top: 4px;
+	padding: 10px 15px 15px;
 	border-radius: 8px;
-	margin: 5px 0 0;
 	align-items: center;
-	background: var(--Bg3);
+	background: var(--Bg4);
 	:deep(.el-button) {
-		margin: 5px 0;
+		margin-top: 10px;
 		border-radius: 4px;
 		height: 48px;
 		width: 100%;
@@ -120,26 +140,31 @@ const onOrderEnd = () => {
 	}
 
 	.bet-info {
-		display: flex;
-		flex-direction: column;
+		display: grid;
 		gap: 10px;
-		margin-bottom: 10px;
 
-		& > div {
+		.cell {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 
-			span {
+			.label {
+				color: var(--Text_s);
+				font-family: "PingFang SC";
 				font-size: 14px;
+				font-weight: 500;
+				line-height: 20px;
 			}
-
-			& > span:last-child {
-				color: var(--Theme);
-			}
-
-			.transId {
+			.value {
 				color: var(--Text1);
+				font-family: "PingFang SC";
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 20px;
+			}
+
+			.success {
+				color: var(--Success);
 			}
 		}
 	}

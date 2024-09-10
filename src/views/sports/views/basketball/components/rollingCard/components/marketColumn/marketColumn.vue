@@ -1,7 +1,3 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育-足球-赔率卡片列；
--->
 <template>
 	<div class="marketColumn" v-if="market?.selections">
 		<MarketCard
@@ -18,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import MarketCard from "../marketCard/marketCard.vue";
 import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 
@@ -65,6 +61,7 @@ const oddsChange = (obj: any) => {
 
 <style scoped lang="scss">
 .marketColumn {
+	max-width: 158px;
 	flex: 1;
 	display: flex;
 	flex-direction: column;

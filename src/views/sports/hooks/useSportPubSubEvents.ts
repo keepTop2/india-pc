@@ -72,7 +72,7 @@ export default function useSportPubSubEvents() {
 		};
 		try {
 			let res: any;
-			if (store.token) {
+			if (store.userInfo.token) {
 				res = await sportsApi.sportsLogin(params).catch((err) => err);
 			} else {
 				res = await sportsApi.sbaAnonLogin(params).catch((err) => err);

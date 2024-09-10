@@ -1,7 +1,3 @@
-<!--
- * @Author: Relax
- * @Description: 体育-篮球-队伍卡片
--->
 <template>
 	<div class="league-info">
 		<!-- 队伍信息 -->
@@ -57,14 +53,14 @@ const props = withDefaults(defineProps<teamDataType>(), {
 /**
  * @description: 跳转到比赛详细
  */
-const linkDetail = () => {
+/*const linkDetail = () => {
 	const params = {
 		eventId: props?.teamData?.eventId,
 		dataIndex: props?.dataIndex,
 	};
 	SportHotStore.setCurrentEvent(props.teamData);
 	gotoEventDetail(params, SportTypeEnum.Basketball);
-};
+};*/
 </script>
 
 <style scoped lang="scss">
@@ -92,11 +88,15 @@ const linkDetail = () => {
 				}
 			}
 			.team-name {
+				max-width: 286px;
 				flex: 1;
 				color: var(--Text_s);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
+				white-space: nowrap; /* 防止文本换行 */
+				overflow: hidden; /* 超出部分隐藏 */
+				text-overflow: ellipsis; /* 超出部分显示省略号 */
 			}
 
 			.score {

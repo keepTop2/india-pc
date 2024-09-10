@@ -81,6 +81,7 @@ export const useUserStore = defineStore("User", {
 		},
 
 		setUserInfo(info: Object) {
+			this.token = info.token;
 			Object.assign(this.userInfo, info);
 		},
 		// 设置记住密码

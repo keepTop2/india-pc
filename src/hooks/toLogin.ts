@@ -13,9 +13,10 @@ export function useToLogin() {
 	 */
 	const isHaveToken = () => {
 		return new Promise<TokenResponse>((resolve, reject) => {
-			if (!store.token) {
+			if (!store.userInfo.token) {
 				pubSub.publish(pubSub.PubSubEvents.LoginEvents.showOrHiddenLoginDialog.eventName, pubSub.PubSubEvents.LoginEvents.showOrHiddenLoginDialog.params[1]);
 				reject({ code: Common.ResCode.ERR });
+				console.log("token校验失败；未登录状态");
 			} else {
 				resolve({ code: Common.ResCode.SUCCESS });
 			}

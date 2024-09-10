@@ -20,18 +20,24 @@
 			</div>
 			<div class="league-footer">
 				<div class="other-info">
+					<!-- 塞节时间 -->
 					<div class="date">
 						<span>{{ livePeriod }}</span>
 						<span v-if="[1, 2, 3, 4, 99].includes(event.gameInfo.livePeriod) && !event.gameInfo.delayLive && !event.gameInfo.isHt">{{ formattedGameTime }}</span>
 					</div>
 					<div class="info-list">
-					<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px" @click="attentionEvent(!isAttention ? false : true)"></svg-icon>
-						<div class="markets-stats">
+						<!-- 收藏 -->
+						<span class="collection">
+							<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px" @click="attentionEvent(!isAttention ? false : true)"></svg-icon>
+						</span>
+						<!-- 盘口数量 -->
+						<div class="markets-qty" @click="linkDetail">
 							<span>+{{ event.marketCount }}</span>
 							<span class="arrow-icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 						</div>
 					</div>
 				</div>
+				<!-- 节数比分 -->
 				<div class="score-list" v-if="event.basketballInfo?.latestLivePeriod > 0">
 					<div class="item" :class="{ theme: event.basketballInfo?.latestLivePeriod == item }" v-for="(item, index) in event.basketballInfo?.latestLivePeriod" :key="item">
 						{{ event.basketballInfo.homeGameScore[index] }}-{{ event.basketballInfo.awayGameScore[index] }}
@@ -219,6 +225,9 @@ const linkDetail = () => {
 	background-color: var(--Bg1);
 	&:last-child {
 		border-bottom: 0px;
+		.league-option {
+			border-bottom: 0px;
+		}
 	}
 
 	.content {
@@ -265,13 +274,10 @@ const linkDetail = () => {
 					.collection {
 						width: 20px;
 						height: 20px;
-						// display: flex;
-						// align-items: center;
-						// justify-content: center;
 						cursor: pointer;
 					}
 
-					.markets-stats {
+					.markets-qty {
 						min-width: 50px;
 						display: flex;
 						align-items: center;
@@ -321,6 +327,7 @@ const linkDetail = () => {
 		border-bottom: 1px solid var(--Line_2);
 		overflow: hidden;
 		.tooltip-container {
+			cursor: pointer;
 			.icon {
 				width: 23px;
 				height: 16px;

@@ -5,7 +5,8 @@
 <template>
 	<div class="shopCart">
 		<div class="header-container">
-			<cardStatus :betStatus="placeParlayRes?.betStatus" @changeOrderStatus="changeOrderStatus" />
+			<span class="close_icon" @click="changeOrderStatus"><svg-icon name="sports-close" size="30px"></svg-icon></span>
+			<cardStatus :betStatus="placeParlayRes?.betStatus" />
 		</div>
 		<!-- 购物车卡片 -->
 		<div class="container-main">
@@ -91,22 +92,51 @@ const onKeepOrder = () => {
 .shopCart {
 	width: 100%;
 	min-height: 100%;
-	box-sizing: border-box;
-	//padding-bottom: 10px;
-
 	background: var(--Bg1);
 	color: var(--Text_s);
+	box-sizing: border-box;
+
 	.header-container {
-		padding: 6px 15px 0 15px;
-		& > div {
-			padding: 9px 0;
+		position: relative;
+		height: 52px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0px 15px;
+		.close_icon {
+			position: absolute;
+			top: 50%;
+			right: 15px;
+			transform: translate(0px, -50%);
+			width: 30px;
+			height: 30px;
+			cursor: pointer;
+			z-index: 999;
 		}
 	}
 
 	.container-main {
+		position: relative;
 		overflow-y: hidden;
-		padding: 0 15px;
-		margin-bottom: 10px;
+		padding: 10px 15px 15px;
+		&::after {
+			position: absolute;
+			content: "";
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 1px;
+			background-color: var(--Line_1);
+			box-shadow: 0px 1px 0px 0px #343d48;
+		}
+		.commodity,
+		.money-plan {
+			display: grid;
+			gap: 6px;
+		}
+		.money-plan {
+			margin-top: 6px;
+		}
 	}
 }
 
@@ -143,22 +173,18 @@ const onKeepOrder = () => {
 	}
 }
 .moreShop {
+	margin-top: 5px;
 	padding: 15px;
 	border-radius: 8px;
-	margin: 5px 0 0;
 	align-items: center;
 	position: sticky;
 	bottom: 0;
 	z-index: 99;
 	display: grid;
 	gap: 5px;
-	background: var(--Bg3);
-	// .el-button {
-	// 	margin: 0;
-	// }
+	background: var(--Bg4);
 
 	:deep(.el-button) {
-		margin: 0;
 		border-radius: 4px;
 		height: 48px;
 		width: 100%;
@@ -169,7 +195,7 @@ const onKeepOrder = () => {
 
 	.btnKeep {
 		border: 1px solid var(--Theme);
-		background: var(--Bg3);
+		background: var(--Bg4);
 		color: var(--Theme);
 	}
 }

@@ -1,7 +1,3 @@
-/*
- * @Author: WangMingxin
- * @Description: 购物车数据
- */
 import { defineStore } from "pinia";
 import { merge } from "lodash-es";
 import { SportsRootObject, BetMarketInfo } from "/@/views/sports/models/interface";
@@ -263,20 +259,22 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 		 * @description 添加赛事到购物车
 		 * @param data  赛事信息
 		 */
-		async addEventToCart(data) {
+		async addEventToCart(data: any) {
 			const { isHaveToken, toLogin } = useToLogin();
 			const res = await isHaveToken()
 				.then((res) => res)
 				.catch((err) => err);
 			if (res.code == 500) {
-				return false;
+				toLogin;
+				return;
 			}
+
 			if (this.sportsBetEventData.length >= 10) {
 				ElMessage({
 					message: "最多选择10场比赛",
 					customClass: "weak-hint",
 				});
-				return false;
+				return;
 			}
 			const ShopCatControlStore = useShopCatControlStore();
 			const eventId = data.eventId;
@@ -288,6 +286,8 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 				// 当前数据对象不存在于数组中，新增它
 				this.sportsBetEventData.push(data);
 			}
+			console.log("this.sportsBetEventData", this.sportsBetEventData);
+
 			// 赛事添加格式化数据
 			sportsOpenSse(this.sportsEventInfo);
 			/*处理购物车列表信息*/
@@ -338,16 +338,16 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 		},
 
 		// 储存当前选中的赛事盘口信息
-		async storeEventInfo(key, data) {
-			const { isHaveToken, toLogin } = useToLogin();
-			const res = await isHaveToken(false)
+		async storeEventInfo(key: any, data: any) {
+			const { isHaveToken } = useToLogin();
+			const res = await isHaveToken()
 				.then((res) => res)
 				.catch((err) => err);
 			if (res.code == 500) {
-				return false;
+				return;
 			}
 			if (this.sportsBetEventData.length >= 10) {
-				return false;
+				return;
 			}
 			if (this.sportsEventInfo) this.sportsEventInfo[key] = data;
 			// 拼接唯一标识

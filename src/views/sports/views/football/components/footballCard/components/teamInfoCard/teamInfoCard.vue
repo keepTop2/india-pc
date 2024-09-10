@@ -7,9 +7,11 @@
 		<!-- 队伍信息 -->
 		<div class="league-team-info">
 			<!-- 主队 -->
-			<div class="team" @click="linkDetail">
+			<div class="team">
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.homeIconUrl" /></div>
-				<div class="team-name">{{ teamData.teamInfo.homeName }}</div>
+				<div class="team-name">
+					<div class="name">{{ teamData.teamInfo.homeName }}</div>
+				</div>
 				<!-- 红牌黄牌数量 -->
 				<div class="foul-info" v-if="teamData.soccerInfo?.homeRedCard > 0 || teamData.soccerInfo?.homeYellowCard > 0">
 					<span v-if="teamData.soccerInfo?.homeRedCard > 0" class="red">{{ teamData.soccerInfo?.homeRedCard }}</span>
@@ -21,7 +23,9 @@
 			<!-- 客队 -->
 			<div class="team">
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.awayIconUrl" /></div>
-				<div class="team-name">{{ teamData.teamInfo.awayName }}</div>
+				<div class="team-name">
+					<div class="name">{{ teamData.teamInfo.awayName }}</div>
+				</div>
 				<!-- 红牌黄牌数量 -->
 				<div class="foul-info" v-if="teamData.soccerInfo?.awayRedCard > 0 || teamData.soccerInfo?.awayYellowCard > 0">
 					<span v-if="teamData.soccerInfo?.awayRedCard > 0" class="red">{{ teamData.soccerInfo?.awayRedCard }}</span>
@@ -32,15 +36,19 @@
 			</div>
 		</div>
 		<div class="other-info">
+			<!-- 塞节时间 -->
 			<div class="date">
 				<span>{{ livePeriod }}</span>
 				<span v-if="(teamData.gameInfo.livePeriod == 2 || teamData.gameInfo.livePeriod == 1) && !teamData.gameInfo.delayLive && !teamData.gameInfo.isHt">{{
 					formattedGameTime
 				}}</span>
 			</div>
+			<!-- 其他信息 -->
 			<div class="info-list">
-				<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px" @click="attentionEvent(!isAttention ? false : true)"></svg-icon>
-				<div class="markets-stats">
+				<span class="collection">
+					<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px" @click="attentionEvent(!isAttention ? false : true)"></svg-icon>
+				</span>
+				<div class="markets-qty" @click="linkDetail">
 					<span>+{{ teamData.marketCount }}</span>
 					<span class="arrow-icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 				</div>
@@ -123,7 +131,6 @@ const linkDetail = () => {
 		dataIndex: props?.dataIndex,
 		marketCount: props?.teamData.marketCount,
 	};
-
 	SportHotStore.setCurrentEvent(props.teamData);
 	gotoEventDetail(params, SportTypeEnum.FootBall);
 };
@@ -173,6 +180,13 @@ const attentionEvent = async (isActive: boolean) => {
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
+
+				.name {
+					max-width: 242px;
+					white-space: nowrap; /* 防止文本换行 */
+					overflow: hidden; /* 超出部分隐藏 */
+					text-overflow: ellipsis; /* 超出部分显示省略号 */
+				}
 			}
 			.foul-info {
 				display: flex;
@@ -241,7 +255,7 @@ const attentionEvent = async (isActive: boolean) => {
 				cursor: pointer;
 			}
 
-			.markets-stats {
+			.markets-qty {
 				min-width: 50px;
 				display: flex;
 				align-items: center;

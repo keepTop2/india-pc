@@ -1,24 +1,18 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育- 联赛 - 购物车
--->
 <template>
 	<div class="shopCart" v-if="!isOrdered">
-		<div class="header-container">
-			<div class="handler" @click="changeShopCart">
-				<div class="left">
-					<span>投注单</span>
-					<span class="num_total" v-if="ChampionShopCartStore.outrightBetData.length">{{ ChampionShopCartStore.outrightBetData.length }}</span>
-					<SvgIcon iconName="arrowBottom_fill" width="12" height="8" :class="!ShopCatControlStore.getShopCatShow && 'rotate'" class="icon" />
+		<div class="header-container" @click="changeShopCart">
+			<div class="left">
+				<span>投注单</span>
+				<span class="num_total" v-if="ChampionShopCartStore.outrightBetData.length">{{ ChampionShopCartStore.outrightBetData.length }}</span>
+				<span class="arrow"><svg-icon name="sports-arrow_card_header" width="12px" height="8px"></svg-icon></span>
+			</div>
+			<div class="right">
+				<div class="sportsBetEventData" @click.stop="refreshBalance">
+					<!-- 余额 -->
+					<span class="stake">{{ balanceView }}</span>
+					<span class="refresh_icon" :class="{ rotateAn: isRefresh }"><svg-icon name="sports-refresh" size="18px"></svg-icon></span>
 				</div>
-				<div class="right">
-					<div class="sportsBetEventData" @click.stop="refreshBalance">
-						<!-- 余额 -->
-						<span class="stake">{{ balanceView }}</span>
-						<SvgIcon iconName="refresh_theme" size="18" :class="{ rotateAn: isRefresh }" />
-					</div>
-					<SvgIcon v-if="ShopCatControlStore.getShopCatShow" iconName="close2" size="20" @click.stop="click_clear" />
-				</div>
+				<span v-if="ShopCatControlStore.getShopCatShow" class="close_icon" @click.stop="click_clear"><svg-icon name="sports-close" size="30px"></svg-icon></span>
 			</div>
 		</div>
 		<div v-if="ShopCatControlStore.getShopCatShow" class="container-main">
@@ -60,7 +54,10 @@
 				<div class="bottom">
 					<div class="part1">
 						<div class="auth">
-							<el-checkbox v-model="isAccept" label="自动接受更好的赔率" @change="handleAuthChange" />
+							<span class="checkbox" @click="handleAuthChange">
+								<span class="icon"><svg-icon :name="isAccept ? 'sports-checkbox' : 'sports-checkbox_active'" size="18px"></svg-icon></span>
+								<span class="label">自动接受较优赔率</span>
+							</span>
 						</div>
 						<planButton
 							v-model:isAccept="isAccept"
@@ -448,111 +445,141 @@ const saveSetting = async (optionIsAccept: boolean) => {
 </script>
 
 <style scoped lang="scss">
-.exceed {
-	background: var(--icon);
-}
-
 .shopCart {
-	width: 100%;
+	width: 520px;
 	min-height: 100%;
-	box-sizing: border-box;
-	//padding-bottom: 10px;
-
 	background: var(--Bg1);
 	color: var(--Text_s);
+	box-shadow: 0px -3px 30px 0px rgba(14, 16, 19, 0.4);
+	border-radius: 4px;
+	box-sizing: border-box;
 
 	.header-container {
-		padding: 6px 15px 0 15px;
+		height: 52px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0px 15px;
 
-		& > div {
-			padding: 9px 0;
-		}
-
-		.handler {
+		.left {
 			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			border-bottom: 1px solid #373a40;
+			gap: 8px;
 
-			.left {
-				display: flex;
-				align-items: center;
-				gap: 5px;
-				flex: 1;
-				height: 100%;
-
-				& > span:nth-of-type(2) {
-					color: var(--Text1);
-				}
-
-				.num_total {
-					width: 21px;
-					height: 21px;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					background: var(--Theme);
-					// color: themed('Text_a') !important;
-					color: #fff !important;
-					border-radius: 50%;
-				}
-
-				.icon {
-					transition: 0.3s ease;
-				}
+			.label {
+				color: var(--Text_s);
+				font-family: "PingFang SC";
+				font-size: 16px;
+				font-weight: 500;
 			}
 
-			.right {
+			.num_total {
+				width: 21px;
+				height: 21px;
 				display: flex;
 				align-items: center;
-				gap: 8px;
+				justify-content: center;
+				background: var(--Theme);
+				font-size: 14px;
+				color: #fff;
+				border-radius: 50%;
+			}
+
+			.arrow {
+				width: 12px;
+				height: 8px;
+				transition: 0.3s ease;
+			}
+		}
+
+		.right {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+
+			.sportsBetEventData {
+				height: 34px;
+				display: flex;
+				align-items: center;
+				padding: 8px 10px;
+				border-radius: 34px;
+				gap: 10px;
+				background: var(--Bg3);
+				color: var(--Theme);
 				cursor: pointer;
 
-				.sportsBetEventData {
-					display: flex;
-					align-items: center;
-					padding: 5px 10px;
-					border-radius: 99px;
-					gap: 10px;
-
-					background: var(--Bg3);
-					color: var(--Theme);
-
-					.stake {
-						text-align: right;
-						font-family: "DIN Alternate";
-						font-size: 14px;
-						font-style: normal;
-						font-weight: 700;
-						line-height: normal;
-						color: var(--Text_s) !important;
-					}
+				.stake {
+					text-align: right;
+					font-family: "DIN Alternate";
+					font-size: 14px;
+					font-style: normal;
+					font-weight: 700;
+					line-height: normal;
+					color: var(--Text_s) !important;
 				}
+				.refresh_icon {
+					width: 18px;
+					height: 18px;
+				}
+			}
+			.close_icon {
+				width: 30px;
+				height: 30px;
 			}
 		}
 	}
 
 	.container-main {
+		position: relative;
 		overflow-y: hidden;
-		padding: 0 15px;
-		margin-bottom: 10px;
+		padding: 10px 15px 15px;
+
+		&::after {
+			position: absolute;
+			content: "";
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 1px;
+			background-color: var(--Line_1);
+			box-shadow: 0px 1px 0px 0px #343d48;
+		}
 	}
 
 	.noData {
 		padding: 18px 0;
 		text-align: center;
 		font-size: 14px;
-
 		color: var(--Text1);
 	}
 
 	.bottom {
-		padding: 0px 15px 15px;
+		padding: 10px 15px 15px;
 		border-radius: 8px;
-		margin: 5px 0;
-		margin-top: 0;
+		background: var(--Bg4);
+		.part1 {
+			.auth {
+				.checkbox {
+					width: fit-content;
 
-		background: var(--Bg3);
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					cursor: pointer;
+					.icon {
+						width: 18px;
+						height: 18px;
+						color: var(--Bg5);
+					}
+					.label {
+						color: var(--Text1);
+						font-family: "PingFang SC";
+						font-size: 14px;
+						font-weight: 400;
+						line-height: 20px;
+					}
+				}
+			}
+		}
 
 		.part2 {
 			margin: 5px 0;
@@ -572,7 +599,15 @@ const saveSetting = async (optionIsAccept: boolean) => {
 		}
 	}
 }
+
+.shop-plan {
+	display: grid;
+	gap: 6px;
+}
+
 .card-all {
+	display: grid;
+	gap: 6px;
 	overflow: auto;
 	max-height: 420px;
 	position: relative;
@@ -588,23 +623,6 @@ const saveSetting = async (optionIsAccept: boolean) => {
 	height: 16px;
 	transform: rotate(-90deg);
 	cursor: pointer;
-}
-
-.el-checkbox {
-	--el-checkbox-checked-text-color: var(--Text1);
-	--el-checkbox-bg-color: var(--Bg3);
-	--el-checkbox-checked-bg-color: var(--Bg3);
-
-	:deep() {
-		.el-checkbox__inner {
-			border-color: var(--Theme);
-
-			&::after {
-				border-color: var(--Theme);
-				border-width: 2px;
-			}
-		}
-	}
 }
 
 .rotate {

@@ -7,15 +7,19 @@
 		<div class="menu-nav">
 			<div class="left">
 				<div class="nva-item" :class="{ active: item.name == route.name }" v-for="(item, index) in left" :key="index">
-					<router-link :to="{ name: item.name }">{{ item.meta.title }}</router-link>
+					<router-link :to="{ name: item.name }">
+						<span class="value">{{ item.meta.title }}</span>
+					</router-link>
 				</div>
 			</div>
 			<i class="line"></i>
 			<div class="right">
 				<div class="nva-item" v-for="(item, index) in navRight" :key="index">
-					<img class="icon" :src="item.meta.iconCode" alt="" />
-					<router-link :to="{ name: item.name, query: { sportsActive: sportsActive } }">{{ item.meta.title }}</router-link>
-					<div class="value">{{ item.count }}</div>
+					<router-link :to="{ name: item.name, query: { sportsActive: sportsActive } }">
+						<img class="icon mr_6" :src="item.redirect == route.path ? item.meta.iconActive : item.meta.icon" alt="" />
+						<span class="value mr_4">{{ item.meta.title }}</span>
+						<div class="value">{{ item.count }}</div>
+					</router-link>
 				</div>
 
 				<div class="arrow_content">
@@ -148,15 +152,12 @@ const isSeach = computed(() => {
 });
 
 onMounted(() => {});
-
-const changeBall = () => {
-	// sportsBetEvent.clearShopCart();
-};
 </script>
 
 <style scoped lang="scss">
 .header-container {
 	position: relative;
+	width: 100%;
 	height: 48px;
 	display: flex;
 	align-items: center;
@@ -186,6 +187,7 @@ const changeBall = () => {
 		display: flex;
 		align-items: center;
 		padding: 10px 0px;
+		padding-right: 40px;
 		box-sizing: border-box;
 
 		.line {
@@ -203,27 +205,39 @@ const changeBall = () => {
 			.nva-item {
 				min-width: 80px;
 				height: 30px;
-				padding: 10px;
+				// padding: 10px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 				background: var(--butter);
 				border-radius: 4px;
+				white-space: nowrap; /* 禁止换行 */
+				overflow: hidden; /* 隐藏超出容器的内容 */
+				text-overflow: ellipsis; /* 使用省略号代替超出的文本 */
 				box-sizing: border-box;
 
-				.icon {
-					width: 16px;
-					height: 16px;
-				}
+				a {
+					display: block;
+					width: 100%;
+					height: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 0px 12px;
+					text-decoration: dashed;
+					.icon {
+						width: 16px;
+						height: 16px;
+					}
 
-				a,
-				.value {
-					color: var(--Text1, #98a7b5);
-					text-align: center;
-					font-family: "PingFang SC";
-					font-size: 14px;
-					font-weight: 400;
-					text-decoration: none;
+					.value {
+						color: var(--Text1, #98a7b5);
+						text-align: center;
+						font-family: "PingFang SC";
+						font-size: 14px;
+						font-weight: 400;
+						text-decoration: none;
+					}
 				}
 			}
 			.active {
@@ -237,11 +251,22 @@ const changeBall = () => {
 			gap: 12px;
 		}
 		.right {
-			flex: 1;
+			width: 893px;
+			padding-right: 12px;
 			gap: 8px;
+			overflow-x: auto; /* 确保横向滚动 */
+			white-space: nowrap; /* 防止内容换行 */
+			scrollbar-width: none; /* 隐藏滚动条 Firefox */
+			-ms-overflow-style: none; /* 隐藏滚动条 IE 和 Edge */
+
+			&::-webkit-scrollbar {
+				display: none; /* 隐藏滚动条 Chrome 和 Safari */
+			}
+
 			.nva-item {
+				flex-shrink: 0; /* 防止内容被压缩 */
 				gap: 6px;
-				padding: 0px 12px;
+				// padding: 0px 12px;
 			}
 		}
 	}

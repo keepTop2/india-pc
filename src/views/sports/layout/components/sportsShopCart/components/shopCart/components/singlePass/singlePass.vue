@@ -416,8 +416,7 @@ defineExpose({ PlaceBet, stake });
 .singlePass {
 	padding: 6px 15px;
 	border-radius: 8px;
-	margin: 5px 0;
-	background: var(--Bg3);
+	background: var(--Bg4);
 
 	.el-input {
 		height: 50px;
@@ -426,13 +425,23 @@ defineExpose({ PlaceBet, stake });
 			.el-input__wrapper {
 				box-shadow: none;
 				border: none;
+				background: var(--Bg4);
 
-				background: var(--Bg2);
+				.el-input__inner {
+					color: var(--Text1);
+					font-size: 16px;
+					font-weight: 400;
+				}
 
 				input {
 					&::placeholder {
 						color: var(--Text2);
 					}
+				}
+				.el-input__suffix {
+					color: var(--Text1);
+					font-size: 16px;
+					font-weight: 400;
 				}
 			}
 		}

@@ -21,13 +21,14 @@
 					<!-- 主体路由页面 -->
 					<router-view v-cloak />
 				</div>
+				<!-- 购物车 -->
+				<SportsShopCart></SportsShopCart>
 			</div>
 			<!-- 体育热门（视频）显示 -->
 			<div class="right-container" v-if="popularLeague.visible">
 				<SportRight v-if="SportsInfoStore.getSportsToken"></SportRight>
 			</div>
 		</div>
-		<SportsShopCart></SportsShopCart>
 	</div>
 </template>
 
@@ -632,6 +633,7 @@ const unSport = () => {
 	overflow-x: auto;
 	justify-content: center;
 	.left-container {
+		position: relative; // 设置相对定位，购物车弹窗的绝对定位
 		margin: 0px 0;
 		width: 1246px;
 
