@@ -175,12 +175,17 @@ const isBright = () => {
 		box-sizing: border-box;
 
 		.label {
+			max-width: 60%;
 			color: var(--Text1);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 		.value {
+			max-width: 40%;
 			position: relative;
 			color: var(--Text_a);
 			font-family: "PingFang SC";

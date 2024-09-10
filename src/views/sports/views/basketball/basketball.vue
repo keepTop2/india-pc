@@ -1,17 +1,13 @@
-<!--
- * @Author: WangMingxin
- * @Description: 篮球
--->
 <template>
 	<div class="box-content" v-if="state.targetEvents?.length">
 		<!-- 联赛数据统计 -->
 		<SelectCard v-if="state.targetEvents?.length" :sportsActive="sportsActive" :teamData="state.targetEvents"></SelectCard>
-		<!-- /** 可获取间隔-底部边距 class    */
-	bottomClass: "card-item",
-	/** 可获取缩小时展示的-标题高度 class    */
-	minDivClass: "tournament-header",
-	/** 可获取展开时-子集卡片高度 class    */
-	childrenDivClass: "content", -->
+		<!-- 滚球虚拟列表 -->
+		<!--
+				bottomClass: 可获取间隔-底部边距,
+				minDivClass: 可获取缩小时展示的-标题高度,
+				childrenDivClass: 可获取展开时-子集卡片高度,
+			-->
 		<VirtualScrollVirtualList
 			v-if="sportsActive !== `champion`"
 			ref="VirtualScrollVirtualListRef"
@@ -159,7 +155,7 @@ const toggleDisplay = (val?: number) => {
 <style lang="scss" scoped>
 .box-content {
 	width: 100%;
-	height: 100vh;
+	height: calc(100vh - 260px);
 }
 
 .card-container {

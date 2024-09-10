@@ -97,7 +97,7 @@ onBeforeMount(() => {
 	state.targetEvents = [];
 	/** 进入时获取一次页面数据 */
 	state.targetEvents = viewSportPubSubEventData.getSportData(1);
-	console.log(state.targetEvents,'===state.targetEvents')
+	console.log(state.targetEvents, "===state.targetEvents");
 	state.targetEventList = getList();
 	setInitSportsActive();
 

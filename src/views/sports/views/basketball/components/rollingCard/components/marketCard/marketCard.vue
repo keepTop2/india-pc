@@ -1,6 +1,6 @@
 <template>
 	<div class="market-content">
-		<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }">
+		<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
 			<!-- 独赢 -->
 			<template v-if="cardType == `capot`">
 				<div class="label">{{ cardData?.keyName }}</div>
@@ -55,10 +55,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { RiseOrFall } from "/@/components/Sport/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 
 const emit = defineEmits(["oddsChange"]);
@@ -226,13 +225,19 @@ const isBright = () => {
 		box-sizing: border-box;
 
 		.label {
+			max-width: calc(100% - 50px);
 			color: var(--Text1);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 		.value {
+			width: 50px;
 			position: relative;
+			text-align: end;
 			color: var(--Text_a);
 			font-family: "PingFang SC";
 			font-size: 16px;
@@ -266,7 +271,7 @@ const isBright = () => {
 	}
 
 	.isBright {
-		background: var(--Bg5);
+		background: var(--Bg5) !important;
 		.label {
 			color: var(--Text_a);
 		}

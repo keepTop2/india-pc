@@ -8,7 +8,7 @@
 					<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px"></svg-icon>
 				</span> -->
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
-				<div class="league_name">{{ teamData.leagueName }}</div>
+				<div class="league_name" :style="displayContent ? `max-width:328px` : ''">{{ teamData.leagueName }}</div>
 			</div>
 			<!-- 盘口表头 -->
 			<div class="market-name-info" v-if="displayContent">
@@ -181,10 +181,14 @@ const attentionEvent = async (isActive: boolean) => {
 				height: 20px;
 			}
 			.league_name {
+				// max-width: 328px;
 				color: var(--Text_s);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;
+				white-space: nowrap; /* 防止文本换行 */
+				overflow: hidden; /* 超出部分隐藏 */
+				text-overflow: ellipsis; /* 超出部分显示省略号 */
 			}
 		}
 		.market-name-info {
