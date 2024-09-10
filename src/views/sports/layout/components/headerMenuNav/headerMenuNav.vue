@@ -124,13 +124,7 @@ watch([cSportsActive, sports], ([newActive, newSports], [prevActive, prevSports]
 	if (newSports && newSports.length) {
 		const sportsType = route.path.replace(/[^\d]/g, "");
 		const sports = viewSportPubSubEventData.viewSportData.sports;
-		const index = sports?.findIndex((e) => {
-			if (e.sportType == sportsType) {
-				return true;
-			} else {
-				false;
-			}
-		});
+		const index = sports?.findIndex((e) => e.sportType === Number(sportsType));
 		if (index == -1) {
 			const params = {
 				sportsActive: props.sportsActive,
