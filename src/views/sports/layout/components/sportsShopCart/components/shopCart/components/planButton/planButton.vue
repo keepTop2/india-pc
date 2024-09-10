@@ -277,13 +277,3 @@ watch(
 	font-size: 16px !important;
 }
 </style>
-<style lang="scss">
-.custom-confirm-class {
-	.el-message-box__btns {
-		display: flex !important;
-	}
-	.button {
-		width: 100px !important;
-	}
-}
-</style>

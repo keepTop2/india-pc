@@ -1,7 +1,3 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育- 联赛 - 购物车
--->
 <template>
 	<div class="shopCart" v-if="!isOrdered">
 		<div class="header-container" @click="changeShopCart">
@@ -537,6 +533,7 @@ const saveSetting = async (optionIsAccept: boolean) => {
 	background: var(--Bg1);
 	color: var(--Text_s);
 	box-shadow: 0px -3px 30px 0px rgba(14, 16, 19, 0.4);
+	border-radius: 4px;
 	box-sizing: border-box;
 
 	.header-container {
