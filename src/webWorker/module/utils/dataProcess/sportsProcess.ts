@@ -9,7 +9,11 @@ export default (function () {
 	 * @params viewSportData 视图数据
 	 * @returns processData 处理好的数据
 	 */
-	const sportsProcess = (sportServerData, viewSportData, webToPushApi): any => {
+	const sportsProcess = (
+		sportServerData: { payload: { sports: { add: string | any[]; change: string | any[]; remove: string | any[] } } },
+		viewSportData: any,
+		webToPushApi: any
+	): any => {
 		let processData = {};
 		if (sportServerData.payload.sports.add.length > 0) {
 			processData = Object.assign({}, processData, sportsProcessAdd(sportServerData, viewSportData, webToPushApi));
@@ -24,12 +28,12 @@ export default (function () {
 	};
 
 	// 每个运动项目的赛事数量及串关赛事数量的数据源新增 GetSports
-	const sportsProcessAdd = (sportServerData, viewSportData, webToPushApi) => {
+	const sportsProcessAdd = (sportServerData: { payload: { sports: { add: any } } }, viewSportData: { sports: any[] }, webToPushApi: any) => {
 		// 初始化数据
-		viewSportData.sports = viewSportData.sports.concat(sportServerData.payload.sports.add).sort((a, b) => {
+		viewSportData.sports = viewSportData.sports.concat(sportServerData.payload.sports.add).sort((a: { sportType: number }, b: { sportType: number }) => {
 			return a.sportType - b.sportType; // 按照sportType 从小到大排序
 		});
-		viewSportData.sports.forEach((item) => {
+		viewSportData.sports.forEach((item: { icon: any; sportType: string | number; activeIcon: any; count: any; outrightGame: any; liveGameCount: any; gameCount: any }) => {
 			item.icon = sportsMap[item.sportType]?.icon;
 			item.activeIcon = sportsMap[item.sportType]?.activeIcon;
 			switch (webToPushApi) {
@@ -53,10 +57,10 @@ export default (function () {
 	};
 
 	// 每个运动项目的赛事数量及串关赛事数量的数据源数据变化 GetSports
-	const sportsProcessChange = (sportServerData, viewSportData, webToPushApi) => {
-		sportServerData.payload.sports.change.forEach((item) => {
+	const sportsProcessChange = (sportServerData: { payload: { sports: { change: any[] } } }, viewSportData: { sports: any[] }, webToPushApi: any) => {
+		sportServerData.payload.sports.change.forEach((item: { sportType: any; count: any; outrightGame: any; liveGameCount: any; gameCount: any }) => {
 			viewSportData.sports = viewSportData.sports
-				.map((i) => {
+				.map((i: any) => {
 					let sport = i;
 					if (item.sportType == sport.sportType) {
 						switch (webToPushApi) {
@@ -79,7 +83,7 @@ export default (function () {
 					}
 					return sport;
 				})
-				.sort((a, b) => {
+				.sort((a: { sportType: number }, b: { sportType: number }) => {
 					return a.sportType - b.sportType; // 按照sportType 从小到大排序
 				});
 		});
@@ -88,9 +92,9 @@ export default (function () {
 	};
 
 	// 每个运动项目的赛事数量及串关赛事数量的数据源数据删除 GetSports
-	const sportsProcessRemove = (sportServerData, viewSportData) => {
+	const sportsProcessRemove = (sportServerData: { payload: { sports: { remove: any[] } } }, viewSportData: { sports: any[] }) => {
 		//从后向前删除 不会导致索引出错
-		sportServerData.payload.sports.remove.forEach((item) => {
+		sportServerData.payload.sports.remove.forEach((item: any) => {
 			console.error(item);
 			for (let i = viewSportData.sports.length - 1; i >= 0; i--) {
 				if (viewSportData.sports[i].sportType == item) {
