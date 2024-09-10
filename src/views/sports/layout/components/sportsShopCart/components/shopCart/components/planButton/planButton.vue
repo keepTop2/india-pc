@@ -216,9 +216,9 @@ watch(
 <style scoped lang="scss">
 .btn-plan {
 	display: flex;
-
+	gap: 5px;
+	margin-top: 10px;
 	:deep(.el-button) {
-		margin: 5px 0;
 		border-radius: 4px;
 		height: 48px;
 		border: 1px solid var(--Theme);
@@ -233,46 +233,42 @@ watch(
 
 	.btn-touzhu {
 		flex: 1;
-		margin: 0 5px;
 
 		:deep(.el-button) {
-			margin: 5px 0;
 			border-radius: 4px;
 			height: 48px;
 			width: 100%;
 			border: 1px solid var(--Theme);
 			background: var(--Theme);
 			color: var(--Text_a);
-		}
-	}
 
-	.el-button:first-child {
-		margin-left: 0;
-	}
-
-	.center {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		color: var(--Text_a);
-
-		& > span:last-child {
-			font-size: 12px;
-		}
-
-		.center_buttom {
-			margin-top: 5px;
+			.center {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				color: var(--Text_a);
+				font-family: "PingFang SC";
+				font-size: 16px;
+				font-weight: 500;
+				line-height: 22px;
+				.center_buttom {
+					color: var(--Text_a);
+					font-family: "PingFang SC";
+					font-size: 12px;
+					font-weight: 400;
+					line-height: 16px;
+				}
+			}
 		}
 	}
 
 	.isClose {
-		margin: 5px 0;
 		border-radius: 4px;
 		height: 48px;
 		width: 100%;
-		border: 1px solid var(--icon) !important ;
-		background: var(--icon) !important ;
+		border: 1px solid var(--butter) !important ;
+		background: var(--butter) !important ;
 		color: var(--Text_a);
 	}
 }

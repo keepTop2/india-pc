@@ -47,10 +47,10 @@ onMounted(() => {
 		setMarket();
 	});
 });
+
 /** 设置market */
 const setMarket = () => {
 	market.value = marketsMatchData(props.sportInfo.markets, props.betType, props.selectionsLength);
-	// console.log("market----------->", market);
 };
 
 /**

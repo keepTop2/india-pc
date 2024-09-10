@@ -157,12 +157,12 @@ onMounted(() => {
 		changeDome();
 	});
 
-	resizeObserver.observe(moreShopRef.value as any);
+	// resizeObserver.observe(moreShopRef.value as any);
 });
 
 onUnmounted(() => {
 	try {
-		resizeObserver.unobserve(moreShopRef.value as any);
+		// resizeObserver.unobserve(moreShopRef.value as any);
 	} catch (error) {}
 });
 
@@ -503,4 +503,14 @@ defineExpose({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.commodity,
+.money-plan {
+	display: grid;
+	gap: 6px;
+}
+
+.money-plan {
+	margin-top: 6px;
+}
+</style>

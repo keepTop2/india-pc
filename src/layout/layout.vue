@@ -76,7 +76,7 @@ onUnmounted(() => {
 	justify-content: center;
 	margin: 64px auto 0;
 	overflow-y: auto;
-	height: calc(100vh - 70px);
+	height: calc(100vh - 64px);
 }
 
 .mainArea::-webkit-scrollbar {

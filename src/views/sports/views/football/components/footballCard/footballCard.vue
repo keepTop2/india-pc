@@ -13,7 +13,7 @@
 			<!-- 盘口表头 -->
 			<div class="market-name-info" v-if="displayContent">
 				<div class="market-name-list">
-					<div class="label" v-for="betType in betTypes" :key="betType">{{ betType }}</div>
+					<div class="label" v-for="betType in SportsCommonFn.betTypeMap[1]" :key="betType">{{ betType }}</div>
 				</div>
 			</div>
 			<div class="header-icon">
@@ -32,9 +32,8 @@ import EventItem from "./components/eventItem/eventItem.vue";
 import PubSub from "/@/pubSub/pubSub";
 import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
+import SportsCommonFn from "/@/views/sports/utils/common";
 const SportAttentionStore = useSportAttentionStore();
-
-const betTypes = ["全场独赢", "全场让球", "全场大小", "半场独赢", "半场让球", "半场大小"];
 
 interface teamDataType {
 	/** 数据索引 */
@@ -57,8 +56,6 @@ const props = withDefaults(defineProps<teamDataType>(), {
 		return {};
 	},
 });
-
-// console.log("props", props.teamData);
 
 const displayContent = ref(true);
 
