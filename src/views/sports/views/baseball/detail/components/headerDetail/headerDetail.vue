@@ -182,6 +182,7 @@ const handleGoBack = () => {
 			align-items: center;
 			font-size: 14px;
 			gap: 8px;
+
 			color: var(--Text1);
 
 			img {
@@ -223,6 +224,7 @@ const handleGoBack = () => {
 
 	.active {
 		border-color: transparent;
+
 		color: var(--Text_a);
 		background: var(--Theme);
 	}

@@ -1,7 +1,7 @@
 import { merge, unionWith, unionBy } from "lodash-es";
 import { formattingChildrenViewData } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { SportViewModels } from "/@/views/sports/models/sportViewModels";
-import { SportEventSourceResponse } from "/@/models/sportEventSourceModel";
+import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourceModel";
 // 每个赛事联系数量 数据线程处理 GetEvents
 export default (function () {
 	/**

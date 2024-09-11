@@ -18,7 +18,6 @@
 			<el-table-column prop="league" :label="$t(`matchResult['联赛']`)">
 				<template #default="{ row }">
 					<div class="col-box">
-						<SvgIcon :iconName="row.leagueIconUrl" :size="22" />
 						{{ row.leagueName }}
 					</div>
 				</template>
@@ -27,7 +26,6 @@
 				<template #default="{ row }">
 					<div class="competition">
 						<div class="col-box" v-for="item in row.events">
-							<!--							<SvgIcon :iconName="item.logo" :size="22" />-->
 							{{ item.awayName }}
 						</div>
 					</div>
@@ -163,6 +161,12 @@
 					</div>
 				</template>
 			</el-table-column>
+			<template #empty>
+				<div class="custom-empty">
+					<svg-icon name="no_data" width="142" height="120" />
+					<p>哎呀！还没有数据！</p>
+				</div>
+			</template>
 		</el-table>
 
 		<Pagination v-if="tableData.length" :currentPage="params.pageNumber" :pageSize="params.pageSize" :total="total" @prevClick="prevClick" @nextClick="nextClick" />
@@ -303,6 +307,7 @@ const getTableData = () => {
 	const start = (params.pageNumber - 1) * params.pageSize;
 	const end = start + params.pageSize;
 	tableData.value = eventResultData.value.slice(start, end);
+	console.log(tableData.value, "===tableData.value");
 };
 </script>
 
@@ -313,7 +318,16 @@ const getTableData = () => {
 		align-items: center;
 		gap: 12px;
 	}
-
+	.custom-empty {
+		margin-top: 160px;
+		margin-bottom: 130px;
+		p {
+			line-height: 30px;
+			color: var(--Text2);
+			font-size: 14px;
+			font-weight: 400;
+		}
+	}
 	.competition {
 		flex-direction: column;
 		display: grid;
@@ -329,7 +343,7 @@ const getTableData = () => {
 
 	:deep() {
 		.el-table {
-			background: themed("Bg");
+			background: var(--Bg1);
 
 			tr {
 				background: transparent;

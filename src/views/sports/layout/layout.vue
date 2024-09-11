@@ -616,7 +616,7 @@ const unSport = () => {
 <style lang="scss" scoped>
 .base-body {
 	height: 100%;
-	max-width: 1660px;
+	max-width: 1636px;
 	margin: 0 auto;
 	overflow-x: auto;
 }
@@ -628,14 +628,15 @@ const unSport = () => {
 	display: flex;
 	height: calc(100% - 40px);
 
-	width: 1660px;
+	width: 1636px;
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
 	.left-container {
 		position: relative; // 设置相对定位，购物车弹窗的绝对定位
 		margin: 0px 0;
-		width: 1246px;
+		flex: 1;
+		// width: 1246px;
 
 		.header {
 			width: 100%;

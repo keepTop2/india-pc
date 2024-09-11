@@ -2,7 +2,7 @@
 import sportsMap from "/@/views/sports/utils/sportsMap/sportsMap";
 import { formattingChildrenViewData } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { merge } from "lodash-es";
-import { SportEventSourceResponse } from "/@/models/sportEventSourceModel";
+import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourceModel";
 
 // 每个运动项目的赛事数量及串关赛事数量  数据线程处理 GetSports
 export default (function () {

@@ -244,6 +244,9 @@ onMounted(() => {});
 				background-color: var(--Theme);
 				a {
 					color: var(--Text_a);
+					.value {
+						color: var(--Text_a);
+					}
 				}
 			}
 		}
@@ -251,7 +254,7 @@ onMounted(() => {});
 			gap: 12px;
 		}
 		.right {
-			width: 893px;
+			width: calc(100% - 270px);
 			padding-right: 12px;
 			gap: 8px;
 			overflow-x: auto; /* 确保横向滚动 */
