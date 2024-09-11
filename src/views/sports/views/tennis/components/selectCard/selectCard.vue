@@ -1,7 +1,3 @@
-<!--
- * @Author: Relax
- * @Description: 联赛数据统计筛选
--->
 <template>
 	<div class="box_select">
 		<div class="select_left">

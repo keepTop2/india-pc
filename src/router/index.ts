@@ -26,7 +26,7 @@ const routes = [
 				component: () => import("/@/views/home/index.vue"),
 				meta: {
 					title: "home",
-					idx: 1,
+					showFooter: true,
 				},
 			},
 			{
@@ -34,8 +34,8 @@ const routes = [
 				name: "user",
 				layout: true,
 				meta: {
-					title: "home",
-					idx: 1,
+					title: "user",
+					showFooter: true,
 				},
 				children: [...userRoutes],
 			},
@@ -46,7 +46,6 @@ const routes = [
 				layout: true,
 				meta: {
 					title: "sports",
-					idx: 1,
 				},
 				children: [...sportsRoutes],
 			},

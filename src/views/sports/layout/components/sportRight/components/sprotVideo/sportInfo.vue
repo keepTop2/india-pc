@@ -22,7 +22,7 @@
 		</div>
 		<!-- 当前比赛时间信息 -->
 		<div class="time">
-			<div class="Text_s">
+			<div class="Text_s" style="flex: 1; width: 100%">
 				<span v-for="item in computedSportShowTime" :key="item">{{ item }}</span>
 			</div>
 			<div>

@@ -27,7 +27,7 @@
 							<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px" @click="attentionEvent(!isAttention ? false : true)"></svg-icon>
 						</span>
 						<!-- 盘口数量 -->
-						<div class="markets-stats">
+						<div class="markets-stats" @click="linkDetail">
 							<span>+{{ event.marketCount }}</span>
 							<span class="arrow-icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 						</div>

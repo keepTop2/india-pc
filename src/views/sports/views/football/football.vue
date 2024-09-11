@@ -97,7 +97,7 @@ onBeforeMount(() => {
 	state.targetEvents = [];
 	/** 进入时获取一次页面数据 */
 	state.targetEvents = viewSportPubSubEventData.getSportData(1);
-	console.log(state.targetEvents, "===state.targetEvents");
+	// console.log(state.targetEvents, "===state.targetEvents");
 	state.targetEventList = getList();
 	setInitSportsActive();
 
@@ -105,7 +105,6 @@ onBeforeMount(() => {
 	watchEffect(() => {
 		/** 最新数据响应接入  */
 		state.targetEvents = viewSportPubSubEventData.getSportData(1);
-
 		state.targetEventList = getList();
 		setInitSportsActive();
 	});
@@ -131,7 +130,7 @@ const getList = () => {
 		}
 		leagues = newLeagues;
 	}
-	sportHotStore.setInitEvent(get(leagues, "[0].events.[0]", {}) as any);
+	sportHotStore.setInitEvent(get(state.targetEvents, "[0].events.[0]", {}) as any);
 	return leagues;
 };
 

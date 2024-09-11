@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed, watch, reactive } from "vue";
+import { onMounted, ref, computed, watch, reactive, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
 import { isEmpty, map } from "lodash-es";
 import { SprotVideo, PlayingMethod } from "./components/index";
@@ -22,10 +22,7 @@ import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import { useSportRightTool } from "./useSportRightTool";
 import { SportControlEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { SpinnerWrap } from "/@/components/Spinner";
-import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
-import { useRoute } from "vue-router";
-const route = useRoute();
-const SportSortStore = useSportSortStore();
+
 const SportHotStore = useSportHotStore();
 const { currentEventInfo } = storeToRefs(SportHotStore);
 const { initDataEvent, getVideoUrl } = useSportRightTool();
@@ -81,38 +78,8 @@ const getHotEvents = async () => {
 
 onMounted(async () => {
 	// await getHotEvents();
-	await GetPromotions();
 });
-/**
- * @description 获取热门赛事
- */
-const GetPromotions = async () => {
-	// 路由地址处理
-	const splArr = route.path.split("/");
-	let sportType = 0;
-	// 查找当前球类型
-	for (let i = 0; i < splArr.length; i++) {
-		const num = Number(splArr[i]);
-		if (num && num.toString() != "NaN") {
-			sportType = num;
-			break;
-		}
-	}
 
-	const params = {
-		query: `$filter=sporttype eq ${sportType}`,
-		includeMarkets: "none",
-	};
-	const res = await sportsApi.GetPromotions(params).catch((err) => err);
-	// 获取赛果数量后添加到sports中
-	if (res.data) {
-		const list = res.data.events;
-		console.log(list, 999999999);
-
-		SportSortStore.setHotLeagueList(list);
-		SportSortStore.setIsActiveHot(true);
-	}
-};
 watch(
 	/**
 	 * 监听赛事ID， 重新获取对应赛事详情

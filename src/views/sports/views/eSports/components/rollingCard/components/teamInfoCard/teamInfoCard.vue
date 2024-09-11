@@ -1,46 +1,20 @@
-<!--
- * @Author: Relax
- * @Description: 体育-电子竞技-队伍卡片
--->
 <template>
-	<div class="card-container">
-		<div class="information_team">
-			<!-- 队伍名称 -->
-			<div class="team" @click="linkDetail">
-				<div class="team_one">
-					<div class="team_name">
-						<img class="icon" :src="teamData.teamInfo?.homeIconUrl" />
-						<div class="name">
-							<span>{{ teamData.teamInfo.homeName }}</span>
-						</div>
-					</div>
-					<!-- 红牌黄牌数量 -->
-					<div class="foul-info">
-						<span v-if="teamData.soccerInfo?.homeRedCard > 0" class="red">{{ teamData.soccerInfo?.homeRedCard }}</span>
-						<span v-if="teamData.soccerInfo?.homeYellowCard > 0" class="yellow">{{ teamData.soccerInfo?.homeYellowCard }}</span>
-					</div>
-				</div>
-				<!-- 队伍名称 -->
-				<div class="team_two">
-					<div class="team_name">
-						<img class="icon" :src="teamData.teamInfo?.awayIconUrl" />
-						<div class="name">
-							<span>{{ teamData.teamInfo.awayName }}</span>
-						</div>
-					</div>
-
-					<!-- 红牌黄牌数量 -->
-					<div class="foul-info">
-						<span v-if="teamData.soccerInfo?.awayRedCard > 0" class="red">{{ teamData.soccerInfo?.awayRedCard }}</span>
-						<span v-if="teamData.soccerInfo?.awayYellowCard > 0" class="yellow">{{ teamData.soccerInfo?.awayYellowCard }}</span>
-					</div>
-				</div>
+	<div class="league-info">
+		<!-- 队伍信息 -->
+		<div class="league-team-info">
+			<!-- 主队 -->
+			<div class="team">
+				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.homeIconUrl" /></div>
+				<div class="team-name">{{ teamData.teamInfo.homeName }}</div>
+				<!-- 得分 -->
+				<div class="score">{{ teamData.gameInfo?.liveHomeScore }}</div>
 			</div>
-			<!-- 队伍比分 -->
-			<div :class="[IfOffTheBat == 'rollingBall' ? 'score' : ' is_show ']">
-				<span>{{ teamData.gameInfo?.liveHomeScore }}</span>
-				<i class="icon"></i>
-				<span>{{ teamData.gameInfo?.liveAwayScore }}</span>
+			<!-- 客队 -->
+			<div class="team">
+				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.awayIconUrl" /></div>
+				<div class="team-name">{{ teamData.teamInfo.awayName }}</div>
+				<!-- 得分 -->
+				<div class="score">{{ teamData.gameInfo?.liveAwayScore }}</div>
 			</div>
 		</div>
 	</div>
@@ -90,140 +64,51 @@ const linkDetail = () => {
 </script>
 
 <style scoped lang="scss">
-.is_show {
-	display: none;
-}
-.card-container {
-	width: 100%;
+.league-info {
+	flex: 1;
 	display: flex;
-	.information_team {
+	align-items: center;
+	padding: 8px 10px 8px 24px;
+	.league-team-info {
 		flex: 1;
-		margin-left: 12px;
+		height: 100%;
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		justify-content: space-evenly;
 		.team {
-			flex: 1;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-			padding: 14px 0;
-
-			.icon {
-				-webkit-user-drag: none;
-				width: 20px;
-				height: 20px;
-			}
-
-			.name {
-				cursor: pointer;
-
-				color: var(--Text1);
-
-				flex: 1;
-				position: relative;
-				overflow: hidden;
-				display: flex;
-				// height: 100%;
-				height: 24px;
-				margin-left: 8px;
-				box-sizing: border-box;
-
-				span {
-					width: 100%;
-					// height: 100%;
-					white-space: nowrap;
-					/* 不允许换行 */
-					overflow: hidden;
-					/* 超出部分隐藏 */
-					text-overflow: ellipsis;
-					/* 显示省略号 */
-					font-family: "PingFang SC";
-					font-size: 16px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: normal;
-					margin-left: 8px;
-					top: 0;
-					position: absolute;
-				}
-			}
-			.team_one {
-				flex: 1;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-			}
-			.team_two {
-				flex: 1;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-top: 22px;
-			}
-			.team_name {
-				flex: 1;
-				display: flex;
-				align-items: center;
-			}
-			.foul-info {
-				display: flex;
-				align-items: center;
-				margin-right: 21px;
-				.yellow {
-					margin-left: 10px;
-					background-color: var(--F1);
-				}
-				.red {
-					margin-left: 5px;
-					background-color: var(--Warn);
-				}
-				.yellow,
-				.red {
-					padding: 2px;
-					border-radius: 2px;
-					color: var(--Text_s);
-					font-family: "PingFang SC";
-					font-size: 14px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 14px; /* 100% */
-				}
-			}
-		}
-
-		.score {
 			display: flex;
 			align-items: center;
-
-			span {
-				display: flex;
-				padding: 10px;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				gap: 10px;
-				flex-shrink: 0;
-				border-radius: 4px;
-
+			gap: 6px;
+			.team-icon {
+				width: 20px;
+				height: 20px;
+				.icon {
+					width: 100%;
+					height: 100%;
+				}
+			}
+			.team-name {
+				max-width: 286px;
+				flex: 1;
 				color: var(--Text_s);
-				background: var(--Bg4);
-				font-family: "DIN Alternate";
-				font-size: 16px;
-				font-style: normal;
-				font-weight: 700;
-				line-height: normal;
+				font-family: "PingFang SC";
+				font-size: 14px;
+				font-weight: 400;
+				white-space: nowrap; /* 防止文本换行 */
+				overflow: hidden; /* 超出部分隐藏 */
+				text-overflow: ellipsis; /* 超出部分显示省略号 */
 			}
 
-			.icon {
-				padding: 0;
-				margin: 0 4px;
-				width: 16px;
-				height: 2px;
-				flex-shrink: 0;
-				border-radius: 2px;
-
-				background: var(--Line);
+			.score {
+				min-width: 32px;
+				height: 34px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: var(--Theme);
+				font-family: "DIN Alternate";
+				font-size: 16px;
+				font-weight: 700;
 			}
 		}
 	}

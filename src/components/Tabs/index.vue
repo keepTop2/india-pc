@@ -5,8 +5,10 @@
 				{{ tab.label }}
 			</button>
 		</div>
-		<div class="tabs-content">
-			<slot :activeTab="activeTab"></slot>
+		<div class="tabs-content-box">
+			<div class="tabs-content">
+				<slot :activeTab="activeTab"></slot>
+			</div>
 		</div>
 	</div>
 </template>
@@ -38,43 +40,60 @@ const selectTab = (tabName: string) => {
 	display: flex;
 	border-radius: 4px;
 	align-items: flex-start;
-	padding: 0 20px;
 }
 
 .tabs-header {
 	display: flex;
 	flex-direction: column;
-	width: 200px; /* Adjust width as needed */
-	background: var(--Bg1);
-	margin-right: 10px;
+	/* Adjust width as needed */
 	border-radius: 8px;
-	padding: 13px;
+	overflow: hidden;
+	overflow-y: auto;
+	height: 80vh;
+	min-height: 500px;
+}
+.tabs-header::-webkit-scrollbar {
+	display: none;
 }
 
 .tabs-header button {
-	flex: 1;
-	padding: 10px;
+	min-height: 36px;
+	margin: 0 12px 8px;
 	border: none;
 	background: none;
 	cursor: pointer;
-	text-align: left; /* Align text to the left */
+	background: var(--Bg1);
+	color: var(--Text1);
+	width: 174px;
+	text-align: center; /* Align text to the left */
 }
 
 .tabs-header button.active {
 	font-weight: bold;
 	border-radius: 4px;
-	background: var(--Bg3);
+	background: var(--Theme);
+	color: var(--Text_s);
 }
 
-.tabs-content {
+.tabs-content-box {
 	flex: 1;
-	padding: 10px;
-	background: var(--Bg1);
 	height: 80vh;
-	border-radius: 8px;
+	margin-right: 5px;
 	overflow-y: auto; /* Add scrollbar if content overflows */
 }
-.tabs-content::-webkit-scrollbar {
-	display: none;
+.tabs-content {
+	background-color: var(--Bg3);
+	border-radius: 8px;
+	margin-right: 5px;
+}
+.tabs-content-box::-webkit-scrollbar {
+	width: 6px;
+}
+.tabs-content-box::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+.tabs-content-box::-webkit-scrollbar-thumb {
+	background: var(--Bg1);
+	border-radius: 5px;
 }
 </style>

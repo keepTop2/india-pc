@@ -69,7 +69,6 @@ import sportsApi from "/@/api/sports/sports";
 import workerManage from "/@/webWorker/workerManage";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useUserStore } from "/@/stores/modules/user";
-import { nextTick } from "process";
 const UserStore = useUserStore();
 const { initSportPubsub, unSubSport, clearState, sportsLogin, clearSportsOddsChange } = useSportPubSubEvents();
 const SportsInfoStore = useSportsInfoStore();
@@ -118,13 +117,11 @@ onBeforeMount(() => {
 });
 onMounted(() => {
 	//发布初始化数据事件
-	// pubSub.publish(pubSub.PubSubEvents.SportEvents.initChildrenView.eventName, {});
+	pubSub.publish(pubSub.PubSubEvents.SportEvents.initChildrenView.eventName, {});
 	//获取关注列表
-	// getAttention();
+	getAttention();
 	//初始化体育
-	nextTick(() => {
-		initSport();
-	});
+	initSport();
 });
 // onBeforeMount(() => {
 // 	//发布初始化数据事件
@@ -170,11 +167,11 @@ const getAttention = async () => {
 };
 const initSport = async () => {
 	//体育登录
-	// sportsLogin().then(async () => {
-	initSportPubsub();
-	await openEventDetailPush();
-	// loading.value = false;
-	// });
+	sportsLogin().then(async () => {
+		initSportPubsub();
+		await openEventDetailPush();
+		loading.value = false;
+	});
 };
 
 const emit = defineEmits(["expandAndCollapse"]);
@@ -248,7 +245,7 @@ const closeSportsSSE = () => {
  * @description 开启赛事详情推送
  */
 const openEventDetailPush = async () => {
-	await openSSE();
+	openSSE();
 	const { leagueId, eventId } = route.query;
 	console.info("开启赛事详情推送", leagueId, eventId);
 	//线程名称 体育视图处理线程
@@ -276,10 +273,10 @@ const openEventDetailPush = async () => {
 </script>
 <style scoped lang="scss">
 .oddsUp {
-	color: var(--Warn) !important;
+	color: var(--Theme) !important;
 }
 .oddsDown {
-	color: var(--Theme) !important;
+	color: var(--Success) !important;
 }
 .competition {
 	display: flex;
