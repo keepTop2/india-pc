@@ -1,7 +1,4 @@
 <!--
- * @Author: WangMingxin
- * @Description: 体育-头部-条件区分
- * @Component: 头部菜单条件组件
  * @Features:
  *   - 左侧分类选择（今日、早盘、冠军）
  *   - 左侧开关（未开赛/滚球）
@@ -126,6 +123,8 @@ const isShowTime = computed(() => {
 
 // 组件挂载后的初始化操作
 onMounted(() => {
+	console.log("???????????????????????????????????????????????????????????");
+
 	setDefaultActive();
 	wSwitchSelectRight(!SportSortStore.getIsActiveHot && "on", true);
 });
@@ -185,19 +184,27 @@ const switchObjRight = ref({
 	off: { label: "热门", type: "hot", active: false },
 });
 
+// console.log("switchObjRight ----  开始", switchObjRight.value);
+
 // 监听热门联赛列表变化
-watch(
+/*watch(
 	() => SportSortStore.getHotLeagueList,
 	(newValue, oldValue) => {
-		if (!newValue.length) {
+		console.log("newValue------???????", newValue.length);
+
+		if (newValue.length === 0) {
 			switchObjRight.value.on.active = true;
 			switchObjRight.value.off.active = false;
 		} else {
+			console.log("？？");
+
 			switchObjRight.value.on.active = false;
 			switchObjRight.value.off.active = true;
 		}
+
+		console.log("switchObjRight ----- 监听结束", switchObjRight.value);
 	}
-);
+);*/
 
 /**
  * @description: 右侧热门时间变动处理

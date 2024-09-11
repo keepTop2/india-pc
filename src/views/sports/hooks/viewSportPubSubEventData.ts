@@ -83,6 +83,7 @@ export default (function () {
 		 * 处理数据
 		 */
 		public getSportData(sportType) {
+			// console.log("this.viewSportData.childrenViewData[sportType]", this.viewSportData.childrenViewData[sportType]);
 			const SportSortStore = useSportSortStore();
 			let leagues = this.viewSportData.childrenViewData[sportType];
 			/** 是否选中热门联赛 */
