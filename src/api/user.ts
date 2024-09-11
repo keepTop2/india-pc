@@ -9,4 +9,20 @@ export const userApi = {
 			headers,
 		});
 	},
+	//安全中心基本信息
+	getUserGlobalSetInfo: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/global/getUserGlobalSetInfo`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	//修改密码
+	changePassword: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/global/changePassword`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };

@@ -8,32 +8,82 @@
 			<div>
 				<span>登陆密码</span>
 				<span>
-					<svg-icon name="arrow_right" size="14px" />
+					<span class="modifyBtn" @click="modifyHandle('password')">修改</span>
 				</span>
 			</div>
 			<div>
 				<span>手机号</span>
-				<span>
-					<svg-icon name="arrow_right" size="14px" />
+				<span v-if="userGlobalSetInfo.phone">
+					<span class="info"> {{ userGlobalSetInfo.phone }} </span>
+					<span class="modifyBtn" @click="modifyHandle('phone')">修改</span>
 				</span>
+				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
 			<div>
 				<span>电子邮箱</span>
-				<span>
-					<svg-icon name="arrow_right" size="14px" />
+				<span v-if="userGlobalSetInfo.email">
+					<span class="info"> {{ userGlobalSetInfo.email }} </span>
+					<span class="modifyBtn" @click="modifyHandle('email')">修改</span>
 				</span>
+				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
 			<div>
 				<span>交易密码</span>
 				<span>
-					<svg-icon name="arrow_right" size="14px" />
+					<span class="modifyBtn" @click="modifyHandle('withdrawPwd')">修改</span>
 				</span>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed, onMounted, reactive, Ref, ref } from "vue";
+import { useUserStore } from "/@/stores/modules/user";
+import { userApi } from "/@/api/user";
+import eventBus from "/@/utils/eventBus";
+
+interface userGlobalSetInfoType {
+	areaCode: string | null;
+	email: string | null;
+	isSetPwd: Boolean;
+	nickName: string | null;
+	phone: string | null;
+	userAccount: string | null;
+}
+const userStore = useUserStore();
+const userGlobalSetInfo: userGlobalSetInfoType = reactive({
+	areaCode: null,
+	email: null,
+	isSetPwd: false,
+	nickName: null,
+	phone: null,
+	userAccount: null,
+});
+
+onMounted(() => {
+	userApi.getUserGlobalSetInfo().then((res) => {
+		Object.assign(userGlobalSetInfo, res.data);
+	});
+});
+
+const modifyHandle = (type: string) => {
+	switch (type) {
+		case "password":
+			eventBus.emit("show-modal", "ChangePassword");
+			break;
+		case "phone":
+			eventBus.emit("show-modal", "ChangePassword");
+			break;
+		case "email":
+			eventBus.emit("show-modal", "ChangePassword");
+			break;
+		case "withdrawPwd":
+			eventBus.emit("show-modal", "ChangePassword");
+			break;
+	}
+};
+</script>
 
 <style scoped lang="scss">
 .security_center {
@@ -65,6 +115,14 @@
 		}
 		> div:hover {
 			background: rgba(0, 0, 0, 0.05);
+		}
+		.modifyBtn {
+			background: var(--Theme);
+			font-size: 16px;
+			border-radius: 4px;
+			color: var(--Text_a);
+			padding: 5px 30px;
+			margin-left: 16px;
 		}
 	}
 }

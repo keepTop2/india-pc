@@ -10,6 +10,7 @@ declare module 'vue' {
     AreaCode: typeof import('./src/components/AreaCode/index.vue')['default']
     Button: typeof import('./src/components/Button/Button.vue')['default']
     CententItem: typeof import('./src/components/virtualScrollVirtualList/cententItem/cententItem.vue')['default']
+    ChangePassword: typeof import('./src/components/Modal/components/ChangePassword.vue')['default']
     Dialog: typeof import('./src/components/Dialog/Dialog.vue')['default']
     DropdownSelect: typeof import('./src/components/DropdownSelect/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
