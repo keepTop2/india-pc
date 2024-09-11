@@ -224,10 +224,10 @@ onUnmounted(() => {
 const attentionSwitch = computed(() => SportAttentionStore.attentionType);
 
 watch(
-	() => UserStore.token,
+	() => UserStore.userInfo.token,
 	(newValue, oldValue) => {
 		/**改为token 变动时就进行更新体育token */
-		sportsLogin();
+		window.location.reload();
 	}
 );
 
