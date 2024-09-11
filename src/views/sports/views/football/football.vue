@@ -131,7 +131,7 @@ const getList = () => {
 		}
 		leagues = newLeagues;
 	}
-	sportHotStore.setInitEvent(get(leagues, "[0].events.[0]", {}) as any);
+	sportHotStore.setInitEvent(get(state.targetEvents, "[0].events.[0]", {}) as any);
 	return leagues;
 };
 

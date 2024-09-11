@@ -16,8 +16,9 @@
 			<div class="scoreboard_content fs_14">
 				<div class="scoreboard_header">
 					<span>
-						<span class="fs_12 mr_15">上半场</span>
-						<span class="fs_12">88:23</span>
+						<span class="fs_12 mr_15">
+							<span v-for="item in computedSportShowTime" :key="item"> {{ item }} </span>
+						</span>
 					</span>
 					<span>
 						<svg-icon name="sports-jiaoqiu" size="20px"></svg-icon>
