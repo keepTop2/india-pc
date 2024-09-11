@@ -8,7 +8,7 @@
 					<svg-icon name="sports-collection" size="16px"></svg-icon>
 				</span>
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
-				<div class="league_name" :style="displayContent ? `max-width:328px` : ''">{{ teamData.leagueName }}</div>
+				<div class="league_name" :style="displayContent ? `max-width:300px` : ''">{{ teamData.leagueName }}</div>
 			</div>
 			<!-- 盘口表头 -->
 			<div class="market-name-info" v-if="displayContent">

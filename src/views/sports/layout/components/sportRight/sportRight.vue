@@ -110,7 +110,7 @@ const GetPromotions = async () => {
 		console.log(list, 999999999);
 
 		SportSortStore.setHotLeagueList(list);
-		SportSortStore.setIsActiveHot(true);
+		// SportSortStore.setIsActiveHot(true);
 	}
 };
 watch(
