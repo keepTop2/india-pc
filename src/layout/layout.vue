@@ -5,7 +5,8 @@
 			<Head />
 			<transition name="slide-fade">
 				<div class="mainArea">
-					<container />
+					<router-view />
+					<Footer v-if="route.meta.showFooter" />
 				</div>
 			</transition>
 		</div>
@@ -20,6 +21,9 @@ import left from "./components/left/left.vue";
 import container from "./components/container/index.vue";
 import { useMenuStore } from "/@/stores/modules/menu";
 import Modal from "/@/components/Modal/index.vue";
+import Footer from "./components/footer/index.vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 const MenuStore = useMenuStore();
 
 const collapse = computed(() => {
