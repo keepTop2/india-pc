@@ -228,9 +228,9 @@ const isBright = () => {
 }
 
 .oddsUp {
-	color: var(--Warn) !important;
+	color: var(--Theme) !important;
 }
 .oddsDown {
-	color: var(--Theme) !important;
+	color: var(--Success) !important;
 }
 </style>

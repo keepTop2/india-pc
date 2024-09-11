@@ -161,7 +161,7 @@ defineExpose({ state });
 				transform: rotate(0deg);
 			}
 
-			color: var(--Warn);
+			color: var(--Theme);
 		}
 
 		&.fall {
@@ -170,7 +170,7 @@ defineExpose({ state });
 				transform: rotate(180deg);
 			}
 
-			color: var(--Theme);
+			color: var(--Success);
 		}
 	}
 }
