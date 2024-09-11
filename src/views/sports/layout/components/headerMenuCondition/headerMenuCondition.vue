@@ -33,13 +33,18 @@
 			<!-- 刷新按钮 -->
 			<span class="icon" @click="onRefresh"><svg-icon name="sports-screening" size="20px"></svg-icon></span>
 			<!-- 展开/收起按钮 -->
-			<span class="icon" @click="onExpandAndCollapse"><svg-icon name="sports-tutorial" size="20px"></svg-icon></span>
+			<span class="icon" @click="openBettingRules"><svg-icon name="sports-tutorial" size="20px"></svg-icon></span>
 		</div>
+
+		<!-- 教程 -->
+		<Modal v-if="showBettingRules" :before-close="closeBettingRules" @close="closeBettingRules">
+			<component :is="bettingRulesModal" />
+		</Modal>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from "vue";
+import { computed, defineAsyncComponent, DefineComponent, markRaw, onMounted, reactive, Ref, ref, watch } from "vue";
 import moment from "moment";
 import { wButton, wSwitch } from "./components";
 
@@ -52,7 +57,7 @@ import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSe
 import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-
+import Modal from "../Modal/index.vue";
 // 初始化所需的store
 const SportAttentionStore = useSportAttentionStore();
 const router = useRouter();
@@ -62,6 +67,8 @@ const SportSortStore = useSportSortStore();
 const popularLeague = usePopularLeague();
 const SportMorningTradingStore = useSportMorningTradingStore();
 
+const bettingRulesModal: any = ref(null);
+const showBettingRules = ref(false);
 // 展示热门联赛
 popularLeague.showPopularLeague();
 
@@ -309,6 +316,14 @@ const onExpandAndCollapse = () => {
 		SportAttentionStore.setIsFold(true);
 	}
 	pubSub.publish(pubSub.PubSubEvents.SportEvents.onExpandAngCollapse.eventName, !isFold.value);
+};
+
+const openBettingRules = () => {
+	bettingRulesModal.value = markRaw(defineAsyncComponent(() => import(`../bettingRules/index.vue`)));
+	showBettingRules.value = true;
+};
+const closeBettingRules = () => {
+	showBettingRules.value = false;
 };
 </script>
 

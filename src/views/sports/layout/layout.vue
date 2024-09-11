@@ -6,7 +6,7 @@
 	<div class="base-body">
 		<!-- 公告通知 -->
 		<div class="base-container">
-			<HeaderNotify></HeaderNotify>
+			<HeaderNotify @click="openNotify"></HeaderNotify>
 		</div>
 		<!-- 体育 主体内容区域  -->
 		<div class="main-container">
@@ -29,12 +29,17 @@
 				<SportRight v-if="SportsInfoStore.getSportsToken"></SportRight>
 			</div>
 		</div>
+		<!-- 公告弹窗 -->
+		<Modal v-if="showNotifyModal" :before-close="closeNotifyModal" @close="closeNotifyModal">
+			<component :is="NotifyModal" />
+		</Modal>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive, ref, watch, watchEffect } from "vue";
+import { computed, defineAsyncComponent, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive, ref, watch, watchEffect } from "vue";
 import { cloneDeep, isEmpty } from "lodash-es";
+import Modal from "./components/Modal/index.vue";
 import moment from "moment";
 import workerManage from "/@/webWorker/workerManage";
 import Common from "/@/utils/common";
@@ -102,6 +107,8 @@ const ShopCatControlStore = useShopCatControlStore();
 const route = useRoute();
 const router = useRouter();
 
+const NotifyModal: any = ref(null);
+const showNotifyModal = ref(false);
 /** 打开体育参数  */
 export interface SendParams {
 	/**用户账号 */
@@ -610,6 +617,15 @@ const unSport = () => {
 	closeSportViewProcessWorker();
 	//取消订阅体育事件
 	unSubSport();
+};
+
+const openNotify = () => {
+	NotifyModal.value = markRaw(defineAsyncComponent(() => import(`./components/Notify/index.vue`)));
+	showNotifyModal.value = true;
+};
+
+const closeNotifyModal = () => {
+	showNotifyModal.value = false;
 };
 </script>
 
