@@ -26,4 +26,6 @@
 	--Success: #3bc116;
 	--butter: #2d2e32;
 	--popoverShadow: rgba(14, 16, 19, 0.2);
+	/* 体育计分板背景 */
+	--scoreboard_bg: rgba(26, 28, 32, 0.7);
 }
