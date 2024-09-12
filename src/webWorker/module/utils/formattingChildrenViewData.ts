@@ -7,9 +7,9 @@ import { formatEvent2League } from "/@/views/sports/utils/formattingViewData";
 /**
  * @description 格式化markets数据为对象 以betType为key
  */
-function formattingMarkets(markets) {
+function formattingMarkets(markets: any[]) {
 	const obj: any = {};
-	markets.forEach((item) => {
+	markets.forEach((item: { sort: number; betType: string | number; marketId: any }) => {
 		if (item.sort == 1 || item.sort == 0) {
 			if (obj[item.betType]) {
 				obj[`${item.betType}-${item.marketId}`] = item;
@@ -29,8 +29,12 @@ function formattingMarkets(markets) {
  *   sportType:[]
  * }
  * 在球类路由组件中 直接 state.childrenViewData[sportType] 即可取到对应的球类数据
+ *
+ * @param data： viewSportData
+ * @param sportKey events | outrights
+ * @param webToPushApi 目前仅用于格式化markets时判断是处理详情的还是列表的
  */
-export const formattingChildrenViewData = (data: any, sportKey: string) => {
+export const formattingChildrenViewData = (data: any, sportKey: string, webToPushApi?: string) => {
 	// 获取体育字典 球类型
 	const sportsType = Object.keys(sportsMap);
 	// 遍历data将体育类型提取为一级分类，对应的冠军列表配置在children
@@ -40,10 +44,10 @@ export const formattingChildrenViewData = (data: any, sportKey: string) => {
 		let arr;
 		if (sportKey == "events") {
 			// 除电子竞技 其他都取等于0的数据
-			arr = data[sportKey].filter((sport) => sport.sportType == type);
+			arr = data["events"].filter((sport: { sportType: string }) => sport.sportType == type);
 			// 电子竞技单独处理，其他类型统一处理
-			arr.forEach((item) => {
-				const markets = data.markets.filter((market) => market.eventId == item.eventId);
+			arr.forEach((item: { eventId: any; markets: any }) => {
+				const markets = data.markets.filter((market: { eventId: any }) => market.eventId == item.eventId);
 				item.markets = formattingMarkets(markets);
 			});
 			//格式化为联赛
@@ -59,10 +63,10 @@ export const formattingChildrenViewData = (data: any, sportKey: string) => {
 			/**
 			 * @description 获取scopeType相匹配的冠军数据
 			 */
-			arr = data[sportKey].filter((sport) => {
+			arr = data[sportKey].filter((sport: { sportType: string; teams: any[] }) => {
 				if (sport.sportType == type) {
 					// 对冠军下的队伍信息 按照 orid（优胜冠军赔率ID）进行排序
-					sport.teams.sort((a, b) => {
+					sport.teams.sort((a: { orid: number }, b: { orid: number }) => {
 						return a.orid - b.orid;
 					});
 					return sport;
@@ -82,7 +86,7 @@ export const formatDateToTimeStamp = (date: string): number => {
 };
 
 // 格式化沙巴日期为utc-5
-export const convertUtcToUtc5AndFormat = (date) => {
+export const convertUtcToUtc5AndFormat = (date: moment.MomentInput) => {
 	return moment(date).subtract(5, "hour").format("YYYY-MM-DD HH:mm:ss");
 };
 

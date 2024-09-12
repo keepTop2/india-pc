@@ -57,6 +57,8 @@ const props = withDefaults(defineProps<teamDataType>(), {
  */
 const linkDetail = () => {
 	const params = {
+		leagueId: props?.teamData?.leagueId,
+
 		eventId: props?.teamData?.eventId,
 		dataIndex: props?.dataIndex,
 	};

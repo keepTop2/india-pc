@@ -6,33 +6,30 @@
 	<div class="detail-container">
 		<div class="top">
 			<div class="back" @click="handleGoBack">
-				<SvgIcon class="icon" iconName="arrow_left" :size="13" />
+				<svg-icon class="icon" name="arrow_left" :size="13" />
 				<span> 返回 </span>
 			</div>
 			<div class="title">{{ sportInfo.leagueName }}</div>
 			<div class="handle">
-				<div class="item" @click="isCollect()">
+				<div class="item curp" @click="isCollect()">
 					<span>{{ show ? "显示" : "隐藏" }}</span>
-					<img :src="show ? visible : hidden" alt="img" />
+					<svg-icon :name="show ? 'eyes' : 'eyes_on'" size="16px"></svg-icon>
 				</div>
 				<!-- 收藏 -->
-				<SvgIcon v-if="isAttention" class="saveFollow" iconName="sports_collection_three" @click="attentionEvent(true)" :size="20" />
-				<!-- 未收藏 -->
-				<SvgIcon v-else class="unFollow" iconName="sports_collection_three" @click="attentionEvent(false)" :size="20" />
+				<svg-icon class="saveFollow" :name="isAttention ? 'sports-already_collected' : 'sports-collection'" @click="attentionEvent(true)" :size="20" />
 				<!-- 刷新 -->
-				<SvgIcon iconName="refresh_sports" :class="{ cycling: loading }" :size="20" @click="$emit('refresh')" />
+				<svg-icon name="sports-shuaxin" :class="{ cycling: loading }" :size="20" @click="$emit('refresh')" />
 			</div>
 		</div>
-		<template v-if="!show">
-			<!-- 内容区域 -->
-			<div class="content">
-				<SportEventDetail :sportInfo="sportInfo" :size="'large'" />
-			</div>
-			<div class="playing-methods">
-				<el-button class="active"> 全部</el-button>
-				<SvgIcon :class="['icon-svg', { expand: !expandAndCollapse }]" iconName="doubleArrowUp_sports" @click="onExpandAndCollapse" :size="18" />
-			</div>
-		</template>
+
+		<!-- 内容区域 -->
+		<div class="content" :class="!show ? 'showContent' : 'hideContent '">
+			<SportEventDetail :sportInfo="sportInfo" :size="'large'" />
+		</div>
+		<div class="playing-methods">
+			<el-button class="active"> 全部</el-button>
+			<SvgIcon :class="['icon-svg', { expand: !expandAndCollapse }]" iconName="doubleArrowUp_sports" @click="onExpandAndCollapse" :size="18" />
+		</div>
 	</div>
 </template>
 
@@ -45,7 +42,7 @@ import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention"
 import PubSub from "/@/pubSub/pubSub";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import { useRouter } from "vue-router";
-import SportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
+import SportEventDetail from "/@/views//sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
 
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
@@ -110,12 +107,14 @@ const videoStreamingUrl = ref({});
  */
 const GetStreaming = async () => {
 	const { streamingOption, channelCode, sportType } = props.sportInfo;
+
 	// encodeURI(channelCode),
 	const params = {
 		streamingOption,
 		channelCode: encodeURI(channelCode),
 		sportType,
 	};
+
 	const res = await sportsApi.GetStreaming(params).catch((err) => {
 		return err;
 	});
@@ -136,7 +135,6 @@ const isCollect = () => {
 const isAttention = computed(() => {
 	return SportAttentionStore.attentionEventIdList.includes(props.sportInfo.eventId);
 });
-
 // 点击关注按钮
 const attentionEvent = async (isActive: boolean) => {
 	if (isActive) {
@@ -258,18 +256,33 @@ const handleGoBack = () => {
 }
 
 .content {
-	// background-image: url(/@/assets/zh/default/competition/detailBg.png);;
+	// // background-image: url(/@/assets/zh/default/competition/detailBg.png);;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	width: 100%;
-	min-height: 276px;
+	flex: 1;
+	height: 276px;
 	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
+	transition: all 0.3s linear;
+	overflow: hidden;
+	z-index: 1;
 	> .main {
 		width: 892px;
 	}
+	&.showContent {
+		height: 276px;
+	}
+	&.hideContent {
+		height: 0;
+		opacity: 0;
+	}
+}
+.wrapper {
+	transition: all 1s linear;
+}
+.showContent {
 }
 </style>

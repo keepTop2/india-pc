@@ -161,15 +161,7 @@ onBeforeMount(() => {
 	PubSub.subscribe(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
 	initSportRequest();
 });
-// onMounted(() => {
-// 	LayoutStore.setBigScreen(true);
-// 	PubSub.subscribe(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
-// 	initSportRequest();
-// });
-
 const initSportRequest = async () => {
-	/**请求数据前清除数据 */
-	clearState();
 	//获取关注列表
 	getAttention();
 	// 体育登录
@@ -267,15 +259,28 @@ const openSportViewProcessWorker = () => {
 const getAttention = async (isLogin = true) => {
 	if (isLogin) {
 		if (!isEmpty(UserStore.getUserInfo)) {
-			const res = await FootballCardApi.getAttentionList();
-			const list = res.data;
-			SportAttentionStore.setAttentionList(list);
+			handleGetAttention();
 		}
 	} else {
-		const res = await FootballCardApi.getAttentionList();
-		const list = res.data;
-		SportAttentionStore.setAttentionList(list);
+		handleGetAttention();
 	}
+};
+
+/**
+ * @description 获取关注列表
+ */
+
+const handleGetAttention = () => {
+	return new Promise((resolve, reject) => {
+		FootballCardApi.getAttentionList().then((res) => {
+			if (res.data) {
+				SportAttentionStore.setAttentionList(res.data);
+				resolve(res.data);
+			} else {
+				reject(res);
+			}
+		});
+	});
 };
 
 //初始化体育
@@ -349,7 +354,6 @@ const openSportPush = async () => {
 	// 开启体育线程
 	openSportViewProcessWorker();
 
-	clearState();
 	const query = { ...route?.query, sportsActive: tabActive.value };
 	//路由添加请求时的选中类型；用于页面判断展示内容；
 	router.replace({ path: route.path, query: query });
@@ -549,7 +553,6 @@ const openAttentionOutrightSSE = async () => {
  * @return {*}
  */
 const openAttentionSSE = async () => {
-	// clearState();
 	closeSportViewProcessWorker();
 	openSportViewProcessWorker();
 	initSportPush();
@@ -613,6 +616,7 @@ const getMatchResult = async () => {
 
 //卸载体育
 const unSport = () => {
+	clearState();
 	//关掉体育视图线程
 	closeSportViewProcessWorker();
 	//取消订阅体育事件

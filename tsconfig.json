@@ -45,7 +45,8 @@
 		"moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
 		"baseUrl": "." /* Base directory to resolve non-absolute module names. */,
 		"paths": {
-			"/@/*": ["./src/*"]
+			"/@/*": ["src/*"],
+			"/#/*": ["types/*"]
 		} /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
 		// "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
 		// "typeRoots": [],                       /* List of folders to include type definitions from. */
@@ -70,6 +71,18 @@
 		"forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
 		"ignoreDeprecations": "5.0"
 	},
-	"include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.tsx", "src/**/*.d.ts"], // **Represents any directory, and * represents any file. Indicates that all files in the src directory will be compiled
-	"exclude": ["node_modules", "dist"] // Indicates the file directory that does not need to be compiled
+	"include": [
+		"tests/**/*.ts",
+		"src/**/*.ts",
+		"src/**/*.d.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue",
+		"types/**/*.d.ts",
+		"types/**/*.ts",
+		"config/**/*.ts",
+		"config/**/*.d.ts",
+		"mock/**/*.ts",
+		"vite.config.ts"
+	],
+	"exclude": ["node_modules", "tests/server/**/*.ts", "dist", "**/*.js"]
 }

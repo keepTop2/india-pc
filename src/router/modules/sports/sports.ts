@@ -10,7 +10,21 @@ const Sports = [
 		name: "sports",
 		component: Layout,
 		redirect: "/sports/1",
-		children: [...menuRight, ...sportsRouterLeft],
+		children: [
+			...menuRight,
+			...sportsRouterLeft,
+			{
+				path: "/sports/:sportType/detail",
+				name: "event_detail",
+				component: () => import("/@/views/sports/views/eventDetail/eventDetail.vue"),
+				meta: {
+					title: "赛事详细",
+					isServer: false,
+					isSportSort: false,
+					isHide: false,
+				},
+			},
+		],
 	},
 ];
 

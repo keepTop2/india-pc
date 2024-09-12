@@ -6,16 +6,16 @@
 	<div class="competition">
 		<spinner-wrap :model-value="loading" :top="200">
 			<HeaderDetail
-				v-if="!isEmpty(state.targetEvent)"
+				v-if="!isEmpty(eventDetail)"
 				@filter="filterData"
-				:sportInfo="state.targetEvent"
+				:sportInfo="eventDetail"
 				:loading="loading"
 				@refresh="refresh"
 				:expandAndCollapse="expandAndCollapse"
 				@toggleAll="toggleAllDisplay"
 			></HeaderDetail>
 			<div class="competition_two">
-				<div class="box_team" v-if="state.targetEvent?.markets !== ''">
+				<div class="box_team" v-if="eventDetail?.markets !== ''">
 					<div v-for="(item, index) in markets" :key="index">
 						<div class="team" v-if="state.filtrateBetType === 0 || state.filtrateBetType === item.betType">
 							<div class="record" @click="toggleDisplay(index)">
@@ -27,7 +27,7 @@
 									<MarketColumn
 										:displayContent="!showMarkets[index]"
 										cardType="none"
-										:sportInfo="state.targetEvent"
+										:sportInfo="eventDetail"
 										:market="citem"
 										:betType="citem.betType"
 										@oddsChange="oddsChange"
@@ -51,7 +51,8 @@ import { SpinnerWrap } from "/@/components/Spinner";
 import pubSub from "/@/pubSub/pubSub";
 import { Sports, SportViewData } from "/@/views/sports/models/interface";
 import { useRoute } from "vue-router";
-import { MarketColumn, HeaderDetail } from "./components/index";
+import MarketColumn from "./components/marketColumn/marketColumn.vue";
+import HeaderDetail from "./components/headerDetail/headerDetail.vue";
 import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
@@ -64,7 +65,7 @@ import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import { convertUtcToUtc5AndFormatMD, convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { SportViewProcessWorkerCommandType, WorkerName } from "/@/enum/workerTransferEnum";
-import { sportsEventDetailPush } from "/@/views/sports/utils//sportsMap/sportsSSERequestMap";
+import { sportsEventDetailPush } from "/@/views/sports/utils/sportsMap/sportsSSERequestMap";
 import sportsApi from "/@/api/sports/sports";
 import workerManage from "/@/webWorker/workerManage";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
@@ -78,73 +79,68 @@ const sportsBetEvent = useSportsBetEventStore();
 const route = useRoute();
 
 const loading = ref(false);
-/** 单数据序列数据 ； */
-// const state.targetEvent = ref({});
-const sportSource = ref();
-const recode = reactive({
-	event: {},
-	events: [],
-	markets: [],
-});
-const state = reactive({
-	/**
-	 * @description Sports视图数据
-	 */
-	viewSportData: {
-		/**
-		 * @description 外层Sports组件视图数据
-		 */
-		sports: [] as Sports[],
-		leagues: [],
-		events: [],
-		markets: [],
-		outrights: [],
-		results: [],
-		/**
-		 * @description 各个子路由视图数据
-		 */
-		childrenViewData: {},
-	} as SportViewData,
-	targetEvents: [], // 添加这个字段来保存目标事件数据数组
-	/**单个eventId 对应的 体育对象 */
-	targetEvent: {} as any,
-	finalObject: {} as any,
-	filtrateBetType: 0 as number,
+const { sportType } = route.params;
+
+//根据sportType从state中获取events列表 用于展示该联赛下的所有赛事
+const eventsList = computed(() => {
+	console.log(viewSportPubSubEventData.viewSportData, "==viewSportPubSubEventData.viewSportData.childrenViewData");
+	return viewSportPubSubEventData.viewSportData.childrenViewData[Number(sportType)]?.[0]?.events;
 });
 
-onBeforeMount(() => {
-	clearState();
-});
-onMounted(() => {
-	//发布初始化数据事件
-	pubSub.publish(pubSub.PubSubEvents.SportEvents.initChildrenView.eventName, {});
-	//获取关注列表
-	getAttention();
-	//初始化体育
-	initSport();
-});
-// onBeforeMount(() => {
-// 	//发布初始化数据事件
-// 	pubSub.publish(pubSub.PubSubEvents.SportEvents.initChildrenView.eventName, {});
-// 	//获取关注列表
-// 	getAttention();
-// 	//初始化体育
-// 	initSport();
-// });
-/** 只注重过程不在意结果的数据 响应获取  */
-watchEffect(() => {
-	/** 最新数据响应接入  */
-	state.targetEvents = viewSportPubSubEventData.getSportData(9);
-	// console.info("最新数据响应接入", state.targetEvents);
-	if (state.targetEvents?.length) {
-		//单个数据详细值临时获取方式
-		state.targetEvent = state?.targetEvents[0]?.events[0];
-	}
+//根据路由eventId 匹配对应的 event数据 展示详细数据
+const eventDetail = computed(() => {
+	const { leagueId, eventId } = route.query;
+	const events = eventsList.value;
+	console.log(events, "====events");
+	return events?.filter((item) => item.eventId == eventId)[0];
 });
 
 //获取盘口数据
 const markets = computed(() => {
-	return sortMarks(state.targetEvent);
+	// console.log("eventDetail", eventDetail.value);
+	let marketData: any = [];
+	if (eventDetail.value) {
+		const markets = eventDetail.value?.markets;
+		for (const key in markets) {
+			const market = markets[key];
+			const { betTypeName, marketId, betType } = market;
+			// 在 marketData 中查找是否已存在相同 betTypeName 的数据
+			const existingMarketData = marketData.find((data) => data.betTypeName === betTypeName);
+			if (existingMarketData) {
+				// 如果已存在，则将当前市场对象添加到现有数据的 markets 数组中
+				existingMarketData.markets[key] = market;
+			} else {
+				// 如果不存在，则创建新的数据对象并将当前市场对象添加到其 markets 数组中
+				const newData: any = {
+					betTypeName: betTypeName,
+					marketId: marketId,
+					betType: betType,
+					markets: {
+						[key]: market,
+					},
+				};
+				marketData.push(newData);
+			}
+		}
+	}
+	marketData.sort((a, b) => {
+		if (a.betType === b.betType) {
+			return a.marketId - b.marketId;
+		}
+		return a.betType - b.betType;
+	});
+	// console.log(marketData);
+
+	return marketData;
+});
+
+const state = reactive({
+	filtrateBetType: 0 as number,
+});
+
+onBeforeMount(() => {
+	//初始化体育
+	initSport();
 });
 
 /**
@@ -155,22 +151,19 @@ const oddsChange = (obj: any) => {};
 const filterData = (filterItem: number) => {
 	state.filtrateBetType = filterItem;
 };
-/**
- * @description 获取关注列表
- */
-const getAttention = async () => {
-	if (!isEmpty(UserStore.getUserInfo)) {
-		const res = await sportsApi.getAttentionList();
-		const list = res.data;
-		SportAttentionStore.setAttentionList(list);
-	}
-};
 const initSport = async () => {
+	//开启体育线程
+	workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
 	//体育登录
-	sportsLogin().then(async () => {
-		initSportPubsub();
-		await openEventDetailPush();
-		loading.value = false;
+	sportsLogin().then((res) => {
+		if (res) {
+			initSportPubsub();
+			openEventDetailPush();
+			// if (UserStore.token) {
+			// 	// 开始轮询登录接口
+			// 	startPolling();
+			// }
+		}
 	});
 };
 
@@ -221,52 +214,50 @@ const refresh = () => {
 
 // 注册一个钩子，在组件实例被卸载之前调用。
 onBeforeUnmount(() => {
-	// closeSportsSSE();
+	closeSportsSSE();
 });
-const closeSSE = () => {
-	try {
-		//关掉体育视图线程
-		workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
-	} catch (error) {}
-};
-const openSSE = () => {
-	closeSSE();
-	//开启体育线程
-	workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
-};
+
 const closeSportsSSE = () => {
-	// closeSSE();
+	//关掉体育视图线程
+	workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
 	// 卸载体育
 	unSubSport();
 	clearState();
 };
-
+const openSSE = () => {
+	//开启体育线程
+	workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
+};
 /**
  * @description 开启赛事详情推送
  */
 const openEventDetailPush = async () => {
-	openSSE();
 	const { leagueId, eventId } = route.query;
-	console.info("开启赛事详情推送", leagueId, eventId);
+
 	//线程名称 体育视图处理线程
 	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
 	//线程指令 体育eventSource 指令
 	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
+
 	const params = {
 		apiUrl: SportsCommonFn.getSportPushApiUrl(),
 		token: sportsInfoStore.getSportsToken,
 		language: SportsCommonFn.getSportLanguage(),
 	};
-	//清空参数
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-	//参数赋值
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportsEventDetailPush.openEvents(eventId), params);
-	//发送SSE指令到线程管理器
-	pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
+	/**
+	 * @description 先获取盘口数据，再获取events 防止匹配数据错乱
+	 */
 	//清空参数
 	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
 	//参数赋值
 	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportsEventDetailPush.openMarkets(eventId), params);
+	//发送SSE指令到线程管理器
+	pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
+
+	//清空参数
+	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
+	//参数赋值
+	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportsEventDetailPush.openEvents(leagueId), params);
 	//发送SSE指令到线程管理器
 	pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 };
@@ -282,6 +273,11 @@ const openEventDetailPush = async () => {
 	display: flex;
 	flex-direction: column;
 	min-height: 400px;
+	overflow-y: auto;
+	height: calc(100vh - 155px);
+}
+.competition::-webkit-scrollbar {
+	display: none;
 }
 .header-plan {
 	height: 300px;
@@ -304,7 +300,7 @@ const openEventDetailPush = async () => {
 					width: 4px;
 					height: 22px;
 					border-radius: 0px 4px 4px 0px;
-					background: var(--Theme-, #3bc116);
+					background: var(--Theme, #3bc116);
 					margin-right: 12px;
 				}
 				.record_two {

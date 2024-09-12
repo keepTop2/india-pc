@@ -114,7 +114,7 @@ export default function useSportPubSubEvents() {
 
 	//收到线程处理好的数据
 	const workerToviewSportProcess = <T, T2>(event: WorkerTransfer<T, T2>) => {
-		// console.warn("第九步 视图收到线程管理器发送的数据", event);
+		console.warn("第九步 视图收到线程管理器发送的数据", event);
 		//体育视图处理线程
 		if (event.workerName == WorkerName.sportViewProcessWorker) {
 			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;
@@ -161,23 +161,6 @@ export default function useSportPubSubEvents() {
 			}
 		}
 	};
-
-	/**
-	 * @description  收到子路由视图数据变化事件处理
-	 * @param data
-	 */
-	// const childrenViewChangeProcess = (data: SportViewModels) => {
-	// 	//由于滚球 早盘 今日 需要操作盘口，在这里更新盘口数据  每次赋值影响不大 不做额外判断
-	// 	viewSportPubSubEventData.viewSportData.childrenViewData = data.viewSportData.childrenViewData;
-	// };
-
-	/**
-	 * @description 收到子路由初始化视图数据事件
-	 */
-	// const initChildrenViewProcess = () => {
-	// 	// console.log("收到子路由初始化视图数据事件,===========================");
-	// 	pubsub.publish(pubsub.PubSubEvents.SportEvents.sportsToChildren.eventName, viewSportPubSubEventData);
-	// };
 
 	return { initSportPubsub, unSubSport, clearState, sportsLogin, clearSportsOddsChange };
 }

@@ -1,6 +1,6 @@
 <!--
  * @Author: WangMingxin
- * @Description: 体育-电子竞技-赔率卡片
+ * @Description: 体育-足球-赔率卡片
 -->
 <template>
 	<div class="card-container" v-if="cardData?.oddsPrice?.decimalPrice !== 0">
@@ -194,7 +194,6 @@ const isBright = () => {
 	&:hover {
 		background: var(--Line);
 	}
-
 	.content-container {
 		position: relative;
 		width: 100%;
@@ -207,7 +206,6 @@ const isBright = () => {
 		&.isBright {
 			background: var(--Bg5);
 		}
-
 		.sport_lock {
 			margin-left: 45%;
 			color: var(--icon);
@@ -231,11 +229,15 @@ const isBright = () => {
 			font-style: normal;
 			font-weight: 400;
 			line-height: normal;
+			div {
+				span {
+					color: var(--Text_s);
+				}
+			}
 		}
 
 		.value {
 			color: var(--Text_s);
-
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-style: normal;

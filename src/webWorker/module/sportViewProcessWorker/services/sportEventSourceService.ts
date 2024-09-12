@@ -69,7 +69,7 @@ export default (function () {
 			};
 
 			// console.log(workerToViewData);
-			// console.warn("第七步 service处理完业务 往线程管理器发送");
+			console.warn("第七步 service处理完业务 往线程管理器发送");
 			senDataMain(workerToViewData);
 		}
 

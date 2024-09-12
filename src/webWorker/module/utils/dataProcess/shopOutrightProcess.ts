@@ -29,7 +29,6 @@ export default (function () {
 			processData = Object.assign({}, processData, sportsProcessRemove(sportServerData));
 		}
 
-		// processData.viewSportData.childrenViewData = formattingChildrenViewData(viewSportData, "outrights");
 		processData.outrightBetData = dataObj.outright;
 		return processData;
 	};

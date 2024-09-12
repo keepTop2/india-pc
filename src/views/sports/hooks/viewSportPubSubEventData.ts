@@ -2,8 +2,10 @@ import { reactive } from "vue";
 import _ from "lodash-es";
 import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import Common from "/@/views/sports/utils/common";
-import { SportViewData } from "/@/views/sports/models/interface";
+import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import { SportViewData, SportsRootObject } from "/@/views/sports/models/interface";
 import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
+import { formatDateToTimeStamp } from "/@/webWorker/module/utils/formattingChildrenViewData";
 
 export default (function () {
 	class viewSportPubSubEventData implements SportViewModels {
@@ -59,11 +61,11 @@ export default (function () {
 		 * 设置数据
 		 */
 		public setSportData(viewSportData: SportViewData) {
+			console.log("setSportData", viewSportData);
 			try {
 				// 使用Object.assign来确保响应式数据的正确更新
 				// console.log("viewSportData", viewSportData);
 				Object.assign(this.viewSportData, viewSportData);
-				// console.info("this.viewSportData--------------->", this.viewSportData);
 			} catch (error) {
 				console.error("Error occurred while setting sport data:", error);
 			}
@@ -82,37 +84,28 @@ export default (function () {
 		/**
 		 * 处理数据
 		 */
-		public getSportData(sportType) {
-			// console.log("this.viewSportData.childrenViewData[sportType]", this.viewSportData.childrenViewData[sportType]);
-			const SportSortStore = useSportSortStore();
-			let leagues = this.viewSportData.childrenViewData[sportType];
-			/** 是否选中热门联赛 */
-			const isActiveHot = SportSortStore.getIsActiveHot;
-			/**热门赛事 */
-			const hotLeagueList = SportSortStore.getHotLeagueList;
-			const MenuTab = SportSortStore.getMenuTab;
-			if (isActiveHot && MenuTab != "champion") {
-				// 如果有热门赛事，则处理数据给出热门赛事。
-				if (leagues && hotLeagueList.length > 0) {
-					const hotEventId = hotLeagueList.map((item) => item.eventId);
-					return leagues.filter((item) => {
-						item.events = item.events.filter((eventItem) => {
-							/**eventId是否包含在热门中 */
-							const isEvent = hotEventId.includes(eventItem.eventId);
-							if (isEvent) {
-								return true;
-							} else {
-								return false;
-							}
-						});
-						item.events.sort((a, b) => {
-							return Common.formatDateToTimeStamp(a.globalShowTime) - Common.formatDateToTimeStamp(b.globalShowTime);
-						});
-						return item.events.length;
+		public getSportData(sportType: number) {
+			const sportsBetEvent = useSportsBetEventStore();
+			const leagueSelect = sportsBetEvent.getLeagueSelect;
+			if (!sportType) {
+				return this.viewSportData.childrenViewData;
+			}
+			const leagues = this.viewSportData.childrenViewData[sportType];
+			// 如果有筛选 则处理数据，只给出筛选的联赛列表。
+			if (leagues && leagueSelect.length > 0) {
+				return leagues.filter((item: { leagueId: SportsRootObject }) => leagueSelect.includes(item.leagueId));
+			}
+			// 如果有热门赛事，则处理数据给出热门赛事。
+			const hotLeagueList = JSON.parse(JSON.stringify(sportsBetEvent.hotLeagueList));
+			if (leagues && hotLeagueList.length) {
+				const hotEventId = hotLeagueList.map((item: { eventId: any }) => item.eventId);
+				return leagues.filter((item: { event: any[]; events: any[] }) => {
+					item.event = item.events.filter((eventItem: { eventId: any }) => hotEventId.includes(eventItem.eventId));
+					item.event.sort((a: { globalShowTime: any }, b: { globalShowTime: any }) => {
+						return formatDateToTimeStamp(a.globalShowTime) - formatDateToTimeStamp(b.globalShowTime);
 					});
-				} else {
-					return [];
-				}
+					return item.event.length;
+				});
 			}
 			return leagues;
 		}

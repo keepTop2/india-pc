@@ -46,19 +46,6 @@ const menuRight = [
 				},
 			},
 			{
-				path: "/sports/1/detail",
-				name: "football_detail",
-				component: () => import("/@/views/sports/views/football/detail/detail.vue"),
-				meta: {
-					title: "赛事详细",
-					isServer: false,
-					icon: football,
-					iconActive: football_active,
-					isSportSort: false,
-					isHide: false,
-				},
-			},
-			{
 				path: "/sports/1/sportsLeagueSearch",
 				name: "football_sportsLeagueSearch",
 				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
@@ -97,19 +84,6 @@ const menuRight = [
 					iconActive: basketball_active,
 					isHide: false,
 					isServer: false,
-				},
-			},
-			{
-				path: "/sports/2/detail",
-				name: "basketball_detail",
-				component: () => import("/@/views/sports/views/basketball/detail/detail.vue"),
-				meta: {
-					title: "赛事详细",
-					isServer: false,
-					icon: basketball,
-					iconActive: basketball_active,
-					isSportSort: false,
-					isHide: false,
 				},
 			},
 			{
@@ -153,19 +127,6 @@ const menuRight = [
 				},
 			},
 			{
-				path: "/sports/3/detail",
-				name: "americanSoccer_detail",
-				component: () => import("/@/views/sports/views/americanSoccer/detail/detail.vue"),
-				meta: {
-					title: "赛事详细",
-					isServer: false,
-					icon: americanSoccer,
-					iconActive: americanSoccer_active,
-					isSportSort: false,
-					isHide: false,
-				},
-			},
-			{
 				path: "/sports/3/sportsLeagueSearch",
 				name: "americanSoccer_sportsLeagueSearch",
 				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
@@ -203,19 +164,6 @@ const menuRight = [
 					iconActive: iceHockey_active,
 					isHide: false,
 					isServer: false,
-				},
-			},
-			{
-				path: "/sports/4/detail",
-				name: "iceHockey_detail",
-				component: () => import("/@/views/sports/views/iceHockey/detail/detail.vue"),
-				meta: {
-					title: "赛事详细",
-					isServer: false,
-					icon: iceHockey,
-					iconActive: iceHockey_active,
-					isSportSort: false,
-					isHide: false,
 				},
 			},
 			{
@@ -259,19 +207,6 @@ const menuRight = [
 				},
 			},
 			{
-				path: "/sports/5/detail",
-				name: "tennis_detail",
-				component: () => import("/@/views/sports/views/tennis/detail/detail.vue"),
-				meta: {
-					title: "赛事详细",
-					isServer: false,
-					icon: tennis,
-					iconActive: tennis_active,
-					isSportSort: false,
-					isHide: false,
-				},
-			},
-			{
 				path: "/sports/5/sportsLeagueSearch",
 				name: "tennis_sportsLeagueSearch",
 				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
@@ -309,19 +244,6 @@ const menuRight = [
 					iconActive: volleyball_active,
 					isHide: false,
 					isServer: false,
-				},
-			},
-			{
-				path: "/sports/6/detail",
-				name: "volleyball_detail",
-				component: () => import("/@/views/sports/views/volleyball/detail/detail.vue"),
-				meta: {
-					title: "赛事详细",
-					isServer: false,
-					icon: volleyball,
-					iconActive: volleyball_active,
-					isSportSort: false,
-					isHide: false,
 				},
 			},
 			{
@@ -365,19 +287,6 @@ const menuRight = [
 				},
 			},
 			{
-				path: "/sports/7/detail",
-				name: "billiards_detail",
-				component: () => import("/@/views/sports/views/billiards/detail/detail.vue"),
-				meta: {
-					title: "赛事详细",
-					isServer: false,
-					icon: billiards,
-					iconActive: billiards_active,
-					isSportSort: false,
-					isHide: false,
-				},
-			},
-			{
 				path: "/sports/7/sportsLeagueSearch",
 				name: "billiards_sportsLeagueSearch",
 				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
@@ -415,19 +324,6 @@ const menuRight = [
 					iconActive: baseball_active,
 					isHide: false,
 					isServer: false,
-				},
-			},
-			{
-				path: "/sports/8/detail",
-				name: "baseball_detail",
-				component: () => import("/@/views/sports/views/baseball/detail/detail.vue"),
-				meta: {
-					title: "赛事详细",
-					isServer: false,
-					icon: baseball,
-					iconActive: baseball_active,
-					isSportSort: false,
-					isHide: false,
 				},
 			},
 			{
@@ -471,19 +367,6 @@ const menuRight = [
 				},
 			},
 			{
-				path: "/sports/9/detail",
-				name: "badminton_detail",
-				component: () => import("/@/views/sports/views/badminton/detail/detail.vue"),
-				meta: {
-					title: "赛事详细",
-					isServer: false,
-					icon: badminton,
-					iconActive: badminton_active,
-					isSportSort: false,
-					isHide: false,
-				},
-			},
-			{
 				path: "/sports/9/sportsLeagueSearch",
 				name: "badminton_sportsLeagueSearch",
 				component: () => import("/@/views/sports/views/sportsLeagueSearch/sportsLeagueSearch.vue"),
@@ -522,19 +405,6 @@ const menuRight = [
 					iconActive: eSports_active,
 					isHide: false,
 					isServer: false,
-				},
-			},
-			{
-				path: "/sports/43/detail",
-				name: "eSports_detail",
-				component: () => import("/@/views/sports/views/eSports/detail/detail.vue"),
-				meta: {
-					title: "赛事详细",
-					isServer: false,
-					icon: eSports,
-					iconActive: eSports_active,
-					isSportSort: false,
-					isHide: false,
 				},
 			},
 			{

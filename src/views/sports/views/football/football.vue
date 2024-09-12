@@ -18,7 +18,7 @@
 				bottomClass="card-container"
 				minDivClass="card—header"
 				childrenDivClass="league-content"
-				:list-data="state.targetEventList"
+				:list-data="leagues"
 			>
 				<template #default="{ item, index, isExpand }">
 					<!-- 滚球卡片 -->
@@ -54,7 +54,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, reactive, ref, watchEffect } from "vue";
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watchEffect } from "vue";
 import { cloneDeep, get } from "lodash-es";
 import { Sports, SportViewData } from "/@/views/sports/models/interface";
 import { useRoute } from "vue-router";
@@ -77,7 +77,10 @@ const VirtualScrollVirtualListRef = ref();
 const SportsBetEvent = useSportsBetEventStore();
 /**选中的赛选类型；*/
 const sportsActive = ref("rollingBall");
-
+const leagues = computed(() => viewSportPubSubEventData.getSportData(Number(1)));
+onMounted(() => {
+	console.log(viewSportPubSubEventData, "=====leagues");
+});
 const state = reactive({
 	// 体育数据集合
 	viewSportData: {
@@ -110,10 +113,6 @@ onBeforeMount(() => {
 	});
 });
 
-/**
- * @description: 获取筛选后的列表数据；
- * @return {*}
- */
 const getList = () => {
 	let leagues = cloneDeep(state.targetEvents);
 	const SportLeagueSeachStore = useSportLeagueSeachStore();
@@ -130,6 +129,7 @@ const getList = () => {
 		}
 		leagues = newLeagues;
 	}
+	console.log(state.targetEvents, "=====state.targetEvents");
 	sportHotStore.setInitEvent(get(state.targetEvents, "[0].events.[0]", {}) as any);
 	return leagues;
 };

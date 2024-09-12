@@ -215,6 +215,8 @@ const attentionEvent = async (isActive: boolean) => {
  */
 const linkDetail = () => {
 	const params = {
+		leagueId: props?.event?.leagueId,
+
 		eventId: props?.event?.eventId,
 		dataIndex: props?.dataIndex,
 	};

@@ -1,7 +1,7 @@
 // 体育静态文件
 import sportsMap from "/@/views/sports/utils/sportsMap/sportsMap";
 import { formattingChildrenViewData } from "/@/webWorker/module/utils/formattingChildrenViewData";
-import { merge } from "lodash-es";
+import _ from "lodash";
 import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourceModel";
 
 // 每个运动项目的赛事数量及串关赛事数量  数据线程处理 GetSports
@@ -27,7 +27,6 @@ export default (function () {
 		if (sportServerData.payload.outrights && sportServerData.payload.outrights.remove.length > 0) {
 			processData = Object.assign({}, processData, sportsProcessRemove(sportServerData, viewSportData));
 		}
-
 		processData.viewSportData.childrenViewData = formattingChildrenViewData(viewSportData, "outrights");
 
 		return processData;
@@ -68,16 +67,16 @@ export default (function () {
 					if (oldTeamIndex) {
 						const oldPrice = oldOutright.teams[oldTeamIndex].price;
 						if (teamItem.price > oldPrice) {
-							teamItem.oddsChange = "up";
+							teamItem.oddsChange = "oddsUp";
 						} else if (teamItem.price < oldPrice) {
-							teamItem.oddsChange = "down";
+							teamItem.oddsChange = "oddsDown";
 						}
 					}
 				});
 				//设置冠军赛事数量
 				item.count = item.outrightGame;
 				//将新老数据合并 赋值
-				const newOutright = merge({}, oldOutright, item);
+				const newOutright = _.merge({}, oldOutright, item);
 				viewSportData.outrights[index] = newOutright;
 			});
 		// console.log("处理好的change数据", viewSportData);

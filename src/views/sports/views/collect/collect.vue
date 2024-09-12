@@ -116,10 +116,6 @@ const unFollowEvent = async (list: number[]) => {
 		await sportsApi.unFollow({
 			thirdId: list,
 		});
-
-		const res = await sportsApi.getAttentionList();
-		SportAttentionStore.setAttentionList(res.data);
-
 		canUnFollow.value = true;
 	}
 };

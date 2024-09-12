@@ -1,6 +1,6 @@
 <!--
  * @Author: WangMingxin
- * @Description: 体育-台球-赔率卡片列；
+ * @Description: 体育-足球-赔率卡片列；
 -->
 <template>
 	<div
@@ -21,8 +21,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, watchEffect } from "vue";
-import { MarketCard } from "../index";
-import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
+import MarketCard from "../marketCard/marketCard.vue";
 
 const emit = defineEmits(["oddsChange"]);
 
