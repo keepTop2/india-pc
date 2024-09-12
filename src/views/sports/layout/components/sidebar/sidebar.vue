@@ -19,15 +19,16 @@
 		<!-- 赛事数据 -->
 		<div class="events-content">
 			<div class="events-header">
-				<div class="icon"></div>
+				<div class="icon"><svg-icon name="sports-sidebar-football" size="16px"></svg-icon></div>
 				<div class="team-name">
-					<span></span>
+					<span class="name">李伟</span>
 					<span>VS</span>
-					<span></span>
+					<span class="name">王伟</span>
 				</div>
 			</div>
 			<div class="events-container">
 				<!-- 动态记分板组件 -->
+				<football />
 			</div>
 		</div>
 
@@ -38,7 +39,7 @@
 
 <script setup lang="ts">
 import football from "./components/scoreboard/football/football.vue";
-import baseball from "./components/scoreboard/baseball/baseball.vue";
+import basketball from "./components/scoreboard/basketball/basketball.vue";
 import americanSoccer from "./components/scoreboard/americanSoccer/americanSoccer.vue";
 import iceHockey from "./components/scoreboard/iceHockey/iceHockey.vue";
 import tennis from "./components/scoreboard/tennis/tennis.vue";
@@ -81,10 +82,42 @@ import eSports from "./components/scoreboard/eSports/eSports.vue";
 		}
 	}
 	.events-content {
+		position: relative;
+		&::after {
+			position: absolute;
+			content: "";
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 1px;
+			background-color: var(--Line_1);
+			box-shadow: 0px 1px 0px 0px #343d48;
+		}
 		.events-header {
+			width: 100%;
+			height: 30px;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			padding: 5px 12px;
 			.icon {
+				width: 16px;
+				height: 16px;
 			}
 			.team-name {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				color: var(--Text1);
+				font-family: "PingFang SC";
+				font-size: 14px;
+				font-weight: 400;
+				.name {
+					max-width: 140px;
+					white-space: nowrap; /* 禁止换行 */
+					overflow: hidden; /* 超出部分隐藏 */
+					text-overflow: ellipsis; /* 超出部分显示省略号 */
+				}
 			}
 		}
 

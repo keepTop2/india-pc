@@ -640,14 +640,13 @@ const closeNotifyModal = () => {
 .main-container {
 	display: flex;
 	height: calc(100% - 40px);
-
-	width: 1636px;
+	width: 1660px;
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
 	.left-container {
 		position: relative; // 设置相对定位，购物车弹窗的绝对定位
-		margin: 0px 0;
+		margin: 0px 12px;
 		flex: 1;
 		// width: 1246px;
 
@@ -677,7 +676,7 @@ const closeNotifyModal = () => {
 	.right-container {
 		width: 390px;
 		height: 100%;
-		margin: 0 10px;
+		// margin: 0 10px;
 		overflow-y: auto;
 	}
 	.right-container::-webkit-scrollbar {
