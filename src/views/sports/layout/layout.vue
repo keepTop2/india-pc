@@ -12,21 +12,23 @@
 		<div class="main-container">
 			<!-- 体育游戏列表 -->
 			<div class="left-container">
-				<div class="header">
-					<HeaderMenuNav :sportsActive="tabActive"></HeaderMenuNav>
-					<div class="line"></div>
-					<HeaderMenuCondition :sportsActive="tabActive" v-if="$route?.meta?.isSportSort" @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
+				<div class="container">
+					<div class="header">
+						<HeaderMenuNav :sportsActive="tabActive"></HeaderMenuNav>
+						<div class="line"></div>
+						<HeaderMenuCondition :sportsActive="tabActive" v-if="$route?.meta?.isSportSort" @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
+					</div>
+					<div class="back-container">
+						<!-- 主体路由页面 -->
+						<router-view v-cloak />
+					</div>
+					<!-- 购物车 -->
+					<SportsShopCart></SportsShopCart>
 				</div>
-				<div class="back-container">
-					<!-- 主体路由页面 -->
-					<router-view v-cloak />
-				</div>
-				<!-- 购物车 -->
-				<SportsShopCart></SportsShopCart>
 			</div>
-			<!-- 体育热门（视频）显示 -->
+			<!-- 右边侧边栏 -->
 			<div class="right-container" v-if="popularLeague.visible">
-				<SportRight v-if="SportsInfoStore.getSportsToken"></SportRight>
+				<Sidebar v-if="SportsInfoStore.getSportsToken"></Sidebar>
 			</div>
 		</div>
 		<!-- 公告弹窗 -->
@@ -51,33 +53,24 @@ import { sportTabPushActions } from "/@/views/sports/utils/sportsMap/sportsSSERe
 import { useRoute, useRouter } from "vue-router";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
-
 import { Sports, SportData, SportViewData } from "/@/views/sports/models/interface";
 import { ServerData } from "/@/views/sports/models/commonInterface";
-
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-
 import { useLayoutStore } from "/@/stores/modules/layout";
 import { useUserStore } from "/@/stores/modules/user";
-
 import { Notification } from "/@/components/index";
 import { WorkerName, SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
-
-import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, SportRight } from "./components";
-
+import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar } from "./components";
 import { i18n } from "/@/i18n/index";
-
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { useLoading } from "/@/directive/loading/hooks";
 import SportsCommonFn from "/@/views/sports/utils/common";
-
 import { FootballCardApi } from "/@/api/sports/footballCard";
 import PubSub from "/@/pubSub/pubSub";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
-
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
 import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
@@ -658,23 +651,26 @@ const closeNotifyModal = () => {
 		flex: 1;
 		// width: 1246px;
 
-		.header {
-			width: 100%;
-			border-radius: 8px;
-			background: var(--Bg1);
-
-			box-sizing: border-box;
-
-			.line {
+		.container {
+			width: 1246px;
+			.header {
 				width: 100%;
-				height: 1px;
-				background: var(--Line_1);
-				box-shadow: 0px 1px 0px 0px #343d48;
-			}
-		}
+				border-radius: 8px;
+				background: var(--Bg1);
 
-		&.back-container {
-			background-color: var(--Bg);
+				box-sizing: border-box;
+
+				.line {
+					width: 100%;
+					height: 1px;
+					background: var(--Line_1);
+					box-shadow: 0px 1px 0px 0px #343d48;
+				}
+			}
+
+			&.back-container {
+				background-color: var(--Bg);
+			}
 		}
 	}
 
