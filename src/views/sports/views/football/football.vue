@@ -114,23 +114,18 @@ onBeforeMount(() => {
 });
 
 const getList = () => {
+	// 深拷贝当前球类列表数据
 	let leagues = cloneDeep(state.targetEvents);
 	const SportLeagueSeachStore = useSportLeagueSeachStore();
 	const leagueSelect = SportLeagueSeachStore.getLeagueSelect;
-	// 如果有筛选 则处理数据，只给出筛选的联赛列表。
-	let newLeagues: never[] = [];
+	// 如果有筛选，处理数据，只给出筛选的联赛列表
 	if (leagues && leagueSelect.length > 0) {
-		for (let index = 0; index < leagues.length; index++) {
-			const item = leagues[index];
-			let bool = leagueSelect.includes(item.leagueId);
-			if (bool) {
-				newLeagues.push(item);
-			}
-		}
-		leagues = newLeagues;
+		leagues = leagues.filter((item) => leagueSelect.includes(item.leagueId));
 	}
-	console.log(state.targetEvents, "=====state.targetEvents");
+	// 这里使用了 lodash 提供的 get 函数，它用于安全地访问嵌套的对象属性。即便某个中间属性不存在，也不会抛出错误，而是返回指定的默认值。
+	// "[0].events.[0]" 是一个路径字符串，表示取 targetEvents 数组的第一个元素，然后取该元素的 events 数组的第一个元素。如果 targetEvents 或 events 中的任何部分不存在，get 方法会返回第三个参数中的默认值，即 {}
 	sportHotStore.setInitEvent(get(state.targetEvents, "[0].events.[0]", {}) as any);
+	// 返回当前球类列表数据
 	return leagues;
 };
 

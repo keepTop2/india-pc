@@ -1,7 +1,3 @@
-/*
- * @Author: sun
- * @Description: 体育-右侧热门赛事及当前赛事
- */
 import { defineStore } from "pinia";
 import { merge, isEmpty } from "lodash-es";
 import { SportsRootObject } from "/@/views/sports/models/interface";
@@ -63,27 +59,28 @@ export const useSportHotStore = defineStore("SportHot", {
 		},
 
 		/**
-		 * @description: 设置当前赛事
-		 * @param {SportsRootObject} event
-		 * @return {void}
+		 * @description: 更新当前的赛事信息，如果新的赛事与当前赛事不同。
+		 * @param {SportsRootObject} event - 新的赛事信息对象
 		 */
 		setCurrentEvent(event: SportsRootObject): void {
+			// 检查条件 1: 确保 event 对象不为空，避免处理无效数据
+			// 检查条件 2: 确保新 event 的 eventId 与当前的 eventId 不同，避免重复设置相同的赛事信息
 			if (!isEmpty(event) && this.currentEventInfo?.eventId !== event?.eventId) {
-				console.log("setCurrentEvent", event);
+				// 更新当前的赛事信息为新的 event
 				this.currentEventInfo = event;
 			}
 		},
 
 		/**
-		 * 设置初始化赛事，当前路由不改变，则不修改数据
-		 * @param event
+		 * 初始化当前的赛事信息 (currentEventInfo)。该方法会在满足一定条件时，将新的赛事信息更新到 currentEventInfo 中，并记录当前页面的 URL
+		 * @param event 当前赛事数据对象
 		 */
 		setInitEvent(event: SportsRootObject): void {
 			const currentHref = window.location.href;
+			// 检查 event 对象是否为空，并且当前页面的 URL 是否与记录的 URL 不同，以及新事件 ID 是否与当前事件 ID 不同
 			if (!isEmpty(event) && currentHref !== this.originHref && this.currentEventInfo?.eventId !== event?.eventId) {
-				console.log("setInitEvent", event);
-				this.currentEventInfo = event;
-				this.originHref = currentHref;
+				this.currentEventInfo = event; // 更新当前的赛事信息
+				this.originHref = currentHref; // 更新记录的 URL
 			}
 		},
 

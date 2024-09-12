@@ -202,9 +202,8 @@ const playList = reactive([
 		display: flex;
 		align-items: flex-start;
 		justify-content: space-between;
-		// flex-wrap: wrap;
-
 		margin-bottom: 12px;
+		overflow: hidden;
 
 		& > * {
 			flex-shrink: 0;

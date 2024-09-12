@@ -62,12 +62,16 @@ const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
 
+// 点击比分板
 const openPage = () => {
 	SportHotStore.setCurrentEvent(props.event);
 };
+
+// 点击视频源
 const toggleFullScreen = () => {
 	SportHotStore.setCurrentEvent(props.event);
 };
+
 const refreshPage = () => {
 	console.log("动画直播");
 };

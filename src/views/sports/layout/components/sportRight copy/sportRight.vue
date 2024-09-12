@@ -1,7 +1,3 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育-右侧-热门
--->
 <template>
 	<div v-if="computedHasEvent">
 		<SprotVideo :eventDetail="currentEventInfo" :videoStreamingUrl="videoStreamingUrl" @refresh="refresh" :loading="loading" />
@@ -58,7 +54,6 @@ const getHotEvents = async () => {
 	//获取赛果数量后 添加到sports中
 	if (res.data) {
 		const hotList = formattingSportArrayData(res.data);
-
 		const index = hotList.findIndex((event: SportsRootObject) => {
 			if (event?.streamingOption && event?.channelCode) {
 				return true;
@@ -66,7 +61,6 @@ const getHotEvents = async () => {
 				false;
 			}
 		});
-
 		// 储存数据到Store
 		SportHotStore.setHotEventList(hotList);
 		// 此处或有问题， 是否取对应球类的赛事
