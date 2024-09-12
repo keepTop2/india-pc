@@ -1,9 +1,9 @@
-import { WorkerMap } from '/@/webWorker/workerMap';
-import { WorkerName } from '/@/enum/workerTransferEnum';
-import { WebResponse } from '/@/models/commonInterface';
-import { WorkerTransfer, WorkerItem } from '/@/models/webWorkerModel';
-import pubsub from '/@/pubSub/pubSub';
-import ResCode from '../utils/resCode';
+import { WorkerMap } from "/@/webWorker/workerMap";
+import { WorkerName } from "/@/enum/workerTransferEnum";
+import { WebResponse } from "/@/models/commonInterface";
+import { WorkerTransfer, WorkerItem } from "/@/models/webWorkerModel";
+import pubsub from "/@/pubSub/pubSub";
+import ResCode from "../utils/resCode";
 /**
  * @description 线程管理
  */
@@ -53,7 +53,7 @@ class WorkerManage {
 			if (idx != -1) {
 				// console.error(`已经启动该线程:${name}`);
 				resPonsedata.code = ResCode.ERR;
-				resPonsedata.message = '已经启动该线程';
+				resPonsedata.message = "已经启动该线程";
 				console.error(resPonsedata.message);
 				// reject(resPonsedata);
 			}
@@ -61,7 +61,7 @@ class WorkerManage {
 			resPonsedata.code = ResCode.SUCCESS;
 			// setTimeout(() => {
 			const url = this.WorkerMap[workerName].url;
-			this.WorkerMap[workerName].worker = new Worker(url, { type: 'module' });
+			this.WorkerMap[workerName].worker = new Worker(url, { type: "module" });
 			this.WorkerMap[workerName].worker!.onmessage = this.onMessage;
 			this.workerList.push(this.WorkerMap[workerName]);
 			//console.warn("线程启动成功", workerName);
@@ -69,7 +69,7 @@ class WorkerManage {
 			// }, 0);
 		} else {
 			resPonsedata.code = ResCode.ERR;
-			resPonsedata.message = '超过最大线程数';
+			resPonsedata.message = "超过最大线程数";
 			console.error(resPonsedata.message);
 			// console.error("超过最大线程数");
 		}
@@ -86,9 +86,9 @@ class WorkerManage {
 		const resPonsedata: WebResponse = {};
 		const idx = this.workerList.findIndex((item) => item.workerName == workerName);
 		if (idx == -1) {
-			console.error('未找到该线程');
+			console.error("未找到该线程");
 			resPonsedata.code = ResCode.ERR;
-			resPonsedata.message = '未找到该线程';
+			resPonsedata.message = "未找到该线程";
 			// reject(resPonsedata);
 		}
 		//关闭线程
@@ -129,13 +129,13 @@ class WorkerManage {
 	 * @param data
 	 */
 	public onMessage<T1, T2>(data) {
-		// console.log("看看子线程发送过来的数据", JSON.parse(data.data));
+		console.log("看看子线程发送过来的数据", JSON.parse(data.data));
 		const workerToViewData: WorkerTransfer<T1, T2> = JSON.parse(data.data);
 		// // 将处理好的体育数据发送到Vue组件
 		// if (childrenWorkerData.serverType == "sportServer") {
 		// 	//处理好的数据 赋值给视图
 		pubsub.PubSubEvents.WorkerEvents.workerToView.params = workerToViewData;
-		//console.warn("第八步  线程管理器收到处理好的数据准备发送到视图");
+		console.warn("第八步  线程管理器收到处理好的数据准备发送到视图");
 		pubsub.publish(pubsub.PubSubEvents.WorkerEvents.workerToView.eventName, pubsub.PubSubEvents.WorkerEvents.workerToView.params);
 		// console.log(workerToViewData, "收到子线程数据");
 		// 	//发布体育线子程处理好数据到Spprts组件的事件

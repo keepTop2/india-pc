@@ -1,23 +1,19 @@
-<!--
- * @Author: WangMingxin
- * @Description: 排球
--->
 <template>
 	<div class="box-content" v-if="state.targetEvents?.length">
 		<!-- 联赛数据统计 -->
 		<SelectCard v-if="state.targetEvents?.length" :sportsActive="sportsActive" :teamData="state.targetEvents"></SelectCard>
-		<!-- /** 可获取间隔-底部边距 class    */
-	bottomClass: "card-item",
-	/** 可获取缩小时展示的-标题高度 class    */
-	minDivClass: "tournament-header",
-	/** 可获取展开时-子集卡片高度 class    */
-	childrenDivClass: "content", -->
+		<!-- 滚球虚拟列表 -->
+		<!--
+				bottomClass: 可获取间隔-底部边距,
+				minDivClass: 可获取缩小时展示的-标题高度,
+				childrenDivClass: 可获取展开时-子集卡片高度,
+			-->
 		<VirtualScrollVirtualList
 			v-if="sportsActive !== `champion`"
 			ref="VirtualScrollVirtualListRef"
 			bottomClass="card-container"
-			minDivClass="box"
-			childrenDivClass="box_two"
+			minDivClass="card—header"
+			childrenDivClass="league-content"
 			:list-data="state.targetEventList"
 		>
 			<template #default="{ item, index, isExpand }">
@@ -30,8 +26,8 @@
 			v-else
 			ref="VirtualScrollVirtualListRef"
 			bottomClass="card-container"
-			minDivClass="box"
-			childrenDivClass="box_two"
+			minDivClass="card—header"
+			childrenDivClass="league-content"
 			:list-data="state.targetEvents"
 			:childrenKey="'teams'"
 		>
@@ -46,15 +42,12 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch, watchEffect } from "vue";
+import { onBeforeMount, onBeforeUnmount, reactive, ref, watchEffect } from "vue";
 import { cloneDeep, get } from "lodash-es";
-import pubSub from "/@/pubSub/pubSub";
 import { Sports, SportViewData } from "/@/views/sports/models/interface";
-
 import { useRoute } from "vue-router";
 import { RollingCard, ChampionshipCard, SelectCard, VirtualScrollVirtualList } from "./components/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
@@ -66,9 +59,7 @@ const { clearSportsOddsChange } = useSportPubSubEvents();
 const sportsBetEvent = useSportsBetEventStore();
 const leagueActiveList = ref(sportsBetEvent.getLeagueSelect);
 const route = useRoute();
-
 const VirtualScrollVirtualListRef = ref();
-
 const SportsBetEvent = useSportsBetEventStore();
 /**选中的赛选类型；*/
 const sportsActive = ref("rollingBall");
@@ -157,46 +148,13 @@ const toggleDisplay = (val?: number) => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.el-collapse-item__content) {
-	padding: 0;
-}
-
 .box-content {
 	width: 100%;
-	height: 840px;
-
-	:deep(.el-collapse-item__wrap) {
-		width: 100%;
-
-		border: none;
-		background-color: var(--Bg1);
-	}
-
-	:deep(.el-collapse) {
-		border: none;
-	}
-}
-
-:deep(.el-collapse-item__header) {
-	padding: 0;
-	border: none;
-	height: 40px;
-	flex-shrink: 0;
-	border-radius: 8px 8px 0px 0px;
-	background: var(--Bg6);
-
-	i {
-		display: none;
-	}
-}
-
-.box {
-	width: 100%;
-	margin-bottom: 16px;
+	height: calc(100vh - 260px);
 }
 
 .card-container {
-	margin-bottom: 16px;
+	margin-bottom: 5px;
 }
 .nonedata {
 	margin-top: 20%;

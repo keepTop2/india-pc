@@ -1,57 +1,63 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育-美式足球-赔率卡片
--->
 <template>
-	<div class="card-container">
-		<div class="content-container" v-if="cardData" :class="{ isBright: isBright() }">
-			<div class="content-container" @click="onSetSportsEventData">
-				<div class="text-container">
-					<!-- 独赢 -->
-					<template v-if="cardType == `capot`">
-						<div v-if="market.marketStatus == 'running'">
-							<div class="capot_value" :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</div>
-							<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
-						</div>
-						<SvgIcon v-else class="sport_lock" iconName="sport_lock" :size="22" />
-					</template>
-					<!-- 让球 -->
-					<template v-else-if="cardType == `handicap`">
-						<div class="label">
-							<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
-						</div>
-						<div v-if="market.marketStatus == 'running'">
-							<div class="value" :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</div>
-							<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
-						</div>
-						<SvgIcon v-else class="sport_lock2" iconName="sport_lock" :size="20" />
-					</template>
-					<!-- 大小 -->
-					<template v-else-if="cardType == `magnitude`">
-						<div class="label">
-							<span>{{ cardData.keyName }}</span>
-							<span>{{ cardData?.point }}</span>
-						</div>
-						<div v-if="market.marketStatus == 'running'">
-							<div class="value" :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</div>
-							<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
-						</div>
-						<SvgIcon v-else class="sport_lock2" iconName="sport_lock" :size="20" />
-					</template>
+	<div class="market-content">
+		<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
+			<!-- 独赢 -->
+			<template v-if="cardType == `capot`">
+				<div class="label">{{ cardData?.keyName }}</div>
+				<!-- 状态正常 -->
+				<div class="value" v-if="market.marketStatus == 'running'">
+					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
+					<div class="arrow-icon">
+						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					</div>
 				</div>
-			</div>
+				<!-- 锁 -->
+				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
+			</template>
+
+			<!-- 独赢 -->
+			<template v-else-if="cardType == `handicap`">
+				<div class="label">
+					<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
+				</div>
+				<!-- 状态正常 -->
+				<div class="value" v-if="market.marketStatus == 'running'">
+					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
+					<div class="arrow-icon">
+						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					</div>
+				</div>
+				<!-- 锁 -->
+				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
+			</template>
+
+			<!-- 独赢 -->
+			<template v-else-if="cardType == `magnitude`">
+				<div class="label">
+					<span>{{ cardData.keyName }}</span>
+					<span>{{ cardData?.point }}</span>
+				</div>
+				<!-- 状态正常 -->
+				<div class="value" v-if="market.marketStatus == 'running'">
+					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
+					<div class="arrow-icon">
+						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					</div>
+				</div>
+				<!-- 锁 -->
+				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
+			</template>
 		</div>
-		<template v-else>
-			<i class="noData"></i>
-		</template>
+		<div v-else class="market-item">
+			<div class="noData">-</div>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { RiseOrFall } from "/@/components/Sport/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 
 const emit = defineEmits(["oddsChange"]);
@@ -141,40 +147,6 @@ const onSetSportsEventData = () => {
 	}
 };
 
-// /**
-//  * @description: 选中时高亮处理；
-//  * @param {*} paramsObj
-//  * @return {*}
-//  */
-// const onSetSportsEventData = () => {
-// 	const paramsObj = {
-// 		marketId: marketsMatchData(props.sportInfo.markets, props.betType).marketId,
-// 		selection: props.cardData,
-// 		data: props.sportInfo,
-// 		betType: 5,
-// 	};
-
-// 	//使用 marketId 拼接 selection的key
-// 	//还需要判断当前赛事是否选择了多个 多个无法同时选择的  可以使用 eventid作为key marketId + key 作为值 可行
-// 	const { data, marketId, selection, betType } = paramsObj;
-// 	//存储盘口唯一标识
-// 	if (isBright(data.eventId, marketId, selection)) {
-// 		// 删除Pinia数据
-// 		sportsBetEvent.removeEventCart(event);
-// 	} else {
-// 		sportsBetEvent.setMarketSelect(data.eventId, `${marketId}-${selection.key}`);
-// 		sportsBetEvent.setEventSelect(data.eventId, {
-// 			marketId: marketId,
-// 			betType: betType,
-// 			key: selection.key,
-// 		});
-// 	}
-// 	// 存储Pinia数据
-// 	sportsBetEvent.setSportsEventData(data);
-// 	//同步 新增或改变高亮状态
-// 	// emit("onIsBright", { marketId: marketId, selections: selection, data: data });
-// };
-
 /**
  * @description 判断当前盘口是否存在pinia中
  */
@@ -183,123 +155,82 @@ const isBright = () => {
 
 	return sportsBetEvent.getEventInfo[props.sportInfo.eventId]?.listKye == `${props?.market?.marketId}-${selection.key}`;
 };
-
-// /**
-//  * @description 判断当前盘口是否存在pinia中
-//  */
-// const isBright = (eventId, marketId, selection) => {
-// 	console.info("判断当前盘口是否存在pinia中", eventId, marketId, selection);
-
-// 	if (selection) {
-// 		try {
-// 			return marketsSelect.value[eventId] == `${marketId}-${selection.key}`;
-// 		} catch (error) {
-// 			return false;
-// 		}
-// 	} else {
-// 		return false;
-// 	}
-// };
 </script>
 
 <style scoped lang="scss">
-.oddsUp {
-	color: var(--Warn) !important;
-}
-
-.oddsDown {
-	color: var(--Theme) !important;
-}
-
-.card-container {
-	display: flex;
-	// justify-content: center;
-	align-items: center;
-	margin-top: 4px;
-	width: 264px;
-	height: 50px;
-	flex-shrink: 0;
-	border-radius: 4px;
+.market-content {
+	width: 100%;
+	height: 34px;
 	cursor: pointer;
-	user-select: none;
-	-webkit-user-drag: none;
-	overflow: hidden;
-	background: var(--Bg3);
-	&:hover {
-		background: var(--Line);
-	}
-
-	.content-container {
-		position: relative;
+	.market-item {
 		width: 100%;
 		height: 100%;
-		overflow: hidden;
 		display: flex;
 		align-items: center;
-		border-radius: 4px;
-
-		&.isBright {
-			background: var(--Bg5);
-		}
-	}
-
-	.text-container {
-		display: flex;
-		align-items: center;
-		flex: 1;
 		justify-content: space-between;
-		padding: 14px 21px;
-		.label {
-			color: var(--Text1);
+		padding: 7px 18px 7px 14px;
+		border-radius: 4px;
+		background: var(--Bg3);
+		box-sizing: border-box;
 
-			text-align: center;
+		.label {
+			max-width: calc(100% - 50px);
+			color: var(--Text1);
 			font-family: "PingFang SC";
 			font-size: 14px;
-			font-style: normal;
 			font-weight: 400;
-			line-height: normal;
-		}
-
-		.capot_value {
-			color: var(--Text_s);
-
-			font-family: "PingFang SC";
-			font-size: 16px;
-			font-style: normal;
-			font-weight: 400;
-			line-height: normal;
-			margin-left: 42%;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 		.value {
-			color: var(--Text_s);
-
+			width: 50px;
+			position: relative;
+			text-align: end;
+			color: var(--Text_a);
 			font-family: "PingFang SC";
 			font-size: 16px;
-			font-style: normal;
 			font-weight: 400;
-			line-height: normal;
+
+			.arrow-icon {
+				position: absolute;
+				top: 50%;
+				transform: translate(0px, -50%);
+				right: -16px;
+			}
+		}
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.05);
 		}
 
-		.sport_lock2 {
-			margin-left: 15px;
-			color: var(--icon);
+		.lock {
+			width: 16px;
+			height: 16px;
 		}
-		.sport_lock {
-			margin-left: 68px;
-			color: var(--icon);
+
+		.noData {
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			color: var(--Text1);
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-weight: 400;
 		}
 	}
 
-	.noData {
-		margin: 0 auto;
-		width: 14px;
-		height: 1px;
-
-		background: var(--Text1);
+	.isBright {
+		background: var(--Bg5) !important;
+		.label {
+			color: var(--Text_a);
+		}
 	}
 }
 
-.item:hover {
-	background: var(--Line);
+.oddsUp {
+	color: var(--Theme) !important;
+}
+.oddsDown {
+	color: var(--Success) !important;
 }
 </style>

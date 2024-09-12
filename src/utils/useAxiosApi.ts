@@ -89,7 +89,13 @@ instance.interceptors.response.use(
 		}
 		const res = response.data;
 		// 如果自定义代码不是 200，则判断为错误。
-
+		switch (res.code) {
+			// 登陆过期
+			case ResCode.LOGIN_EXPIRE:
+				const userStore = useUserStore();
+				userStore.logOut();
+				break;
+		}
 		if (res.code !== 200) {
 			if (res.type == "image/png") {
 				return res;

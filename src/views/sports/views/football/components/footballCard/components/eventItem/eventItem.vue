@@ -62,12 +62,16 @@ const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
 
+// 点击比分板
 const openPage = () => {
 	SportHotStore.setCurrentEvent(props.event);
 };
+
+// 点击视频源
 const toggleFullScreen = () => {
 	SportHotStore.setCurrentEvent(props.event);
 };
+
 const refreshPage = () => {
 	console.log("动画直播");
 };
@@ -122,6 +126,7 @@ const handleClick = (action: () => void) => {
 		display: flex;
 		gap: 4px;
 		padding: 8px 4px 8px 0px;
+		overflow: hidden;
 	}
 	.league-option {
 		width: 58px;
@@ -133,6 +138,7 @@ const handleClick = (action: () => void) => {
 		border-left: 1px solid var(--Line_2);
 		overflow: hidden;
 		.tooltip-container {
+			cursor: pointer;
 			.icon {
 				width: 23px;
 				height: 16px;

@@ -5,7 +5,8 @@
 			<Head />
 			<transition name="slide-fade">
 				<div class="mainArea">
-					<container />
+					<router-view />
+					<Footer v-if="route.meta.showFooter" />
 				</div>
 			</transition>
 		</div>
@@ -20,6 +21,9 @@ import left from "./components/left/left.vue";
 import container from "./components/container/index.vue";
 import { useMenuStore } from "/@/stores/modules/menu";
 import Modal from "/@/components/Modal/index.vue";
+import Footer from "./components/footer/index.vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 const MenuStore = useMenuStore();
 
 const collapse = computed(() => {
@@ -58,14 +62,15 @@ onUnmounted(() => {
 
 .container {
 	height: 100vh;
-	flex: 1;
+
 	background: var(--Bg);
-	// width: calc(100vw - 260px);
+	width: calc(100vw - 260px);
+
 	// margin-left: 260px;
 }
 .collapse {
 	.container {
-		// width: calc(100% - 64px);
+		width: calc(100vw - 64px);
 		// margin-left: 64px;
 	}
 }
@@ -75,7 +80,7 @@ onUnmounted(() => {
 	justify-content: center;
 	margin: 64px auto 0;
 	overflow-y: auto;
-	height: calc(100vh - 70px);
+	height: calc(100vh - 64px);
 }
 
 .mainArea::-webkit-scrollbar {

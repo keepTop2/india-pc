@@ -47,10 +47,10 @@ onMounted(() => {
 		setMarket();
 	});
 });
+
 /** 设置market */
 const setMarket = () => {
 	market.value = marketsMatchData(props.sportInfo.markets, props.betType, props.selectionsLength);
-	// console.log("market----------->", market);
 };
 
 /**
@@ -63,6 +63,7 @@ const oddsChange = (obj: any) => {
 
 <style scoped lang="scss">
 .marketColumn {
+	max-width: 130px;
 	flex: 1;
 	display: flex;
 	flex-direction: column;

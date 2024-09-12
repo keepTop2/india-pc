@@ -12,7 +12,6 @@ declare module 'vue' {
     CententItem: typeof import('./src/components/virtualScrollVirtualList/cententItem/cententItem.vue')['default']
     Dialog: typeof import('./src/components/Dialog/Dialog.vue')['default']
     DropdownSelect: typeof import('./src/components/DropdownSelect/index.vue')['default']
-    ElAffix: typeof import('element-plus/es')['ElAffix']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']

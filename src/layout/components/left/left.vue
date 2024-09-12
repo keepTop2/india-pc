@@ -45,14 +45,6 @@
 				</div>
 				<!-- 左侧底步功能区 -->
 				<div class="sidebar_bttom">
-					<!-- 帮助中心 -->
-					<div class="helpcenter_container" @click="to('/helpCenter')">
-						<svg-icon name="help_icon" size="17px" />
-						<span class="left_text1">
-							{{ $t(`layout['layout1']['帮助中心']`) }}
-						</span>
-					</div>
-
 					<!-- 推荐码 -->
 					<div class="referralcode_conatiner">
 						<div class="referralcode_row1 br_4">
@@ -60,6 +52,14 @@
 							<div class="referralcode_btn1 fz_14 br_4">{{ $t(`layout['layout1']['提交']`) }}</div>
 						</div>
 						<div class="referralcode_row2 fz_12 mt_4">{{ $t(`layout['layout1']['注:注册后24小时内有效']`) }}</div>
+					</div>
+
+					<!-- 帮助中心 -->
+					<div class="helpcenter_container" @click="to('/helpCenter')">
+						<svg-icon name="help_icon" size="17px" />
+						<span class="left_text1">
+							{{ $t(`layout['layout1']['帮助中心']`) }}
+						</span>
 					</div>
 					<!-- 白天黑夜  打开侧边栏状态-->
 					<div class="dayOrNight mt_12 mb_10" v-if="!collapse">
@@ -241,6 +241,9 @@ const changeCollpase = () => {
 	}
 
 	.sidebar_bttom {
+		position: absolute;
+		bottom: 0;
+		width: calc(100% - 16px);
 		background: var(--Bg1);
 		color: var(--Text1);
 
@@ -328,7 +331,6 @@ const changeCollpase = () => {
 
 	&.collapse {
 		width: 64px;
-		overflow-x: hidden;
 		.left_main_header {
 			.collapse_icon {
 				color: var(--Text_a);

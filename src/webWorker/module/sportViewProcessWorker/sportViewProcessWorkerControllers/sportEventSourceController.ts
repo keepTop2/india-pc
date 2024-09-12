@@ -1,5 +1,5 @@
 import { SportPushApi, WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
-import { SportEventSourceInstanceModel, OpenSportEventSourceParams, SportEventSourceResponse } from "/@/models/sportEventSourceModel";
+import { SportEventSourceInstanceModel, OpenSportEventSourceParams, SportEventSourceResponse } from "/@/views/sports/models/sportEventSourceModel";
 import qs from "qs";
 import { WebResponse } from "/@/models/commonInterface";
 import ResCode from "/@/utils/resCode";

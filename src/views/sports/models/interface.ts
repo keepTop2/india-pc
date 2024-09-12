@@ -1,6 +1,7 @@
 import { ServerData } from "/@/views/sports/models/commonInterface";
 
 export interface Sports {
+	gameCount?: boolean;
 	count?: number;
 	sportType: number;
 	liveGameCount: number;

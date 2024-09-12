@@ -20,68 +20,6 @@ const sportsRouterLeft = [
 			isServer: false,
 			iconCode: "ty_icon_sc",
 		},
-		children: [
-			{
-				path: "/sports/collect/1",
-				name: "collect_football_detail",
-				component: () => import("/@/views/sports/views/football/detail/detail.vue"),
-				meta: BaseEventDetailMate,
-			},
-			{
-				path: "/sports/collect/2",
-				name: "collect_basketball_detail",
-				component: () => import("/@/views/sports/views/basketball/detail/detail.vue"),
-				meta: BaseEventDetailMate,
-			},
-			{
-				path: "/sports/collect/3",
-				name: "collect_americanSoccer_detail",
-				component: () => import("/@/views/sports/views/americanSoccer/detail/detail.vue"),
-				meta: BaseEventDetailMate,
-			},
-			{
-				path: "/sports/collect/4",
-				name: "collect_iceHockey_detail",
-				component: () => import("/@/views/sports/views/iceHockey/detail/detail.vue"),
-				meta: BaseEventDetailMate,
-			},
-			{
-				path: "/sports/collect/5",
-				name: "collect_tennis_detail",
-				component: () => import("/@/views/sports/views/tennis/detail/detail.vue"),
-				meta: BaseEventDetailMate,
-			},
-			{
-				path: "/sports/collect/6",
-				name: "collect_volleyball_detail",
-				component: () => import("/@/views/sports/views/volleyball/detail/detail.vue"),
-				meta: BaseEventDetailMate,
-			},
-			{
-				path: "/sports/collect/7",
-				name: "collect_billiards_detail",
-				component: () => import("/@/views/sports/views/billiards/detail/detail.vue"),
-				meta: BaseEventDetailMate,
-			},
-			{
-				path: "/sports/collect/8",
-				name: "collect_baseball_detail",
-				component: () => import("/@/views/sports/views/baseball/detail/detail.vue"),
-				meta: BaseEventDetailMate,
-			},
-			{
-				path: "/sports/collect/9",
-				name: "collect_badminton_detail",
-				component: () => import("/@/views/sports/views/badminton/detail/detail.vue"),
-				meta: BaseEventDetailMate,
-			},
-			{
-				path: "/sports/collect/43",
-				name: "collect_eSports_detail",
-				component: () => import("/@/views/sports/views/eSports/detail/detail.vue"),
-				meta: BaseEventDetailMate,
-			},
-		],
 	},
 	{
 		path: "/sports/betRecord",

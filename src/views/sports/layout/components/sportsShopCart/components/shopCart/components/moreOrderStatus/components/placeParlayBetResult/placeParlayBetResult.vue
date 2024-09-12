@@ -5,26 +5,23 @@
 <template>
 	<div class="placeParlayBetResult" v-if="stake">
 		<!-- 赔率注单 -->
-		<div class="container">
+		<div class="cell">
 			<div class="left">
 				<span class="title">{{ comboTypeName }}</span>
 				<span>注单已确认</span>
 			</div>
 			<div class="right">
 				<span class="unitPrice">{{ Common.formatFloat(stake) }} </span>
-				<span class="right_buttom">x{{ comboInfo.betCount }} </span>
+				<span>x{{ comboInfo.betCount }} </span>
 			</div>
 		</div>
 		<!-- 可赢价格 -->
-		<div class="container">
+		<div class="cell">
 			<div class="left">
-				<span class="title">预计可赢:</span> <span>{{ Common.formatFloat(total) || "" }}</span>
-				<span>USD</span>
+				<span class="success">预计可赢:</span> <span>{{ Common.formatFloat(total) || "" }} USD</span>
 			</div>
 			<div class="right">
-				<span class="title">小计:</span>
-				<span>{{ subtotal }} </span>
-				<span>USD</span>
+				<span>小计: {{ subtotal }} USD</span>
 			</div>
 		</div>
 	</div>
@@ -143,58 +140,39 @@ const comboTypeName = computed(() => {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	margin: 8px 0;
-	padding: 10px 15px;
+	padding: 15px 15px 10px 15px;
 	box-sizing: border-box;
 	border-radius: 8px;
-	background: var(--Bg3);
+	background: var(--Bg4);
 
-	.container {
+	.cell {
 		display: flex;
-		flex-direction: row;
+		align-items: center;
 		justify-content: space-between;
-	}
 
-	& > .container:first-child {
-		& > div {
-			display: flex;
-			align-items: center;
-			gap: 5px;
-
-			& > span:first-child {
-				color: var(--Text_s);
-			}
-
-			& > span:last-child {
-				font-size: 14px;
-				color: var(--Text1);
-			}
-		}
-	}
-
-	& > .container:last-child {
-		.left {
-			font-size: 15px;
-			display: flex;
-			align-items: center;
-			gap: 5px;
-			color: var(--Theme);
-		}
-
+		.left,
 		.right {
-			font-size: 14px;
-			display: flex;
-			align-items: center;
-			gap: 5px;
 			color: var(--Text1);
-			.right_buttom {
-				color: var(--Text1);
-				text-align: right;
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-weight: 400;
+			line-height: normal;
+			.title {
+				color: var(--Text_s);
 				font-family: "PingFang SC";
-				font-size: 14px;
-				font-style: normal;
-				font-weight: 400;
-				line-height: normal;
+				font-size: 16px;
+				font-weight: 500;
+				margin-right: 6px;
+			}
+			.unitPrice {
+				margin-right: 6px;
+				color: var(--Text_s);
+				font-family: "PingFang SC";
+				font-size: 20px;
+				font-weight: 500;
+			}
+			.success {
+				color: var(--Success);
 			}
 		}
 	}

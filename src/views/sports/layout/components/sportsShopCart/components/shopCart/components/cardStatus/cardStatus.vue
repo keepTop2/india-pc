@@ -1,24 +1,19 @@
 <template>
 	<div class="card-status-container">
-		<SvgIcon iconName="close2" size="20" class="icon close-bunch" @click="click_clear" />
-
 		<div class="status">
-			<SvgIcon iconName="success" size="30" v-if="betStatus == 0" />
-			<SvgIcon iconName="fail" size="30" v-else />
-			<span v-if="betStatus == 0" class="success">投注成功</span>
-			<span v-else class="fail">投注失败</span>
+			<template v-if="betStatus == 0">
+				<span class="icon"><svg-icon name="sports-success" size="22px"></svg-icon></span>
+				<span class="success">投注成功</span>
+			</template>
+			<template v-else>
+				<span class="icon"><svg-icon name="sports-error" size="22px"></svg-icon></span>
+				<span class="fail">投注失败</span>
+			</template>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-
-import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
-const ShopCatControlStore = useShopCatControlStore();
-//  betStatus 注单状态
-// 0 ：下注成功 ；1 ：下注失败
-
 const props = withDefaults(
 	defineProps<{
 		/** 注单状态  0 ：下注成功 ；1 ：下注失败  */
@@ -28,55 +23,37 @@ const props = withDefaults(
 		betStatus: 0,
 	}
 );
-
-const emits = defineEmits(["changeOrderStatus"]);
-
-const sportsBetEvent = useSportsBetEventStore();
-/**
- * @description 头部清空icon 事件
- */
-const click_clear = () => {
-	sportsBetEvent.clearShopCart();
-	ShopCatControlStore.setShopCatShow(false);
-	emits("changeOrderStatus", false);
-};
 </script>
 
 <style scoped lang="scss">
 .card-status-container {
-	position: relative;
-
-	.header-single {
-		width: 100%;
-		height: 40px;
-		border-bottom: 1px solid #373a40;
-		text-align: right;
-		margin-bottom: 20px;
-	}
-
-	.close-bunch {
-		position: absolute;
-		right: 0;
-		top: 15px;
-		cursor: pointer;
-		z-index: 999;
-	}
-
 	.status {
-		width: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		gap: 10px;
-		position: relative;
+		gap: 12px;
+
+		.icon {
+			display: inline-block;
+			width: 22px;
+			height: 22px;
+		}
 
 		.success {
-			color: var(--Theme);
+			color: var(--Success);
+			font-family: "PingFang SC";
+			font-size: 16px;
+			font-weight: 500;
+			line-height: 22px;
 		}
 
 		.fail {
 			color: var(--Warn);
+			font-family: "PingFang SC";
+			font-size: 16px;
+			font-weight: 500;
+			line-height: 22px;
 		}
 	}
 

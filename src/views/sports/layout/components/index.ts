@@ -1,20 +1,8 @@
-/*
- * @Author: WangMingxin
- * @Description: 体育 - 所有公共及布局组件
- */
 import HeaderMenuNav from "./headerMenuNav/headerMenuNav.vue";
 import HeaderMenuCondition from "./headerMenuCondition/headerMenuCondition.vue";
 import HeaderNotify from "./headerNotify/headerNotify.vue";
-
 import SportsShopCart from "./sportsShopCart/sportsShopCart.vue";
-import SportRight from "./sportRight/sportRight.vue";
-
-import { defineAsyncComponent } from "vue";
-// const HeaderMenuNav = defineAsyncComponent(() => import("/@/views/sports/layout/components/headerMenuNav/headerMenuNav.vue"));
-// const HeaderMenuCondition = defineAsyncComponent(() => import("/@/views/sports/layout/components/headerMenuCondition/headerMenuCondition.vue"));
-// const HeaderNotify = defineAsyncComponent(() => import("/@/views/sports/layout/components/headerNotify/headerNotify.vue"));
-// const SportsShopCart = defineAsyncComponent(() => import("/@/views/sports/layout/components/sportsShopCart/sportsShopCart.vue"));
-// const SportRight = defineAsyncComponent(() => import("/@/views/sports/layout/components/sportRight/sportRight.vue"));
+import Sidebar from "./sidebar/sidebar.vue";
 
 export {
 	/** 体育球内导航*/
@@ -26,5 +14,5 @@ export {
 	/** 购物车 */
 	SportsShopCart,
 	/**体育-右侧-热门 */
-	SportRight,
+	Sidebar,
 };

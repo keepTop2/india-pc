@@ -215,14 +215,13 @@ const sportsEventDetailPush = {
 	/**
 	 * @description 联赛详情推送 传入 leagueId
 	 */
-	openEvents: (eventId) => {
+	openEvents: (leagueid) => {
 		return {
 			sportPushApi: SportPushApi.GetEvents_push,
 			webToPushApi: WebToPushApi.sportsEventDetail,
 			params: {
-				// query: `$filter=leagueid eq ${leagueid} &includeMarkets=none`,
-				query: `$filter=eventId eq ${eventId} &includeMarkets=none`,
-				// query: `$filter=eventId in (${eventId}) &includeMarkets=none`,
+				query: `$filter=leagueid eq ${leagueid}`,
+				includeMarkets: "none",
 			},
 		};
 	},

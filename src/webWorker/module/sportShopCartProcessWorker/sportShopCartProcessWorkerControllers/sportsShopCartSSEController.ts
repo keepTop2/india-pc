@@ -1,6 +1,6 @@
 import qs from "qs";
 import { WebResponse } from "/@/models/commonInterface";
-import { OpenSportEventSourceParams, SportEventSourceResponse } from "/@/models/sportEventSourceModel";
+import { OpenSportEventSourceParams, SportEventSourceResponse } from "/@/views/sports/models/sportEventSourceModel";
 import ResCode from "/@/utils/resCode";
 import SportsShopCartSSEServices from "/@/webWorker/module/sportShopCartProcessWorker/services/sportsShopCartSSEServices";
 export default (function () {

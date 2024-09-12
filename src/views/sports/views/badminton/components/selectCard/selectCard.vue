@@ -1,19 +1,13 @@
-<!--
- * @Author: Relax
- * @Description: 联赛数据统计筛选
--->
 <template>
-	<div>
-		<div class="box_select">
-			<div class="select_left">
-				<!-- <SvgIcon class="icon" iconName="arrow" :size="18" /> -->
-				<div>
-					{{ getDisplayText() }} <span>({{ teamData.length }})</span>
-				</div>
+	<div class="box_select">
+		<div class="select_left">
+			<div class="title">
+				{{ getDisplayText() }} <span>({{ teamData.length }})</span>
 			</div>
-			<div class="select_right" v-if="sportsActive !== 'champion'">
-				<SieveOfCases :options="teamData" />
-			</div>
+			<SieveOfCases v-if="sportsActive !== 'champion'" :options="teamData" />
+		</div>
+		<div class="select_right">
+			<span class="icon"><svg-icon name="sports-arrow_big" size="20px"></svg-icon></span>
 		</div>
 	</div>
 </template>

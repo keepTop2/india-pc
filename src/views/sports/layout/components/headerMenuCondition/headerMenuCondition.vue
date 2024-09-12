@@ -1,7 +1,4 @@
 <!--
- * @Author: WangMingxin
- * @Description: 体育-头部-条件区分
- * @Component: 头部菜单条件组件
  * @Features:
  *   - 左侧分类选择（今日、早盘、冠军）
  *   - 左侧开关（未开赛/滚球）
@@ -36,13 +33,18 @@
 			<!-- 刷新按钮 -->
 			<span class="icon" @click="onRefresh"><svg-icon name="sports-screening" size="20px"></svg-icon></span>
 			<!-- 展开/收起按钮 -->
-			<span class="icon" @click="onExpandAndCollapse"><svg-icon name="sports-tutorial" size="20px"></svg-icon></span>
+			<span class="icon" @click="openBettingRules"><svg-icon name="sports-tutorial" size="20px"></svg-icon></span>
 		</div>
+
+		<!-- 教程 -->
+		<Modal v-if="showBettingRules" :before-close="closeBettingRules" @close="closeBettingRules">
+			<component :is="bettingRulesModal" />
+		</Modal>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from "vue";
+import { computed, defineAsyncComponent, DefineComponent, markRaw, onMounted, reactive, Ref, ref, watch } from "vue";
 import moment from "moment";
 import { wButton, wSwitch } from "./components";
 
@@ -55,7 +57,7 @@ import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSe
 import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-
+import Modal from "../Modal/index.vue";
 // 初始化所需的store
 const SportAttentionStore = useSportAttentionStore();
 const router = useRouter();
@@ -65,6 +67,8 @@ const SportSortStore = useSportSortStore();
 const popularLeague = usePopularLeague();
 const SportMorningTradingStore = useSportMorningTradingStore();
 
+const bettingRulesModal: any = ref(null);
+const showBettingRules = ref(false);
 // 展示热门联赛
 popularLeague.showPopularLeague();
 
@@ -126,6 +130,8 @@ const isShowTime = computed(() => {
 
 // 组件挂载后的初始化操作
 onMounted(() => {
+	console.log("???????????????????????????????????????????????????????????");
+
 	setDefaultActive();
 	wSwitchSelectRight(!SportSortStore.getIsActiveHot && "on", true);
 });
@@ -185,19 +191,27 @@ const switchObjRight = ref({
 	off: { label: "热门", type: "hot", active: false },
 });
 
+// console.log("switchObjRight ----  开始", switchObjRight.value);
+
 // 监听热门联赛列表变化
-watch(
+/*watch(
 	() => SportSortStore.getHotLeagueList,
 	(newValue, oldValue) => {
-		if (!newValue.length) {
+		console.log("newValue------???????", newValue.length);
+
+		if (newValue.length === 0) {
 			switchObjRight.value.on.active = true;
 			switchObjRight.value.off.active = false;
 		} else {
+			console.log("？？");
+
 			switchObjRight.value.on.active = false;
 			switchObjRight.value.off.active = true;
 		}
+
+		console.log("switchObjRight ----- 监听结束", switchObjRight.value);
 	}
-);
+);*/
 
 /**
  * @description: 右侧热门时间变动处理
@@ -302,6 +316,14 @@ const onExpandAndCollapse = () => {
 		SportAttentionStore.setIsFold(true);
 	}
 	pubSub.publish(pubSub.PubSubEvents.SportEvents.onExpandAngCollapse.eventName, !isFold.value);
+};
+
+const openBettingRules = () => {
+	bettingRulesModal.value = markRaw(defineAsyncComponent(() => import(`../bettingRules/index.vue`)));
+	showBettingRules.value = true;
+};
+const closeBettingRules = () => {
+	showBettingRules.value = false;
 };
 </script>
 

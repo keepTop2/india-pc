@@ -7,7 +7,7 @@
 		<div class="singlePass_top">
 			<div>
 				<span class="value">{{ comboInfo.comboTypeName }}</span>
-				<span class="value ml_12">@{{ Common.formatFloat(comboInfo.payoutRate) }}</span>
+				<span class="value ml_6">@{{ Common.formatFloat(comboInfo.payoutRate) }}</span>
 			</div>
 			<el-input
 				v-model="stake"
@@ -196,15 +196,21 @@ defineExpose({ params, total, subtotal });
 .singlePass {
 	padding: 6px 15px;
 	border-radius: 8px;
-	margin: 5px 0;
 	display: flex;
 	flex-direction: column;
-	background: var(--Bg3);
+	background: var(--Bg4);
 
 	.singlePass_top {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
+		.value {
+			color: var(--Text_s);
+			font-family: "PingFang SC";
+			font-size: 16px;
+			font-weight: 500;
+		}
 	}
 	.singlePass_buttom {
 		margin-top: 6px;
@@ -212,8 +218,9 @@ defineExpose({ params, total, subtotal });
 		flex-direction: column;
 		align-items: end;
 		span {
-			font-size: 14px;
 			color: var(--Text1);
+			font-size: 14px;
+			font-weight: 400;
 		}
 	}
 
@@ -222,19 +229,29 @@ defineExpose({ params, total, subtotal });
 		height: 50px;
 		padding: 19px 10px;
 		border-radius: 8px;
-		background: var(--Bg2);
+		background: var(--Bg4);
 
 		:deep() {
 			.el-input__wrapper {
 				box-shadow: none;
 				border: none;
-				padding: 0;
-				background: var(--Bg2);
+				background: var(--Bg4);
+
+				.el-input__inner {
+					color: var(--Text1);
+					font-size: 16px;
+					font-weight: 400;
+				}
 
 				input {
 					&::placeholder {
 						color: var(--Text2);
 					}
+				}
+				.el-input__suffix {
+					color: var(--Text1);
+					font-size: 16px;
+					font-weight: 400;
 				}
 			}
 		}

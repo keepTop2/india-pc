@@ -1,0 +1,95 @@
+<!-- 侧边栏 -->
+<template>
+	<div class="sidebar">
+		<!-- 头部 -->
+		<div class="header">
+			<div class="left">
+				<div class="icon"><svg-icon name="sports-tv_icon_on" width="23px" height="16px"></svg-icon></div>
+			</div>
+			<div class="center">
+				<div class="icon"><svg-icon name="sports-score_icon" width="23px" height="16px"></svg-icon></div>
+				<div class="icon"><svg-icon name="sports-live_icon" width="23px" height="16px"></svg-icon></div>
+			</div>
+			<div class="right">
+				<div class="icon2"><svg-icon name="sports-quanping" size="16px"></svg-icon></div>
+				<div class="icon2"><svg-icon name="sports-shuaxin" size="16px"></svg-icon></div>
+			</div>
+		</div>
+
+		<!-- 赛事数据 -->
+		<div class="events-content">
+			<div class="events-header">
+				<div class="icon"></div>
+				<div class="team-name">
+					<span></span>
+					<span>VS</span>
+					<span></span>
+				</div>
+			</div>
+			<div class="events-container">
+				<!-- 动态记分板组件 -->
+			</div>
+		</div>
+
+		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
+		<div class="markets-list"></div>
+	</div>
+</template>
+
+<script setup lang="ts">
+import football from "./components/scoreboard/football/football.vue";
+import baseball from "./components/scoreboard/baseball/baseball.vue";
+import americanSoccer from "./components/scoreboard/americanSoccer/americanSoccer.vue";
+import iceHockey from "./components/scoreboard/iceHockey/iceHockey.vue";
+import tennis from "./components/scoreboard/tennis/tennis.vue";
+import volleyball from "./components/scoreboard/volleyball/volleyball.vue";
+import billiards from "./components/scoreboard/billiards/billiards.vue";
+import baseBall from "./components/scoreboard/baseball/baseball.vue";
+import badminton from "./components/scoreboard/badminton/badminton.vue";
+import eSports from "./components/scoreboard/eSports/eSports.vue";
+</script>
+
+<style scoped lang="scss">
+.sidebar {
+	width: 100%;
+
+	background-color: var(--Bg1);
+	border-radius: 8px;
+	.header {
+		width: 100%;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0px 24px;
+		.center {
+			display: flex;
+			gap: 24px;
+		}
+		.right {
+			display: flex;
+			gap: 14px;
+		}
+
+		.icon {
+			width: 24px;
+			height: 16px;
+		}
+		.icon2 {
+			width: 16px;
+			height: 16px;
+		}
+	}
+	.events-content {
+		.events-header {
+			.icon {
+			}
+			.team-name {
+			}
+		}
+
+		.events-container {
+		}
+	}
+}
+</style>
