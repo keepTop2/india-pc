@@ -147,27 +147,14 @@ export default function useSportPubSubEvents() {
 
 	//收到线程处理好的数据
 	const workerToviewSportProcess = <T, T2>(event: WorkerTransfer<T, T2>) => {
-		console.warn("第九步 视图收到线程管理器发送的数据", event);
+		// console.log("第九步 视图收到线程管理器发送的数据", event);
 		//体育视图处理线程
 		if (event.workerName == WorkerName.sportViewProcessWorker) {
 			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;
-			// console.log(processData, "视图收到线程处理好的数据");
 			//体育视图处理线程 eventSource 指令
 			if (processData.commandType == SportViewProcessWorkerCommandType.sportEventSource) {
-				// if (processData.data.sportPushApi != SportPushApi.GetSports_push) {
-				//冠军赋值单独赋值
-				// if (processData.data.webToPushApi == WebToPushApi.eventsChampion) {
+				// 派发到 viewSportPubSubEventData 数据中心
 				viewSportPubSubEventData.setSportData(processData.data.state.viewSportData);
-				// }
-				// viewSportPubSubEventData.setSportData(processData.data.state.viewSportData);
-				// pubsub.publish(pubsub.PubSubEvents.SportEvents.sportsToChildren.eventName, viewSportPubSubEventData);
-				// pubsub.publish(pubsub.PubSubEvents.SportEvents.childrenViewChange.eventName, state);
-				// }
-				//球类赋值
-				// 	else {
-				// 		console.log("球类赋值");
-				// 		viewSportPubSubEventData.setSportData(processData.data.state.viewSportData);
-				// 	}
 			}
 			// 体育视图处理线程 赔率变更 指令
 			else if (processData.commandType == SportViewProcessWorkerCommandType.sportOddsChange) {

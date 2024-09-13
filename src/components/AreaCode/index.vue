@@ -16,12 +16,14 @@
 			<ul class="options-list">
 				<li
 					v-for="option in filteredOptions"
-					:key="option.code"
+					:key="option.areaCode"
 					@click="selectOption(option)"
 					class="option-item flex_space-between fs_12"
-					:class="option.code == selectedOption?.code ? 'active' : ''"
+					:class="option.areaCode == selectedOption?.areaCode ? 'active' : ''"
 				>
-					<span>{{ option.label }}</span>
+					<span>	<span v-if='option.icon'>
+						<img :src="option.icon" alt="">
+					</span>{{ option.countryName }}</span>
 					<span>+{{ option.areaCode }}</span>
 				</li>
 				<li v-if="filteredOptions.length === 0" class="no-results">{{ $t(`login['没有数据']`)  }}</li>
@@ -34,9 +36,12 @@
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 
 interface Option {
-	code: string;
-	label: string;
-	areaCode: string;
+  areaCode: string,
+  countryName:  string,
+  countryCode: string,
+  icon:string,
+	maxLength: string,
+	minLength: string,
 }
 
 const props = defineProps({
@@ -46,6 +51,13 @@ const props = defineProps({
 	options: {
 		type: Array<Option>,
 		default:[]
+	},
+	verifyType: {
+		type: Number,
+		default:1
+	},
+	areaCode: {
+		type: String,
 	}
 })
 const emit = defineEmits<{
@@ -84,8 +96,10 @@ const onInput = (e: any) => {
 	emit("update:modelValue", {phone:e.target.value});
 }
 const filteredOptions = computed(() => {
+	console.log(props.options);
+	
 	return props.options.filter(
-		(option:any) => option.code.toLowerCase().includes(searchQuery.value?.toLowerCase()) || option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase())
+		(option:any) => option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase()) || option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase())
 	);
 });
 

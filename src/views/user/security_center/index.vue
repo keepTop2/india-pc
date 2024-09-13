@@ -5,35 +5,93 @@
 			<span>安全中心</span>
 		</div>
 		<div class="content">
-			<div>
+			<div @click="modifyHandle('password')">
 				<span>登陆密码</span>
-				<span>
-					<svg-icon name="arrow_right" size="14px" />
-				</span>
+				<span><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
-			<div>
+			<div @click="modifyHandle('phone')">
 				<span>手机号</span>
-				<span>
-					<svg-icon name="arrow_right" size="14px" />
+				<span v-if="userGlobalSetInfo.phone">
+					<span class="info">
+						<span class="mr_8">+{{ userGlobalSetInfo.areaCode }}</span> {{ userGlobalSetInfo.phone }}
+					</span>
+					<span class="modifyBtn">修改</span>
 				</span>
+				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
-			<div>
+			<div @click="modifyHandle('email')">
 				<span>电子邮箱</span>
-				<span>
-					<svg-icon name="arrow_right" size="14px" />
+				<span v-if="userGlobalSetInfo.email">
+					<span class="info"> {{ userGlobalSetInfo.email }} </span>
+					<span class="modifyBtn">修改</span>
 				</span>
+				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
-			<div>
+			<div @click="modifyHandle('withdrawPwd')">
 				<span>交易密码</span>
-				<span>
-					<svg-icon name="arrow_right" size="14px" />
+				<span v-if="userGlobalSetInfo.isSetPwd">
+					<span class="modifyBtn">修改</span>
 				</span>
+				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed, onMounted, reactive, Ref, ref } from "vue";
+import { useUserStore } from "/@/stores/modules/user";
+import { userApi } from "/@/api/user";
+import eventBus from "/@/utils/eventBus";
+
+interface userGlobalSetInfoType {
+	areaCode: string | null;
+	email: string | null;
+	isSetPwd: Boolean;
+	nickName: string | null;
+	phone: string | null;
+	userAccount: string | null;
+}
+const userStore = useUserStore();
+const userGlobalSetInfo: userGlobalSetInfoType = reactive({
+	areaCode: null,
+	email: null,
+	isSetPwd: false,
+	nickName: null,
+	phone: null,
+	userAccount: null,
+});
+
+onMounted(() => {
+	getUserGlobalSetInfo();
+	eventBus.on("hide-modal", () => {
+		getUserGlobalSetInfo();
+	});
+});
+const getUserGlobalSetInfo = () => {
+	userApi.getUserGlobalSetInfo().then((res) => {
+		userStore.setUserGlobalSetInfo(res.data);
+		Object.assign(userGlobalSetInfo, res.data);
+	});
+};
+
+const modifyHandle = (type: string) => {
+	switch (type) {
+		case "password":
+			eventBus.emit("show-modal", "ChangePassword");
+			break;
+		case "phone":
+			eventBus.emit("show-modal", "setPhone");
+			break;
+		case "email":
+			eventBus.emit("show-modal", "setEmail");
+			break;
+		case "withdrawPwd":
+			eventBus.emit("show-modal", "setWithdrawPwd");
+			break;
+	}
+};
+</script>
 
 <style scoped lang="scss">
 .security_center {
@@ -66,6 +124,19 @@
 		> div:hover {
 			background: rgba(0, 0, 0, 0.05);
 		}
+		.modifyBtn {
+			background: var(--Theme);
+			font-size: 16px;
+			border-radius: 4px;
+			color: var(--Text_a);
+			padding: 5px 30px;
+			margin-left: 16px;
+		}
 	}
+}
+
+.bounce-in {
+	transform: translateY(100%);
+	animation: bounceIn 1s forwards;
 }
 </style>

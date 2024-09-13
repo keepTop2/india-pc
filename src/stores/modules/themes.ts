@@ -35,7 +35,7 @@ export const useThemesStore = defineStore("Themes", {
 		 * @deprecated 全局主题切换
 		 * @param str
 		 */
-		setTheme(str: ThemeKey): void {
+		setTheme(str: ThemeKey) {
 			this.themeName = str || "light";
 			localStorage.setItem("Themes", str);
 			if (str === "light") {

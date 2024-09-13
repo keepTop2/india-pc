@@ -3,32 +3,39 @@
 		<div class="scoreboard" :class="'small'">
 			<div class="scoreboard-center">
 				<div class="header cell">
-					<div class="label">上半场</div>
+					<div class="label">{{ getEventsTitle(eventsInfo) }}</div>
 					<div class="value">
-						<div class="icon" v-for="item in scoreboardData">
-							<svg-icon :name="item.icon" size="20px"></svg-icon>
-						</div>
+						<div class="icon"><svg-icon name="sports-sidebar-football-red_Card" size="20px"></svg-icon></div>
+						<div class="icon"><svg-icon name="sports-sidebar-football-yellow_card" size="20px"></svg-icon></div>
+						<div class="icon"><svg-icon name="sports-sidebar-football-half_time" size="20px"></svg-icon></div>
+						<div class="icon"><svg-icon name="sports-sidebar-football-full_time" size="20px"></svg-icon></div>
 					</div>
 				</div>
 				<!-- 主队 -->
 				<div class="row cell">
 					<div class="label">
-						<div class="icon"></div>
-						<div class="name">川崎前锋</div>
+						<div class="icon"><img :src="eventsInfo?.teamInfo?.homeIconUrl" alt="" /></div>
+						<div class="name">{{ eventsInfo?.teamInfo?.homeName }}</div>
 					</div>
 					<div class="value">
-						<div class="num" v-for="item in scoreboardData">{{ item.value1 }}</div>
+						<div class="num">{{ eventsInfo?.soccerInfo?.homeRedCard }}</div>
+						<div class="num">{{ eventsInfo?.soccerInfo?.homeYellowCard }}</div>
+						<div class="num">{{ 0 }}</div>
+						<div class="num">{{ eventsInfo?.gameInfo?.liveHomeScore }}</div>
 					</div>
 				</div>
 				<div class="line"></div>
 				<!-- 客队 -->
 				<div class="row cell">
 					<div class="label">
-						<div class="icon"></div>
-						<div class="name">北海道札幌</div>
+						<div class="icon"><img :src="eventsInfo?.teamInfo?.awayIconUrl" alt="" /></div>
+						<div class="name">{{ eventsInfo?.teamInfo?.awayName }}</div>
 					</div>
 					<div class="value">
-						<div class="num" v-for="item in scoreboardData">{{ item.value1 }}</div>
+						<div class="num">{{ eventsInfo?.soccerInfo?.awayRedCard }}</div>
+						<div class="num">{{ eventsInfo?.soccerInfo?.awayYellowCard }}</div>
+						<div class="num">{{ 0 }}</div>
+						<div class="num">{{ eventsInfo?.gameInfo?.liveAwayScore }}</div>
 					</div>
 				</div>
 			</div>
@@ -36,44 +43,44 @@
 		<div class="scoreboard-footer">
 			<div class="team team1">
 				<div class="team-info">
-					<div class="icon"></div>
-					<div class="name">川崎前锋</div>
+					<div class="icon"><img :src="eventsInfo?.teamInfo?.homeIconUrl" alt="" /></div>
+					<div class="name">{{ eventsInfo?.teamInfo?.homeName }}</div>
 				</div>
 				<div class="foul-info">
 					<div class="red">
 						<span class="icon"> <svg-icon name="sports-sidebar-football-red_Card" size="16px"></svg-icon></span>
-						<span class="value">1</span>
+						<span class="value">{{ eventsInfo?.soccerInfo?.homeRedCard }}</span>
 					</div>
 					<div class="yellow">
 						<span class="icon"> <svg-icon name="sports-sidebar-football-yellow_card" size="16px"></svg-icon></span>
-						<span class="value">1</span>
+						<span class="value">{{ eventsInfo?.soccerInfo?.homeYellowCard }}</span>
 					</div>
 				</div>
 			</div>
 			<div class="event-info">
 				<div class="date">
-					<span>下半场</span>
-					<span class="red">89:26</span>
+					<span class="red">{{ getEventsTitle(eventsInfo) }}</span>
+					<!-- <span class="red">89:26</span> -->
 				</div>
 				<div class="score">
-					<div class="value">3</div>
+					<div class="value">{{ eventsInfo?.gameInfo?.liveHomeScore }}</div>
 					<i></i>
-					<div class="value">3</div>
+					<div class="value">{{ eventsInfo?.gameInfo?.liveAwayScore }}</div>
 				</div>
 			</div>
 			<div class="team team2">
 				<div class="team-info">
-					<div class="name">川崎前锋</div>
-					<div class="icon"></div>
+					<div class="name">{{ eventsInfo?.teamInfo?.awayName }}</div>
+					<div class="icon"><img :src="eventsInfo?.teamInfo?.awayIconUrl" alt="" /></div>
 				</div>
 				<div class="foul-info">
 					<div class="yellow">
 						<span class="icon"> <svg-icon name="sports-sidebar-football-yellow_card" size="16px"></svg-icon></span>
-						<span class="value">1</span>
+						<span class="value">{{ eventsInfo?.soccerInfo?.awayYellowCard }}</span>
 					</div>
 					<div class="red">
 						<span class="icon"> <svg-icon name="sports-sidebar-football-red_Card" size="16px"></svg-icon></span>
-						<span class="value">1</span>
+						<span class="value">{{ eventsInfo?.soccerInfo?.awayRedCard }}</span>
 					</div>
 				</div>
 			</div>
@@ -82,32 +89,16 @@
 </template>
 
 <script setup lang="ts">
-const scoreboardData = [
-	// 红牌
-	{
-		icon: "sports-sidebar-football-red_Card",
-		value1: 0,
-		value2: 0,
-	},
-	// 黄牌
-	{
-		icon: "sports-sidebar-football-yellow_card",
-		value1: 0,
-		value2: 0,
-	},
-	// 半场
-	{
-		icon: "sports-sidebar-football-half_time",
-		value1: 0,
-		value2: 0,
-	},
-	// 全场
-	{
-		icon: "sports-sidebar-football-full_time",
-		value1: 0,
-		value2: 0,
-	},
-];
+import { SportsRootObject } from "/@/views/sports/models/interface";
+import SportsCommonFn from "/@/views/sports/utils/common";
+const { getEventsTitle } = SportsCommonFn;
+
+const props = withDefaults(
+	defineProps<{
+		eventsInfo: SportsRootObject;
+	}>(),
+	{}
+);
 </script>
 
 <style scoped lang="scss">
@@ -153,6 +144,10 @@ const scoreboardData = [
 					.icon {
 						width: 20px;
 						height: 20px;
+						img {
+							width: 100%;
+							height: 100%;
+						}
 					}
 					.name {
 						color: var(--Text_s);
@@ -220,6 +215,10 @@ const scoreboardData = [
 				.icon {
 					width: 20px;
 					height: 20px;
+					img {
+						width: 100%;
+						height: 100%;
+					}
 				}
 				.name {
 					color: var(--Text1);

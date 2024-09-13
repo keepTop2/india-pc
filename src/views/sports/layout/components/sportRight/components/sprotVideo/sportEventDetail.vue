@@ -107,7 +107,7 @@ const computedHasSportInfo = computed(() => !isEmpty(props.sportInfo));
 const sportIsRunning = computed(() => {
 	if (props.sportInfo.eventStatus === SportEventStatusEnum.Running) {
 		// 已开赛
-		return SportsCommonFn.isShowScore(props.sportInfo.globalShowTime);
+		return SportsCommonFn.isStartMatch(props.sportInfo.globalShowTime);
 	}
 	return false;
 });

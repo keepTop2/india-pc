@@ -21,6 +21,9 @@ interface StoreUser {
 	currencyList: [];
 	userInfo: any;
 	loginInfo: any;
+	userGlobalSetInfo: any;
+	token: string;
+	registerModalInfo: any;
 }
 
 export const useUserStore = defineStore("User", {
@@ -31,6 +34,9 @@ export const useUserStore = defineStore("User", {
 			currencyList: [],
 			userInfo: JSON.parse(localStorage.getItem("userInfo") || "{}"),
 			loginInfo: null,
+			userGlobalSetInfo: {},
+			token: "",
+			registerModalInfo: {},
 		};
 	},
 	getters: {
@@ -53,6 +59,12 @@ export const useUserStore = defineStore("User", {
 			if (!this.loginInfo) return null;
 			const decryptedInfo = EncryptionFn.decrypt(this.loginInfo);
 			return decryptedInfo;
+		},
+		getUserGlobalSetInfo(): any {
+			return this.userGlobalSetInfo;
+		},
+		getRegisterModalInfo(): any {
+			return this.registerModalInfo;
 		},
 	},
 
@@ -79,8 +91,13 @@ export const useUserStore = defineStore("User", {
 				this.currencyList = data.currencyEnums;
 			}
 		},
-
-		setUserInfo(info: Object) {
+		setUserGlobalSetInfo(info: Object) {
+			this.userGlobalSetInfo = info;
+		},
+		setRegisterModalInfo(info: Object) {
+			this.registerModalInfo = info;
+		},
+		setUserInfo(info: any) {
 			this.token = info.token;
 			Object.assign(this.userInfo, info);
 		},

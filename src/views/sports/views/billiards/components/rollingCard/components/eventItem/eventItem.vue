@@ -111,7 +111,7 @@ const livePeriod = computed(() => {
 	if (eventStatus == "postponed") {
 		return "比赛推迟";
 	}
-	if (SportsCommonFn.isShowScore(globalShowTime)) {
+	if (SportsCommonFn.isStartMatch(globalShowTime)) {
 		if (parentId > 0) {
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
 		} else {

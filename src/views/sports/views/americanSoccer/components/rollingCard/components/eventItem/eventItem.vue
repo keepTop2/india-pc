@@ -19,7 +19,7 @@
 					<!-- 塞节时间 -->
 					<div class="date">
 						<span>{{ livePeriod }}</span>
-						<span v-if="!SportsCommonFn.isShowScore(event.globalShowTime)">{{ formattedGameTime }}</span>
+						<span v-if="!SportsCommonFn.isStartMatch(event.globalShowTime)">{{ formattedGameTime }}</span>
 					</div>
 					<div class="info-list">
 						<!-- 收藏 -->
@@ -109,7 +109,7 @@ const livePeriod = computed(() => {
 	if (eventStatus == "postponed") {
 		return "比赛推迟";
 	}
-	if (SportsCommonFn.isShowScore(globalShowTime)) {
+	if (SportsCommonFn.isStartMatch(globalShowTime)) {
 		if (livePeriod == 0 && !delayLive && isHt) {
 			return "中场休息";
 		}
