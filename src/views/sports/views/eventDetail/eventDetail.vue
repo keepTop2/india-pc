@@ -16,26 +16,7 @@
 			></HeaderDetail>
 			<div class="competition_two">
 				<div class="box_team" v-if="eventDetail?.markets !== ''">
-					<div v-for="(item, index) in markets" :key="index">
-						<div class="team" v-if="state.filtrateBetType === 0 || state.filtrateBetType === item.betType">
-							<div class="record" @click="toggleDisplay(index)">
-								<div class="record_one"></div>
-								<div class="record_two">{{ item.betTypeName }}</div>
-							</div>
-							<div class="team_one">
-								<template v-for="(citem, cIndex) in item.markets" :key="cIndex">
-									<MarketColumn
-										:displayContent="!showMarkets[index]"
-										cardType="none"
-										:sportInfo="eventDetail"
-										:market="citem"
-										:betType="citem.betType"
-										@oddsChange="oddsChange"
-									></MarketColumn>
-								</template>
-							</div>
-						</div>
-					</div>
+					<MarketItem :markets="markets" />
 				</div>
 				<div class="nonedata" v-else>
 					<NoneData></NoneData>
@@ -70,6 +51,7 @@ import sportsApi from "/@/api/sports/sports";
 import workerManage from "/@/webWorker/workerManage";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useUserStore } from "/@/stores/modules/user";
+import MarketItem from "./marketItem/marketItem.vue";
 const UserStore = useUserStore();
 const { initSportPubsub, unSubSport, clearState, sportsLogin, clearSportsOddsChange } = useSportPubSubEvents();
 const SportsInfoStore = useSportsInfoStore();
@@ -83,7 +65,7 @@ const { sportType } = route.params;
 
 //根据sportType从state中获取events列表 用于展示该联赛下的所有赛事
 const eventsList = computed(() => {
-	console.log(viewSportPubSubEventData.viewSportData, "==viewSportPubSubEventData.viewSportData.childrenViewData");
+	// console.log(viewSportPubSubEventData.viewSportData, "==viewSportPubSubEventData.viewSportData.childrenViewData");
 	return viewSportPubSubEventData.viewSportData.childrenViewData[Number(sportType)]?.[0]?.events;
 });
 
@@ -91,7 +73,7 @@ const eventsList = computed(() => {
 const eventDetail = computed(() => {
 	const { leagueId, eventId } = route.query;
 	const events = eventsList.value;
-	console.log(events, "====events");
+	// console.log(events, "====events");
 	return events?.filter((item) => item.eventId == eventId)[0];
 });
 
@@ -153,7 +135,7 @@ const filterData = (filterItem: number) => {
 };
 const initSport = async () => {
 	//开启体育线程
-	workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
+	// workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
 	//体育登录
 	sportsLogin().then((res) => {
 		if (res) {

@@ -14,7 +14,7 @@
 
 import { reactive, watch } from "vue";
 import pubsub from "/@/pubSub/pubSub";
-import { ServerData } from "/@/models/commonInterface";
+// import { ServerData } from "/@/models/commonInterface";
 import { Sports, SportData, SportViewData } from "/@/views/sports/models/interface";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useChampionShopCartStore } from "/@/stores/modules/sports/championShopCart";
@@ -31,10 +31,10 @@ import { useLoading } from "/@/directive/loading/hooks";
 import viewSportPubSubEventData from "./viewSportPubSubEventData";
 
 const { stopLoading } = useLoading();
+
 export default function useSportPubSubEvents() {
 	const sportsBetEvent = useSportsBetEventStore();
-	const ChampionShopCart = useChampionShopCartStore();
-
+	// const sportsBetChampion = useSportsBetChampionStore();
 	//体育订阅事件
 	const initSportPubsub = () => {
 		// //订阅SSE推送数据
@@ -61,8 +61,36 @@ export default function useSportPubSubEvents() {
 		// pubsub.unsubscribe(pubsub.PubSubEvents.SportEvents.initChildrenView.eventName, initChildrenViewProcess);
 	};
 
+	let pollingTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	const executePoll = async () => {
+		await sportsLogin({ showLoading: false });
+		// 继续轮询
+		pollAgain();
+	};
+
+	// 五分钟轮询一次
+	const pollAgain = () => {
+		pollingTimeout = setTimeout(executePoll, 300000);
+	};
+
+	// 开启登录接口轮询
+	const startPolling = () => {
+		if (!pollingTimeout) {
+			pollAgain();
+		}
+	};
+
+	// 关闭登录接口轮询
+	const stopPolling = () => {
+		if (pollingTimeout) {
+			clearTimeout(pollingTimeout);
+			pollingTimeout = null;
+		}
+	};
+
 	// 体育登录
-	const sportsLogin = async () => {
+	const sportsLogin = async (showLoadingObject?: object) => {
 		const store = useUserStore();
 		const sportsInfoStore = useSportsInfoStore();
 		const params = {
@@ -70,12 +98,17 @@ export default function useSportPubSubEvents() {
 			device: "H5",
 			venueCode: "SBA",
 		};
+		let headers = {};
+		if (showLoadingObject) {
+			headers = showLoadingObject;
+		}
+
 		try {
 			let res: any;
-			if (store.userInfo.token) {
-				res = await sportsApi.sportsLogin(params).catch((err) => err);
+			if (store.token) {
+				res = await sportsApi.sportsLogin(params, headers);
 			} else {
-				res = await sportsApi.sbaAnonLogin(params).catch((err) => err);
+				res = await sportsApi.sbaAnonLogin(params);
 			}
 			if (res.code === Common.ResCode.SUCCESS) {
 				if (res.data.type === "token") {
@@ -118,7 +151,7 @@ export default function useSportPubSubEvents() {
 		//体育视图处理线程
 		if (event.workerName == WorkerName.sportViewProcessWorker) {
 			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;
-			// console.log(event, "视图收到线程处理好的数据");
+			// console.log(processData, "视图收到线程处理好的数据");
 			//体育视图处理线程 eventSource 指令
 			if (processData.commandType == SportViewProcessWorkerCommandType.sportEventSource) {
 				// if (processData.data.sportPushApi != SportPushApi.GetSports_push) {
@@ -142,25 +175,61 @@ export default function useSportPubSubEvents() {
 			}
 			//体育视图处理线程 取消loading 指令
 			else if (processData.commandType == WorkerCommonCommadnType.stopLoading) {
-				stopLoading();
+				// stopLoading();
 			}
 		}
 		//体育购物车线程
 		else if (event.workerName == WorkerName.sportShopCartProcessWorker) {
-			const processData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = event as WorkerTransfer<
-				WorkerToViewSportsShopCart<any>,
-				SportShopCartProcessWorkerCommandType
-			>;
-			if (processData.commandType == SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges) {
-				/** 联赛-数据推送 */
-				sportsBetEvent.shopCartSSEProcess(processData.data?.data?.sportsBetEventData);
-			}
-			if (processData.commandType == SportShopCartProcessWorkerCommandType.outrightShopCartViewChanges) {
-				/** 冠军-数据推送 */
-				ChampionShopCart.outrightShopCartSSEProcess(processData.data.data?.outrightBetData);
-			}
+			// const processData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = event as WorkerTransfer<
+			// 	WorkerToViewSportsShopCart<any>,
+			// 	SportShopCartProcessWorkerCommandType
+			// >;
+			// if (processData.commandType == SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges) {
+			// 	if (!sportsBetEvent.sportsBetShow) return; // 弹窗关闭停止对应任务
+			// 	// 接受赛事购物车数据
+			// 	/*// console.log("processData------------------>", processData);
+			// 	if (processData.data.data && processData.data.data.length > 0) {
+			// 		sportsBetEvent.shopCartSSEProcess(processData.data.data);
+			// 	}*/
+			// 	if (sportsBetEvent.sportsBetEventData.length == 1) {
+			// 		// 单关注单请求
+			// 		Common.getSingleTicket();
+			// 	}
+			// 	if (sportsBetEvent.sportsBetEventData.length > 1) {
+			// 		// 串关注单请求
+			// 		Common.getParlayTickets();
+			// 	}
+			// }
+			// if (processData.commandType == SportShopCartProcessWorkerCommandType.championShopCartViewChanges) {
+			// 	if (!sportsBetChampion.championBetShow) return; // 弹窗关闭停止对应任务
+			// 	// 冠军购物车数据
+			// 	if (processData.data.data && processData.data.data.length > 0) {
+			// 		sportsBetChampion.championShopCartSSEProcess(processData.data.data);
+			// 	}
+			// 	if (sportsBetChampion.championBetData.length == 1) {
+			// 		// 冠军单关注单请求
+			// 		Common.getOutrightTicket();
+			// 	}
+			// }
 		}
 	};
 
-	return { initSportPubsub, unSubSport, clearState, sportsLogin, clearSportsOddsChange };
+	/**
+	 * @description  收到子路由视图数据变化事件处理
+	 * @param data
+	 */
+	// const childrenViewChangeProcess = (data: SportViewModels) => {
+	// 	//由于滚球 早盘 今日 需要操作盘口，在这里更新盘口数据  每次赋值影响不大 不做额外判断
+	// 	viewSportPubSubEventData.viewSportData.childrenViewData = data.viewSportData.childrenViewData;
+	// };
+
+	/**
+	 * @description 收到子路由初始化视图数据事件
+	 */
+	// const initChildrenViewProcess = () => {
+	// 	// console.log("收到子路由初始化视图数据事件,===========================");
+	// 	pubsub.publish(pubsub.PubSubEvents.SportEvents.sportsToChildren.eventName, viewSportPubSubEventData);
+	// };
+
+	return { startPolling, stopPolling, initSportPubsub, unSubSport, clearState, sportsLogin, clearSportsOddsChange };
 }

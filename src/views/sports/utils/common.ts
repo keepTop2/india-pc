@@ -22,7 +22,7 @@ interface DateData {
  */
 class SportsCommonFn {
 	// 球类表头集中的字典
-	public static betTypeMap = {
+	public static betTypeMap: Record<number, string[]> = {
 		// 足球
 		1: [$.t("全场独赢"), $.t("全场让球"), $.t("全场大小"), $.t("半场独赢"), $.t("半场让球"), $.t("半场大小")],
 		// 篮球
@@ -45,7 +45,7 @@ class SportsCommonFn {
 		43: [$.t("全场独赢"), $.t("全场让球"), $.t("全场大小")],
 	};
 
-	public static getEventsTitleMap = {
+	public static getEventsTitleMap: Record<number, string> = {
 		1: "gameInfo",
 		2: "gameInfo",
 		3: "gameInfo",
@@ -64,7 +64,7 @@ class SportsCommonFn {
 	 * @param {*} key ["key"]
 	 * @return {*}
 	 */
-	public static safeAccess = (obj: any, key: string[]) => {
+	public static safeAccess = (obj: any, key: string[]): any => {
 		const nObj = key.reduce((xs, x) => {
 			if (xs && xs[x]) {
 				return xs[x];
@@ -91,9 +91,33 @@ class SportsCommonFn {
 		}
 	};
 
+
+	/**
+	 * @description 格式化让球Point
+	 */
+	public static formatPoint = (data: { betType: number; point: number; key: string; }): string | null => {
+		const { betType, point, key } = data;
+		const primaryBetTypes = [1, 7, 17, 219, 609, 637, 701, 704, 708, 153, 155, 1303, 1308, 1316, 3904, 9002, 9008, 9012, 9018, 9024, 9028, 9034, 9040, 9046, 9052, 9059, 9076, 9077, 9091, 9093, 9116];
+		const secondaryBetTypes = [28, 124, 125, 453, 477, 478, 646];
+		if (primaryBetTypes.includes(betType)) return this.formatPositiveNum(point);
+		if (secondaryBetTypes.includes(betType) && key !== "x") return this.formatPositiveNum(point);
+		if (secondaryBetTypes.includes(betType) && key === "x") return null;
+		return point.toString();
+	};
+
+
+	/**
+	 * @description 正数拼接+号
+	 */
+	public static formatPositiveNum = (value: number): string => {
+		const isPositive = value > 0;
+		return (isPositive ? "+" : "") + value;
+	};
+
+
 	// 动态匹配球类头部信息
 	public static getEventsTitle = (event: SportsRootObject, temp = "MM-DD HH:mm"): string[] => {
-		const titleMap = {
+		const titleMap: Record<number, any> = {
 			1: {
 				key: "gameInfo",
 				0: {
@@ -207,7 +231,6 @@ class SportsCommonFn {
 		const sportType = event.sportType;
 		// 获取信息对象
 		const infoKey = titleMap[sportType]?.key;
-		// console.log(infoKey, "===infoKey", event, sportType);
 		let title = "";
 		/**
 		 *  判断滚球
@@ -309,14 +332,14 @@ class SportsCommonFn {
 	/**
 	 * @description 格式关注数据 提取对应的 events列表与 eventsid
 	 */
-	public static formatAttention = (data) => {
+	public static formatAttention = (data: any) => {
 		/**
 		 * 递归函数用于提取'thirdId'值
 		 * @param {Object|Array} element - 当前处理的数据元素，可以是对象或数组
 		 * @returns {string[]} 收集到的'id'值数组
 		 */
 		const ids: number[] = [];
-		function recursiveExtract(element) {
+		function recursiveExtract(element: { thirdId?: any; list?: any; } | null): { eventIds: number[] } {
 			if (Array.isArray(element)) {
 				// 如果当前元素是数组，则遍历每个子元素
 				for (const item of element) {
@@ -360,7 +383,7 @@ class SportsCommonFn {
 	 * @param {*} date
 	 * @return {*}
 	 */
-	public static getResultDateRangeOld = (date) => {
+	public static getResultDateRangeOld = (date: moment.MomentInput) => {
 		const today = moment(date).subtract(1, "days").format("YYYY-MM-DDT12:00:00");
 		const tomorrow = moment(date).format("YYYY-MM-DDT12:00:00");
 		return { startDate: today, endDate: tomorrow };

@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { formattingChildrenViewData } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { SportViewModels } from "/@/views/sports/models/sportViewModels";
+import { SportViewData, SportsRootObject } from "/@/views/sports/models/interface";
 import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourceModel";
 // 每个赛事联系数量 数据线程处理 GetEvents
 export default (function () {
@@ -11,7 +12,7 @@ export default (function () {
 	 * @returns processData 处理好的数据
 	 */
 
-	const eventsProcess = (sportServerData: SportEventSourceResponse, viewSportData) => {
+	const eventsProcess = (sportServerData: SportEventSourceResponse, viewSportData: SportViewData) => {
 		let processData = {} as SportViewModels;
 		const { add, change, remove } = sportServerData.payload.events || { add: [], change: [], remove: [] };
 		if (add.length > 0) {
@@ -34,30 +35,30 @@ export default (function () {
 		if (sportServerData.payload.markets && sportServerData.payload.markets.remove.length > 0) {
 			processData = Object.assign({}, processData, marketsProcessRemove(sportServerData, viewSportData));
 		}
-		// processData.viewSportData["childrenViewData"] = formattingChildrenViewData(viewSportData, "events", sportServerData.webToPushApi);
+		processData.viewSportData = processData.viewSportData || {};
 		processData.viewSportData["childrenViewData"] = formattingChildrenViewData(viewSportData, "events");
-		// console.log(processData, "=====processData");
+		console.log(JSON.parse(JSON.stringify(processData)), "==events===processData");
 		return processData;
 	};
 
 	// 赛事相关信息数据源新增 GetEvents
-	const eventsProcessAdd = (sportServerData, viewSportData) => {
-		viewSportData.events = viewSportData.events.concat(sportServerData.payload.events.add);
+	const eventsProcessAdd = (sportServerData: SportEventSourceResponse, viewSportData: SportViewData) => {
+		viewSportData.events = viewSportData.events.concat(sportServerData.payload.events?.add || []);
 		return { sportServerData, viewSportData };
 	};
 	// 盘口信息数据源新增 GetEvents
-	const marketsProcessAdd = (sportServerData, viewSportData) => {
-		viewSportData.markets = viewSportData.markets.concat(sportServerData.payload.markets.add);
+	const marketsProcessAdd = (sportServerData: SportEventSourceResponse, viewSportData: SportViewData) => {
+		viewSportData.markets = viewSportData.markets.concat(sportServerData.payload.markets?.add || []);
 		return { sportServerData, viewSportData };
 	};
 
 	// 赛事相关信息数据源变化 GetEvents
-	const eventsProcessChange = (sportServerData, viewSportData) => {
+	const eventsProcessChange = (sportServerData: SportEventSourceResponse, viewSportData: SportViewData) => {
 		/**
 		 * @description 处理events数据源
 		 */
 		// 根据eventsId 匹配被修改的数据
-		sportServerData.payload.events.change.forEach((item) => {
+		sportServerData.payload.events?.change.forEach((item) => {
 			const index = viewSportData.events.findIndex((i) => i.eventId === item.eventId);
 			if (index !== -1) {
 				// 如果找到匹配项，合并对象  进行深度合并不然嵌套的内容会被覆盖掉
@@ -67,12 +68,12 @@ export default (function () {
 		return { sportServerData, viewSportData };
 	};
 	// 盘口相关信息数据源变化 GetEvents
-	const marketsProcessChange = (sportServerData, viewSportData) => {
+	const marketsProcessChange = (sportServerData: SportEventSourceResponse, viewSportData: SportViewData) => {
 		/**
 		 * @description 处理markets数据源
 		 */
 
-		sportServerData.payload.markets.change.forEach((item) => {
+		sportServerData.payload.markets?.change.forEach((item) => {
 			const index = viewSportData.markets.findIndex((i) => i.marketId === item.marketId);
 			// 如果找到匹配项，合并对象
 			if (index !== -1) {
@@ -83,9 +84,9 @@ export default (function () {
 				 */
 				// 获取old数据index
 				const oldMarkets = viewSportData.markets[index];
-				item.selections.forEach((selectionsItem) => {
-					const oldSelectionsIndex = oldMarkets?.selections.findIndex((i) => i.key === selectionsItem.key);
-					if (oldSelectionsIndex != -1) {
+				item.selections.forEach((selectionsItem: any) => {
+					const oldSelectionsIndex = oldMarkets?.selections.findIndex((i: any) => i.key === selectionsItem.key);
+					if (oldSelectionsIndex !== -1 && oldSelectionsIndex !== undefined) {
 						const oldDecimalPrice = oldMarkets.selections[oldSelectionsIndex].oddsPrice.decimalPrice;
 						if (selectionsItem.oddsPrice.decimalPrice > oldDecimalPrice) {
 							selectionsItem.oddsChange = "oddsUp";
@@ -104,11 +105,11 @@ export default (function () {
 	};
 
 	// 赛事相关信息数据源删除 GetEvents
-	const eventsProcessRemove = (sportServerData, viewSportData) => {
+	const eventsProcessRemove = (sportServerData: SportEventSourceResponse, viewSportData: SportViewData) => {
 		/**
 		 * 删除events数据
 		 */
-		sportServerData.payload.events.remove.forEach((item) => {
+		sportServerData.payload.events?.remove.forEach((item) => {
 			const index = viewSportData.events.findIndex((event) => event.eventId === item);
 
 			if (index !== -1) {
@@ -119,11 +120,11 @@ export default (function () {
 	};
 
 	//盘口信息数据源删除 GetEvents
-	const marketsProcessRemove = (sportServerData, viewSportData) => {
+	const marketsProcessRemove = (sportServerData: SportEventSourceResponse, viewSportData: SportViewData) => {
 		/**
 		 * 删除markets数据
 		 */
-		sportServerData.payload.markets.remove.forEach((item) => {
+		sportServerData.payload.markets?.remove.forEach((item) => {
 			const index = viewSportData.markets.findIndex((event) => event.marketId === item);
 
 			if (index !== -1) {

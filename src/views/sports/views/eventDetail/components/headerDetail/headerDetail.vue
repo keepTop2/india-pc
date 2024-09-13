@@ -6,7 +6,7 @@
 	<div class="detail-container">
 		<div class="top">
 			<div class="back" @click="handleGoBack">
-				<svg-icon class="icon" name="arrow_left" :size="13" />
+				<svg-icon class="icon" name="arrow_left" size="13" />
 				<span> 返回 </span>
 			</div>
 			<div class="title">{{ sportInfo.leagueName }}</div>
@@ -16,33 +16,21 @@
 					<svg-icon :name="show ? 'eyes' : 'eyes_on'" size="16px"></svg-icon>
 				</div>
 				<!-- 收藏 -->
-				<svg-icon class="saveFollow" :name="isAttention ? 'sports-already_collected' : 'sports-collection'" @click="attentionEvent(true)" :size="20" />
+				<svg-icon class="saveFollow" :name="isAttention ? 'sports-already_collected' : 'sports-collection'" @click="attentionEvent(true)" size="20" />
 				<!-- 刷新 -->
-				<svg-icon name="sports-shuaxin" :class="{ cycling: loading }" :size="20" @click="$emit('refresh')" />
+				<svg-icon name="sports-shuaxin" :class="{ cycling: loading }" size="20" @click="$emit('refresh')" />
 			</div>
-		</div>
-
-		<!-- 内容区域 -->
-		<div class="content" :class="!show ? 'showContent' : 'hideContent '">
-			<SportEventDetail :sportInfo="sportInfo" :size="'large'" />
-		</div>
-		<div class="playing-methods">
-			<el-button class="active"> 全部</el-button>
-			<SvgIcon :class="['icon-svg', { expand: !expandAndCollapse }]" iconName="doubleArrowUp_sports" @click="onExpandAndCollapse" :size="18" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref, onMounted, computed, watch } from "vue";
-import hidden from "/@/assets/zh/default/competition/hidden.png";
-import visible from "/@/assets/zh/default/competition/visible.png";
 import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import { useRouter } from "vue-router";
-// import SportEventDetail from "/@/views//sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
 
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
@@ -50,24 +38,15 @@ const router = useRouter();
 
 import sportsApi from "/@/api/sports/sports";
 
-const emits = defineEmits(["back", "isHidden", "isCollect", "refresh", "filter", "expandAndCollapse", "toggleAll"]);
+const emits = defineEmits(["back", "isHidden", "isCollect", "refresh", "filter", "toggleAll"]);
 
 // 定义props类型
 interface CapotCardType {
 	/** 队伍数据 */
 	sportInfo: any;
 	loading?: boolean;
-	expandAndCollapse?: boolean;
 }
 
-// 展示以及收缩玩法列表
-const expandAndCollapse = ref(true);
-
-const onExpandAndCollapse = () => {
-	expandAndCollapse.value = !expandAndCollapse.value;
-	emits("expandAndCollapse");
-	emits("toggleAll");
-};
 
 // 定义props并设置默认值
 const props = withDefaults(defineProps<CapotCardType>(), {
@@ -75,29 +54,8 @@ const props = withDefaults(defineProps<CapotCardType>(), {
 		return {};
 	},
 	loading: false,
-	expandAndCollapse: true,
 });
 
-watch(
-	() => props.expandAndCollapse,
-	(newValue) => {
-		expandAndCollapse.value = newValue;
-	}
-);
-
-watch(
-	() => props.sportInfo,
-	(newValue, oldValue) => {
-		const event = newValue;
-		if (event?.streamingOption && event?.channelCode) {
-			GetStreaming();
-		}
-	}
-);
-
-onMounted(() => {
-	GetStreaming();
-});
 
 /** 视频流地址 */
 const videoStreamingUrl = ref({});
@@ -130,6 +88,7 @@ const GetStreaming = async () => {
 const show = ref(false);
 const isCollect = () => {
 	show.value = !show.value;
+	emits("isCollect", show.value);
 };
 
 const isAttention = computed(() => {
