@@ -3,7 +3,7 @@ import { NoneData } from "./noneData";
 import Button from "/@/components/Button/Button.vue";
 import FromInput from "/@/components/Input/fromInput.vue";
 import { Notification } from "./Notification";
-import { WImage } from "./wImage";
+
 const components: {
 	[propName: string]: Component;
 } = {

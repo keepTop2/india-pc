@@ -44,6 +44,8 @@ import { useLink } from "/@/views/sports/hooks/useLink";
 const { gotoEventDetail } = useLink();
 const emit = defineEmits(["refresh", "closeVideoWrapper"]);
 
+console.log("useControlList------?", useControlList);
+
 enum ActionsEnum {
 	/**
 	 * 比分板
@@ -141,7 +143,6 @@ const computedShowFullScreen = computed(() => {
 /**
  * 工具tool
  */
-
 const computedTools = computed(() => {
 	return [
 		{

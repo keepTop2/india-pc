@@ -38,7 +38,7 @@
 		<div class="other-info">
 			<!-- 塞节时间 -->
 			<div class="date">
-				<span>{{ livePeriod }}</span>
+				<span>{{ SportsCommonFn.getEventsTitle(teamData) }}</span>
 				<span v-if="(teamData.gameInfo.livePeriod == 2 || teamData.gameInfo.livePeriod == 1) && !teamData.gameInfo.delayLive && !teamData.gameInfo.isHt">{{
 					formattedGameTime
 				}}</span>
@@ -90,28 +90,6 @@ const props = withDefaults(defineProps<teamDataType>(), {
 	teamData: () => {
 		return {};
 	},
-});
-
-/**
- * @description 计算是上半场还是下半场 根据 livePeriod 判断当前是第几节
- */
-const livePeriod = computed(() => {
-	const gameInfo = SportsCommonFn.safeAccess(props.teamData, ["gameInfo"]);
-	const { livePeriod, delayLive, isHt } = gameInfo;
-	if (livePeriod == 0 && !delayLive && isHt) {
-		return "中场休息";
-	}
-	if (livePeriod == 0 && delayLive && !isHt) {
-		return "延迟开赛";
-	}
-	if (livePeriod == 1 && !delayLive && !isHt) {
-		return "上半场";
-	}
-	if (livePeriod == 2 && !delayLive && !isHt) {
-		return "下半场";
-	}
-	const globalShowTime = SportsCommonFn.safeAccess(props.teamData, ["globalShowTime"]);
-	return convertUtcToUtc5AndFormatMD(globalShowTime);
 });
 
 // 定义计算属性 格式化比赛开始时间

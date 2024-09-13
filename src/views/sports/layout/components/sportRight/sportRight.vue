@@ -33,6 +33,8 @@ const videoStreamingUrl = ref({});
  */
 // const { pause } = useIntervalFn(() => getHotEvents(), 5000);
 
+console.log("currentEventInfo.value,currentEventInfo.value", currentEventInfo.value);
+
 /**
  * 判断是否有赛事
  */
@@ -81,6 +83,8 @@ watch(
 	() => currentEventInfo.value.eventId,
 	async (newVal, oldVal) => {
 		if (newVal !== oldVal) {
+			console.log("有没有触发");
+
 			initDataEvent();
 			await getHotEventVideoInfo();
 		}
@@ -100,6 +104,9 @@ const getStreaming = async () => {
 	const res = await sportsApi.GetStreaming(params).catch((err) => {
 		return err;
 	});
+
+	console.log("√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√", res);
+
 	const { status, data } = res;
 
 	if (status == 200) {
@@ -111,6 +118,8 @@ const getStreaming = async () => {
 		SportHotStore.updateControlType(type);
 		SportHotStore.updateUseControlList(list);
 	} else {
+		console.log("走到了这里？");
+
 		const list = getVideoUrl({});
 		SportHotStore.updateControlType(SportControlEnum.Info);
 		SportHotStore.updateUseControlList(list);

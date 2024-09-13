@@ -147,9 +147,17 @@ export enum SportMarketStatusEnum {
 }
 
 /**
- * 右侧面板控制类型
+ * 右侧面板头部切换
+ * 比分板
+ * 视频源
+ * 动画源
  */
 export enum SportControlEnum {
+	/**
+	 * 赛事详情
+	 */
+	Info = "detail",
+
 	/**
 	 * 视频播放源
 	 */
@@ -159,11 +167,6 @@ export enum SportControlEnum {
 	 * 动画直播播放源
 	 */
 	Animation = "animation",
-
-	/**
-	 * 赛事详情
-	 */
-	Info = "detail",
 }
 
 /**

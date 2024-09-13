@@ -29,6 +29,7 @@
 			<!-- 右边侧边栏 -->
 			<div class="right-container" v-if="popularLeague.visible">
 				<Sidebar v-if="SportsInfoStore.getSportsToken"></Sidebar>
+				<!-- <sportRight v-if="SportsInfoStore.getSportsToken"></sportRight> -->
 			</div>
 		</div>
 		<!-- 公告弹窗 -->
@@ -61,7 +62,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import { Notification } from "/@/components/index";
 import { WorkerName, SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
-import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar } from "./components";
+import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar, sportRight } from "./components";
 import { i18n } from "/@/i18n/index";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { useLoading } from "/@/directive/loading/hooks";
@@ -628,8 +629,9 @@ const closeNotifyModal = () => {
 
 <style lang="scss" scoped>
 .base-body {
+	width: 1660px;
 	height: 100%;
-	max-width: 1636px;
+	// max-width: 1636px;
 	margin: 0 auto;
 	overflow-x: auto;
 }

@@ -54,53 +54,35 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watchEffect } from "vue";
+import { computed, onBeforeMount, onMounted, reactive, ref, watchEffect } from "vue";
 import { cloneDeep, get } from "lodash-es";
 import { Sports, SportViewData } from "/@/views/sports/models/interface";
 import { useRoute } from "vue-router";
 import { FootballCard, ChampionshipCard, SelectCard, VirtualScrollVirtualList, DateSelector } from "./components/index";
-import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
-import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
-
-const sportHotStore = useSportHotStore();
+import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+const SidebarStore = useSidebarStore();
 const { clearSportsOddsChange } = useSportPubSubEvents();
-const sportsBetEvent = useSportsBetEventStore();
-const leagueActiveList = ref(sportsBetEvent.getLeagueSelect);
 const route = useRoute();
-
 const VirtualScrollVirtualListRef = ref();
+const sportsActive = ref("rollingBall"); // 选中的赛选类型
 
-const SportsBetEvent = useSportsBetEventStore();
-/**选中的赛选类型；*/
-const sportsActive = ref("rollingBall");
 const leagues = computed(() => viewSportPubSubEventData.getSportData(Number(1)));
-onMounted(() => {
-	console.log(viewSportPubSubEventData, "=====leagues");
-});
+
 const state = reactive({
-	// 体育数据集合
-	viewSportData: {
-		sports: [] as Sports[], // 球类tab数据
-		leagues: [], // 联赛数据
-		events: [], // 赛况数据
-		markets: [], // 盘口数据
-		outrights: [], // 冠军数据
-		results: [], // 赛果数据
-		childrenViewData: {}, // 处理好的视图数据
-	} as SportViewData,
 	targetEvents: [], // 添加这个字段来保存目标事件数据数组
 	targetEventList: [], // 赛选后的额数据（展示）
 });
 
 onBeforeMount(() => {
 	state.targetEvents = [];
-	/** 进入时获取一次页面数据 */
-	state.targetEvents = viewSportPubSubEventData.getSportData(1);
-	// console.log(state.targetEvents, "===state.targetEvents");
+	//  进入时获取一次页面数据
+	// state.targetEvents = viewSportPubSubEventData.getSportData(1);
+	console.log("state.targetEvent", state.targetEvents);
+	SidebarStore.setEventsInfo(get(state.targetEvents, "[0].events.[0]", {}) as any);
 	state.targetEventList = getList();
 	setInitSportsActive();
 
@@ -122,9 +104,6 @@ const getList = () => {
 	if (leagues && leagueSelect.length > 0) {
 		leagues = leagues.filter((item) => leagueSelect.includes(item.leagueId));
 	}
-	// 这里使用了 lodash 提供的 get 函数，它用于安全地访问嵌套的对象属性。即便某个中间属性不存在，也不会抛出错误，而是返回指定的默认值。
-	// "[0].events.[0]" 是一个路径字符串，表示取 targetEvents 数组的第一个元素，然后取该元素的 events 数组的第一个元素。如果 targetEvents 或 events 中的任何部分不存在，get 方法会返回第三个参数中的默认值，即 {}
-	sportHotStore.setInitEvent(get(state.targetEvents, "[0].events.[0]", {}) as any);
 	// 返回当前球类列表数据
 	return leagues;
 };

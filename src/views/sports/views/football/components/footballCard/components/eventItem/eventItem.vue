@@ -19,7 +19,7 @@
 		</div>
 		<!-- 其他信息 -->
 		<div class="league-option">
-			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool.action)">
+			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool)">
 				<span class="icon"><svg-icon :name="tool.iconName" width="23px" height="16px"></svg-icon></span>
 				<!-- <span class="tooltip-text">{{ tool.tooltipText }}</span> -->
 			</div>
@@ -30,8 +30,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { TeamInfoCard, MarketColumn } from "/@/views/sports/views/football/components/footballCard/index";
-import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
-const SportHotStore = useSportHotStore();
+import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
+const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
 
 interface teamDataType {
 	/** 数据索引 */
@@ -55,25 +55,14 @@ const props = withDefaults(defineProps<teamDataType>(), {
 });
 
 const emit = defineEmits(["oddsChange"]);
-/**
- * @description 动画结束删除oddsChange字段状态
- */
+
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
 
-// 点击比分板
-const openPage = () => {
-	SportHotStore.setCurrentEvent(props.event);
-};
-
-// 点击视频源
-const toggleFullScreen = () => {
-	SportHotStore.setCurrentEvent(props.event);
-};
-
-const refreshPage = () => {
-	console.log("动画直播");
+// 点击对应工具
+const handleClick = (tool: any) => {
+	tool.action(tool.param);
 };
 
 /**
@@ -81,35 +70,25 @@ const refreshPage = () => {
  */
 const tools = computed(() => {
 	const baseTools = [];
-
 	// 判断 是否在未开赛页面
 	if (props.IfOffTheBat !== "todayContest") {
 		baseTools.push({
 			iconName: "sports-score_icon",
 			tooltipText: "比分板",
-			action: openPage,
+			action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
+			param: props.event, // 传递参数
 		});
 	}
-
 	// 判断是否有视频源
 	if (props.event.streamingOption != 0 && props.event.channelCode) {
 		baseTools.push({
 			iconName: "sports-live_icon",
 			tooltipText: "视频源",
-			action: toggleFullScreen,
+			action: switchEventVideoSource,
 		});
 	}
 	return baseTools;
 });
-
-/**
- * @description  点击对应icon方法
- */
-const handleClick = (action: () => void) => {
-	if (typeof action === "function") {
-		action();
-	}
-};
 </script>
 
 <style scoped lang="scss">
