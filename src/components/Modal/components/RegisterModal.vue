@@ -13,7 +13,14 @@
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
-						<input type="text" :value="payLoad.userAccount" class="common_input" :placeholder="$t(`login['输入账号']`)" @input="userOnInput" />
+						<input
+							type="text"
+							:value="payLoad.userAccount"
+							class="common_input"
+							:placeholder="$t(`login['输入账号']`)"
+							@input="userOnInput"
+							:class="VerifyError.userAccount ? 'verifyError' : ''"
+						/>
 					</p>
 					<p v-show="VerifyError.userAccount" class="Wran_text fs_10 mt_2">{{ $t(`login['账号规则']`) }}</p>
 				</div>
@@ -56,26 +63,24 @@
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['主货币']`) }}</p>
 					<p style="height: 34px">
-						<DropdownSelect :options="options" :placeholder="$t(`login['选择货币']`)" @update:modelValue="handleSelect" @search="handleSearch" />
+						<DropdownSelect :options="options" :placeholder="$t(`login['选择货币']`)" @update:modelValue="handleSelect" :model="payLoad.mainCurrency" />
 					</p>
 				</div>
 
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_12">{{ $t(`login['推荐码非必填']`) }}</p>
-					<p class="common_password">
-						<input type="text" :value="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" />
-					</p>
+					<p class="common_password"><input type="text" v-model="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" @input="inviteCodeInput" /></p>
 				</div>
 				<div class="fs_10 userAgreement" :class="userAgreement ? 'Text_s' : 'Text1'">
 					<svg-icon
 						class="curp"
 						:name="userAgreement ? 'check_icon_on' : 'check_icon'"
 						size="14px"
-						@click="userAgreement = !userAgreement"
+						@click="userAgreementOnInput"
 						:style="{ color: userAgreement ? 'var(--Theme)' : '' }"
 					/>
 					<span
-						>{{ $t(`login['我同意']`) }}<span>{{ $t(`login['用户协议']`) }}</span> {{ $t(`login['并确认我已年满18岁']`) }}</span
+						>{{ $t(`login['我同意']`) }} <span class="Wran_text" @click="toHelpCenter"> {{ $t(`login['用户协议']`) }}</span> {{ $t(`login['并确认我已年满18岁']`) }}</span
 					>
 				</div>
 				<div class="fs_10 userAgreement" :class="advertise ? 'Text_s' : 'Text1'">
@@ -94,7 +99,7 @@
 				</div>
 				<div class="flex-center fs_12">
 					<div class="Text1">
-						{{ $t(`login['已有账号']`) }}<span class="Wran_text">{{ $t(`login['登录']`) }}</span>
+						{{ $t(`login['已有账号']`) }}<span class="Wran_text curp" @click="toLogin">{{ $t(`login['登录']`) }}</span>
 					</div>
 				</div>
 			</div>
@@ -104,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { loginApi } from "/@/api/login";
 import Common from "/@/utils/common";
 import eventBus from "/@/utils/eventBus";
@@ -112,6 +117,8 @@ import { useUserStore } from "/@/stores/modules/user";
 import DropdownSelect from "/@/components/DropdownSelect/index.vue";
 import showToast from "/@/hooks/useToast";
 import { userApi } from "/@/api/user";
+import router from "/@/router";
+import { CommonApi } from "/@/api/common";
 
 const UserStore = useUserStore();
 const userAccountRegex = /^[a-zA-Z][a-zA-Z0-9]{3,10}$/;
@@ -137,24 +144,36 @@ const VerifyError = reactive({
 	confirmPassword: false,
 });
 
-const passOnInput = (e: any) => {
-	payLoad.password = e.target.value;
+onMounted(() => {
+	if (UserStore.getRegisterModalInfo) {
+		Object.assign(payLoad, UserStore.getRegisterModalInfo);
+	}
+});
+
+const passOnInput = (e: Event) => {
+	payLoad.password = (e.target as HTMLInputElement).value;
 	passWordregex.test(payLoad.password) ? (VerifyError.passWord = false) : (VerifyError.passWord = true);
 	verifyBtn();
 };
-const userOnInput = (e: any) => {
-	payLoad.userAccount = e.target.value;
+const userOnInput = (e: Event) => {
+	payLoad.userAccount = (e.target as HTMLInputElement).value;
 	userAccountRegex.test(payLoad.userAccount) ? (VerifyError.userAccount = false) : (VerifyError.userAccount = true);
 	verifyBtn();
 };
-const confirmOnInput = (e: any) => {
-	payLoad.confirmPassword = e.target.value;
+const confirmOnInput = (e: Event) => {
+	payLoad.confirmPassword = (e.target as HTMLInputElement).value;
 	payLoad.confirmPassword === payLoad.password ? (VerifyError.confirmPassword = false) : (VerifyError.confirmPassword = true);
 	verifyBtn();
 };
-
+const inviteCodeInput = (e: Event) => {
+	payLoad.inviteCode = (e.target as HTMLInputElement).value;
+};
+const userAgreementOnInput = () => {
+	userAgreement.value = !userAgreement.value;
+	verifyBtn();
+};
 const verifyBtn = () => {
-	if (payLoad.password && payLoad.userAccount && payLoad.confirmPassword && payLoad.mainCurrency) {
+	if (payLoad.password && payLoad.userAccount && payLoad.confirmPassword && payLoad.mainCurrency && userAgreement.value) {
 		if (!VerifyError.userAccount && !VerifyError.passWord && !VerifyError.confirmPassword) {
 			disabledBtn.value = false;
 		} else {
@@ -175,10 +194,6 @@ const onSubmit = async (token: string) => {
 		getUserInfo();
 		showToast(message, 1500);
 	} else {
-		payLoad.password = "";
-		payLoad.userAccount = "";
-		payLoad.confirmPassword = "";
-		payLoad.mainCurrency = "";
 		showToast(message, 1500);
 	}
 };
@@ -192,10 +207,6 @@ const handleSelect = (option: any) => {
 	verifyBtn();
 };
 
-const handleSearch = (query: string) => {
-	console.log("Search query:", query);
-};
-
 const getUserInfo = async () => {
 	const res = await userApi.getIndexInfo().catch((err) => err);
 	const { code, data, message } = res;
@@ -207,11 +218,24 @@ const getUserInfo = async () => {
 		showToast(message, 1500);
 	}
 };
+const toHelpCenter = () => {
+	UserStore.setRegisterModalInfo(payLoad);
+	router.push({
+		path: "/helpCenter",
+		query: {
+			type: "userAgreement",
+		},
+	});
+	eventBus.emit("hide-modal");
+};
+const toLogin = () => {
+	eventBus.emit("show-modal", "LoginModal");
+};
 </script>
 
 <style lang="scss" scoped>
 .loginWrapper {
-	width: 650px;
+	width: 680px;
 	height: 542px;
 	display: flex;
 	border-radius: 12px;

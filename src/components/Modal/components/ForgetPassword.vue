@@ -14,7 +14,14 @@
 				<div v-if="currentStep === 0">
 					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
-						<input type="text" :value="payLoad.userAccount" class="common_input" :placeholder="$t(`login['输入账号']`)" @input="userOnInput" />
+						<input
+							type="text"
+							:value="payLoad.userAccount"
+							class="common_input"
+							:placeholder="$t(`login['输入账号']`)"
+							@input="userOnInput"
+							:class="userAccountVerifyError ? 'verifyError' : ''"
+						/>
 					</p>
 					<p v-show="userAccountVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`login['账号规则']`) }}</p>
 				</div>
@@ -28,15 +35,29 @@
 					<div>
 						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
 						<p>
-							<input type="text" :value="payLoad.email" class="common_input" :placeholder="$t(`login['输入账号']`)" @input="emailOnInput" v-if="verifyType == 'email'" />
-							<AreaCode v-else @update:modelValue="areaCodeInput" :options="options"></AreaCode>
+							<input
+								type="text"
+								:value="payLoad.email"
+								class="common_input"
+								:placeholder="$t(`login['输入账号']`)"
+								@input="emailOnInput"
+								v-if="verifyType == 'email'"
+								:class="userVerifyTypeVerifyError ? 'verifyError' : ''"
+							/>
+							<AreaCode v-else @update:modelValue="areaCodeInput" :options="AreaCodeOptions" :type="verifyType" :class="userVerifyTypeVerifyError ? 'verifyError' : ''"></AreaCode>
 						</p>
 						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ verifyType == "email" ? $t(`login['电子邮箱不正确']`) : $t(`login['电话号码不正确']`) }}</p>
 					</div>
 					<div>
 						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['验证码']`) }}</p>
 						<p>
-							<VerificationCode @update:modelValue="VerificationCodeInput" @sendVerificationCode="sendVerificationCode" :disabled="verificationBtn" />
+							<VerificationCode
+								@VerificationCodeInput="VerificationCodeInput"
+								@sendVerificationCode="sendVerificationCode"
+								v-model="verificationBtn"
+								:disabled="verificationBtn"
+								ref="VerificationCodeRef"
+							/>
 						</p>
 					</div>
 					<p class="fs_10 Text1 mt_16 fw_200">
@@ -45,20 +66,42 @@
 				</div>
 				<!-- 第三步 -->
 				<div v-else-if="currentStep === 2">
-					<p class="Text_s mb_8 mt_8 fs_16">{{ $t(`login['新密码']`) }}</p>
+					<p class="Text_s mb_8 mt_8 fs_14">{{ $t(`login['新密码']`) }}</p>
 					<!-- 密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['密码']`) }}</p>
+						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['密码']`) }}</p>
 						<p class="common_password">
-							<input type="password" :value="payLoad.password" class="common_input" :placeholder="$t(`login['输入密码']`)" @input="passOnInput" />
+							<input
+								:type="showPassword ? 'text' : 'password'"
+								:value="payLoad.password"
+								class="common_input"
+								:placeholder="$t(`login['输入密码']`)"
+								@input="passOnInput"
+								autocomplete="new-password"
+								:class="VerifyError.passWord ? 'verifyError' : ''"
+							/>
+							<span class="eyes">
+								<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showPassword = !showPassword" />
+							</span>
 						</p>
 						<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
 					</div>
 					<!-- 确认密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
+						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
 						<p class="common_password">
-							<input type="password" :value="payLoad.confirmPassword" class="common_input" :placeholder="$t(`login['输入密码']`)" @input="confirmOnInput" />
+							<input
+								:type="showConfimPassword ? 'text' : 'password'"
+								:value="payLoad.confirmPassword"
+								class="common_input"
+								:placeholder="$t(`login['输入密码']`)"
+								@input="confirmOnInput"
+								autocomplete="new-password"
+								:class="VerifyError.confirmPassword ? 'verifyError' : ''"
+							/>
+							<span class="eyes">
+								<svg-icon :name="showConfimPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showConfimPassword = !showConfimPassword" />
+							</span>
 						</p>
 						<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
 					</div>
@@ -73,19 +116,18 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { loginApi } from "/@/api/login";
 import Common from "/@/utils/common";
 import eventBus from "/@/utils/eventBus";
 import AreaCode from "/@/components/AreaCode/index.vue";
 import { useUserStore } from "/@/stores/modules/user";
 import VerificationCode from "/@/components/VerificationCode/index.vue";
-import options from "/@/assets/ts/areaCode";
 import showToast from "/@/hooks/useToast";
+import { CommonApi } from "/@/api/common";
 const UserStore = useUserStore();
 const currentStep = ref(0);
-
-const verificationBtn = ref(true);
+const VerificationCodeRef = ref(null);
 enum verifyTypeEnum {
 	email = "email",
 	phone = "phone",
@@ -96,35 +138,50 @@ const VerifyError = reactive({
 	passWord: false,
 	confirmPassword: false,
 });
+
 // 验证码
 const hcaptcha: any = ref(null);
 
+const AreaCodeOptions: any = ref([]);
 // 登陆表单
 const payLoad = reactive({
 	userAccount: "",
 	phone: "",
 	email: "",
-	areaCode: options[0].areaCode,
+	areaCode: "",
 	verifyCode: "",
 	password: "",
 	confirmPassword: "",
 });
-
 //账号密码校验规则
+const minLength = ref(8);
+const maxLength = ref(13);
 const userAccountRegex = /^[a-zA-Z][a-zA-Z0-9]{3,10}$/;
 const userEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const userPhoneRegex = /^\d{8,11}$/;
+
 const passWordregex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@_$]{8,16}$/;
 
+const getAreaCodeDownBox = async () => {
+	const res = await CommonApi.getAreaCodeDownBox().catch((err) => err);
+	const { code, message, data } = res;
+	if (code == Common.ResCode.SUCCESS) {
+		AreaCodeOptions.value = data;
+		payLoad.areaCode = data[0].areaCode;
+		minLength.value = data[0].minLength;
+		maxLength.value = data[0].maxLength;
+	} else {
+		showToast(message);
+	}
+};
 //显示校验提示
 const userAccountVerifyError = ref(false);
 const userVerifyTypeVerifyError = ref(false);
 // 校验完成登陆按钮可以点击
 const disabledBtn = ref(true);
-
+const verificationBtn = ref(true);
 // 显示密码
 const showPassword = ref(false);
-
+const showConfimPassword = ref(false);
 // 监听输入框变化
 const userOnInput = (e: any) => {
 	payLoad.userAccount = e.target.value;
@@ -150,9 +207,16 @@ const confirmOnInput = (e: any) => {
 	verifyBtn();
 };
 
+// 手机号区号输入变化
 const areaCodeInput = (data: any) => {
 	const { phone, areaCode } = data;
+	if (areaCode) {
+		const data = AreaCodeOptions.value.find((item: any) => item.areaCode === areaCode);
+		minLength.value = data.minLength;
+		maxLength.value = data.maxLength;
+	}
 	if (phone) {
+		const userPhoneRegex = new RegExp(`^\\d{${minLength.value},${maxLength.value}}$`);
 		payLoad.phone = phone;
 		userPhoneRegex.test(payLoad.phone) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
 		verificationBtn.value = userVerifyTypeVerifyError.value;
@@ -201,6 +265,7 @@ const onNextStep = async (step: number) => {
 	switch (step) {
 		case 0:
 			res = await loginApi.submitAccount(payLoad).catch((err) => err);
+			getAreaCodeDownBox();
 			break;
 		case 1:
 			const params = {
@@ -224,16 +289,15 @@ const onNextStep = async (step: number) => {
 	const { code, message } = res;
 	if (code == Common.ResCode.SUCCESS) {
 		if (currentStep.value === 2) {
-			eventBus.emit("hide-modal");
 			eventBus.emit("show-modal", "LoginModal");
 			showToast(message, 1500);
 		} else {
 			currentStep.value++;
 		}
+		disabledBtn.value = true;
 	} else {
 		showToast(message, 1500);
 	}
-	disabledBtn.value = true;
 };
 
 const VerificationCodeInput = (verifyCode: string) => {
@@ -255,12 +319,14 @@ const sendVerificationCode = async () => {
 			const { code, message } = res;
 			if (code == Common.ResCode.SUCCESS) {
 				showToast(message, 1500);
+				verificationBtn.value = true;
+				(VerificationCodeRef.value as any).startCountdown(10);
 			} else {
 				showToast(message, 1500);
-				verificationBtn.value = true;
 			}
 		}
 	} else {
+		const userPhoneRegex = new RegExp(`^\\d{${minLength.value},${maxLength.value}}$`);
 		if (!userPhoneRegex.test(payLoad.phone)) {
 			showToast("手机号不正确", 1500);
 			verificationBtn.value = true;
@@ -268,19 +334,21 @@ const sendVerificationCode = async () => {
 		} else {
 			const params = {
 				userAccount: payLoad.userAccount,
-				email: payLoad.phone,
+				phone: payLoad.phone,
+				areaCode: payLoad.areaCode,
 			};
 			const res = await loginApi.sendSms(params).catch((err) => err);
 			const { code, message } = res;
 			if (code == Common.ResCode.SUCCESS) {
 				showToast(message, 1500);
+				verificationBtn.value = true;
 			} else {
 				showToast(message, 1500);
-				verificationBtn.value = true;
 			}
 		}
 	}
 };
+
 const onSubmit = async (token: string) => {
 	const res = await loginApi.submitAccount(payLoad).catch((err) => err);
 	const { code, data, message } = res;
@@ -288,10 +356,10 @@ const onSubmit = async (token: string) => {
 		eventBus.emit("hide-modal");
 		localStorage.setItem("userInfo", JSON.stringify(data));
 		UserStore.setUserInfo(data);
-		alert("登陆成功");
+		showToast("登陆成功");
 	} else {
 		payLoad.userAccount = "";
-		alert("error");
+		showToast(message);
 	}
 };
 </script>
@@ -315,7 +383,16 @@ const onSubmit = async (token: string) => {
 	}
 	.login_right_form {
 		padding: 25px 32px;
-
+		.common_password {
+			position: relative;
+			.eyes {
+				position: absolute;
+				right: 16px;
+				top: 50%;
+				transform: translateY(-50%);
+				cursor: pointer;
+			}
+		}
 		.login_text {
 			color: var(--Text_s);
 			font-weight: 500;

@@ -5,33 +5,34 @@
 			<span>安全中心</span>
 		</div>
 		<div class="content">
-			<div>
+			<div @click="modifyHandle('password')">
 				<span>登陆密码</span>
-				<span>
-					<span class="modifyBtn" @click="modifyHandle('password')">修改</span>
-				</span>
+				<span><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
-			<div>
+			<div @click="modifyHandle('phone')">
 				<span>手机号</span>
 				<span v-if="userGlobalSetInfo.phone">
-					<span class="info"> {{ userGlobalSetInfo.phone }} </span>
-					<span class="modifyBtn" @click="modifyHandle('phone')">修改</span>
+					<span class="info">
+						<span class="mr_8">+{{ userGlobalSetInfo.areaCode }}</span> {{ userGlobalSetInfo.phone }}
+					</span>
+					<span class="modifyBtn">修改</span>
 				</span>
 				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
-			<div>
+			<div @click="modifyHandle('email')">
 				<span>电子邮箱</span>
 				<span v-if="userGlobalSetInfo.email">
 					<span class="info"> {{ userGlobalSetInfo.email }} </span>
-					<span class="modifyBtn" @click="modifyHandle('email')">修改</span>
+					<span class="modifyBtn">修改</span>
 				</span>
 				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
-			<div>
+			<div @click="modifyHandle('withdrawPwd')">
 				<span>交易密码</span>
-				<span>
-					<span class="modifyBtn" @click="modifyHandle('withdrawPwd')">修改</span>
+				<span v-if="userGlobalSetInfo.isSetPwd">
+					<span class="modifyBtn">修改</span>
 				</span>
+				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
 		</div>
 	</div>
@@ -62,10 +63,17 @@ const userGlobalSetInfo: userGlobalSetInfoType = reactive({
 });
 
 onMounted(() => {
-	userApi.getUserGlobalSetInfo().then((res) => {
-		Object.assign(userGlobalSetInfo, res.data);
+	getUserGlobalSetInfo();
+	eventBus.on("hide-modal", () => {
+		getUserGlobalSetInfo();
 	});
 });
+const getUserGlobalSetInfo = () => {
+	userApi.getUserGlobalSetInfo().then((res) => {
+		userStore.setUserGlobalSetInfo(res.data);
+		Object.assign(userGlobalSetInfo, res.data);
+	});
+};
 
 const modifyHandle = (type: string) => {
 	switch (type) {
@@ -73,13 +81,13 @@ const modifyHandle = (type: string) => {
 			eventBus.emit("show-modal", "ChangePassword");
 			break;
 		case "phone":
-			eventBus.emit("show-modal", "ChangePassword");
+			eventBus.emit("show-modal", "setPhone");
 			break;
 		case "email":
-			eventBus.emit("show-modal", "ChangePassword");
+			eventBus.emit("show-modal", "setEmail");
 			break;
 		case "withdrawPwd":
-			eventBus.emit("show-modal", "ChangePassword");
+			eventBus.emit("show-modal", "setWithdrawPwd");
 			break;
 	}
 };
@@ -125,5 +133,10 @@ const modifyHandle = (type: string) => {
 			margin-left: 16px;
 		}
 	}
+}
+
+.bounce-in {
+	transform: translateY(100%);
+	animation: bounceIn 1s forwards;
 }
 </style>

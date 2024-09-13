@@ -99,9 +99,7 @@ import { computed, onMounted } from "vue";
 import { useThemesStore } from "/@/stores/modules/themes";
 import { useMenuStore } from "/@/stores/modules/menu";
 import useTo from "/@/hooks/ustTo";
-import useMenuHooks from "./useMenuHooks";
 import PubSub from "/@/pubSub/pubSub";
-import Img from "/@/components/Img/index.vue";
 import Common from "/@/utils/common";
 const { to, router } = useTo();
 const ThemesStore = useThemesStore();
@@ -198,7 +196,7 @@ const changeCollpase = () => {
 		cursor: pointer;
 		overflow-y: auto;
 		transition: all 0.2s ease;
-		height: calc(100vh - 64px);
+		height: calc(100vh - 264px);
 		.left_scroll_conatiner1 {
 			padding: 8px;
 			margin: 8px auto;

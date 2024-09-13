@@ -12,7 +12,17 @@
 				</div>
 				<transition @before-enter="beforeEnter" @enter="enter" @leave="leave">
 					<div v-show="openMenuIndex == index" class="subMenu">
-						<div v-for="(subItem, subIndex) in item.children" :key="index" class="menu_item subItem" @click="goToPath(subItem)">
+						<div
+							v-for="(subItem, subIndex) in item.children"
+							:key="index"
+							class="menu_item subItem"
+							:class="openSubMenuIndex == index + ',' + subIndex ? 'activeMenu' : ''"
+							@click="
+								() => {
+									goToPath(index, subIndex);
+								}
+							"
+						>
 							<span class="menu_icon">
 								<img :src="subItem.icon" alt="" />
 							</span>
@@ -35,7 +45,8 @@ import useSvgHoverHooks from "/@/hooks/useSvgHover";
 const { onMouseout, onMouseover, hoverItem } = useSvgHoverHooks();
 const router = useRouter();
 const route = useRoute();
-const openMenuIndex: Ref<number | null> = ref(null);
+const openMenuIndex: Ref<number | null | string> = ref(null);
+const openSubMenuIndex: any = ref(null);
 const currentRoute = ref({});
 //菜单从缓存中拉取
 const routerObj: any = computed(() => {
@@ -93,7 +104,8 @@ const activeMenu = computed(() => {
 	return path;
 });
 
-const goToPath = (path: object) => {
+const goToPath = (index: number, subIndex: number) => {
+	openSubMenuIndex.value = index + "," + subIndex;
 	router.push("/sports");
 };
 
@@ -117,7 +129,8 @@ const selectMenu = (item: any, index: number) => {
 		currentRoute.value = item;
 		openMenu(index);
 	} else {
-		goToPath(item);
+		openMenuIndex.value = index;
+		router.push("/sports");
 	}
 };
 

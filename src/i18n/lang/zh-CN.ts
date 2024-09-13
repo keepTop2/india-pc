@@ -277,8 +277,37 @@ export const lang = {
 	// 帮助中心
 	helpCenter: {
 		帮助中心: "帮助中心",
+		// 读取文件名所以英文命名
+		registerLogin: {
+			registerLogin: "注册登录",
+		},
+		protectMinors: {
+			protectMinors: "保护未成年人",
+		},
+
+		privacyAgreement: {
+			privacyAgreement: "隐私政策",
+		},
+		userAgreement: {
+			userAgreement: "用户协议",
+		},
+		sportsTerms: {
+			sportsTerms: "体育条款",
+		},
+		bonusTerms: {
+			bonusTerms: "奖金条款",
+		},
+		supportedCurrency: {
+			supportedCurrency: "支持货币",
+		},
+		customerService: {
+			customerService: "24小时客服",
+		},
+		aboutUs: {
+			aboutUs: "关于我们",
+		},
 		contactUs: {
-			联系我们: "联系我们",
+			contactUs: "联系我们",
 			业务邮箱: "业务邮箱：",
 			业务Telegram: "业务 Telegram：",
 			投诉建议邮箱: "投诉建议邮箱：",

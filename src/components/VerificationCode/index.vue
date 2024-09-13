@@ -2,8 +2,8 @@
 	<div class="verification-code">
 		<div class="input-container">
 			<input placeholder="Enter your phone number" @input="validateInput" class="contact-input common_input" :disabled="sendCodeText == '发送'" />
-			<button @click="sendVerificationCode" class="send-button" :isSending="isSending" :disabled="disabled">
-				{{ isSending && isCountingDown ? countdown + "s" : sendCodeText }}
+			<button @click="sendVerificationCode" class="send-button" :disabled="disabled">
+				{{ isCountingDown ? countdown + "s" : sendCodeText }}
 			</button>
 		</div>
 	</div>
@@ -14,26 +14,35 @@ import { ref, computed, watch } from "vue";
 import { useCountdown } from "/@/hooks/countdown";
 const { countdown, isCountingDown, startCountdown } = useCountdown();
 const sendCodeText = ref("发送");
-const isSending = ref(false);
 const emit = defineEmits<{
-	(e: "update:modelValue", value: string): void;
+	(e: "update:modelValue", value: Boolean): void;
 	(e: "sendVerificationCode"): void;
+	(e: "VerificationCodeInput", value: string): void;
 }>();
 const props = defineProps({
 	disabled: {
 		type: Boolean,
 	},
 });
-const validateInput = (e: any) => {
-	emit("update:modelValue", e.target.value);
-};
+watch(
+	() => isCountingDown.value,
+	() => {
+		if (!isCountingDown.value) {
+			emit("update:modelValue", false);
+		}
+	}
+);
 
-const sendVerificationCode = async () => {
-	isSending.value = true;
-	startCountdown(10);
+const validateInput = (e: any) => {
+	emit("VerificationCodeInput", e.target.value);
+};
+const sendVerificationCode = () => {
 	sendCodeText.value = "重新发送";
 	emit("sendVerificationCode");
 };
+defineExpose({
+	startCountdown,
+});
 </script>
 
 <style scoped>

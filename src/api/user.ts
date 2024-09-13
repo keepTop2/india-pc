@@ -25,4 +25,39 @@ export const userApi = {
 			headers,
 		});
 	},
+	//发送手机验证码
+	globalSendSms: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/global/sendSms`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
+	// 修改邮箱手机号码校验
+	checkVerifyCode: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/global/checkVerifyCode`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
+	// 绑定修改邮箱或手机
+	bindAccount: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/global/bindAccount`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
+	//修改交易密码
+	setWithdrawPwd: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/global/setWithdrawPwd`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };

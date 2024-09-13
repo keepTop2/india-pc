@@ -1,9 +1,7 @@
 <template>
 	<div class="dropdown-select" ref="dropdown">
 		<button class="trigger" @click="toggleDropdown">
-			<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''">
-				{{ selectedOptionLabel || placeholder }}
-			</span>
+			<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''"> {{ selectedOptionLabel || placeholder }} </span>
 			<svg-icon name="arrow_right" size="14px" />
 		</button>
 		<div v-if="isOpen" class="dropdown-menu">
@@ -40,6 +38,7 @@ interface Option {
 const props = defineProps<{
 	options: Option[];
 	placeholder?: string;
+	model: string;
 }>();
 
 const emit = defineEmits<{
@@ -87,7 +86,7 @@ watch(selectedOption, (newVal) => {
 });
 
 const selectedOptionLabel = computed(() => {
-	return selectedOption.value ? selectedOption.value.code : "";
+	return props.model ? props.model : selectedOption.value ? selectedOption.value.code : "";
 });
 
 // Add and remove global click event listener

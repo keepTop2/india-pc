@@ -56,6 +56,10 @@
 		color: var(--Text_s);
 		outline: none;
 	}
+	.verifyError {
+		border: 1px solid var(--Theme);
+		border-radius: 4px;
+	}
 	.common_input::placeholder {
 		color: var(--Text2);
 	}
