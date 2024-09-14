@@ -7,94 +7,77 @@
 		<div class="top">
 			<div class="back" @click="handleGoBack">
 				<svg-icon class="icon" name="arrow_left" size="13" />
-				<span> 返回 </span>
+				<span>返回</span>
 			</div>
 			<div class="title">{{ sportInfo.leagueName }}</div>
 			<div class="handle">
-				<div class="item curp" @click="isCollect()">
+				<div class="item curp" @click="toggleCollect">
 					<span>{{ show ? "显示" : "隐藏" }}</span>
 					<svg-icon :name="show ? 'eyes' : 'eyes_on'" size="16px"></svg-icon>
 				</div>
-				<!-- 收藏 -->
-				<svg-icon class="saveFollow" :name="isAttention ? 'sports-already_collected' : 'sports-collection'" @click="attentionEvent(true)" size="20" />
-				<!-- 刷新 -->
-				<svg-icon name="sports-shuaxin" :class="{ cycling: loading }" size="20" @click="$emit('refresh')" />
+				<svg-icon 
+					class="saveFollow" 
+					:name="isAttention ? 'sports-already_collected' : 'sports-collection'" 
+					@click="attentionEvent(true)" 
+					size="20" 
+				/>
+				<svg-icon 
+					name="sports-shuaxin" 
+					:class="{ cycling: loading }" 
+					size="20" 
+					@click="$emit('refresh')" 
+				/>
 			</div>
+		</div>
+		<div class="content" :class="!show ? 'showContent' : 'hideContent'">
+			<SportEventDetail :sportInfo="sportInfo" :size="'large'" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, computed, watch } from "vue";
+import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-import PubSub from "/@/pubSub/pubSub";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
-import { useRouter } from "vue-router";
+import PubSub from "/@/pubSub/pubSub";
+import sportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
 
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
 const router = useRouter();
 
-import sportsApi from "/@/api/sports/sports";
-
 const emits = defineEmits(["back", "isHidden", "isCollect", "refresh", "filter", "toggleAll"]);
 
-// 定义props类型
 interface CapotCardType {
-	/** 队伍数据 */
 	sportInfo: any;
 	loading?: boolean;
 }
 
-
-// 定义props并设置默认值
 const props = withDefaults(defineProps<CapotCardType>(), {
-	sportInfo: () => {
-		return {};
-	},
+	sportInfo: () => ({}),
 	loading: false,
 });
 
-
-/** 视频流地址 */
-const videoStreamingUrl = ref({});
-/**
- * @description:获取视频url
- * @return {*}
- */
-const GetStreaming = async () => {
-	const { streamingOption, channelCode, sportType } = props.sportInfo;
-
-	// encodeURI(channelCode),
-	const params = {
-		streamingOption,
-		channelCode: encodeURI(channelCode),
-		sportType,
-	};
-
-	const res = await sportsApi.GetStreaming(params).catch((err) => {
-		return err;
-	});
-	const { status, data } = res;
-	if (status == 200) {
-		videoStreamingUrl.value = res.data;
-	}
-};
-
-/**
- * @description 点击切换 显示||隐藏 比分栏
- */
 const show = ref(false);
-const isCollect = () => {
+
+/**
+ * @description 切换显示/隐藏比分栏
+ */
+const toggleCollect = () => {
 	show.value = !show.value;
 	emits("isCollect", show.value);
 };
 
-const isAttention = computed(() => {
-	return SportAttentionStore.attentionEventIdList.includes(props.sportInfo.eventId);
-});
-// 点击关注按钮
+const isAttention = computed(() => 
+	SportAttentionStore.attentionEventIdList.includes(props.sportInfo.eventId)
+);
+
+/**
+ * @description 处理关注/取消关注事件
+ * @param {boolean} isActive - 是否为关注操作
+ */
 const attentionEvent = async (isActive: boolean) => {
 	if (isActive) {
 		await FootballCardApi.unFollow({
@@ -109,6 +92,9 @@ const attentionEvent = async (isActive: boolean) => {
 	PubSub.publish(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, {});
 };
 
+/**
+ * @description 处理返回操作
+ */
 const handleGoBack = () => {
 	router.back();
 	SportHotStore.updateToHotEvent();
@@ -119,13 +105,11 @@ const handleGoBack = () => {
 .detail-container {
 	width: 100%;
 	margin-bottom: 20px;
-	border-radius: 0px 0px 8px 8px;
-
+	border-radius: 0 0 8px 8px;
 	color: var(--Text1);
 
 	.title {
 		font-size: 16px;
-
 		color: var(--Text_s);
 	}
 
@@ -139,59 +123,13 @@ const handleGoBack = () => {
 			align-items: center;
 			font-size: 14px;
 			gap: 8px;
-
 			color: var(--Text1);
-
-			img {
-				cursor: pointer;
-			}
-		}
-
-		.unFollow {
-			color: var(--icon);
+			cursor: pointer;
 		}
 
 		.saveFollow {
 			color: var(--Warn);
 		}
-	}
-}
-
-.playing-methods {
-	// height: 52px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 10px;
-	padding: 12px;
-	border-radius: 0px 0px 8px 8px;
-	background: var(--Bg1-1, #24262b);
-
-	.el-button {
-		width: fit-content;
-		margin: 0;
-		height: 28px;
-		border-radius: 99px;
-		background: transparent;
-		border: 1px solid var(--Icon, #67707b);
-		padding: 0 20px;
-
-		color: var(--Text1);
-	}
-
-	.active {
-		border-color: transparent;
-
-		color: var(--Text_a);
-		background: var(--Theme);
-	}
-	.icon-svg {
-		color: var(--icon);
-	}
-
-	.expand {
-		color: var(--icon);
-		transform: rotate(-180deg);
 	}
 }
 
@@ -204,7 +142,6 @@ const handleGoBack = () => {
 
 	.back {
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
 		cursor: pointer;
 
@@ -215,9 +152,6 @@ const handleGoBack = () => {
 }
 
 .content {
-	// // background-image: url(/@/assets/zh/default/competition/detailBg.png);;
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
 	width: 100%;
 	flex: 1;
 	height: 276px;
@@ -228,20 +162,18 @@ const handleGoBack = () => {
 	transition: all 0.3s linear;
 	overflow: hidden;
 	z-index: 1;
+
 	> .main {
 		width: 892px;
 	}
+
 	&.showContent {
 		height: 276px;
 	}
+
 	&.hideContent {
 		height: 0;
 		opacity: 0;
 	}
-}
-.wrapper {
-	transition: all 1s linear;
-}
-.showContent {
 }
 </style>

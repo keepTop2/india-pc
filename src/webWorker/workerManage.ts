@@ -129,7 +129,7 @@ class WorkerManage {
 	 * @param data
 	 */
 	public onMessage<T1, T2>(data) {
-		// console.log("看看子线程发送过来的数据", JSON.parse(data.data));
+		console.log("看看子线程发送过来的数据", JSON.parse(data.data));
 		const workerToViewData: WorkerTransfer<T1, T2> = JSON.parse(data.data);
 		// // 将处理好的体育数据发送到Vue组件
 		// if (childrenWorkerData.serverType == "sportServer") {

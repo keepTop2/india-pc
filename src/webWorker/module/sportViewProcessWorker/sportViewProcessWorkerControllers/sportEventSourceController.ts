@@ -63,7 +63,7 @@ class SportEventSourceController {
 	public openSportEventSource({ sportPushApi, webToPushApi, params, version, isMultiple, apiUrl, language, token }: OpenSportEventSourceParams): Promise<WebResponse> {
 		//根据 isMultiple 判断是否需要开启多个推送
 		if (isMultiple) {
-			return this.openMultipleSportEventSource({ sportPushApi, webToPushApi, params, version, apiUrl, language, token }, 10);
+			return this.openMultipleSportEventSource({ sportPushApi, webToPushApi, params, version, apiUrl, language, token }, 5);
 		} else {
 			return this.openSingleSportEventSource({ sportPushApi, webToPushApi, params, version, isMultiple, apiUrl, language, token });
 		}

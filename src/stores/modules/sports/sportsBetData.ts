@@ -286,7 +286,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 				// 当前数据对象不存在于数组中，新增它
 				this.sportsBetEventData.push(data);
 			}
-			console.log("this.sportsBetEventData", this.sportsBetEventData);
+			// console.log("this.sportsBetEventData", this.sportsBetEventData);
 
 			// 赛事添加格式化数据
 			sportsOpenSse(this.sportsEventInfo);

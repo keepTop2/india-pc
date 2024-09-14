@@ -24,10 +24,11 @@ export interface SportEventSourceInstanceModel {
 	sourceInstance: EventSource | null;
 }
 
+
 /**
  * @description 开启SSE 请求参数模型
  */
-export interface OpenSportEventSourceParams {
+export interface OpenSportSourceParams {
 	/**
 	 * @description 请求域名
 	 */
@@ -72,7 +73,58 @@ export interface OpenSportEventSourceParams {
 	 * 清理赔率状态
 	 */
 	oddsChange?: object;
-}
+};
+
+
+/**
+ * @description 开启SSE 请求参数模型
+ */
+export type OpenSportEventSourceParams = (sportType?: string) => {
+	/**
+	 * @description 请求域名
+	 */
+	apiUrl: string;
+
+	/**
+	 * @description token
+	 */
+	token: string;
+
+	/**
+	 * @description 语言
+	 */
+	language: string;
+
+	/**
+	 * @description SSE连接名称
+	 */
+	sportPushApi: SportPushApi;
+
+	/**
+	 * @description 前端业务名称
+	 */
+	webToPushApi: WebToPushApi;
+
+	/**
+	 * 查询语句参数
+	 */
+	params?: SSESelectParamse;
+
+	/**
+	 * 版本号
+	 */
+	version?: string;
+
+	/**
+	 * 是否开启单个 true 单个 false 多个
+	 */
+	isMultiple?: boolean;
+
+	/**
+	 * 清理赔率状态
+	 */
+	oddsChange?: object;
+};
 
 /**
  * @description SSE 返回数据 模型

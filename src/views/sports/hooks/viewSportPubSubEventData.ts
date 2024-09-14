@@ -64,7 +64,7 @@ export default (function () {
 		 */
 		public setSportData(viewSportData: SportViewData) {
 			// 收到数据推送派发 使用Object.assign来确保响应式数据的正确更新
-			console.log("收到数据推送派发 viewSportData", viewSportData);
+			// console.log("收到数据推送派发 viewSportData", viewSportData);
 			Object.assign(this.viewSportData, viewSportData);
 			// 再进行球类数据派发
 		}
@@ -86,7 +86,7 @@ export default (function () {
 			if (!sportType) {
 				return this.viewSportData.childrenViewData;
 			}
-			const leagues = this.viewSportData.childrenViewData[sportType];
+			const leagues = this.viewSportData.childrenViewData;
 			// 如果有筛选 则处理数据，只给出筛选的联赛列表。
 			if (leagues && leagueSelect.length > 0) {
 				return leagues.filter((item: { leagueId: SportsRootObject }) => leagueSelect.includes(item.leagueId));

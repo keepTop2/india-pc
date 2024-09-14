@@ -96,7 +96,7 @@ const onInput = (e: any) => {
 	emit("update:modelValue", {phone:e.target.value});
 }
 const filteredOptions = computed(() => {
-	console.log(props.options);
+	// console.log(props.options);
 	
 	return props.options.filter(
 		(option:any) => option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase()) || option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase())

@@ -64,7 +64,23 @@ export default (function () {
 				data: {
 					webToPushApi: data.webToPushApi,
 					sportPushApi: data.sportPushApi,
-					state: viewSportDataU,
+					state: {
+						viewSportData: {
+						
+						/**
+						 * @description 外层Sports组件视图数据
+						 */
+						sports: viewSportDataU.viewSportData.sports,
+						leagues: [],
+						events:  [],
+						markets: [],
+						outrights:  viewSportDataU.viewSportData.outrights,
+						results: [],
+						/**
+						 * @description 各个子路由视图数据
+						 */
+						childrenViewData: viewSportDataU.viewSportData.childrenViewData,
+					}},
 				},
 			};
 

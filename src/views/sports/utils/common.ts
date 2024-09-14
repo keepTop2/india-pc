@@ -102,7 +102,9 @@ class SportsCommonFn {
 		if (primaryBetTypes.includes(betType)) return this.formatPositiveNum(point);
 		if (secondaryBetTypes.includes(betType) && key !== "x") return this.formatPositiveNum(point);
 		if (secondaryBetTypes.includes(betType) && key === "x") return null;
+		if (point) {
 		return point.toString();
+		}
 	};
 
 
@@ -447,16 +449,7 @@ class SportsCommonFn {
 	 * @returns 体育类型请求参数
 	 */
 	public static getRequestSportsType = (): string => {
-		let requestStr = "";
-		const sportsKeyTypeList = Object.keys(sportsMap);
-		sportsKeyTypeList.forEach((key, index) => {
-			if (index != sportsKeyTypeList.length - 1) {
-				requestStr += key + ",";
-			} else {
-				requestStr += key;
-			}
-		});
-		return requestStr;
+		return Object.keys(sportsMap).join(',');
 	};
 
 	/**

@@ -1,5 +1,5 @@
 import Common from "/@/utils/common";
-import CommonApi from "/@/api/common";
+import userApi from "/@/api/user";
 import sportsApi from "/@/api/venueHome/sports";
 import shopCartPubSub from "/@/views/venueHome/sports/hooks/shopCartPubSub";
 import { useSportsBetEventStore } from "/@/store/modules/sports/sportsBetData";
@@ -12,7 +12,7 @@ import { convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingC
 // 请求余额信息
 export const getIndexInfo = async () => {
 	const sportsBetInfo = useSportsBetInfoStore();
-	const res = await CommonApi.getIndexInfo().catch((err) => err);
+	const res = await userApi.getIndexInfo().catch((err) => err);
 	if (res.code == Common.getInstance().ResCode.SUCCESS) {
 		sportsBetInfo.balance = res.data.totalBalance;
 	}
@@ -117,7 +117,7 @@ export const getParlayTickets = async () => {
 			handlingParlayTicketsOdds(res.data);
 			restoreStatus();
 			const filteredPriceInfo = res.data.priceInfo.filter((price) => price.stateCode != 0);
-			console.log("filteredPriceInfo", filteredPriceInfo);
+			// console.log("filteredPriceInfo", filteredPriceInfo);
 			if (filteredPriceInfo.length > 0) {
 				filteredPriceInfo.forEach((i) => {
 					const index = sportsBetEvent.sportsBetEventData.findIndex((v) => v.betMarketInfo.marketId == i.marketId);
@@ -125,7 +125,7 @@ export const getParlayTickets = async () => {
 						sportsBetEvent.sportsBetEventData[index].betMarketInfo.stateCode = i.stateCode;
 					}
 				});
-				console.log("sportsBetEventData", sportsBetEvent.sportsBetEventData);
+				// console.log("sportsBetEventData", sportsBetEvent.sportsBetEventData);
 				sportsBetEvent.examineEventsStatus();
 			}
 			// const data = {
@@ -137,7 +137,7 @@ export const getParlayTickets = async () => {
 			// };
 			// marketClosingErrors(data);
 		} else {
-			console.log("==", res?.data?.errorCode, res?.data?.message);
+			// console.log("==", res?.data?.errorCode, res?.data?.message);
 		}
 	} catch (err: any) {
 		// console.log("err", err);
@@ -190,7 +190,7 @@ const marketClosingErrors = (errInfo) => {
 				}
 			});
 		});
-		console.log("B039marketIds", marketIds);
+		// console.log("B039marketIds", marketIds);
 		if (marketIds.length > 0) {
 			sportsBetEvent.sportsBetEventData.forEach((v) => {
 				if (marketIds.includes(v.betMarketInfo.marketId)) {
@@ -200,7 +200,7 @@ const marketClosingErrors = (errInfo) => {
 		}
 		// 过滤出stateCode不等于0
 		const filteredPriceInfo = errInfo.details.getParlayTickets.priceInfo.filter((price) => price.stateCode != 0);
-		console.log("B039filteredPriceInfo", filteredPriceInfo);
+		// console.log("B039filteredPriceInfo", filteredPriceInfo);
 		if (filteredPriceInfo.length > 0) {
 			filteredPriceInfo.forEach((i) => {
 				const index = sportsBetEvent.sportsBetEventData.findIndex((v) => v.betMarketInfo.marketId == i.marketId);
@@ -209,7 +209,7 @@ const marketClosingErrors = (errInfo) => {
 				}
 			});
 		}
-		console.log("sportsBetEvent.sportsBetEventData", sportsBetEvent.sportsBetEventData);
+		// console.log("sportsBetEvent.sportsBetEventData", sportsBetEvent.sportsBetEventData);
 	} else {
 		const regexes = [
 			{ errorCode: "B005", regex: /Event Closed or Invalid Market ; Market ID (.+)/ },

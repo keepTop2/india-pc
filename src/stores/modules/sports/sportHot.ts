@@ -76,7 +76,7 @@ export const useSportHotStore = defineStore("SportHot", {
 		 * @param event 当前赛事数据对象
 		 */
 		setInitEvent(event: SportsRootObject): void {
-			console.log("初始化的event", event);
+			// console.log("初始化的event", event);
 			const currentHref = window.location.href;
 			// 检查 event 对象是否为空，并且当前页面的 URL 是否与记录的 URL 不同，以及新事件 ID 是否与当前事件 ID 不同
 			if (!isEmpty(event) && currentHref !== this.originHref && this.currentEventInfo?.eventId !== event?.eventId) {
