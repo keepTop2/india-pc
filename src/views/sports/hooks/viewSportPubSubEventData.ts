@@ -49,6 +49,7 @@ export default (function () {
 				childrenViewData: {},
 			});
 		}
+
 		/**
 		 * 清空赛事数据保留sports
 		 */
@@ -57,27 +58,22 @@ export default (function () {
 				childrenViewData: {},
 			});
 		}
+
 		/**
 		 * 设置数据
 		 */
 		public setSportData(viewSportData: SportViewData) {
-			console.log("setSportData", viewSportData);
-			try {
-				// 使用Object.assign来确保响应式数据的正确更新
-				// console.log("viewSportData", viewSportData);
-				Object.assign(this.viewSportData, viewSportData);
-			} catch (error) {
-				console.error("Error occurred while setting sport data:", error);
-			}
+			// 收到数据推送派发 使用Object.assign来确保响应式数据的正确更新
+			// console.log("收到数据推送派发 viewSportData", viewSportData);
+			Object.assign(this.viewSportData, viewSportData);
+			// 再进行球类数据派发
 		}
 
 		/**
 		 * @description 关注直接给出所有的events 不区分sportType
 		 */
 		public getEvents() {
-			// return Object.values(this.viewSportData.childrenViewData);
 			const leagues = Object.values(this.viewSportData.childrenViewData);
-			// console.log(leagues, "======leagues");
 			return [].concat(...leagues);
 		}
 
@@ -90,7 +86,7 @@ export default (function () {
 			if (!sportType) {
 				return this.viewSportData.childrenViewData;
 			}
-			const leagues = this.viewSportData.childrenViewData[sportType];
+			const leagues = this.viewSportData.childrenViewData;
 			// 如果有筛选 则处理数据，只给出筛选的联赛列表。
 			if (leagues && leagueSelect.length > 0) {
 				return leagues.filter((item: { leagueId: SportsRootObject }) => leagueSelect.includes(item.leagueId));

@@ -29,6 +29,16 @@ export const CommonApi = {
 			headers,
 		});
 	},
+	/**
+	 *@description 获取国家区号
+	 */
+	getAreaCodeDownBox: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/common/getAreaCodeDownBox`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 
 	/**
 	 *@description 获取游戏菜单

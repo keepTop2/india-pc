@@ -53,9 +53,8 @@ import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
-import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
-
-const sportHotStore = useSportHotStore();
+import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+const SidebarStore = useSidebarStore();
 const { clearSportsOddsChange } = useSportPubSubEvents();
 const sportsBetEvent = useSportsBetEventStore();
 const leagueActiveList = ref(sportsBetEvent.getLeagueSelect);
@@ -129,7 +128,7 @@ const getList = () => {
 		}
 		leagues = newleagues;
 	}
-	sportHotStore.setInitEvent(get(leagues, "[0].events.[0]", {}) as any);
+	SidebarStore.setEventsInfo(get(leagues, "[0].events.[0]", {}) as any);
 	return leagues;
 };
 

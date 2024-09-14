@@ -15,13 +15,13 @@ export function loadLang() {
 	return langs;
 }
 const getlang = () => {
-	return localStorage.getItem("langInfo") ? JSON.parse(localStorage.getItem("langInfo") || "{}").code : "en-US";
+	return localStorage.getItem("langInfo") ? JSON.parse(localStorage.getItem("langInfo") || "{}").code : "zh-CN";
 };
 export const i18n = createI18n({
 	// globalInjection: true,
 	legacy: false,
 	locale: getlang(),
-	fallbackLocale: "en-US",
+	fallbackLocale: "zh-CN",
 	messages: loadLang(),
 });
 
@@ -30,13 +30,11 @@ export const i18n = createI18n({
  * @param lang
  */
 export function setLang(lang: LangType) {
-	console.log(lang);
-
 	const LangList = loadLang();
 	if (LangList[lang]) {
 		i18n.global.locale.value = lang;
 	} else {
-		i18n.global.locale.value = "en-US";
+		i18n.global.locale.value = "zh-CN";
 	}
 }
 

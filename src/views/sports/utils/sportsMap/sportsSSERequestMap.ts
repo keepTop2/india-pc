@@ -2,7 +2,7 @@
 import SportsCommonFn from "../common";
 import moment from "moment";
 import { WebToPushApi, SportPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
-import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
+import { OpenSportEventSourceParams, OpenSportSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import { betTypes } from "./sportsBetType";
 
 interface SportPushAction {
@@ -11,7 +11,7 @@ interface SportPushAction {
 	/**
 	 * @description 打开sports SSE推送
 	 */
-	openSport?: OpenSportEventSourceParams;
+	openSport?: OpenSportSourceParams;
 
 	/**
 	 * @description 打开Outrights SSE推送
@@ -21,7 +21,7 @@ interface SportPushAction {
 	/**
 	 * @description 打开events SSE推送
 	 */
-	openEvents?: OpenSportEventSourceParams;
+	openEvents: OpenSportEventSourceParams;
 }
 
 /**
@@ -42,21 +42,20 @@ const sportTabPushActions = {
 			params: {
 				query: `$filter=liveGameCount gt 0 and sportType in (${SportsCommonFn.getRequestSportsType()})`,
 			},
-		} as OpenSportEventSourceParams,
+		},
 
 		/**
 		 * @description 滚球下的球类赛事信息推送 开启SSE events推送
 		 */
-		openEvents: {
+		openEvents: (sportType = "1") => ({
 			sportPushApi: SportPushApi.GetEvents_push,
 			webToPushApi: WebToPushApi.eventsRollingBall,
 			params: {
-				// query: `$filter=sportType in (${SportsCommonFn.getRequestSportsType()}) and isLive eq true & $orderby=globalShowTime desc`,
-				query: `$filter=sportType in (${SportsCommonFn.getRequestSportsType()}) and isLive eq true &$orderby=globalShowTime asc`,
+				query: `$filter=sportType in (${sportType}) and isLive eq true &$orderby=globalShowTime asc`,
 				includeMarkets: `$filter=bettype in (${betTypes})`,
 			},
 			isMultiple: true,
-		},
+		}),
 	} as SportPushAction,
 
 	/**
@@ -80,17 +79,17 @@ const sportTabPushActions = {
 		/**
 		 * @description 今日下的球类赛事信息 开七SSE events 推送
 		 */
-		openEvents: {
+		openEvents: (sportType = "1") => ({
 			sportPushApi: SportPushApi.GetEvents_push,
 			webToPushApi: WebToPushApi.eventsTodayContest,
 			params: {
-				query: `$filter= sportType in (${SportsCommonFn.getRequestSportsType()}) and islive eq false &$orderby=globalShowTime asc `,
+				query: `$filter= sportType in (${sportType}) and islive eq false &$orderby=globalShowTime asc `,
 				from: moment.utc().subtract(5, "hour").startOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
 				until: moment.utc().subtract(5, "hour").endOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
 				includeMarkets: `$filter=bettype in (${betTypes})`,
 			},
 			isMultiple: true,
-		},
+		}),
 	} as SportPushAction,
 
 	/**
@@ -113,16 +112,16 @@ const sportTabPushActions = {
 		/**
 		 * @description 早盘下的球类赛事信息 开启SSE events推送
 		 */
-		openEvents: {
+		openEvents: (sportType = "1") => ({
 			sportPushApi: SportPushApi.GetEvents_push,
 			webToPushApi: WebToPushApi.eventsMorningTrading,
 			params: {
-				query: `$filter= sportType in (${SportsCommonFn.getRequestSportsType()})&$orderby=globalShowTime asc `,
+				query: `$filter= sportType in (${sportType})&$orderby=globalShowTime asc `,
 				from: moment.utc().subtract(5, "hour").endOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
 				includeMarkets: `$filter=bettype in (${betTypes})`,
 			},
 			isMultiple: true,
-		},
+		}),
 	} as SportPushAction,
 
 	/**
@@ -144,14 +143,14 @@ const sportTabPushActions = {
 		/**
 		 * @description 冠军下的球类赛事信息 开启SSE outrights推送
 		 */
-		openEvents: {
+		openEvents: (sportType = "1") => ({
 			sportPushApi: SportPushApi.GetOutrights_push,
 			webToPushApi: WebToPushApi.eventsChampion,
 			params: {
-				query: `$filter= sportType in (${SportsCommonFn.getRequestSportsType()})&$orderby=eventDate asc `,
+				query: `$filter= sportType in (${sportType})&$orderby=eventDate asc `,
 				includeMarkets: `$filter=bettype in (${betTypes})`,
 			},
-		},
+		}),
 	} as SportPushAction,
 	/**
 	 * @description 关注
@@ -181,6 +180,7 @@ const sportTabPushActions = {
 	 */
 	matchResult: {
 		name: "赛果",
+		openEvents:()=>{}
 	},
 };
 
@@ -192,7 +192,7 @@ const sportsShopCart = {
 	 * @description 购物车赛事信息推送 开启SSE
 	 * @params 购物车赛事id集合
 	 */
-	openEvents: async (params) => {
+	openEvents: async (params: any) => {
 		// 	return sportEventSource.openSportEventSource({
 		// 		sportPushApi: sportEventSource.sportPushApi.GetEvents_push,
 		// 		webToPushApi: sportEventSource.webToPushApi["sportsShopCart"],
@@ -215,7 +215,7 @@ const sportsEventDetailPush = {
 	/**
 	 * @description 联赛详情推送 传入 leagueId
 	 */
-	openEvents: (leagueid) => {
+	openEvents: (leagueid: any) => {
 		return {
 			sportPushApi: SportPushApi.GetEvents_push,
 			webToPushApi: WebToPushApi.sportsEventDetail,
@@ -225,7 +225,7 @@ const sportsEventDetailPush = {
 			},
 		};
 	},
-	openMarkets: (eventId) => {
+	openMarkets: (eventId: any) => {
 		return {
 			sportPushApi: SportPushApi.GetMarkets_push,
 			webToPushApi: WebToPushApi.sportsEventDetail,

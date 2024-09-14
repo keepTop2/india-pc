@@ -35,16 +35,17 @@ function formattingMarkets(markets: any[]) {
  * @param webToPushApi 目前仅用于格式化markets时判断是处理详情的还是列表的
  */
 export const formattingChildrenViewData = (data: any, sportKey: string, webToPushApi?: string) => {
+	console.log(data,'======data')
 	// 获取体育字典 球类型
 	const sportsType = Object.keys(sportsMap);
 	// 遍历data将体育类型提取为一级分类，对应的冠军列表配置在children
-	const childrenViewData = {};
+	let childrenViewData = {};
 
-	sportsType.forEach((type) => {
+	// sportsType.forEach((type) => {
 		let arr;
 		if (sportKey == "events") {
 			// 除电子竞技 其他都取等于0的数据
-			arr = data["events"].filter((sport: { sportType: string }) => sport.sportType == type);
+			arr = data["events"]
 			// 电子竞技单独处理，其他类型统一处理
 			arr.forEach((item: { eventId: any; markets: any }) => {
 				const markets = data.markets.filter((market: { eventId: any }) => market.eventId == item.eventId);
@@ -64,17 +65,18 @@ export const formattingChildrenViewData = (data: any, sportKey: string, webToPus
 			 * @description 获取scopeType相匹配的冠军数据
 			 */
 			arr = data[sportKey].filter((sport: { sportType: string; teams: any[] }) => {
-				if (sport.sportType == type) {
+				// if (sport.sportType == sportKey) {
 					// 对冠军下的队伍信息 按照 orid（优胜冠军赔率ID）进行排序
 					sport.teams.sort((a: { orid: number }, b: { orid: number }) => {
 						return a.orid - b.orid;
 					});
 					return sport;
-				}
+				// }
 			});
 		}
-		childrenViewData[type] = arr;
-	});
+	console.log(arr,'=========arr')
+		childrenViewData = arr;
+	// });
 	return childrenViewData;
 };
 

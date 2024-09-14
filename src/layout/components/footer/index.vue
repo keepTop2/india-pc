@@ -80,14 +80,14 @@ import Common from "/@/utils/common";
 	background: var(--Bg2) 0% 0% / 15px 15px repeat;
 	filter: drop-shadow(0px 1px 0px var(--Bg2));
 	color: var(--Text_s);
-	padding: 38px 0;
+	padding: 18px 0;
 	.footer1Item {
 		padding: 20px 0 20px;
 	}
 	.partnersIcon {
 		display: flex;
 		gap: 40px;
-		height: 72px;
+		height: 82px;
 		img {
 			height: 72px;
 		}
@@ -95,7 +95,7 @@ import Common from "/@/utils/common";
 	.paymentMethodIcon {
 		display: flex;
 		gap: 40px;
-		height: 72px;
+		height: 82px;
 		align-items: center;
 		img {
 			height: 44px;
@@ -104,7 +104,7 @@ import Common from "/@/utils/common";
 	.responsibleGameIcon {
 		display: flex;
 		gap: 40px;
-		height: 72px;
+		height: 82px;
 		align-items: center;
 		img {
 			height: 56px;
@@ -145,5 +145,11 @@ import Common from "/@/utils/common";
 			height: 98px;
 		}
 	}
+}
+.line {
+	height: 1px;
+	width: 100%;
+	background: var(--Line_1);
+	box-shadow: 0px 1px 0px 0px #343d48;
 }
 </style>

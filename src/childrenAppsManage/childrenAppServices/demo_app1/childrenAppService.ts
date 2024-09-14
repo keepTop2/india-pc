@@ -5,7 +5,7 @@ import { ChildrenToMainCommon } from "/@/childrenAppsManage/childrenAppDTOs/chil
  */
 class ChildrenAppService {
 	public process1(childrenToMainCommonData: ChildrenToMainCommon) {
-		console.log("到了service层", childrenToMainCommonData);
+		// console.log("到了service层", childrenToMainCommonData);
 	}
 }
 

@@ -22,7 +22,7 @@ function applyTheme(cssContent: string) {
 export const useThemesStore = defineStore("Themes", {
 	state: (): ThemesStore => {
 		return {
-			themeName: (localStorage.getItem("Themes") as ThemeKey) || "light",
+			themeName: (localStorage.getItem("Themes") as ThemeKey) || "dark",
 		};
 	},
 	getters: {
@@ -35,7 +35,7 @@ export const useThemesStore = defineStore("Themes", {
 		 * @deprecated 全局主题切换
 		 * @param str
 		 */
-		setTheme(str: ThemeKey): void {
+		setTheme(str: ThemeKey) {
 			this.themeName = str || "light";
 			localStorage.setItem("Themes", str);
 			if (str === "light") {

@@ -41,7 +41,8 @@
 				</div>
 				<!-- 菜单 -->
 				<div class="left_scroll_conatiner2">
-					<Menu />
+					<menuSkeleton v-if="isLoading" />
+					<Menu v-else />
 				</div>
 				<!-- 左侧底步功能区 -->
 				<div class="sidebar_bttom">
@@ -95,19 +96,23 @@
 <script setup lang="ts">
 import { ThemeKey } from "/@/models/commonInterface";
 import Menu from "./components/menu.vue";
-import { computed, onMounted } from "vue";
+import menuSkeleton from "./components/menuSkeleton.vue";
+import { computed, onMounted, ref } from "vue";
 import { useThemesStore } from "/@/stores/modules/themes";
 import { useMenuStore } from "/@/stores/modules/menu";
 import useTo from "/@/hooks/ustTo";
-import useMenuHooks from "./useMenuHooks";
 import PubSub from "/@/pubSub/pubSub";
-import Img from "/@/components/Img/index.vue";
 import Common from "/@/utils/common";
 const { to, router } = useTo();
 const ThemesStore = useThemesStore();
 const MenuStore = useMenuStore();
-
-onMounted(() => {});
+const isLoading = ref(false);
+onMounted(() => {
+	isLoading.value = true;
+	setTimeout(() => {
+		isLoading.value = false;
+	}, 1500);
+});
 
 const showLottery = () => {
 	PubSub.publish(PubSub.PubSubEvents.LotteryEvents.LotteryDialogSwitch.eventName, PubSub.PubSubEvents.LotteryEvents.LotteryDialogSwitch.params.show);
@@ -198,7 +203,7 @@ const changeCollpase = () => {
 		cursor: pointer;
 		overflow-y: auto;
 		transition: all 0.2s ease;
-		height: calc(100vh - 64px);
+		height: calc(100vh - 264px);
 		.left_scroll_conatiner1 {
 			padding: 8px;
 			margin: 8px auto;

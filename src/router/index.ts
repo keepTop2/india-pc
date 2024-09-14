@@ -22,7 +22,6 @@ const routes = [
 			{
 				path: "/",
 				name: "home",
-				layout: true,
 				component: () => import("/@/views/home/index.vue"),
 				meta: {
 					title: "home",
@@ -32,7 +31,6 @@ const routes = [
 			{
 				path: "/user",
 				name: "user",
-				layout: true,
 				meta: {
 					title: "user",
 					showFooter: true,
@@ -43,7 +41,6 @@ const routes = [
 			{
 				path: "/sports",
 				name: "sports",
-				layout: true,
 				meta: {
 					title: "sports",
 				},
@@ -54,7 +51,6 @@ const routes = [
 			{
 				path: "/helpCenter",
 				name: "helpCenter",
-				layout: true,
 				component: () => import("/@/views/helpCenter/index.vue"),
 				meta: {
 					title: "helpCenter",
@@ -64,7 +60,6 @@ const routes = [
 			{
 				path: "/demo",
 				name: "demo",
-				layout: true,
 				component: () => import("/@/views/demo/demo.vue"),
 				meta: {
 					title: "demo",

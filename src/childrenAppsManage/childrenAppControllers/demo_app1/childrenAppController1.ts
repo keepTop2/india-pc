@@ -6,7 +6,7 @@ import ChildrenAppService from "/@/childrenAppsManage/childrenAppServices/demo_a
  */
 class ChildrenAppController1 implements Controller {
 	public handleRequest(childrenToMainCommonData: ChildrenToMainCommon) {
-		console.log(childrenToMainCommonData, "看看数据过来");
+		// console.log(childrenToMainCommonData, "看看数据过来");
 		if (childrenToMainCommonData.apiName) {
 			//直接映射到对应方法
 			this[childrenToMainCommonData.apiName](childrenToMainCommonData);

@@ -24,6 +24,7 @@
 		"countup.js": "^2.6.0",
 		"cropperjs": "^1.5.13",
 		"crypto-js": "^4.2.0",
+		"dayjs": "^1.11.7",
 		"decimal.js": "^10.4.3",
 		"echarts": "^5.4.2",
 		"echarts-gl": "^2.0.9",

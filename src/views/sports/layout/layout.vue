@@ -29,6 +29,7 @@
 			<!-- 右边侧边栏 -->
 			<div class="right-container" v-if="popularLeague.visible">
 				<Sidebar v-if="SportsInfoStore.getSportsToken"></Sidebar>
+				<!-- <sportRight v-if="SportsInfoStore.getSportsToken"></sportRight> -->
 			</div>
 		</div>
 		<!-- 公告弹窗 -->
@@ -38,598 +39,475 @@
 	</div>
 </template>
 
+
 <script setup lang="ts">
-import { computed, defineAsyncComponent, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive, ref, watch, watchEffect } from "vue";
+import { computed, defineAsyncComponent, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import { cloneDeep, isEmpty } from "lodash-es";
-import Modal from "./components/Modal/index.vue";
+import { useRoute, useRouter } from "vue-router";
+import { useIntervalFn } from "@vueuse/core";
 import moment from "moment";
+
+import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
+import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
+import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
+import { useLayoutStore } from "/@/stores/modules/layout";
+import { useUserStore } from "/@/stores/modules/user";
+import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
+import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
+import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
+import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
+
+import { i18n } from "/@/i18n/index";
+import { useLoading } from "/@/directive/loading/hooks";
+import { useToLogin } from "/@/hooks/toLogin";
+import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+
 import workerManage from "/@/webWorker/workerManage";
 import Common from "/@/utils/common";
 import sportsApi from "/@/api/sports/sports";
 import pubSub from "/@/pubSub/pubSub";
-import { useIntervalFn } from "@vueuse/core";
 import { formattingResultViewData } from "/@/views/sports/utils/formattingViewData";
-import { sportTabPushActions } from "/@/views/sports/utils/sportsMap/sportsSSERequestMap";
-import { useRoute, useRouter } from "vue-router";
-import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
-import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
-import { Sports, SportData, SportViewData } from "/@/views/sports/models/interface";
-import { ServerData } from "/@/views/sports/models/commonInterface";
-import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-import { useLayoutStore } from "/@/stores/modules/layout";
-import { useUserStore } from "/@/stores/modules/user";
-import { Notification } from "/@/components/index";
-import { WorkerName, SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
-import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
-import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar } from "./components";
-import { i18n } from "/@/i18n/index";
-import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
-import { useLoading } from "/@/directive/loading/hooks";
+import { sportTabPushActions, sportsEventDetailPush } from "/@/views/sports/utils/sportsMap/sportsSSERequestMap";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { FootballCardApi } from "/@/api/sports/footballCard";
-import PubSub from "/@/pubSub/pubSub";
-import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
-import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
-import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
 
-import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
+import { WorkerName, SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
+import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 
-import { useToLogin } from "/@/hooks/toLogin";
-const { isHaveToken, toLogin } = useToLogin();
+import Modal from "./components/Modal/index.vue";
+import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar, sportRight } from "./components";
 
-const { startLoading, stopLoading } = useLoading();
-const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
-const $: any = i18n.global;
+// 常量定义
+const $ = i18n.global;
+const route = useRoute();
+const router = useRouter();
+
+// Store 实例化
 const popularLeague = usePopularLeague();
 const SportsInfoStore = useSportsInfoStore();
-// const sportAttention = useSportAttentionStore();
-
 const SportsBetEventStore = useSportsBetEventStore();
 const SportAttentionStore = useSportAttentionStore();
 const SportMorningTradingStore = useSportMorningTradingStore();
 const LayoutStore = useLayoutStore();
 const UserStore = useUserStore();
-
 const SportLeagueSeachStore = useSportLeagueSeachStore();
 const SportSortStore = useSportSortStore();
 const ShopCatControlStore = useShopCatControlStore();
 
-const route = useRoute();
-const router = useRouter();
+// Hooks
+const { isHaveToken, toLogin } = useToLogin();
+const { startLoading, stopLoading } = useLoading();
+const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
 
-const NotifyModal: any = ref(null);
+// 响应式数据
+const NotifyModal = ref(null);
 const showNotifyModal = ref(false);
-/** 打开体育参数  */
-export interface SendParams {
-	/**用户账号 */
-	userAccount?: string;
-	/** 设备：0:后台 1:PC 2:IOS_H5 3:IOS_APP 4:Android_H5 5:Android_APP */
-	device?: number;
-	/** 场馆code */
-	venueCode?: string;
-	/** 游戏code */
-	gameCode?: string;
-	/** 游戏code */
-	gameId?: string;
-	/** 客户端ip */
-	ip?: string;
+const tabActive = ref(route.query.sportsActive || "rollingBall");
+const sportState = reactive({ sportTypeActive: null });
+const routeRecord = ref({
+  newRoute: { path: "", isSportSort: "" },
+  oldRoute: { path: "", isSportSort: "" }
+});
+
+const sportType = computed(() => route.params.sportType);
+
+// 计算属性
+const attentionSwitch = computed(() => SportAttentionStore.attentionType);
+
+/**
+ * @description 组件生命周期钩子
+ */
+onBeforeMount(() => {
+  LayoutStore.setBigScreen(true);
+  pubSub.subscribe(pubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
+  initSportRequest();
+});
+
+onBeforeUnmount(() => {
+  unSport();
+  pause();
+});
+
+onUnmounted(() => {
+  LayoutStore.setBigScreen(false);
+});
+
+/**
+ * @description 初始化体育请求
+ */
+const initSportRequest = async () => {
+  await getAttention();
+  await sportsLogin();
+  await initSport();
+};
+
+/**
+ * @description 获取关注列表
+ * @param isLogin 是否需要登录
+ */
+const getAttention = async (isLogin = true) => {
+  if ((isLogin && !isEmpty(UserStore.getUserInfo)) || !isLogin) {
+    try {
+      const res = await FootballCardApi.getAttentionList();
+      if (res.data) {
+        SportAttentionStore.setAttentionList(res.data);
+        return res.data;
+      }
+    } catch (error) {
+      console.error("获取关注列表失败", error);
+    }
+  }
+};
+
+/**
+ * @description 初始化体育
+ */
+const initSport = async () => {
+  initSportPubsub();
+  openSportPush();
+};
+
+/**
+ * @description 开启体育推送
+ */
+const openSportPush = async () => {
+  closeSportViewProcessWorker();
+  openSportViewProcessWorker();
+
+	const query = { ...route?.query, sportsActive: tabActive.value };
+  const sportsActive = query.sportsActive as string || tabActive.value;
+	
+  // 更新 tabActive
+  // tabActive.value = sportsActive;
+ // 更新路由，确保 sportsActive 参数正确
+ if (query.sportsActive !== sportsActive) {
+    router.replace({ path: route.path, query: { ...query, sportsActive } });
+  }
+  startLoading();
+
+  const params = {
+    apiUrl: SportsCommonFn.getSportPushApiUrl(),
+    token: SportsInfoStore.getSportsToken,
+    language: SportsCommonFn.getSportLanguage(),
+  };
+	await handleSportPush(params,sportsActive);
+	if (route?.meta?.isSportSort) {
+    await handleSportEventsPush(params);
+	} else if (route.path == "/sports/collect") {
+    await openAttentionSSE();
+    await getAttention(false);
+	} else if (route.path.match(/^\/sports\/\d+\/detail/)) {
+    await openEventDetailPush();
+  } else {
+    stopLoading();
+  }
+};
+
+const handleSportPush = async (params, sportsActive) => {
+	switch (sportsActive) {
+		case "rollingBall":
+			sendWorkerCommand(sportTabPushActions.rollingBall.openSport, params);
+			break;
+		case "todayContest":
+			sendWorkerCommand(sportTabPushActions.todayContest.openSport, params);
+			break;
+		case "morningTrading":
+			sendWorkerCommand(sportTabPushActions.morningTrading.openSport, params);
+			break;
+		case "champion":
+			sendWorkerCommand(sportTabPushActions.champion.openSport, params);
+			break;
+		default:
+			sendWorkerCommand(sportTabPushActions.todayContest.openSport, params);
+			break;
+	}
 }
 
-/*选中的类型项 */
-type TabOptions = "rollingBall" | "todayContest" | "morningTrading" | "champion" | "attention" | "matchResult";
+
 /**
- * @description 组件挂载之前根据路由设置选中的tab
+ * @description 处理体育分类推送
+ * @param params 基础参数
  */
-const tabActive = ref<TabOptions>("rollingBall");
+const handleSportEventsPush = async (params) => {
+  const pushActions = {
+    rollingBall: ()=> sendWorkerCommand(sportTabPushActions.rollingBall.openEvents(sportType.value as string), params),
+    todayContest: ()=> sendWorkerCommand(sportTabPushActions.todayContest.openEvents(sportType.value as string), params),
+    morningTrading: 
+      () => {
+        const { startDate, endDate } = SportMorningTradingStore.getTimeInterval;
+        const queryParams = SportMorningTradingStore.getActiveDate 
+          ? {
+              query: `$filter= sportType in (${sportType.value})`,
+              from: startDate,
+              until: endDate,
+              includeMarkets: `$filter=bettype in (${betTypes})`,
+            }
+          : {
+              query: `$filter= sportType in (${sportType.value})`,
+              includeMarkets: `$filter=bettype in (${betTypes})`,
+              from: moment.utc().add(8 - 5 / 24, "day").startOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
+					};
+        sendWorkerCommand(sportTabPushActions.morningTrading.openEvents(sportType.value as string), params, { params: queryParams });
+      }
+    ,
+    champion: ()=> sendWorkerCommand(sportTabPushActions.champion.openEvents(sportType.value as string), params),
+    matchResult: 
+      async () => {
+        const today = moment();
+        const twelveDaysAgo = moment().subtract(11, "day");
+        const format = "YYYY-MM-DD";
+        
+        try {
+          const res = await sportsApi.GetSportResults({
+            language: "zhcn",
+            from: `${twelveDaysAgo.format(format)}T00:00:00`,
+            until: `${today.format(format)}T23:59:59`,
+          });
+          
+          if (res.data) {
+            const sportList = res.data.sportList;
+            viewSportPubSubEventData.setSportData({
+              ...viewSportPubSubEventData.viewSportData,
+              sports: formattingResultViewData(sportList),
+            });
+          }
+        } catch (error) {
+          console.error("获取比赛结果失败", error);
+        }
+      }
+  };
 
-const sportState = reactive({ sportTypeActive: null as number | null });
+  const action = pushActions[tabActive.value as keyof typeof pushActions];
+  if (!action) {
+    return;
+  }
+  action();
+};
+/**
+ * @description 发送worker命令
+ * @param action 动作配置
+ * @param params 基础参数
+ * @param additionalParams 额外参数
+ */
+ const sendWorkerCommand = (action, params, additionalParams = {}) => {
+  pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
+  pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
+  pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, action, params, additionalParams);
+	 pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
+	 stopLoading();
+	
+};
 
-/** 路由记录( 用于判断是否需要重建sport数据)  */
-const routeRecord = ref({
-	newRoute: {
-		path: "" as any,
-		isSportSort: "" as any,
-	},
-	oldRoute: {
-		path: "" as any,
-		isSportSort: "" as any,
-	},
-});
+
+/**
+ * @description 开启关注SSE
+ */
+const openAttentionSSE = async () => {
+  closeSportViewProcessWorker();
+  openSportViewProcessWorker();
+  initSportPubsub();
+  
+  if (attentionSwitch.value == "event") {
+    openAttentionEventSSE();
+  } else {
+    openAttentionOutrightSSE();
+  }
+};
+
+/**
+ * @description 开启关注事件SSE
+ */
+const openAttentionEventSSE = () => {
+  const params = {
+    apiUrl: SportsCommonFn.getSportPushApiUrl(),
+    token: SportsInfoStore.getSportsToken,
+    language: SportsCommonFn.getSportLanguage(),
+  };
+  
+  const attentionParams = {
+    params: {
+      query: `$filter= eventId in (${SportAttentionStore.attentionEventIdList.join()})&$orderby=globalShowTime asc `,
+      includeMarkets: `$filter=bettype in (${betTypes})`,
+    },
+	};
+  sendWorkerCommand(sportTabPushActions.attention.openEvents, { ...params, ...attentionParams });
+};
+
+/**
+ * @description 开启关注冠军SSE
+ */
+const openAttentionOutrightSSE = () => {
+  const params = {
+    apiUrl: SportsCommonFn.getSportPushApiUrl(),
+    token: SportsInfoStore.getSportsToken,
+    language: SportsCommonFn.getSportLanguage(),
+  };
+  
+  const attentionParams = {
+    params: {
+      query: `$filter= leagueId in (${SportAttentionStore.attentionLeagueIdList.join()})&$orderby=eventDate asc `,
+      includeMarkets: `$filter=bettype in (${betTypes})`,
+    },
+  };
+
+  sendWorkerCommand(sportTabPushActions.attention.openOutright, { ...params, ...attentionParams });
+};
+
+/**
+ * @description 开启事件详情推送
+ */
+const openEventDetailPush = async () => {
+  const { leagueId, eventId } = route.query;
+
+  const params = {
+    apiUrl: SportsCommonFn.getSportPushApiUrl(),
+    token: SportsInfoStore.getSportsToken,
+    language: SportsCommonFn.getSportLanguage(),
+  };
+	// sendWorkerCommand(sportTabPushActions.rollingBall.openSport, params),
+  sendWorkerCommand(sportsEventDetailPush.openMarkets(eventId), params);
+  sendWorkerCommand(sportsEventDetailPush.openEvents(leagueId), params);
+};
+
+
+/**
+ * @description 切换tab
+ * @param path 路径对象
+ */
+const onTab = (path: any) => {
+	const query = { ...route?.query, sportsActive: path.type };
+  if (tabActive.value == path.type) return;
+	router.replace({ path: route.path, query: { ...query } });
+  ShopCatControlStore.setShopCatShow(false);
+  clearStroe();
+  unSubSport();
+  closeSportViewProcessWorker();
+  
+  tabActive.value = path.type;
+  initSportPubsub();
+  openSportViewProcessWorker();
+  openSportPush();
+};
+
+/**
+ * @description 刷新初始化体育界面
+ */
+const onRefresh = () => {
+  initSport();
+};
+
+/**
+ * @description 卸载体育
+ */
+const unSport = () => {
+  clearState();
+  closeSportViewProcessWorker();
+  unSubSport();
+};
+
+/**
+ * @description 打开通知
+ */
+const openNotify = () => {
+  NotifyModal.value = markRaw(defineAsyncComponent(() => import(`./components/Notify/index.vue`)));
+  showNotifyModal.value = true;
+};
+
+/**
+ * @description 关闭通知模态框
+ */
+const closeNotifyModal = () => {
+  showNotifyModal.value = false;
+};
+
+/**
+ * @description 关闭体育视图处理线程
+ */
+const closeSportViewProcessWorker = () => {
+  try {
+    workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
+  } catch (error) {
+    console.error("关闭体育视图处理线程失败", error);
+  }
+};
+
+/**
+ * @description 开启体育视图处理线程
+ */
+const openSportViewProcessWorker = () => {
+  try {
+    workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
+  } catch (error) {
+    console.error("开启体育视图处理线程失败", error);
+  }
+};
+
+/**
+ * @description 清除store数据
+ */
+const clearStroe = () => {
+	viewSportPubSubEventData.clearEventsState();
+  SportLeagueSeachStore.clearLeagueSelect();
+};
+
+// 监听
+watch(
+  () => route.path,
+  (newValue, oldValue) => {
+    if (routeRecord.value.newRoute?.path) {
+      routeRecord.value.oldRoute = cloneDeep(routeRecord.value.newRoute);
+      routeRecord.value.newRoute = {
+        path: newValue,
+        isSportSort: route.meta?.isSportSort || false,
+      };
+      if (!routeRecord.value.oldRoute?.isSportSort || !routeRecord.value.newRoute?.isSportSort) {
+        initSport();
+      }
+    } else {
+      initSport();
+      routeRecord.value.newRoute = {
+        path: newValue,
+        isSportSort: route.meta?.isSportSort || false,
+      };
+    }
+
+    ShopCatControlStore.setShopCatShow(false);
+    if (!routeRecord.value.oldRoute.path.includes("sportsLeagueSearch")) {
+      clearStroe();
+    }
+  },
+  {
+    deep: true,
+  }
+);
+
+watch(
+  () => UserStore.userInfo.token,
+  () => {
+    window.location.reload();
+  }
+);
+watch(
+  () => SportMorningTradingStore.getActiveDate,
+  (newValue) => {
+    if (newValue && tabActive.value == "morningTrading") {
+      initSport();
+    }
+  }
+);
 
 const { pause, resume } = useIntervalFn(() => sportsLogin(), 8 * 60 * 1000);
 
-/**
- * 卸载
- */
-onBeforeUnmount(() => {
-	// 卸载体育
-	unSport();
-	pause();
-});
-onBeforeMount(() => {
-	LayoutStore.setBigScreen(true);
-	PubSub.subscribe(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
-	initSportRequest();
-});
-const initSportRequest = async () => {
-	//获取关注列表
-	getAttention();
-	// 体育登录
-	await sportsLogin();
-	// 初始化体育
-	await initSport();
-};
-
-/**清除store数据 */
-const clearStroe = () => {
-	SportLeagueSeachStore.clearLeagueSelect();
-};
-
-watch(
-	() => route.path,
-	(newValue, oldValue) => {
-		if (routeRecord.value.newRoute?.path) {
-			routeRecord.value.oldRoute = cloneDeep(routeRecord.value.newRoute);
-			routeRecord.value.newRoute = {
-				path: newValue,
-				isSportSort: route.meta?.isSportSort || false,
-			};
-			// console.info("routeRecord.value.", routeRecord.value);
-			/** 路由记录 当判断isSportSort 不一致时；进行数据请求  */
-			if (!routeRecord.value.oldRoute?.isSportSort || !routeRecord.value.newRoute?.isSportSort) {
-				// console.info("路由记录 当判断isSportSort 不一致时；进行");
-				initSport();
-			}
-		} else {
-			initSport();
-			routeRecord.value.newRoute = {
-				path: newValue,
-				isSportSort: route.meta?.isSportSort || false,
-			};
-		}
-
-		ShopCatControlStore.setShopCatShow(false);
-		// 如果不是从搜索页面跳转的就不清除store数据  否则清除
-		if (!routeRecord.value.oldRoute.path.includes("sportsLeagueSearch")) {
-			clearStroe();
-		}
-	},
-	{
-		deep: true,
-		// immediate: true,
-	}
-);
-
-onUnmounted(() => {
-	LayoutStore.setBigScreen(false);
-});
-const attentionSwitch = computed(() => SportAttentionStore.attentionType);
-
-watch(
-	() => UserStore.userInfo.token,
-	(newValue, oldValue) => {
-		/**改为token 变动时就进行更新体育token */
-		window.location.reload();
-	}
-);
-
-watch(
-	() => SportMorningTradingStore.getActiveDate,
-	(newValue, oldValue) => {
-		if (newValue && tabActive.value == "morningTrading") {
-			initSport();
-		}
-	}
-);
-
-/**
- * @description: 关闭体育线程
- * @return {*}
- */
-const closeSportViewProcessWorker = () => {
-	try {
-		workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
-	} catch (error) {}
-};
-
-/**
- * @description: 开启体育线程
- * @return {*}
- */
-const openSportViewProcessWorker = () => {
-	try {
-		workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
-	} catch (error) {}
-};
-
-/**
- * @description 获取关注列表
- * @param isLogin 是否需要登陆
- */
-const getAttention = async (isLogin = true) => {
-	if (isLogin) {
-		if (!isEmpty(UserStore.getUserInfo)) {
-			handleGetAttention();
-		}
-	} else {
-		handleGetAttention();
-	}
-};
-
-/**
- * @description 获取关注列表
- */
-
-const handleGetAttention = () => {
-	return new Promise((resolve, reject) => {
-		FootballCardApi.getAttentionList().then((res) => {
-			if (res.data) {
-				SportAttentionStore.setAttentionList(res.data);
-				resolve(res.data);
-			} else {
-				reject(res);
-			}
-		});
-	});
-};
-
-//初始化体育
-const initSport = async () => {
-	initSportPubsub();
-	openSportPush();
-};
-
-const initSportPush = () => {
-	//打开冠军页面  loading不停 所以注释
-	startLoading();
-	//线程名称 体育视图处理线程
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
-	//console.warn("第二步 准备发送指令到线程管理器", pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName);
-	//线程指令 体育eventSource 指令
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
-	//console.warn("第二步 准备发送指令到线程管理器", pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType);
-	const params = {
-		apiUrl: SportsCommonFn.getSportPushApiUrl(),
-		token: SportsInfoStore.getSportsToken,
-		language: SportsCommonFn.getSportLanguage(),
-	};
-
-	if (tabActive.value == "rollingBall") {
-		//清空参数
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-		//参数赋值
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.rollingBall.openSport, params);
-		//发送SSE指令到线程管理器
-		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-	}
-
-	//如果当前激活的tab是 今日
-	else if (tabActive.value == "todayContest") {
-		//清空参数
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-		//参数赋值
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.todayContest.openSport, params);
-		//发送SSE指令到线程管理器
-		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-	}
-
-	//如果当前激活的tab是 早盘
-	else if (tabActive.value == "morningTrading") {
-		//清空参数
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-		//参数赋值
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.morningTrading.openSport, params);
-		//发送SSE指令到线程管理器
-		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-	}
-
-	//如果当前激活的tab是 冠军
-	else if (tabActive.value == "champion") {
-		//清空参数
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-
-		//参数赋值
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.champion.openSport, params);
-		//发送SSE指令到线程管理器
-		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-	}
-};
-
-/**
- * @description 发送指令到体育视图处理线程 开启SSE推送
- */
-const openSportPush = async () => {
-	// 关闭体育线程
-	closeSportViewProcessWorker();
-	// 开启体育线程
-	openSportViewProcessWorker();
-
-	const query = { ...route?.query, sportsActive: tabActive.value };
-	//路由添加请求时的选中类型；用于页面判断展示内容；
-	router.replace({ path: route.path, query: query });
-	// console.info("路由添加请求时的选中类型；用于页面判断展示内容；", route);
-	//stopLoading  在useSportPubSubEvents hooks 中触发 停止loading
-	//打开冠军页面  loading不停 所以注释
-	startLoading();
-	//线程名称 体育视图处理线程
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
-	//console.warn("第二步 准备发送指令到线程管理器", pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName);
-	//线程指令 体育eventSource 指令
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
-	//console.warn("第二步 准备发送指令到线程管理器", pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType);
-	const params = {
-		apiUrl: SportsCommonFn.getSportPushApiUrl(),
-		token: SportsInfoStore.getSportsToken,
-		language: SportsCommonFn.getSportLanguage(),
-	};
-	console.log(tabActive.value, "==tabActive.value ");
-	initSportPush();
-	if (route?.meta?.isSportSort) {
-		// router.push({ path: route.path, query: { sportsActive: tabActive.value } });
-		//console.warn("第二步 准备发送指令到线程管理器", params);
-		//如果当前激活的tab是 滚球
-		if (tabActive.value == "rollingBall") {
-			//清空参数
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-			//参数赋值
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.rollingBall.openEvents, params);
-			//发送SSE指令到线程管理器
-			pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-		}
-
-		//如果当前激活的tab是 今日
-		else if (tabActive.value == "todayContest") {
-			//清空参数
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-			//参数赋值
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.todayContest.openEvents, params);
-			//发送SSE指令到线程管理器
-			pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-
-			// await sportTabPushActions.todayContest.openSport?.();
-
-			// await sportTabPushActions.todayContest.openEvents?.();
-		}
-
-		//如果当前激活的tab是 早盘
-		else if (tabActive.value == "morningTrading") {
-			// //清空参数
-			// pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-			// //参数赋值
-			// pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.morningTrading.openEvents, params);
-			// //发送SSE指令到线程管理器
-			// pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-			openMorningTradingSSE();
-		}
-
-		//如果当前激活的tab是 冠军
-		else if (tabActive.value == "champion") {
-			//清空参数
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-			//参数赋值
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.champion.openEvents, params);
-			// console.info(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName);
-			// console.info(pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-			//发送SSE指令到线程管理器
-			pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-			stopLoading();
-		}
-
-		//如果当前激活的tab是 赛果
-		else if (tabActive.value == "matchResult") {
-			await getMatchResult();
-		}
-
-		//如果当前激活的tab是 关注
-		else if (tabActive.value == "attention") {
-			console.log("点击关注");
-		}
-	} else if (route.path == "/sports/collect") {
-		/** 关注收藏 */
-		openAttentionSSE();
-		getAttention(false);
-	} else {
-		// closeSportViewProcessWorker();
-		stopLoading();
-	}
-};
-
-/**早盘sse数据请求 */
-const openMorningTradingSSE = () => {
-	const ActiveDate = SportMorningTradingStore.getActiveDate;
-	const { startDate, endDate } = SportMorningTradingStore.getTimeInterval;
-	const params = {
-		apiUrl: SportsCommonFn.getSportPushApiUrl(),
-		token: SportsInfoStore.getSportsToken,
-		language: SportsCommonFn.getSportLanguage(),
-	};
-	const queryParams: any = {};
-	if (SportMorningTradingStore.getActiveDate) {
-		queryParams["params"] = {
-			query: `$filter= sportType in (${SportsCommonFn.getRequestSportsType()})`,
-			from: startDate,
-			until: endDate,
-			includeMarkets: `$filter=bettype in (${betTypes})`,
-		};
-	} else {
-		queryParams["params"] = {
-			query: `$filter= sportType in (${SportsCommonFn.getRequestSportsType()})`,
-			includeMarkets: `$filter=bettype in (${betTypes})`,
-			from: moment
-				.utc()
-				.add(8 - 5 / 24, "day")
-				.startOf("day")
-				.add(5, "hour")
-				.format("YYYY-MM-DDTHH:mm:ss"),
-		};
-	}
-	// // startLoading();
-	// pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-	// //参数赋值
-	// pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.morningTrading.openSport, params);
-	// //发送SSE指令到线程管理器
-	// pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-	//清空参数
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-	//参数赋值
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.morningTrading.openEvents, params, queryParams);
-	//发送SSE指令到线程管理器
-	pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-};
-
-/**
- * @description: 开启关注SSE event
- * @return {*}
- */
-const openAttentionEventSSE = async () => {
-	//stopLoading  在useSportPubSubEvents hooks 中触发 停止loading
-	//线程名称 体育视图处理线程
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
-	//线程指令 体育eventSource 指令
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
-
-	const params = {
-		apiUrl: SportsCommonFn.getSportPushApiUrl(),
-		token: SportsInfoStore.getSportsToken,
-		language: SportsCommonFn.getSportLanguage(),
-	};
-	const attentionParams = {
-		params: {
-			query: `$filter= eventId in (${SportAttentionStore.attentionEventIdList.join()})&$orderby=globalShowTime asc `,
-			includeMarkets: `$filter=bettype in (${betTypes})`,
-		},
-	};
-	//清空参数
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-	//参数赋值
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.attention.openEvents, params, attentionParams);
-	//发送SSE指令到线程管理器
-	pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-};
-
-/**
- * @description: 开启关注冠军的SSE;
- * @return {*}
- */
-const openAttentionOutrightSSE = async () => {
-	//stopLoading  在useSportPubSubEvents hooks 中触发 停止loading
-	//线程名称 体育视图处理线程
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
-	//线程指令 体育eventSource 指令
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
-
-	const params = {
-		apiUrl: SportsCommonFn.getSportPushApiUrl(),
-		token: SportsInfoStore.getSportsToken,
-		language: SportsCommonFn.getSportLanguage(),
-	};
-	const attentionParams = {
-		params: {
-			query: `$filter= leagueId in (${SportAttentionStore.attentionLeagueIdList.join()})&$orderby=eventDate asc `,
-			includeMarkets: `$filter=bettype in (${betTypes})`,
-		},
-	};
-	//清空参数
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OpenSportEventSourceParams;
-	//参数赋值
-	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportTabPushActions.attention.openOutright, params, attentionParams);
-	//发送SSE指令到线程管理器
-	pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-	// stopLoading();
-};
-
-/**
- * @description: 开启关注SSE；
- * @return {*}
- */
-const openAttentionSSE = async () => {
-	closeSportViewProcessWorker();
-	openSportViewProcessWorker();
-	initSportPush();
-	if (attentionSwitch.value == "event") {
-		openAttentionEventSSE();
-	} else {
-		openAttentionOutrightSSE();
-	}
-};
-
-// 切换tab时 根据path处理对应的获取数据逻辑
-const onTab = (path: any) => {
-	console.log(path, "=====path");
-	ShopCatControlStore.setShopCatShow(false);
-	clearStroe();
-	if (tabActive.value == path.type) {
-		return;
-	}
-	unSubSport();
-	closeSportViewProcessWorker();
-	//设置当前选中的tab 跳转到对应的路由
-	tabActive.value = path.type;
-	initSportPubsub();
-	openSportViewProcessWorker();
-	//开启体育推送
-	openSportPush();
-};
-
-/**
- * @description: 刷新 初始化体育界面
- * @return {*}
- */
-const onRefresh = () => {
-	initSport();
-};
-
-const getMatchResult = async () => {
-	// 获取当前日期
-	const today = moment();
-	// 获取当前日期往前12天
-	const twelveDaysAgo = moment().subtract(11, "day");
-	const format = "YYYY-MM-DD";
-	const res = await sportsApi
-		.GetSportResults({
-			language: "zhcn",
-			from: `${twelveDaysAgo.format(format)}T00:00:00`,
-			until: `${today.format(format)}T23:59:59`,
-		})
-		.catch((err) => err);
-	//获取赛果数量后 添加到sports中
-	if (res.data) {
-		const sportList = res.data.sportList;
-		viewSportPubSubEventData.setSportData({
-			...viewSportPubSubEventData.viewSportData,
-			sports: formattingResultViewData(sportList),
-		});
-		//初始化球类路由状态
-		// initRouter();
-	}
-};
-
-//卸载体育
-const unSport = () => {
-	clearState();
-	//关掉体育视图线程
-	closeSportViewProcessWorker();
-	//取消订阅体育事件
-	unSubSport();
-};
-
-const openNotify = () => {
-	NotifyModal.value = markRaw(defineAsyncComponent(() => import(`./components/Notify/index.vue`)));
-	showNotifyModal.value = true;
-};
-
-const closeNotifyModal = () => {
-	showNotifyModal.value = false;
-};
 </script>
 
 <style lang="scss" scoped>
 .base-body {
+	width: 1660px;
 	height: 100%;
-	max-width: 1636px;
+	// max-width: 1636px;
 	margin: 0 auto;
 	overflow-x: auto;
 }
@@ -640,14 +518,13 @@ const closeNotifyModal = () => {
 .main-container {
 	display: flex;
 	height: calc(100% - 40px);
-
-	width: 1636px;
+	width: 1660px;
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
 	.left-container {
 		position: relative; // 设置相对定位，购物车弹窗的绝对定位
-		margin: 0px 0;
+		margin: 0px 12px;
 		flex: 1;
 		// width: 1246px;
 
@@ -677,7 +554,7 @@ const closeNotifyModal = () => {
 	.right-container {
 		width: 390px;
 		height: 100%;
-		margin: 0 10px;
+		// margin: 0 10px;
 		overflow-y: auto;
 	}
 	.right-container::-webkit-scrollbar {

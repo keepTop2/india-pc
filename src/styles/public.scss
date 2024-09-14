@@ -29,6 +29,13 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+	.ellipsis2 {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
 	.Wran_text {
 		color: var(--Warn);
 	}
@@ -44,6 +51,9 @@
 	.Text2 {
 		color: var(--Text2);
 	}
+	.Texta {
+		color: var(--Text_a);
+	}
 	.common_input {
 		width: 100%;
 		height: 34px;
@@ -52,6 +62,10 @@
 		padding: 0 16px;
 		color: var(--Text_s);
 		outline: none;
+	}
+	.verifyError {
+		border: 1px solid var(--Theme);
+		border-radius: 4px;
 	}
 	.common_input::placeholder {
 		color: var(--Text2);

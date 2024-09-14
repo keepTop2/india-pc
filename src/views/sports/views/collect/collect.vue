@@ -189,10 +189,6 @@ const computedSportComponent = computed(() => {
 	].filter((item) => !!item.data?.length);
 });
 
-watchEffect(() => {
-	//
-});
-
 /**
  * @description 赔率发生变化后 3秒动画 清理掉oddsChange状态
  */
