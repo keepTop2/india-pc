@@ -1,22 +1,28 @@
 <template>
-	<div class="home-wrapper">
-		<!-- banner -->
-		<bannerSkeleton v-if="isLoading" />
-		<banner v-else></banner>
+	<div>
+		<Fragment>
+			<bannerSkeleton v-if="isLoading" />
+			<banner v-else></banner>
+		</Fragment>
+
 		<div class="max-width">
 			<!-- 热门推荐 -->
-			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
-			<hotGame :hotGameList="hotGameList" v-else />
-
-			<!-- b -->
-			<template v-if="isLoading">
-				<lobbyGameSkeleton :skeletonCount="6" />
-				<lobbyGameSkeleton :skeletonCount="3" />
-				<lobbyGameSkeleton :skeletonCount="6" />
-				<lobbyGameSkeleton :skeletonCount="1" />
-				<lobbyGameSkeleton :skeletonCount="5" />
-			</template>
-			<lobbyGameCard v-for="item in lobbyGameList" :gameList="item" />
+			<Fragment>
+				<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
+				<hotGame :hotGameList="hotGameList" v-else />
+			</Fragment>
+			<Fragment>
+				<Fragment v-if="isLoading">
+					<lobbyGameSkeleton :skeletonCount="6" />
+					<lobbyGameSkeleton :skeletonCount="3" />
+					<lobbyGameSkeleton :skeletonCount="6" />
+					<lobbyGameSkeleton :skeletonCount="1" />
+					<lobbyGameSkeleton :skeletonCount="5" />
+				</Fragment>
+				<Fragment v-else>
+					<lobbyGameCard v-for="item in lobbyGameList" :gameList="item" />
+				</Fragment>
+			</Fragment>
 		</div>
 	</div>
 </template>
