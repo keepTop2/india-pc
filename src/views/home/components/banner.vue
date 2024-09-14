@@ -31,7 +31,7 @@ import banner2 from "./image/banner2.png";
 import banner3 from "./image/banner3.png";
 import { onMounted, ref } from "vue";
 const swiperRef: any = ref(null);
-
+const isLoading = ref(false);
 const announcementList = [banner1, banner2, banner3, banner1, banner2, banner3];
 const onSwiper = (swiper: any) => {
 	swiperRef.value = swiper;

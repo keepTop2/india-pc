@@ -10,24 +10,12 @@
 			<div class="more Text1 fs_18 curp">更多</div>
 		</div>
 		<div class="lobbyGameList">
-			<slide>
+			<slide v-if="gameList?.gameInfoList">
 				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
 					<div>
 						<img :src="item.icon" alt="" />
 					</div>
-					<div class="gameInfo">{{ item.name }} {{ item.name }}{{ item.name }}{{ item.name }} {{ item.name }}{{ item.name }}</div>
-					<div class="onHover">
-						<div class="playBtn fs_15 Text_s">Play</div>
-					</div>
-					<div class="collect" @click="collectGame(item)">
-						<svg-icon :name="item.collect ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
-					</div>
-				</div>
-				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
-					<div>
-						<img :src="item.icon" alt="" />
-					</div>
-					<div class="gameInfo">{{ item.name }} {{ item.name }}{{ item.name }}</div>
+					<div class="gameInfo">{{ item.name }}</div>
 					<div class="onHover">
 						<div class="playBtn fs_15 Text_s">Play</div>
 					</div>
