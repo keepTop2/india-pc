@@ -1,20 +1,26 @@
-<!-- src/components/RegisterForm.vue -->
 <template>
 	<form class="loginWrapper">
 		<div class="login_left_img">
-			<img src="/@/assets/common/login_left.png" alt="" />
+			<img src="/@/assets/common/login_left.png" alt="Login Image" />
 		</div>
+
 		<div class="login_right_form">
+			<!-- 登录标题 -->
 			<div class="login_text fs_16 mb_20">
 				<span>{{ $t(`login['登陆']`) }}</span>
 			</div>
+
+			<!-- 登录表单 -->
 			<div class="login_form">
+				<!-- 账号输入 -->
 				<div class="mb_12">
 					<p class="Text_s fs_12"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
 						<input type="text" :value="payLoad.userAccount" class="common_input mt_8" :placeholder="$t(`login['输入账号']`)" @input="userOnInput" autocomplete="new-password" />
 					</p>
 				</div>
+
+				<!-- 密码输入 -->
 				<div class="mb_12">
 					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
 					<p class="common_password">
@@ -26,11 +32,13 @@
 							@input="passOnInput"
 							autocomplete="new-password"
 						/>
-						<span class="eyes">
-							<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showPassword = !showPassword" />
+						<span class="eyes" @click="showPassword = !showPassword">
+							<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" />
 						</span>
 					</p>
 				</div>
+
+				<!-- 记住密码和忘记密码 -->
 				<div class="flex_space-between fs_12 mt_10">
 					<div class="Text1 curp flex-center" style="gap: 6px">
 						<svg-icon
@@ -43,12 +51,21 @@
 					</div>
 					<div class="Text_s curp fs_12" @click="forgetPassword">{{ $t(`login['忘记密码']`) }}？</div>
 				</div>
+
+				<!-- 登录按钮 -->
 				<div class="mt_40 mb_12">
-					<button class="common_btn fs_12" type="button" @click="onLogin">{{ $t(`login['登陆']`) }}</button>
+					<button class="common_btn fs_12" type="button" id="captcha-element" @click="onLogin">
+						{{ $t(`login['登陆']`) }}
+					</button>
 				</div>
+
+				<!-- 注册和联系客服 -->
 				<div class="flex_space-between fs_12">
 					<div class="Text1">
-						{{ $t(`login['新用户']`) }}？ <span class="Wran_text curp" @click="toRegister">{{ $t(`login['创建账号']`) }}</span>
+						{{ $t(`login['新用户']`) }}？
+						<span class="Wran_text curp" @click="toRegister">
+							{{ $t(`login['创建账号']`) }}
+						</span>
 					</div>
 					<div>
 						<span class="Wran_text fs_12">{{ $t(`login['联系客服']`) }}</span>
@@ -57,7 +74,9 @@
 			</div>
 		</div>
 	</form>
-	<Hcaptcha ref="hcaptcha" @submit="onSubmit" />
+
+	<!-- 验证码容器 -->
+	<div id="hcaptchaContainer"></div>
 </template>
 
 <script setup lang="ts">
@@ -68,79 +87,99 @@ import Common from "/@/utils/common";
 import eventBus from "/@/utils/eventBus";
 import showToast from "/@/hooks/useToast";
 import { useUserStore } from "/@/stores/modules/user";
+
 const UserStore = useUserStore();
+let hcaptcha: any = null;
 
-// 验证码
-const hcaptcha: any = ref(null);
+// 控制验证码的显示
+const showhcaptcha = ref(false);
 
-// 登陆表单
+// 表单数据
 const payLoad = reactive({
 	userAccount: "",
 	password: "",
 });
+
 // 记住密码
 const rememberPassword = ref(false);
 
-//账号密码校验规则
+// 输入验证正则
 const userAccountRegex = /^[a-zA-Z][a-zA-Z0-9]{3,10}$/;
 const passWordregex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@_$]{8,16}$/;
 
-//显示校验提示
+// 验证提示
 const userAccountVerifyError = ref(false);
 const passWordVerifyError = ref(false);
 
-// 显示密码
+// 密码显示切换
 const showPassword = ref(false);
 
-// 获取是否记住密码
+// 初始化验证码
 onMounted(() => {
 	if (UserStore.getLoginInfo) {
 		Object.assign(payLoad, UserStore.getLoginInfo);
 		rememberPassword.value = true;
 		verifyBtn();
 	}
+	(window as any).initAliyunCaptcha({
+		SceneId: "qxye14r6d",
+		prefix: "5zbecta",
+		mode: "popup",
+		element: "#hcaptchaContainer",
+		button: "#captcha-element",
+		captchaVerifyCallback: captchaVerifyCallback,
+		onBizResultCallback: onSubmit,
+		getInstance: getInstance,
+		slideStyle: {
+			width: 360,
+			height: 200,
+		},
+		language: "cn",
+	});
 });
-// 监听输入框变化
+
+// 账号输入变化处理
 const userOnInput = (e: any) => {
 	payLoad.userAccount = e.target.value;
-	userAccountRegex.test(payLoad.userAccount) ? (userAccountVerifyError.value = false) : (userAccountVerifyError.value = true);
+	userAccountVerifyError.value = !userAccountRegex.test(payLoad.userAccount);
 	verifyBtn();
 };
+
+// 密码输入变化处理
 const passOnInput = (e: any) => {
 	payLoad.password = e.target.value;
-	passWordregex.test(payLoad.password) ? (passWordVerifyError.value = false) : (passWordVerifyError.value = true);
+	passWordVerifyError.value = !passWordregex.test(payLoad.password);
 	verifyBtn();
 };
 
-// 表单验证
+// 验证按钮状态
 const verifyBtn = () => {};
 
-// 点击登录，弹出真人验证
+// 登录处理
 const onLogin = async () => {
 	if (userAccountRegex.test(payLoad.userAccount) && passWordregex.test(payLoad.password)) {
-		hcaptcha.value?.validate();
+		showhcaptcha.value = true;
 	} else {
 		showToast("用户名或密码错误", 1500);
 	}
 };
 
-// 前端验证通过，提交表单
+// 获取验证码实例
+const getInstance = (instance: any) => {
+	hcaptcha.value = instance;
+};
+
+// 提交处理
 const onSubmit = async (token: string) => {
 	const verifyToken = token;
 	const res = await loginApi.userLogin({ ...payLoad, verifyToken }).catch((err) => err);
 	const { code, data, message } = res;
-	if (code == Common.ResCode.SUCCESS) {
+	if (code === Common.ResCode.SUCCESS) {
 		showToast(message, 1500);
 		eventBus.emit("hide-modal");
 		await UserStore.setUserInfo(data);
 		getUserInfo();
-
-		// 保存登陆密码
-		if (rememberPassword.value) {
-			UserStore.setLoginInfo({ userAccount: payLoad.userAccount, password: payLoad.password });
-		} else {
-			UserStore.setLoginInfo();
-		}
+		rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
 	} else {
 		payLoad.password = "";
 		payLoad.userAccount = "";
@@ -148,11 +187,11 @@ const onSubmit = async (token: string) => {
 	}
 };
 
-// 登录成功获取用户信息
+// 获取用户信息
 const getUserInfo = async () => {
 	const res = await userApi.getIndexInfo().catch((err) => err);
 	const { code, data, message } = res;
-	if (code == Common.ResCode.SUCCESS) {
+	if (code === Common.ResCode.SUCCESS) {
 		const userInfo = { ...UserStore.getUserInfo, ...data };
 		UserStore.setUserInfo(userInfo);
 		localStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -161,17 +200,26 @@ const getUserInfo = async () => {
 	}
 };
 
-// 忘记密码
+// 忘记密码处理
 const forgetPassword = () => {
 	eventBus.emit("show-modal", "ForgetPassword");
 };
 
-// 新用户注册
+// 注册处理
 const toRegister = () => {
 	eventBus.emit("show-modal", "RegisterModal");
 };
-</script>
 
+// 验证码验证回调
+const captchaVerifyCallback = (captchaVerifyParam: any) => {
+	// 构造标准返回参数
+	const verifyResult = {
+		captchaResult: true,
+		bizResult: true,
+	};
+	return verifyResult;
+};
+</script>
 <style lang="scss" scoped>
 .loginWrapper {
 	width: 680px;
