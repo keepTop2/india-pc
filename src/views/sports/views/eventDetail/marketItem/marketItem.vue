@@ -29,7 +29,11 @@
 										class="li_tag bg_Tag1"
 										v-for="selection in filterSelections(market.selections)"
 										@click="market.marketStatus === 'running' && onSetSportsEventData(market, selection)"
-										:class="{ isBright: isBright(market, selection), threeCol: filterSelections(market.selections).length % 2 != 0 && !isbladder(market.betType) }"
+										:class="{
+											isBright: isBright(market, selection),
+											threeCol: filterSelections(market.selections).length % 3 === 0 && !isbladder(market.betType),
+											twoCol: filterSelections(market.selections).length % 3 !== 0 && !isbladder(market.betType)
+										}"
 										:key="market.marketId + selection.key"
 									>
 										<div v-if="market.marketStatus === 'running'">
@@ -39,12 +43,15 @@
 											</span>
 											<span :class="['fs_14', 'fw_400', 'price', changeClass(selection)]"
 												>{{ selection.oddsPrice.decimalPrice }}
-												<RiseOrFall
+												<span>
+													<RiseOrFall
 													v-if="selection.oddsChange"
 													:time="3000"
 													:status="selection.oddsChange == 'oddsUp' ? 1 : 2"
 													@animationEnd="animationEnd(market.marketId, selection)"
 												/>
+												</span>
+												
 											</span>
 										</div>
 										<div v-else>
@@ -328,7 +335,6 @@ watch(
 				}
 				.li_tag {
 					cursor: pointer;
-					flex: 1;
 					padding:7px 12px;
 					height: 34px;
 					box-sizing: border-box; /* 包括边框和内边距在内占据50% */
@@ -337,11 +343,20 @@ watch(
 					justify-content: center;
 					flex-direction: column;
 					background-color: var(--Bg3);
+					flex-basis: calc(50% - 5px); /* 每个元素占据50%，减去10px的间隔 */
 					font-size: 14px;
+					margin-bottom: 10px;
 					.price {
 						position: relative;
 						display: inline-block;
 						color:var(--Text_a);
+						display: flex;
+						align-items: center;
+						gap:5px;
+						span{
+							width: 20px;
+							display: inline-block;
+						}
 					}
 					>div{
 						display: flex;
