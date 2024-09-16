@@ -10,8 +10,8 @@
 			</div>
 			<i class="line"></i>
 			<div class="right">
-				<div v-for="(item, index) in sportsData" :key="index" class="nva-item" :class="{ active: route.query.sportType == item.sportType }" @click="toPath(item)">
-					<img class="icon mr_6" :src="route.query.sportType == item.sportType ? item.activeIcon : item.icon" alt="" />
+				<div v-for="(item, index) in sportsData" :key="index" class="nva-item" :class="{ active: Number(route.query.sportType) == item.sportType }" @click="toPath(item)">
+					<img class="icon mr_6" :src="Number(route.query.sportType) == item.sportType ? item.activeIcon : item.icon" alt="" />
 					<span class="value mr_4">{{ item.sportName }}</span>
 					<div class="value">{{ item.count }}</div>
 				</div>
@@ -40,6 +40,8 @@ const emit = defineEmits(["switchType"]);
 
 // 球类tab数据
 const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
+console.log("sportsData", sportsData);
+console.log("route.query.sportType", route.query.sportType);
 
 // 路由初始化逻辑
 const initRoute = () => {
@@ -107,6 +109,7 @@ onMounted(() => {});
 		align-items: center;
 		padding: 10px 0;
 		padding-right: 40px;
+		overflow: hidden;
 		box-sizing: border-box;
 
 		.line {

@@ -18,7 +18,7 @@
 				<div class="other-info">
 					<!-- 塞节时间 -->
 					<div class="date">
-						<span>{{ livePeriod }}</span>
+						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
 					</div>
 					<div class="info-list">
 						<!-- 收藏 -->
@@ -90,55 +90,6 @@ const emit = defineEmits(["oddsChange"]);
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
-
-/**
- * @description 计算是上半场还是下半场 根据 livePeriod 判断当前是第几节
- */
-const livePeriod = computed(() => {
-	const gameInfo = SportsCommonFn.safeAccess(props.event, ["gameInfo"]);
-	const eSportInfo = SportsCommonFn.safeAccess(props.event, ["eSportInfo"]);
-	const { livePeriod } = gameInfo;
-	const { isStartingSoon } = eSportInfo;
-	const eventStatus = SportsCommonFn.safeAccess(props.event, ["eventStatus"]);
-	const isLive = SportsCommonFn.safeAccess(props.event, ["isLive"]);
-	if (eventStatus == "closed") {
-		return "比赛关闭";
-	}
-	if (eventStatus == "postponed") {
-		return "比赛推迟";
-	}
-	if (isLive) {
-		if (livePeriod == 1) {
-			return "第1局";
-		}
-		if (livePeriod == 2) {
-			return "第2局";
-		}
-		if (livePeriod == 3) {
-			return "第3局";
-		}
-		if (livePeriod == 4) {
-			return "第4局";
-		}
-		if (livePeriod == 5) {
-			return "第5局";
-		}
-		if (livePeriod == 6) {
-			return "第6局";
-		}
-		if (livePeriod == 7) {
-			return "第7局";
-		}
-		if (livePeriod == 8) {
-			return "第8局";
-		}
-		if (livePeriod == 9) {
-			return "第9局";
-		}
-	}
-	const globalShowTime = SportsCommonFn.safeAccess(props.event, ["globalShowTime"]);
-	return convertUtcToUtc5AndFormatMD(globalShowTime);
-});
 
 const openPage = () => {
 	SportHotStore.setCurrentEvent(props.event);

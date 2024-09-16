@@ -18,7 +18,7 @@
 				<div class="other-info">
 					<!-- 塞节时间 -->
 					<div class="date">
-						<span>{{ livePeriod }}</span>
+						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
 						<span v-if="!SportsCommonFn.isStartMatch(event.globalShowTime)">{{ formattedGameTime }}</span>
 					</div>
 					<div class="info-list">
@@ -90,41 +90,6 @@ const emit = defineEmits(["oddsChange"]);
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
-
-/**
- * @description 计算是上半场还是下半场 根据 livePeriod 判断当前是第几节
- */
-const livePeriod = computed(() => {
-	const gameInfo = SportsCommonFn.safeAccess(props.event, ["gameInfo"]);
-	const eventStatus = SportsCommonFn.safeAccess(props.event, ["eventStatus"]);
-	const globalShowTime = SportsCommonFn.safeAccess(props.event, ["globalShowTime"]);
-	const { livePeriod, delayLive, isHt } = gameInfo;
-	if (eventStatus == "closed") {
-		return "比赛关闭";
-	}
-	if (eventStatus == "postponed") {
-		return "比赛推迟";
-	}
-	if (SportsCommonFn.isStartMatch(globalShowTime)) {
-		if (livePeriod == 0 && !delayLive && isHt) {
-			return "中场休息";
-		}
-		if (livePeriod == 1 && !delayLive && !isHt) {
-			return "第一节";
-		}
-		if (livePeriod == 2 && !delayLive && !isHt) {
-			return "第二节";
-		}
-		if (livePeriod == 3 && !delayLive && !isHt) {
-			return "第三节";
-		}
-		if (livePeriod == 4 && !delayLive && !isHt) {
-			return "第四节";
-		}
-	}
-
-	return convertUtcToUtc5AndFormatMD(globalShowTime);
-});
 
 // 定义计算属性 格式化比赛开始时间
 const formattedGameTime = computed(() => {

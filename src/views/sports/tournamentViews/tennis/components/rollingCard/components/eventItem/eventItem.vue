@@ -20,7 +20,7 @@
 				<div class="other-info">
 					<!-- 塞节时间 -->
 					<div class="date">
-						<span>{{ livePeriod }}</span>
+						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
 					</div>
 					<div class="info-list">
 						<!-- 收藏 -->
@@ -112,31 +112,6 @@ const emit = defineEmits(["oddsChange"]);
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
-
-/**
- * @description 计算是上半场还是下半场 根据 livePeriod 判断当前是第几节
- */
-const livePeriod = computed(() => {
-	const tennisInfo = SportsCommonFn.safeAccess(props.event, ["tennisInfo"]);
-	const { currentSet } = tennisInfo;
-	if (currentSet == 1) {
-		return "第1盘";
-	}
-	if (currentSet == 2) {
-		return "第2盘";
-	}
-	if (currentSet == 3) {
-		return "第3盘";
-	}
-	if (currentSet == 4) {
-		return "第4盘";
-	}
-	if (currentSet == 5) {
-		return "第5盘";
-	}
-	const globalShowTime = SportsCommonFn.safeAccess(props.event, ["globalShowTime"]);
-	return convertUtcToUtc5AndFormatMD(globalShowTime);
-});
 
 const openPage = () => {
 	SportHotStore.setCurrentEvent(props.event);

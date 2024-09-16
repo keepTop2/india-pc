@@ -20,7 +20,7 @@
 				<div class="other-info">
 					<!-- 塞节时间 -->
 					<div class="date">
-						<span>{{ livePeriod }}</span>
+						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
 					</div>
 					<div class="info-list">
 						<!-- 收藏 -->
@@ -101,51 +101,6 @@ const emit = defineEmits(["oddsChange"]);
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
-
-/**
- * @description 计算是上半场还是下半场 根据 livePeriod 判断当前是第几节
- */
-const livePeriod = computed(() => {
-	if (!props.event.baseballInfo) {
-		const globalShowTime = SportsCommonFn.safeAccess(props.event, ["globalShowTime"]);
-		return convertUtcToUtc5AndFormatMD(globalShowTime);
-	}
-	const baseballInfo = SportsCommonFn.safeAccess(props.event, ["baseballInfo"]);
-	const { currentInning } = baseballInfo;
-	if (currentInning == 1) {
-		return "第1局";
-	}
-	if (currentInning == 2) {
-		return "第2局";
-	}
-	if (currentInning == 3) {
-		return "第3局";
-	}
-	if (currentInning == 4) {
-		return "第4局";
-	}
-	if (currentInning == 5) {
-		return "第5局";
-	}
-	if (currentInning == 6) {
-		return "第6局";
-	}
-	if (currentInning == 7) {
-		return "第7局";
-	}
-	if (currentInning == 8) {
-		return "第8局";
-	}
-	if (currentInning == 9) {
-		return "第9局";
-	}
-	if (currentInning > 9) {
-		return "延长赛";
-	}
-
-	const globalShowTime = SportsCommonFn.safeAccess(props.event, ["globalShowTime"]);
-	return convertUtcToUtc5AndFormatMD(globalShowTime);
-});
 
 const openPage = () => {
 	SportHotStore.setCurrentEvent(props.event);
