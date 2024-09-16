@@ -163,15 +163,18 @@ const getAttention = async (isLogin = true) => {
  */
 const initSport = async () => {
 	initSportPubsub();
-	openSportPush();
+	// 判断路由中是否有 sportType 参数
+	const sportType = (route.query.sportType as string) || "1"; // 如果没有传入 sportType，则默认为 "1"
+	openSportPush(sportType);
 };
 
 /**
  * @description 开启体育推送
  */
-const openSportPush = async (sportType: string = "1") => {
+const openSportPush = async (sportType) => {
+	console.log("重新触发");
+	console.log("route", route);
 	console.log("sportType", sportType);
-
 	closeSportViewProcessWorker();
 	openSportViewProcessWorker();
 	// 开启球类信息推送

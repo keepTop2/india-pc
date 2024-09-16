@@ -20,13 +20,16 @@ const handleSportTypeRedirect = async (to, from, next) => {
 			}
 		}
 	} else {
-		if (!to.query.sportType || to.query.sportType !== "1") {
+		console.log("============>>>>>>>>>");
+		if (!to.query.sportType) {
 			if (to.query.sportType !== "1") {
+				console.log(1);
 				next({
 					...to,
 					query: { ...to.query, sportType: "1" },
 				});
 			} else {
+				console.log(2);
 				next();
 			}
 		} else {

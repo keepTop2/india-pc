@@ -54,30 +54,14 @@ const initRoute = () => {
 };
 initRoute();
 
-const pathMap = {
-	todayContest: "/sports/todayContest",
-	morningTrading: "/sports/morningTrading",
-	champion: "/sports/champion",
-	rollingBall: "/sports/rollingBall", // 添加rollingBall的路径
-};
-
 const toPath = (item: any) => {
 	// 路由参数与点击tab类型相同退出
 	if (route.query.sportType == item.sportType) return;
 	// 获取当前路径
 	const currentPath = router.currentRoute.value.path;
-	// 确定基础路径
-	let basePath = Object.keys(pathMap).find((key) => currentPath.startsWith(pathMap[key]));
-	// 如果没有找到匹配的基础路径，则默认跳转到今日
-	if (!basePath) {
-		basePath = "todayContest";
-	}
-	// 构建目标路径
-	let targetPath = pathMap[basePath];
-	console.log("Target Path:", targetPath);
 	// 跳转到目标路径并通过 query 传递 sportType
 	router.push({
-		path: targetPath,
+		path: currentPath,
 		query: { sportType: item.sportType },
 	});
 	emit("switchType", item.sportType);

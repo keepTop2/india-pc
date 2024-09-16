@@ -98,8 +98,8 @@ const switchDisable = ref({
 
 // 今日下-按钮配置
 const eventStatusData = ref({
-	on: { label: "滚球", type: "rollingBall", active: true, path: "/sports/todayContest/rollingBall" },
-	off: { label: "未开赛", type: "todayContest", active: false, path: "/sports/todayContest/notStarted" },
+	on: { label: "滚球", type: "rollingBall", active: route.path === "/sports/todayContest/rollingBall" ? true : false, path: "/sports/todayContest/rollingBall" },
+	off: { label: "未开赛", type: "todayContest", active: route.path === "/sports/todayContest/notStarted" ? true : false, path: "/sports/todayContest/notStarted" },
 });
 
 // 热门-时间开关配置
@@ -120,6 +120,7 @@ const onType = (item: any) => {
 		}
 		if (route.path == "/sports/todayContest/rollingBall" || route.path == "/sports/todayContest/notStarted") return;
 	} else {
+		if (item.path === route.path) return;
 		Object.keys(eventStatusData.value).forEach((key) => {
 			eventStatusData.value[key as "off" | "on"].active = false;
 		});
@@ -134,8 +135,6 @@ const onType = (item: any) => {
 };
 
 const onEventStatusData = (e: "off" | "on") => {
-	console.log("e", e);
-
 	if (eventStatusData.value[e].path === route.path) return;
 	const { sportType } = route.query;
 	Object.keys(eventStatusData.value).forEach((key) => {
