@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { defineAsyncComponent } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
@@ -51,6 +51,14 @@ const matchedLeague = ref([]);
 
 // 获取到的数据
 const leagues = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
+
+// 路由参数 sportType 变化 清空筛选的联赛
+watch(
+	() => route.query.sportType,
+	(newValue, oldValue) => {
+		matchedLeague.value = [];
+	}
+);
 
 const selectFilterLeague = (value: number) => {
 	// 遍历 leagues 数组，找到 leagueId 与传入的 value 匹配的对象

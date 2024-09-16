@@ -63,18 +63,16 @@ const props = defineProps({
 	},
 });
 
-console.log("matchedLeague", props.matchedLeague);
-
-// 监控 matchedLeague 的变化
-watchEffect(() => {
-	console.log("Matched League Changed:", props.matchedLeague);
-	// 在这里处理 matchedLeague 的逻辑，确保数据发生变化时可以渲染
-	if (props.matchedLeague.length) {
-		// 进行需要的操作，比如更新显示的联赛数据
-		console.log("Updated matched league:", props.matchedLeague);
-		// 你可以在这里处理 matchedLeague 的显示逻辑
-	}
-});
+// // 监控 matchedLeague 的变化
+// watchEffect(() => {
+// 	console.log("Matched League Changed:", props.matchedLeague);
+// 	// 在这里处理 matchedLeague 的逻辑，确保数据发生变化时可以渲染
+// 	if (props.matchedLeague.length) {
+// 		// 进行需要的操作，比如更新显示的联赛数据
+// 		console.log("Updated matched league:", props.matchedLeague);
+// 		// 你可以在这里处理 matchedLeague 的显示逻辑
+// 	}
+// });
 
 /**
  * @description 赔率发生变化后 3秒动画结束后清理掉oddsChange状态

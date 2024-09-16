@@ -13,7 +13,7 @@ import { convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingC
 export const getIndexInfo = async () => {
 	const sportsBetInfo = useSportsBetInfoStore();
 	const res = await userApi.getIndexInfo().catch((err) => err);
-	if (res.code == Common.getInstance().ResCode.SUCCESS) {
+	if (res.code == Common.ResCode.SUCCESS) {
 		sportsBetInfo.balance = res.data.totalBalance;
 	}
 };
@@ -24,7 +24,7 @@ export const getIndexInfo = async () => {
 export const getBetOrderId = async () => {
 	const sportsBetInfo = useSportsBetInfoStore();
 	const res = await sportsApi.getBetOrderId().catch((err) => err);
-	if (res.code === Common.getInstance().ResCode.SUCCESS) {
+	if (res.code === Common.ResCode.SUCCESS) {
 		sportsBetInfo.vendorTransId = res.data;
 	}
 };
@@ -37,7 +37,7 @@ export const getPublicSetting = async () => {
 		type: "sport_odds",
 	};
 	const res = await sportsApi.getPublicSetting(params).catch((err) => err);
-	if (res.code == Common.getInstance().ResCode.SUCCESS) {
+	if (res.code == Common.ResCode.SUCCESS) {
 		stopLoading();
 		if (res.data.length > 0) {
 			const data = res.data[0];
