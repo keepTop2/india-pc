@@ -72,12 +72,6 @@ const UserStore = useUserStore();
 
 // 验证码
 const hcaptcha: any = ref(null);
-=======
-const hcaptcha: any = ref(null);
-const certifyId = ref(null);
-// 控制验证码的显示
-const showhcaptcha = ref(false);
->>>>>>> 828ee03 (feat:修改登陆验证)
 
 // 登陆表单
 const payLoad = reactive({
@@ -105,25 +99,6 @@ onMounted(() => {
 		rememberPassword.value = true;
 		verifyBtn();
 	}
-<<<<<<< HEAD
-=======
-	(window as any).initAliyunCaptcha({
-		SceneId: "qxye14r6d",
-		prefix: "5zbecta",
-		mode: "popup",
-		element: "#hcaptchaContainer",
-		button: "#captcha-element",
-		captchaVerifyCallback: captchaVerifyCallback,
-		onBizResultCallback: onSubmit,
-		getInstance: getInstance,
-		slideStyle: {
-			width: 360,
-			height: 200,
-		},
-		language: "cn",
-		region: "sgp",
-	});
->>>>>>> 828ee03 (feat:修改登陆验证)
 });
 // 监听输入框变化
 const userOnInput = (e: any) => {
@@ -143,30 +118,16 @@ const verifyBtn = () => {};
 // 点击登录，弹出真人验证
 const onLogin = async () => {
 	if (userAccountRegex.test(payLoad.userAccount) && passWordregex.test(payLoad.password)) {
-<<<<<<< HEAD
 		hcaptcha.value?.validate();
-=======
->>>>>>> 828ee03 (feat:修改登陆验证)
 	} else {
 		showToast("用户名或密码错误", 1500);
 	}
 };
 
-<<<<<<< HEAD
 // 前端验证通过，提交表单
 const onSubmit = async (token: string) => {
 	const verifyToken = token;
 	const res = await loginApi.userLogin({ ...payLoad, verifyToken }).catch((err) => err);
-=======
-// 获取验证码实例
-const getInstance = (instance: any) => {
-	hcaptcha.value = instance;
-};
-
-// 提交处理
-const onSubmit = async () => {
-	const res = await loginApi.userLogin({ ...payLoad, certifyId: certifyId.value }).catch((err) => err);
->>>>>>> 828ee03 (feat:修改登陆验证)
 	const { code, data, message } = res;
 	if (code == Common.ResCode.SUCCESS) {
 		showToast(message, 1500);
@@ -181,7 +142,6 @@ const onSubmit = async () => {
 			UserStore.setLoginInfo();
 		}
 	} else {
-		showhcaptcha.value = false;
 		payLoad.password = "";
 		payLoad.userAccount = "";
 		showToast(message, 1500);
@@ -210,32 +170,6 @@ const forgetPassword = () => {
 const toRegister = () => {
 	eventBus.emit("show-modal", "RegisterModal");
 };
-<<<<<<< HEAD
-=======
-
-// 验证码验证回调
-const captchaVerifyCallback = (captchaVerifyParam: any) => {
-	return loginApi.verifyCode({ captchaVerifyParam: captchaVerifyParam }).then((res) => {
-		if (res.code === Common.ResCode.SUCCESS) {
-			// 构造标准返回参数
-			const verifyResult = {
-				captchaResult: res.data.captchaResult,
-				bizResult: res.data.captchaResult,
-			};
-			certifyId.value = JSON.parse(captchaVerifyParam).certifyId;
-
-			return verifyResult;
-		} else {
-			// 构造标准返回参数
-			const verifyResult = {
-				captchaResult: res.data.captchaResult,
-				bizResult: res.data.captchaResult,
-			};
-			return verifyResult;
-		}
-	});
-};
->>>>>>> 828ee03 (feat:修改登陆验证)
 </script>
 
 <style lang="scss" scoped>

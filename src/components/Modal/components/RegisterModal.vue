@@ -198,8 +198,7 @@ const onSubmit = async (token: string) => {
 	}
 };
 const onLogin = async () => {
-	// hcaptcha.value?.validate();
-	onSubmit("true");
+	hcaptcha.value?.validate();
 };
 const options = UserStore.getCurrencyList;
 
