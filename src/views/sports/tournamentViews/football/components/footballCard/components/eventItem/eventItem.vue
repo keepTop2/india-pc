@@ -1,7 +1,7 @@
 <template>
 	<div class="league-content">
 		<!-- 队伍信息 -->
-		<TeamInfoCard :IfOffTheBat="IfOffTheBat" :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
+		<TeamInfoCard :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
 		<!-- 盘口信息 -->
 		<div class="league-markets">
 			<!-- 全场独赢 -->
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { TeamInfoCard, MarketColumn } from "/@/views/sports/views/football/components/footballCard/index";
+import { TeamInfoCard, MarketColumn } from "/@/views/sports/tournamentViews/football/components/footballCard/index";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
 
@@ -38,15 +38,11 @@ interface teamDataType {
 	dataIndex: number;
 	/** 队伍数据 */
 	event: any;
-	/** 当前路由名称 */
-	IfOffTheBat: string;
 	displayContent: boolean;
 }
 const props = withDefaults(defineProps<teamDataType>(), {
 	/** 数据索引 */
 	dataIndex: 0,
-	/** 当前路由名称 */
-	IfOffTheBat: "rollingBall",
 	displayContent: true,
 	/** 队伍数据 */
 	event: () => {
@@ -71,14 +67,12 @@ const handleClick = (tool: any) => {
 const tools = computed(() => {
 	const baseTools = [];
 	// 判断 是否在未开赛页面
-	if (props.IfOffTheBat !== "todayContest") {
-		baseTools.push({
-			iconName: "sports-score_icon",
-			tooltipText: "比分板",
-			action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
-			param: props.event, // 传递参数
-		});
-	}
+	baseTools.push({
+		iconName: "sports-score_icon",
+		tooltipText: "比分板",
+		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
+		param: props.event, // 传递参数
+	});
 	// 判断是否有视频源
 	if (props.event.streamingOption != 0 && props.event.channelCode) {
 		baseTools.push({

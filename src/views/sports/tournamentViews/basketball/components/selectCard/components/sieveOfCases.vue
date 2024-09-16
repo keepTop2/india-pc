@@ -78,21 +78,19 @@ const handleCommand = (command: { index: number; value: string | null; label: st
 
 // 计算所有联赛的总事件数量
 const totalEvents = computed(() => {
+	/**
+	 * @description 球类列表
+	 */
+	const sports = viewSportPubSubEventData.viewSportData.sports;
 
-/**
- * @description 球类列表
- */
-const sports = viewSportPubSubEventData.viewSportData.sports;
-
-const sport = sports.filter((item) => item.sportType == 1)[0] as unknown as { gameCount: number; liveGameCount: number; count: number };
-if (route.query.sportsActive == "todayContest") {
-	return sport?.gameCount;
-} else if (route.query.sportsActive == "rollingBall") {
-	return sport?.liveGameCount
-}
-else{
-	return sport?.count
-}
+	const sport = sports.filter((item) => item.sportType == 1)[0] as unknown as { gameCount: number; liveGameCount: number; count: number };
+	if (route.query.sportsActive == "todayContest") {
+		return sport?.gameCount;
+	} else if (route.query.sportsActive == "rollingBall") {
+		return sport?.liveGameCount;
+	} else {
+		return sport?.count;
+	}
 });
 
 const optionsWithAll = computed(() => {
@@ -101,5 +99,5 @@ const optionsWithAll = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@import "/@/views/sports/views/styles/sieveOfCases.scss";
+@import "/@/views/sports/tournamentViews/styles/sieveOfCases.scss";
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<component :is="sportsMap[route.query.sportType]" />
+	<component v-if="leagues" :is="sportsMap[Number(route.query.sportType)]" :listData="leagues" />
 </template>
 
 <script setup lang="ts">
@@ -30,11 +30,6 @@ const Badminton = defineAsyncComponent(() => import("/@/views/sports/tournamentV
 // 电子竞技列表
 const ESports = defineAsyncComponent(() => import("/@/views/sports/tournamentViews/eSports/eSports.vue"));
 
-// import NoData from "/@/views/sports/components/noData/noData.vue";
-
-// const leagues = computed(() => viewSportPubSubEventData.getSportData(Number(route.query.sportType)));
-// console.log("leagues------------------", leagues);
-
 const sportsMap = {
 	1: Football,
 	2: Basketball,
@@ -47,6 +42,9 @@ const sportsMap = {
 	9: Badminton,
 	43: ESports,
 };
+
+// 获取到的数据
+const leagues = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
 </script>
 
 <style scoped></style>

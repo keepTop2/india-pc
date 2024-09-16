@@ -40,5 +40,5 @@ const toggleExpand = () => {
 </script>
 
 <style lang="scss" scoped>
-@import "/@/views/sports/views/styles/selectCard.scss";
+@import "/@/views/sports/tournamentViews/styles/selectCard.scss";
 </style>

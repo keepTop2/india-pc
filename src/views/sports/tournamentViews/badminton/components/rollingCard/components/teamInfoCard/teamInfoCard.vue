@@ -37,8 +37,6 @@ const { gotoEventDetail } = useLink();
 interface teamDataType {
 	/** 数据索引 */
 	dataIndex: number;
-	/** 当前路由名称 */
-	IfOffTheBat: string;
 	/** 队伍数据 */
 	teamData: any;
 }
@@ -46,8 +44,6 @@ interface teamDataType {
 const props = withDefaults(defineProps<teamDataType>(), {
 	/** 数据索引 */
 	dataIndex: 0,
-	/** 当前路由名称 */
-	IfOffTheBat: "rollingBall",
 	teamData: () => {
 		return {};
 	},

@@ -21,18 +21,15 @@
 			</div>
 		</div>
 		<template v-if="displayContent">
-			<EventItem :IfOffTheBat="IfOffTheBat" v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
+			<EventItem v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
 		</template>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref } from "vue";
-import { defineAsyncComponent } from "vue";
+import { onMounted, watch, ref, defineAsyncComponent } from "vue";
 import SportsCommonFn from "/@/views/sports/utils/common";
-
-const EventItem = defineAsyncComponent(() => import("/@/views/sports/views/basketball/components/rollingCard/components/eventItem/eventItem.vue"));
-
+const EventItem = defineAsyncComponent(() => import("/@/views/sports/tournamentViews/basketball/components/rollingCard/components/eventItem/eventItem.vue"));
 interface teamDataType {
 	/** 数据索引 */
 	dataIndex: number;
@@ -40,15 +37,11 @@ interface teamDataType {
 	teamData: any;
 	/** 是展开状态？ */
 	isExpand?: boolean;
-	/** 当前路由名称 */
-	IfOffTheBat: string;
 }
 const props = withDefaults(defineProps<teamDataType>(), {
 	isExpand: true,
 	/** 数据索引 */
 	dataIndex: 0,
-	/** 当前路由名称 */
-	IfOffTheBat: "rollingBall",
 	/** 队伍数据 */
 	teamData: () => {
 		return {};

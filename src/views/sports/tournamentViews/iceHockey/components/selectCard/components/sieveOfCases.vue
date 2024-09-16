@@ -83,5 +83,5 @@ const optionsWithAll = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@import "/@/views/sports/views/styles/sieveOfCases.scss";
+@import "/@/views/sports/tournamentViews/styles/sieveOfCases.scss";
 </style>

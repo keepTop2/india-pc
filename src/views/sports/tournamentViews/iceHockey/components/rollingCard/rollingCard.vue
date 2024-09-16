@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		<template v-if="displayContent">
-			<EventItem :IfOffTheBat="IfOffTheBat" v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
+			<EventItem v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
 		</template>
 	</div>
 </template>
@@ -38,15 +38,11 @@ interface teamDataType {
 	teamData: any;
 	/** 是展开状态？ */
 	isExpand?: boolean;
-	/** 当前路由名称 */
-	IfOffTheBat: string;
 }
 const props = withDefaults(defineProps<teamDataType>(), {
 	isExpand: true,
 	/** 数据索引 */
 	dataIndex: 0,
-	/** 当前路由名称 */
-	IfOffTheBat: "rollingBall",
 	/** 队伍数据 */
 	teamData: () => {
 		return {};
@@ -63,7 +59,6 @@ const emit = defineEmits(["toggleDisplay"]);
  * @return {*}
  */
 const toggleDisplay = () => {
-	console.log(123);
 	displayContent.value = !displayContent.value;
 	const params = {
 		index: props.dataIndex,
@@ -83,7 +78,6 @@ watch(
 
 onMounted(() => {
 	displayContent.value = props.isExpand;
-	// console.log(props.teamData, 45612);
 });
 </script>
 

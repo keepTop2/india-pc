@@ -1,7 +1,3 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育主页
--->
 <template>
 	<div class="base-body">
 		<!-- 公告通知 -->
@@ -14,9 +10,9 @@
 			<div class="left-container">
 				<div class="container">
 					<div class="header">
-						<HeaderMenuNav :sportsActive="tabActive"></HeaderMenuNav>
+						<HeaderMenuNav @switchType="openSportPush"></HeaderMenuNav>
 						<div class="line"></div>
-						<HeaderMenuCondition :sportsActive="tabActive" v-if="$route?.meta?.isSportSort" @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
+						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
 					</div>
 					<div class="back-container">
 						<!-- 主体路由页面 -->
@@ -38,7 +34,6 @@
 		</Modal>
 	</div>
 </template>
-
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive, ref, watch } from "vue";
@@ -103,16 +98,17 @@ const { startLoading, stopLoading } = useLoading();
 const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
 
 // 响应式数据
+const tabActive = ref("rollingBall"); // 默认滚球
+
 const NotifyModal = ref(null);
 const showNotifyModal = ref(false);
-const tabActive = ref(route.query.sportsActive || "rollingBall");
 const sportState = reactive({ sportTypeActive: null });
 const routeRecord = ref({
-  newRoute: { path: "", isSportSort: "" },
-  oldRoute: { path: "", isSportSort: "" }
+	newRoute: { path: "", isSportSort: "" },
+	oldRoute: { path: "", isSportSort: "" },
 });
 
-const sportType = computed(() => route.params.sportType);
+// const sportType = computed(() => route.query.sportType);
 
 // 计算属性
 const attentionSwitch = computed(() => SportAttentionStore.attentionType);
@@ -121,27 +117,27 @@ const attentionSwitch = computed(() => SportAttentionStore.attentionType);
  * @description 组件生命周期钩子
  */
 onBeforeMount(() => {
-  LayoutStore.setBigScreen(true);
-  pubSub.subscribe(pubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
-  initSportRequest();
+	LayoutStore.setBigScreen(true);
+	pubSub.subscribe(pubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
+	initSportRequest();
 });
 
 onBeforeUnmount(() => {
-  unSport();
-  pause();
+	unSport();
+	pause();
 });
 
 onUnmounted(() => {
-  LayoutStore.setBigScreen(false);
+	LayoutStore.setBigScreen(false);
 });
 
 /**
  * @description 初始化体育请求
  */
 const initSportRequest = async () => {
-  await getAttention();
-  await sportsLogin();
-  await initSport();
+	await getAttention();
+	await sportsLogin();
+	await initSport();
 };
 
 /**
@@ -149,65 +145,59 @@ const initSportRequest = async () => {
  * @param isLogin 是否需要登录
  */
 const getAttention = async (isLogin = true) => {
-  if ((isLogin && !isEmpty(UserStore.getUserInfo)) || !isLogin) {
-    try {
-      const res = await FootballCardApi.getAttentionList();
-      if (res.data) {
-        SportAttentionStore.setAttentionList(res.data);
-        return res.data;
-      }
-    } catch (error) {
-      console.error("获取关注列表失败", error);
-    }
-  }
+	if ((isLogin && !isEmpty(UserStore.getUserInfo)) || !isLogin) {
+		try {
+			const res = await FootballCardApi.getAttentionList();
+			if (res.data) {
+				SportAttentionStore.setAttentionList(res.data);
+				return res.data;
+			}
+		} catch (error) {
+			console.error("获取关注列表失败", error);
+		}
+	}
 };
 
 /**
  * @description 初始化体育
  */
 const initSport = async () => {
-  initSportPubsub();
-  openSportPush();
+	initSportPubsub();
+	openSportPush();
 };
 
 /**
  * @description 开启体育推送
  */
-const openSportPush = async () => {
-  closeSportViewProcessWorker();
-  openSportViewProcessWorker();
+const openSportPush = async (sportType: string = "1") => {
+	console.log("sportType", sportType);
 
-	const query = { ...route?.query, sportsActive: tabActive.value };
-  const sportsActive = query.sportsActive as string || tabActive.value;
-	
-  // 更新 tabActive
-  // tabActive.value = sportsActive;
- // 更新路由，确保 sportsActive 参数正确
- if (query.sportsActive !== sportsActive) {
-    router.replace({ path: route.path, query: { ...query, sportsActive } });
-  }
-  startLoading();
+	closeSportViewProcessWorker();
+	openSportViewProcessWorker();
+	// 开启球类信息推送
+	await handleSportPush();
+	// 开启球类赛事数据推送
+	await handleSportEventsPush(sportType);
 
-  const params = {
-    apiUrl: SportsCommonFn.getSportPushApiUrl(),
-    token: SportsInfoStore.getSportsToken,
-    language: SportsCommonFn.getSportLanguage(),
-  };
-	await handleSportPush(params,sportsActive);
-	if (route?.meta?.isSportSort) {
-    await handleSportEventsPush(params);
+	/*if (route?.meta?.isSportSort) {
 	} else if (route.path == "/sports/collect") {
-    await openAttentionSSE();
-    await getAttention(false);
+		await openAttentionSSE();
+		await getAttention(false);
 	} else if (route.path.match(/^\/sports\/\d+\/detail/)) {
-    await openEventDetailPush();
-  } else {
-    stopLoading();
-  }
+		await openEventDetailPush();
+	} else {
+		stopLoading();
+	}*/
 };
 
-const handleSportPush = async (params, sportsActive) => {
-	switch (sportsActive) {
+// 开启对应sports推送
+const handleSportPush = async () => {
+	const params = {
+		apiUrl: SportsCommonFn.getSportPushApiUrl(),
+		token: SportsInfoStore.getSportsToken,
+		language: SportsCommonFn.getSportLanguage(),
+	};
+	switch (tabActive.value) {
 		case "rollingBall":
 			sendWorkerCommand(sportTabPushActions.rollingBall.openSport, params);
 			break;
@@ -224,67 +214,78 @@ const handleSportPush = async (params, sportsActive) => {
 			sendWorkerCommand(sportTabPushActions.todayContest.openSport, params);
 			break;
 	}
-}
-
+};
 
 /**
  * @description 处理体育分类推送
- * @param params 基础参数
+ * @param sportType 球类参数 默认为1 足球
  */
-const handleSportEventsPush = async (params) => {
-  const pushActions = {
-    rollingBall: ()=> sendWorkerCommand(sportTabPushActions.rollingBall.openEvents(sportType.value as string), params),
-    todayContest: ()=> sendWorkerCommand(sportTabPushActions.todayContest.openEvents(sportType.value as string), params),
-    morningTrading: 
-      () => {
-        const { startDate, endDate } = SportMorningTradingStore.getTimeInterval;
-        const queryParams = SportMorningTradingStore.getActiveDate 
-          ? {
-              query: `$filter= sportType in (${sportType.value})`,
-              from: startDate,
-              until: endDate,
-              includeMarkets: `$filter=bettype in (${betTypes})`,
-            }
-          : {
-              query: `$filter= sportType in (${sportType.value})`,
-              includeMarkets: `$filter=bettype in (${betTypes})`,
-              from: moment.utc().add(8 - 5 / 24, "day").startOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
-					};
-        sendWorkerCommand(sportTabPushActions.morningTrading.openEvents(sportType.value as string), params, { params: queryParams });
-      }
-    ,
-    champion: ()=> sendWorkerCommand(sportTabPushActions.champion.openEvents(sportType.value as string), params),
-    matchResult: 
-      async () => {
-        const today = moment();
-        const twelveDaysAgo = moment().subtract(11, "day");
-        const format = "YYYY-MM-DD";
-        
-        try {
-          const res = await sportsApi.GetSportResults({
-            language: "zhcn",
-            from: `${twelveDaysAgo.format(format)}T00:00:00`,
-            until: `${today.format(format)}T23:59:59`,
-          });
-          
-          if (res.data) {
-            const sportList = res.data.sportList;
-            viewSportPubSubEventData.setSportData({
-              ...viewSportPubSubEventData.viewSportData,
-              sports: formattingResultViewData(sportList),
-            });
-          }
-        } catch (error) {
-          console.error("获取比赛结果失败", error);
-        }
-      }
-  };
+const handleSportEventsPush = async (sportType = "1") => {
+	const params = {
+		apiUrl: SportsCommonFn.getSportPushApiUrl(),
+		token: SportsInfoStore.getSportsToken,
+		language: SportsCommonFn.getSportLanguage(),
+	};
+	const pushActions = {
+		// 滚球
+		rollingBall: () => sendWorkerCommand(sportTabPushActions.rollingBall.openEvents(sportType as string), params),
+		// 今日
+		todayContest: () => sendWorkerCommand(sportTabPushActions.todayContest.openEvents(sportType as string), params),
+		// 早盘
+		morningTrading: () => {
+			const { startDate, endDate } = SportMorningTradingStore.getTimeInterval;
+			const queryParams = SportMorningTradingStore.getActiveDate
+				? {
+						query: `$filter= sportType in (${sportType})`,
+						from: startDate,
+						until: endDate,
+						includeMarkets: `$filter=bettype in (${betTypes})`,
+				  }
+				: {
+						query: `$filter= sportType in (${sportType})`,
+						includeMarkets: `$filter=bettype in (${betTypes})`,
+						from: moment
+							.utc()
+							.add(8 - 5 / 24, "day")
+							.startOf("day")
+							.add(5, "hour")
+							.format("YYYY-MM-DDTHH:mm:ss"),
+				  };
+			sendWorkerCommand(sportTabPushActions.morningTrading.openEvents(sportType as string), params, { params: queryParams });
+		},
+		// 冠军
+		champion: () => sendWorkerCommand(sportTabPushActions.champion.openEvents(sportType as string), params),
+		// 赛果
+		matchResult: async () => {
+			const today = moment();
+			const twelveDaysAgo = moment().subtract(11, "day");
+			const format = "YYYY-MM-DD";
 
-  const action = pushActions[tabActive.value as keyof typeof pushActions];
-  if (!action) {
-    return;
-  }
-  action();
+			try {
+				const res = await sportsApi.GetSportResults({
+					language: "zhcn",
+					from: `${twelveDaysAgo.format(format)}T00:00:00`,
+					until: `${today.format(format)}T23:59:59`,
+				});
+
+				if (res.data) {
+					const sportList = res.data.sportList;
+					viewSportPubSubEventData.setSportData({
+						...viewSportPubSubEventData.viewSportData,
+						sports: formattingResultViewData(sportList),
+					});
+				}
+			} catch (error) {
+				console.error("获取比赛结果失败", error);
+			}
+		},
+	};
+	// 判断tabActive触发对应方法
+	const action = pushActions[tabActive.value as keyof typeof pushActions];
+	if (!action) {
+		return;
+	}
+	action();
 };
 /**
  * @description 发送worker命令
@@ -292,215 +293,216 @@ const handleSportEventsPush = async (params) => {
  * @param params 基础参数
  * @param additionalParams 额外参数
  */
- const sendWorkerCommand = (action, params, additionalParams = {}) => {
-  pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
-  pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
-  pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, action, params, additionalParams);
-	 pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
-	 stopLoading();
-	
+const sendWorkerCommand = (action, params, additionalParams = {}) => {
+	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
+	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
+	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, action, params, additionalParams);
+	pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 };
-
 
 /**
  * @description 开启关注SSE
  */
 const openAttentionSSE = async () => {
-  closeSportViewProcessWorker();
-  openSportViewProcessWorker();
-  initSportPubsub();
-  
-  if (attentionSwitch.value == "event") {
-    openAttentionEventSSE();
-  } else {
-    openAttentionOutrightSSE();
-  }
+	closeSportViewProcessWorker();
+	openSportViewProcessWorker();
+	initSportPubsub();
+
+	if (attentionSwitch.value == "event") {
+		openAttentionEventSSE();
+	} else {
+		openAttentionOutrightSSE();
+	}
 };
 
 /**
  * @description 开启关注事件SSE
  */
 const openAttentionEventSSE = () => {
-  const params = {
-    apiUrl: SportsCommonFn.getSportPushApiUrl(),
-    token: SportsInfoStore.getSportsToken,
-    language: SportsCommonFn.getSportLanguage(),
-  };
-  
-  const attentionParams = {
-    params: {
-      query: `$filter= eventId in (${SportAttentionStore.attentionEventIdList.join()})&$orderby=globalShowTime asc `,
-      includeMarkets: `$filter=bettype in (${betTypes})`,
-    },
+	const params = {
+		apiUrl: SportsCommonFn.getSportPushApiUrl(),
+		token: SportsInfoStore.getSportsToken,
+		language: SportsCommonFn.getSportLanguage(),
 	};
-  sendWorkerCommand(sportTabPushActions.attention.openEvents, { ...params, ...attentionParams });
+
+	const attentionParams = {
+		params: {
+			query: `$filter= eventId in (${SportAttentionStore.attentionEventIdList.join()})&$orderby=globalShowTime asc `,
+			includeMarkets: `$filter=bettype in (${betTypes})`,
+		},
+	};
+	sendWorkerCommand(sportTabPushActions.attention.openEvents, { ...params, ...attentionParams });
 };
 
 /**
  * @description 开启关注冠军SSE
  */
 const openAttentionOutrightSSE = () => {
-  const params = {
-    apiUrl: SportsCommonFn.getSportPushApiUrl(),
-    token: SportsInfoStore.getSportsToken,
-    language: SportsCommonFn.getSportLanguage(),
-  };
-  
-  const attentionParams = {
-    params: {
-      query: `$filter= leagueId in (${SportAttentionStore.attentionLeagueIdList.join()})&$orderby=eventDate asc `,
-      includeMarkets: `$filter=bettype in (${betTypes})`,
-    },
-  };
+	const params = {
+		apiUrl: SportsCommonFn.getSportPushApiUrl(),
+		token: SportsInfoStore.getSportsToken,
+		language: SportsCommonFn.getSportLanguage(),
+	};
 
-  sendWorkerCommand(sportTabPushActions.attention.openOutright, { ...params, ...attentionParams });
+	const attentionParams = {
+		params: {
+			query: `$filter= leagueId in (${SportAttentionStore.attentionLeagueIdList.join()})&$orderby=eventDate asc `,
+			includeMarkets: `$filter=bettype in (${betTypes})`,
+		},
+	};
+
+	sendWorkerCommand(sportTabPushActions.attention.openOutright, { ...params, ...attentionParams });
 };
 
 /**
  * @description 开启事件详情推送
  */
 const openEventDetailPush = async () => {
-  const { leagueId, eventId } = route.query;
+	const { leagueId, eventId } = route.query;
 
-  const params = {
-    apiUrl: SportsCommonFn.getSportPushApiUrl(),
-    token: SportsInfoStore.getSportsToken,
-    language: SportsCommonFn.getSportLanguage(),
-  };
+	const params = {
+		apiUrl: SportsCommonFn.getSportPushApiUrl(),
+		token: SportsInfoStore.getSportsToken,
+		language: SportsCommonFn.getSportLanguage(),
+	};
 	// sendWorkerCommand(sportTabPushActions.rollingBall.openSport, params),
-  sendWorkerCommand(sportsEventDetailPush.openMarkets(eventId), params);
-  sendWorkerCommand(sportsEventDetailPush.openEvents(leagueId), params);
+	sendWorkerCommand(sportsEventDetailPush.openMarkets(eventId), params);
+	sendWorkerCommand(sportsEventDetailPush.openEvents(leagueId), params);
 };
 
-
 /**
- * @description 切换tab
+ * @description 切换大类
  * @param path 路径对象
  */
-const onTab = (path: any) => {
-	const query = { ...route?.query, sportsActive: path.type };
-  if (tabActive.value == path.type) return;
-	router.replace({ path: route.path, query: { ...query } });
-  ShopCatControlStore.setShopCatShow(false);
-  clearStroe();
-  unSubSport();
-  closeSportViewProcessWorker();
-  
-  tabActive.value = path.type;
-  initSportPubsub();
-  openSportViewProcessWorker();
-  openSportPush();
+const onTab = (type: string) => {
+	// 点击当前大类直接退出
+	if (tabActive.value == type) return;
+	// 更新大类标识
+	tabActive.value = type;
+	ShopCatControlStore.setShopCatShow(false);
+	// 清空数据
+	clearStroe();
+	//取消体育订阅
+	unSubSport();
+	// 关闭体育视图线程
+	closeSportViewProcessWorker();
+	// 订阅
+	initSportPubsub();
+	// 开启体育线程
+	openSportViewProcessWorker();
+	// 发起推送
+	openSportPush(route.query.sportType as string);
 };
 
 /**
  * @description 刷新初始化体育界面
  */
 const onRefresh = () => {
-  initSport();
+	initSport();
 };
 
 /**
  * @description 卸载体育
  */
 const unSport = () => {
-  clearState();
-  closeSportViewProcessWorker();
-  unSubSport();
+	console.error("卸载体育");
+	clearState();
+	closeSportViewProcessWorker();
+	unSubSport();
 };
 
 /**
  * @description 打开通知
  */
 const openNotify = () => {
-  NotifyModal.value = markRaw(defineAsyncComponent(() => import(`./components/Notify/index.vue`)));
-  showNotifyModal.value = true;
+	NotifyModal.value = markRaw(defineAsyncComponent(() => import(`./components/Notify/index.vue`)));
+	showNotifyModal.value = true;
 };
 
 /**
  * @description 关闭通知模态框
  */
 const closeNotifyModal = () => {
-  showNotifyModal.value = false;
+	showNotifyModal.value = false;
 };
 
 /**
  * @description 关闭体育视图处理线程
  */
 const closeSportViewProcessWorker = () => {
-  try {
-    workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
-  } catch (error) {
-    console.error("关闭体育视图处理线程失败", error);
-  }
+	try {
+		workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
+	} catch (error) {
+		console.error("关闭体育视图处理线程失败", error);
+	}
 };
 
 /**
  * @description 开启体育视图处理线程
  */
 const openSportViewProcessWorker = () => {
-  try {
-    workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
-  } catch (error) {
-    console.error("开启体育视图处理线程失败", error);
-  }
+	try {
+		workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
+	} catch (error) {
+		console.error("开启体育视图处理线程失败", error);
+	}
 };
 
 /**
  * @description 清除store数据
  */
-const clearStroe = () => {
+const clearStroe = async () => {
 	viewSportPubSubEventData.clearEventsState();
-  SportLeagueSeachStore.clearLeagueSelect();
+	SportLeagueSeachStore.clearLeagueSelect();
 };
 
 // 监听
-watch(
-  () => route.path,
-  (newValue, oldValue) => {
-    if (routeRecord.value.newRoute?.path) {
-      routeRecord.value.oldRoute = cloneDeep(routeRecord.value.newRoute);
-      routeRecord.value.newRoute = {
-        path: newValue,
-        isSportSort: route.meta?.isSportSort || false,
-      };
-      if (!routeRecord.value.oldRoute?.isSportSort || !routeRecord.value.newRoute?.isSportSort) {
-        initSport();
-      }
-    } else {
-      initSport();
-      routeRecord.value.newRoute = {
-        path: newValue,
-        isSportSort: route.meta?.isSportSort || false,
-      };
-    }
+/*watch(
+	() => route.path,
+	(newValue, oldValue) => {
+		if (routeRecord.value.newRoute?.path) {
+			routeRecord.value.oldRoute = cloneDeep(routeRecord.value.newRoute);
+			routeRecord.value.newRoute = {
+				path: newValue,
+				isSportSort: route.meta?.isSportSort || false,
+			};
+			if (!routeRecord.value.oldRoute?.isSportSort || !routeRecord.value.newRoute?.isSportSort) {
+				initSport();
+			}
+		} else {
+			initSport();
+			routeRecord.value.newRoute = {
+				path: newValue,
+				isSportSort: route.meta?.isSportSort || false,
+			};
+		}
 
-    ShopCatControlStore.setShopCatShow(false);
-    if (!routeRecord.value.oldRoute.path.includes("sportsLeagueSearch")) {
-      clearStroe();
-    }
-  },
-  {
-    deep: true,
-  }
-);
+		ShopCatControlStore.setShopCatShow(false);
+		if (!routeRecord.value.oldRoute.path.includes("sportsLeagueSearch")) {
+			clearStroe();
+		}
+	},
+	{
+		deep: true,
+	}
+);*/
 
 watch(
-  () => UserStore.userInfo.token,
-  () => {
-    window.location.reload();
-  }
+	() => UserStore.userInfo.token,
+	() => {
+		window.location.reload();
+	}
 );
 watch(
-  () => SportMorningTradingStore.getActiveDate,
-  (newValue) => {
-    if (newValue && tabActive.value == "morningTrading") {
-      initSport();
-    }
-  }
+	() => SportMorningTradingStore.getActiveDate,
+	(newValue) => {
+		if (newValue && tabActive.value == "morningTrading") {
+			initSport();
+		}
+	}
 );
 
 const { pause, resume } = useIntervalFn(() => sportsLogin(), 8 * 60 * 1000);
-
 </script>
 
 <style lang="scss" scoped>

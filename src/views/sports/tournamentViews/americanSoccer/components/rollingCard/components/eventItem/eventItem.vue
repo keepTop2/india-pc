@@ -3,7 +3,7 @@
 		<div class="content">
 			<div class="main">
 				<!-- 队伍信息 -->
-				<TeamInfoCard :IfOffTheBat="IfOffTheBat" :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
+				<TeamInfoCard :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
 				<!-- 盘口信息 -->
 				<div class="league-markets">
 					<!-- 全场独赢 -->
@@ -71,15 +71,11 @@ interface teamDataType {
 	dataIndex: number;
 	/** 队伍数据 */
 	event: any;
-	/** 当前路由名称 */
-	IfOffTheBat: string;
 	displayContent: boolean;
 }
 const props = withDefaults(defineProps<teamDataType>(), {
 	/** 数据索引 */
 	dataIndex: 0,
-	/** 当前路由名称 */
-	IfOffTheBat: "rollingBall",
 	displayContent: true,
 	/** 队伍数据 */
 	event: () => {
@@ -143,9 +139,6 @@ const openPage = () => {
 const toggleFullScreen = () => {
 	SportHotStore.setCurrentEvent(props.event);
 };
-const refreshPage = () => {
-	console.log("动画直播");
-};
 
 /**
  * @description  计算工具图标的显示状态
@@ -154,14 +147,11 @@ const tools = computed(() => {
 	const baseTools = [];
 
 	// 判断 是否在未开赛页面
-	if (props.IfOffTheBat !== "todayContest") {
-		baseTools.push({
-			iconName: "sports-score_icon",
-			tooltipText: "比分板",
-			action: openPage,
-		});
-	}
-
+	baseTools.push({
+		iconName: "sports-score_icon",
+		tooltipText: "比分板",
+		action: openPage,
+	});
 	// 判断是否有视频源
 	if (props.event.streamingOption != 0 && props.event.channelCode) {
 		baseTools.push({

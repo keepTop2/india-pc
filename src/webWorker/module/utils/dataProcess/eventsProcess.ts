@@ -36,8 +36,10 @@ export default (function () {
 			processData = Object.assign({}, processData, marketsProcessRemove(sportServerData, viewSportData));
 		}
 		processData.viewSportData = processData.viewSportData || {};
+		// console.log("processData.viewSportData===================>", processData.viewSportData);
+
 		processData.viewSportData["childrenViewData"] = formattingChildrenViewData(viewSportData, "events");
-		console.log(JSON.parse(JSON.stringify(processData)), "==events===processData");
+		// console.log(JSON.parse(JSON.stringify(processData)), "==events===processData");
 		return processData;
 	};
 

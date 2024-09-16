@@ -45,7 +45,7 @@ import { storeToRefs } from "pinia";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 const SidebarStore = useSidebarStore();
 const { eventsInfo } = storeToRefs(SidebarStore);
-console.log("eventsInfo", eventsInfo);
+// console.log("eventsInfo", eventsInfo);
 
 // 球类图标集合
 const ballInfo: Record<number, { iconName: string; componentName: any }> = {
