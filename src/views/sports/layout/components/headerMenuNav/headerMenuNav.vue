@@ -1,17 +1,8 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育-头部-球类导航
--->
 <template>
 	<div class="header-container">
 		<div class="menu-nav">
 			<div class="left">
-				<div
-					v-for="(item, index) in left"
-					:key="index"
-					class="nva-item"
-					:class="{ active: item.name === route.name }"
-				>
+				<div v-for="(item, index) in Menu" :key="index" class="nva-item" :class="{ active: item.name === route.name }">
 					<router-link :to="{ name: item.name }">
 						<span class="value">{{ item.meta.title }}</span>
 					</router-link>
@@ -19,21 +10,10 @@
 			</div>
 			<i class="line"></i>
 			<div class="right">
-				<div
-					v-for="(item, index) in sportList"
-					:key="index"
-					class="nva-item"
-					:class="{ active: route.name === String(item.name) + '_list' }"
-				>
-					<router-link :to="{ name: item.name, query: { sportsActive } }">
-						<img
-							class="icon mr_6"
-							:src="item.redirect === route.path ? item.meta.iconActive : item.meta.icon"
-							alt=""
-						/>
-						<span class="value mr_4">{{ item.meta.title }}</span>
-						<div class="value">{{ item.count }}</div>
-					</router-link>
+				<div v-for="(item, index) in sportsData" :key="index" class="nva-item" :class="{ active: Number(route.query.sportType) == item.sportType }" @click="toPath(item)">
+					<img class="icon mr_6" :src="Number(route.query.sportType) == item.sportType ? item.activeIcon : item.icon" alt="" />
+					<span class="value mr_4">{{ item.sportName }}</span>
+					<div class="value">{{ item.count }}</div>
 				</div>
 				<div class="arrow_content">
 					<span class="icon">
@@ -46,84 +26,51 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, watch, computed } from "vue";
-import { debounce } from "lodash-es";
-import sportsRouter from "/@/router/modules/sports/menuRight";
-import sportsRouterLeft from "/@/router/modules/sports/sportsRouterLeft";
+import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import MajorCategoriesMenu from "/@/router/modules/sports/sportsRouterLeft";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 
 const router = useRouter();
 const route = useRoute();
-// console.log(route,'====route')
-const props = withDefaults(
-	defineProps<{
-		sportsActive?: string;
-	}>(),
-	{
-		sportsActive: "",
+const Menu = ref(MajorCategoriesMenu);
+
+// 定义组件事件
+const emit = defineEmits(["switchType"]);
+
+// 球类tab数据
+const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
+console.log("sportsData", sportsData);
+console.log("route.query.sportType", route.query.sportType);
+
+// 路由初始化逻辑
+const initRoute = () => {
+	if (sportsData.value.length > 0) {
+		// 获取第一个 sportsData 项的 sportType
+		const firstSportType = sportsData.value[0].sportType;
+		// 生成拼接路径
+		const defaultPath = `${router.currentRoute.value.path}/${firstSportType}`;
+		// 跳转到拼接后的路径
+		router.push(defaultPath);
 	}
-);
+};
+initRoute();
 
-const sportsBetEvent = useSportsBetEventStore();
-
-const left = ref(sportsRouterLeft);
-const right = ref(sportsRouter);
-const navRight = ref([]);
-
-const sports = computed(() => viewSportPubSubEventData.viewSportData.sports);
-
-const sportList = computed(() => {
-	const list = right.value.filter((item) => {
-		const type = item.path.replace(/[^\d]/g, "");
-		const sport = sports.value.find((sp) => Number(sp.sportType) === Number(type));
-		if (!sport) return false;
-
-		let count;
-		switch (props.sportsActive) {
-			case "todayContest":
-				count = sport.gameCount;
-				break;
-			case "rollingBall":
-				count = sport.liveGameCount;
-				break;
-			case "morningTrading":
-			case "champion":
-				count = sport.count;
-				break;
-			default:
-				count = 0
-				break;
-		}
-		item.count = count || 0;
-		if (count) {
-			return item;
-		}
-		return false;
+const toPath = (item: any) => {
+	// 路由参数与点击tab类型相同退出
+	if (route.query.sportType == item.sportType) return;
+	// 获取当前路径
+	const currentPath = router.currentRoute.value.path;
+	// 跳转到目标路径并通过 query 传递 sportType
+	router.push({
+		path: currentPath,
+		query: { sportType: item.sportType },
 	});
-	// console.log(list, '=======list')
-	return list;
-});
+	emit("switchType", item.sportType);
+};
 
-// watch([() => props.sportsActive, sports], ([newActive, newSports]) => {
-// 	if (!/^\/sports\/\d+\/list$/.test(route.path)) return;
-
-// 	if (newSports && newSports.length) {
-// 		const sportsType = route.path.replace(/[^\d]/g, "");
-// 		const index = newSports.findIndex((e) => e.sportType === Number(sportsType));
-// 		if (index === -1) {
-// 			router.push({
-// 				path: navRight.value[0].path,
-// 				query: { sportsActive: props.sportsActive },
-// 			});
-// 		}
-// 	}
-// });
-
-onMounted(() => {
-	// Initialization logic if needed
-});
+// 在组件挂载时执行初始化
+onMounted(() => {});
 </script>
 
 <style scoped lang="scss">
@@ -162,6 +109,7 @@ onMounted(() => {
 		align-items: center;
 		padding: 10px 0;
 		padding-right: 40px;
+		overflow: hidden;
 		box-sizing: border-box;
 
 		.line {
@@ -182,34 +130,26 @@ onMounted(() => {
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				padding: 0px 12px;
 				background: var(--butter);
 				border-radius: 4px;
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				box-sizing: border-box;
+				cursor: pointer;
 
-				a {
-					display: flex;
-					width: 100%;
-					height: 100%;
-					align-items: center;
-					justify-content: center;
-					padding: 0 12px;
-					text-decoration: none;
+				.icon {
+					width: 16px;
+					height: 16px;
+				}
 
-					.icon {
-						width: 16px;
-						height: 16px;
-					}
-
-					.value {
-						color: var(--Text1, #98a7b5);
-						text-align: center;
-						font-family: "PingFang SC";
-						font-size: 14px;
-						font-weight: 400;
-					}
+				.value {
+					color: var(--Text1, #98a7b5);
+					text-align: center;
+					font-family: "PingFang SC";
+					font-size: 14px;
+					font-weight: 400;
 				}
 			}
 

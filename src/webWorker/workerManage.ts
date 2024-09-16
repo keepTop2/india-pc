@@ -108,7 +108,7 @@ class WorkerManage {
 	 * @description 收到视图数据
 	 */
 	private viewToWorker<T1, T2>(receiverData: WorkerTransfer<T1, T2>) {
-		//console.warn("第三步 线程管理器收到了视图数据 准备发送到对应线程", receiverData);
+		// console.error("第三步 线程管理器收到了视图数据 准备发送到对应线程", receiverData);
 		//体育视图处理线程
 		// if (receiverData.workerName == WorkerName.sportViewProcessWorker) {
 		//找到线程实例
@@ -129,13 +129,12 @@ class WorkerManage {
 	 * @param data
 	 */
 	public onMessage<T1, T2>(data) {
-		console.log("看看子线程发送过来的数据", JSON.parse(data.data));
+		// console.error("第八步  线程管理器收到处理好的数据准备发送到视图", JSON.parse(data.data));
 		const workerToViewData: WorkerTransfer<T1, T2> = JSON.parse(data.data);
 		// // 将处理好的体育数据发送到Vue组件
 		// if (childrenWorkerData.serverType == "sportServer") {
 		// 	//处理好的数据 赋值给视图
 		pubsub.PubSubEvents.WorkerEvents.workerToView.params = workerToViewData;
-		console.warn("第八步  线程管理器收到处理好的数据准备发送到视图");
 		pubsub.publish(pubsub.PubSubEvents.WorkerEvents.workerToView.eventName, pubsub.PubSubEvents.WorkerEvents.workerToView.params);
 		// console.log(workerToViewData, "收到子线程数据");
 		// 	//发布体育线子程处理好数据到Spprts组件的事件
