@@ -1,12 +1,15 @@
 <template>
-	<component v-if="leagues" :is="sportsMap[Number(route.query.sportType)]" :listData="leagues" />
+	<component v-if="leagues" :is="sportsMap[Number(route.query.sportType)]" :listData="leagues" :matchedLeague="matchedLeague" />
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, computed, onMounted, reactive } from "vue";
 import { defineAsyncComponent } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
+import pubsub from "/@/pubSub/pubSub";
+const SportLeagueSearchStore = useSportLeagueSearchStore();
 const route = useRoute();
 
 // 足球列表
@@ -43,8 +46,31 @@ const sportsMap = {
 	43: ESports,
 };
 
+// 用于存储匹配的联赛数据
+const matchedLeague = ref([]);
+
 // 获取到的数据
 const leagues = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
+
+const selectFilterLeague = (value: number) => {
+	// 遍历 leagues 数组，找到 leagueId 与传入的 value 匹配的对象
+	if (value > 0) {
+		const arr = [];
+		const result = leagues.value.find((league) => league.leagueId === value);
+		// 将匹配结果存储到 matchedLeague 变量中
+		if (result) {
+			arr.push(result);
+			matchedLeague.value = arr;
+			console.log("匹配的联赛：", matchedLeague.value);
+		}
+	} else {
+		matchedLeague.value = [];
+	}
+};
+
+onMounted(() => {
+	pubsub.subscribe("selectFilterLeague", selectFilterLeague);
+});
 </script>
 
 <style scoped></style>

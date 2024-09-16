@@ -10,7 +10,13 @@
 				minDivClass: 可获取缩小时展示的-标题高度
 				childrenDivClass: 可获取展开时-子集卡片高度
 			-->
-			<VirtualScrollVirtualList ref="VirtualScrollVirtualListRef" bottomClass="card-container" minDivClass="card—header" childrenDivClass="league-content" :list-data="listData">
+			<VirtualScrollVirtualList
+				ref="VirtualScrollVirtualListRef"
+				bottomClass="card-container"
+				minDivClass="card—header"
+				childrenDivClass="league-content"
+				:list-data="matchedLeague.length > 0 ? matchedLeague : listData"
+			>
 				<template #default="{ item, index, isExpand }">
 					<!-- 滚球卡片 -->
 					<FootballCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="oddsChange" @toggleDisplay="toggleDisplay"></FootballCard>
@@ -24,7 +30,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import { FootballCard, SelectCard, VirtualScrollVirtualList } from "./components/index";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
@@ -47,9 +53,28 @@ const props = defineProps({
 		type: Array,
 		default: () => [],
 	},
+	/**
+	 * @description 选择匹配到联赛数据
+	 * @param {Array} matchedLeague
+	 */
+	matchedLeague: {
+		type: Array,
+		default: () => [],
+	},
 });
 
-console.log("props", props.listData);
+console.log("matchedLeague", props.matchedLeague);
+
+// 监控 matchedLeague 的变化
+watchEffect(() => {
+	console.log("Matched League Changed:", props.matchedLeague);
+	// 在这里处理 matchedLeague 的逻辑，确保数据发生变化时可以渲染
+	if (props.matchedLeague.length) {
+		// 进行需要的操作，比如更新显示的联赛数据
+		console.log("Updated matched league:", props.matchedLeague);
+		// 你可以在这里处理 matchedLeague 的显示逻辑
+	}
+});
 
 /**
  * @description 赔率发生变化后 3秒动画结束后清理掉oddsChange状态

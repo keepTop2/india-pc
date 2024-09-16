@@ -50,7 +50,7 @@ import { RollingCard, ChampionshipCard, SelectCard, VirtualScrollVirtualList } f
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
+import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 const SidebarStore = useSidebarStore();
@@ -111,8 +111,8 @@ onBeforeUnmount(() => {});
  */
 const getList = () => {
 	let leagues = cloneDeep(state.targetEvents);
-	const SportLeagueSeachStore = useSportLeagueSeachStore();
-	const leagueSelect = SportLeagueSeachStore.getLeagueSelect;
+	const SportLeagueSearchStore = useSportLeagueSearchStore();
+	const leagueSelect = SportLeagueSearchStore.getLeagueSelect;
 	// 如果有筛选 则处理数据，只给出筛选的联赛列表。
 	let newleagues: never[] = [];
 	if (leagues && leagueSelect.length > 0) {

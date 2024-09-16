@@ -36,8 +36,8 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { defineProps, withDefaults } from "vue";
-import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
-const SportLeagueSeachStore = useSportLeagueSeachStore();
+import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
+const SportLeagueSearchStore = useSportLeagueSearchStore();
 interface Option {
 	leagueId: number | null;
 	leagueName: string;
@@ -67,9 +67,9 @@ const handleCommand = (command: { index: number; value: string | null; label: st
 	activeIndex.value = command.index;
 	selectedOption.value = command.index !== 0 ? props.options[command.index - 1] : null;
 	if (activeIndex.value > 0) {
-		SportLeagueSeachStore.setSportsLeagueSelect([command.value]);
+		SportLeagueSearchStore.setSportsLeagueSelect([command.value]);
 	} else {
-		SportLeagueSeachStore.clearLeagueSelect();
+		SportLeagueSearchStore.clearLeagueSelect();
 	}
 };
 

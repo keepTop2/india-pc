@@ -1,18 +1,12 @@
-/*
- * @Author: WangMingxin
- * @Description: 体育-搜素
- */
 import { defineStore } from "pinia";
 
-import { SportsRootObject, BetMarketInfo } from "/@/views/sports/models/interface";
-
-interface sportLeagueSeachType {
+interface sportLeagueSearchType {
 	/** 选择的联赛 */
 	sportsLeagueSelect: string[]; //
 }
 
-export const useSportLeagueSeachStore = defineStore("SportLeagueSeach", {
-	state: (): sportLeagueSeachType => {
+export const useSportLeagueSearchStore = defineStore("SportLeagueSearch", {
+	state: (): sportLeagueSearchType => {
 		return {
 			sportsLeagueSelect: [], // 选择的联赛
 		};
