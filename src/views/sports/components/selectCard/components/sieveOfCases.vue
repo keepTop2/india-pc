@@ -67,7 +67,15 @@ const handleCommand = (command: { index: number; value: string | null; label: st
 
 // 计算所有联赛的总事件数量
 const totalEvents = computed(() => {
-	return viewSportPubSubEventData.viewSportData.sports.find((item) => item.sportType === Number(route.query.sportType))?.liveGameCount;
+	console.log("viewSportPubSubEventData.viewSportData.sports", viewSportPubSubEventData.viewSportData.sports);
+
+	if (route.path === "/sports/todayContest/rollingBall") {
+		return viewSportPubSubEventData.viewSportData.sports.find((item) => item.sportType === Number(route.query.sportType))?.liveGameCount;
+	} else if (route.path === "/sports/todayContest/notStarted") {
+		return viewSportPubSubEventData.viewSportData.sports.find((item) => item.sportType === Number(route.query.sportType))?.gameCount;
+	} else {
+		return viewSportPubSubEventData.viewSportData.sports.find((item) => item.sportType === Number(route.query.sportType))?.count;
+	}
 });
 
 const optionsWithAll = computed(() => {
