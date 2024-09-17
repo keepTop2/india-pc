@@ -21,7 +21,7 @@ export const i18n = createI18n({
 	// globalInjection: true,
 	legacy: false,
 	locale: getlang(),
-	fallbackLocale: "en-US",
+	fallbackLocale: "zh-CN",
 	messages: loadLang(),
 });
 
@@ -34,7 +34,7 @@ export function setLang(lang: LangType) {
 	if (LangList[lang]) {
 		i18n.global.locale.value = lang;
 	} else {
-		i18n.global.locale.value = "en-US";
+		i18n.global.locale.value = "zh-CN";
 	}
 }
 

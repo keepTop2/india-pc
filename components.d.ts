@@ -38,7 +38,7 @@ declare module 'vue' {
     Form: typeof import('./src/components/Form/index.vue')['default']
     FromInput: typeof import('./src/components/Input/fromInput.vue')['default']
     H5Video: typeof import('./src/components/wVideo/h5Video.vue')['default']
-    Hcaptcha: typeof import('./src/components/Modal/components/hcaptcha.vue')['default']
+    Hcaptcha: typeof import('./src/components/Hcaptcha.vue')['default']
     Img: typeof import('./src/components/Img/index.vue')['default']
     IndexOrigin: typeof import('./src/components/svgIcon/index-origin.vue')['default']
     LangCurrenyConfig: typeof import('./src/components/Modal/components/LangCurrenyConfig.vue')['default']
