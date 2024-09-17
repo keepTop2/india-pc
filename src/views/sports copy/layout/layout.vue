@@ -68,7 +68,7 @@ import PubSub from "/@/pubSub/pubSub";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
-import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
+import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
 
@@ -90,7 +90,7 @@ const SportMorningTradingStore = useSportMorningTradingStore();
 const LayoutStore = useLayoutStore();
 const UserStore = useUserStore();
 
-const SportLeagueSeachStore = useSportLeagueSeachStore();
+const SportLeagueSearchStore = useSportLeagueSearchStore();
 const SportSortStore = useSportSortStore();
 const ShopCatControlStore = useShopCatControlStore();
 
@@ -162,7 +162,7 @@ const initSportRequest = async () => {
 
 /**清除store数据 */
 const clearStroe = () => {
-	SportLeagueSeachStore.clearLeagueSelect();
+	SportLeagueSearchStore.clearLeagueSelect();
 };
 
 watch(

@@ -1,14 +1,6 @@
 <template>
 	<div>
-		<el-dropdown
-			trigger="click"
-			:teleported="false"
-			placement="bottom-start"
-			:hide-on-click="true"
-			popper-class="popperClass"
-			@visible-change="handleVisibleChange"
-			@command="handleCommand"
-		>
+		<el-dropdown trigger="click" :teleported="false" placement="bottom-start" :hide-on-click="true" popper-class="popperClass" @command="handleCommand">
 			<div class="el-dropdown-content">
 				<div class="left">
 					<span class="name">{{ selectedOption ? selectedOption.leagueName : "全部" }}</span>
@@ -36,10 +28,11 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { defineProps, withDefaults } from "vue";
-import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
+import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-const SportLeagueSeachStore = useSportLeagueSeachStore();
 import { useRoute } from "vue-router";
+import pubsub from "/@/pubSub/pubSub";
+const SportLeagueSearchStore = useSportLeagueSearchStore();
 const route = useRoute();
 interface Option {
 	leagueId: number | null;
@@ -52,13 +45,8 @@ const props = withDefaults(defineProps<{ options: Option[] }>(), {
 	options: () => [],
 });
 
-const dropdownRef = ref(null);
 const activeIndex = ref<number | null>(0);
 const selectedOption = ref<Option | null>(null);
-
-const handleVisibleChange = (isVisible: boolean) => {
-	console.log("Dropdown visibility changed:", isVisible);
-};
 
 /**
  * @description: option选中
@@ -66,30 +54,27 @@ const handleVisibleChange = (isVisible: boolean) => {
  * @return {*}
  */
 const handleCommand = (command: { index: number; value: string | null; label: string }) => {
-	console.log("Command received:", command);
 	activeIndex.value = command.index;
 	selectedOption.value = command.index !== 0 ? props.options[command.index - 1] : null;
-	if (activeIndex.value > 0) {
-		SportLeagueSeachStore.setSportsLeagueSelect([command.value]);
+	// 筛选派发事件
+	pubsub.publish("selectFilterLeague", command.value);
+	/*	if (activeIndex.value > 0) {
+		SportLeagueSearchStore.setSportsLeagueSelect([command.value]);
 	} else {
-		SportLeagueSeachStore.clearLeagueSelect();
-	}
+		SportLeagueSearchStore.clearLeagueSelect();
+	}*/
 };
 
 // 计算所有联赛的总事件数量
 const totalEvents = computed(() => {
-	/**
-	 * @description 球类列表
-	 */
-	const sports = viewSportPubSubEventData.viewSportData.sports;
+	console.log("viewSportPubSubEventData.viewSportData.sports", viewSportPubSubEventData.viewSportData.sports);
 
-	const sport = sports.filter((item) => item.sportType == 1)[0] as unknown as { gameCount: number; liveGameCount: number; count: number };
-	if (route.query.sportsActive == "todayContest") {
-		return sport?.gameCount;
-	} else if (route.query.sportsActive == "rollingBall") {
-		return sport?.liveGameCount;
+	if (route.path === "/sports/todayContest/rollingBall") {
+		return viewSportPubSubEventData.viewSportData.sports.find((item) => item.sportType === Number(route.query.sportType))?.liveGameCount;
+	} else if (route.path === "/sports/todayContest/notStarted") {
+		return viewSportPubSubEventData.viewSportData.sports.find((item) => item.sportType === Number(route.query.sportType))?.gameCount;
 	} else {
-		return sport?.count;
+		return viewSportPubSubEventData.viewSportData.sports.find((item) => item.sportType === Number(route.query.sportType))?.count;
 	}
 });
 

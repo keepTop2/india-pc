@@ -124,7 +124,7 @@ watch([cSportsActive, sports], ([newActive, newSports], [prevActive, prevSports]
 });
 
 /**是否显示搜索按钮 */
-const isSeach = computed(() => {
+const isSearch = computed(() => {
 	// 	if (route.name?.indexOf("football") != -1 || route.name?.indexOf("basketball") != -1) {
 	// 		if (route?.query?.sportsActive == `champion`) {
 	// 			return false;

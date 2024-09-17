@@ -10,7 +10,13 @@
 				minDivClass: 可获取缩小时展示的-标题高度
 				childrenDivClass: 可获取展开时-子集卡片高度
 			-->
-			<VirtualScrollVirtualList ref="VirtualScrollVirtualListRef" bottomClass="card-container" minDivClass="card—header" childrenDivClass="league-content" :list-data="listData">
+			<VirtualScrollVirtualList
+				ref="VirtualScrollVirtualListRef"
+				bottomClass="card-container"
+				minDivClass="card—header"
+				childrenDivClass="league-content"
+				:list-data="matchedLeague.length > 0 ? matchedLeague : listData"
+			>
 				<template #default="{ item, index, isExpand }">
 					<!-- 滚球卡片 -->
 					<RollingCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="oddsChange" @toggleDisplay="toggleDisplay"></RollingCard>
@@ -24,7 +30,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import { RollingCard, SelectCard, VirtualScrollVirtualList } from "./components/index";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
@@ -47,6 +53,14 @@ const props = defineProps({
 	 * @param {Array} listData
 	 */
 	listData: {
+		type: Array,
+		default: () => [],
+	},
+	/**
+	 * @description 选择匹配到联赛数据
+	 * @param {Array} matchedLeague
+	 */
+	matchedLeague: {
 		type: Array,
 		default: () => [],
 	},

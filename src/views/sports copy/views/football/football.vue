@@ -61,7 +61,7 @@ import { useRoute } from "vue-router";
 import { FootballCard, ChampionshipCard, SelectCard, VirtualScrollVirtualList, DateSelector } from "./components/index";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
+import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 const SidebarStore = useSidebarStore();
@@ -98,8 +98,8 @@ onBeforeMount(() => {
 const getList = () => {
 	// 深拷贝当前球类列表数据
 	let leagues = cloneDeep(state.targetEvents);
-	const SportLeagueSeachStore = useSportLeagueSeachStore();
-	const leagueSelect = SportLeagueSeachStore.getLeagueSelect;
+	const SportLeagueSearchStore = useSportLeagueSearchStore();
+	const leagueSelect = SportLeagueSearchStore.getLeagueSelect;
 	// 如果有筛选，处理数据，只给出筛选的联赛列表
 	if (leagues && leagueSelect.length > 0) {
 		leagues = leagues.filter((item) => leagueSelect.includes(item.leagueId));

@@ -60,9 +60,9 @@ import { debounce } from "lodash-es";
 // import FromInput from '/@/components/Input/fromInput.vue';
 import { MarketCard, SearchInput } from "./components/index";
 import sportsApi from "/@/api/sports/sports";
-import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
+import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { useRouter, useRoute } from "vue-router";
-const SportLeagueSeachStore = useSportLeagueSeachStore();
+const SportLeagueSearchStore = useSportLeagueSearchStore();
 const router = useRouter();
 const route = useRoute();
 const searchValue = ref("");
@@ -85,7 +85,7 @@ const getLeagues = async () => {
 	}
 };
 
-const activeLeagues = ref<any>(SportLeagueSeachStore.getLeagueSelect);
+const activeLeagues = ref<any>(SportLeagueSearchStore.getLeagueSelect);
 interface League {
 	leagueId: number | never;
 	leagueName: string;
@@ -100,7 +100,7 @@ onMounted(() => {
 	const storedHistory = JSON.parse(localStorage.getItem("searchHistory") || "[]");
 	searchHistory.value = storedHistory;
 	/** 进入移除点击记录 */
-	SportLeagueSeachStore.clearLeagueSelect();
+	SportLeagueSearchStore.clearLeagueSelect();
 	//获取联赛数据
 	getLeagues();
 });
@@ -134,10 +134,10 @@ const handleSubmit = (val: any) => {
 		localStorage.setItem("searchHistory", JSON.stringify(searchHistory.value));
 	}
 	// console.info("保存联赛数据到 pinia 中", val);
-	SportLeagueSeachStore.setSportsLeagueSelect([val?.leagueId]);
+	SportLeagueSearchStore.setSportsLeagueSelect([val?.leagueId]);
 	onClickLeft();
 	// if (activeLeagues.value.length > 0) {
-	//   SportLeagueSeachStore.setSportsLeagueSelect(activeLeagues.value);
+	//   SportLeagueSearchStore.setSportsLeagueSelect(activeLeagues.value);
 	//   onClickLeft();
 	// }
 };

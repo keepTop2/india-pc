@@ -7,6 +7,7 @@ import { useLoading } from "/@/directive/loading/hooks";
 import { useUserStore } from "/@/stores/modules/user";
 import router from "/@/router";
 import { useRequestError } from "/@/hooks/requestError";
+import showToast from "../hooks/useToast";
 const { startLoading, stopLoading } = useLoading();
 const { handleRequestError } = useRequestError();
 
@@ -96,6 +97,10 @@ instance.interceptors.response.use(
 				userStore.logOut();
 				break;
 		}
+		if (res.code === 10007) {
+			showToast("令牌错误，请先重新登录");
+		}
+
 		if (res.code !== 200) {
 			if (res.type == "image/png") {
 				return res;

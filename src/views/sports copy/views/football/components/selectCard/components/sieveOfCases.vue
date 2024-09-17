@@ -36,10 +36,10 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { defineProps, withDefaults } from "vue";
-import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
+import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useRoute } from "vue-router";
-const SportLeagueSeachStore = useSportLeagueSeachStore();
+const SportLeagueSearchStore = useSportLeagueSearchStore();
 const route = useRoute();
 interface Option {
 	leagueId: number | null;
@@ -68,9 +68,9 @@ const handleCommand = (command: { index: number; value: string | null; label: st
 	activeIndex.value = command.index;
 	selectedOption.value = command.index !== 0 ? props.options[command.index - 1] : null;
 	if (activeIndex.value > 0) {
-		SportLeagueSeachStore.setSportsLeagueSelect([command.value]);
+		SportLeagueSearchStore.setSportsLeagueSelect([command.value]);
 	} else {
-		SportLeagueSeachStore.clearLeagueSelect();
+		SportLeagueSearchStore.clearLeagueSelect();
 	}
 };
 

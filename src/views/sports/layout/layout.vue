@@ -50,7 +50,7 @@ import { useLayoutStore } from "/@/stores/modules/layout";
 import { useUserStore } from "/@/stores/modules/user";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
-import { useSportLeagueSeachStore } from "/@/stores/modules/sports/sportLeagueSeach";
+import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 
@@ -89,7 +89,7 @@ const SportAttentionStore = useSportAttentionStore();
 const SportMorningTradingStore = useSportMorningTradingStore();
 const LayoutStore = useLayoutStore();
 const UserStore = useUserStore();
-const SportLeagueSeachStore = useSportLeagueSeachStore();
+const SportLeagueSearchStore = useSportLeagueSearchStore();
 const SportSortStore = useSportSortStore();
 const ShopCatControlStore = useShopCatControlStore();
 // Hooks
@@ -461,7 +461,7 @@ const openSportViewProcessWorker = () => {
  */
 const clearStroe = async () => {
 	viewSportPubSubEventData.clearEventsState();
-	SportLeagueSeachStore.clearLeagueSelect();
+	SportLeagueSearchStore.clearLeagueSelect();
 };
 
 // 监听
