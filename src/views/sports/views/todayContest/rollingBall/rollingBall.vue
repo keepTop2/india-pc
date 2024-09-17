@@ -47,7 +47,7 @@ const sportsMap = {
 };
 
 // 用于存储匹配的联赛数据
-const matchedLeague = ref([]);
+const matchedLeague = ref([] as any);
 
 // 获取到的数据
 const leagues = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
@@ -61,10 +61,12 @@ watch(
 );
 
 const selectFilterLeague = (value: number) => {
+	// const leaguesData: any = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
+	// console.log("leaguesData.value", leaguesData.value);
 	// 遍历 leagues 数组，找到 leagueId 与传入的 value 匹配的对象
 	if (value > 0) {
 		const arr = [];
-		const result = leagues.value.find((league) => league.leagueId === value);
+		const result = leagues.value.find((league: any) => league.leagueId === value);
 		// 将匹配结果存储到 matchedLeague 变量中
 		if (result) {
 			arr.push(result);

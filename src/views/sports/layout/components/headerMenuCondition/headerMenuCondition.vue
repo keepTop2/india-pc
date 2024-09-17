@@ -40,7 +40,7 @@
 			<component :is="bettingRulesModal" />
 		</Modal> -->
 	</div>
-	<searchBar v-else  @cancel="handleSearch(false)"/>
+	<searchBar v-else @cancel="handleSearch(false)" />
 </template>
 
 <script setup lang="ts">
@@ -114,10 +114,11 @@ const switchObjRight = ref({
 // 组件挂载后的初始化操作
 onMounted(() => {});
 
-const handleSearch = ( data:boolean ) => {
+const handleSearch = (data: boolean) => {
 	isSearch.value = data;
-}
+};
 
+// 点击大类
 const onType = (item: any) => {
 	if (item.path === "/sports/todayContest") {
 		// eventStatusData.value.on.active = true;
@@ -133,8 +134,9 @@ const onType = (item: any) => {
 		});
 	}
 	router.push(item.path);
-	if (item.path === "/sports/todayContest") {
+	if (item.type === "todayContest") {
 		const activeItem: any = Object.values(eventStatusData.value).find((item) => item.active);
+		// console.log("activeItem", activeItem);
 		emit("onType", activeItem.type);
 	} else {
 		emit("onType", item.type);
@@ -155,6 +157,8 @@ const onEventStatusData = (e: "off" | "on") => {
 		path: targetPath,
 		query: { sportType: sportType },
 	});
+	console.log("e=================>", e);
+
 	emit("onType", eventStatusData.value[e].type);
 };
 

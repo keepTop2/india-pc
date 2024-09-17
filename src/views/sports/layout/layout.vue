@@ -97,8 +97,19 @@ const { isHaveToken, toLogin } = useToLogin();
 const { startLoading, stopLoading } = useLoading();
 const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
 
+const routeMap = {
+	// 滚球
+	"/sports/todayContest/rollingBall": "rollingBall",
+	// 未开赛
+	"/sports/todayContest/notStarted": "todayContest",
+	// 早盘
+	"/sports/morningTrading": "morningTrading",
+	// 今日
+	"/sports/champion": "champion",
+} as any;
+
 // 响应式数据
-const tabActive = ref("rollingBall"); // 默认滚球
+const tabActive = ref(routeMap[route.path]); // 默认滚球
 const isShowoVerlay = ref(false);
 
 const NotifyModal = ref(null);
@@ -177,11 +188,9 @@ const initSport = async () => {
  * @description 开启体育推送
  */
 const openSportPush = async (sportType) => {
-	console.log("重新触发");
-	console.log("route", route);
-	console.log("sportType", sportType);
 	closeSportViewProcessWorker();
 	openSportViewProcessWorker();
+	console.log('tabActive.value',tabActive.value);
 	// 开启球类信息推送
 	await handleSportPush();
 	// 开启球类赛事数据推送
@@ -383,6 +392,7 @@ const openEventDetailPush = async () => {
  * @param path 路径对象
  */
 const onTab = (type: string) => {
+	console.log("type", type);
 	// 点击当前大类直接退出
 	if (tabActive.value == type) return;
 	// 更新大类标识
