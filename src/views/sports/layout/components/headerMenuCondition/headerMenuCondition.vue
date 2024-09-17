@@ -1,5 +1,5 @@
 <template>
-	<div class="heaerMenuCondition-container">
+	<div class="heaerMenuCondition-container" v-if="!isSearch">
 		<!-- 左侧分类和开关 -->
 		<div class="left">
 			<template v-for="(item, index) in MajorCategoriesMenu" :key="index">
@@ -24,13 +24,13 @@
 				<!-- 搜索框占位 -->
 				<div class="search">
 					<div class="icon"><svg-icon name="sports-search" size="14px" /></div>
-					<input type="text" placeholder="请输入赛事名称/球队名" @input="getFilterEvents" />
+					<input type="text" placeholder="请输入赛事名称/球队名" @click="handleSearch(true)" />
 				</div>
 				<!-- 时间/热门开关，仅在特定条件下显示 -->
 				<wSwitch :switchObj="switchObjRight" :disabled="switchDisable.right"></wSwitch>
 			</div>
 			<!--  -->
-			<span class="icon"><svg-icon name="sports-screening" size="20px"></svg-icon></span>
+			<!-- <span class="icon"><svg-icon name="sports-screening" size="20px"></svg-icon></span> -->
 			<!-- 教程 -->
 			<span class="icon"><svg-icon name="sports-tutorial" size="20px"></svg-icon></span>
 		</div>
@@ -40,6 +40,7 @@
 			<component :is="bettingRulesModal" />
 		</Modal> -->
 	</div>
+	<searchBar v-else  @cancel="handleSearch(false)"/>
 </template>
 
 <script setup lang="ts">
@@ -53,9 +54,11 @@ import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useMatchEvents } from "/@/views/sports/hooks/eventMatch";
+import searchBar from "./components/searchBar/searchBar.vue";
 import Modal from "../Modal/index.vue";
 
 // 初始化所需的store
+const isSearch = ref(false);
 const SportAttentionStore = useSportAttentionStore();
 const router = useRouter();
 const route = useRoute();
@@ -110,6 +113,10 @@ const switchObjRight = ref({
 
 // 组件挂载后的初始化操作
 onMounted(() => {});
+
+const handleSearch = ( data:boolean ) => {
+	isSearch.value = data;
+}
 
 const onType = (item: any) => {
 	if (item.path === "/sports/todayContest") {

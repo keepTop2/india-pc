@@ -17,6 +17,7 @@
 					<div class="back-container">
 						<!-- 主体路由页面 -->
 						<router-view v-cloak />
+						<div class="overlay" v-if="isShowoVerlay"</div>
 					</div>
 					<!-- 购物车 -->
 					<SportsShopCart></SportsShopCart>
@@ -91,7 +92,6 @@ const UserStore = useUserStore();
 const SportLeagueSeachStore = useSportLeagueSeachStore();
 const SportSortStore = useSportSortStore();
 const ShopCatControlStore = useShopCatControlStore();
-
 // Hooks
 const { isHaveToken, toLogin } = useToLogin();
 const { startLoading, stopLoading } = useLoading();
@@ -99,6 +99,7 @@ const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubE
 
 // 响应式数据
 const tabActive = ref("rollingBall"); // 默认滚球
+const isShowoVerlay = ref(false);
 
 const NotifyModal = ref(null);
 const showNotifyModal = ref(false);
@@ -111,12 +112,15 @@ const routeRecord = ref({
 // const sportType = computed(() => route.query.sportType);
 
 // 计算属性
-const attentionSwitch = computed(() => SportAttentionStore.attentionType);
 
 /**
  * @description 组件生命周期钩子
  */
 onBeforeMount(() => {
+	pubSub.subscribe("showoVerlay", (data) => {
+		console.log("showoVerlay", data);
+		isShowoVerlay.value = data;
+	})
 	LayoutStore.setBigScreen(true);
 	pubSub.subscribe(pubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
 	initSportRequest();
@@ -125,6 +129,7 @@ onBeforeMount(() => {
 onBeforeUnmount(() => {
 	unSport();
 	pause();
+
 });
 
 onUnmounted(() => {
@@ -550,8 +555,19 @@ const { pause, resume } = useIntervalFn(() => sportsLogin(), 8 * 60 * 1000);
 				}
 			}
 
-			&.back-container {
+			.back-container {
 				background-color: var(--Bg);
+				position: relative;
+
+				.overlay {
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					background-color: rgba(0, 0, 0, 0.5);
+					z-index: 1;
+				}
 			}
 		}
 	}

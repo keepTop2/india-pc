@@ -156,7 +156,7 @@ const toggleDisplay = (val?: number) => {
 <style lang="scss" scoped>
 .box-content {
 	width: 100%;
-	height: calc(100vh - 260px);
+	height: calc(100vh - 200px);
 }
 
 .card-container {

@@ -131,6 +131,22 @@ class SportsCommonFn {
 		}
 	};
 
+	public static timeFormate = (globalShowTime) => {
+		if (globalShowTime) {
+			const date = dayjs(convertUtcToUtc5AndFormat(globalShowTime)).format("MM-DD");
+			const time = dayjs(convertUtcToUtc5AndFormat(globalShowTime)).format("HH:mm");
+			return {
+				date,
+				time,
+			};
+		} else {
+			return {
+				date: "00-00",
+				time: "00:00",
+			};
+		}
+	};
+
 	// 使用safeAccess函数来安全地访问深层属性 防止多级访问出现undefined报错
 	public static safeAccessMultiple = (obj, keysArray) => {
 		return keysArray.reduce((result, keys) => {

@@ -91,14 +91,6 @@ const Sports = [
 					title: "赛事详细",
 				},
 			},
-			{
-				path: "/sports/:sportType/detail",
-				name: "event_detail",
-				component: () => import("/@/views/sports/views/eventDetail/eventDetail.vue"),
-				meta: {
-					title: "赛事详细",
-				},
-			},
 		],
 	},
 ];
