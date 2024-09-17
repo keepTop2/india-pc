@@ -29,7 +29,7 @@ interface StoreUser {
 export const useUserStore = defineStore("User", {
 	state: (): StoreUser => {
 		return {
-			lang: JSON.parse(localStorage.getItem("langInfo" || "{}") as any)?.code || LangEnum["en-US"],
+			lang: JSON.parse(localStorage.getItem("langInfo" || "{}") as any)?.code || LangEnum["zh-CN"],
 			LangList: [],
 			currencyList: [],
 			userInfo: JSON.parse(localStorage.getItem("userInfo") || "{}"),
