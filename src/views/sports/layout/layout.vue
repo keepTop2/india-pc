@@ -128,6 +128,7 @@ const routeRecord = ref({
  * @description 组件生命周期钩子
  */
 onBeforeMount(() => {
+	tabActive.value = route.meta.name as string;
 	pubSub.subscribe("showoVerlay", (data) => {
 		console.log("showoVerlay", data);
 		isShowoVerlay.value = data;

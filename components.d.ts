@@ -34,6 +34,7 @@ declare module 'vue' {
     ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    EventCountBar: typeof import('./src/components/EventCountBar/EventCountBar.vue')['default']
     ForgetPassword: typeof import('./src/components/Modal/components/ForgetPassword.vue')['default']
     Form: typeof import('./src/components/Form/index.vue')['default']
     FromInput: typeof import('./src/components/Input/fromInput.vue')['default']
