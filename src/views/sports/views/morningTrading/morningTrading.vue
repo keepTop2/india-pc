@@ -1,12 +1,13 @@
 <template>
-	<component v-if="leagues" :is="sportsMap[Number(route.query.sportType)]" :listData="leagues" />
+	<component v-if="leagues" :is="sportsMap[Number(route.query.sportType)]" :listData="leagues" :matchedLeague="matchedLeague" />
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, computed, onMounted, watch, onBeforeUnmount } from "vue";
 import { defineAsyncComponent } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import pubsub from "/@/pubSub/pubSub";
 const route = useRoute();
 
 // 足球列表
@@ -45,6 +46,46 @@ const sportsMap = {
 
 // 获取到的数据
 const leagues = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
+
+// 用于存储匹配的联赛数据
+const matchedLeague = ref([] as any);
+
+// 路由参数 sportType 变化 清空筛选的联赛
+watch(
+	() => route.query.sportType,
+	(newValue, oldValue) => {
+		matchedLeague.value = [];
+	}
+);
+
+const selectFilterLeague = (value: number) => {
+	// const leaguesData: any = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
+	// console.log("leaguesData.value", leaguesData.value);
+	// 遍历 leagues 数组，找到 leagueId 与传入的 value 匹配的对象
+	console.log("leagues.value -- morningTrading", leagues.value);
+	if (value > 0) {
+		const arr = [];
+		const result = leagues.value.find((league: any) => league.leagueId === value);
+		// 将匹配结果存储到 matchedLeague 变量中
+		if (result) {
+			arr.push(result);
+			matchedLeague.value = arr;
+			console.log("匹配的联赛：", matchedLeague.value);
+		}
+	} else {
+		matchedLeague.value = [];
+	}
+};
+
+onMounted(() => {
+	// 订阅选择联赛事件
+	pubsub.subscribe("selectFilterLeague", selectFilterLeague);
+});
+
+onBeforeUnmount(() => {
+	// 取消订阅选择联赛事件
+	pubsub.unsubscribe("selectFilterLeague", selectFilterLeague);
+});
 </script>
 
 <style scoped></style>

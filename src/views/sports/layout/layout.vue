@@ -17,7 +17,7 @@
 					<div class="back-container">
 						<!-- 主体路由页面 -->
 						<router-view v-cloak />
-						<div class="overlay" v-if="isShowoVerlay"</div>
+						<div class="overlay" v-if="isShowoVerlay"></div>
 					</div>
 					<!-- 购物车 -->
 					<SportsShopCart></SportsShopCart>
@@ -128,11 +128,10 @@ const routeRecord = ref({
  * @description 组件生命周期钩子
  */
 onBeforeMount(() => {
-	tabActive.value = route.meta.name as string;
 	pubSub.subscribe("showoVerlay", (data) => {
 		console.log("showoVerlay", data);
 		isShowoVerlay.value = data;
-	})
+	});
 	LayoutStore.setBigScreen(true);
 	pubSub.subscribe(pubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
 	initSportRequest();
@@ -141,7 +140,6 @@ onBeforeMount(() => {
 onBeforeUnmount(() => {
 	unSport();
 	pause();
-
 });
 
 onUnmounted(() => {
@@ -191,7 +189,7 @@ const initSport = async () => {
 const openSportPush = async (sportType) => {
 	closeSportViewProcessWorker();
 	openSportViewProcessWorker();
-	console.log('tabActive.value',tabActive.value);
+	console.log("tabActive.value", tabActive.value);
 	// 开启球类信息推送
 	await handleSportPush();
 	// 开启球类赛事数据推送
@@ -229,7 +227,7 @@ const handleSportPush = async () => {
 			sendWorkerCommand(sportTabPushActions.champion.openSport, params);
 			break;
 		default:
-			sendWorkerCommand(sportTabPushActions.todayContest.openSport, params);
+			sendWorkerCommand(sportTabPushActions.rollingBall.openSport, params);
 			break;
 	}
 };

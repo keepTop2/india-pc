@@ -41,9 +41,6 @@ const { clearSportsOddsChange } = useSportPubSubEvents();
 const route = useRoute();
 const VirtualScrollVirtualListRef = ref();
 
-/**选中的赛选类型；*/
-const sportsActive = ref("rollingBall");
-
 /**
  * @description 组件属性定义
  */

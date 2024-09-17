@@ -10,7 +10,13 @@
 				minDivClass: 可获取缩小时展示的-标题高度
 				childrenDivClass: 可获取展开时-子集卡片高度
 			-->
-			<VirtualScrollVirtualList ref="VirtualScrollVirtualListRef" bottomClass="card-container" minDivClass="card—header" childrenDivClass="league-content" :list-data="listData">
+			<VirtualScrollVirtualList
+				ref="VirtualScrollVirtualListRef"
+				bottomClass="card-container"
+				minDivClass="card—header"
+				childrenDivClass="league-content"
+				:list-data="matchedLeague.length > 0 ? matchedLeague : listData"
+			>
 				<template #default="{ item, index, isExpand }">
 					<!-- 滚球卡片 -->
 					<RollingCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="oddsChange" @toggleDisplay="toggleDisplay"></RollingCard>
@@ -35,9 +41,6 @@ const { clearSportsOddsChange } = useSportPubSubEvents();
 const route = useRoute();
 const VirtualScrollVirtualListRef = ref();
 
-/**选中的赛选类型；*/
-const sportsActive = ref("rollingBall");
-
 /**
  * @description 组件属性定义
  */
@@ -47,6 +50,14 @@ const props = defineProps({
 	 * @param {Array} listData
 	 */
 	listData: {
+		type: Array,
+		default: () => [],
+	},
+	/**
+	 * @description 选择匹配到联赛数据
+	 * @param {Array} matchedLeague
+	 */
+	matchedLeague: {
 		type: Array,
 		default: () => [],
 	},
