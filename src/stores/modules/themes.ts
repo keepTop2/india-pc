@@ -22,7 +22,7 @@ function applyTheme(cssContent: string) {
 export const useThemesStore = defineStore("Themes", {
 	state: (): ThemesStore => {
 		return {
-			themeName: (localStorage.getItem("Themes") as ThemeKey) || "light",
+			themeName: (localStorage.getItem("Themes") as ThemeKey) || "dark",
 		};
 	},
 	getters: {

@@ -118,7 +118,7 @@ const collectGame = (game: gameInfo) => {
 			border-bottom-right-radius: 12px;
 			word-break: break-all;
 			display: -webkit-box; /* 必须使用 Webkit 特性布局 */
-			-webkit-line-clamp: 2; /* 限制行数为 3 行 */
+			-webkit-line-clamp: 2; /* 限制行数为 2 行 */
 			-webkit-box-orient: vertical; /* 垂直排列盒子元素 */
 			overflow: hidden; /* 隐藏超出部分 */
 			text-overflow: ellipsis; /* 添加省略号 */
