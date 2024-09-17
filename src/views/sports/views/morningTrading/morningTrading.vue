@@ -64,7 +64,7 @@ const selectFilterLeague = (value: number) => {
 	// 遍历 leagues 数组，找到 leagueId 与传入的 value 匹配的对象
 	console.log("leagues.value -- morningTrading", leagues.value);
 	if (value > 0) {
-		const arr = [];
+		const arr: any = [];
 		const result = leagues.value.find((league: any) => league.leagueId === value);
 		// 将匹配结果存储到 matchedLeague 变量中
 		if (result) {

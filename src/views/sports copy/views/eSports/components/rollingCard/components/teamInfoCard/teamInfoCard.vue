@@ -37,7 +37,7 @@ interface teamDataType {
 	/** 数据索引 */
 	dataIndex: number;
 	/** 当前路由名称 */
-	IfOffTheBat: string;
+	IfOffTheBat?: string;
 	/** 队伍数据 */
 	teamData: any;
 }

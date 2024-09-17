@@ -49,21 +49,21 @@ const Sports = [
 			{
 				path: "/sports/todayContest",
 				name: "todayContestList",
-				meta: { title: "今日", name: "todayContest" },
+				meta: { title: "今日", name: "todayContest", type:"list" },
 				redirect: "/sports/todayContest/rollingBall",
 				children: [
 					{
 						path: "/sports/todayContest/rollingBall",
 						name: "todayContestRollingBall",
 						component: () => import("/@/views/sports/views/todayContest/rollingBall/rollingBall.vue"),
-						meta: { title: "滚球比赛" },
+						meta: { title: "滚球比赛", type:"list" },
 						beforeEnter: (to, from, next) => handleSportTypeRedirect(to, from, next),
 					},
 					{
 						path: "/sports/todayContest/notStarted",
 						name: "todayContestNotStarted",
 						component: () => import("/@/views/sports/views/todayContest/notStarted/notStarted.vue"),
-						meta: { title: "未开赛比赛" },
+						meta: { title: "未开赛比赛", type:"list" },
 						beforeEnter: (to, from, next) => handleSportTypeRedirect(to, from, next),
 					},
 				],
@@ -71,7 +71,7 @@ const Sports = [
 			{
 				path: "/sports/morningTrading",
 				name: "morningTradingList",
-				meta: { name: "morningTrading", title: "早盘" },
+				meta: { name: "morningTrading", title: "早盘", type:"list" },
 				component: () => import("/@/views/sports/views/morningTrading/morningTrading.vue"),
 				beforeEnter: (to, from, next) => handleSportTypeRedirect(to, from, next),
 			},

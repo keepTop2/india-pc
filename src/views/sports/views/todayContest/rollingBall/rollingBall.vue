@@ -45,7 +45,11 @@ const sportsMap = {
 };
 
 // 获取到的数据
-const leagues = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
+const leagues = computed(() => {
+	// console.log(viewSportPubSubEventData.getSportData(),'===viewSportPubSubEventData.getSportData()')
+	return viewSportPubSubEventData.getSportData()
+});
+
 
 // 用于存储匹配的联赛数据
 const matchedLeague = ref([] as any);

@@ -69,7 +69,6 @@ import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
 import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
-import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
@@ -91,7 +90,6 @@ const LayoutStore = useLayoutStore();
 const UserStore = useUserStore();
 
 const SportLeagueSearchStore = useSportLeagueSearchStore();
-const SportSortStore = useSportSortStore();
 const ShopCatControlStore = useShopCatControlStore();
 
 const route = useRoute();

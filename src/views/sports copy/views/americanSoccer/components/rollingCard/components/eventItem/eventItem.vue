@@ -72,7 +72,7 @@ interface teamDataType {
 	/** 队伍数据 */
 	event: any;
 	/** 当前路由名称 */
-	IfOffTheBat: string;
+	IfOffTheBat?: string;
 	displayContent: boolean;
 }
 const props = withDefaults(defineProps<teamDataType>(), {

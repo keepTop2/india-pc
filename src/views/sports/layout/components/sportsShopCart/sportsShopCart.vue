@@ -15,14 +15,12 @@ import { ShopCart, ChampionCart } from "./components/index";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useChampionShopCartStore } from "/@/stores/modules/sports/championShopCart";
-import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { useUserStore } from "/@/stores/modules/user";
 
 const ShopCatControlStore = useShopCatControlStore();
 const SportsBetEventStore = useSportsBetEventStore();
 const ChampionShopCartStore = useChampionShopCartStore();
 const UserStore = useUserStore();
-const SportSortStore = useSportSortStore();
 
 /** 获取购物车类型 */
 const shopCartTyp = computed(() => {
@@ -35,9 +33,6 @@ watch(
 		if (!newValue) {
 			/** 清楚购物车所有参数*/
 			SportsBetEventStore.clearShopCart();
-			SportSortStore.setIsActiveHot(false);
-			SportSortStore.clearHotLeagueList();
-
 			SportsBetEventStore.setOddsOptionMassge(0);
 			ChampionShopCartStore.clearOutrightShopCart();
 		}
