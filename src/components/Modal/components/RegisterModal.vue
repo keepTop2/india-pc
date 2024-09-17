@@ -105,7 +105,8 @@
 			</div>
 		</div>
 	</div>
-	<Hcaptcha ref="hcaptcha" @submit="onSubmit" />
+	<div id="captcha-element" ref="captchaBtn"></div>
+	<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
 </template>
 
 <script setup lang="ts">
@@ -125,6 +126,7 @@ const userAccountRegex = /^[a-zA-Z][a-zA-Z0-9]{3,10}$/;
 const passWordregex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@_$]{8,16}$/;
 
 const hcaptcha: any = ref(null);
+const captchaBtn: any = ref(null);
 const payLoad = reactive({
 	userAccount: "",
 	password: "",
@@ -184,8 +186,8 @@ const verifyBtn = () => {
 	}
 };
 const onSubmit = async (token: string) => {
-	const verifyToken = token;
-	const res = await loginApi.userRegister({ ...payLoad, verifyToken }).catch((err) => err);
+	const certifyId = hcaptcha.value.certifyId;
+	const res = await loginApi.userRegister({ ...payLoad, certifyId }).catch((err) => err);
 	const { code, data, message } = res;
 	if (code == Common.ResCode.SUCCESS) {
 		eventBus.emit("hide-modal");
@@ -199,7 +201,8 @@ const onSubmit = async (token: string) => {
 };
 const onLogin = async () => {
 	// hcaptcha.value?.validate();
-	onSubmit("true");
+	// onSubmit("true");
+	captchaBtn.value.click();
 };
 const options = UserStore.getCurrencyList;
 
