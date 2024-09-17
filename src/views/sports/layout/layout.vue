@@ -51,7 +51,6 @@ import { useUserStore } from "/@/stores/modules/user";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
 import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
-import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 
 import { i18n } from "/@/i18n/index";
@@ -81,16 +80,16 @@ const $ = i18n.global;
 const route = useRoute();
 const router = useRouter();
 
+const sportsBetEvent = useSportsBetEventStore();
+
 // Store 实例化
 const popularLeague = usePopularLeague();
 const SportsInfoStore = useSportsInfoStore();
-const SportsBetEventStore = useSportsBetEventStore();
 const SportAttentionStore = useSportAttentionStore();
 const SportMorningTradingStore = useSportMorningTradingStore();
 const LayoutStore = useLayoutStore();
 const UserStore = useUserStore();
 const SportLeagueSearchStore = useSportLeagueSearchStore();
-const SportSortStore = useSportSortStore();
 const ShopCatControlStore = useShopCatControlStore();
 // Hooks
 const { isHaveToken, toLogin } = useToLogin();
@@ -178,6 +177,9 @@ const initSport = async () => {
  * @description 开启体育推送
  */
 const openSportPush = async (sportType) => {
+	sportsBetEvent.clearHotLeagueList();
+	pubSub.publish('clearHotLeagueList', 'on');
+	
 	console.log("重新触发");
 	console.log("route", route);
 	console.log("sportType", sportType);
@@ -187,16 +189,6 @@ const openSportPush = async (sportType) => {
 	await handleSportPush();
 	// 开启球类赛事数据推送
 	await handleSportEventsPush(sportType);
-
-	/*if (route?.meta?.isSportSort) {
-	} else if (route.path == "/sports/collect") {
-		await openAttentionSSE();
-		await getAttention(false);
-	} else if (route.path.match(/^\/sports\/\d+\/detail/)) {
-		await openEventDetailPush();
-	} else {
-		stopLoading();
-	}*/
 };
 
 // 开启对应sports推送
@@ -401,6 +393,8 @@ const onTab = (type: string) => {
 	openSportViewProcessWorker();
 	// 发起推送
 	openSportPush(route.query.sportType as string);
+
+	// sportsBetEvent.clearHotLeagueList();
 };
 
 /**
@@ -418,6 +412,8 @@ const unSport = () => {
 	clearState();
 	closeSportViewProcessWorker();
 	unSubSport();
+	sportsBetEvent.clearHotLeagueList();
+	pubSub.publish('clearHotLeagueList', 'on');
 };
 
 /**

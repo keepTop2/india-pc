@@ -1,7 +1,7 @@
 <template>
 	<div class="box-content" v-if="state.targetEvents?.length">
 		<!-- 联赛数据统计 -->
-		<EventCountBar v-if="state.targetEvents?.length" :sportsActive="sportsActive" :teamData="state.targetEvents" />
+		<SelectCard v-if="state.targetEvents?.length" :sportsActive="sportsActive" :teamData="state.targetEvents" />
 		<VirtualScrollVirtualList
 			ref="VirtualScrollVirtualListRef"
 			bottomClass="card-container"
@@ -28,6 +28,7 @@ import { Sports, SportViewData } from "/@/views/sports/models/interface";
 
 import { useRoute } from "vue-router";
 import championCard from "./components/championCard/championCard.vue";
+import SelectCard from "/@/views/sports/components/selectCard/selectCard.vue";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
@@ -75,14 +76,14 @@ const state = reactive({
 onBeforeMount(() => {
 	state.targetEvents = [];
 	/** 进入时获取一次页面数据 */
-	state.targetEvents = viewSportPubSubEventData.getSportData(5);
+	state.targetEvents = viewSportPubSubEventData.getSportData();
 	state.targetEventList = getList();
 	setInitsportsActive();
 
 	/** 只注重过程不在意结果的数据 响应获取  */
 	watchEffect(() => {
 		/** 最新数据响应接入  */
-		state.targetEvents = viewSportPubSubEventData.getSportData(5);
+		state.targetEvents = viewSportPubSubEventData.getSportData();
 		state.targetEventList = getList();
 		setInitsportsActive();
 	});

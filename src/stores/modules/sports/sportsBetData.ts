@@ -1,131 +1,67 @@
 import { defineStore } from "pinia";
-import { merge } from "lodash-es";
+// import { showToast } from "vant";
+import { i18n } from "/@/i18n/index";
+import _ from "lodash";
+import workerManage from "/@/webWorker/workerManage";
+import { SportShopCartProcessWorkerCommandType, WorkerName } from "/@/enum/workerTransferEnum";
+import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
+import SportsCommonFn from "/@/views/sports/utils/common";
+import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
+import { SportPushApi, WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
+import { WorkerTransfer } from "/@/models/webWorkerModel";
+import pubsub from "/@/pubSub/pubSub";
 import { SportsRootObject, BetMarketInfo } from "/@/views/sports/models/interface";
-import { processingInfo, sportsOpenSse, sportsCloseSse, getEventIdCollection, examineEventsStatus } from "/@/views/sports/utils/sportsBetTool";
-
-import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
-import { ElMessage, MessageHandler } from "element-plus";
 import { useToLogin } from "/@/hooks/toLogin";
-
+const $: any = i18n.global;
 interface sportsBetEvent {
-	/**实时请求 返回关闭的 MarketId */
-	closeMarketIds: string[];
-	/**实时请求 返回不支持串关的 MarketId */
-	unSeriesMarketIds: string[];
-	/**实时请求 返回不同球类的 MarketId */
-	differentBetTypeMarketIds: string[];
-	/**实时请求 返回禁止下注的 MarketId */
-	nobetsMarketIds: [];
-
-	/** 购物车接受赔率 默认开启 */
+	sportsBetShow: boolean;
 	radioStatus: boolean;
-	/** 购物车赛事数据 */
 	sportsBetEventData: SportsRootObject[];
-	/** 选择的联赛 */
 	sportsLeagueSelect: SportsRootObject[];
-	/** 储存当前选中的赛事盘口信息 */
 	sportsEventInfo: any;
-	/** 最少需要的投注赛事 */
 	combo: number;
-	/** 投注状态 */
 	bettingStatus: number;
-	/** 用于存储筛选的联赛列表 */
-	leagueList: [];
-	/** 存储热门联赛列表 */
-	hotLeagueList: [];
-	/** 单关 下注选项 0：不接受盘口变更(预设) ; 1：只接受更好的赔率; 2：接受任何赔率变更 */
-	oddsOption: number;
-	/** 单关时任何 赔率弹窗 */
-	oddsOptionMassge: number;
 
-	/** 串关 下注选项 0：不接受盘口变更 (预设) ; 1：接受任何赔率  */
-	priceOption: number;
-	/** 购物车显示次数 */
-	sportsBetShowCount?: number;
+	//联赛筛选与热门排序
+	leagueList: [];
+	hotLeagueList: null | [];
+
+	//关注列表与赛事联赛id存储
+	attentionList: [];
+	attentionEventIdList: number[];
+	attentionLeagueIdList: number[];
+	// 判断当前关注的列表是赛事还是联赛
+	attentionType: string;
+
+	//存储折叠状态
+	isFold: boolean;
+	foldCount: number;
 }
+
 export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 	state: (): sportsBetEvent => {
 		return {
-			/**实时请求 返回关闭的 MarketId */
-			closeMarketIds: [],
-			/** 返回不同球类的 MarketId   */
-			differentBetTypeMarketIds: [],
-			/** 返回禁止下注的 MarketId   */
-			nobetsMarketIds: [],
-			radioStatus: true, // 购物车接受赔率 默认开启
+			sportsBetShow: false, // 购物车关闭开启状态
+			radioStatus: false, // 购物车接受赔率 默认不开启
 			sportsBetEventData: [], // 购物车赛事数据
 			sportsEventInfo: {}, // 储存当前选中的赛事盘口信息
 			combo: 0, // 最大需要支持多少场投注赛事
 			bettingStatus: 0, // 投注状态
 
 			sportsLeagueSelect: [], // 选择的联赛
-
 			leagueList: [], // 用于存储筛选的联赛列表
-			hotLeagueList: [], // 存储热门联赛列表
-			oddsOption: 1,
-			priceOption: 1,
-			oddsOptionMassge: 0,
-			/** 购物车显示次数 */
-			sportsBetShowCount: 0,
+			hotLeagueList: null, // 存储热门联赛列表
+
+			attentionList: [], //关注的赛事列表
+			attentionEventIdList: [], //关注的赛事id列表
+			attentionLeagueIdList: [], //关注的冠军id列表
+			attentionType: "event", //当前显示的关注列表为冠军联赛还是赛事
+
+			isFold: false, //是否折叠
+			foldCount: 0,
 		};
 	},
 	getters: {
-		/**
-		 * @description:实时返回 非串关的 MarketId
-		 * @return {*}
-		 */
-		getUnSeriesMarketIds(): string[] {
-			return this.nobetsMarketIds;
-		},
-		/**
-		 * @description: 禁止下注的 MarketId
-		 * @return {*}
-		 */
-		getNobetsMarketIds(): any[] {
-			return this.nobetsMarketIds;
-		},
-		/**
-		 * @description: 获取不同球类的 MarketId
-		 * @return {*}
-		 */
-		getDifferentBetTypeMarketIds(): string[] {
-			return this.differentBetTypeMarketIds;
-		},
-		/**
-		 * @description: 获取关闭的MarketId;
-		 * @return {*}
-		 */
-		getCloseMarketIds(): string[] {
-			return this.closeMarketIds;
-		},
-		/**
-		 * @description: 接受任何赔率弹窗 (接受更好赔率取消时第一次弹出)
-		 * @return {*}
-		 */
-		getOddsOptionMassge(): any {
-			return this.oddsOptionMassge;
-		},
-		/**
-		 * @description:接受单关 赔率变化 状态
-		 * @return {*}
-		 */
-		getOddsOption(): any {
-			return this.oddsOption;
-		},
-		/**
-		 * @description:接受串关 赔率变化 状态
-		 * @return {*}
-		 */
-		getPriceOption(): any {
-			return this.priceOption;
-		},
-		/**
-		 * @description:获取投注状态
-		 * @return {*}
-		 */
-		getBettingStatus(): any {
-			return this.bettingStatus;
-		},
 		/**
 		 * @description 获取储存当前选中的赛事盘口信息
 		 */
@@ -139,250 +75,327 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 		getLeagueSelect(): SportsRootObject[] {
 			return this.sportsLeagueSelect;
 		},
+
+		getMinCombo(): number {
+			return this.combo;
+		},
+
 		/**
 		 * @description 获取联赛列表
 		 */
 		getLeagueList(): [] {
 			return this.leagueList;
 		},
+		getAttentionLeagueIdList(): number[] {
+			return this.attentionLeagueIdList;
+		},
+		getAttentionEventIdList(): number[] {
+			return this.attentionEventIdList;
+		},
 	},
 
 	actions: {
 		/**
-		 * @description:实时返回 非串关的 MarketId
-		 * @return {*}
-		 */
-		setUnSeriesMarketIds(data: []): string[] {
-			this.unSeriesMarketIds = data;
-			/*处理购物车列表信息*/
-			const { EventData, combo } = processingInfo(
-				this.sportsBetEventData,
-				this.sportsEventInfo,
-				this.closeMarketIds,
-				this.differentBetTypeMarketIds,
-				this.nobetsMarketIds,
-				this.unSeriesMarketIds
-			);
-			// 判断投注状态
-			this.bettingStatus = examineEventsStatus(this.sportsBetEventData, this.radioStatus, this.combo);
-			this.sportsBetEventData = EventData;
-			this.combo = combo;
-		},
-		/**
-		 * @description: 设置禁止投注的marketId
-		 * @return {*}
-		 */
-		setNobetsMarketIds(data: []) {
-			this.nobetsMarketIds = data;
-			/*处理购物车列表信息*/
-			const { EventData, combo } = processingInfo(
-				this.sportsBetEventData,
-				this.sportsEventInfo,
-				this.closeMarketIds,
-				this.differentBetTypeMarketIds,
-				this.nobetsMarketIds,
-				this.unSeriesMarketIds
-			);
-			// 判断投注状态
-			this.bettingStatus = examineEventsStatus(this.sportsBetEventData, this.radioStatus, this.combo);
-			this.sportsBetEventData = EventData;
-			this.combo = combo;
-		},
-		/**
-		 * @description: 设置不同球内的marketId
-		 * @return {*}
-		 */
-		setDifferentBetTypeMarketIds(data: string[]) {
-			this.differentBetTypeMarketIds = data;
-			/*处理购物车列表信息*/
-			const { EventData, combo } = processingInfo(
-				this.sportsBetEventData,
-				this.sportsEventInfo,
-				this.closeMarketIds,
-				this.differentBetTypeMarketIds,
-				this.nobetsMarketIds,
-				this.unSeriesMarketIds
-			);
-			// 判断投注状态
-			this.bettingStatus = examineEventsStatus(this.sportsBetEventData, this.radioStatus, this.combo);
-			this.sportsBetEventData = EventData;
-			this.combo = combo;
-		},
-		/**
-		 * @description: 设置关闭的marketId
-		 * @return {*}
-		 */
-		setCloseMarketIds(data: string[]) {
-			this.closeMarketIds = data;
-			/*处理购物车列表信息*/
-			const { EventData, combo } = processingInfo(
-				this.sportsBetEventData,
-				this.sportsEventInfo,
-				this.closeMarketIds,
-				this.differentBetTypeMarketIds,
-				this.nobetsMarketIds,
-				this.unSeriesMarketIds
-			);
-			// 判断投注状态
-			this.bettingStatus = examineEventsStatus(this.sportsBetEventData, this.radioStatus, this.combo);
-			this.sportsBetEventData = EventData;
-			this.combo = combo;
-		},
-		/**
-		 * @description: 接受任何赔率弹窗 (接受更好赔率取消时第一次弹出)
-		 * @return {*}
-		 */
-		setOddsOptionMassge(data?: number | null) {
-			if (data) {
-				this.oddsOptionMassge = data;
-			} else {
-				this.oddsOptionMassge += 1;
-			}
-		},
-		/**
-		 * @description:设置单关 赔率变化 状态
-		 * @return {*}
-		 */
-		setOddsOption(data: number): any {
-			this.oddsOption = data;
-		},
-
-		/**
-		 * @description:设置串关 赔率变化 状态
-		 * @return {*}
-		 */
-		setPriceOption(data: number) {
-			this.priceOption = data;
-		},
-
-		/**
 		 * @description 添加赛事到购物车
 		 * @param data  赛事信息
 		 */
-		async addEventToCart(data: any) {
-			const { isHaveToken, toLogin } = useToLogin();
-			const res = await isHaveToken()
-				.then((res) => res)
-				.catch((err) => err);
-			if (res.code == 500) {
-				toLogin;
-				return;
+		async addEventToCart(data) {
+			const { isHaveToken } = useToLogin();
+			try {
+				await isHaveToken();
+			} catch (error) {
+				console.error("Error:", error);
+				return; // 如果出错直接退出方法
 			}
-
-			if (this.sportsBetEventData.length >= 10) {
-				ElMessage({
-					message: "最多选择10场比赛",
-					customClass: "weak-hint",
-				});
-				return;
-			}
-			const ShopCatControlStore = useShopCatControlStore();
 			const eventId = data.eventId;
 			const existingIndex = this.sportsBetEventData.findIndex((item) => item.eventId === eventId);
 			if (existingIndex !== -1) {
 				// 当前数据对象已存在于数组中，替换它
 				this.sportsBetEventData.splice(existingIndex, 1, data);
+			} else if (this.sportsBetEventData.length >= 10) {
+				// showToast($.t('sports["最多选择场比赛"]', { value: 10 }));
+				return;
 			} else {
 				// 当前数据对象不存在于数组中，新增它
 				this.sportsBetEventData.push(data);
 			}
-			// console.log("this.sportsBetEventData", this.sportsBetEventData);
+
+			console.log("this.sportsBetEventData", this.sportsBetEventData);
 
 			// 赛事添加格式化数据
-			sportsOpenSse(this.sportsEventInfo);
-			/*处理购物车列表信息*/
-			const { EventData, combo } = processingInfo(
-				this.sportsBetEventData,
-				this.sportsEventInfo,
-				this.closeMarketIds,
-				this.differentBetTypeMarketIds,
-				this.nobetsMarketIds,
-				this.unSeriesMarketIds
-			);
-			// 判断投注状态
-			this.bettingStatus = examineEventsStatus(this.sportsBetEventData, this.radioStatus, this.combo);
-			this.sportsBetEventData = EventData;
-			this.combo = combo;
-			/**如果购物车显示 小于1, 则主动显示一次 */
-			if (ShopCatControlStore.getShopCatShowCount < 1) {
-				ShopCatControlStore.setShopCatShow(true);
-			}
+			this.processingInfo();
 		},
 
-		/**
+		/*/~*
 		 * @description SSE推送的最新购物车数据
 		 * @param data SSE推送数据源的数据
-		 */
+		 ~/
 		shopCartSSEProcess(data) {
 			data.forEach((v) => {
 				this.sportsBetEventData.forEach((i) => {
 					if (v.eventId == i.eventId) {
 						// 如果找到匹配项，合并对象  进行深度合并不然嵌套的内容会被覆盖掉
-						i = merge(i, v);
+						i = _.merge(i, v);
 					}
 				});
 			});
-			/** 处理购物车列表信息*/
-			const { EventData, combo } = processingInfo(
-				this.sportsBetEventData,
-				this.sportsEventInfo,
-				this.closeMarketIds,
-				this.differentBetTypeMarketIds,
-				this.nobetsMarketIds,
-				this.unSeriesMarketIds
-			);
+			this.processingInfo();
+		},*/
+
+		processingInfo() {
+			// 提取共同的处理逻辑
+			const processEvent = (v) => {
+				const eventInfo = this.sportsEventInfo[v.eventId];
+				const { betType, marketId, selectionKey } = eventInfo;
+				const market: any = Object.values(v.markets).find((item: any) => item.betType === betType && item.marketId === marketId) || {};
+				v.betMarketInfo = {
+					betType: betType,
+					betTypeName: market.betTypeName,
+					marketId: marketId,
+					marketStatus: market.marketStatus,
+					combo: market.combo || 0,
+				};
+				const selection = market.selections ? market.selections.find((s) => s.key === selectionKey) : null;
+				if (selection) {
+					v.betMarketInfo = {
+						...v.betMarketInfo,
+						key: selection.key,
+						keyName: selection.keyName,
+						point: selection.point,
+						decimalPrice: selection.oddsPrice.decimalPrice,
+					};
+				}
+			};
+			if (this.sportsBetEventData.length === 1) {
+				this.combo = 0;
+				const [v] = this.sportsBetEventData;
+				processEvent(v);
+			} else if (this.sportsBetEventData.length > 1) {
+				const comparedIndex = this.sportsBetEventData.findIndex((data) => data.eventStatus === "running" && data.isParlay);
+				this.sportsBetEventData.forEach((v) => {
+					processEvent(v);
+					if (comparedIndex !== -1) {
+						v.betMarketInfo.differentBalls = v.sportType !== this.sportsBetEventData[comparedIndex].sportType;
+					}
+					if (v.betMarketInfo.combo) {
+						if (v.betMarketInfo.combo > this.combo) {
+							this.combo = v.betMarketInfo.combo;
+						}
+					}
+				});
+			}
+			console.log("处理完之后的购物车数据", this.sportsBetEventData);
 			// 判断投注状态
-			this.bettingStatus = examineEventsStatus(this.sportsBetEventData, this.radioStatus, this.combo);
-			this.sportsBetEventData = EventData;
-			this.combo = combo;
+			this.examineEventsStatus();
+		},
+
+		/*processingInfo() {
+			// 赛事数据只有一条 为单关处理
+			if (this.sportsBetEventData.length === 1) {
+				this.combo = 0;
+				const [v] = this.sportsBetEventData;
+				const eventInfo = this.sportsEventInfo[v.eventId];
+				const { betType, marketId, selectionKey } = eventInfo;
+				let market: any = {};
+				Object.values(v.markets).forEach((item: any) => {
+					console.log();
+					if (item.betType === betType) {
+						if (item.marketId === marketId) {
+							market = item;
+						}
+					}
+				});
+				// const market = v.markets[betType];
+				const selection: any = market.selections.find((s) => s.key === selectionKey);
+				v.betMarketInfo = {
+					betType: betType,
+					betTypeName: market.betTypeName,
+					marketId: marketId,
+					marketStatus: market.marketStatus,
+					key: selection.key,
+					keyName: selection.keyName,
+					point: selection.point,
+					decimalPrice: selection.oddsPrice.decimalPrice,
+				};
+			} else if (this.sportsBetEventData.length > 1) {
+				const comparedIndex = this.sportsBetEventData.findIndex((data) => data.eventStatus === "running" && data.isParlay);
+				this.sportsBetEventData.forEach((v) => {
+					const eventInfo = this.sportsEventInfo[v.eventId];
+					const { betType, marketId, selectionKey } = eventInfo;
+					let market: any = {};
+					Object.values(v.markets).forEach((item: any) => {
+						console.log();
+						if (item.betType === betType) {
+							if (item.marketId === marketId) {
+								market = item;
+							}
+						}
+					});
+					v.betMarketInfo = {
+						betType: betType,
+						betTypeName: market.betTypeName,
+						marketId: marketId,
+						marketStatus: market.marketStatus,
+						combo: market.combo,
+					};
+					if (comparedIndex !== -1) {
+						v.betMarketInfo.differentBalls = v.sportType != this.sportsBetEventData[comparedIndex].sportType;
+					}
+					if (market.combo > this.combo) {
+						this.combo = market.combo;
+					}
+					const selection = market.selections.find((s) => s.key === selectionKey);
+					if (selection) {
+						v.betMarketInfo.key = selection.key;
+						v.betMarketInfo.keyName = selection.keyName;
+						v.betMarketInfo.point = selection.point;
+						v.betMarketInfo.decimalPrice = selection.oddsPrice.decimalPrice;
+					}
+				});
+			}
+			console.log("处理完之后的购物车数据", this.sportsBetEventData);
+			// 判断投注状态
+			this.examineEventsStatus();
+		},*/
+
+		/**
+		 * @description 判断盘口状态是否异常；
+		 * 0 正常下注
+		 * 1 盘口关闭
+		 * 2 不支持串关
+		 * 3 未达到赛事数量要求
+		 * 4 赔率变化
+		 * 5 暂不支持下注
+		 */
+		examineEventsStatus() {
+			if (this.sportsBetEventData.some((v) => v.eventStatus !== "running" || v.betMarketInfo?.marketStatus !== "running")) {
+				this.bettingStatus = 1;
+				console.log("==>>>>>>>盘口关闭", 1);
+				return 1;
+			}
+			// 进行串关状态判断
+			if (this.sportsBetEventData.length > 1 && this.sportsBetEventData.some((v) => v.betMarketInfo?.differentBalls || v.betMarketInfo?.combo === 0 || !v.isParlay)) {
+				this.bettingStatus = 2;
+				console.log("==>>>>>>>不支持串关", 2);
+				return 2;
+			}
+			// 判断选择赛事的combo达到没 如未到提示
+			if (this.sportsBetEventData.length < this.combo) {
+				this.bettingStatus = 3;
+				console.log("==>>>>>>>未达到赛事数量要求", 3, "串关要求:", this.combo);
+				return 3;
+			}
+			// 判断支不支持投注
+			if (this.sportsBetEventData.some((v) => v.betMarketInfo?.stateCode && v.betMarketInfo?.stateCode !== 0)) {
+				this.bettingStatus = 5;
+				console.log("==>>>>>>>暂不支持下注", 5);
+				return 5;
+			}
+			// 如果赔率变化则推出
+			if (this.bettingStatus === 4) {
+				console.log("==>>>>>>>赔率变化", 4);
+				return 4;
+			}
+			// 都支持则返回true
+			this.bettingStatus = 0;
+			return 0;
 		},
 
 		// 储存当前选中的赛事盘口信息
-		async storeEventInfo(key: any, data: any) {
+		async storeEventInfo(key, data) {
 			const { isHaveToken } = useToLogin();
-			const res = await isHaveToken()
-				.then((res) => res)
-				.catch((err) => err);
-			if (res.code == 500) {
-				return;
+			try {
+				await isHaveToken();
+			} catch (error) {
+				console.error("Error:", error);
+				return; // 如果出错直接退出方法
 			}
-			if (this.sportsBetEventData.length >= 10) {
+			if (!this.sportsEventInfo[key] && this.sportsBetEventData.length >= 10) {
 				return;
+			} else {
+				this.sportsEventInfo[key] = data;
+				// 拼接唯一标识
+				this.sportsEventInfo[key].listKye = `${data.marketId}-${data.selectionKey}`;
+				// 处理选中赛事ID
+				this.getEventIdCollection();
 			}
-			if (this.sportsEventInfo) this.sportsEventInfo[key] = data;
-			// 拼接唯一标识
-			this.sportsEventInfo[key].listKye = `${data.marketId}-${data.selectionKey}`;
-			// 处理选中赛事ID
-			// getEventIdCollection(this.sportsEventInfo);
+			console.log("this.sportsEventInfo", this.sportsEventInfo);
+		},
+
+		/**
+		 * @returns 处理选中赛事ID
+		 */
+		getEventIdCollection() {
+			let requestStr = "";
+			const eventIdCollectionList = Object.keys(this.sportsEventInfo);
+			eventIdCollectionList.forEach((key, index) => {
+				if (index != eventIdCollectionList.length - 1) {
+					requestStr += key + ",";
+				} else {
+					requestStr += key;
+				}
+			});
+			return requestStr;
+		},
+
+		// 开启体育购物车sse线程
+		sportsOpenSse() {
+			// 先关闭购物车线程
+			workerManage.stopWorker(WorkerName.sportShopCartProcessWorker);
+			// 开启购物车线程
+			workerManage.startWorker(WorkerName.sportShopCartProcessWorker);
+			const sportsInfoStore = useSportsInfoStore();
+			const params: OpenSportEventSourceParams = {
+				apiUrl: SportsCommonFn.getSportPushApiUrl(),
+				token: sportsInfoStore.getSportsToken,
+				language: SportsCommonFn.getSportLanguage(),
+				sportPushApi: SportPushApi.GetEvents_push,
+				webToPushApi: WebToPushApi.sportsShopCart,
+				params: {
+					query: `$filter=eventId in (${this.getEventIdCollection()})`,
+				},
+			};
+			const viewsToWorkData: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerCommandType> = {
+				workerName: WorkerName.sportShopCartProcessWorker,
+				commandType: SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges,
+				data: params,
+			};
+			//发送SSE指令到线程管理器
+			pubsub.publish(pubsub.PubSubEvents.WorkerEvents.viewToWorker.eventName, viewsToWorkData);
+		},
+
+		// 关闭体育购物车sse线程
+		sportsCloseSse() {
+			workerManage.stopWorker(WorkerName.sportShopCartProcessWorker);
 		},
 
 		// 删除购物车已添加的数据
 		removeEventCart(data) {
-			// console.log("data", data);
 			// 匹配购物车赛事善书
 			const index = this.sportsBetEventData.findIndex((v) => v.eventId == data.eventId);
 			this.sportsBetEventData.splice(index, 1);
 			// 同时删除高亮选中状态
 			delete this.sportsEventInfo[data.eventId];
-
-			if (this.sportsBetEventData.length) {
-				/*处理购物车列表信息*/
-				const { EventData, combo } = processingInfo(
-					this.sportsBetEventData,
-					this.sportsEventInfo,
-					this.closeMarketIds,
-					this.differentBetTypeMarketIds,
-					this.nobetsMarketIds,
-					this.unSeriesMarketIds
-				);
-				// 判断投注状态
-				this.bettingStatus = examineEventsStatus(this.sportsBetEventData, this.radioStatus, this.combo);
-				this.sportsBetEventData = EventData;
-				this.combo = combo;
-			} else if (this.sportsBetEventData.length == 0) {
-				// 购物车数据为空关闭线程
-				sportsCloseSse();
+			this.bettingStatus = 0; // 先恢复初始值，重新判断投注状态
+			this.processingInfo();
+			// 购物车数据为空关闭线程
+			if (this.sportsBetEventData.length == 0) {
+				this.closeShopCart(); // 关闭购物车弹窗
+				this.sportsCloseSse(); // 关闭线程
 			}
+		},
+
+		// 开启购物车
+		openShopCart() {
+			this.sportsBetShow = true;
+			// 执行开启购物车线程
+			this.sportsOpenSse();
+		},
+
+		// 关闭购物车
+		closeShopCart() {
+			this.sportsBetShow = false;
+			this.sportsCloseSse(); // 关闭线程
 		},
 
 		// 清空购物车
@@ -390,7 +403,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 			this.sportsBetEventData = [];
 			this.sportsEventInfo = {};
 			this.combo = 0;
-			sportsCloseSse();
+			this.sportsCloseSse(); // 关闭线程
 		},
 
 		// ======== 联赛⬇
@@ -407,6 +420,46 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 		// 联赛列表，直接由赛事列表存储起来用于筛选
 		setSelectLeaguesList(data) {
 			this.leagueList = data;
+		},
+
+		// ----- 设置热门赛事 -------
+		setHotLeagueList(list) {
+			this.hotLeagueList = list;
+		},
+		// 清理热门赛事
+		clearHotLeagueList() {
+			this.hotLeagueList = null;
+		},
+		//存储关注数据
+		setAttentionList(data) {
+			this.attentionList = data;
+			this.clearAttentionList();
+			//筛选出对应的关注列表 赛事或冠军
+			data.forEach((item) => {
+				const { eventIds } = SportsCommonFn.formatAttention(item.list);
+				if (item.type == 2) {
+					// console.log(eventIds, "======eventIds");
+					this.attentionEventIdList = eventIds;
+				}
+				if (item.type == 1) {
+					this.attentionLeagueIdList = eventIds;
+				}
+			});
+		},
+		//清理关注列表
+		clearAttentionList() {
+			this.attentionEventIdList = [];
+			this.attentionLeagueIdList = [];
+		},
+		//设置当前展示的是冠军关注还是赛事关注
+		setAttentionType(type) {
+			this.attentionType = type;
+		},
+		setIsFold(isFold) {
+			this.isFold = isFold;
+		},
+		setFoldCount(count) {
+			this.foldCount = count;
 		},
 	},
 	persist: {

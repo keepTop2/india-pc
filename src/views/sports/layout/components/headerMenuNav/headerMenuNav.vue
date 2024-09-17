@@ -30,10 +30,11 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import MajorCategoriesMenu from "/@/router/modules/sports/sportsRouterLeft";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-
+import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 const router = useRouter();
 const route = useRoute();
 const Menu = ref(MajorCategoriesMenu);
+const sportsBetEvent = useSportsBetEventStore();
 
 // 定义组件事件
 const emit = defineEmits(["switchType"]);

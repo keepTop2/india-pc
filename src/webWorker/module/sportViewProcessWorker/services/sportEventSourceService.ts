@@ -26,7 +26,7 @@ export default (function () {
 		 * @description sse 消息处理业务
 		 */
 		public eventSourceOnMessageProcess(data: SportEventSourceResponse) {
-			console.warn("第六步 对应service处理对应业务");
+			// console.warn("第六步 对应service处理对应业务");
 			// console.log("data eventSourceOnMessageProcess ===========>", data);
 
 			if (data.payload?.sports) {
@@ -87,7 +87,7 @@ export default (function () {
 			};
 
 			// console.log(workerToViewData);
-			console.warn("第七步 service处理完业务 往线程管理器发送");
+			// console.warn("第七步 service处理完业务 往线程管理器发送");
 			senDataMain(workerToViewData);
 		}
 

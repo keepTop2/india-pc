@@ -50,7 +50,11 @@ const sportsMap = {
 const matchedLeague = ref([]);
 
 // 获取到的数据
-const leagues = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
+const leagues = computed(() => {
+	// console.log(viewSportPubSubEventData.getSportData(),'===viewSportPubSubEventData.getSportData()')
+	return viewSportPubSubEventData.getSportData()
+});
+
 
 // 路由参数 sportType 变化 清空筛选的联赛
 watch(

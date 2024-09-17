@@ -39,7 +39,7 @@ interface teamDataType {
 	/** 是展开状态？ */
 	isExpand?: boolean;
 	/** 当前路由名称 */
-	IfOffTheBat: string;
+	IfOffTheBat?: string;
 }
 const props = withDefaults(defineProps<teamDataType>(), {
 	isExpand: true,

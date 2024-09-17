@@ -44,7 +44,9 @@ const sportsMap = {
 };
 
 // 获取到的数据
-const leagues = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
+// const leagues = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
+const leagues = computed(() => viewSportPubSubEventData.getSportData());
+
 </script>
 
 <style scoped></style>
