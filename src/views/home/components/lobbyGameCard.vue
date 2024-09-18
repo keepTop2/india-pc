@@ -14,7 +14,7 @@
 				<img :src="gameList?.gameInfoList[0].icon" alt="" />
 			</div>
 			<slide v-else>
-				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
+				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem" @click="Common.goToGame(item)">
 					<div>
 						<img :src="item.icon" alt="" />
 					</div>
@@ -33,8 +33,10 @@
 
 <script setup lang="ts">
 import slide from "./slide.vue";
+import { gameApi } from "/@/api/game";
 import { HomeApi } from "/@/api/home";
 import showToast from "/@/hooks/useToast";
+import { useUserStore } from "/@/stores/modules/user";
 import Common from "/@/utils/common";
 interface gameInfo {
 	id: string;

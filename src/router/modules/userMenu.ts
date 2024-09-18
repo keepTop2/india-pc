@@ -74,6 +74,7 @@ const userRoutes = [
 			title: "安全中心",
 			idx: 1,
 			icon: "security_center",
+			showFooter: true,
 		},
 	},
 	{
