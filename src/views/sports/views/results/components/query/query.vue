@@ -59,7 +59,9 @@ const handleSearch = () => {
 		display: flex;
 		gap: 16px;
 		align-items: center;
-
+		span{
+			color: var(--Text1);
+		}
 		& > * {
 			flex-shrink: 0;
 		}

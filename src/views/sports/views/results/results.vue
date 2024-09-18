@@ -7,13 +7,7 @@
 		<!--查询栏-->
 		<query :queryForm="queryForm" :ballOptions="ballOptions" :loading="loading" @search="getEventResultsData" />
 
-		<el-table :data="tableData" style="width: 100%">
-			<el-table-column type="expand" width="20">
-				<template #default="{ row }">
-					<!--展开详情-->
-					<itemDetails item="row" />
-				</template>
-			</el-table-column>
+		<el-table :data="eventResultData" style="width: 100%">
 			<el-table-column prop="date" :label="$t(`matchResult['日期']`)" width="200" />
 			<el-table-column prop="league" :label="$t(`matchResult['联赛']`)">
 				<template #default="{ row }">
@@ -169,7 +163,7 @@
 			</template>
 		</el-table>
 
-		<Pagination v-if="tableData.length" :currentPage="params.pageNumber" :pageSize="params.pageSize" :total="total" @prevClick="prevClick" @nextClick="nextClick" />
+		<Pagination v-if="eventResultData?.length" :currentPage="params.pageNumber" :pageSize="params.pageSize" :total="total" @prevClick="prevClick" @nextClick="nextClick" />
 	</div>
 </template>
 
@@ -186,6 +180,8 @@ import { QueryFormType, QueryOptionItemType } from "/@/views/sports/models/sport
 import { useResultHook } from "./useResultHook";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
+import useSportPubSubEvents from "../../hooks/useSportPubSubEvents";
+const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
 const ShopCatControlStore = useShopCatControlStore();
 const popularLeague = usePopularLeague();
 /*隐藏热门联赛*/
@@ -217,17 +213,16 @@ const loading = ref<boolean>(false);
  */
 const ballOptions = ref<QueryOptionItemType[]>([]);
 
-const tableData = ref([]);
-
 const total = ref(0);
 const params = reactive({
 	pageNumber: 1,
 	pageSize: 10,
 });
 
-onMounted(() => {
+onMounted(async () => {
 	ShopCatControlStore.setShopCatClose(true);
-	initRequest();
+	await sportsLogin();
+	await initRequest();
 });
 
 onUnmounted(() => {
@@ -271,21 +266,12 @@ const getEventResultsData = async () => {
 		});
 	if (res.data) {
 		eventResultData.value = preprocessData(res.data.result);
-		total.value = res.data.result.length;
+		total.value = eventResultData.value.length;
 		params.pageNumber = 1;
 		console.info(eventResultData.value, "默认赛果数据");
-		getTableData();
 	}
 };
 
-// 监听分页变化截取表格数据
-watch(
-	params,
-	() => {
-		getTableData();
-	},
-	{ deep: true }
-);
 // 上一页
 const prevClick = () => {
 	if (params.pageNumber <= 1) {
@@ -302,13 +288,6 @@ const nextClick = (totalPages: number) => {
 	params.pageNumber++;
 };
 
-// 截取 tableData 数据
-const getTableData = () => {
-	const start = (params.pageNumber - 1) * params.pageSize;
-	const end = start + params.pageSize;
-	tableData.value = eventResultData.value.slice(start, end);
-	console.log(tableData.value, "===tableData.value");
-};
 </script>
 
 <style scoped lang="scss">
