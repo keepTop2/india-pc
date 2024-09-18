@@ -33,11 +33,27 @@ const routes = [
 				name: "user",
 				meta: {
 					title: "user",
-					showFooter: true,
 				},
 				children: [...userRoutes],
 			},
-
+			{
+				path: "/game",
+				name: "game",
+				redirect: "/game/gamepage",
+				meta: {
+					title: "game",
+				},
+				children: [
+					{
+						path: "gamepage",
+						name: "gamepage",
+						component: () => import("/@/views/game/gamePage.vue"),
+						meta: {
+							title: "gamepage",
+						},
+					},
+				],
+			},
 			{
 				path: "/sports",
 				name: "sports",

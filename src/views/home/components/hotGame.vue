@@ -10,7 +10,7 @@
 			<div class="more Text1 fs_18 curp">更多</div>
 		</div>
 		<div class="hotGameList">
-			<div v-for="(item, index) in hotGameList" :key="index" class="hotGameItem">
+			<div v-for="(item, index) in hotGameList" :key="index" class="hotGameItem" @click="Common.goToGame(item)">
 				<img :src="item.icon" alt="" />
 			</div>
 		</div>
@@ -18,6 +18,9 @@
 </template>
 
 <script setup lang="ts">
+import { gameApi } from "/@/api/game";
+import { useUserStore } from "/@/stores/modules/user";
+import Common from "/@/utils/common";
 interface gameInfo {
 	id: string;
 	name: string;
@@ -38,6 +41,20 @@ const props = defineProps({
 		type: Array<gameInfo>,
 	},
 });
+
+const goToGame = (gameinfo: any) => {
+	console.log(gameinfo, 99999);
+	const params = {
+		userAccount: useUserStore().getUserInfo.userAccount,
+		venueCode: gameinfo.venueCode,
+		gameCode: gameinfo.gameCode,
+		ip: "",
+		currencyCode: useUserStore().getUserInfo.mainCurrency,
+	};
+	gameApi.loginGame(params).then((res) => {
+		console.log(res);
+	});
+};
 </script>
 
 <style scoped lang="scss">

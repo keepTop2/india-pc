@@ -7,7 +7,10 @@ import { useThemesStore } from "../stores/modules/themes";
 // 引入复制插件
 import useClipboard from "vue-clipboard3";
 import { i18n } from "../i18n";
-
+import { gameApi } from "../api/game";
+import router from "../router";
+import qs from "qs";
+import showToast from "../hooks/useToast";
 // // 全局设置moment时区 (上海)
 moment.tz.setDefault("Pacific/Guadalcanal");
 class Common {
@@ -349,6 +352,17 @@ class Common {
 		}
 		return formattedNumber;
 	}
+	// 获取 config 配置请求 api
+	static getUrl() {
+		switch (import.meta.env.VITE_BASEENV) {
+			case "development":
+				return (window as any)["PLATFROM_CONFIG"].developS128Url;
+			case "production":
+				return (window as any)["PLATFROM_CONFIG"].productionS128Url;
+			default:
+				return "";
+		}
+	}
 
 	/**
 	 * @description 获取根据主题语言获取图片
@@ -364,6 +378,65 @@ class Common {
 	static getlangImgPath(path: string) {
 		const themesStore = useThemesStore();
 		return new URL(`../assets/lang/${i18n.global.locale.value}/${themesStore.themeName}/${path}`, import.meta.url).href;
+	}
+
+	/**
+	 * 进入游戏
+	 */
+
+	static goToGame(gameinfo: any) {
+		const params = {
+			venueCode: gameinfo.venueCode,
+			gameCode: gameinfo.gameCode,
+		};
+		gameApi.loginGame(params).then((res) => {
+			if (res.code === this.ResCode.SUCCESS) {
+				const { source, userAccount, type } = res.data;
+				const state = {
+					source: "",
+					userAccount: "",
+					type: "",
+				};
+				switch (type) {
+					case "url": {
+						state.source = source;
+						state.userAccount = userAccount;
+						state.type = type;
+						break;
+					}
+					case "html": {
+						// 将HTML编码的文本字符串转换为Blob对象
+						const blob: any = new Blob([source], { type: "text/html" });
+						// 将Blob对象作为iframe的源
+						state.source = URL.createObjectURL(blob);
+						// window.open(state.source, "_blank");
+						// window.open(state.source, "_self");
+						state.userAccount = userAccount;
+						state.type = type;
+						break;
+					}
+					case "token": {
+						const params = {
+							session_id: source,
+							lang: "zh-CN",
+							login_id: userAccount,
+						};
+						const url = Common.getUrl();
+						state.source = url + `/api/cash/auth?${qs.stringify(params)}`;
+						state.userAccount = userAccount;
+						state.type = type;
+						break;
+					}
+					default:
+						break;
+				}
+				console.log(state);
+
+				router.push({ path: "/game/gamepage", query: { ...state } });
+			} else {
+				showToast(res.message);
+			}
+		});
 	}
 }
 

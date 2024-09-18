@@ -5,7 +5,7 @@
 				<div class="balance_box flex-center">
 					<div class="balance">
 						<img src="/@/assets/common/coin.png" alt="" style="height: 16px" class="mr_4" />
-						<span>{{ Common.thousands(123123123123.123) }}</span>
+						<span>{{ Common.thousands(UserStore.getUserInfo.totalBalance) }}</span>
 					</div>
 					<div class="recharge">{{ $t(`common['充值']`) }}</div>
 				</div>
@@ -95,8 +95,12 @@ const mouseover = (icon: string) => {
 	currentHover.value = icon;
 };
 const goToPath = (route: any) => {
-	isOpenMenu.value = false;
-	router.push({ name: route.name });
+	if (route.name === "invite_friends") {
+		eventBus.emit("show-modal", "InviteFriends");
+	} else {
+		isOpenMenu.value = false;
+		router.push({ name: route.name });
+	}
 };
 const logOut = () => {
 	UserStore.logOut();

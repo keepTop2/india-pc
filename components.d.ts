@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AreaCode: typeof import('./src/components/AreaCode/index.vue')['default']
+    AreaText: typeof import('./src/components/areaText.vue')['default']
     Button: typeof import('./src/components/Button/Button.vue')['default']
     CententItem: typeof import('./src/components/virtualScrollVirtualList/cententItem/cententItem.vue')['default']
     ChangePassword: typeof import('./src/components/Modal/components/ChangePassword.vue')['default']
@@ -41,7 +42,9 @@ declare module 'vue' {
     H5Video: typeof import('./src/components/wVideo/h5Video.vue')['default']
     Hcaptcha: typeof import('./src/components/Hcaptcha.vue')['default']
     Img: typeof import('./src/components/Img/index.vue')['default']
+    ImgUpload: typeof import('./src/components/ImgUpload.vue')['default']
     IndexOrigin: typeof import('./src/components/svgIcon/index-origin.vue')['default']
+    InviteFriends: typeof import('./src/components/Modal/components/InviteFriends.vue')['default']
     LangCurrenyConfig: typeof import('./src/components/Modal/components/LangCurrenyConfig.vue')['default']
     LoginModal: typeof import('./src/components/Modal/components/LoginModal.vue')['default']
     M3u8Video: typeof import('./src/components/wVideo/m3u8Video.vue')['default']
