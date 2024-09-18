@@ -74,14 +74,13 @@ import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSou
 
 import Modal from "./components/Modal/index.vue";
 import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar, sportRight } from "./components";
-
+import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 // 常量定义
 const $ = i18n.global;
 const route = useRoute();
 const router = useRouter();
-
 const sportsBetEvent = useSportsBetEventStore();
-
+const SidebarStore = useSidebarStore();
 // Store 实例化
 const popularLeague = usePopularLeague();
 const SportsInfoStore = useSportsInfoStore();
@@ -95,7 +94,6 @@ const ShopCatControlStore = useShopCatControlStore();
 const { isHaveToken, toLogin } = useToLogin();
 const { startLoading, stopLoading } = useLoading();
 const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
-
 const routeMap = {
 	// 滚球
 	"/sports/todayContest/rollingBall": "rollingBall",
@@ -110,6 +108,7 @@ const routeMap = {
 // 响应式数据
 const tabActive = ref(routeMap[route.path]); // 默认滚球
 const isShowoVerlay = ref(false);
+const isDataHandled = ref(false); // 标志位，确保只处理一次数据
 
 const NotifyModal = ref(null);
 const showNotifyModal = ref(false);
@@ -382,7 +381,7 @@ const openEventDetailPush = async () => {
  * @param path 路径对象
  */
 const onTab = (type: string) => {
-	console.log("type", type);
+	// console.log("type", type);
 	// 点击当前大类直接退出
 	if (tabActive.value == type) return;
 	// 更新大类标识
@@ -400,8 +399,6 @@ const onTab = (type: string) => {
 	openSportViewProcessWorker();
 	// 发起推送
 	openSportPush(route.query.sportType as string);
-
-	// sportsBetEvent.clearHotLeagueList();
 };
 
 /**
@@ -464,7 +461,12 @@ const openSportViewProcessWorker = () => {
  * @description 清除store数据
  */
 const clearStroe = async () => {
-	viewSportPubSubEventData.clearEventsState();
+	// viewSportPubSubEventData.clearEventsState();
+	console.log(2);
+	// 清除列表数据
+	viewSportPubSubEventData.clearState();
+	// 清除侧边栏数据
+	SidebarStore.clearEventsInfo();
 	SportLeagueSearchStore.clearLeagueSelect();
 };
 

@@ -55,7 +55,6 @@ const leagues = computed(() => {
 });
 // console.log("rollingBall --  leagues", leagues);
 
-// toggleEventScoreboard()
 // 用于存储匹配的联赛数据
 const matchedLeague = ref([] as any);
 const isDataHandled = ref(false); // 标志位，确保只处理一次数据

@@ -21,12 +21,15 @@
 		<div class="events-content">
 			<div class="events-header">
 				<div class="icon"><svg-icon :name="ballInfo[Number(route.query.sportType)]?.iconName" size="16px"></svg-icon></div>
-				<div class="team-name">
-					<span class="name">{{ eventsInfo?.teamInfo?.homeName }}</span>
-					<span>VS</span>
-					<span class="name">{{ eventsInfo?.teamInfo?.awayName }}</span>
-				</div>
+				<template v-if="Object.keys(eventsInfo).length !== 0">
+					<div class="team-name">
+						<span class="name">{{ eventsInfo?.teamInfo?.homeName }}</span>
+						<span>VS</span>
+						<span class="name">{{ eventsInfo?.teamInfo?.awayName }}</span>
+					</div>
+				</template>
 			</div>
+
 			<div class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
