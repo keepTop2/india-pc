@@ -48,7 +48,7 @@
 
 		<!-- 其他信息 -->
 		<div class="league-option">
-			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool.action)">
+			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool)">
 				<span class="icon"><svg-icon :name="tool.iconName" width="23px" height="16px"></svg-icon></span>
 				<!-- <span class="tooltip-text">{{ tool.tooltipText }}</span> -->
 			</div>
@@ -64,14 +64,13 @@ import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention"
 import PubSub from "/@/pubSub/pubSub";
 const SportAttentionStore = useSportAttentionStore();
 import { FootballCardApi } from "/@/api/sports/footballCard";
-import { useRouter, useRoute } from "vue-router";
-import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import { useLink } from "/@/views/sports/hooks/useLink";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
-const router = useRouter();
-const route = useRoute();
+import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
+const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
+
 const SportHotStore = useSportHotStore();
 const { gotoEventDetail } = useLink();
 
@@ -107,46 +106,32 @@ const formattedGameTime = computed(() => {
 	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 });
 
-const openPage = () => {
-	SportHotStore.setCurrentEvent(props.event);
-};
-const toggleFullScreen = () => {
-	SportHotStore.setCurrentEvent(props.event);
-};
-const refreshPage = () => {
-	console.log("动画直播");
-};
-
 /**
  * @description  计算工具图标的显示状态
  */
 const tools = computed(() => {
 	const baseTools = [];
-
+	// 判断 是否在未开赛页面
 	baseTools.push({
 		iconName: "sports-score_icon",
 		tooltipText: "比分板",
-		action: openPage,
+		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
+		param: props.event, // 传递参数
 	});
-
 	// 判断是否有视频源
 	if (props.event.streamingOption != 0 && props.event.channelCode) {
 		baseTools.push({
 			iconName: "sports-live_icon",
 			tooltipText: "视频源",
-			action: toggleFullScreen,
+			action: switchEventVideoSource,
 		});
 	}
 	return baseTools;
 });
 
-/**
- * @description  点击对应icon方法
- */
-const handleClick = (action: () => void) => {
-	if (typeof action === "function") {
-		action();
-	}
+// 点击对应工具
+const handleClick = (tool: any) => {
+	tool.action(tool.param);
 };
 
 const isAttention = computed(() => {
