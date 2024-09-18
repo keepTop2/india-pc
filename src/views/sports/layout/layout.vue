@@ -190,7 +190,7 @@ const openSportPush = async (sportType) => {
 	pubSub.publish("clearHotLeagueList", "on");
 	closeSportViewProcessWorker();
 	openSportViewProcessWorker();
-	console.log("tabActive.value", tabActive.value);
+	// console.log("tabActive.value", tabActive.value);
 	// 开启球类信息推送
 	await handleSportPush();
 	// 开启球类赛事数据推送

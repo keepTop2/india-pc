@@ -59,10 +59,7 @@ watch(
 );
 
 const selectFilterLeague = (value: number) => {
-	// const leaguesData: any = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
-	// console.log("leaguesData.value", leaguesData.value);
 	// 遍历 leagues 数组，找到 leagueId 与传入的 value 匹配的对象
-	console.log("leagues.value -- notStarted", leagues.value);
 	if (value > 0) {
 		const arr = [];
 		const result = leagues.value.find((league: any) => league.leagueId === value);

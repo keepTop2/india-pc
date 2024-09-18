@@ -162,7 +162,7 @@ const onEventStatusData = (e: "off" | "on") => {
 		path: targetPath,
 		query: { sportType: sportType },
 	});
-	console.log("e=================>", e);
+	// console.log("e=================>", e);
 
 	emit("onType", eventStatusData.value[e].type);
 };
@@ -172,7 +172,7 @@ const onEventStatusData = (e: "off" | "on") => {
  */
 const isShowTime = computed(() => {
 	const sportType = route.query.sportType;
-	console.log(route, "======route");
+	// console.log(route, "======route");
 	if ((sportType === "1" || sportType === "2") && route.meta?.type === "list") {
 		return true;
 	}

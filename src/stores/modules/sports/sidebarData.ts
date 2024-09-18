@@ -17,5 +17,11 @@ export const useSidebarStore = defineStore("sidebarData", {
 				this.eventsInfo = eventInfo;
 			}
 		},
+
+		// 清除暂存的侧边数据信息
+		// 每次切换球类时使用先清除数据
+		clearEventsInfo() {
+			this.eventsInfo = {} as SportsRootObject;
+		},
 	},
 });

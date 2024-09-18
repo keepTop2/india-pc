@@ -3,12 +3,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, onBeforeUnmount } from "vue";
-import { defineAsyncComponent } from "vue";
+import { ref, computed, onMounted, watch, watchEffect, onBeforeUnmount, defineAsyncComponent } from "vue";
+import { cloneDeep, get } from "lodash-es";
 import { useRouter, useRoute } from "vue-router";
-import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import pubsub from "/@/pubSub/pubSub";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
+import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
 const route = useRoute();
+const SidebarStore = useSidebarStore();
 
 // 足球列表
 const Football = defineAsyncComponent(() => import("/@/views/sports/tournamentViews/football/football.vue"));
@@ -47,28 +51,61 @@ const sportsMap = {
 // 获取到的数据
 const leagues = computed(() => {
 	// console.log(viewSportPubSubEventData.getSportData(),'===viewSportPubSubEventData.getSportData()')
-	return viewSportPubSubEventData.getSportData()
+	return viewSportPubSubEventData.getSportData();
 });
+// console.log("rollingBall --  leagues", leagues);
 
-
+// toggleEventScoreboard()
 // 用于存储匹配的联赛数据
 const matchedLeague = ref([] as any);
+const isDataHandled = ref(false); // 标志位，确保只处理一次数据
 
-// 路由参数 sportType 变化 清空筛选的联赛
+// 路由参数 sportType 变化
 watch(
 	() => route.query.sportType,
 	(newValue, oldValue) => {
+		// console.log("rollingBall --  leagues", leagues);
+		// 清除选择联赛缓存
 		matchedLeague.value = [];
+		// 清除数据中心数据===列表数据
+		viewSportPubSubEventData.clearState();
+		// 清除侧边栏数据
+		SidebarStore.clearEventsInfo();
+		// getSidebarData();
 	}
 );
 
+// 使用 watch 监听 sportData 数据变化
+watch(
+	() => viewSportPubSubEventData.getSportData(), // 监听数据变化
+	(sportData) => {
+		// console.log("sportData", sportData);
+		// sportType 切换时会清空数据，判断是否为空对象或空数组，避免处理
+		if (
+			(Array.isArray(sportData) && sportData.length === 0) || // 判断是否为空数组
+			(typeof sportData === "object" && Object.keys(sportData).length === 0) // 判断是否为空对象
+		) {
+			return; // 空数据时不做逻辑处理
+		}
+		getSidebarData(sportData);
+	}
+);
+
+// 取第一个联赛的第一个赛事
+const getSidebarData = (sportData: any) => {
+	// console.error("开始处理数据");
+	// console.log("sportData", sportData);
+	// 检查 sportData 是否有数据以及第一个联赛是否存在
+	const firstEvent = sportData[0].events[0]; // 获取第一个联赛的第一场赛事
+	console.log("rollingBall -- firstEvent", firstEvent);
+	toggleEventScoreboard(firstEvent); // 传入赛事数据
+	isDataHandled.value = true; // 标记数据已处理，防止重复执行
+};
+
 const selectFilterLeague = (value: number) => {
-	// const leaguesData: any = computed(() => viewSportPubSubEventData.viewSportData.childrenViewData);
-	// console.log("leaguesData.value", leaguesData.value);
 	// 遍历 leagues 数组，找到 leagueId 与传入的 value 匹配的对象
-	console.log("leagues.value -- rollingBall", leagues.value);
 	if (value > 0) {
-		const arr = [];
+		const arr: any = [];
 		const result = leagues.value.find((league: any) => league.leagueId === value);
 		// 将匹配结果存储到 matchedLeague 变量中
 		if (result) {

@@ -41,8 +41,8 @@ const emit = defineEmits(["switchType"]);
 
 // 球类tab数据
 const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
-console.log("sportsData", sportsData);
-console.log("route.query.sportType", route.query.sportType);
+// console.log("sportsData", sportsData);
+// console.log("route.query.sportType", route.query.sportType);
 
 // 路由初始化逻辑
 const initRoute = () => {

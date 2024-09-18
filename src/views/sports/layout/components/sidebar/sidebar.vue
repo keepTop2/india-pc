@@ -20,7 +20,7 @@
 		<!-- 赛事数据 -->
 		<div class="events-content">
 			<div class="events-header">
-				<div class="icon"><svg-icon :name="ballInfo[eventsInfo?.sportType]?.iconName" size="16px"></svg-icon></div>
+				<div class="icon"><svg-icon :name="ballInfo[Number(route.query.sportType)]?.iconName" size="16px"></svg-icon></div>
 				<div class="team-name">
 					<span class="name">{{ eventsInfo?.teamInfo?.homeName }}</span>
 					<span>VS</span>
@@ -29,8 +29,10 @@
 			</div>
 			<div class="events-container">
 				<!-- 动态记分板组件 -->
-				<!-- <football /> -->
-				<component :is="ballInfo[eventsInfo?.sportType]?.componentName" :eventsInfo="eventsInfo"></component>
+				<!-- 已开赛的动态组件计分板 -->
+				<component v-if="SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="eventsInfo"></component>
+				<!-- 未开赛计分板显示 -->
+				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
 		</div>
 
@@ -41,11 +43,15 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+import SportsCommonFn from "/@/views/sports/utils/common";
+const route = useRoute();
 const SidebarStore = useSidebarStore();
 const { eventsInfo } = storeToRefs(SidebarStore);
-// console.log("eventsInfo", eventsInfo);
+
+const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/notStarted/notStarted.vue"));
 
 // 球类图标集合
 const ballInfo: Record<number, { iconName: string; componentName: any }> = {

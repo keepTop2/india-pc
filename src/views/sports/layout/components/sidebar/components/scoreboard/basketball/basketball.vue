@@ -1,5 +1,5 @@
 <template>
-	<div></div>
+	<div>篮球</div>
 </template>
 
 <script setup lang="ts"></script>

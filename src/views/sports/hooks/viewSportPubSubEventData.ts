@@ -76,24 +76,22 @@ export default (function () {
 			return [].concat(...leagues);
 		}
 
-		
 		/**
 		 * 处理数据
 		 */
 		public getSportData() {
 			const sportsBetEvent = useSportsBetEventStore();
 			const leagueSelect = sportsBetEvent.getLeagueSelect;
-			
-			const leagues = this.viewSportData.childrenViewData
+			const leagues = this.viewSportData.childrenViewData;
 			// 如果有筛选 则处理数据，只给出筛选的联赛列表。
 			if (leagues.length && leagueSelect.length > 0) {
-				console.log('=======有筛选数据')
+				// console.log('=======有筛选数据')
 				return leagues.filter((item) => leagueSelect.includes(item.leagueId));
 			}
 			// 如果有热门赛事，则处理数据给出热门赛事。
 			const hotLeagueList = JSON.parse(JSON.stringify(sportsBetEvent.hotLeagueList));
 			if (leagues.length && hotLeagueList) {
-				console.log('=========有热门数据')
+				// console.log('=========有热门数据')
 				const hotEventId = hotLeagueList.map((item) => item.eventId);
 				return leagues.filter((item) => {
 					item.event = item.events.filter((eventItem) => hotEventId.includes(eventItem.eventId));
@@ -103,7 +101,7 @@ export default (function () {
 					return item.event.length;
 				});
 			}
-			console.log(leagues,'===leagues',hotLeagueList)
+			// console.log(leagues, "===leagues", hotLeagueList);
 
 			return leagues;
 		}
