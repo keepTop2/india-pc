@@ -70,30 +70,37 @@ const ballInfo: Record<number, { iconName: string; componentName: any }> = {
 		iconName: "sports-sidebar-americanSoccer",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/americanSoccer/americanSoccer.vue")),
 	},
+	// 冰球
 	4: {
 		iconName: "sports-sidebar-iceHockey",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/iceHockey/iceHockey.vue")),
 	},
+	// 网球
 	5: {
 		iconName: "sports-sidebar-tennis",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/tennis/tennis.vue")),
 	},
+	// 排球
 	6: {
 		iconName: "sports-sidebar-volleyball",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/volleyball/volleyball.vue")),
 	},
+	// 斯诺克
 	7: {
 		iconName: "sports-sidebar-billiards",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/billiards/billiards.vue")),
 	},
+	// 棒球
 	8: {
 		iconName: "sports-sidebar-baseBall",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/baseball/baseball.vue")),
 	},
+	// 羽毛球
 	9: {
 		iconName: "sports-sidebar-badminton",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/badminton/badminton.vue")),
 	},
+	// 电子竞技
 	43: {
 		iconName: "sports-sidebar-eSports",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/eSports/eSports.vue")),
