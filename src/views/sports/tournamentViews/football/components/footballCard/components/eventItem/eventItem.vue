@@ -79,6 +79,7 @@ const tools = computed(() => {
 			iconName: "sports-live_icon",
 			tooltipText: "视频源",
 			action: switchEventVideoSource,
+			param: props.event, // 传递参数
 		});
 	}
 	return baseTools;

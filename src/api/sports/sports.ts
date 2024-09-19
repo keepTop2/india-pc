@@ -120,14 +120,8 @@ class SportsApi {
 	 *@description 获取视频地址或视频流地址;
 	 */
 	static GetStreaming = (params?: object) => {
-		const requireParams: any = {};
-		const requestParams = Object.assign({}, requireParams, params);
-		if (!requestParams.channelCode) {
-			return Promise.reject({ status: 0, data: {} });
-		}
-		return useAxiosSabaApi(`/sports/V1/GetStreaming?${qs.stringify(requestParams)}`, {
+		return useAxiosSabaApi(`/sports/V1/GetStreaming?${qs.stringify(params)}`, {
 			method: "GET",
-			// data: requestParams,
 		});
 	};
 	/**

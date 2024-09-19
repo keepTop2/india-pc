@@ -7,11 +7,17 @@
 						<div class="label">{{ getEventsTitle(eventsInfo) }}</div>
 						<div class="value">
 							<!-- 渲染前两节得分 -->
-							<template v-for="(period, index) in gameSession" :key="index">
-								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
-									{{ period }}
+							<div class="num-content">
+								<div v-if="canScrollLeft" class="left-icon" @click="scrollLeft"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></div>
+								<div class="num-container">
+									<div class="num-list" :style="{ transform: `translateX(-${scrollPosition}px)` }">
+										<div v-for="(period, index) in gameSession" :key="index" class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
+											{{ period }}
+										</div>
+									</div>
 								</div>
-							</template>
+								<div v-if="canScrollRight" class="right-icon" @click="scrollRight"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></div>
+							</div>
 							<!-- 总分 -->
 							<div class="num F2">{{ $t(`sports['总分']`) }}</div>
 						</div>
@@ -25,13 +31,17 @@
 							<div class="name">{{ eventsInfo?.teamInfo?.homeName }}</div>
 						</div>
 						<div class="value">
-							<template v-for="(score, index) in homeScores" :key="index">
-								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
-									<span v-if="isPeriodActive(index + 1)">
-										{{ score }}
-									</span>
+							<div class="num-content">
+								<div class="num-container">
+									<div class="num-list" :style="{ transform: `translateX(-${scrollPosition}px)` }">
+										<div v-for="(score, index) in homeScores" :key="index" class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
+											<span v-if="isPeriodActive(index + 1)">
+												{{ score }}
+											</span>
+										</div>
+									</div>
 								</div>
-							</template>
+							</div>
 							<!-- 总分 -->
 							<div class="num F2">
 								<span>{{ eventsInfo?.baseballInfo?.homeCurrentPoint }}</span>
@@ -48,13 +58,17 @@
 							<div class="name">{{ eventsInfo?.teamInfo?.awayName }}</div>
 						</div>
 						<div class="value">
-							<template v-for="(score, index) in awayScores" :key="index">
-								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
-									<span v-if="isPeriodActive(index + 1)">
-										{{ score }}
-									</span>
+							<div class="num-content">
+								<div class="num-container">
+									<div class="num-list" :style="{ transform: `translateX(-${scrollPosition}px)` }">
+										<div v-for="(score, index) in awayScores" :key="index" class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
+											<span v-if="isPeriodActive(index + 1)">
+												{{ score }}
+											</span>
+										</div>
+									</div>
 								</div>
-							</template>
+							</div>
 							<!-- 总分 -->
 							<div class="num F2">
 								<span>{{ eventsInfo?.baseballInfo?.awayCurrentPoint }}</span>
@@ -68,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { i18n } from "/@/i18n/index";
@@ -81,6 +95,10 @@ const props = withDefaults(
 	}>(),
 	{}
 );
+
+const itemWidth = 30; // 每个子项宽度为 30px
+const visibleItems = 5; // 容器内可见的子项数量
+const scrollPosition = ref(0); // 当前滚动的位置
 
 // 总共的盘数
 const gameSession = computed(() => props.eventsInfo?.gameSession || 0);
@@ -97,6 +115,29 @@ const isPeriodActive = (period: number) => gameSession.value >= period;
 const homeScores = computed(() => props.eventsInfo?.baseballInfo?.homeGameScore || []);
 // 计算客队得分
 const awayScores = computed(() => props.eventsInfo?.baseballInfo?.awayGameScore || []);
+
+// 可滚动的最大位置
+const maxScrollPosition = computed(() => (gameSession.value - visibleItems) * itemWidth);
+
+// 向左滚动
+const scrollLeft = () => {
+	if (scrollPosition.value > 0) {
+		scrollPosition.value -= itemWidth;
+	}
+};
+
+// 向右滚动
+const scrollRight = () => {
+	if (scrollPosition.value < maxScrollPosition.value) {
+		scrollPosition.value += itemWidth;
+	}
+};
+
+// 是否能向左滚动
+const canScrollLeft = computed(() => scrollPosition.value > 0);
+
+// 是否能向右滚动
+const canScrollRight = computed(() => scrollPosition.value < maxScrollPosition.value);
 </script>
 
 <style scoped lang="scss">
@@ -195,16 +236,52 @@ const awayScores = computed(() => props.eventsInfo?.baseballInfo?.awayGameScore 
 				justify-content: space-between;
 				padding: 0px 15px 0px 12px;
 				.label {
+					// width: 120px;
 					flex: 1;
 					display: flex;
 					gap: 5px;
 				}
 				.value {
-					min-width: 179px;
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
 					gap: 2px;
+				}
+				.num-content {
+					position: relative;
+					width: 150px;
+					margin: 0px 20px 0px 15px;
+
+					.num-container {
+						// width: 100%;
+						width: 150px;
+						overflow: hidden;
+						.num-list {
+							width: 270px;
+							display: flex;
+						}
+					}
+
+					.left-icon,
+					.right-icon {
+						position: absolute;
+						width: 20px;
+						height: 20px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						cursor: pointer;
+					}
+					.left-icon {
+						top: 50%;
+						left: -15px;
+						transform: translate(0, -50%) rotate(-180deg);
+					}
+					.right-icon {
+						top: 50%;
+						right: -15px;
+						transform: translate(0, -50%);
+					}
 				}
 			}
 			.line {
