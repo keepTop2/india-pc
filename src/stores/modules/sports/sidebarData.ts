@@ -8,7 +8,11 @@ export const useSidebarStore = defineStore("sidebarData", {
 			eventsInfo: {} as SportsRootObject,
 		};
 	},
-	getters: {},
+	getters: {
+		getEventsInfo(): SportsRootObject {
+			return this.eventsInfo;
+		},
+	},
 	actions: {
 		// 获取赛事信息
 		setEventsInfo(eventInfo: any) {

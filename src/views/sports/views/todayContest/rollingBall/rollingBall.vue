@@ -63,14 +63,12 @@ const isDataHandled = ref(false); // 标志位，确保只处理一次数据
 watch(
 	() => route.query.sportType,
 	(newValue, oldValue) => {
-		// console.log("rollingBall --  leagues", leagues);
 		// 清除选择联赛缓存
 		matchedLeague.value = [];
 		// 清除数据中心数据===列表数据
 		viewSportPubSubEventData.clearState();
 		// 清除侧边栏数据
 		SidebarStore.clearEventsInfo();
-		// getSidebarData();
 	}
 );
 
@@ -78,6 +76,7 @@ watch(
 watch(
 	() => viewSportPubSubEventData.getSportData(), // 监听数据变化
 	(sportData) => {
+		console.log("数据变化触发数据监听");
 		// console.log("sportData", sportData);
 		// sportType 切换时会清空数据，判断是否为空对象或空数组，避免处理
 		if (
@@ -86,7 +85,15 @@ watch(
 		) {
 			return; // 空数据时不做逻辑处理
 		}
-		getSidebarData(sportData);
+		// console.log("SidebarStore.getEventsInfo", SidebarStore.getEventsInfo);
+		if (Object.keys(SidebarStore.getEventsInfo).length === 0) {
+			// 如果首次加载，获取第一条赛事并保存赛事 ID
+			// console.log("首次加载数据");
+			getSidebarData(sportData); // 获取第一个联赛的第一场赛事
+		} else {
+			// console.log("更新数据");
+			updateEventScoreboard(sportData);
+		}
 	}
 );
 
@@ -95,10 +102,29 @@ const getSidebarData = (sportData: any) => {
 	// console.error("开始处理数据");
 	// console.log("sportData", sportData);
 	// 检查 sportData 是否有数据以及第一个联赛是否存在
-	const firstEvent = sportData[0].events[0]; // 获取第一个联赛的第一场赛事
-	console.log("rollingBall -- firstEvent", firstEvent);
-	toggleEventScoreboard(firstEvent); // 传入赛事数据
-	isDataHandled.value = true; // 标记数据已处理，防止重复执行
+	const firstEvent = sportData[0]?.events[0]; // 获取第一个联赛的第一场赛事
+	if (firstEvent) {
+		console.log("rollingBall -- firstEvent", firstEvent);
+		toggleEventScoreboard(firstEvent); // 传入赛事数据
+		isDataHandled.value = true; // 标记数据已处理，防止重复执行
+	}
+};
+
+// 更新之前获取的赛事数据
+const updateEventScoreboard = (sportData: any) => {
+	// console.log("更新数据开始");
+	// 获取侧边栏联赛id与赛事id进行匹配
+	const { leagueId, eventId } = SidebarStore.getEventsInfo;
+	// console.log("看看eventId", leagueId, eventId);
+	// 遍历所有联赛和赛事，找到匹配的赛事
+	// console.log("leagues", leagues.value);
+	// 匹配对应联赛
+	const leaguesArray: any = leagues.value.find((item: any) => item.leagueId === leagueId);
+	// console.log("leaguesArray", leaguesArray);
+	// 匹配对应赛事
+	const eventInfo = leaguesArray.events.find((item: any) => item.eventId === eventId);
+	// 传入赛事数据
+	toggleEventScoreboard(eventInfo);
 };
 
 const selectFilterLeague = (value: number) => {

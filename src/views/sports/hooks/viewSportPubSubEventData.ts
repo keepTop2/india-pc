@@ -63,7 +63,7 @@ export default (function () {
 		 */
 		public setSportData(viewSportData: SportViewData) {
 			// 收到数据推送派发 使用Object.assign来确保响应式数据的正确更新
-			// console.log("收到数据推送派发 viewSportData", viewSportData);
+			console.log("收到数据推送派发 viewSportData", viewSportData);
 			Object.assign(this.viewSportData, viewSportData);
 			// 再进行球类数据派发
 		}
