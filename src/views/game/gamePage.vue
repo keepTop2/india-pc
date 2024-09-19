@@ -20,7 +20,8 @@ import router from "/@/router";
 import Common from "/@/utils/common";
 import { onMounted } from "vue";
 import { useWindowSize } from "@vueuse/core";
-import { useRoute } from "vue-router";
+import { onBeforeRouteLeave, useRoute } from "vue-router";
+import { useUserStore } from "/@/stores/modules/user";
 const { width, height } = useWindowSize();
 const state: any = reactive({
 	source: "",
@@ -30,12 +31,9 @@ const state: any = reactive({
 onMounted(() => {
 	state.source = useRoute().query.source;
 });
-const loginGame = () => {};
+onBeforeRouteLeave(() => {
+	useUserStore().initUserInfo();
+});
 </script>
 
-<style scoped>
-.ifrmeContainerRef {
-	height: 900px;
-	width: 100%;
-}
-</style>
+<style scoped></style>

@@ -17,11 +17,7 @@
 							:key="index"
 							class="menu_item subItem"
 							:class="openSubMenuIndex == index + ',' + subIndex ? 'activeMenu' : ''"
-							@click="
-								() => {
-									goToPath(index, subIndex);
-								}
-							"
+							@click="goToPath(subItem, index, subIndex)"
 						>
 							<span class="menu_icon">
 								<img :src="subItem.icon" alt="" />
@@ -50,42 +46,7 @@ const openSubMenuIndex: any = ref(null);
 const currentRoute = ref({});
 //菜单从缓存中拉取
 const routerObj: any = computed(() => {
-	const menuList: any = MenuStore.getMenu;
-
-	// 测试子菜单数据
-	menuList[0]
-		? (menuList[0].children = [
-				{
-					gameOneClassId: "1828719272336265217",
-					directoryName: "BIZ_GAME_ONE_DIRECTORY_331",
-					homeName: "BIZ_GAME_ONE_HOME_332",
-					icon: "https://oss.playesoversea.store/baowang/80a51ebf125d4468bde116f99d92b89d.jpg",
-					modelCode: "CA",
-					gameInfo: null,
-				},
-				{
-					gameOneClassId: "1828719272336265217",
-					directoryName: "BIZ_GAME_ONE_DIRECTORY_331",
-					homeName: "BIZ_GAME_ONE_HOME_332",
-					icon: "https://oss.playesoversea.store/baowang/80a51ebf125d4468bde116f99d92b89d.jpg",
-					modelCode: "CA",
-					gameInfo: null,
-				},
-		  ])
-		: "";
-	menuList[5]
-		? (menuList[5].children = [
-				{
-					gameOneClassId: "1828719272336265217",
-					directoryName: "BIZ_GAME_ONE_DIRECTORY_331",
-					homeName: "BIZ_GAME_ONE_HOME_332",
-					icon: "https://oss.playesoversea.store/baowang/80a51ebf125d4468bde116f99d92b89d.jpg",
-					modelCode: "CA",
-					gameInfo: null,
-				},
-		  ])
-		: "";
-	return menuList;
+	return MenuStore.getMenu;
 });
 
 const collapse = computed(() => {
@@ -104,9 +65,10 @@ const activeMenu = computed(() => {
 	return path;
 });
 
-const goToPath = (index: number, subIndex: number) => {
+const goToPath = (subItem: Object, index: number, subIndex: number) => {
 	openSubMenuIndex.value = index + "," + subIndex;
-	router.push("/sports");
+	// router.push("/sports");
+	console.log(subItem, 33333);
 };
 
 const state = reactive({
@@ -129,8 +91,12 @@ const selectMenu = (item: any, index: number) => {
 		currentRoute.value = item;
 		openMenu(index);
 	} else {
+		if (item.modelCode == "PE") {
+			router.push("/sports");
+		} else {
+			router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId } });
+		}
 		openMenuIndex.value = index;
-		router.push("/sports");
 	}
 };
 

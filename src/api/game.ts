@@ -9,4 +9,11 @@ export const gameApi = {
 			headers,
 		});
 	},
+	queryGameInfoByOneClassId: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/game_lobby/api/queryGameInfoByOneClassId`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };

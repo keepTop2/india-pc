@@ -80,7 +80,7 @@ import Common from "/@/utils/common";
 	background: var(--Bg2) 0% 0% / 15px 15px repeat;
 	filter: drop-shadow(0px 1px 0px var(--Bg2));
 	color: var(--Text_s);
-	padding: 18px 0;
+	padding: 18px 10px;
 	.footer1Item {
 		padding: 20px 0 20px;
 	}
@@ -116,7 +116,7 @@ import Common from "/@/utils/common";
 	background: #21232a 0% 0% / 15px 15px repeat;
 	filter: drop-shadow(0px 1px 0px var(--Bg2));
 	color: var(--Text_s);
-	padding: 35px 0;
+	padding: 35px 10px;
 	.footer2_1 {
 		display: flex;
 		.footer2_1_item {

@@ -129,6 +129,11 @@ export default defineComponent({
 	overflow-x: auto; /* 允许水平滚动 */
 	white-space: nowrap; /* 防止换行 */
 	cursor: grab; /* 拖动时显示抓取光标 */
+	-webkit-touch-callout: none; /*系统默认菜单被禁用*/
+	-webkit-user-select: none; /*webkit浏览器*/
+	-khtml-user-select: none; /*早期浏览器*/
+	-moz-user-select: none; /*火狐*/
+	-ms-user-select: none; /*IE10*/
 }
 
 /* 隐藏滑动条和滑块 */

@@ -166,6 +166,7 @@ const onSubmit = async () => {
 		showToast(message, 1500);
 		eventBus.emit("hide-modal");
 		await UserStore.setUserInfo(data);
+		localStorage.setItem("userInfo", JSON.stringify(data));
 		getUserInfo();
 		rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
 	} else {

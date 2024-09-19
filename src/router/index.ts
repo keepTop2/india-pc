@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, createWebHistory, Router } from "vue-router";
+import { createRouter, createWebHashHistory, createWebHistory, onBeforeRouteLeave, Router } from "vue-router";
 //引入首页路由
 import frontPage from "./modules/frontPage";
 // 错误页
@@ -43,6 +43,7 @@ const routes = [
 				meta: {
 					title: "game",
 				},
+
 				children: [
 					{
 						path: "gamepage",
@@ -50,6 +51,15 @@ const routes = [
 						component: () => import("/@/views/game/gamePage.vue"),
 						meta: {
 							title: "gamepage",
+						},
+					},
+					{
+						path: "venue",
+						name: "venue",
+						component: () => import("/@/views/game/venue.vue"),
+						meta: {
+							title: "venue",
+							showFooter: true,
 						},
 					},
 				],
@@ -92,8 +102,10 @@ const routes = [
 ];
 
 const router: Router = createRouter({
-	history: createWebHashHistory("/"),
+	history: createWebHashHistory(),
 	routes: routes as any,
 });
-
+router.beforeEach(async (to, from) => {
+	document.querySelector(".mainArea")?.scrollTo({ top: 0 });
+});
 export default router;
