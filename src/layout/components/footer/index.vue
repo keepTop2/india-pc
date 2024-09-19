@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="footer1"
+		class="footer1 mt_40"
 		:style="{
 			backgroundImage: `url(${Common.getCommonImgPath('footer1.png')})`,
 		}"

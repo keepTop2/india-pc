@@ -14,11 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
-import { gameApi } from "/@/api/game";
-import router from "/@/router";
-import Common from "/@/utils/common";
-import { onMounted } from "vue";
+import { reactive, onMounted, watch } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import { onBeforeRouteLeave, useRoute } from "vue-router";
 import { useUserStore } from "/@/stores/modules/user";
@@ -28,8 +24,10 @@ const state: any = reactive({
 	userAccount: "",
 	type: "",
 });
+const route = useRoute();
+
 onMounted(() => {
-	state.source = useRoute().query.source;
+	state.source = route.query.source;
 });
 onBeforeRouteLeave(() => {
 	useUserStore().initUserInfo();
