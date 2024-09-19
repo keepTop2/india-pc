@@ -115,16 +115,6 @@ const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
 
-const openPage = () => {
-	SportHotStore.setCurrentEvent(props.event);
-};
-const toggleFullScreen = () => {
-	SportHotStore.setCurrentEvent(props.event);
-};
-const refreshPage = () => {
-	console.log("动画直播");
-};
-
 /**
  * @description  计算工具图标的显示状态
  */
@@ -143,6 +133,7 @@ const tools = computed(() => {
 			iconName: "sports-live_icon",
 			tooltipText: "视频源",
 			action: switchEventVideoSource,
+			param: props.event, // 传递参数
 		});
 	}
 	return baseTools;

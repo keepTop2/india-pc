@@ -30,12 +30,17 @@
 				</template>
 			</div>
 
-			<div class="events-container">
+			<!-- 计分板组件 -->
+			<div v-if="SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
 				<component v-if="SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="eventsInfo"></component>
 				<!-- 未开赛计分板显示 -->
 				<NotStarted v-else :eventsInfo="eventsInfo" />
+			</div>
+			<!-- 直播 -->
+			<div v-else-if="SidebarStore.sidebarStatus === 'live'" class="events-live">
+				<VideoSource />
 			</div>
 		</div>
 
@@ -55,17 +60,21 @@ const SidebarStore = useSidebarStore();
 const { eventsInfo } = storeToRefs(SidebarStore);
 
 const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/notStarted/notStarted.vue"));
+const VideoSource = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/videoSource/videoSource.vue"));
 
 // 球类图标集合
 const ballInfo: Record<number, { iconName: string; componentName: any }> = {
+	// 足球
 	1: {
 		iconName: "sports-sidebar-football",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/football/football.vue")),
 	},
+	// 篮球
 	2: {
 		iconName: "sports-sidebar-basketball",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/basketball/basketball.vue")),
 	},
+	// 美式足球
 	3: {
 		iconName: "sports-sidebar-americanSoccer",
 		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/americanSoccer/americanSoccer.vue")),
@@ -201,6 +210,12 @@ const handleActions = () => {};
 		}
 
 		.events-container {
+			width: 100%;
+			height: 100%;
+		}
+		.events-live {
+			width: 100%;
+			height: 100%;
 		}
 	}
 }

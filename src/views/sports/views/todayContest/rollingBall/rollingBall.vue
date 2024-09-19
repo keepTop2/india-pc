@@ -74,14 +74,14 @@ watch(
 
 // 使用 watch 监听 sportData 数据变化
 watch(
-	() => viewSportPubSubEventData.getSportData(), // 监听数据变化
-	(sportData) => {
-		console.log("数据变化触发数据监听");
+	() => viewSportPubSubEventData.getSportData().length, // 监听数据变化
+	() => {
+		console.log("数据变化触发数据监听", viewSportPubSubEventData.getSportData());
 		// console.log("sportData", sportData);
 		// sportType 切换时会清空数据，判断是否为空对象或空数组，避免处理
 		if (
-			(Array.isArray(sportData) && sportData.length === 0) || // 判断是否为空数组
-			(typeof sportData === "object" && Object.keys(sportData).length === 0) // 判断是否为空对象
+			(Array.isArray(leagues.value) && leagues.value.length === 0) || // 判断是否为空数组
+			(typeof leagues.value === "object" && Object.keys(leagues.value).length === 0) // 判断是否为空对象
 		) {
 			return; // 空数据时不做逻辑处理
 		}
@@ -89,10 +89,10 @@ watch(
 		if (Object.keys(SidebarStore.getEventsInfo).length === 0) {
 			// 如果首次加载，获取第一条赛事并保存赛事 ID
 			// console.log("首次加载数据");
-			getSidebarData(sportData); // 获取第一个联赛的第一场赛事
+			getSidebarData(leagues.value); // 获取第一个联赛的第一场赛事
 		} else {
 			// console.log("更新数据");
-			updateEventScoreboard(sportData);
+			updateEventScoreboard(leagues.value);
 		}
 	}
 );

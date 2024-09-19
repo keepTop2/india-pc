@@ -7,11 +7,15 @@
 						<div class="label">{{ getEventsTitle(eventsInfo) }}</div>
 						<div class="value">
 							<!-- 渲染前两节得分 -->
-							<template v-for="(period, index) in gameSession" :key="index">
-								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
-									{{ period }}
+							<div class="num-content">
+								<div class="left-icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></div>
+								<div class="num-container">
+									<div v-for="(period, index) in gameSession" :key="index" class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
+										{{ period }}
+									</div>
 								</div>
-							</template>
+								<div class="right-icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></div>
+							</div>
 							<!-- 总分 -->
 							<div class="num F2">{{ $t(`sports['总分']`) }}</div>
 						</div>
@@ -25,13 +29,15 @@
 							<div class="name">{{ eventsInfo?.teamInfo?.homeName }}</div>
 						</div>
 						<div class="value">
-							<template v-for="(score, index) in homeScores" :key="index">
-								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
-									<span v-if="isPeriodActive(index + 1)">
-										{{ score }}
-									</span>
+							<div class="num-content">
+								<div class="num-container">
+									<div v-for="(score, index) in homeScores" :key="index" class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
+										<span v-if="isPeriodActive(index + 1)">
+											{{ score }}
+										</span>
+									</div>
 								</div>
-							</template>
+							</div>
 							<!-- 总分 -->
 							<div class="num F2">
 								<span>{{ eventsInfo?.baseballInfo?.homeCurrentPoint }}</span>
@@ -48,13 +54,15 @@
 							<div class="name">{{ eventsInfo?.teamInfo?.awayName }}</div>
 						</div>
 						<div class="value">
-							<template v-for="(score, index) in awayScores" :key="index">
-								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
-									<span v-if="isPeriodActive(index + 1)">
-										{{ score }}
-									</span>
+							<div class="num-content">
+								<div class="num-container">
+									<div v-for="(score, index) in awayScores" :key="index" class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
+										<span v-if="isPeriodActive(index + 1)">
+											{{ score }}
+										</span>
+									</div>
 								</div>
-							</template>
+							</div>
 							<!-- 总分 -->
 							<div class="num F2">
 								<span>{{ eventsInfo?.baseballInfo?.awayCurrentPoint }}</span>
@@ -200,11 +208,36 @@ const awayScores = computed(() => props.eventsInfo?.baseballInfo?.awayGameScore 
 					gap: 5px;
 				}
 				.value {
-					min-width: 179px;
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
 					gap: 2px;
+				}
+				.num-content {
+					position: relative;
+					width: 150px;
+
+					margin: 0px 20px 0px 15px;
+
+					.num-container {
+						display: flex;
+						// overflow: hidden;
+					}
+
+					.left-icon,
+					.right-icon {
+						position: absolute;
+					}
+					.left-icon {
+						top: 50%;
+						left: -15px;
+						transform: translate(0, -50%) rotate(-180deg);
+					}
+					.right-icon {
+						top: 50%;
+						right: -15px;
+						transform: translate(0, -50%);
+					}
 				}
 			}
 			.line {

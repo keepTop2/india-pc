@@ -104,12 +104,12 @@ const props = withDefaults(
 <style scoped lang="scss">
 .scoreboard-container {
 	width: 100%;
-	height: 208px;
+	height: 100%;
 
 	// 侧边栏小布局样式
 	.small {
 		width: 100%;
-		height: 100%;
+		height: 208px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
