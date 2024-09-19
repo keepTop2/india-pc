@@ -8,7 +8,11 @@ export const useSidebarStore = defineStore("sidebarData", {
 			eventsInfo: {} as SportsRootObject,
 		};
 	},
-	getters: {},
+	getters: {
+		getEventsInfo(): SportsRootObject {
+			return this.eventsInfo;
+		},
+	},
 	actions: {
 		// 获取赛事信息
 		setEventsInfo(eventInfo: any) {
@@ -16,6 +20,12 @@ export const useSidebarStore = defineStore("sidebarData", {
 			if (!isEmpty(eventInfo) && this.eventsInfo?.eventId !== eventInfo?.eventId) {
 				this.eventsInfo = eventInfo;
 			}
+		},
+
+		// 清除暂存的侧边数据信息
+		// 每次切换球类时使用先清除数据
+		clearEventsInfo() {
+			this.eventsInfo = {} as SportsRootObject;
 		},
 	},
 });

@@ -1,5 +1,5 @@
 <template>
-	<div class="mt_40">
+	<div class="mt_40 pr_10 pl_10">
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
@@ -7,12 +7,15 @@
 					<span class="Text_s fs_20">{{ gameList?.name }}</span>
 				</span>
 			</div>
-			<div class="more Text1 fs_18 curp">更多</div>
+			<div class="more Text1 fs_18 curp" @click="gotoVenue(gameList)">更多</div>
 		</div>
 		<div class="lobbyGameList">
-			<slide v-if="gameList?.gameInfoList">
-				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
-					<div>
+			<div class="onlyOneGame" v-if="gameList?.gameInfoList.length == 1" click="Common.goToGame(item)">
+				<img :src="gameList?.gameInfoList[0].icon" alt="" />
+			</div>
+			<slide v-else>
+				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem" @click="Common.goToGame(item)">
+					<div class="imgBox">
 						<img :src="item.icon" alt="" />
 					</div>
 					<div class="gameInfo">{{ item.name }}</div>
@@ -32,6 +35,7 @@
 import slide from "./slide.vue";
 import { HomeApi } from "/@/api/home";
 import showToast from "/@/hooks/useToast";
+import router from "/@/router";
 import Common from "/@/utils/common";
 interface gameInfo {
 	id: string;
@@ -65,6 +69,9 @@ const collectGame = (game: gameInfo) => {
 		}
 	});
 };
+const gotoVenue = (gameInfo: any) => {
+	router.push({ path: "/game/venue", query: { gameOneId: gameInfo.gameOneId } });
+};
 </script>
 
 <style scoped lang="scss">
@@ -84,6 +91,10 @@ const collectGame = (game: gameInfo) => {
 	.lobbyGameItem {
 		margin-right: 15px;
 		position: relative;
+		.imgBox {
+			height: 190px;
+			width: 190px;
+		}
 		.onHover {
 			display: none;
 		}
@@ -94,33 +105,35 @@ const collectGame = (game: gameInfo) => {
 			z-index: 20;
 			cursor: pointer;
 		}
-	}
-	img {
-		width: 190px;
-		height: 190px;
-		object-fit: cover;
-		border-top-left-radius: 12px;
-		border-top-right-radius: 12px;
-		pointer-events: none;
-	}
-	.gameInfo {
-		height: 52px;
-		width: 190px;
-		background: var(--Bg1);
-		font-size: 14px;
-		color: var(--Text1);
+		img {
+			width: 190px;
+			height: 190px;
+			object-fit: cover;
+			border-top-left-radius: 12px;
+			border-top-right-radius: 12px;
+			pointer-events: none;
+		}
+		.gameInfo {
+			height: 52px;
+			width: 190px;
+			background: var(--Bg1);
+			font-size: 14px;
+			color: var(--Text1);
 
-		padding: 6px 12px;
-		line-height: 22px;
-		border-bottom-left-radius: 12px;
-		border-bottom-right-radius: 12px;
-		word-break: break-all;
-		display: -webkit-box; /* 必须使用 Webkit 特性布局 */
-		-webkit-line-clamp: 2; /* 限制行数为 3 行 */
-		-webkit-box-orient: vertical; /* 垂直排列盒子元素 */
-		overflow: hidden; /* 隐藏超出部分 */
-		text-overflow: ellipsis; /* 添加省略号 */
-		white-space: normal; /* 允许换行 */
+			padding: 6px 12px;
+			line-height: 22px;
+			border-bottom-left-radius: 12px;
+			border-bottom-right-radius: 12px;
+			word-break: break-all;
+			display: -webkit-box; /* 必须使用 Webkit 特性布局 */
+			-webkit-line-clamp: 2; /* 限制行数为 2 行 */
+			-webkit-box-orient: vertical; /* 垂直排列盒子元素 */
+			overflow: hidden; /* 隐藏超出部分 */
+			text-overflow: ellipsis; /* 添加省略号 */
+			white-space: normal; /* 允许换行 */
+			display: flex;
+			align-items: center;
+		}
 	}
 	.lobbyGameItem:hover {
 		.onHover {
@@ -142,6 +155,17 @@ const collectGame = (game: gameInfo) => {
 				margin: auto;
 				cursor: pointer;
 			}
+		}
+	}
+	.onlyOneGame {
+		flex: 1;
+		width: 100%;
+		cursor: pointer;
+		img {
+			width: 100%;
+			height: 242px;
+			border-radius: 12px;
+			object-fit: cover;
 		}
 	}
 }

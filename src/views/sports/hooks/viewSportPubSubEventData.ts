@@ -4,7 +4,6 @@ import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import Common from "/@/views/sports/utils/common";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { SportViewData, SportsRootObject } from "/@/views/sports/models/interface";
-import { useSportSortStore } from "/@/stores/modules/sports/sportSort";
 import { formatDateToTimeStamp } from "/@/webWorker/module/utils/formattingChildrenViewData";
 
 export default (function () {
@@ -21,7 +20,7 @@ export default (function () {
 				markets: [],
 				outrights: [],
 				results: [],
-				childrenViewData: {},
+				childrenViewData: [],
 			}) as SportViewData;
 		}
 		// 获取单例实例的静态方法
@@ -46,7 +45,7 @@ export default (function () {
 				markets: [],
 				outrights: [],
 				results: [],
-				childrenViewData: {},
+				childrenViewData: [],
 			});
 		}
 
@@ -55,7 +54,7 @@ export default (function () {
 		 */
 		public clearEventsState() {
 			Object.assign(this.viewSportData, {
-				childrenViewData: {},
+				childrenViewData: [],
 			});
 		}
 
@@ -64,7 +63,7 @@ export default (function () {
 		 */
 		public setSportData(viewSportData: SportViewData) {
 			// 收到数据推送派发 使用Object.assign来确保响应式数据的正确更新
-			// console.log("收到数据推送派发 viewSportData", viewSportData);
+			console.log("收到数据推送派发 viewSportData", viewSportData);
 			Object.assign(this.viewSportData, viewSportData);
 			// 再进行球类数据派发
 		}
@@ -80,29 +79,30 @@ export default (function () {
 		/**
 		 * 处理数据
 		 */
-		public getSportData(sportType: number) {
+		public getSportData() {
 			const sportsBetEvent = useSportsBetEventStore();
 			const leagueSelect = sportsBetEvent.getLeagueSelect;
-			if (!sportType) {
-				return this.viewSportData.childrenViewData;
-			}
 			const leagues = this.viewSportData.childrenViewData;
 			// 如果有筛选 则处理数据，只给出筛选的联赛列表。
-			if (leagues && leagueSelect.length > 0) {
-				return leagues.filter((item: { leagueId: SportsRootObject }) => leagueSelect.includes(item.leagueId));
+			if (leagues.length && leagueSelect.length > 0) {
+				// console.log('=======有筛选数据')
+				return leagues.filter((item) => leagueSelect.includes(item.leagueId));
 			}
 			// 如果有热门赛事，则处理数据给出热门赛事。
 			const hotLeagueList = JSON.parse(JSON.stringify(sportsBetEvent.hotLeagueList));
-			if (leagues && hotLeagueList.length) {
-				const hotEventId = hotLeagueList.map((item: { eventId: any }) => item.eventId);
-				return leagues.filter((item: { event: any[]; events: any[] }) => {
-					item.event = item.events.filter((eventItem: { eventId: any }) => hotEventId.includes(eventItem.eventId));
-					item.event.sort((a: { globalShowTime: any }, b: { globalShowTime: any }) => {
+			if (leagues.length && hotLeagueList) {
+				// console.log('=========有热门数据')
+				const hotEventId = hotLeagueList.map((item) => item.eventId);
+				return leagues.filter((item) => {
+					item.event = item.events.filter((eventItem) => hotEventId.includes(eventItem.eventId));
+					item.event.sort((a, b) => {
 						return formatDateToTimeStamp(a.globalShowTime) - formatDateToTimeStamp(b.globalShowTime);
 					});
 					return item.event.length;
 				});
 			}
+			// console.log(leagues, "===leagues", hotLeagueList);
+
 			return leagues;
 		}
 	}

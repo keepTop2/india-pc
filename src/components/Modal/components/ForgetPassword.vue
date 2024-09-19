@@ -112,7 +112,7 @@
 			</div>
 		</div>
 	</div>
-	<Hcaptcha ref="hcaptcha" @submit="onSubmit" />
+	<!-- 验证码容器 -->
 </template>
 
 <script setup lang="ts">
@@ -289,6 +289,8 @@ const onNextStep = async (step: number) => {
 	const { code, message } = res;
 	if (code == Common.ResCode.SUCCESS) {
 		if (currentStep.value === 2) {
+			localStorage.setItem("loginInfo", "");
+			UserStore.setLoginInfo({});
 			eventBus.emit("show-modal", "LoginModal");
 			showToast(message, 1500);
 		} else {

@@ -212,6 +212,7 @@ const props = withDefaults(
 			.team-info {
 				display: flex;
 				gap: 8px;
+
 				.icon {
 					width: 20px;
 					height: 20px;
@@ -221,10 +222,14 @@ const props = withDefaults(
 					}
 				}
 				.name {
+					flex: 1;
 					color: var(--Text1);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
+					white-space: nowrap; /* 强制文本在一行显示 */
+					overflow: hidden; /* 隐藏溢出内容 */
+					text-overflow: ellipsis; /* 溢出时显示省略号 */
 				}
 			}
 			.foul-info {

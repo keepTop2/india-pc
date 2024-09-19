@@ -54,7 +54,7 @@
 
 				<!-- 登录按钮 -->
 				<div class="mt_40 mb_12">
-					<button class="common_btn fs_12" type="button" id="captcha-element" @click="onLogin">
+					<button class="common_btn fs_12" type="button" @click="onLogin" :disabled="disabledBtn">
 						{{ $t(`login['登陆']`) }}
 					</button>
 				</div>
@@ -76,7 +76,8 @@
 	</form>
 
 	<!-- 验证码容器 -->
-	<div id="hcaptchaContainer"></div>
+	<div id="captcha-element" ref="captchaBtn"></div>
+	<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
 </template>
 
 <script setup lang="ts">
@@ -89,11 +90,10 @@ import showToast from "/@/hooks/useToast";
 import { useUserStore } from "/@/stores/modules/user";
 
 const UserStore = useUserStore();
-let hcaptcha: any = null;
-
-// 控制验证码的显示
-const showhcaptcha = ref(false);
-
+const hcaptcha: any = ref(null);
+const certifyId = ref(null);
+const captchaBtn: any = ref(null);
+const disabledBtn = ref(false);
 // 表单数据
 const payLoad = reactive({
 	userAccount: "",
@@ -121,21 +121,6 @@ onMounted(() => {
 		rememberPassword.value = true;
 		verifyBtn();
 	}
-	(window as any).initAliyunCaptcha({
-		SceneId: "qxye14r6d",
-		prefix: "5zbecta",
-		mode: "popup",
-		element: "#hcaptchaContainer",
-		button: "#captcha-element",
-		captchaVerifyCallback: captchaVerifyCallback,
-		onBizResultCallback: onSubmit,
-		getInstance: getInstance,
-		slideStyle: {
-			width: 360,
-			height: 200,
-		},
-		language: "cn",
-	});
 });
 
 // 账号输入变化处理
@@ -153,31 +138,35 @@ const passOnInput = (e: any) => {
 };
 
 // 验证按钮状态
-const verifyBtn = () => {};
+const verifyBtn = () => {
+	if (!userAccountVerifyError.value && !passWordVerifyError.value) {
+		disabledBtn.value = false;
+	} else {
+		disabledBtn.value = true;
+	}
+};
 
 // 登录处理
 const onLogin = async () => {
 	if (userAccountRegex.test(payLoad.userAccount) && passWordregex.test(payLoad.password)) {
-		showhcaptcha.value = true;
+		captchaBtn.value?.click();
 	} else {
 		showToast("用户名或密码错误", 1500);
 	}
 };
 
-// 获取验证码实例
-const getInstance = (instance: any) => {
-	hcaptcha.value = instance;
-};
+// 前端验证通过，提交表单
 
 // 提交处理
-const onSubmit = async (token: string) => {
-	const verifyToken = token;
-	const res = await loginApi.userLogin({ ...payLoad, verifyToken }).catch((err) => err);
+const onSubmit = async () => {
+	const certifyId = hcaptcha.value.certifyId;
+	const res = await loginApi.userLogin({ ...payLoad, certifyId }).catch((err) => err);
 	const { code, data, message } = res;
 	if (code === Common.ResCode.SUCCESS) {
 		showToast(message, 1500);
 		eventBus.emit("hide-modal");
 		await UserStore.setUserInfo(data);
+		localStorage.setItem("userInfo", JSON.stringify(data));
 		getUserInfo();
 		rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
 	} else {
@@ -209,15 +198,8 @@ const forgetPassword = () => {
 const toRegister = () => {
 	eventBus.emit("show-modal", "RegisterModal");
 };
-
-// 验证码验证回调
-const captchaVerifyCallback = (captchaVerifyParam: any) => {
-	// 构造标准返回参数
-	const verifyResult = {
-		captchaResult: true,
-		bizResult: true,
-	};
-	return verifyResult;
+const getInstance = (instance: any) => {
+	hcaptcha.value = instance;
 };
 </script>
 <style lang="scss" scoped>

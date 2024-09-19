@@ -1,23 +1,37 @@
 <template>
-	<div class="mt_40">
+	<div class="mt_40 pr_10 pl_10">
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
 					<img src="./image/hotGameIcon.png" alt="" />
-					<span class="Text_s fs_20">热门电子</span>
+					<span class="Text_s fs_20">热门推荐</span>
 				</span>
 			</div>
-			<div class="more Text1 fs_18 curp">更多</div>
 		</div>
-		<div class="hotGameList">
+		<slide class="hotGameList">
 			<div v-for="(item, index) in hotGameList" :key="index" class="hotGameItem">
 				<img :src="item.icon" alt="" />
+				<div class="gameInfo Texta">
+					<div class="fs_19">
+						<img src="./image/hotGameIcon.png" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
+					</div>
+					<div class="fs_13 mt_9">
+						{{ item.name }}
+					</div>
+					<div class="gotoGameBtn">
+						<button class="common_btn" @click="Common.goToGame(item)">进入游戏</button>
+					</div>
+				</div>
 			</div>
-		</div>
+		</slide>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { gameApi } from "/@/api/game";
+import { useUserStore } from "/@/stores/modules/user";
+import Common from "/@/utils/common";
+import slide from "./slide.vue";
 interface gameInfo {
 	id: string;
 	name: string;
@@ -38,6 +52,20 @@ const props = defineProps({
 		type: Array<gameInfo>,
 	},
 });
+
+const goToGame = (gameinfo: any) => {
+	console.log(gameinfo, 99999);
+	const params = {
+		userAccount: useUserStore().getUserInfo.userAccount,
+		venueCode: gameinfo.venueCode,
+		gameCode: gameinfo.gameCode,
+		ip: "",
+		currencyCode: useUserStore().getUserInfo.mainCurrency,
+	};
+	gameApi.loginGame(params).then((res) => {
+		console.log(res);
+	});
+};
 </script>
 
 <style scoped lang="scss">
@@ -51,17 +79,42 @@ const props = defineProps({
 		width: 24px;
 	}
 }
+
 .hotGameList {
 	display: flex;
-	gap: 15px;
 	overflow: hidden;
 	.hotGameItem {
+		margin-right: 15px;
+		position: relative;
 		img {
 			width: 258px;
 			height: 258px;
 			border-radius: 12px;
 			object-fit: cover;
 			pointer-events: none;
+		}
+		.gameInfo {
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			position: absolute;
+			background: rgba(0, 0, 0, 0.05);
+			backdrop-filter: blur(13.298970222473145px);
+			padding: 12px 14px;
+			img {
+				height: 20px;
+				width: 20px;
+			}
+			.gotoGameBtn {
+				display: none;
+			}
+		}
+	}
+	.hotGameItem:hover {
+		.gameInfo {
+			.gotoGameBtn {
+				display: block;
+			}
 		}
 	}
 }

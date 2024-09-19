@@ -33,7 +33,7 @@ export interface SportViewModels {
 		/**
 		 * @description 各个子路由视图数据
 		 */
-		childrenViewData: Array<any> | {};
+		childrenViewData: [];
 	};
 }
 /**

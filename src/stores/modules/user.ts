@@ -8,6 +8,8 @@ import { CommonApi } from "/@/api/common";
 import Common from "/@/utils/common";
 import { useMenuStore } from "./menu";
 import EncryptionFn from "/@/utils/encryption";
+import { userApi } from "/@/api/user";
+import showToast from "/@/hooks/useToast";
 interface LangListType {
 	code: LangEnum;
 	currLang: number;
@@ -115,14 +117,29 @@ export const useUserStore = defineStore("User", {
 			this.loginInfo = EncryptionFn.encryption(JSON.stringify(loginInfoObj));
 		},
 		async userInit() {
+			if (this.getUserInfo.token) {
+				this.initUserInfo();
+			}
+
 			await this.setCommonBusiness();
 			this.setLangs(this.getLang);
 			this.initUserMenu();
 		},
 		logOut(): void {
 			localStorage.removeItem("userInfo");
-			window.location.reload();
-			console.log(this.getUserInfo);
+			window.location.replace("/");
+		},
+		// 获取用户信息
+		async initUserInfo() {
+			const res = await userApi.getIndexInfo().catch((err) => err);
+			const { code, data, message } = res;
+			if (code === Common.ResCode.SUCCESS) {
+				const userInfo = { ...this.getUserInfo, ...data };
+				this.setUserInfo(userInfo);
+				localStorage.setItem("userInfo", JSON.stringify(userInfo));
+			} else {
+				showToast(message, 1500);
+			}
 		},
 	},
 	persist: [

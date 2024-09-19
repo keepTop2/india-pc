@@ -27,6 +27,8 @@ export default (function () {
 		 */
 		public eventSourceOnMessageProcess(data: SportEventSourceResponse) {
 			// console.warn("第六步 对应service处理对应业务");
+			// console.log("data eventSourceOnMessageProcess ===========>", data);
+
 			if (data.payload?.sports) {
 				/**
 				 * 今日 早盘 滚球 冠军 都走的这里，需要将 webToPushApi 传给 senDataMain 判断 一下是否为冠军，处理冠军的赛事count展示
@@ -66,26 +68,26 @@ export default (function () {
 					sportPushApi: data.sportPushApi,
 					state: {
 						viewSportData: {
-						
-						/**
-						 * @description 外层Sports组件视图数据
-						 */
-						sports: viewSportDataU.viewSportData.sports,
-						leagues: [],
-						events:  [],
-						markets: [],
-						outrights:  viewSportDataU.viewSportData.outrights,
-						results: [],
-						/**
-						 * @description 各个子路由视图数据
-						 */
-						childrenViewData: viewSportDataU.viewSportData.childrenViewData,
-					}},
+							/**
+							 * @description 外层Sports组件视图数据
+							 */
+							sports: viewSportDataU.viewSportData.sports,
+							leagues: [],
+							events: [],
+							markets: [],
+							outrights: viewSportDataU.viewSportData.outrights,
+							results: [],
+							/**
+							 * @description 各个子路由视图数据
+							 */
+							childrenViewData: viewSportDataU.viewSportData.childrenViewData,
+						},
+					},
 				},
 			};
 
 			// console.log(workerToViewData);
-			console.warn("第七步 service处理完业务 往线程管理器发送");
+			// console.warn("第七步 service处理完业务 往线程管理器发送");
 			senDataMain(workerToViewData);
 		}
 

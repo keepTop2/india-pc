@@ -6,6 +6,7 @@ import sportsMap from "./sportsMap/sportsMap";
 import { i18n } from "/@/i18n/index";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import { convertUtcToUtc5AndFormatMD, convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
+import common from "/@/utils/common";
 const $: any = i18n.global;
 
 dayjs.extend(relativeTime);
@@ -91,22 +92,22 @@ class SportsCommonFn {
 		}
 	};
 
-
 	/**
 	 * @description 格式化让球Point
 	 */
-	public static formatPoint = (data: { betType: number; point: number; key: string; }): string | null => {
+	public static formatPoint = (data: { betType: number; point: number; key: string }): string | null => {
 		const { betType, point, key } = data;
-		const primaryBetTypes = [1, 7, 17, 219, 609, 637, 701, 704, 708, 153, 155, 1303, 1308, 1316, 3904, 9002, 9008, 9012, 9018, 9024, 9028, 9034, 9040, 9046, 9052, 9059, 9076, 9077, 9091, 9093, 9116];
+		const primaryBetTypes = [
+			1, 7, 17, 219, 609, 637, 701, 704, 708, 153, 155, 1303, 1308, 1316, 3904, 9002, 9008, 9012, 9018, 9024, 9028, 9034, 9040, 9046, 9052, 9059, 9076, 9077, 9091, 9093, 9116,
+		];
 		const secondaryBetTypes = [28, 124, 125, 453, 477, 478, 646];
 		if (primaryBetTypes.includes(betType)) return this.formatPositiveNum(point);
 		if (secondaryBetTypes.includes(betType) && key !== "x") return this.formatPositiveNum(point);
 		if (secondaryBetTypes.includes(betType) && key === "x") return null;
 		if (point) {
-		return point.toString();
+			return point.toString();
 		}
 	};
-
 
 	/**
 	 * @description 正数拼接+号
@@ -128,6 +129,22 @@ class SportsCommonFn {
 			return false;
 		} else {
 			return true;
+		}
+	};
+
+	public static timeFormate = (globalShowTime) => {
+		if (globalShowTime) {
+			const date = dayjs(convertUtcToUtc5AndFormat(globalShowTime)).format("MM-DD");
+			const time = dayjs(convertUtcToUtc5AndFormat(globalShowTime)).format("HH:mm");
+			return {
+				date,
+				time,
+			};
+		} else {
+			return {
+				date: "00-00",
+				time: "00:00",
+			};
 		}
 	};
 
@@ -323,7 +340,7 @@ class SportsCommonFn {
 				if (parentId > 0) {
 					return convertUtcToUtc5AndFormatMD(globalShowTime);
 				} else {
-					return `第${common.getInstance().add(liveHomeScore, liveAwayScore) + 1}局`;
+					return `第${common.add(liveHomeScore, liveAwayScore) + 1}局`;
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -449,7 +466,7 @@ class SportsCommonFn {
 	 * @returns 体育类型请求参数
 	 */
 	public static getRequestSportsType = (): string => {
-		return Object.keys(sportsMap).join(',');
+		return Object.keys(sportsMap).join(",");
 	};
 
 	/**
@@ -476,7 +493,7 @@ class SportsCommonFn {
 		 * @returns {string[]} 收集到的'id'值数组
 		 */
 		const ids: number[] = [];
-		function recursiveExtract(element: { thirdId?: any; list?: any; } | null): { eventIds: number[] } {
+		function recursiveExtract(element: { thirdId?: any; list?: any } | null): { eventIds: number[] } {
 			if (Array.isArray(element)) {
 				// 如果当前元素是数组，则遍历每个子元素
 				for (const item of element) {

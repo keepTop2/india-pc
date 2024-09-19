@@ -5,9 +5,9 @@ export function useToolsHooks() {
 
 	// 切换计分板功能
 	const toggleEventScoreboard = (eventInfo: any) => {
+		console.log("更新 eventInfo 赛事数据", eventInfo);
 		// 切换的时候获取当前赛事信息
 		if (eventInfo) {
-			console.log("更新 eventInfo 赛事数据", eventInfo);
 			SidebarStore.setEventsInfo(eventInfo);
 		}
 	};

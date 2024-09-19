@@ -2,7 +2,7 @@
 	<div class="banner">
 		<img src="./image/image.png" alt="" />
 		<div class="swiper-box">
-			<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container" @swiper="onSwiper">
+			<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
 				<SwiperSlide v-for="(item, index) in announcementList" :key="index">
 					<img :src="item" alt="" />
 				</SwiperSlide>
@@ -54,13 +54,13 @@ const goToPrevSlide = () => {
 	}
 	.swiper-box {
 		position: relative;
-		max-width: 1636px;
+		max-width: 1350px;
 		margin: 0 auto;
 		.arrow {
 			max-width: 1350px;
 			position: absolute;
-			left: 0;
-			right: 0;
+			left: 10px;
+			right: 10px;
 			top: 50%;
 			transform: translateY(-50%);
 			display: flex;
@@ -88,8 +88,8 @@ const goToPrevSlide = () => {
 		}
 	}
 	.swiper {
+		margin: -55px 55px 0;
 		max-width: 1254px;
-		margin-top: -50px;
 		padding-bottom: 20px;
 		:deep(.swiper-pagination) {
 			bottom: -2px !important;

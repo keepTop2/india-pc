@@ -67,7 +67,7 @@ const queryLobbyTopGame = () => {
 </script>
 
 <style lang="scss" scoped>
-.textMain {
-	background-color: var(--Bg);
+.home-wrapper {
+	padding-bottom: 40px;
 }
 </style>

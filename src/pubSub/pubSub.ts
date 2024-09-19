@@ -1,4 +1,4 @@
-import PubSubEvents from './pubSubEvents/pubSubEvents';
+import PubSubEvents from "./pubSubEvents/pubSubEvents";
 
 type EventHandler = (...args: any[]) => void;
 
