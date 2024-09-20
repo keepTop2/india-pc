@@ -20,7 +20,7 @@
 		<!-- 其他信息 -->
 		<div class="league-option">
 			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool)">
-				<span class="icon"><svg-icon :name="tool.iconName" width="23px" height="16px"></svg-icon></span>
+				<span class="icon"><svg-icon :name="getIconName(tool, event, index)" width="23px" height="16px"></svg-icon></span>
 				<!-- <span class="tooltip-text">{{ tool.tooltipText }}</span> -->
 			</div>
 		</div>
@@ -31,6 +31,8 @@
 import { computed } from "vue";
 import { TeamInfoCard, MarketColumn } from "/@/views/sports/tournamentViews/football/components/footballCard/index";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
+import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+const SidebarStore = useSidebarStore();
 const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
 
 interface teamDataType {
@@ -52,6 +54,26 @@ const props = withDefaults(defineProps<teamDataType>(), {
 
 const emit = defineEmits(["oddsChange"]);
 
+// 获取侧边栏图标
+const getIconName = (tool: any, events: any, index: number) => {
+	const { eventId } = SidebarStore.getEventsInfo;
+	const isEventActive = events.eventId === eventId;
+	if (!isEventActive) {
+		return tool.iconName;
+	}
+	let activeIndex = -1;
+	switch (SidebarStore.sidebarStatus) {
+		case "scoreboard":
+			activeIndex = 0;
+			break;
+		case "live":
+			activeIndex = 1;
+			break;
+		// 你可以根据其他可能的状态扩展此逻辑
+	}
+	return index === activeIndex ? tool.iconName_active : tool.iconName;
+};
+
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
@@ -69,6 +91,7 @@ const tools = computed(() => {
 	// 判断 是否在未开赛页面
 	baseTools.push({
 		iconName: "sports-score_icon",
+		iconName_active: "sports-score_icon_active",
 		tooltipText: "比分板",
 		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
 		param: props.event, // 传递参数
@@ -77,8 +100,10 @@ const tools = computed(() => {
 	if (props.event.streamingOption != 0 && props.event.channelCode) {
 		baseTools.push({
 			iconName: "sports-live_icon",
+			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
 			action: switchEventVideoSource,
+			param: props.event, // 传递参数
 		});
 	}
 	return baseTools;

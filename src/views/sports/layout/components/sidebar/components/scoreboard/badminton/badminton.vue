@@ -7,7 +7,7 @@
 						<div class="label">{{ getEventsTitle(eventsInfo) }}</div>
 						<div class="value">
 							<!-- 渲染前两节得分 -->
-							<template v-for="(period, index) in periods" :key="index">
+							<template v-for="(period, index) in gameSession" :key="index">
 								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
 									{{ period }}
 								</div>
@@ -27,7 +27,7 @@
 							<div class="name">{{ eventsInfo?.teamInfo?.homeName }}</div>
 						</div>
 						<div class="value">
-							<template v-for="(score, index) in homeScores" :key="index">
+							<template v-for="(score, index) in homeScores.splice(0, gameSession)" :key="index">
 								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
 									<span v-if="isPeriodActive(index + 1)">
 										{{ score }}
@@ -36,7 +36,7 @@
 							</template>
 							<!-- 局 -->
 							<div class="num">
-								<span>{{ calculateSetScore(homeScores, awayScores) }}</span>
+								<span>{{ eventsInfo?.badmintonInfo?.homeSetScore }}</span>
 							</div>
 							<!-- 总分 -->
 							<div class="num F2">
@@ -54,7 +54,7 @@
 							<div class="name">{{ eventsInfo?.teamInfo?.awayName }}</div>
 						</div>
 						<div class="value">
-							<template v-for="(score, index) in awayScores" :key="index">
+							<template v-for="(score, index) in awayScores.splice(0, gameSession)" :key="index">
 								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
 									<span v-if="isPeriodActive(index + 1)">
 										{{ score }}
@@ -63,7 +63,7 @@
 							</template>
 							<!-- 局 -->
 							<div class="num">
-								<span>{{ calculateSetScore(awayScores, homeScores) }}</span>
+								<span>{{ eventsInfo?.badmintonInfo?.awaySetScore }}</span>
 							</div>
 							<!-- 总分 -->
 							<div class="num F2">
@@ -92,15 +92,13 @@ const props = withDefaults(
 	{}
 );
 
-// 计算属性
-const periods = ["1", "2", "3", "4", "5"];
 // 总共的盘数
 const gameSession = computed(() => props.eventsInfo?.gameSession || 0);
 // 当前盘数
-const currentInning = computed(() => props.eventsInfo?.badmintonInfo?.currentInning || 1);
+const currentSet = computed(() => props.eventsInfo?.badmintonInfo?.currentSet || 1);
 
 // 判断当前节是否是直播的最新节
-const isCurrentPeriod = (period: number) => currentInning.value === period;
+const isCurrentPeriod = (period: number) => currentSet.value === period;
 
 // 判断是否是活跃的节
 const isPeriodActive = (period: number) => gameSession.value >= period;
@@ -111,26 +109,26 @@ const homeScores = computed(() => props.eventsInfo?.badmintonInfo?.homeGameScore
 const awayScores = computed(() => props.eventsInfo?.badmintonInfo?.awayGameScore || []);
 
 // 计算局
-const calculateSetScore = (scores: number[], opponentScores: number[]) => {
-	if (currentInning.value === 1) {
+/*const calculateSetScore = (scores: number[], opponentScores: number[]) => {
+	if (currentSet.value === 1) {
 		return 0; // 第一盘时不计算局
-	} else if (currentInning.value === 2) {
+	} else if (currentSet.value === 2) {
 		// 当前为第二盘时计算第一盘的局
 		return compareSets(scores, opponentScores, 0); // 比较第一盘的得分
-	} else if (currentInning.value === 3) {
+	} else if (currentSet.value === 3) {
 		// 当前为第三盘时计算前两盘的局
 		return compareSets(scores, opponentScores, 0) + compareSets(scores, opponentScores, 1); // 比较前两盘的得分
-	} else if (currentInning.value === 4) {
+	} else if (currentSet.value === 4) {
 		// 当前为第三盘时计算前两盘的局
 		return compareSets(scores, opponentScores, 0) + compareSets(scores, opponentScores, 1) + compareSets(scores, opponentScores, 2); // 比较前三盘的得分
-	} else if (currentInning.value === 5) {
+	} else if (currentSet.value === 5) {
 		// 当前为第三盘时计算前两盘的局
 		return compareSets(scores, opponentScores, 0) + compareSets(scores, opponentScores, 1) + compareSets(scores, opponentScores, 2) + compareSets(scores, opponentScores, 3); // 比较前四盘的得分
 	}
-};
+};*/
 
 // 对比得分
-const compareSets = (scores: number[], opponentScores: number[], setIndex: number) => {
+/*const compareSets = (scores: number[], opponentScores: number[], setIndex: number) => {
 	// 确保 setIndex 在有效范围内
 	if (setIndex < 0 || setIndex >= scores.length || setIndex >= opponentScores.length) {
 		return 0;
@@ -141,7 +139,7 @@ const compareSets = (scores: number[], opponentScores: number[], setIndex: numbe
 	} else {
 		return 0; // 客队的得分更高或相等，局数不变
 	}
-};
+};*/
 </script>
 
 <style scoped lang="scss">

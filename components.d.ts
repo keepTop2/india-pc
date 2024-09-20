@@ -8,14 +8,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AreaCode: typeof import('./src/components/AreaCode/index.vue')['default']
-    AreaText: typeof import('./src/components/areaText.vue')['default']
     Button: typeof import('./src/components/Button/Button.vue')['default']
     CententItem: typeof import('./src/components/virtualScrollVirtualList/cententItem/cententItem.vue')['default']
     ChangePassword: typeof import('./src/components/Modal/components/ChangePassword.vue')['default']
     Collapse: typeof import('./src/components/Collapse/index.vue')['default']
     CollapseItem: typeof import('./src/components/Collapse/CollapseItem.vue')['default']
     CollapseTransition: typeof import('./src/components/Collapse/CollapseTransition.vue')['default']
-    copy: typeof import('./src/components/Modal/components/setPhone copy.vue')['default']
     Dialog: typeof import('./src/components/Dialog/Dialog.vue')['default']
     DropdownSelect: typeof import('./src/components/DropdownSelect/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -36,7 +34,6 @@ declare module 'vue' {
     ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
-    EventCountBar: typeof import('./src/components/EventCountBar/EventCountBar.vue')['default']
     ForgetPassword: typeof import('./src/components/Modal/components/ForgetPassword.vue')['default']
     Form: typeof import('./src/components/Form/index.vue')['default']
     FromInput: typeof import('./src/components/Input/fromInput.vue')['default']
@@ -70,7 +67,6 @@ declare module 'vue' {
     Toast: typeof import('./src/components/Toast/index.vue')['default']
     VerificationCode: typeof import('./src/components/VerificationCode/index.vue')['default']
     VirtualScrollVirtualList: typeof import('./src/components/virtualScrollVirtualList/virtualScrollVirtualList.vue')['default']
-    WImage: typeof import('./src/components/wImage/wImage.vue')['default']
     WVideo: typeof import('./src/components/wVideo/wVideo.vue')['default']
   }
 }
