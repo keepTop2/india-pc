@@ -16,7 +16,7 @@
 				<div class="mb_12">
 					<p class="Text_s fs_12"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
-						<input type="text" :value="payLoad.userAccount" class="common_input mt_8" :placeholder="$t(`login['输入账号']`)" @input="userOnInput" autocomplete="new-password" />
+						<input type="text" v-model="payLoad.userAccount" class="common_input mt_8" :placeholder="$t(`login['输入账号']`)" @input="userOnInput" autocomplete="new-password" />
 					</p>
 				</div>
 
@@ -26,7 +26,7 @@
 					<p class="common_password">
 						<input
 							:type="showPassword ? 'text' : 'password'"
-							:value="payLoad.password"
+							v-model="payLoad.password"
 							class="common_input"
 							:placeholder="$t(`login['输入密码']`)"
 							@input="passOnInput"
@@ -124,15 +124,13 @@ onMounted(() => {
 });
 
 // 账号输入变化处理
-const userOnInput = (e: any) => {
-	payLoad.userAccount = e.target.value;
+const userOnInput = () => {
 	userAccountVerifyError.value = !userAccountRegex.test(payLoad.userAccount);
 	verifyBtn();
 };
 
 // 密码输入变化处理
-const passOnInput = (e: any) => {
-	payLoad.password = e.target.value;
+const passOnInput = () => {
 	passWordVerifyError.value = !passWordregex.test(payLoad.password);
 	verifyBtn();
 };
@@ -166,6 +164,7 @@ const onSubmit = async () => {
 		showToast(message, 1500);
 		eventBus.emit("hide-modal");
 		await UserStore.setUserInfo(data);
+		localStorage.setItem("userInfo", JSON.stringify(data));
 		getUserInfo();
 		rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
 	} else {

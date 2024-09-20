@@ -14,7 +14,7 @@
 						<p class="common_password">
 							<input
 								:type="showOldPassword ? 'text' : 'password'"
-								:value="payLoad.oldPassword"
+								v-model="payLoad.oldPassword"
 								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
 								@input="oldPasswordOnInput"
@@ -33,7 +33,7 @@
 						<p class="common_password">
 							<input
 								:type="showPassword ? 'text' : 'password'"
-								:value="payLoad.password"
+								v-model="payLoad.password"
 								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
 								@input="passwordOnInput"
@@ -51,7 +51,7 @@
 						<p class="common_password">
 							<input
 								:type="showConfirmPassword ? 'text' : 'password'"
-								:value="payLoad.confirmPassword"
+								v-model="payLoad.confirmPassword"
 								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
 								@input="confirmOnInput"
@@ -106,19 +106,16 @@ const showOldPassword = ref(false);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
-const passwordOnInput = (e: any) => {
-	payLoad.password = e.target.value;
+const passwordOnInput = () => {
 	passWordregex.test(payLoad.password) ? (VerifyError.password = false) : (VerifyError.password = true);
 	verifyBtn();
 };
-const oldPasswordOnInput = (e: any) => {
-	payLoad.oldPassword = e.target.value;
+const oldPasswordOnInput = () => {
 	passWordregex.test(payLoad.oldPassword) ? (VerifyError.oldPassword = false) : (VerifyError.oldPassword = true);
 	verifyBtn();
 };
 
-const newPasswordOnInput = (e: any) => {
-	payLoad.newPassword = e.target.value;
+const newPasswordOnInput = () => {
 	passWordregex.test(payLoad.newPassword) ? (VerifyError.newPassword = false) : (VerifyError.newPassword = true);
 	verifyBtn();
 };

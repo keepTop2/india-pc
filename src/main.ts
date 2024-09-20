@@ -3,9 +3,8 @@ import store from "/@/stores/index";
 import App from "/@/App.vue";
 import router from "/@/router";
 import "/@/permission";
-import * as directives from "/@/directive/index";
+import directives from "./directive/index";
 import { i18n } from "/@/i18n/index";
-// svg图标注册
 import "virtual:svg-icons-register";
 import "/@/styles/app.css";
 import "/@/styles/index.scss";
@@ -14,6 +13,7 @@ import "v-calendar/style.css";
 window.__VUE_PROD_DEVTOOLS__ = false;
 window.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
 const app = createApp(App);
+
 // 循环注册指令
 Object.keys(directives).forEach((key) => {
 	app.directive(key, (directives as { [key: string]: Directive })[key]);

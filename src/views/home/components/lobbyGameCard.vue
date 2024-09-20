@@ -3,20 +3,20 @@
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
-					<img :src="gameList?.icon" alt="" />
-					<span class="Text_s fs_20">{{ gameList?.name }}</span>
+					<img v-lazy-load="gameList?.icon" alt="" />
+					<span class="Text_s fs_20">{{ title ? title : gameList?.name }}</span>
 				</span>
 			</div>
-			<div class="more Text1 fs_18 curp">更多</div>
+			<div class="more Text1 fs_18 curp" @click="gotoVenue(gameList)">更多</div>
 		</div>
 		<div class="lobbyGameList">
-			<div class="onlyOneGame" v-if="gameList?.gameInfoList.length == 1">
-				<img :src="gameList?.gameInfoList[0].icon" alt="" />
+			<div class="onlyOneGame" v-if="gameList?.gameInfoList?.length == 1" click="Common.goToGame(item)">
+				<img v-lazy-load="gameList?.gameInfoList[0].icon" alt="" />
 			</div>
 			<slide v-else>
-				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem" @click="Common.goToGame(item)">
-					<div>
-						<img :src="item.icon" alt="" />
+				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem" @click.self="Common.goToGame(item)">
+					<div class="imgBox">
+						<img v-lazy-load="item.icon" alt="" />
 					</div>
 					<div class="gameInfo">{{ item.name }}</div>
 					<div class="onHover">
@@ -33,10 +33,9 @@
 
 <script setup lang="ts">
 import slide from "./slide.vue";
-import { gameApi } from "/@/api/game";
 import { HomeApi } from "/@/api/home";
 import showToast from "/@/hooks/useToast";
-import { useUserStore } from "/@/stores/modules/user";
+import router from "/@/router";
 import Common from "/@/utils/common";
 interface gameInfo {
 	id: string;
@@ -57,6 +56,10 @@ const props = defineProps({
 	gameList: {
 		type: Object,
 	},
+	title: {
+		type: String,
+		default: "热门推荐",
+	},
 });
 const collectGame = (game: gameInfo) => {
 	const params = {
@@ -69,6 +72,9 @@ const collectGame = (game: gameInfo) => {
 			game.collect = !game.collect;
 		}
 	});
+};
+const gotoVenue = (gameInfo: any) => {
+	router.push({ path: "/game/venue", query: { gameOneId: gameInfo.gameOneId } });
 };
 </script>
 
@@ -89,6 +95,10 @@ const collectGame = (game: gameInfo) => {
 	.lobbyGameItem {
 		margin-right: 15px;
 		position: relative;
+		.imgBox {
+			height: 190px;
+			width: 190px;
+		}
 		.onHover {
 			display: none;
 		}

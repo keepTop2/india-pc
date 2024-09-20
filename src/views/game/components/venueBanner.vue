@@ -1,18 +1,35 @@
 <template>
 	<div class="banner">
-		<img src="./image/image.png" alt="" />
-		<div class="swiper-box">
-			<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
-				<SwiperSlide v-for="(item, index) in announcementList" :key="index">
-					<img :src="item" alt="" />
-				</SwiperSlide>
-			</Swiper>
-			<div class="arrow">
-				<div class="arrow_left" @click="goToPrevSlide">
-					<svg-icon name="arrow_left" width="6px" height="16px"></svg-icon>
-				</div>
-				<div class="arrow_right" @click="goToNextSlide">
-					<svg-icon name="arrow_right" width="6px" height="16px"></svg-icon>
+		<div
+			class="bg bg-blur"
+			:style="{
+				background: `url(${announcementList[activeIndex]})`,
+			}"
+		></div>
+		<div class="swiper_wrapper">
+			<div class="swiper-box pt_38">
+				<Swiper
+					:autoplay="true"
+					:slidesPerView="1"
+					:spaceBetween="15"
+					:loop="true"
+					:modules="modules"
+					:pagination="true"
+					class="swiper-container curp"
+					@swiper="onSwiper"
+					@slideChange="slideChange"
+				>
+					<SwiperSlide v-for="(item, index) in announcementList" :key="index">
+						<img :src="item" alt="" />
+					</SwiperSlide>
+				</Swiper>
+				<div class="arrow">
+					<div class="arrow_left" @click="goToPrevSlide">
+						<svg-icon name="arrow_left" width="6px" height="16px"></svg-icon>
+					</div>
+					<div class="arrow_right" @click="goToNextSlide">
+						<svg-icon name="arrow_right" width="6px" height="16px"></svg-icon>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -30,11 +47,14 @@ import banner1 from "./image/banner1.png";
 import banner2 from "./image/banner2.png";
 import banner3 from "./image/banner3.png";
 import { onMounted, ref } from "vue";
+import { url } from "inspector";
 const swiperRef: any = ref(null);
 const isLoading = ref(false);
+const activeIndex = ref(0);
 const announcementList = [banner1, banner2, banner3, banner1, banner2, banner3];
 const onSwiper = (swiper: any) => {
 	swiperRef.value = swiper;
+	console.log(swiperRef.value, 8888);
 };
 const goToNextSlide = () => {
 	swiperRef.value?.slideNext();
@@ -42,22 +62,51 @@ const goToNextSlide = () => {
 const goToPrevSlide = () => {
 	swiperRef.value?.slidePrev();
 };
+const slideChange = (value: any) => {
+	activeIndex.value = value.realIndex;
+};
 </script>
 
 <style scoped lang="scss">
 .banner {
 	width: 100%;
-	max-width: 1636px;
+	max-width: 1660px;
 	margin: 0 auto;
+	height: 360px;
+	position: relative;
+	overflow: hidden;
+	.bg {
+		width: 100%;
+		height: 360px;
+		background-size: 100% 100%;
+	}
+	.bg-blur {
+		float: left;
+		width: 100%;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+		-webkit-filter: blur(17.5px);
+		-moz-filter: blur(17.5px);
+		-o-filter: blur(17.5px);
+		-ms-filter: blur(17.5px);
+		filter: blur(17.5px);
+	}
 	img {
 		width: 100%;
 	}
+	.swiper_wrapper {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+	}
 	.swiper-box {
 		position: relative;
-		max-width: 1350px;
+		width: 772px;
+		height: 330px;
 		margin: 0 auto;
 		.arrow {
-			max-width: 1350px;
 			position: absolute;
 			left: 10px;
 			right: 10px;
@@ -88,7 +137,7 @@ const goToPrevSlide = () => {
 		}
 	}
 	.swiper {
-		margin: -55px 55px 0;
+		margin: 0 55px 0;
 		max-width: 1254px;
 		padding-bottom: 20px;
 		:deep(.swiper-pagination) {

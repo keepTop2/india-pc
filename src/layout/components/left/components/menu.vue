@@ -3,7 +3,7 @@
 		<div>
 			<div v-for="(item, index) in routerObj" :key="index">
 				<div class="menu_item" :class="openMenuIndex == index ? 'activeMenu' : ''" @click="selectMenu(item, index)">
-					<span class="menu_icon"><img :src="item.icon" alt="" /></span>
+					<span class="menu_icon"><img v-lazy-load="item.icon" alt="" /></span>
 					<span class="menu_name ellipsis">{{ item.directoryName }}</span>
 					<span class="arrow" v-if="item.children && !collapse">
 						<svg-icon name="arrow_up" v-if="openMenuIndex == index" height="8px" width="14px" />
@@ -17,14 +17,10 @@
 							:key="index"
 							class="menu_item subItem"
 							:class="openSubMenuIndex == index + ',' + subIndex ? 'activeMenu' : ''"
-							@click="
-								() => {
-									goToPath(index, subIndex);
-								}
-							"
+							@click="goToPath(subItem, index, subIndex)"
 						>
 							<span class="menu_icon">
-								<img :src="subItem.icon" alt="" />
+								<img v-lazy-load="subItem.icon" alt="" />
 							</span>
 							<span class="menu_name ellipsis">{{ subItem.directoryName }}</span>
 						</div>
@@ -42,6 +38,7 @@ import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
 import { useMenuStore } from "/@/stores/modules/menu";
 const MenuStore = useMenuStore();
 import useSvgHoverHooks from "/@/hooks/useSvgHover";
+import Common from "/@/utils/common";
 const { onMouseout, onMouseover, hoverItem } = useSvgHoverHooks();
 const router = useRouter();
 const route = useRoute();
@@ -50,50 +47,11 @@ const openSubMenuIndex: any = ref(null);
 const currentRoute = ref({});
 //菜单从缓存中拉取
 const routerObj: any = computed(() => {
-	const menuList: any = MenuStore.getMenu;
-
-	// 测试子菜单数据
-	menuList[0]
-		? (menuList[0].children = [
-				{
-					gameOneClassId: "1828719272336265217",
-					directoryName: "BIZ_GAME_ONE_DIRECTORY_331",
-					homeName: "BIZ_GAME_ONE_HOME_332",
-					icon: "https://oss.playesoversea.store/baowang/80a51ebf125d4468bde116f99d92b89d.jpg",
-					modelCode: "CA",
-					gameInfo: null,
-				},
-				{
-					gameOneClassId: "1828719272336265217",
-					directoryName: "BIZ_GAME_ONE_DIRECTORY_331",
-					homeName: "BIZ_GAME_ONE_HOME_332",
-					icon: "https://oss.playesoversea.store/baowang/80a51ebf125d4468bde116f99d92b89d.jpg",
-					modelCode: "CA",
-					gameInfo: null,
-				},
-		  ])
-		: "";
-	menuList[5]
-		? (menuList[5].children = [
-				{
-					gameOneClassId: "1828719272336265217",
-					directoryName: "BIZ_GAME_ONE_DIRECTORY_331",
-					homeName: "BIZ_GAME_ONE_HOME_332",
-					icon: "https://oss.playesoversea.store/baowang/80a51ebf125d4468bde116f99d92b89d.jpg",
-					modelCode: "CA",
-					gameInfo: null,
-				},
-		  ])
-		: "";
-	return menuList;
+	return MenuStore.getMenu;
 });
 
 const collapse = computed(() => {
-	const val = MenuStore.getCollapse;
-	if (val) {
-	}
-
-	return val;
+	return MenuStore.getCollapse;
 });
 
 const activeMenu = computed(() => {
@@ -104,9 +62,9 @@ const activeMenu = computed(() => {
 	return path;
 });
 
-const goToPath = (index: number, subIndex: number) => {
+const goToPath = (subItem: Object, index: number, subIndex: number) => {
 	openSubMenuIndex.value = index + "," + subIndex;
-	router.push("/sports");
+	// router.push("/sports");
 };
 
 const state = reactive({
@@ -124,20 +82,31 @@ const openMenu = (index: number) => {
 	}
 };
 
+/**
+ * PE:"跳转体育"
+ * CA:"进入通用场馆"
+ * LT:"进入gamePage页面"
+ */
 const selectMenu = (item: any, index: number) => {
 	if (item.children) {
 		currentRoute.value = item;
 		openMenu(index);
 	} else {
+		if (item.modelCode == "PE") {
+			router.push("/sports");
+		} else if (item.modelCode == "LT") {
+			Common.goToGame(item.gameInfo);
+		} else {
+			router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId } });
+		}
 		openMenuIndex.value = index;
-		router.push("/sports");
 	}
 };
 
 // 动画
 const beforeEnter = (el: any) => {
 	el.style.maxHeight = "0";
-	el.style.transition = "all 0.2s ease";
+	el.style.transition = "height 0.2s ease";
 };
 
 const enter = (el: any) => {
@@ -147,7 +116,7 @@ const enter = (el: any) => {
 
 const leave = (el: any) => {
 	el.style.maxHeight = "0";
-	el.style.transition = "all 0.2s ease";
+	el.style.transition = "height 0.2s ease";
 };
 </script>
 

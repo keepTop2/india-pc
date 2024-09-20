@@ -12,7 +12,7 @@
 					<div>
 						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['邮箱']`) }}</p>
 						<p class="common_password">
-							<input type="text" :value="payLoad.email" class="common_input" :placeholder="$t(`login['输入账号']`)" @input="emailOnInput" />
+							<input type="text" v-model="payLoad.email" class="common_input" :placeholder="$t(`login['输入账号']`)" @input="emailOnInput" />
 						</p>
 						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`login['手机号规则']`) }}</p>
 					</div>
@@ -83,8 +83,7 @@ const sendVerificationCode = async () => {
 		}
 	}
 };
-const emailOnInput = (e: any) => {
-	payLoad.email = e.target.value;
+const emailOnInput = () => {
 	userEmailRegex.test(payLoad.email) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
 	verificationBtn.value = userVerifyTypeVerifyError.value;
 	verifyBtn();

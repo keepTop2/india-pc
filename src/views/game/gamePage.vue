@@ -14,28 +14,24 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
-import { gameApi } from "/@/api/game";
-import router from "/@/router";
-import Common from "/@/utils/common";
-import { onMounted } from "vue";
+import { reactive, onMounted, watch } from "vue";
 import { useWindowSize } from "@vueuse/core";
-import { useRoute } from "vue-router";
+import { onBeforeRouteLeave, useRoute } from "vue-router";
+import { useUserStore } from "/@/stores/modules/user";
 const { width, height } = useWindowSize();
 const state: any = reactive({
 	source: "",
 	userAccount: "",
 	type: "",
 });
+const route = useRoute();
+
 onMounted(() => {
-	state.source = useRoute().query.source;
+	state.source = route.query.source;
 });
-const loginGame = () => {};
+onBeforeRouteLeave(() => {
+	useUserStore().initUserInfo();
+});
 </script>
 
-<style scoped>
-.ifrmeContainerRef {
-	height: 900px;
-	width: 100%;
-}
-</style>
+<style scoped></style>

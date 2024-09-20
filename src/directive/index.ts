@@ -1,1 +1,5 @@
-export * from "./loading";
+import { lazyLoad } from "./lazyLoad";
+
+export default {
+	lazyLoad,
+};
