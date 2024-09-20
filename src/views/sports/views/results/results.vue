@@ -80,7 +80,6 @@
 import { onMounted, onUnmounted, reactive, ref, watch, computed } from "vue";
 import query from "./components/query/query.vue";
 import moment from "moment";
-import itemDetails from "./components/itemDetails/itemDetails.vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { Pagination } from "/@/components/Pagination";
 import sportsApi from "/@/api/sports/sports";
