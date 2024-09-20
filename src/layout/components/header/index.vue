@@ -15,7 +15,7 @@
 				</div>
 				<div class="lang user">
 					<div>
-						<img :src="LangIcon" alt="" @click="openUserMenu" />
+						<img v-lazy-load="LangIcon" alt="" @click="openUserMenu" />
 						<div class="userMenu" v-if="isOpenMenu" ref="userMenu">
 							<div v-for="(route, index) in userRoutes" :key="index" @mouseover="onMouseover('user-' + route.meta.icon)" @mouseout="onMouseout" @click="goToPath(route)">
 								<span><svg-icon :name="'user-' + route.meta.icon" size="18px" :hover="hoverItem"></svg-icon></span>
@@ -37,7 +37,7 @@
 			</div>
 
 			<div class="lang">
-				<img :src="LangIcon" alt="" @click="openLangCurrenyConfig" />
+				<img v-lazy-load="LangIcon" alt="" @click="openLangCurrenyConfig" />
 			</div>
 		</div>
 	</header>
@@ -72,7 +72,10 @@ const isLogin = computed(() => {
 	return UserStore.getLogin;
 });
 const LangIcon = computed(() => {
-	return UserStore.getLangList.find((item: any) => item.code == UserStore.getLang)?.icon;
+	const langList = UserStore.getLangList;
+	const currentLang = UserStore.getLang;
+	const icon = langList.find((item: any) => item.code === currentLang)?.icon;
+	return icon;
 });
 
 const openUserMenu = () => {
@@ -231,12 +234,13 @@ const logOut = () => {
 .lang::after {
 	content: "";
 	position: absolute;
-	bottom: 0;
+	bottom: 6px;
 	left: 50%;
 	transform: translate(-50%, 50%);
 	display: inline-block;
 	height: 14px;
 	width: 14px;
 	background: url("/@/assets/svg/dark/lang_down_icon.svg");
+	background-size: cover;
 }
 </style>

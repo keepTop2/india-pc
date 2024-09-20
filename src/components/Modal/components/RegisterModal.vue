@@ -15,7 +15,7 @@
 					<p>
 						<input
 							type="text"
-							:value="payLoad.userAccount"
+							v-model="payLoad.userAccount"
 							class="common_input"
 							:placeholder="$t(`login['输入账号']`)"
 							@input="userOnInput"
@@ -30,7 +30,7 @@
 					<p class="common_password">
 						<input
 							:type="showPassword ? 'text' : 'password'"
-							:value="payLoad.password"
+							v-model="payLoad.password"
 							class="common_input"
 							:placeholder="$t(`login['输入密码']`)"
 							@input="passOnInput"
@@ -48,7 +48,7 @@
 					<p class="common_password">
 						<input
 							:type="showConfirmPassword ? 'text' : 'password'"
-							:value="payLoad.confirmPassword"
+							v-model="payLoad.confirmPassword"
 							class="common_input"
 							:placeholder="$t(`login['输入确认密码']`)"
 							@input="confirmOnInput"
@@ -69,7 +69,7 @@
 
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_12">{{ $t(`login['推荐码非必填']`) }}</p>
-					<p class="common_password"><input type="text" v-model="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" @input="inviteCodeInput" /></p>
+					<p class="common_password"><input type="text" v-model="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" /></p>
 				</div>
 				<div class="fs_10 userAgreement" :class="userAgreement ? 'Text_s' : 'Text1'">
 					<svg-icon
@@ -152,24 +152,19 @@ onMounted(() => {
 	}
 });
 
-const passOnInput = (e: Event) => {
-	payLoad.password = (e.target as HTMLInputElement).value;
+const passOnInput = () => {
 	passWordregex.test(payLoad.password) ? (VerifyError.passWord = false) : (VerifyError.passWord = true);
 	verifyBtn();
 };
-const userOnInput = (e: Event) => {
-	payLoad.userAccount = (e.target as HTMLInputElement).value;
+const userOnInput = () => {
 	userAccountRegex.test(payLoad.userAccount) ? (VerifyError.userAccount = false) : (VerifyError.userAccount = true);
 	verifyBtn();
 };
-const confirmOnInput = (e: Event) => {
-	payLoad.confirmPassword = (e.target as HTMLInputElement).value;
+const confirmOnInput = () => {
 	payLoad.confirmPassword === payLoad.password ? (VerifyError.confirmPassword = false) : (VerifyError.confirmPassword = true);
 	verifyBtn();
 };
-const inviteCodeInput = (e: Event) => {
-	payLoad.inviteCode = (e.target as HTMLInputElement).value;
-};
+
 const userAgreementOnInput = () => {
 	userAgreement.value = !userAgreement.value;
 	verifyBtn();

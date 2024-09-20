@@ -1,28 +1,22 @@
 <template>
 	<div>
-		<Fragment>
-			<bannerSkeleton v-if="isLoading" />
-			<banner v-else></banner>
-		</Fragment>
+		<bannerSkeleton v-if="isLoading" />
+		<banner v-else></banner>
 
 		<div class="max-width">
 			<!-- 热门推荐 -->
-			<Fragment>
-				<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
-				<hotGame :hotGameList="hotGameList" v-else />
-			</Fragment>
-			<Fragment>
-				<Fragment v-if="isLoading">
-					<lobbyGameSkeleton :skeletonCount="6" />
-					<lobbyGameSkeleton :skeletonCount="3" />
-					<lobbyGameSkeleton :skeletonCount="6" />
-					<lobbyGameSkeleton :skeletonCount="1" />
-					<lobbyGameSkeleton :skeletonCount="5" />
-				</Fragment>
-				<Fragment v-else>
-					<lobbyGameCard v-for="item in lobbyGameList" :gameList="item" />
-				</Fragment>
-			</Fragment>
+			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
+			<hotGame :hotGameList="hotGameList" v-else />
+			<div v-if="isLoading">
+				<lobbyGameSkeleton :skeletonCount="6" />
+				<lobbyGameSkeleton :skeletonCount="3" />
+				<lobbyGameSkeleton :skeletonCount="6" />
+				<lobbyGameSkeleton :skeletonCount="1" />
+				<lobbyGameSkeleton :skeletonCount="5" />
+			</div>
+			<div v-else>
+				<lobbyGameCard v-for="item in lobbyGameList" :gameList="item" :title="item.name" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -37,7 +31,7 @@ import lobbyGameSkeleton from "./components/lobbyGameSkeleton.vue";
 import lobbyGameCard from "./components/lobbyGameCard.vue";
 import { HomeApi } from "/@/api/home";
 const isLoading = ref(false);
-const lobbyGameList = ref([]);
+const lobbyGameList: any = ref([]);
 const hotGameList = ref([]);
 onMounted(() => {
 	queryGameInfoDetail();

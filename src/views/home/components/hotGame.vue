@@ -10,7 +10,7 @@
 		</div>
 		<slide class="hotGameList">
 			<div v-for="(item, index) in hotGameList" :key="index" class="hotGameItem">
-				<img :src="item.icon" alt="" />
+				<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
 				<div class="gameInfo Texta">
 					<div class="fs_19">
 						<img src="./image/hotGameIcon.png" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
@@ -52,20 +52,6 @@ const props = defineProps({
 		type: Array<gameInfo>,
 	},
 });
-
-const goToGame = (gameinfo: any) => {
-	console.log(gameinfo, 99999);
-	const params = {
-		userAccount: useUserStore().getUserInfo.userAccount,
-		venueCode: gameinfo.venueCode,
-		gameCode: gameinfo.gameCode,
-		ip: "",
-		currencyCode: useUserStore().getUserInfo.mainCurrency,
-	};
-	gameApi.loginGame(params).then((res) => {
-		console.log(res);
-	});
-};
 </script>
 
 <style scoped lang="scss">

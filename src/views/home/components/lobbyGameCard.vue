@@ -3,20 +3,20 @@
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
-					<img :src="gameList?.icon" alt="" />
-					<span class="Text_s fs_20">{{ gameList?.name }}</span>
+					<img v-lazy-load="gameList?.icon" alt="" />
+					<span class="Text_s fs_20">{{ title ? title : gameList?.name }}</span>
 				</span>
 			</div>
 			<div class="more Text1 fs_18 curp" @click="gotoVenue(gameList)">更多</div>
 		</div>
 		<div class="lobbyGameList">
-			<div class="onlyOneGame" v-if="gameList?.gameInfoList.length == 1" click="Common.goToGame(item)">
-				<img :src="gameList?.gameInfoList[0].icon" alt="" />
+			<div class="onlyOneGame" v-if="gameList?.gameInfoList?.length == 1" click="Common.goToGame(item)">
+				<img v-lazy-load="gameList?.gameInfoList[0].icon" alt="" />
 			</div>
 			<slide v-else>
-				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem" @click="Common.goToGame(item)">
+				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem" @click.self="Common.goToGame(item)">
 					<div class="imgBox">
-						<img :src="item.icon" alt="" />
+						<img v-lazy-load="item.icon" alt="" />
 					</div>
 					<div class="gameInfo">{{ item.name }}</div>
 					<div class="onHover">
@@ -55,6 +55,10 @@ interface gameInfo {
 const props = defineProps({
 	gameList: {
 		type: Object,
+	},
+	title: {
+		type: String,
+		default: "热门推荐",
 	},
 });
 const collectGame = (game: gameInfo) => {

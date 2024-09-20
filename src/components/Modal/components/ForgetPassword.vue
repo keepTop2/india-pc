@@ -16,7 +16,7 @@
 					<p>
 						<input
 							type="text"
-							:value="payLoad.userAccount"
+							v-model="payLoad.userAccount"
 							class="common_input"
 							:placeholder="$t(`login['输入账号']`)"
 							@input="userOnInput"
@@ -37,7 +37,7 @@
 						<p>
 							<input
 								type="text"
-								:value="payLoad.email"
+								v-model="payLoad.email"
 								class="common_input"
 								:placeholder="$t(`login['输入账号']`)"
 								@input="emailOnInput"
@@ -73,7 +73,7 @@
 						<p class="common_password">
 							<input
 								:type="showPassword ? 'text' : 'password'"
-								:value="payLoad.password"
+								v-model="payLoad.password"
 								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
 								@input="passOnInput"
@@ -92,7 +92,7 @@
 						<p class="common_password">
 							<input
 								:type="showConfimPassword ? 'text' : 'password'"
-								:value="payLoad.confirmPassword"
+								v-model="payLoad.confirmPassword"
 								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
 								@input="confirmOnInput"
@@ -183,26 +183,22 @@ const verificationBtn = ref(true);
 const showPassword = ref(false);
 const showConfimPassword = ref(false);
 // 监听输入框变化
-const userOnInput = (e: any) => {
-	payLoad.userAccount = e.target.value;
+const userOnInput = () => {
 	userAccountRegex.test(payLoad.userAccount) ? (userAccountVerifyError.value = false) : (userAccountVerifyError.value = true);
 	verifyBtn();
 };
 
-const emailOnInput = (e: any) => {
-	payLoad.email = e.target.value;
+const emailOnInput = () => {
 	userEmailRegex.test(payLoad.email) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
 	verificationBtn.value = userVerifyTypeVerifyError.value;
 	verifyBtn();
 };
 
-const passOnInput = (e: any) => {
-	payLoad.password = e.target.value;
+const passOnInput = () => {
 	passWordregex.test(payLoad.password) ? (VerifyError.passWord = false) : (VerifyError.passWord = true);
 	verifyBtn();
 };
-const confirmOnInput = (e: any) => {
-	payLoad.confirmPassword = e.target.value;
+const confirmOnInput = () => {
 	payLoad.confirmPassword === payLoad.password ? (VerifyError.confirmPassword = false) : (VerifyError.confirmPassword = true);
 	verifyBtn();
 };

@@ -3,9 +3,12 @@ import { isArray, filter, map } from "lodash-es";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { formatDateToTimeStamp } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { QueryFormType, QueryOptionItemType } from "/@/views/sports/models/sportResultModel";
+import { convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
+
 import Common from "/@/views/sports/utils/common";
 import sportsApi from "/@/api/sports/sports";
 import moment from "moment";
+import dayjs from "dayjs";
 
 type Enum = { [s: number]: string };
 // 判断值是否在enum中
@@ -46,18 +49,18 @@ export const useResultHook = () => {
 	/**
 	 * @description: 预处理数据
 	 */
-	const preprocessData = (items: any[]) => {
-		if (!isArray(items)) {
-			return items;
-		}
-
-		items.forEach((item) => {
+	const preprocessData = (resultData: any[]) => {
+		const newArr: any[] = [];
+		resultData.forEach((item) => {
 			item.events?.forEach((event: any) => {
 				event.timestamp = formatDateToTimeStamp(event.eventTime);
+				event.date = dayjs(convertUtcToUtc5AndFormat(event.eventTime)).format("YYYY-MM-DD hh:mm");
+				event = Object.assign(event, { leagueName: item.leagueName });
 			});
 			item.events?.sort((a: any, b: any) => a.timestamp - b.timestamp);
+			newArr.push(...item.events);
 		});
-		return items;
+		return newArr;
 	};
 
 	return {
