@@ -59,7 +59,7 @@ const { sportType } = route.params;
 
 /**
  * @description 根据sportType获取赛事列表下的赛事
- * @returns Array of events
+ * @returns 赛事数组
  */
 const eventsList = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.viewSportData.childrenViewData;
@@ -71,8 +71,8 @@ const eventsList = computed(() => {
 });
 
 /**
- * @description Computes the event detail based on the event ID from the route
- * @returns Event detail object
+ * @description 根据路由中的事件ID计算事件详情
+ * @returns 事件详情对象
  */
 const eventDetail = computed(() => {
   const { eventId } = route.query;
@@ -82,8 +82,8 @@ const eventDetail = computed(() => {
 });
 
 /**
- * @description Computes and organizes market data
- * @returns Organized and sorted market data
+ * @description 计算并组织市场数据
+ * @returns 组织和排序后的市场数据
  */
 const markets = computed(() => {
   let marketData: any = [];
@@ -117,7 +117,7 @@ const markets = computed(() => {
   return marketData;
 });
 
-// Watch effects
+// 监听效果
 watchEffect(() => {
   if (markets.value) {
     showMarkets.value = Array(markets.value.length).fill(false);
@@ -125,15 +125,15 @@ watchEffect(() => {
 });
 
 /**
- * @description Filters data based on the provided filter item
- * @param filterItem The filter item to apply
+ * @description 根据提供的过滤项过滤数据
+ * @param filterItem 要应用的过滤项
  */
 const filterData = (filterItem: number) => {
   state.filtrateBetType = filterItem;
 };
 
 /**
- * @description Toggles the display of all markets
+ * @description 切换所有市场的显示状态
  */
 const toggleAllDisplay = () => {
   expandAndCollapse.value = !expandAndCollapse.value;
@@ -141,7 +141,7 @@ const toggleAllDisplay = () => {
 };
 
 /**
- * @description Refreshes the sport data
+ * @description 刷新体育数据
  */
 const refresh = () => {
   loading.value = true;

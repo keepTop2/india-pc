@@ -6,7 +6,9 @@ export const gameApi = {
 		return useAxiosApi(`/app/third/api/loginGame`, {
 			method: "POST",
 			data,
-			headers,
+			headers: {
+				needLogin: true,
+			},
 		});
 	},
 	queryGameInfoByOneClassId: (data = {}, headers = {}) => {

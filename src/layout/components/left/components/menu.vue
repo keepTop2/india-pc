@@ -3,7 +3,7 @@
 		<div>
 			<div v-for="(item, index) in routerObj" :key="index">
 				<div class="menu_item" :class="openMenuIndex == index ? 'activeMenu' : ''" @click="selectMenu(item, index)">
-					<span class="menu_icon"><img :src="item.icon" alt="" /></span>
+					<span class="menu_icon"><img v-lazy-load="item.icon" alt="" /></span>
 					<span class="menu_name ellipsis">{{ item.directoryName }}</span>
 					<span class="arrow" v-if="item.children && !collapse">
 						<svg-icon name="arrow_up" v-if="openMenuIndex == index" height="8px" width="14px" />
@@ -20,7 +20,7 @@
 							@click="goToPath(subItem, index, subIndex)"
 						>
 							<span class="menu_icon">
-								<img :src="subItem.icon" alt="" />
+								<img v-lazy-load="subItem.icon" alt="" />
 							</span>
 							<span class="menu_name ellipsis">{{ subItem.directoryName }}</span>
 						</div>
@@ -38,23 +38,22 @@ import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
 import { useMenuStore } from "/@/stores/modules/menu";
 const MenuStore = useMenuStore();
 import useSvgHoverHooks from "/@/hooks/useSvgHover";
+import Common from "/@/utils/common";
+import { activityApi } from "/@/api/activity";
 const { onMouseout, onMouseover, hoverItem } = useSvgHoverHooks();
 const router = useRouter();
 const route = useRoute();
 const openMenuIndex: Ref<number | null | string> = ref(null);
 const openSubMenuIndex: any = ref(null);
 const currentRoute = ref({});
+const activityList = ref([]);
 //菜单从缓存中拉取
 const routerObj: any = computed(() => {
 	return MenuStore.getMenu;
 });
 
 const collapse = computed(() => {
-	const val = MenuStore.getCollapse;
-	if (val) {
-	}
-
-	return val;
+	return MenuStore.getCollapse;
 });
 
 const activeMenu = computed(() => {
@@ -68,9 +67,16 @@ const activeMenu = computed(() => {
 const goToPath = (subItem: Object, index: number, subIndex: number) => {
 	openSubMenuIndex.value = index + "," + subIndex;
 	// router.push("/sports");
-	console.log(subItem, 33333);
 };
 
+onMounted(() => {
+	getactivityList();
+});
+const getactivityList = () => {
+	activityApi.activityPageList().then((res) => {
+		activityList.value = res.data.records;
+	});
+};
 const state = reactive({
 	//选中的菜单数组
 	selectList: [] as Array<string>,
@@ -86,6 +92,11 @@ const openMenu = (index: number) => {
 	}
 };
 
+/**
+ * PE:"跳转体育"
+ * CA:"进入通用场馆"
+ * LT:"进入gamePage页面"
+ */
 const selectMenu = (item: any, index: number) => {
 	if (item.children) {
 		currentRoute.value = item;
@@ -93,6 +104,8 @@ const selectMenu = (item: any, index: number) => {
 	} else {
 		if (item.modelCode == "PE") {
 			router.push("/sports");
+		} else if (item.modelCode == "LT") {
+			Common.goToGame(item.gameInfo);
 		} else {
 			router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId } });
 		}
@@ -103,7 +116,7 @@ const selectMenu = (item: any, index: number) => {
 // 动画
 const beforeEnter = (el: any) => {
 	el.style.maxHeight = "0";
-	el.style.transition = "all 0.2s ease";
+	el.style.transition = "height 0.2s ease";
 };
 
 const enter = (el: any) => {
@@ -113,7 +126,7 @@ const enter = (el: any) => {
 
 const leave = (el: any) => {
 	el.style.maxHeight = "0";
-	el.style.transition = "all 0.2s ease";
+	el.style.transition = "height 0.2s ease";
 };
 </script>
 

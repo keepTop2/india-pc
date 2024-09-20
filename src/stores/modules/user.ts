@@ -146,7 +146,7 @@ export const useUserStore = defineStore("User", {
 		{
 			key: "loginInfo",
 			storage: localStorage,
-			paths: ["loginInfo"],
+			paths: ["loginInfo","token"],
 		},
 	],
 });

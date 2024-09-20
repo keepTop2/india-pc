@@ -12,7 +12,7 @@
 		>
 			<div class="el-dropdown-content">
 				<span class="content"><slot name="prefix"></slot>{{ selectDateLabel }}</span>
-				<SvgIcon class="icon" iconName="arrow" :size="18" />
+				<svg-icon class="icon" name="arrow_down" :size="12" />
 			</div>
 			<template #dropdown>
 				<el-dropdown-menu>
@@ -77,7 +77,7 @@ const onCommand = (e: any) => {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding: 12px 20px;
+			padding: 8px 10px;
 			cursor: pointer;
 			box-sizing: border-box;
 			color: var(--Text1);

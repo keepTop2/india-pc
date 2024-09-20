@@ -78,14 +78,22 @@ import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import SportsCommon from "/@/views/sports/utils/common";
 import RiseOrFall from "/@/components/Sport/RiseOrFall.vue";
 import SelectionName from "../components/selectionName.vue";
+import { useRoute } from "vue-router";
 
+/**
+ * @description 市场类型接口
+ */
 interface marketType {
+	markets: any;
 	betTypeName: string ;
 	marketId: string;
 	betType: string;
 	marketStatus: string;
 }
 
+/**
+ * @description 组件属性定义
+ */
 const props = withDefaults(
 	defineProps<{
 		markets: marketType[];
@@ -94,60 +102,95 @@ const props = withDefaults(
 );
 
 const sportsBetEvent = useSportsBetEventStore();
-
+const route = useRoute();
 const isFold = ref(false);
 const isFixed = ref(false);
 const activeTab = ref("all");
 const activeSelection = ref<string[]>([]);
 
-
+/**
+ * @description 计算赛事详情
+ */
 const eventDetail = computed(() => {
-  // Implement event detail computation logic here  
+  // 实现赛事详情计算逻辑
 });
 
+/**
+ * @description 计算市场选择
+ */
 const marketsSelect = computed(() => sportsBetEvent.getEventInfo);
 
+/**
+ * @description 切换标签
+ * @param key 标签键值
+ */
 const changeTab = (key: string) => {
   activeTab.value = key;
 };
 
-// const onExpandAngCollapse = (val: boolean) => {
-//   if (!val) {
-//     activeSelection.value = [];
-//   } else {
-//     activeSelection.value = markets.value.map((item: { betTypeName: any; }) => item.betTypeName);
-//   }
-// };
-
+/**
+ * @description 过滤选择项
+ * @param data 选择项数据
+ * @returns 过滤后的选择项
+ */
 const filterSelections = (data: any[]) => {
   return data.filter((item: { oddsPrice: { decimalPrice: number; }; }) => item.oddsPrice.decimalPrice != 0);
 };
 
+/**
+ * @description 判断是否高亮
+ * @param market 市场对象
+ * @param selection 选择项对象
+ * @returns 是否高亮
+ */
 const isBright = (market: { marketId: any; }, selection: { key: any; }) => {
-  const eventId = eventDetail.eventId;
-  return marketsSelect.value[eventId]?.listKye == `${market.marketId}-${selection.key}`;
+  const { eventId } = route.query;
+  return marketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
 };
 
+/**
+ * @description 设置体育事件数据
+ * @param market 市场对象
+ * @param selection 选择项对象
+ */
 const onSetSportsEventData = (market: any, selection: any) => {
-  // Implement bet selection logic here
+  // 实现投注选择逻辑
 };
 
+/**
+ * @description 改变类名
+ * @param item 选择项对象
+ * @returns 类名
+ */
 const changeClass = (item: { oddsChange: string; }) => {
   if (!item.oddsChange) return "";
   return item.oddsChange == "oddsUp" ? "oddsUp" : "oddsDown";
 };
 
+/**
+ * @description 动画结束处理
+ * @param marketId 市场ID
+ * @param selection 选择项对象
+ */
 const animationEnd = (marketId: any, selection: { oddsChange: string; }) => {
   if (selection.oddsChange) {
     selection.oddsChange = "";
   }
 };
 
+/**
+ * @description 判断是否为特殊类型
+ * @param type 类型编号
+ * @returns 是否为特殊类型
+ */
 const isbladder = (type: number) => {
   const arr = [4, 30, 152, 416, 413, 414, 165, 166, 392, 399, 405, 413, 414, 1302, 1317, 3900, 3910, 3917];
   return arr.includes(type);
 };
 
+/**
+ * @description 监听activeSelection变化
+ */
 watch(
   () => activeSelection.value.length,
   (newValue, oldValue) => {

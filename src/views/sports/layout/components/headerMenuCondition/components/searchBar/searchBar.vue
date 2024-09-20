@@ -17,7 +17,7 @@
         <div class="history-info">
           <div class="history-title" @click="setSearchQuery(result.title)"> 
             {{ result.title }}
-            <svg-icon name="sports-remove" @click="removeHistory(index)" />
+            <svg-icon name="sports-remove" @click.stop="removeHistory(result.title)" />
           </div>
         </div>
       </div>
@@ -33,12 +33,9 @@
           <div class="result-subtitle">{{ result.subtitle }}</div>
           <div class="result-subtitle">
             {{ getEventsTitle(result) }}
-            <span v-if="(result.gameInfo.livePeriod == 2 || result.gameInfo.livePeriod == 1) && !result.gameInfo.delayLive && !result.gameInfo.isHt">{{
+            <span v-if="(result.gameInfo?.livePeriod == 2 || result.gameInfo?.livePeriod == 1) && !result.gameInfo?.delayLive && !result.gameInfo?.isHt">{{
               formattedGameTime(result)
             }}</span>
-            <!-- <span>
-             {{ timeFormate(result?.globalShowTime).date }}
-            </span> -->
           ({{ result.gameInfo?.liveHomeScore }}-{{ result.gameInfo?.liveAwayScore }})</div>
         </div>
       </div>
@@ -60,22 +57,46 @@ import { useRoute } from 'vue-router';
 import pubsub from '/@/pubSub/pubSub';
 import { useLoading } from '/@/directive/loading/hooks';
 import { useLink } from '/@/views/sports/hooks/useLink';
+
 const { gotoEventDetail } = useLink();
 const { startLoading, stopLoading } = useLoading();
 const route = useRoute();
-const { getEventsTitle,timeFormate } = SportsCommonFn;
+const { getEventsTitle, timeFormate } = SportsCommonFn;
 const { searchMatches } = useMatchEvents();
 
 const searchInput = ref<HTMLInputElement | null>(null);
-const searchHistory = ref([{
+const searchHistory = ref<Array<{ title: string }>>([{
   title:'菲律宾'
 }]);
 const searchQuery = ref<string>('');
-const searchResults = ref<Array<{
+
+/**
+ * @description 搜索结果类型定义
+ */
+interface SearchResult {
   sportIcon: string;
   title: string;
   subtitle: string;
-}>>([]);
+  leagueId?: string | number;
+  eventId?: string | number;
+  leagueIconUrl?: string;
+  leagueName: string;
+  teamInfo: {
+    homeName: string;
+    awayName: string;
+  };
+  gameInfo?: {
+    livePeriod?: number;
+    delayLive?: boolean;
+    isHt?: boolean;
+    seconds?: number;
+    liveHomeScore?: number;
+    liveAwayScore?: number;
+  };
+  globalShowTime?: string | number;
+}
+
+const searchResults = ref<SearchResult[]>([]);
 
 const emit = defineEmits<{
   (e: 'search', query: string): void;
@@ -95,33 +116,14 @@ const props = withDefaults(defineProps<Props>(), {
 onBeforeMount(() => {
   pubsub.publish('showoVerlay', true);
 })
+
 onUnmounted(() => {
   pubsub.publish('showoVerlay', false);
 })
+
 /**
- * @description 计算是上半场还是下半场 根据 livePeriod 判断当前是第几节
+ * @description 防抖搜索函数
  */
- const livePeriod = computed(() => {
-	const tennisInfo = SportsCommonFn.safeAccess(props.event, ["tennisInfo"]);
-	const { currentSet } = tennisInfo;
-	if (currentSet == 1) {
-		return "第1盘";
-	}
-	if (currentSet == 2) {
-		return "第2盘";
-	}
-	if (currentSet == 3) {
-		return "第3盘";
-	}
-	if (currentSet == 4) {
-		return "第4盘";
-	}
-	if (currentSet == 5) {
-		return "第5盘";
-	}
-	const globalShowTime = SportsCommonFn.safeAccess(props.event, ["globalShowTime"]);
-	return convertUtcToUtc5AndFormatMD(globalShowTime);
-});
 const debouncedSearch = debounce(async () => {
   startLoading();
   const { sportType } = route.query;
@@ -131,44 +133,62 @@ const debouncedSearch = debounce(async () => {
   });
   stopLoading();
   console.log(results, '====results');
-  searchResults.value = results.data.events.map((result: { leagueIconUrl: any; leagueName: any; teamInfo: { homeName: any; awayName: any; }; }) => ({
+  searchResults.value = results.data.events.map((result: SearchResult) => ({
+    ...result,
     sportIcon: result.leagueIconUrl,
     title: result.leagueName,
     subtitle: `${result.teamInfo.homeName} vs ${result.teamInfo.awayName}`,
-    ...result
   }));
 }, 300);
 
-
-// 定义计算属性 格式化比赛开始时间
-const formattedGameTime = (event: { gameInfo: { seconds: number; }; }) => {
-  console.log(event,'=====event')
-	const minutes = Math.floor(event.gameInfo.seconds / 60);
+/**
+ * @description 格式化比赛开始时间
+ * @param event 比赛事件对象
+ */
+const formattedGameTime = (event: SearchResult) => {
+  if (!event.gameInfo?.seconds) return '';
+  const minutes = Math.floor(event.gameInfo.seconds / 60);
   const seconds = event.gameInfo.seconds % 60;
-  console.log(minutes,seconds,'====minutes')
-	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 };
 
+/**
+ * @description 取消搜索
+ */
 const cancelSearch = (): void => {
   searchQuery.value = '';
   searchResults.value = [];
   emit('cancel');
 };
+
+/**
+ * @description 设置搜索查询
+ * @param query 查询字符串
+ */
 const setSearchQuery = (query: string): void => {
   searchQuery.value = query;
   debouncedSearch();
 }
+
+/**
+ * @description 移除搜索历史
+ * @param title 要移除的历史记录标题
+ */
 const removeHistory = (title: string): void => {
   searchHistory.value = searchHistory.value.filter((item) => item.title !== title);
 };
 
-const showEventDetail = (event: { leagueId: any; eventId: any; sportIcon: string; title: string; subtitle: string;  }) => {
+/**
+ * @description 显示事件详情
+ * @param event 事件对象
+ */
+const showEventDetail = (event: SearchResult) => {
   console.log(event,'====event')
   const { sportType } = route.query;
-	const params = {
-		leagueId: event?.leagueId,
-		eventId: event?.eventId,
-	};
+  const params = {
+    leagueId: event?.leagueId,
+    eventId: event?.eventId,
+  };
   gotoEventDetail(params, sportType as string);
   cancelSearch();
 }

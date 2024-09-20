@@ -8,6 +8,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import router from "/@/router";
 import { useRequestError } from "/@/hooks/requestError";
 import showToast from "../hooks/useToast";
+import eventBus from "./eventBus";
 const { startLoading, stopLoading } = useLoading();
 const { handleRequestError } = useRequestError();
 
@@ -63,8 +64,17 @@ instance.interceptors.request.use(
 		if (config.headers.showLoading !== false) {
 			showLoading(config.headers.loadingTarget);
 		}
-		config["headers"]["Sign"] = EncryptionFn.encryption();
 		const UserStore = useUserStore();
+
+		// 需要登陆的处理
+		if (config["headers"]["needLogin"] == "true" && !UserStore.getUserInfo.token) {
+			hideLoading();
+			eventBus.emit("show-modal", "LoginModal");
+			return Promise.reject();
+		}
+
+		config["headers"]["Sign"] = EncryptionFn.encryption();
+
 		const language = UserStore.getLang;
 		if (language) {
 			config["headers"]["Accept-Language"] = language;
