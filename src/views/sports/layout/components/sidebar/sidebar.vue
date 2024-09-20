@@ -7,8 +7,8 @@
 				<div class="icon"><svg-icon name="sports-tv_icon_on" width="23px" height="16px"></svg-icon></div>
 			</div>
 			<div class="center">
-				<div class="icon" v-for="tool in computedTools" :key="tool.iconName">
-					<svg-icon :name="tool.iconName" width="23px" height="16px"></svg-icon>
+				<div class="icon" v-for="(tool, index) in computedTools" :key="tool.iconName" @click="handleClick(tool)">
+					<svg-icon :name="getIconName(tool, index)" width="23px" height="16px"></svg-icon>
 				</div>
 			</div>
 			<div class="right">
@@ -55,6 +55,8 @@ import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import SportsCommonFn from "/@/views/sports/utils/common";
+import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
+const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
 const route = useRoute();
 const SidebarStore = useSidebarStore();
 const { eventsInfo } = storeToRefs(SidebarStore);
@@ -120,21 +122,47 @@ const ballInfo: Record<number, { iconName: string; componentName: any }> = {
  * 工具tool
  */
 const computedTools = computed(() => {
-	return [
-		//  比分板
-		{
-			iconName: "sports-score_icon",
-			actions: () => handleActions(),
-		},
-		// 视频源
-		{
+	const baseTools = [];
+	// 判断 是否在未开赛页面
+	baseTools.push({
+		iconName: "sports-score_icon",
+		iconName_active: "sports-score_icon_active",
+		tooltipText: "比分板",
+		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
+		param: eventsInfo, // 传递参数
+	});
+	// 判断是否有视频源
+	if (eventsInfo.value.streamingOption != 0 && eventsInfo.value.channelCode) {
+		baseTools.push({
 			iconName: "sports-live_icon",
-			actions: () => handleActions(),
-		},
-	];
+			iconName_active: "sports-live_icon_active",
+			tooltipText: "视频源",
+			action: switchEventVideoSource,
+			param: eventsInfo, // 传递参数
+		});
+	}
+	return baseTools;
 });
 
-const handleActions = () => {};
+// 获取侧边栏图标
+const getIconName = (tool: any, index: number) => {
+	let activeIndex = -1;
+	switch (SidebarStore.sidebarStatus) {
+		case "scoreboard":
+			activeIndex = 0;
+			break;
+		case "live":
+			activeIndex = 1;
+			break;
+		// 你可以根据其他可能的状态扩展此逻辑
+	}
+	return index === activeIndex ? tool.iconName_active : tool.iconName;
+};
+
+// 点击对应工具
+const handleClick = (tool: any) => {
+	tool.action(tool.param);
+};
 </script>
 
 <style scoped lang="scss">
@@ -150,22 +178,31 @@ const handleActions = () => {};
 		align-items: center;
 		justify-content: space-between;
 		padding: 0px 24px;
+		.left,
+		.center,
+		.right {
+			flex: 1;
+		}
 		.center {
 			display: flex;
+			justify-content: center;
 			gap: 24px;
 		}
 		.right {
 			display: flex;
+			justify-content: end;
 			gap: 14px;
 		}
 
 		.icon {
 			width: 24px;
 			height: 16px;
+			cursor: pointer;
 		}
 		.icon2 {
 			width: 16px;
 			height: 16px;
+			cursor: pointer;
 		}
 	}
 	.events-content {
