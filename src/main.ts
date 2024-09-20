@@ -9,6 +9,8 @@ import { i18n } from "/@/i18n/index";
 import "virtual:svg-icons-register";
 import "/@/styles/app.css";
 import "/@/styles/index.scss";
+import VCalendar from "v-calendar";
+import "v-calendar/style.css";
 window.__VUE_PROD_DEVTOOLS__ = false;
 window.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
 const app = createApp(App);
@@ -17,7 +19,7 @@ Object.keys(directives).forEach((key) => {
 	app.directive(key, (directives as { [key: string]: Directive })[key]);
 });
 
-// app.use(VCalendar, {});
+app.use(VCalendar, {});
 app.use(store);
 
 app

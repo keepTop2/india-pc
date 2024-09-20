@@ -28,4 +28,6 @@
 	--popoverShadow: rgba(14, 16, 19, 0.2);
 	/* 体育计分板背景 */
 	--scoreboard_bg: rgba(26, 28, 32, 0.7);
+	--light-ok-Butter:#2D2E32;
+	--light-ok-Text-1:#98A7B5;
 }
