@@ -70,7 +70,7 @@ import { FootballCardApi } from "/@/api/sports/footballCard";
 import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
 
 import { WorkerName, SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
-import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
+import { OpenSportEventSourceParams, OpenSportSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 
 import Modal from "./components/Modal/index.vue";
 import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar, sportRight } from "./components";
@@ -110,7 +110,7 @@ const tabActive = ref(routeMap[route.path]); // 默认滚球
 const isShowoVerlay = ref(false);
 const isDataHandled = ref(false); // 标志位，确保只处理一次数据
 
-const NotifyModal = ref(null);
+const NotifyModal = ref();
 const showNotifyModal = ref(false);
 const sportState = reactive({ sportTypeActive: null });
 const routeRecord = ref({
@@ -118,7 +118,7 @@ const routeRecord = ref({
 	oldRoute: { path: "", isSportSort: "" },
 });
 
-// const sportType = computed(() => route.query.sportType);
+const attentionSwitch = computed(() => SportAttentionStore.attentionType);
 
 // 计算属性
 
@@ -184,7 +184,7 @@ const initSport = async () => {
 /**
  * @description 开启体育推送
  */
-const openSportPush = async (sportType) => {
+const openSportPush = async (sportType: string | undefined) => {
 	sportsBetEvent.clearHotLeagueList();
 	pubSub.publish("clearHotLeagueList", "on");
 	closeSportViewProcessWorker();
@@ -193,7 +193,15 @@ const openSportPush = async (sportType) => {
 	// 开启球类信息推送
 	await handleSportPush();
 	// 开启球类赛事数据推送
-	await handleSportEventsPush(sportType);
+  if (route.path == "/sports/collect") {
+    await openAttentionSSE();
+    await getAttention(false);
+  } else if (route.path.match(/^\/sports\/\d+\/detail/)) {
+    await openEventDetailPush();
+	} else {
+		await handleSportEventsPush(sportType);
+    stopLoading();
+  }
 };
 
 // 开启对应sports推送
@@ -299,7 +307,7 @@ const handleSportEventsPush = async (sportType = "1") => {
  * @param params 基础参数
  * @param additionalParams 额外参数
  */
-const sendWorkerCommand = (action, params, additionalParams = {}) => {
+const sendWorkerCommand = (action: any, params = {}, additionalParams = {}) => {
 	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
 	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
 	pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, action, params, additionalParams);
@@ -462,44 +470,13 @@ const openSportViewProcessWorker = () => {
  */
 const clearStroe = async () => {
 	// viewSportPubSubEventData.clearEventsState();
-	console.log(2);
+	console.log(2,'=clearStroe==');
 	// 清除列表数据
 	viewSportPubSubEventData.clearState();
 	// 清除侧边栏数据
 	SidebarStore.clearEventsInfo();
 	SportLeagueSearchStore.clearLeagueSelect();
 };
-
-// 监听
-/*watch(
-	() => route.path,
-	(newValue, oldValue) => {
-		if (routeRecord.value.newRoute?.path) {
-			routeRecord.value.oldRoute = cloneDeep(routeRecord.value.newRoute);
-			routeRecord.value.newRoute = {
-				path: newValue,
-				isSportSort: route.meta?.isSportSort || false,
-			};
-			if (!routeRecord.value.oldRoute?.isSportSort || !routeRecord.value.newRoute?.isSportSort) {
-				initSport();
-			}
-		} else {
-			initSport();
-			routeRecord.value.newRoute = {
-				path: newValue,
-				isSportSort: route.meta?.isSportSort || false,
-			};
-		}
-
-		ShopCatControlStore.setShopCatShow(false);
-		if (!routeRecord.value.oldRoute.path.includes("sportsLeagueSearch")) {
-			clearStroe();
-		}
-	},
-	{
-		deep: true,
-	}
-);*/
 
 watch(
 	() => UserStore.userInfo.token,
