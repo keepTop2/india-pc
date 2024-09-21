@@ -422,7 +422,9 @@ const closeNotifyModal = () => {
  */
 const closeSportViewProcessWorker = () => {
 	try {
-		workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
+		if(workerManage.getWorkerList().length){
+			workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
+		}
 	} catch (error) {
 		console.error("关闭体育视图处理线程失败", error);
 	}

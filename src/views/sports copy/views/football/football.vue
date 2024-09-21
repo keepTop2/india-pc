@@ -135,6 +135,6 @@ const toggleDisplay = (val?: number) => {
 	margin-bottom: 5px;
 }
 .noData {
-	margin-top: 20%;
+	height:100%;
 }
 </style>

@@ -64,8 +64,10 @@
 			</el-table-column>
 			<template #empty>
 				<div class="custom-empty">
-					<svg-icon name="no_data" width="142" height="120" />
-					<p>哎呀！还没有数据！</p>
+					<!-- <svg-icon name="no_data" width="142" height="120" />
+					<p>哎呀！还没有数据！</p> -->
+					<NoneData/>
+
 				</div>
 			</template>
 		</el-table>
@@ -233,7 +235,7 @@ const sizeChange = (pageSize: number) => {
 		margin-top: 160px;
 		margin-bottom: 130px;
 		p {
-			line-height: 30px;
+			// line-height: 30px;
 			color: var(--Text2);
 			font-size: 14px;
 			font-weight: 400;

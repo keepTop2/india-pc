@@ -221,7 +221,9 @@ const selectEvent = () => {
 
 <style scoped lang="scss">
 .box-content {
-	height: 840px;
+	// height: 840px;
+	height: calc(100vh - 200px);
+
 	overflow-y: auto;
 	.box_navigation {
 		margin: 16px 0;
@@ -254,7 +256,7 @@ const selectEvent = () => {
 	}
 
 	.no-data {
-		height: 400px;
+		height: 100%;
 
 		.button {
 			width: 220px;

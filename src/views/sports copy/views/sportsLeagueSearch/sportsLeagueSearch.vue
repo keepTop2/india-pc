@@ -275,7 +275,7 @@ const deleteHistory = (index: number) => {
 	}
 }
 
-.nonedata {
+.noData {
 	margin-top: 340px;
 }
 </style>
