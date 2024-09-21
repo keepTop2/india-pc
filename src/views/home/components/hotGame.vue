@@ -3,7 +3,7 @@
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
-					<img src="./image/hotGameIcon.png" alt="" />
+					<img v-lazy-load="hotGameIcon" alt="" />
 					<span class="Text_s fs_20">热门推荐</span>
 				</span>
 			</div>
@@ -13,14 +13,17 @@
 				<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
 				<div class="gameInfo Texta">
 					<div class="fs_19">
-						<img src="./image/hotGameIcon.png" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
+						<img v-lazy-load="hotGameIcon" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
 					</div>
 					<div class="fs_13 mt_9">
 						{{ item.name }}
 					</div>
-					<div class="gotoGameBtn">
+					<div class="gotoGameBtn mt_9">
 						<button class="common_btn" @click="Common.goToGame(item)">进入游戏</button>
 					</div>
+				</div>
+				<div class="collect" @click="collectGame(item)">
+					<svg-icon :name="item.collect ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
 				</div>
 			</div>
 		</slide>
@@ -28,10 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import { gameApi } from "/@/api/game";
-import { useUserStore } from "/@/stores/modules/user";
 import Common from "/@/utils/common";
 import slide from "./slide.vue";
+import hotGameIcon from "./image/hotGameIcon.png";
+import { HomeApi } from "/@/api/home";
+import showToast from "/@/hooks/useToast";
 interface gameInfo {
 	id: string;
 	name: string;
@@ -52,6 +56,18 @@ const props = defineProps({
 		type: Array<gameInfo>,
 	},
 });
+const collectGame = (game: gameInfo) => {
+	const params = {
+		gameId: game.id,
+		type: !game.collect,
+	};
+	HomeApi.collection(params).then((res) => {
+		if (res.code === Common.ResCode.SUCCESS) {
+			showToast(game.collect ? "取消收藏成功" : "收藏成功");
+			game.collect = !game.collect;
+		}
+	});
+};
 </script>
 
 <style scoped lang="scss">
@@ -68,10 +84,17 @@ const props = defineProps({
 
 .hotGameList {
 	display: flex;
-	overflow: hidden;
 	.hotGameItem {
 		margin-right: 15px;
 		position: relative;
+		border-radius: 12px;
+		.collect {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			z-index: 20;
+			cursor: pointer;
+		}
 		img {
 			width: 258px;
 			height: 258px;

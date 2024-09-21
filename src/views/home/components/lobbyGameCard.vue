@@ -14,13 +14,17 @@
 				<img v-lazy-load="gameList?.gameInfoList[0].icon" alt="" />
 			</div>
 			<slide v-else>
-				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem" @click.self="Common.goToGame(item)">
+				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
+					<div class="cornerMark">
+						<svg-icon name="new_game_icon" v-if="item.cornerLabels == 1" size="60" />
+						<svg-icon name="hot_game_icon" v-else-if="item.cornerLabels == 2" size="60" />
+					</div>
 					<div class="imgBox">
 						<img v-lazy-load="item.icon" alt="" />
 					</div>
 					<div class="gameInfo">{{ item.name }}</div>
 					<div class="onHover">
-						<div class="playBtn fs_15 Text_s">Play</div>
+						<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>
 					</div>
 					<div class="collect" @click="collectGame(item)">
 						<svg-icon :name="item.collect ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
@@ -91,10 +95,16 @@ const gotoVenue = (gameInfo: any) => {
 }
 .lobbyGameList {
 	display: flex;
-
 	.lobbyGameItem {
 		margin-right: 15px;
+		padding-top: 4px;
 		position: relative;
+		.cornerMark {
+			position: absolute;
+			top: 0px;
+			left: -4px;
+			z-index: 30;
+		}
 		.imgBox {
 			height: 190px;
 			width: 190px;
@@ -123,7 +133,6 @@ const gotoVenue = (gameInfo: any) => {
 			background: var(--Bg1);
 			font-size: 14px;
 			color: var(--Text1);
-
 			padding: 6px 12px;
 			line-height: 22px;
 			border-bottom-left-radius: 12px;
@@ -142,11 +151,13 @@ const gotoVenue = (gameInfo: any) => {
 	.lobbyGameItem:hover {
 		.onHover {
 			position: absolute;
-			top: 0;
+			top: 4px;
 			left: 0;
 			width: 100%;
 			height: 190px;
 			background: rgba(0, 0, 0, 0.5);
+			border-top-left-radius: 12px;
+			border-top-right-radius: 12px;
 			display: block;
 			display: flex;
 			.playBtn {
@@ -160,6 +171,9 @@ const gotoVenue = (gameInfo: any) => {
 				cursor: pointer;
 			}
 		}
+	}
+	.lobbyGameItem:first-child {
+		margin-left: 4px;
 	}
 	.onlyOneGame {
 		flex: 1;
