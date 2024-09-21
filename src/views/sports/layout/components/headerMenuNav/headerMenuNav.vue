@@ -10,7 +10,7 @@
 			</div>
 			<i class="line"></i>
 			<div class="right">
-				<div v-for="(item, index) in sportsData" :key="index" class="nva-item" :class="{ active: Number(route.query.sportType) == item.sportType }" @click="toPath(item)">
+				<div v-for="(item, index) in sportsData" :key="index" class="nva-item" :class="{ active: Number(sportType) == item.sportType }" @click="toPath(item)">
 					<img class="icon mr_6" :src="Number(route.query.sportType) == item.sportType ? item.activeIcon : item.icon" alt="" />
 					<span class="value mr_4">{{ item.sportName }}</span>
 					<div class="value">{{ item.count }}</div>
@@ -35,9 +35,7 @@ const router = useRouter();
 const route = useRoute();
 const Menu = ref(MajorCategoriesMenu);
 const sportsBetEvent = useSportsBetEventStore();
-
-// 定义组件事件
-const emit = defineEmits(["switchType"]);
+const sportType = computed(() => route.query.sportType);
 
 // 球类tab数据
 const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
@@ -59,15 +57,25 @@ initRoute();
 
 const toPath = (item: any) => {
 	// 路由参数与点击tab类型相同退出
-	if (route.query.sportType == item.sportType) return;
-	// 获取当前路径
-	const currentPath = router.currentRoute.value.path;
+	if (route.meta.type !== 'list') {
+		router.push({
+			path: '/sports/todayContest/rollingBall',
+			query: { sportType: item.sportType },
+		}).catch(err => {
+			console.error('Navigation failed:', err);
+			// 可以在这里添加一些错误处理逻辑
+		});
+	} else {
+		console.log(route.query,'=======query',router.currentRoute)
+		if (route.query.sportType == item.sportType) return;
+		// 获取当前路径
+		const currentPath = router.currentRoute.value.path;
 	// 跳转到目标路径并通过 query 传递 sportType
-	router.push({
-		path: currentPath,
-		query: { sportType: item.sportType },
-	});
-	emit("switchType", item.sportType);
+		router.push({
+				path: currentPath,
+				query: { sportType: item.sportType },
+		})
+	}
 };
 
 // 在组件挂载时执行初始化
@@ -156,12 +164,9 @@ onMounted(() => {});
 
 			.active {
 				background-color: var(--Theme);
-				a {
-					color: var(--Text_a);
 					.value {
-						color: var(--Text_a);
+						color: var(--Text_s);
 					}
-				}
 			}
 		}
 

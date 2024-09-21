@@ -2,41 +2,26 @@ import { computed } from "vue";
 import Layout from "/@/views/sports/layout/layout.vue";
 import sportsRouterLeft from "../sports/sportsRouterLeft";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import { RouteLocationNormalized } from 'vue-router';
 
 // 封装处理 sportType 的通用函数
-const handleSportTypeRedirect = async (to, from, next) => {
-	const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
-	if (sportsData.value.length > 0) {
-		if (from.query.sportType) {
-			// 从来源路由中获取 sportType
-			const sportType = from.query.sportType;
-			if (to.query.sportType !== sportType) {
-				next({
-					...to,
-					query: { ...to.query, sportType },
-				});
-			} else {
-				next();
-			}
-		}
-	} else {
-		if (!to.query.sportType) {
-			if (to.query.sportType !== "1") {
-				console.log(1);
-				next({
-					...to,
-					query: { ...to.query, sportType: "1" },
-				});
-			} else {
-				console.log(2);
-				next();
-			}
-		} else {
-			next();
-		}
-	}
+const handleSportTypeRedirect = async (
+  to: RouteLocationNormalized,
+  from: RouteLocationNormalized,
+  next: Function
+) => {
+  const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
+  const sportType = to.query.sportType || from.query.sportType || "1";
+	console.log(to,'========to',from,'=========from')
+  if (!to.query.sportType) {
+    next({
+      ...to,
+      query: { ...to.query, sportType },
+    });
+  } else {
+    next();
+  }
 };
-
 const Sports = [
 	{
 		path: "/sports",
@@ -45,7 +30,7 @@ const Sports = [
 		redirect: "/sports/todayContest/rollingBall",
 		children: [
 			// 大类菜单
-			...sportsRouterLeft,
+				...sportsRouterLeft,
 			{
 				path: "/sports/todayContest",
 				name: "todayContestList",
@@ -57,14 +42,14 @@ const Sports = [
 						name: "todayContestRollingBall",
 						component: () => import("/@/views/sports/views/todayContest/rollingBall/rollingBall.vue"),
 						meta: { title: "滚球比赛", type:"list" },
-						beforeEnter: (to, from, next) => handleSportTypeRedirect(to, from, next),
+						beforeEnter: handleSportTypeRedirect,
 					},
 					{
 						path: "/sports/todayContest/notStarted",
 						name: "todayContestNotStarted",
 						component: () => import("/@/views/sports/views/todayContest/notStarted/notStarted.vue"),
 						meta: { title: "未开赛比赛", type:"list" },
-						beforeEnter: (to, from, next) => handleSportTypeRedirect(to, from, next),
+						beforeEnter: handleSportTypeRedirect,
 					},
 				],
 			},
@@ -73,18 +58,18 @@ const Sports = [
 				name: "morningTradingList",
 				meta: { name: "morningTrading", title: "早盘", type:"list" },
 				component: () => import("/@/views/sports/views/morningTrading/morningTrading.vue"),
-				beforeEnter: (to, from, next) => handleSportTypeRedirect(to, from, next),
+				beforeEnter: handleSportTypeRedirect,
 			},
 			{
 				path: "/sports/champion",
 				name: "championList",
-				meta: { name: "champion", title: "冠军" },
+				meta: { name: "champion", title: "冠军", type:"list" },
 				component: () => import("/@/views/sports/views/champion/champion.vue"),
-				beforeEnter: (to, from, next) => handleSportTypeRedirect(to, from, next),
+				beforeEnter: handleSportTypeRedirect,
 			},
 			{
-				path: "/sports/:sportType/detail",
-				name: "event_detail",
+				path: "/sports/detail",
+				name: "eventDetail",
 				component: () => import("/@/views/sports/views/eventDetail/eventDetail.vue"),
 				meta: {
 					title: "赛事详细",

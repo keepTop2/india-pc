@@ -65,8 +65,9 @@
 				</Collapse>
 			</div>
 			<div v-if="!markets.length" class="noData color_T3">
-				<div class="fs_24">{{ $t('sports["盘口已关闭"]') }}</div>
-				<div class="fs_24">{{ $t('sports["当前无法进行投注"]') }}</div>
+				<svg-icon name="sports-no_markets" />
+				<div >{{ $t('sports["盘口已关闭"]') }}</div>
+				<div >{{ $t('sports["当前无法进行投注"]') }}</div>
 			</div>
 		</div>
 	</div>
@@ -340,7 +341,14 @@ watch(
 			align-items: center;
 			justify-content: center;
 			flex-direction: column;
+			font-size: 14px;
+			color:var(--Text2);
 			height: calc(100vh - 480px);
+			svg{
+				width: 140px;
+				height: 120px;
+				margin-bottom: 10px;
+			}
 		}
 		.selections_list {
 			// padding: 20px 24px;

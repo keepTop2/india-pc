@@ -7,7 +7,7 @@ export const useLink = () => {
 	const gotoEventDetail = (params: any, sportType: number | string) => {
 		console.log(params, sportType, "====gotoEvcentDetail");
 		/** 路由地址处理 */
-		router.push({ path: `/sports/${sportType}/detail`, query: params });
+		router.push({ path: `/sports/detail`, query: { sportType, ...params } });
 	};
 
 	return {

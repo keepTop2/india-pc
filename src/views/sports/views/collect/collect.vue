@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref, watchEffect, Component, computed } from "vue";
+import { onMounted, watch, ref, watchEffect, Component, computed, inject } from "vue";
 import pubSub from "/@/pubSub/pubSub";
 import { useRouter, useRoute } from "vue-router";
 import { map, get, isArray, filter, xorWith } from "lodash-es";
@@ -63,6 +63,12 @@ const computedEventId = computed(() => {
 
 const isShowCollect = computed(() => route.name === "sportsCollect");
 
+const openSportPush = inject('openSportPush') as () => void;
+
+onMounted(() => {
+	openSportPush();
+});
+
 const getEventData = () => {
 	const newEvents = map(viewSportPubSubEventData.getEvents(), (league: any) => {
 		const { events } = league;
@@ -105,32 +111,32 @@ const getAllEventIds = () => {
 	return allEventIds;
 };
 
-const canUnFollow = ref(true);
+// const canUnFollow = ref(true);
 
-const unFollowEvent = async (list: number[]) => {
-	if (list.length) {
-		// 防止重复
-		if (!canUnFollow.value) {
-			return;
-		}
-		await sportsApi.unFollow({
-			thirdId: list,
-		});
-		canUnFollow.value = true;
-	}
-};
+// const unFollowEvent = async (list: number[]) => {
+// 	if (list.length) {
+// 		// 防止重复
+// 		if (!canUnFollow.value) {
+// 			return;
+// 		}
+// 		await sportsApi.unFollow({
+// 			thirdId: list,
+// 		});
+// 		canUnFollow.value = true;
+// 	}
+// };
 
-watch(
-	() => listData.value,
-	(newVal) => {
-		if (newVal.length > 0) {
-			const getAllEventId = getAllEventIds();
-			const diffIds = xorWith(computedEventId.value, getAllEventId);
-			canUnFollow.value = !!diffIds.length;
-			unFollowEvent(diffIds);
-		}
-	}
-);
+// watch(
+// 	() => listData.value,
+// 	(newVal) => {
+// 		if (newVal.length > 0) {
+// 			const getAllEventId = getAllEventIds();
+// 			const diffIds = xorWith(computedEventId.value, getAllEventId);
+// 			canUnFollow.value = !!diffIds.length;
+// 			unFollowEvent(diffIds);
+// 		}
+// 	}
+// );
 
 const computedSportComponent = computed(() => {
 	stopLoading();
