@@ -6,10 +6,10 @@
 	<div class="noneData_container">
 		<div class="center">
 			<div class="icon" v-if="themed == 'default'">
-				<SvgIcon :iconName="iconSvg" size="120px" />
+				<svg-icon :name="iconSvgLight" size="120px" />
 			</div>
 			<div class="icon" v-if="themed == 'dark'">
-				<SvgIcon :iconName="iconSvgLight" size="120px" />
+				<svg-icon :name="iconSvgLight" size="120px" />
 			</div>
 		</div>
 		<div class="text_content">
@@ -37,8 +37,8 @@ interface NoneData {
 	center?: string;
 }
 const props = withDefaults(defineProps<NoneData>(), {
-	iconSvg: "kzt_img",
-	iconSvgLight: "kzt_img_light",
+	iconSvg: "light_no_data",
+	iconSvgLight: "no_data",
 	title: "",
 	center: "",
 });
@@ -57,6 +57,7 @@ const props = withDefaults(defineProps<NoneData>(), {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		line-height: normal;
 	}
 
 	.icon {
@@ -72,6 +73,7 @@ const props = withDefaults(defineProps<NoneData>(), {
 			font-size: 14px;
 			font-weight: 400;
 			color: var(--Text2_1);
+			line-height: normal;
 		}
 	}
 }

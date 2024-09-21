@@ -92,7 +92,7 @@ export default function useSportPubSubEvents() {
 	 * @description 切换tab时清空数据
 	 */
 	const clearState = () => {
-		viewSportPubSubEventData.clearState();
+		viewSportPubSubEventData.clearEventsState();
 	};
 
 	/**

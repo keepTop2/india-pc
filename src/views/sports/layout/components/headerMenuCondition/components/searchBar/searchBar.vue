@@ -41,8 +41,9 @@
       </div>
     </div>
     <div class="custom-empty" v-else>
-      <svg-icon name="no_data" width="142" height="120" />
-      <p>哎呀！还没有数据！</p>
+      <!-- <svg-icon name="no_data" width="142" height="120" />
+      <p>哎呀！还没有数据！</p> -->
+      <NoneData/>
     </div>
   </div>
 </template>

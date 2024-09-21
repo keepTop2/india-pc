@@ -17,13 +17,13 @@
 					<div>
 						<img v-lazy-load="LangIcon" alt="" @click="openUserMenu" />
 						<div class="userMenu" v-if="isOpenMenu" ref="userMenu">
-							<div v-for="(route, index) in userRoutes" :key="index" @mouseover="onMouseover('user-' + route.meta.icon)" @mouseout="onMouseout" @click="goToPath(route)">
-								<span><svg-icon :name="'user-' + route.meta.icon" size="18px" :hover="hoverItem"></svg-icon></span>
+							<div v-for="(route, index) in userRoutes" :key="index" @click="goToPath(route)" v-hover-svg>
+								<span><svg-icon :name="'user-' + route.meta.icon" size="18px"></svg-icon></span>
 								<span>{{ $t(`common['${route.meta.title}']`) }}</span>
 							</div>
 
-							<div class="mt_6px mb_6px login_out" @mouseover="onMouseover('user-logout')" @mouseout="onMouseout" @click="logOut">
-								<span><svg-icon name="user-logout" size="18px" :hover="hoverItem"></svg-icon></span>
+							<div class="mt_6px mb_6px login_out" @click="logOut" v-hover-svg>
+								<span><svg-icon name="user-logout" size="18px"></svg-icon></span>
 								<span> {{ $t(`common['退出登陆']`) }}</span>
 							</div>
 						</div>
@@ -72,10 +72,7 @@ const isLogin = computed(() => {
 	return UserStore.getLogin;
 });
 const LangIcon = computed(() => {
-	const langList = UserStore.getLangList;
-	const currentLang = UserStore.getLang;
-	const icon = langList.find((item: any) => item.code === currentLang)?.icon;
-	return icon;
+	return UserStore.getLangList.find((item: any) => item.code == UserStore.getLang)?.icon;
 });
 
 const openUserMenu = () => {
@@ -180,7 +177,7 @@ const logOut = () => {
 				transform: translateY(25px);
 				background: var(--Bg1);
 				border-radius: 4px;
-				z-index: 100;
+				z-index: 150;
 				box-shadow: 0px 4px 12px 0px rgba(14, 16, 19, 0.25);
 				> div {
 					display: flex;
@@ -234,7 +231,7 @@ const logOut = () => {
 .lang::after {
 	content: "";
 	position: absolute;
-	bottom: 6px;
+	bottom: 0px;
 	left: 50%;
 	transform: translate(-50%, 50%);
 	display: inline-block;

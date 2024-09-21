@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, reactive, ref, watchEffect } from "vue";
+import { computed, inject, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watchEffect } from "vue";
 import { isEmpty } from "lodash-es";
 import { LocationQueryValue, useRoute } from "vue-router";
 import { SpinnerWrap } from "/@/components/Spinner";
@@ -56,10 +56,8 @@ const state = reactive({
 	filtrateBetType: 0 as number,
 });
 
-const { sportType } = route.params;
-
 /**
- * @description 根据sportType获取赛事列表下的赛事
+ * @description 获取赛事列表下的赛事
  * @returns 赛事数组
  */
 const eventsList = computed(() => {
@@ -116,6 +114,15 @@ const markets = computed(() => {
 		return a.betType - b.betType;
 	});
 	return marketData;
+});
+
+const openSportPush = inject("openSportPush") as () => void;
+
+watchEffect(() => {
+	const { eventId } = route.query;
+	if (eventId) {
+		openSportPush();
+	}
 });
 
 // 监听效果
@@ -196,8 +203,8 @@ const refresh = () => {
 			}
 		}
 	}
-	.nonedata {
-		margin-top: 20%;
+	.noData {
+		height: 100%;
 	}
 }
 </style>

@@ -314,8 +314,8 @@ const openEventDetailPush = async () => {
 			}
 		}
 	}
-	.nonedata {
-		margin-top: 20%;
+	.noData {
+		height:100%;
 	}
 }
 </style>

@@ -39,12 +39,14 @@ import { useMenuStore } from "/@/stores/modules/menu";
 const MenuStore = useMenuStore();
 import useSvgHoverHooks from "/@/hooks/useSvgHover";
 import Common from "/@/utils/common";
+import { activityApi } from "/@/api/activity";
 const { onMouseout, onMouseover, hoverItem } = useSvgHoverHooks();
 const router = useRouter();
 const route = useRoute();
 const openMenuIndex: Ref<number | null | string> = ref(null);
 const openSubMenuIndex: any = ref(null);
 const currentRoute = ref({});
+const activityList = ref([]);
 //菜单从缓存中拉取
 const routerObj: any = computed(() => {
 	return MenuStore.getMenu;
@@ -67,6 +69,14 @@ const goToPath = (subItem: Object, index: number, subIndex: number) => {
 	// router.push("/sports");
 };
 
+onMounted(() => {
+	getactivityList();
+});
+const getactivityList = () => {
+	activityApi.activityPageList().then((res) => {
+		activityList.value = res.data.records;
+	});
+};
 const state = reactive({
 	//选中的菜单数组
 	selectList: [] as Array<string>,

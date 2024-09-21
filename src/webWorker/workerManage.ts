@@ -39,7 +39,9 @@ class WorkerManage {
 	 * @description 线程字典
 	 */
 	public WorkerMap = WorkerMap;
-
+	public getWorkerList() {
+		return this.workerList;
+	}
 	/**
 	 * @description 启动线程
 	 * @param name  线程名称

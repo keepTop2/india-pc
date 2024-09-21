@@ -9,7 +9,7 @@
   >
     <div class="el-dropdown-content">
       <span>{{ formattedDateRange }}</span>
-      <svg-icon class="searchIcon" name="arrow_down" :size="14" />
+      <svg-icon class="searchIcon" name="arrow_down" size="14" />
     </div>
     <template #dropdown>
       <VDatePicker 
@@ -20,10 +20,10 @@
       >
         <template #header-title-wrapper>{{ headerTitle }}</template>
         <template #header-prev-button>
-          <svg-icon class="searchIcon" name="arrow_up" :size="14" />
+          <svg-icon class="searchIcon" name="arrow_up" size="14" />
         </template>
         <template #header-next-button>
-          <svg-icon class="searchIcon" name="arrow_down" :size="14" />
+          <svg-icon class="searchIcon" name="arrow_down" size="14" />
         </template>
       </VDatePicker>
     </template>

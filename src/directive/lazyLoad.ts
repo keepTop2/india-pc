@@ -9,12 +9,11 @@ const observer = new IntersectionObserver((entries) => {
 			const imageUrl = imgEl.dataset.src;
 
 			if (imageUrl) {
-				imgEl.src = imageUrl;
+				imgEl.src = resolveImageUrl(imageUrl);
 				imgEl.classList.add("fade-in");
 			} else {
 				imgEl.src = defaultPng; // 备用图像
 			}
-
 			observer.unobserve(imgEl); // 停止观察
 		}
 	});
@@ -42,3 +41,14 @@ export const lazyLoad = {
 		}
 	},
 };
+
+function resolveImageUrl(url: string): string {
+	// 判断是否是绝对 URL
+	const absoluteUrlPattern = /^http?:\/\//i;
+	if (absoluteUrlPattern.test(url)) {
+		return url; // 直接使用绝对 URL
+	}
+
+	// 转换相对路径为绝对路径
+	return new URL(url, import.meta.url).href;
+}
