@@ -9,8 +9,10 @@
 					</div>
 					<div class="right">
 						<div class="event-info">
-							<div class="event-date">下半场 89:26</div>
-							<div class="event-collection"><svg-icon :name="'sports-collection'" size="16px" /></div>
+							<div class="event-date">{{ SportsCommonFn.getEventsTitle(item) }}</div>
+							<div class="event-collection" @click="attentionEvent(!SportAttentionStore.attentionEventIdList.includes(item.eventId) ? false : true, item)">
+								<svg-icon :name="!SportAttentionStore.attentionEventIdList.includes(item.eventId) ? 'sports-collection' : 'sports-already_collected'" size="16px" />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -19,14 +21,40 @@
 						<div class="team-icon"><img :src="item.teamInfo.homeIconUrl" alt="" /></div>
 						<div class="team-name">{{ item.teamInfo.homeName }}</div>
 					</div>
-					<div class="right"></div>
+					<div class="right">
+						<div class="market-item">
+							<div class="label">
+								<span>{{ item.markets[3].selections[0].keyName }}</span>
+								<span>{{ item.markets[3].selections[0].point }}</span>
+							</div>
+							<div class="value">
+								<span :class="oddsClass(item)">{{ item.markets[3].selections[0].oddsPrice.decimalPrice }}</span>
+								<div class="arrow-icon">
+									<RiseOrFall :time="3000" :status="oddsChange(item)" @animationEnd="item.oddsChange = ''" />
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="event-team-info">
 					<div class="left">
 						<div class="team-icon"><img :src="item.teamInfo.awayIconUrl" alt="" /></div>
 						<div class="team-name">{{ item.teamInfo.awayName }}</div>
 					</div>
-					<div class="right"></div>
+					<div class="right">
+						<div class="market-item">
+							<div class="label">
+								<span>{{ item.markets[3].selections[1].keyName }}</span>
+								<span>{{ item.markets[3].selections[1].point }}</span>
+							</div>
+							<div class="value">
+								<span :class="oddsClass(item)">{{ item.markets[3].selections[1].oddsPrice.decimalPrice }}</span>
+								<div class="arrow-icon">
+									<RiseOrFall :time="3000" :status="oddsChange(item)" @animationEnd="item.oddsChange = ''" />
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -35,16 +63,68 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { RiseOrFall } from "/@/components/Sport/index";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import SportsCommonFn from "/@/views/sports/utils/common";
+import { FootballCardApi } from "/@/api/sports/footballCard";
+import PubSub from "/@/pubSub/pubSub";
+import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
+
+const SportAttentionStore = useSportAttentionStore();
 
 const promotionsData = computed(() => {
 	return viewSportPubSubEventData.promotionsViewData.value;
 });
 
-console.log("promotionsData", promotionsData);
+// 点击关注按钮
+const attentionEvent = async (isActive: boolean, item) => {
+	if (isActive) {
+		await FootballCardApi.unFollow({
+			thirdId: [item.eventId],
+		});
+	} else {
+		await FootballCardApi.saveFollow({
+			thirdId: item.eventId,
+			type: 2,
+		});
+	}
+	PubSub.publish(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, {});
+};
+
+/**
+ * @description 赔率状态类名
+ */
+const oddsClass = (item: any) => {
+	if (!item.oddsChange) {
+		return "";
+	} else if (item.oddsChange == "oddsUp") {
+		return "oddsUp";
+	} else if (item.oddsChange == "oddsDown") {
+		return "oddsDown";
+	}
+};
+/**
+ * @description 赔率状态类名
+ */
+const oddsChange = (item: any) => {
+	if (!item.oddsChange) {
+		return 3;
+	} else if (item.oddsChange == "oddsUp") {
+		return 1;
+	} else if (item.oddsChange == "oddsDown") {
+		return 2;
+	}
+};
 </script>
 
 <style scoped lang="scss">
+.oddsUp {
+	color: var(--Theme) !important;
+}
+.oddsDown {
+	color: var(--Success) !important;
+}
+
 .hot-event-container {
 	.hot_header {
 		width: 100%;
@@ -58,6 +138,7 @@ console.log("promotionsData", promotionsData);
 	.event-list {
 		display: grid;
 		margin: 0px 12px;
+		padding-bottom: 12px;
 		gap: 6px;
 		.event-card {
 			padding: 12px 14px;
@@ -66,6 +147,7 @@ console.log("promotionsData", promotionsData);
 			.card-header {
 				display: flex;
 				align-items: center;
+				padding-bottom: 6px;
 
 				.event-title {
 					color: var(--Text_s);
@@ -73,6 +155,9 @@ console.log("promotionsData", promotionsData);
 					font-size: 14px;
 					font-weight: 400;
 					line-height: 20px;
+					white-space: nowrap; /* 不换行 */
+					overflow: hidden; /* 超出部分隐藏 */
+					text-overflow: ellipsis; /* 超出部分显示省略号 */
 				}
 
 				.event-info {
@@ -91,13 +176,22 @@ console.log("promotionsData", promotionsData);
 						height: 20px;
 						display: flex;
 						align-items: center;
+						cursor: pointer;
 					}
 				}
 			}
 			.event-team-info {
+				display: flex;
+				margin-top: 4px;
 				.team-icon {
 					width: 20px;
 					height: 20px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					margin-right: 5px;
+					cursor: pointer;
+
 					img {
 						width: 100%;
 						height: 100%;
@@ -108,10 +202,59 @@ console.log("promotionsData", promotionsData);
 					font-family: "PingFang SC";
 					font-size: 12px;
 					font-weight: 400;
+					cursor: pointer;
+				}
+				.market-item {
+					width: 140px;
+					height: 34px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					padding: 0px 18px 0px 12px;
+					border-radius: 4px;
+					background-color: var(--Bg3);
+					cursor: pointer;
+					.label {
+						width: 50%;
+						height: 100%;
+						display: flex;
+						align-items: center;
+						span {
+							font-size: 12px;
+							font-weight: 400;
+							&:first-child {
+								color: var(--Text1);
+							}
+							&:last-child {
+								margin-left: 4px;
+								color: var(--Text_s);
+							}
+						}
+					}
+					.value {
+						position: relative;
+						width: 50%;
+						height: 100%;
+						display: flex;
+						align-items: center;
+						justify-content: end;
+						color: var(--Text_s);
+						font-family: "PingFang SC";
+						font-size: 14px;
+						font-weight: 400;
+						.arrow-icon {
+							position: absolute;
+							top: 50%;
+							right: -15px;
+							transform: translate(0, -50%);
+						}
+					}
 				}
 			}
 			.left {
-				flex: 1;
+				// flex: 1;
+				width: 198px;
+				padding-right: 10px;
 			}
 			.right {
 				width: 140px;

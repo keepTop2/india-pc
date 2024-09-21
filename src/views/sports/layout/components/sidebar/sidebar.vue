@@ -1,33 +1,35 @@
 <!-- 侧边栏 -->
 <template>
 	<div class="sidebar">
-		<!-- 头部 -->
-		<div class="header">
-			<div class="left">
-				<div class="icon"><svg-icon name="sports-tv_icon_on" width="23px" height="16px"></svg-icon></div>
-			</div>
-			<div class="center">
-				<div class="icon" v-for="(tool, index) in computedTools" :key="tool.iconName" @click="handleClick(tool)">
-					<svg-icon :name="getIconName(tool, index)" width="23px" height="16px"></svg-icon>
+		<div class="affix">
+			<!-- 头部 -->
+			<div class="header">
+				<div class="left">
+					<div class="icon"><svg-icon name="sports-tv_icon_on" width="23px" height="16px"></svg-icon></div>
+				</div>
+				<div class="center">
+					<div class="icon" v-for="(tool, index) in computedTools" :key="tool.iconName" @click="handleClick(tool)">
+						<svg-icon :name="getIconName(tool, index)" width="23px" height="16px"></svg-icon>
+					</div>
+				</div>
+				<div class="right">
+					<div class="icon2"><svg-icon name="sports-quanping" size="16px"></svg-icon></div>
+					<div class="icon2"><svg-icon name="sports-shuaxin" size="16px"></svg-icon></div>
 				</div>
 			</div>
-			<div class="right">
-				<div class="icon2"><svg-icon name="sports-quanping" size="16px"></svg-icon></div>
-				<div class="icon2"><svg-icon name="sports-shuaxin" size="16px"></svg-icon></div>
-			</div>
-		</div>
 
-		<!-- 赛事数据 -->
-		<div class="events-content">
-			<div class="events-header">
-				<div class="icon"><svg-icon :name="ballInfo[Number(route.query.sportType)]?.iconName" size="16px"></svg-icon></div>
-				<template v-if="Object.keys(eventsInfo).length !== 0">
-					<div class="team-name">
-						<span class="name">{{ eventsInfo?.teamInfo?.homeName }}</span>
-						<span>VS</span>
-						<span class="name">{{ eventsInfo?.teamInfo?.awayName }}</span>
-					</div>
-				</template>
+			<!-- 赛事数据 -->
+			<div class="events-content">
+				<div class="events-header">
+					<div class="icon"><svg-icon :name="ballInfo[Number(route.query.sportType)]?.iconName" size="16px"></svg-icon></div>
+					<template v-if="Object.keys(eventsInfo).length !== 0">
+						<div class="team-name">
+							<span class="name">{{ eventsInfo?.teamInfo?.homeName }}</span>
+							<span>VS</span>
+							<span class="name">{{ eventsInfo?.teamInfo?.awayName }}</span>
+						</div>
+					</template>
+				</div>
 			</div>
 
 			<!-- 计分板组件 -->
@@ -182,88 +184,95 @@ const handleClick = (tool: any) => {
 
 	background-color: var(--Bg1);
 	border-radius: 8px;
-	.header {
-		width: 100%;
-		height: 40px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0px 24px;
-		.left,
-		.center,
-		.right {
-			flex: 1;
-		}
-		.center {
-			display: flex;
-			justify-content: center;
-			gap: 24px;
-		}
-		.right {
-			display: flex;
-			justify-content: end;
-			gap: 14px;
-		}
 
-		.icon {
-			width: 24px;
-			height: 16px;
-			cursor: pointer;
-		}
-		.icon2 {
-			width: 16px;
-			height: 16px;
-			cursor: pointer;
-		}
-	}
-	.events-content {
-		position: relative;
-		&::after {
-			position: absolute;
-			content: "";
-			top: 0px;
-			left: 0px;
+	.affix {
+		position: sticky;
+		top: 0px;
+		background-color: var(--Bg1);
+		z-index: 1;
+		.header {
 			width: 100%;
-			height: 1px;
-			background-color: var(--Line_1);
-			box-shadow: 0px 1px 0px 0px #343d48;
-		}
-		.events-header {
-			width: 100%;
-			height: 30px;
+			height: 40px;
 			display: flex;
 			align-items: center;
-			gap: 8px;
-			padding: 5px 12px;
+			justify-content: space-between;
+			padding: 0px 24px;
+			.left,
+			.center,
+			.right {
+				flex: 1;
+			}
+			.center {
+				display: flex;
+				justify-content: center;
+				gap: 24px;
+			}
+			.right {
+				display: flex;
+				justify-content: end;
+				gap: 14px;
+			}
+
 			.icon {
+				width: 24px;
+				height: 16px;
+				cursor: pointer;
+			}
+			.icon2 {
 				width: 16px;
 				height: 16px;
+				cursor: pointer;
 			}
-			.team-name {
+		}
+		.events-content {
+			position: relative;
+			&::after {
+				position: absolute;
+				content: "";
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 1px;
+				background-color: var(--Line_1);
+				box-shadow: 0px 1px 0px 0px #343d48;
+			}
+			.events-header {
+				width: 100%;
+				height: 30px;
 				display: flex;
 				align-items: center;
 				gap: 8px;
-				color: var(--Text1);
-				font-family: "PingFang SC";
-				font-size: 14px;
-				font-weight: 400;
-				line-height: 16px;
-				.name {
-					max-width: 140px;
-					white-space: nowrap; /* 禁止换行 */
-					overflow: hidden; /* 超出部分隐藏 */
-					text-overflow: ellipsis; /* 超出部分显示省略号 */
+				padding: 5px 12px;
+				.icon {
+					width: 16px;
+					height: 16px;
+				}
+				.team-name {
+					display: flex;
+					align-items: center;
+					gap: 8px;
+					color: var(--Text1);
+					font-family: "PingFang SC";
+					font-size: 14px;
+					font-weight: 400;
+					line-height: 16px;
+					.name {
+						max-width: 140px;
+						white-space: nowrap; /* 禁止换行 */
+						overflow: hidden; /* 超出部分隐藏 */
+						text-overflow: ellipsis; /* 超出部分显示省略号 */
+					}
 				}
 			}
-		}
 
-		.events-container {
-			width: 100%;
-			height: 100%;
-		}
-		.events-live {
-			width: 100%;
-			height: 100%;
+			.events-container {
+				width: 100%;
+				height: 100%;
+			}
+			.events-live {
+				width: 100%;
+				height: 100%;
+			}
 		}
 	}
 }

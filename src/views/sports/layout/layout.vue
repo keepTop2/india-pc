@@ -221,6 +221,8 @@ const openSportPush = async (type: string | undefined) => {
 		getPromotions();
 	} else {
 		await handleSportEventsPush((type || sportType.value) as string);
+		// 获取热门赛事id开启推送
+		getPromotions();
 		stopLoading();
 	}
 };
