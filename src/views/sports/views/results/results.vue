@@ -31,7 +31,7 @@
 			<el-table-column prop="sports-half_court" >
 				<template #header>
 					<div class="col-title-box">
-						<svg-icon name="sports-half_court" :size="20" /> &nbsp; 半场
+						<svg-icon name="sports-half_court" size="20" /> &nbsp; 半场
 					</div>
 				</template>
 				<template #default="{ row }">
@@ -48,7 +48,7 @@
 			<el-table-column prop="sports-full_court" >
 				<template #header>
 					<div class="col-title-box">
-					<svg-icon name="sports-full_court" :size="20" /> &nbsp; 全场
+					<svg-icon name="sports-full_court" size="20" /> &nbsp; 全场
 				</div>
 				</template>
 				<template #default="{ row }">
