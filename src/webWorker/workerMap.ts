@@ -28,6 +28,14 @@ export const WorkerMap = {
 	} as WorkerItem,
 
 	/**
+	 * @description 热门赛事处理线程
+	 */
+	promotionsProcessWorker: {
+		workerName: WorkerName.promotionsProcessWorker,
+		url: sportViewProcessWorker,
+	} as WorkerItem,
+
+	/**
 	 * @description 彩票线程名称及文件路径
 	 */
 	lotteryWorker: {

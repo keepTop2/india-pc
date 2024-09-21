@@ -26,7 +26,7 @@ export default (function () {
 		 * @description sse 消息处理业务
 		 */
 		public eventSourceOnMessageProcess(data: SportEventSourceResponse) {
-			// console.warn("第六步 对应service处理对应业务");
+			// console.error("第六步 对应service处理对应业务");
 			// console.log("data eventSourceOnMessageProcess ===========>", data);
 
 			if (data.payload?.sports) {
@@ -43,6 +43,8 @@ export default (function () {
 			// 处理events数据变化方法
 			if (data.payload?.events) {
 				const processData = eventsProcess(data, viewSportDataU.viewSportData) as SportViewModels;
+				// console.log("processData===========processData", processData);
+
 				//处理好的数据赋值给state
 				viewSportDataU.viewSportData.events = processData.viewSportData.events as never[];
 			}
@@ -81,6 +83,7 @@ export default (function () {
 							 * @description 各个子路由视图数据
 							 */
 							childrenViewData: viewSportDataU.viewSportData.childrenViewData,
+							promotionsViewData: viewSportDataU.viewSportData.promotionsViewData,
 						},
 					},
 				},

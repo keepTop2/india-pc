@@ -26,7 +26,6 @@
 			<!-- 右边侧边栏 -->
 			<div class="right-container" v-if="popularLeague.visible">
 				<Sidebar v-if="SportsInfoStore.getSportsToken"></Sidebar>
-				<!-- <sportRight v-if="SportsInfoStore.getSportsToken"></sportRight> -->
 			</div>
 		</div>
 		<!-- 公告弹窗 -->
@@ -75,6 +74,7 @@ import { OpenSportEventSourceParams, OpenSportSourceParams } from "/@/views/spor
 import Modal from "./components/Modal/index.vue";
 import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar, sportRight } from "./components";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 // 常量定义
 const $ = i18n.global;
 const route = useRoute();
@@ -94,6 +94,8 @@ const ShopCatControlStore = useShopCatControlStore();
 const { isHaveToken, toLogin } = useToLogin();
 const { startLoading, stopLoading } = useLoading();
 const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
+const { getPromotions } = useToolsHooks();
+
 const routeMap = {
 	// 滚球
 	"/sports/todayContest/rollingBall": "rollingBall",
@@ -187,21 +189,26 @@ const initSport = async () => {
 const openSportPush = async (sportType: string | undefined) => {
 	sportsBetEvent.clearHotLeagueList();
 	pubSub.publish("clearHotLeagueList", "on");
+	// 关闭体育线程
 	closeSportViewProcessWorker();
+	// 开启体育线程
 	openSportViewProcessWorker();
 	// console.log("tabActive.value", tabActive.value);
 	// 开启球类信息推送
 	await handleSportPush();
 	// 开启球类赛事数据推送
-  if (route.path == "/sports/collect") {
-    await openAttentionSSE();
-    await getAttention(false);
-  } else if (route.path.match(/^\/sports\/\d+\/detail/)) {
-    await openEventDetailPush();
+	if (route.path == "/sports/collect") {
+		await openAttentionSSE();
+		await getAttention(false);
+	} else if (route.path.match(/^\/sports\/\d+\/detail/)) {
+		// 开启详情推送
+		await openEventDetailPush();
+		// 获取热门赛事id开启推送
+		getPromotions();
 	} else {
 		await handleSportEventsPush(sportType);
-    stopLoading();
-  }
+		stopLoading();
+	}
 };
 
 // 开启对应sports推送
@@ -470,7 +477,7 @@ const openSportViewProcessWorker = () => {
  */
 const clearStroe = async () => {
 	// viewSportPubSubEventData.clearEventsState();
-	console.log(2,'=clearStroe==');
+	console.log(2, "=clearStroe==");
 	// 清除列表数据
 	viewSportPubSubEventData.clearState();
 	// 清除侧边栏数据

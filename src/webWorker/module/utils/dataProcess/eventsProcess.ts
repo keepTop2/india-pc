@@ -3,6 +3,7 @@ import { formattingChildrenViewData } from "/@/webWorker/module/utils/formatting
 import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import { SportViewData, SportsRootObject } from "/@/views/sports/models/interface";
 import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourceModel";
+import { WebToPushApi, SportPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 // 每个赛事联系数量 数据线程处理 GetEvents
 export default (function () {
 	/**
@@ -37,8 +38,15 @@ export default (function () {
 		}
 		processData.viewSportData = processData.viewSportData || {};
 		// console.log("processData.viewSportData===================>", processData.viewSportData);
+		// console.log("sportServerData.webToPushApi", sportServerData.webToPushApi);
 
-		processData.viewSportData["childrenViewData"] = formattingChildrenViewData(viewSportData, "events");
+		// 判断如果不是热门赛事sse推送标识，则就正常格式化为联赛
+		if (sportServerData.webToPushApi === WebToPushApi.promotionsEvent) {
+			processData.viewSportData["promotionsViewData"] = formattingChildrenViewData(viewSportData, "events", sportServerData.webToPushApi);
+		} else {
+			processData.viewSportData["childrenViewData"] = formattingChildrenViewData(viewSportData, "events", sportServerData.webToPushApi);
+		}
+
 		// console.log(JSON.parse(JSON.stringify(processData)), "==events===processData");
 		return processData;
 	};

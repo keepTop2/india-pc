@@ -61,7 +61,10 @@ class WorkerManage {
 			resPonsedata.code = ResCode.SUCCESS;
 			// setTimeout(() => {
 			const url = this.WorkerMap[workerName].url;
-			this.WorkerMap[workerName].worker = new Worker(url, { type: "module" });
+			this.WorkerMap[workerName].worker = new Worker(url, {
+				name: workerName,
+				type: "module",
+			});
 			this.WorkerMap[workerName].worker!.onmessage = this.onMessage;
 			this.workerList.push(this.WorkerMap[workerName]);
 			//console.warn("线程启动成功", workerName);

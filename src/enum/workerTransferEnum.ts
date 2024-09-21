@@ -17,6 +17,11 @@ export enum WorkerName {
 	sportShopCartProcessWorker = "sportShopCartProcessWorker",
 
 	/**
+	 * @description 热门赛事处理线程
+	 */
+	promotionsProcessWorker = "promotionsProcessWorker",
+
+	/**
 	 * @description 彩票线程名称
 	 */
 	lottery = "lottery",

@@ -73,7 +73,7 @@ const GetAnnouncement = async () => {
 	const res = await sportsApi.GetAnnouncement(params).catch((err) => {
 		return err;
 	});
-	console.info("获取沙巴平台公告数据", res);
+	// console.info("获取沙巴平台公告数据", res);
 	const { status, data } = res;
 	if (status == 200) {
 		announcementList.value = data;

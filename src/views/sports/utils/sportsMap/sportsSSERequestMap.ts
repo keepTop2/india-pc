@@ -129,7 +129,6 @@ const sportTabPushActions = {
 	 */
 	champion: {
 		name: "冠军",
-
 		/**
 		 * @description 开启冠军获取体育项目及赛事数量推送 开启SSE sports推送
 		 */
@@ -180,7 +179,7 @@ const sportTabPushActions = {
 	 */
 	matchResult: {
 		name: "赛果",
-		openEvents:()=>{}
+		openEvents: () => {},
 	},
 };
 
@@ -192,22 +191,9 @@ const sportsShopCart = {
 	 * @description 购物车赛事信息推送 开启SSE
 	 * @params 购物车赛事id集合
 	 */
-	openEvents: async (params: any) => {
-		// 	return sportEventSource.openSportEventSource({
-		// 		sportPushApi: sportEventSource.sportPushApi.GetEvents_push,
-		// 		webToPushApi: sportEventSource.webToPushApi["sportsShopCart"],
-		// 		params: {
-		// 			query: `$filter=eventId in (${params})`,
-		// 		},
-		// 	});
-		// },
-		// /**
-		//  * @description 购物车赛事信息推送 关闭SSE
-		//  */
-		// closeEvents: async () => {
-		// 	return sportEventSource.closeSportEventSource(sportEventSource.webToPushApi["sportsShopCart"]);
-	},
+	openEvents: async (params: any) => {},
 };
+
 /**
  * @description 联赛详情 sse 推送
  */
@@ -237,9 +223,23 @@ const sportsEventDetailPush = {
 	/**
 	 * @description 购物车赛事信息推送 关闭SSE
 	 */
-	closeEvents: () => {
-		// return sportEventSource.closeSportEventSource(sportEventSource.webToPushApi["sportsEventDetail"]);
+	closeEvents: () => {},
+};
+
+/**
+ * @description 热门推荐赛事 sse 推送
+ */
+const promotionsEventsSSEPush = {
+	openEvents: (eventIds: string) => {
+		return {
+			sportPushApi: SportPushApi.GetEvents_push,
+			webToPushApi: WebToPushApi.promotionsEvent,
+			params: {
+				query: `$filter=eventId in (${eventIds})`,
+				includeMarkets: `$filter=bettype in (${3})`,
+			},
+		};
 	},
 };
 
-export { sportTabPushActions, sportsShopCart, sportsEventDetailPush };
+export { sportTabPushActions, sportsShopCart, sportsEventDetailPush, promotionsEventsSSEPush };

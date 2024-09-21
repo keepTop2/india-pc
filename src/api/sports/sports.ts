@@ -46,7 +46,7 @@ class SportsApi {
 	/**
 	 * @description: 公告获取
 	 */
-	static GetAnnouncement = (params) => {
+	static GetAnnouncement = (params = {}) => {
 		const requireParams = { language: "zhcn" };
 		const requestParams = Object.assign({}, requireParams, params);
 		return useAxiosSabaApi(`/sports/V1/GetAnnouncement?${qs.stringify(requestParams)}`, {
@@ -56,7 +56,7 @@ class SportsApi {
 	/**
 	 *@description 获取热门赛事
 	 */
-	static GetHotEvents = (params) => {
+	static GetHotEvents = (params = {}) => {
 		const requireParams = {};
 		const requestParams = Object.assign({}, requireParams, params);
 		return useAxiosSabaApi(`/sports/V1/GetHotEvents?${qs.stringify(requestParams)}`, {
@@ -67,7 +67,24 @@ class SportsApi {
 	/**
 	 *@description 获取热门赛事(可指定sportType 体育类型；以及其它参数；)
 	 */
-	static GetPromotions = (params) => {
+	/*	static GetPromotions = (params = {} as any) => {
+		const requireParams = { language: "zhcn" };
+		// 定义是否回传 Market 信息的逻辑
+		let includeMarkets = "$filter=bettype eq 3"; // 默认回传 bettype 为 3 的 Market 信息
+		if (params.includeMarkets === "none") {
+			// 如果明确不需要回传 Market 信息
+			includeMarkets = "";
+		}
+		// 组装请求参数，移除外部 includeMarkets 传参
+		const requestParams = Object.assign({}, requireParams, params);
+		delete requestParams.includeMarkets; // 确保不从外部接收 includeMarkets
+		// 如果需要 includeMarkets 参数，则加上
+		const queryString = includeMarkets ? `${qs.stringify(requestParams)}&${includeMarkets}` : qs.stringify(requestParams);
+		return useAxiosSabaApi(`/sports/V1/GetPromotions?${queryString}`, {
+			method: "GET",
+		});
+	};*/
+	static GetPromotions = (params = {}) => {
 		const requireParams = { language: "zhcn" };
 		const requestParams = Object.assign({}, requireParams, params);
 		return useAxiosSabaApi(`/sports/V1/GetPromotions?${qs.stringify(requestParams)}`, {
@@ -78,7 +95,7 @@ class SportsApi {
 	/**
 	 *@description 获取赛果数量
 	 */
-	static GetSportResults = (params) => {
+	static GetSportResults = (params = {}) => {
 		const requireParams = {};
 		const requestParams = Object.assign({}, requireParams, params);
 		return useAxiosSabaApi(`/sports/V1/GetSportResults?${qs.stringify(requestParams)}`, {
@@ -88,7 +105,7 @@ class SportsApi {
 	/**
 	 *@description 获取赛果
 	 */
-	static GetEventResults = (params) => {
+	static GetEventResults = (params = {}) => {
 		const requireParams = {};
 		const requestParams = Object.assign({}, requireParams, params);
 		return useAxiosSabaApi(`/sports/V1/GetEventResults?${qs.stringify(requestParams)}`, {

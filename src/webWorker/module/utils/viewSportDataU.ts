@@ -39,6 +39,7 @@ export default (function () {
 			 * @description 各个子路由视图数据
 			 */
 			childrenViewData: {},
+			promotionsViewData: {},
 		};
 	}
 

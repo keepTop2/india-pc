@@ -109,4 +109,8 @@ export enum WebToPushApi {
 	 * @description 更新体育数据
 	 */
 	updateOddsChange = "updateOddsChange",
+	/**
+	 * @description 热门赛事推送
+	 */
+	promotionsEvent = "promotionsEvent",
 }

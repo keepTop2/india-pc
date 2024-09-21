@@ -102,7 +102,7 @@ export default function useSportPubSubEvents() {
 		if (showLoadingObject) {
 			headers = showLoadingObject;
 		}
-		console.log(store.token,'=====store')
+		console.log(store.token, "=====store");
 		try {
 			let res: any;
 			if (store.token) {
@@ -154,7 +154,14 @@ export default function useSportPubSubEvents() {
 			//体育视图处理线程 eventSource 指令
 			if (processData.commandType == SportViewProcessWorkerCommandType.sportEventSource) {
 				// 派发到 viewSportPubSubEventData 数据中心
-				viewSportPubSubEventData.setSportData(processData.data.state.viewSportData);
+				// console.log(processData.data.webToPushApi, processData.data.state.viewSportData);
+				// 判断是否为热门赛事
+				if (processData.data.webToPushApi === WebToPushApi.promotionsEvent) {
+					// console.log("viewSportPubSubEventData", viewSportPubSubEventData);
+					viewSportPubSubEventData.promotionsViewData.value = processData.data.state.viewSportData.promotionsViewData;
+				} else {
+					viewSportPubSubEventData.setSportData(processData.data.state.viewSportData);
+				}
 			}
 			// 体育视图处理线程 赔率变更 指令
 			else if (processData.commandType == SportViewProcessWorkerCommandType.sportOddsChange) {

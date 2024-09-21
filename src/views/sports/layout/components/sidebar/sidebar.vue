@@ -45,12 +45,15 @@
 		</div>
 
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
-		<div class="markets-list"></div>
+		<div class="markets-list">
+			<!-- 热门赛事 -->
+			<HotEvents />
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
@@ -61,8 +64,16 @@ const route = useRoute();
 const SidebarStore = useSidebarStore();
 const { eventsInfo } = storeToRefs(SidebarStore);
 
+// 未开赛
 const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/notStarted/notStarted.vue"));
+// 视频
 const VideoSource = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/videoSource/videoSource.vue"));
+// 热门赛事
+const HotEvents = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/hotEvents/hotEvents.vue"));
+
+onMounted(() => {
+	console.log("route", route);
+});
 
 // 球类图标集合
 const ballInfo: Record<number, { iconName: string; componentName: any }> = {

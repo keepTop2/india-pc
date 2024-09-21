@@ -1,7 +1,3 @@
-<!--
- * @Author: Relax
- * @Description: 体育-足球-队伍卡片
--->
 <template>
 	<div class="league-info">
 		<!-- 队伍信息 -->
