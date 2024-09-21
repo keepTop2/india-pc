@@ -22,19 +22,19 @@
 					</div>
 				</div>
 				<div class="tabs curp">
-					<span v-for="(item, index) in gameTab" class="tab" :class="currentTab == index ? 'active' : ''" @click="currentTab = index">{{ item.label }}</span>
+					<span v-for="(item, index) in gameTab" class="tab" :class="currentTab == index ? 'active' : ''" @click="clickTab(index)">{{ item.label }}</span>
 				</div>
 			</div>
 			<!-- 查询展示 -->
 			<div v-if="searchQuery">
-				<venueGameCard :gameList="hotGameObj.gameInfoList"></venueGameCard>
+				<venueGameCard :gameList="filteredResults"></venueGameCard>
 			</div>
 
-			<!-- 默认展示 -->
-			<div v-else>
+			<!-- 默认展示全部 -->
+			<div v-else-if="currentTab == 0">
 				<!-- 热门推荐 -->
 				<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
-				<hotGame :hotGameList="hotGameObj.gameInfoList" v-else-if="hotGameObj.gameInfoList?.length" />
+				<hotGame :hotGameList="hotGameObj.gameInfoList" v-else />
 				<div v-if="isLoading">
 					<lobbyGameSkeleton :skeletonCount="6" />
 					<lobbyGameSkeleton :skeletonCount="3" />
@@ -43,9 +43,21 @@
 					<lobbyGameSkeleton :skeletonCount="5" />
 				</div>
 				<div v-else>
-					<lobbyGameCard :gameList="newGameObj" title="新游戏" v-if="newGameObj.gameInfoList?.length" />
-					<lobbyGameCard :gameList="allgameObj" title="全部游戏" v-if="allgameObj.gameInfoList?.length" />
+					<lobbyGameCard :gameList="newGameObj" title="新游戏" />
+					<lobbyGameCard :gameList="item" v-for="(item, index) in gameList" :key="index" :bigOneItem="false" />
 				</div>
+			</div>
+			<!-- 其他tab处理 -->
+			<!-- 其他tab处理 -->
+			<div v-else-if="currentTab == 1">
+				<hotGame :hotGameList="hotGameObj.gameInfoList" v-if="hotGameObj.gameInfoList?.length" />
+			</div>
+			<div v-else-if="currentTab == 2 && newGameObj.length">
+				<lobbyGameCard :gameList="newGameObj" title="新游戏" />
+			</div>
+
+			<div v-else>
+				<venueGameCard :gameList="getCurrentTabGameList"></venueGameCard>
 			</div>
 		</div>
 	</div>
@@ -64,49 +76,37 @@ interface gameList {
 	gameInfoList: [];
 	id: number | null;
 	label: string | number | null;
-	name: string | number | null;
+	name: string | number;
 }
 
 import { gameApi } from "/@/api/game";
 import { useRoute } from "vue-router";
 import { reactive } from "vue";
+import router from "/@/router";
 const isLoading = ref(false);
 const searchinputFocus = ref(false);
-const GameList = ref([]);
 
 const hotGameObj: any = reactive({});
 const newGameObj: any = reactive({});
 const allgameObj: any = reactive({});
 const gameTab: any = ref([]);
-const gameList = ref([
-	{ id: 1, name: "游戏名称6026" },
-	{ id: 2, name: "游戏名称3499" },
-	{ id: 3, name: "游戏名称8942" },
-	{ id: 4, name: "游戏名称7668" },
-	{ id: 5, name: "游戏名称7404" },
-	{ id: 6, name: "游戏名称4243" },
-	{ id: 7, name: "游戏名称6430" },
-	{ id: 8, name: "游戏名称9817" },
-]);
-const searchHistoryList = ref([
-	{ id: 1, name: "游戏名称6026" },
-	{ id: 2, name: "游戏名称3499" },
-	{ id: 3, name: "游戏名称8942" },
-	{ id: 4, name: "游戏名称7668" },
-]);
+const gameList = ref([]);
 
 const currentTab = ref(0);
 // 根据标签添加预定义的选项
 
 const labelSet = new Set<number | string | null>();
-onMounted(() => {
-	queryGameInfoByOneClassId();
+onMounted(async () => {
+	await queryGameInfoByOneClassId();
+	currentTab.value = gameTab.value.findIndex((item: any) => item.id == route.query.gameTwoId);
 });
 const route = useRoute();
-const queryGameInfoByOneClassId = () => {
+const queryGameInfoByOneClassId = async () => {
 	isLoading.value = true;
+	labelSet.clear();
+	gameTab.value = [];
 	const params = route.query.gameOneId;
-	gameApi
+	await gameApi
 		.queryGameInfoByOneClassId({ gameOneId: params })
 		.then((res) => {
 			// 遍历 res.data，收集标签
@@ -124,20 +124,24 @@ const queryGameInfoByOneClassId = () => {
 					gameTab.value.push({
 						value: Number(value),
 						label: label,
+						id: Number(value),
 					});
 				}
 			});
 
 			// 遍历 res.data，添加每个游戏的标签
-			res.data.forEach((item: gameList, index: number) => {
-				gameTab.value.push({
-					value: gameTab.value.length, // Adjusting index to avoid collisions with predefined labels
-					label: item.name,
+			res.data
+				.filter((item: any) => item.label == 0)
+				.forEach((item: gameList, index: number) => {
+					gameTab.value.push({
+						value: gameTab.value.length, // Adjusting index to avoid collisions with predefined labels
+						label: item.name,
+						id: item.id,
+					});
 				});
-			});
 
 			// 保存原始数据
-			GameList.value = JSON.parse(JSON.stringify(res.data));
+			gameList.value = JSON.parse(JSON.stringify(res.data.filter((item: any) => item.label == 0)));
 
 			// 热门推荐
 			flatMapGame(res.data, 1, hotGameObj);
@@ -165,18 +169,63 @@ const flatMapGame = (orginData: any, labelBy: number, target: object) => {
 // 监听 query 参数变化
 watch(
 	() => route.query.gameOneId,
-	() => {
-		queryGameInfoByOneClassId();
+	async () => {
+		await queryGameInfoByOneClassId();
+		currentTab.value = gameTab.value.findIndex((item: any) => item.id == route.query.gameTwoId);
 	}
 );
-
+watch(
+	() => route.query.gameTwoId,
+	() => {
+		currentTab.value = gameTab.value.findIndex((item: any) => item.id == route.query.gameTwoId);
+	}
+);
 const searchQuery = ref(""); // 搜索关键词
-// 计算属性，用于筛选搜索结果
+// 模糊查询
 const filteredResults = computed(() => {
 	if (!searchQuery.value) {
-		return []; // 如果搜索框为空，则显示全部
+		return [];
 	}
-	return gameList.value.filter((item) => item.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
+	let currentTabGameData = [];
+	// 处理数据源
+	switch (currentTab.value) {
+		case 0:
+			currentTabGameData = gameList.value.reduce((acc: any[], item: any) => {
+				if (item.gameInfoList && item.gameInfoList.length > 0) {
+					acc.push(...item.gameInfoList);
+				}
+				return acc;
+			}, []);
+			break;
+		case 1:
+			if (hotGameObj.gameInfoList.length) {
+				currentTabGameData = hotGameObj.gameInfoList;
+			} else {
+				currentTabGameData = getCurrentTabGameList.value;
+			}
+			break;
+		case 2:
+			if (newGameObj.gameInfoList.length) {
+				currentTabGameData = hotGameObj.gameInfoList;
+			} else {
+				currentTabGameData = getCurrentTabGameList.value;
+			}
+			break;
+		default:
+			currentTabGameData = getCurrentTabGameList.value;
+	}
+	return Array.from(
+		new Set(
+			currentTabGameData.filter((item: any) => item.name.includes(searchQuery.value)).map((item: any) => JSON.stringify(item)) // 转换对象为字符串以去重
+		)
+	).map((item: any) => JSON.parse(item)); // 将字符串转换回对象
+});
+const clickTab = (index: number) => {
+	currentTab.value = index;
+	router.push({ path: "/game/venue", query: { gameOneId: route.query.gameOneId, gameTwoId: gameTab.value[index].id } });
+};
+const getCurrentTabGameList = computed(() => {
+	return gameList.value.find((item: any) => item.id == gameTab.value[currentTab.value]?.id)?.["gameInfoList"] || [];
 });
 </script>
 

@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AreaCode: typeof import('./src/components/AreaCode/index.vue')['default']
+    BackToTop: typeof import('./src/components/BackToTop.vue')['default']
     Button: typeof import('./src/components/Button/Button.vue')['default']
     CententItem: typeof import('./src/components/virtualScrollVirtualList/cententItem/cententItem.vue')['default']
     ChangePassword: typeof import('./src/components/Modal/components/ChangePassword.vue')['default']

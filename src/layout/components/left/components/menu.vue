@@ -5,24 +5,24 @@
 				<div class="menu_item" :class="openMenuIndex == index ? 'activeMenu' : ''" @click="selectMenu(item, index)">
 					<span class="menu_icon"><img v-lazy-load="item.icon" alt="" /></span>
 					<span class="menu_name ellipsis">{{ item.directoryName }}</span>
-					<span class="arrow" v-if="item.children && !collapse">
+					<span class="arrow" v-if="item.twoList && !collapse">
 						<svg-icon name="arrow_up" v-if="openMenuIndex == index" height="8px" width="14px" />
 						<svg-icon name="arrow_down" v-else height="8px" width="14px" />
 					</span>
 				</div>
-				<transition @before-enter="beforeEnter" @enter="enter" @leave="leave">
+				<transition name="drawer-expand" @before-enter="beforeEnter" @enter="enter" @before-leave="beforeLeave" @leave="leave">
 					<div v-show="openMenuIndex == index" class="subMenu">
 						<div
-							v-for="(subItem, subIndex) in item.children"
+							v-for="(subItem, subIndex) in item.twoList"
 							:key="index"
 							class="menu_item subItem"
 							:class="openSubMenuIndex == index + ',' + subIndex ? 'activeMenu' : ''"
-							@click="goToPath(subItem, index, subIndex)"
+							@click="goToPath(item, subItem, index, subIndex)"
 						>
 							<span class="menu_icon">
 								<img v-lazy-load="subItem.icon" alt="" />
 							</span>
-							<span class="menu_name ellipsis">{{ subItem.directoryName }}</span>
+							<span class="menu_name ellipsis">{{ subItem.name }}</span>
 						</div>
 					</div>
 				</transition>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h, Ref, onMounted, reactive, ref, watch, watchEffect, onUnmounted } from "vue";
+import { computed, h, Ref, onMounted, reactive, ref, watch, watchEffect, onUnmounted, nextTick } from "vue";
 import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
 
 import { useMenuStore } from "/@/stores/modules/menu";
@@ -43,9 +43,8 @@ import { activityApi } from "/@/api/activity";
 const { onMouseout, onMouseover, hoverItem } = useSvgHoverHooks();
 const router = useRouter();
 const route = useRoute();
-const openMenuIndex: Ref<number | null | string> = ref(null);
+const openMenuIndex: Ref<number | null> = ref(null);
 const openSubMenuIndex: any = ref(null);
-const currentRoute = ref({});
 const activityList = ref([]);
 //菜单从缓存中拉取
 const routerObj: any = computed(() => {
@@ -56,40 +55,33 @@ const collapse = computed(() => {
 	return MenuStore.getCollapse;
 });
 
-const activeMenu = computed(() => {
-	const { path } = route;
-	if (state.selectList.length == 0) {
-		state.selectList = [path, router.resolve(route.fullPath).matched[route.matched.length - 2]?.path];
+watch(
+	() => [route.query.gameTwoId, route.query.gameOneId, routerObj.value],
+	() => {
+		setOpenMenu();
 	}
-	return path;
-});
+);
+const setOpenMenu = () => {
+	openMenuIndex.value = routerObj.value.findIndex((item: any) => item.gameOneClassId == route.query.gameOneId);
+	if (openMenuIndex.value) {
+		console.log(routerObj.value);
 
-const goToPath = (subItem: Object, index: number, subIndex: number) => {
+		openSubMenuIndex.value = openMenuIndex.value + "," + routerObj.value[openMenuIndex.value]?.twoList?.findIndex((item: any) => item.id == route.query.gameTwoId);
+	}
+};
+const goToPath = (item: any, subItem: any, index: number, subIndex: number) => {
 	openSubMenuIndex.value = index + "," + subIndex;
-	// router.push("/sports");
+	router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: subItem.id } });
 };
 
 onMounted(() => {
+	setOpenMenu();
 	getactivityList();
 });
 const getactivityList = () => {
 	activityApi.activityPageList().then((res) => {
 		activityList.value = res.data.records;
 	});
-};
-const state = reactive({
-	//选中的菜单数组
-	selectList: [] as Array<string>,
-	//展开的菜单
-	openMenuList: [] as Array<string>,
-});
-
-const openMenu = (index: number) => {
-	if (openMenuIndex.value === index) {
-		openMenuIndex.value = null;
-	} else {
-		openMenuIndex.value = index;
-	}
 };
 
 /**
@@ -98,35 +90,56 @@ const openMenu = (index: number) => {
  * LT:"进入gamePage页面"
  */
 const selectMenu = (item: any, index: number) => {
-	if (item.children) {
-		currentRoute.value = item;
-		openMenu(index);
+	// 如果一级分类是选中状态，
+	if (openMenuIndex.value === index) {
+		// 取消选中状态，
+		openMenuIndex.value = null;
+		// 取消二级分类选中状态，
+		openSubMenuIndex.value = null;
+		// 场馆内回到默认全部，
+		router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: 0 } });
+		return;
+		// 如果不是选中状态，判断
+	} else if (item.twoList) {
+		openMenuIndex.value = index;
+		router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: 0 } });
 	} else {
 		if (item.modelCode == "PE") {
 			router.push("/sports");
 		} else if (item.modelCode == "LT") {
 			Common.goToGame(item.gameInfo);
 		} else {
-			router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId } });
+			router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: 0 } });
 		}
 		openMenuIndex.value = index;
 	}
 };
 
 // 动画
-const beforeEnter = (el: any) => {
-	el.style.maxHeight = "0";
-	el.style.transition = "height 0.2s ease";
+// 在进入动画之前，手动设置 max-height 为内容高度
+// 动态计算高度的钩子函数，使用 Element 作为类型
+const beforeEnter = (el: Element) => {
+	const element = el as HTMLElement;
+	element.style.maxHeight = "0";
 };
 
-const enter = (el: any) => {
-	const height = el.scrollHeight;
-	el.style.maxHeight = `${height}px`;
+const enter = (el: Element) => {
+	const element = el as HTMLElement;
+	nextTick(() => {
+		element.style.maxHeight = element.scrollHeight + 20 + "px"; // 动态计算内容高度
+	});
 };
 
-const leave = (el: any) => {
-	el.style.maxHeight = "0";
-	el.style.transition = "height 0.2s ease";
+const beforeLeave = (el: Element) => {
+	const element = el as HTMLElement;
+	element.style.maxHeight = element.scrollHeight + 20 + "px"; // 在隐藏时，先将高度设置为当前高度
+};
+
+const leave = (el: Element) => {
+	const element = el as HTMLElement;
+	nextTick(() => {
+		element.style.maxHeight = "0"; // 收起时设置 max-height 为 0
+	});
 };
 </script>
 
@@ -172,6 +185,7 @@ const leave = (el: any) => {
 	.subItem {
 		background: var(--Bg4);
 		color: var(--Text1);
+		z-index: 5;
 	}
 	&.collapse {
 		width: 64px;
@@ -187,7 +201,7 @@ const leave = (el: any) => {
 		.menu_icon {
 			width: 46px;
 			height: 100%;
-			align-items: center;
+			text-align: center;
 			img {
 				margin: 13px auto;
 			}
@@ -201,5 +215,8 @@ const leave = (el: any) => {
 			}
 		}
 	}
+}
+.subMenu {
+	transition: max-height 0.2s ease;
 }
 </style>

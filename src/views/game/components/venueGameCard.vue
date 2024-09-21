@@ -1,49 +1,5 @@
 <template>
-	<div class="mt_40 pr_10 pl_10 gamelist">
-		<div v-for="(item, index) in gameList" :key="index" class="gameListItem">
-			<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
-			<div class="gameInfo Texta">
-				<div class="fs_13">
-					{{ item.name }}
-				</div>
-			</div>
-			<div class="onHover">
-				<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>
-			</div>
-		</div>
-		<div v-for="(item, index) in gameList" :key="index" class="gameListItem">
-			<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
-			<div class="gameInfo Texta">
-				<div class="fs_13">
-					{{ item.name }}
-				</div>
-			</div>
-			<div class="onHover">
-				<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>
-			</div>
-		</div>
-		<div v-for="(item, index) in gameList" :key="index" class="gameListItem">
-			<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
-			<div class="gameInfo Texta">
-				<div class="fs_13">
-					{{ item.name }}
-				</div>
-			</div>
-			<div class="onHover">
-				<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>
-			</div>
-		</div>
-		<div v-for="(item, index) in gameList" :key="index" class="gameListItem">
-			<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
-			<div class="gameInfo Texta">
-				<div class="fs_13">
-					{{ item.name }}
-				</div>
-			</div>
-			<div class="onHover">
-				<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>
-			</div>
-		</div>
+	<div class="mt_40 pr_10 pl_10 gamelist" v-if="gameList?.length">
 		<div v-for="(item, index) in gameList" :key="index" class="gameListItem">
 			<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
 			<div class="gameInfo Texta">
@@ -78,7 +34,7 @@ interface gameInfo {
 }
 const props = defineProps({
 	gameList: {
-		type: Array<gameInfo>,
+		type: Array<any>,
 	},
 });
 </script>
