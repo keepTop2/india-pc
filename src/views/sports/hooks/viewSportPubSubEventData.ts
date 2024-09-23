@@ -23,7 +23,9 @@ export default (function () {
 				childrenViewData: [],
 			}) as unknown as SportViewData;
 
-			this.promotionsViewData = ref<SportViewData[]>([]);
+			this.sidebarData = reactive({
+				event: [],
+			} as unknown as SportViewData);
 		}
 		// 获取单例实例的静态方法
 		public static getInstance(): viewSportPubSubEventData {
@@ -36,8 +38,8 @@ export default (function () {
 		}
 
 		public viewSportData: SportViewData;
-		// 热门赛事
-		public promotionsViewData: SportViewData;
+		public sidebarData: SportViewData;
+
 		/**
 		 * 清空数据
 		 */

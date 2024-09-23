@@ -57,24 +57,26 @@ initRoute();
 
 const toPath = (item: any) => {
 	// 路由参数与点击tab类型相同退出
-	if (route.meta.type !== 'list') {
-		router.push({
-			path: '/sports/todayContest/rollingBall',
-			query: { sportType: item.sportType },
-		}).catch(err => {
-			console.error('Navigation failed:', err);
-			// 可以在这里添加一些错误处理逻辑
-		});
+	if (route.meta.type !== "list") {
+		router
+			.push({
+				path: "/sports/todayContest/rollingBall",
+				query: { sportType: item.sportType },
+			})
+			.catch((err) => {
+				console.error("Navigation failed:", err);
+				// 可以在这里添加一些错误处理逻辑
+			});
 	} else {
-		console.log(route.query,'=======query',router.currentRoute)
+		// console.log(route.query,'=======query',router.currentRoute)
 		if (route.query.sportType == item.sportType) return;
 		// 获取当前路径
 		const currentPath = router.currentRoute.value.path;
-	// 跳转到目标路径并通过 query 传递 sportType
+		// 跳转到目标路径并通过 query 传递 sportType
 		router.push({
-				path: currentPath,
-				query: { sportType: item.sportType },
-		})
+			path: currentPath,
+			query: { sportType: item.sportType },
+		});
 	}
 };
 
@@ -164,9 +166,9 @@ onMounted(() => {});
 
 			.active {
 				background-color: var(--Theme);
-					.value {
-						color: var(--Text_s);
-					}
+				.value {
+					color: var(--Text_s);
+				}
 			}
 		}
 

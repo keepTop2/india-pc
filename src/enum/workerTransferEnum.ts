@@ -17,9 +17,9 @@ export enum WorkerName {
 	sportShopCartProcessWorker = "sportShopCartProcessWorker",
 
 	/**
-	 * @description 热门赛事处理线程
+	 * @description 侧边栏处理线程
 	 */
-	promotionsProcessWorker = "promotionsProcessWorker",
+	sidebarWorker = "sidebarWorker",
 
 	/**
 	 * @description 彩票线程名称
@@ -54,6 +54,11 @@ export enum SportViewProcessWorkerCommandType {
 	 * @description 体育视图处理线程 赔率变更 指令
 	 */
 	sportOddsChange = "sportOddsChange",
+
+	/**
+	 * @description 侧边栏视图处理线程 sidebarEventSource 指令
+	 */
+	sidebarEventSource = "sidebarEventSource",
 }
 
 /**
