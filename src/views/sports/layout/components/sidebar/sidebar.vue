@@ -48,8 +48,10 @@
 
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
 		<div class="markets-list">
+			<!-- 盘口列表 -->
+			<MarketsList />
 			<!-- 热门赛事 -->
-			<HotEvents />
+			<!-- <HotEvents /> -->
 		</div>
 	</div>
 </template>
@@ -72,6 +74,8 @@ const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/com
 const VideoSource = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/videoSource/videoSource.vue"));
 // 热门赛事
 const HotEvents = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/hotEvents/hotEvents.vue"));
+// 盘口列表
+const MarketsList = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/marketsList/marketsList.vue"));
 
 onMounted(() => {
 	console.log("route", route);

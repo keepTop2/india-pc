@@ -103,7 +103,8 @@ const ShopCatControlStore = useShopCatControlStore();
 const { isHaveToken, toLogin } = useToLogin();
 const { startLoading, stopLoading } = useLoading();
 const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
-const { getPromotions } = useToolsHooks();
+// 引入 侧边赛事推送  侧边赛事盘口推送 获取热门赛事
+const { getSidebarEventSSEPush, getSidebarMarketSSEPush, getPromotions } = useToolsHooks();
 
 /**
  * @description 路由映射
@@ -202,13 +203,16 @@ const initSport = async () => {
  * @param {string | undefined} sportType - 体育类型
  */
 const openSportPush = async (type: string | undefined) => {
-	console.log(type, "====sportType.value==========", sportType.value);
+	// console.log(type, "====sportType.value==========", sportType.value);
 	sportsBetEvent.clearHotLeagueList();
 	pubSub.publish("clearHotLeagueList", "on");
 	// 关闭体育线程
+	// 目前只关闭了 { sportViewProcessWorker.workerName }
 	closeSportViewProcessWorker();
 	// 开启体育线程
+	// 同时开启所有线程 { sportViewProcessWorker.workerName , WorkerName.sidebarWorker }
 	openSportViewProcessWorker();
+	// 球类信息推送
 	await handleSportPush();
 
 	// 开启球类赛事数据推送
@@ -216,13 +220,20 @@ const openSportPush = async (type: string | undefined) => {
 		await getAttention(false);
 		await openAttentionSSE();
 	} else if (route.path == "/sports/detail") {
-		await openEventDetailPush();
+		// 开启详情盘口推送
+		// 侧边赛事推送
+		// getSidebarEventSSEPush();
+		// 侧边赛事盘口推送
+		// getSidebarMarketSSEPush();
+		// await openEventDetailPush();
 		// 获取热门赛事id开启推送
-		getPromotions();
+		// getPromotions();
 	} else {
 		await handleSportEventsPush((type || sportType.value) as string);
+		// await getSidebarMarketSSEPush();
 		// 获取热门赛事id开启推送
-		getPromotions();
+		// getPromotions();
+		// 获取热门赛事
 		stopLoading();
 	}
 };
@@ -368,7 +379,8 @@ const openAttentionOutrightSSE = () => {
 /**
  * @description 打开事件详情推送
  */
-const openEventDetailPush = async () => {
+/*const openEventDetailPush = async () => {
+	console.log("详情推送触发");
 	const { leagueId, eventId } = route.query;
 
 	const params = {
@@ -378,7 +390,7 @@ const openEventDetailPush = async () => {
 	};
 	sendWorkerCommand(sportsEventDetailPush.openMarkets(eventId as string), params);
 	sendWorkerCommand(sportsEventDetailPush.openEvents(leagueId as string), params);
-};
+};*/
 
 /**
  * @description 标签切换
@@ -437,7 +449,10 @@ const closeNotifyModal = () => {
 const closeSportViewProcessWorker = () => {
 	try {
 		if (workerManage.getWorkerList().length) {
+			// 关闭列表events线程
 			workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
+			// 关闭侧边栏events线程
+			workerManage.stopWorker(workerManage.WorkerMap.sidebarWorker.workerName);
 		}
 	} catch (error) {
 		console.error("关闭体育视图处理线程失败", error);
@@ -448,8 +463,12 @@ const closeSportViewProcessWorker = () => {
  * @description 打开体育视图处理工作线程
  */
 const openSportViewProcessWorker = () => {
+	console.log("触发了几次开启线程的操作");
 	try {
+		// 开启列表events线程
 		workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
+		// 开启侧边栏events线程
+		// workerManage.startWorker(workerManage.WorkerMap.sidebarWorker.workerName);
 	} catch (error) {
 		console.error("开启体育视图处理线程失败", error);
 	}

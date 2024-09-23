@@ -73,7 +73,7 @@ import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention"
 const SportAttentionStore = useSportAttentionStore();
 
 const promotionsData = computed(() => {
-	return viewSportPubSubEventData.promotionsViewData.value;
+	return viewSportPubSubEventData.sidebarEvent.promotionsList;
 });
 
 // 点击关注按钮

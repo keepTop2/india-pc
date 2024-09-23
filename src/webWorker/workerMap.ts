@@ -30,8 +30,8 @@ export const WorkerMap = {
 	/**
 	 * @description 热门赛事处理线程
 	 */
-	promotionsProcessWorker: {
-		workerName: WorkerName.promotionsProcessWorker,
+	sidebarWorker: {
+		workerName: WorkerName.sidebarWorker,
 		url: sportViewProcessWorker,
 	} as WorkerItem,
 
