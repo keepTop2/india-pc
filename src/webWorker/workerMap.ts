@@ -4,6 +4,8 @@ import { WorkerItem } from "/@/models/webWorkerModel";
 import sportViewProcessWorker from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorker?worker&url";
 //体育购物车处理线程
 import sportShopCartProcessWorker from "/@/webWorker/module/sportShopCartProcessWorker/sportShopCartProcessWorker?worker&url";
+//体育购物车处理线程
+import sidebarWorker from "/@/webWorker/module/sidebarWorker/sidebarWorker?worker&url";
 //彩票线程
 import lotteryWorker from "/@/webWorker/module/lotteryWorker/lotteryWorker?worker&url";
 
@@ -28,11 +30,11 @@ export const WorkerMap = {
 	} as WorkerItem,
 
 	/**
-	 * @description 热门赛事处理线程
+	 * @description 侧边栏处理线程
 	 */
 	sidebarWorker: {
 		workerName: WorkerName.sidebarWorker,
-		url: sportViewProcessWorker,
+		url: sidebarWorker,
 	} as WorkerItem,
 
 	/**

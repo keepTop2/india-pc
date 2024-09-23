@@ -14,14 +14,21 @@ export function useToolsHooks() {
 
 	// 切换计分板功能
 	const toggleEventScoreboard = (eventInfo: any) => {
+		if (workerManage.getWorkerList().length) {
+			// 关闭侧边栏events线程
+			workerManage.stopWorker(workerManage.WorkerMap.sidebarWorker.workerName);
+			// SidebarStore.clearEventsInfo();
+		}
+		// 开启侧边栏events线程
+		workerManage.startWorker(workerManage.WorkerMap.sidebarWorker.workerName);
 		console.log("更新 eventInfo 赛事数据", eventInfo);
 		// 设置状态
 		SidebarStore.getSidebarStatus("scoreboard");
 		// 切换的时候获取当前赛事信息
 		if (eventInfo) {
 			SidebarStore.setEventsInfo(eventInfo);
-			// 每次更新侧边赛事时都需要重新推送对应的盘口详情
-			getSidebarMarketSSEPush();
+			getSidebarEventSSEPush(); // 侧边赛事推送
+			getSidebarMarketSSEPush(); // 每次更新侧边赛事时都需要重新推送对应的盘口详情
 		}
 	};
 

@@ -101,40 +101,18 @@ const activeTab = ref("all");
 const activeSelection = ref<string[]>([]);
 
 /**
- * @description 获取赛事列表下的赛事
- * @returns 赛事数组
- */
-const eventsList = computed(() => {
-	const { leagueId } = SidebarStore.getEventsInfo;
-	const childrenViewData = viewSportPubSubEventData.viewSportData.childrenViewData;
-	// 检查 childrenViewData 是否为数组，再进行 find 操作
-	if (Array.isArray(childrenViewData)) {
-		return childrenViewData.find((item: any) => item.leagueId === leagueId);
-	}
-	return [];
-});
-
-/**
- * @description 获取赛事详情
- * @returns 赛事详情对象
- */
-const eventDetail = computed(() => {
-	const { eventId } = SidebarStore.getEventsInfo;
-	// 检查 eventsList 是否为对象且其 events 属性是否为数组
-	if (eventsList.value && Array.isArray(eventsList.value.events)) {
-		return eventsList.value.events.find((item: any) => item.eventId === eventId);
-	}
-	return null;
-});
-
-/**
  * @description 计算并组织市场数据
  * @returns 组织和排序后的市场数据
  */
 const markets = computed(() => {
 	let marketData: any = [];
-	if (eventDetail.value) {
-		const markets = eventDetail.value?.markets;
+	// 获取 SidebarStore 中的 eventsInfo，确保它是响应式的
+	const eventsInfo = viewSportPubSubEventData.sidebarData?.event[0]?.events[0];
+	console.log("eventsInfo", eventsInfo);
+
+	if (eventsInfo && eventsInfo.markets) {
+		// 遍历 markets 数据
+		const markets = eventsInfo.markets;
 		for (const key in markets) {
 			const market = markets[key];
 			const { betTypeName, marketId, betType } = market;
@@ -162,8 +140,6 @@ const markets = computed(() => {
 	});
 	return marketData;
 });
-
-console.log("侧边栏的数据", markets);
 
 /**
  * @description 计算市场选择

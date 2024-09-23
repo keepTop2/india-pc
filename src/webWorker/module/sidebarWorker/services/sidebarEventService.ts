@@ -63,8 +63,8 @@ export default (function () {
 			}
 			//数据返回拼装
 			const workerToViewData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = {
-				workerName: WorkerName.sportViewProcessWorker,
-				commandType: SportViewProcessWorkerCommandType.sportEventSource,
+				workerName: WorkerName.sidebarWorker,
+				commandType: SportViewProcessWorkerCommandType.sidebarEventSource,
 				data: {
 					webToPushApi: data.webToPushApi,
 					sportPushApi: data.sportPushApi,
@@ -83,6 +83,7 @@ export default (function () {
 							 * @description 各个子路由视图数据
 							 */
 							childrenViewData: viewSportDataU.viewSportData.childrenViewData,
+							promotionsViewData: viewSportDataU.viewSportData.promotionsViewData,
 						},
 					},
 				},
@@ -99,7 +100,7 @@ export default (function () {
 		public cancelLoading(data: WebResponse) {
 			//数据返回拼装
 			const workerToViewData: WorkerTransfer<WebResponse, WorkerCommonCommadnType> = {
-				workerName: WorkerName.sportViewProcessWorker,
+				workerName: WorkerName.sidebarWorker,
 				commandType: WorkerCommonCommadnType.stopLoading,
 				data: data,
 			};

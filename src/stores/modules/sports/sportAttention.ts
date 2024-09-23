@@ -70,14 +70,12 @@ export const useSportAttentionStore = defineStore("SportAttention", {
 		 * @return {*}
 		 */
 		setAttentionList(data: any) {
-			console.log("data------------>>>>", data);
-
 			this.attentionList = data;
 			this.clearAttentionList();
 			//筛选出对应的关注列表 赛事或冠军
 			data.forEach((item) => {
 				const { eventIds } = SportsCommonFn.formatAttention(item.list);
-				console.info(" 筛选出对应的关注列表 赛事或冠军");
+				// console.info(" 筛选出对应的关注列表 赛事或冠军");
 				if (item.type == 2) {
 					// console.log(eventIds, "======eventIds");
 					this.attentionEventIdList = eventIds;

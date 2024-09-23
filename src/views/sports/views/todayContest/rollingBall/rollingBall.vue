@@ -63,7 +63,7 @@ const openSportPush = inject("openSportPush") as () => void;
 
 watchEffect(() => {
 	const sportType = route.query.sportType;
-	console.log(sportType, "====sportType");
+	// console.log(sportType, "====sportType");
 	if (sportType) {
 		// 清除选择联赛缓存
 		matchedLeague.value = [];
@@ -79,7 +79,7 @@ watchEffect(() => {
 watch(
 	() => viewSportPubSubEventData.getSportData().length, // 监听数据变化
 	() => {
-		console.log("数据变化触发数据监听", viewSportPubSubEventData.getSportData());
+		// console.log("数据变化触发数据监听", viewSportPubSubEventData.getSportData());
 		// console.log("sportData", sportData);
 		// sportType 切换时会清空数据，判断是否为空对象或空数组，避免处理
 		if (

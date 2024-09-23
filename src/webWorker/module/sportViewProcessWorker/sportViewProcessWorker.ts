@@ -15,7 +15,7 @@ export default (function () {
 
 		const jsonData: WorkerTransfer<Data, CommandType> = JSON.parse(strData);
 
-		console.error("第四步 体育线程收到了数据 到对应controller", jsonData);
+		// console.error("第四步 体育线程收到了数据 到对应controller", jsonData);
 		//收到体育sportEventSource 指令
 		if (jsonData.commandType == SportViewProcessWorkerCommandType.sportEventSource) {
 			const data: WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerCommandType> = jsonData as WorkerTransfer<
@@ -38,17 +38,6 @@ export default (function () {
 				...data.data,
 			};
 			sportOddsChangeController.clearOddsChange(params);
-		}
-		// 侧边栏数据处理指令 （与详情同一套）
-		else if (jsonData.commandType == SportViewProcessWorkerCommandType.sidebarEventSource) {
-			const data: WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerCommandType> = jsonData as WorkerTransfer<
-				OpenSportEventSourceParams,
-				SportViewProcessWorkerCommandType
-			>;
-			const params: OpenSportEventSourceParams = {
-				...data.data,
-			};
-			sportEventSourceController.openSportEventSource(params);
 		}
 	};
 

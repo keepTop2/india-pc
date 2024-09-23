@@ -222,9 +222,9 @@ const openSportPush = async (type: string | undefined) => {
 	} else if (route.path == "/sports/detail") {
 		// 开启详情盘口推送
 		// 侧边赛事推送
-		// getSidebarEventSSEPush();
+		getSidebarEventSSEPush();
 		// 侧边赛事盘口推送
-		// getSidebarMarketSSEPush();
+		getSidebarMarketSSEPush();
 		// await openEventDetailPush();
 		// 获取热门赛事id开启推送
 		// getPromotions();
@@ -463,14 +463,14 @@ const closeSportViewProcessWorker = () => {
  * @description 打开体育视图处理工作线程
  */
 const openSportViewProcessWorker = () => {
-	console.log("触发了几次开启线程的操作");
+	// console.log("触发了几次开启线程的操作");
 	try {
 		// 开启列表events线程
 		workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
 		// 开启侧边栏events线程
-		// workerManage.startWorker(workerManage.WorkerMap.sidebarWorker.workerName);
+		workerManage.startWorker(workerManage.WorkerMap.sidebarWorker.workerName);
 	} catch (error) {
-		console.error("开启体育视图处理线程失败", error);
+		// console.error("开启体育视图处理线程失败", error);
 	}
 };
 

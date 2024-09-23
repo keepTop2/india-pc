@@ -14,9 +14,7 @@ export const useSidebarStore = defineStore("sidebarData", {
 	},
 	getters: {
 		// 获取赛事信息
-		getEventsInfo(): SportsRootObject {
-			return this.eventsInfo;
-		},
+		getEventsInfo: (state) => state.eventsInfo,
 		// 获取直播地址
 		getLiveUrl(): any {
 			return this.liveUrl;
