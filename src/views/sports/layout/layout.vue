@@ -205,8 +205,11 @@ const openSportPush = async (type: string | undefined) => {
 	console.log(type, "====sportType.value==========", sportType.value);
 	sportsBetEvent.clearHotLeagueList();
 	pubSub.publish("clearHotLeagueList", "on");
+	clearStroe();
+	unSubSport();
 	// 关闭体育线程
 	closeSportViewProcessWorker();
+	initSportPubsub();
 	// 开启体育线程
 	openSportViewProcessWorker();
 	await handleSportPush();
@@ -389,11 +392,6 @@ const onTab = (type: string) => {
 	if (tabActive.value == type) return;
 	tabActive.value = type;
 	ShopCatControlStore.setShopCatShow(false);
-	clearStroe();
-	unSubSport();
-	closeSportViewProcessWorker();
-	initSportPubsub();
-	openSportViewProcessWorker();
 	openSportPush(route.query.sportType as string);
 };
 

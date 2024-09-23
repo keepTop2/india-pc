@@ -59,6 +59,7 @@ export default (function () {
 		public clearEventsState() {
 			Object.assign(this.viewSportData, {
 				childrenViewData: [],
+				markets:[]
 			});
 		}
 
