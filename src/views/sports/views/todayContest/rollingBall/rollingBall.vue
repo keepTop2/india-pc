@@ -59,12 +59,11 @@ const leagues = computed(() => {
 const matchedLeague = ref([] as any);
 const isDataHandled = ref(false); // 标志位，确保只处理一次数据
 
-
-const openSportPush = inject('openSportPush') as () => void;
+const openSportPush = inject("openSportPush") as () => void;
 
 watchEffect(() => {
 	const sportType = route.query.sportType;
-	console.log(sportType,'====sportType')
+	// console.log(sportType, "====sportType");
 	if (sportType) {
 		// 清除选择联赛缓存
 		matchedLeague.value = [];
@@ -72,15 +71,15 @@ watchEffect(() => {
 		viewSportPubSubEventData.clearEventsState();
 		// 清除侧边栏数据
 		SidebarStore.clearEventsInfo();
-    openSportPush();
-  }
+		openSportPush();
+	}
 });
 
 // 使用 watch 监听 sportData 数据变化
 watch(
 	() => viewSportPubSubEventData.getSportData().length, // 监听数据变化
 	() => {
-		console.log("数据变化触发数据监听", viewSportPubSubEventData.getSportData());
+		// console.log("数据变化触发数据监听", viewSportPubSubEventData.getSportData());
 		// console.log("sportData", sportData);
 		// sportType 切换时会清空数据，判断是否为空对象或空数组，避免处理
 		if (
@@ -95,10 +94,9 @@ watch(
 			// console.log("首次加载数据");
 			getSidebarData(leagues.value); // 获取第一个联赛的第一场赛事
 		} else {
-			console.log("更新数据",leagues.value);
+			console.log("更新数据", leagues.value);
 			if (leagues.value) {
-			updateEventScoreboard(leagues.value);
-				
+				updateEventScoreboard(leagues.value);
 			}
 		}
 	}

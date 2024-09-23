@@ -201,12 +201,12 @@ const sportsEventDetailPush = {
 	/**
 	 * @description 联赛详情推送 传入 leagueId
 	 */
-	openEvents: (leagueid: any) => {
+	openEvents: (eventId: any) => {
 		return {
 			sportPushApi: SportPushApi.GetEvents_push,
 			webToPushApi: WebToPushApi.sportsEventDetail,
 			params: {
-				query: `$filter=leagueid eq ${leagueid}`,
+				query: `$filter=eventId eq ${eventId}`,
 				includeMarkets: "none",
 			},
 		};
@@ -236,6 +236,7 @@ const promotionsEventsSSEPush = {
 			webToPushApi: WebToPushApi.promotionsEvent,
 			params: {
 				query: `$filter=eventId in (${eventIds})`,
+				// 只获取大小的盘口信息
 				includeMarkets: `$filter=bettype in (${3})`,
 			},
 		};

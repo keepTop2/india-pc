@@ -25,8 +25,8 @@ export default (function () {
 			SportEventSourceController.startSEE(params);
 		}
 
-		//收到冠军购物车 outrightShopCartViewChanges 指令
-		if (jsonData.commandType == SportShopCartProcessWorkerCommandType.outrightShopCartViewChanges) {
+		//收到冠军购物车 championShopCartViewChanges 指令
+		if (jsonData.commandType == SportShopCartProcessWorkerCommandType.championShopCartViewChanges) {
 			const data: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerCommandType> = jsonData as WorkerTransfer<
 				OpenSportEventSourceParams,
 				SportShopCartProcessWorkerCommandType

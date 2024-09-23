@@ -25,8 +25,6 @@ export default (function () {
 			const params: OpenSportEventSourceParams = {
 				...data.data,
 			};
-			// console.log("openSportEventSource ===================> params", params);
-
 			sportEventSourceController.openSportEventSource(params);
 		}
 		//收到体育赔率变更指令

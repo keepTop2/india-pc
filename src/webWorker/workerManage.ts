@@ -47,6 +47,7 @@ class WorkerManage {
 	 * @param name  线程名称
 	 */
 	public startWorker(workerName: WorkerName) {
+		console.log(workerName, "====");
 		// return new Promise((resolve, reject) => {
 		const resPonsedata: WebResponse = {};
 
@@ -86,7 +87,6 @@ class WorkerManage {
 	 * @param 线程名称
 	 */
 	public stopWorker(workerName: WorkerName): void {
-		// console.log(workerName, "====");
 		// return new Promise((resolve, reject) => {
 		const resPonsedata: WebResponse = {};
 		const idx = this.workerList.findIndex((item) => item.workerName == workerName);
