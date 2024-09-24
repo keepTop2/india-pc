@@ -17,7 +17,8 @@
 					<div class="back-container">
 						<!-- 主体路由页面 -->
 						<router-view v-cloak />
-						<div class="overlay" v-if="isShowoVerlay"></div>
+						<!-- 搜索触发的遮罩 -->
+						<div class="overlay" v-if="isShowMask"></div>
 					</div>
 					<!-- 购物车 -->
 					<SportsShopCart></SportsShopCart>
@@ -37,7 +38,7 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, provide, reactive, ref, watch, watchEffect } from "vue";
-import { cloneDeep, isEmpty } from "lodash-es";
+import { isEmpty } from "lodash-es";
 import { useRoute, useRouter } from "vue-router";
 import { useIntervalFn } from "@vueuse/core";
 import moment from "moment";
@@ -59,7 +60,6 @@ import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 
 import workerManage from "/@/webWorker/workerManage";
-import Common from "/@/utils/common";
 import sportsApi from "/@/api/sports/sports";
 import pubSub from "/@/pubSub/pubSub";
 import { formattingResultViewData } from "/@/views/sports/utils/formattingViewData";
@@ -69,7 +69,6 @@ import { FootballCardApi } from "/@/api/sports/footballCard";
 import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
 
 import { WorkerName, SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
-import { OpenSportEventSourceParams, OpenSportSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 
 import Modal from "./components/Modal/index.vue";
 import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar } from "./components";
@@ -120,16 +119,12 @@ const routeMap = {
  * @description 响应式数据
  */
 const tabActive = computed(() => routeMap[route.path as keyof typeof routeMap]);
-const isShowoVerlay = ref(false);
-const isDataHandled = ref(false);
+const isShowMask = ref(false);
 
+// 公告数据
 const NotifyModal = ref();
+// 公告弹窗状态
 const showNotifyModal = ref(false);
-// const sportState = reactive({ sportTypeActive: null });
-// const routeRecord = ref({
-// 	newRoute: { path: "", isSportSort: "" },
-// 	oldRoute: { path: "", isSportSort: "" },
-// });
 
 /**
  * @description 计算属性
@@ -141,8 +136,7 @@ const attentionSwitch = computed(() => SportAttentionStore.attentionType);
  */
 onBeforeMount(() => {
 	pubSub.subscribe("showoVerlay", (data) => {
-		console.log("showoVerlay", data);
-		isShowoVerlay.value = data;
+		isShowMask.value = data;
 	});
 	LayoutStore.setBigScreen(true);
 	pubSub.subscribe(pubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
@@ -166,8 +160,11 @@ onUnmounted(() => {
  * @description 初始化体育请求
  */
 const initSportRequest = async () => {
+	// 获取关注列表
 	await getAttention();
+	// 体育登录
 	await sportsLogin();
+	// 初始化体育
 	await initSport();
 };
 
