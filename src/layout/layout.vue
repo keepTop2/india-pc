@@ -7,6 +7,7 @@
 				<div class="mainArea">
 					<router-view id="router-view" />
 					<Footer v-if="route.meta.showFooter" />
+					<BackToTop />
 				</div>
 			</transition>
 		</div>
@@ -36,7 +37,6 @@ const resizeObserver = new ResizeObserver((entries) => {
 		const domWidth = (entry.target as any)?.offsetWidth;
 		if (domWidth === lastWidth.value) return;
 		lastWidth.value = domWidth;
-
 		if (domWidth < 1460) {
 			MenuStore.setCollapse(true);
 		} else {
@@ -80,6 +80,7 @@ onUnmounted(() => {
 	margin: 64px auto 0;
 	overflow-y: auto;
 	height: calc(100vh - 64px);
+	position: relative;
 }
 .mainArea::-webkit-scrollbar {
 	display: none;

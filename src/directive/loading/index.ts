@@ -1,7 +1,7 @@
 import { createApp, Directive } from "vue";
 import Loading from "./index.vue";
 
-export const jxLoading: Directive = {
+export const okLoading: Directive = {
 	mounted(el, binding) {
 		const app = createApp(Loading);
 		const instance = app.mount(document.createElement("div"));

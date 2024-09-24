@@ -9,4 +9,12 @@ export const activityApi = {
 			headers,
 		});
 	},
+	// 活动列表
+	activityTabsList: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activityLabs/api/queryList`, {
+			method: "GET",
+			data,
+			headers,
+		});
+	},
 };

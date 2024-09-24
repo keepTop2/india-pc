@@ -1,7 +1,3 @@
-<!--
- * @Author: Relax
- * @Description: 赛事详细比分栏
--->
 <template>
 	<div class="detail-container">
 		<div class="top">
@@ -15,18 +11,8 @@
 					<span>{{ show ? "显示" : "隐藏" }}</span>
 					<svg-icon :name="show ? 'eyes' : 'eyes_on'" size="16px"></svg-icon>
 				</div>
-				<svg-icon 
-					class="saveFollow" 
-					:name="isAttention ? 'sports-already_collected' : 'sports-collection'" 
-					@click="attentionEvent(true)" 
-					size="20" 
-				/>
-				<svg-icon 
-					name="sports-shuaxin" 
-					:class="{ cycling: loading }" 
-					size="20" 
-					@click="$emit('refresh')" 
-				/>
+				<svg-icon class="saveFollow" :name="isAttention ? 'sports-already_collected' : 'sports-collection'" @click="attentionEvent(true)" size="20" />
+				<svg-icon name="sports-shuaxin" :class="{ cycling: loading }" size="20" @click="$emit('refresh')" />
 			</div>
 		</div>
 		<div class="content" :class="!show ? 'showContent' : 'hideContent'">
@@ -70,9 +56,7 @@ const toggleCollect = () => {
 	emits("isCollect", show.value);
 };
 
-const isAttention = computed(() => 
-	SportAttentionStore.attentionEventIdList.includes(props.sportInfo.eventId)
-);
+const isAttention = computed(() => SportAttentionStore.attentionEventIdList.includes(props.sportInfo.eventId));
 
 /**
  * @description 处理关注/取消关注事件

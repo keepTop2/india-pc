@@ -15,9 +15,9 @@
 				<!-- 收藏 -->
 				<div class="top_right">
 					<!-- 关注 -->
-					<SvgIcon v-if="isAttention" class="sports_collection2" iconName="sports_collection_two" :size="16" @click="attentionEvent(true)" />
+					<svg-icon v-if="isAttention" class="sports_collection2" name="sports-already_collected" size="16" @click="attentionEvent(true)" />
 					<!-- 取消关注 -->
-					<SvgIcon v-else class="sports_collection" iconName="sports_collection" :size="16" @click="attentionEvent(false)" />
+					<svg-icon v-else class="sports_collection" name="sports-collection" size="16" @click="attentionEvent(false)" />
 				</div>
 			</div>
 			<div class="box_two">

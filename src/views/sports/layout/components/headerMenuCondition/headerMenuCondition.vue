@@ -40,6 +40,7 @@
 			<component :is="bettingRulesModal" />
 		</Modal> -->
 	</div>
+	<!-- 搜索框组件 -->
 	<searchBar v-else @cancel="handleSearch(false)" />
 </template>
 

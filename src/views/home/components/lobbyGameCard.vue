@@ -1,16 +1,16 @@
 <template>
-	<div class="mt_40 pr_10 pl_10">
+	<div class="mt_40 pr_10 pl_10" v-if="gameList?.gameInfoList?.length">
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
 					<img v-lazy-load="gameList?.icon" alt="" />
-					<span class="Text_s fs_20">{{ title ? title : gameList?.name }}</span>
+					<span class="Text_s fs_20">{{ title ? title : gameList?.name ? gameList?.name : "热门推荐" }}</span>
 				</span>
 			</div>
-			<div class="more Text1 fs_18 curp" @click="gotoVenue(gameList)">更多</div>
+			<div class="more Text1 fs_18 curp" @click="gotoVenue(gameList)" v-if="gameList?.gameInfoList?.length !== 1">更多</div>
 		</div>
 		<div class="lobbyGameList">
-			<div class="onlyOneGame" v-if="gameList?.gameInfoList?.length == 1" click="Common.goToGame(item)">
+			<div class="onlyOneGame" v-if="bigOneItem && gameList?.gameInfoList?.length == 1" click="Common.goToGame(item)">
 				<img v-lazy-load="gameList?.gameInfoList[0].icon" alt="" />
 			</div>
 			<slide v-else>
@@ -41,6 +41,7 @@ import { HomeApi } from "/@/api/home";
 import showToast from "/@/hooks/useToast";
 import router from "/@/router";
 import Common from "/@/utils/common";
+import { useRoute } from "vue-router";
 interface gameInfo {
 	id: string;
 	name: string;
@@ -56,13 +57,17 @@ interface gameInfo {
 	maintenanceEndTime: string;
 	collect: boolean;
 }
+const route = useRoute();
 const props = defineProps({
 	gameList: {
 		type: Object,
 	},
 	title: {
 		type: String,
-		default: "热门推荐",
+	},
+	bigOneItem: {
+		type: Boolean,
+		default: true,
 	},
 });
 const collectGame = (game: gameInfo) => {
@@ -78,7 +83,11 @@ const collectGame = (game: gameInfo) => {
 	});
 };
 const gotoVenue = (gameInfo: any) => {
-	router.push({ path: "/game/venue", query: { gameOneId: gameInfo.gameOneId } });
+	if (route.query.gameOneId) {
+		router.push({ path: "/game/venue", query: { gameOneId: route.query.gameOneId, gameTwoId: gameInfo.id } });
+	} else {
+		router.push({ path: "/game/venue", query: { gameOneId: gameInfo.gameOneId, gameTwoId: 0 } });
+	}
 };
 </script>
 

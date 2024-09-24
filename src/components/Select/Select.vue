@@ -12,7 +12,7 @@
 		>
 			<div class="el-dropdown-content">
 				<span class="content"><slot name="prefix"></slot>{{ selectDateLabel }}</span>
-				<svg-icon class="icon" name="arrow_down" :size="12" />
+				<svg-icon class="icon" name="arrow_down" size="12" />
 			</div>
 			<template #dropdown>
 				<el-dropdown-menu>

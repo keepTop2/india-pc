@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { ref, reactive } from "vue";
 import _ from "lodash-es";
 import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import Common from "/@/views/sports/utils/common";
@@ -21,7 +21,11 @@ export default (function () {
 				outrights: [],
 				results: [],
 				childrenViewData: [],
-			}) as SportViewData;
+			}) as unknown as SportViewData;
+
+			this.sidebarData = reactive({
+				event: [],
+			} as unknown as SportViewData);
 		}
 		// 获取单例实例的静态方法
 		public static getInstance(): viewSportPubSubEventData {
@@ -34,6 +38,8 @@ export default (function () {
 		}
 
 		public viewSportData: SportViewData;
+		public sidebarData: SportViewData;
+
 		/**
 		 * 清空数据
 		 */
@@ -63,9 +69,8 @@ export default (function () {
 		 */
 		public setSportData(viewSportData: SportViewData) {
 			// 收到数据推送派发 使用Object.assign来确保响应式数据的正确更新
-			console.log("收到数据推送派发 viewSportData", viewSportData);
+			// console.log("收到数据推送派发 viewSportData", viewSportData);
 			Object.assign(this.viewSportData, viewSportData);
-			// 再进行球类数据派发
 		}
 
 		/**

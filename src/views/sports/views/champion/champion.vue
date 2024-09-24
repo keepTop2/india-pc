@@ -21,7 +21,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch, watchEffect } from "vue";
+import { computed, inject, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch, watchEffect } from "vue";
 import { cloneDeep, get } from "lodash-es";
 import pubSub from "/@/pubSub/pubSub";
 import { Sports, SportViewData } from "/@/views/sports/models/interface";
@@ -89,6 +89,17 @@ onBeforeMount(() => {
 	});
 });
 
+
+
+const openSportPush = inject('openSportPush') as () => void;
+
+watchEffect(() => {
+	const sportType = route.query.sportType;
+	if (sportType) {
+    openSportPush();
+  }
+});
+
 onBeforeUnmount(() => {});
 
 /**
@@ -141,7 +152,7 @@ const toggleDisplay = (val?: number) => {
 .card-container {
 	margin-bottom: 5px;
 }
-.nonedata {
-	margin-top: 20%;
+.noData {
+	height:100%;
 }
 </style>

@@ -19,7 +19,7 @@
 			>
 				<div class="el-dropdown-content">
 					<span>{{ startDate }} - {{ endDate }}</span>
-					<svg-icon class="searchIcon" name="arrow_down" :size="14" />
+					<svg-icon class="searchIcon" name="arrow_down" size="14" />
 				</div>
 				<template #dropdown>
 					<VDatePicker 
@@ -30,10 +30,10 @@
 					>
 						<template #header-title-wrapper>{{ selectDateYM }}</template>
 						<template #header-prev-button>
-							<svg-icon class="searchIcon" name="arrow_up" :size="14" />
+							<svg-icon class="searchIcon" name="arrow_up" size="14" />
 						</template>
 						<template #header-next-button>
-							<svg-icon class="searchIcon" name="arrow_down" :size="14" />
+							<svg-icon class="searchIcon" name="arrow_down" size="14" />
 						</template>
 					</VDatePicker>
 				</template>
@@ -52,7 +52,7 @@
 			@click="handleSearch" 
 			:disabled="loading"
 		>
-			<svg-icon class="searchIcon" name="result_search" :size="14" /> &nbsp;
+			<svg-icon class="searchIcon" name="result_search" size="14" /> &nbsp;
 			{{ $t(`matchResult['搜索']`) }}
 		</el-button>
 	</div>

@@ -102,7 +102,7 @@ export default function useSportPubSubEvents() {
 		if (showLoadingObject) {
 			headers = showLoadingObject;
 		}
-		console.log(store.token,'=====store')
+		// console.log(store.token, "=====store");
 		try {
 			let res: any;
 			if (store.token) {
@@ -154,6 +154,7 @@ export default function useSportPubSubEvents() {
 			//体育视图处理线程 eventSource 指令
 			if (processData.commandType == SportViewProcessWorkerCommandType.sportEventSource) {
 				// 派发到 viewSportPubSubEventData 数据中心
+				// console.log(processData.data.webToPushApi, processData.data.state.viewSportData);
 				viewSportPubSubEventData.setSportData(processData.data.state.viewSportData);
 			}
 			// 体育视图处理线程 赔率变更 指令
@@ -165,6 +166,16 @@ export default function useSportPubSubEvents() {
 				// stopLoading();
 			}
 		}
+		// 侧边栏推回的数据
+		else if (event.workerName == WorkerName.sidebarWorker) {
+			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;
+			if (processData.commandType == SportViewProcessWorkerCommandType.sidebarEventSource) {
+				// console.log("sidebarWorker -- sidebarWorker", processData.data.state.viewSportData.childrenViewData[0]?.events[0]);
+				viewSportPubSubEventData.sidebarData.event = processData.data.state.viewSportData.childrenViewData;
+				console.log("viewSportPubSubEventData.sidebarData.event", viewSportPubSubEventData.sidebarData.event);
+			}
+		}
+
 		//体育购物车线程
 		else if (event.workerName == WorkerName.sportShopCartProcessWorker) {
 			// const processData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = event as WorkerTransfer<

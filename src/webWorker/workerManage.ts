@@ -39,12 +39,15 @@ class WorkerManage {
 	 * @description 线程字典
 	 */
 	public WorkerMap = WorkerMap;
-
+	public getWorkerList() {
+		return this.workerList;
+	}
 	/**
 	 * @description 启动线程
 	 * @param name  线程名称
 	 */
 	public startWorker(workerName: WorkerName) {
+		console.log(workerName, "====");
 		// return new Promise((resolve, reject) => {
 		const resPonsedata: WebResponse = {};
 
@@ -61,7 +64,10 @@ class WorkerManage {
 			resPonsedata.code = ResCode.SUCCESS;
 			// setTimeout(() => {
 			const url = this.WorkerMap[workerName].url;
-			this.WorkerMap[workerName].worker = new Worker(url, { type: "module" });
+			this.WorkerMap[workerName].worker = new Worker(url, {
+				name: workerName,
+				type: "module",
+			});
 			this.WorkerMap[workerName].worker!.onmessage = this.onMessage;
 			this.workerList.push(this.WorkerMap[workerName]);
 			//console.warn("线程启动成功", workerName);
@@ -81,7 +87,6 @@ class WorkerManage {
 	 * @param 线程名称
 	 */
 	public stopWorker(workerName: WorkerName): void {
-		// console.log(workerName, "====");
 		// return new Promise((resolve, reject) => {
 		const resPonsedata: WebResponse = {};
 		const idx = this.workerList.findIndex((item) => item.workerName == workerName);

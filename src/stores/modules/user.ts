@@ -10,6 +10,7 @@ import { useMenuStore } from "./menu";
 import EncryptionFn from "/@/utils/encryption";
 import { userApi } from "/@/api/user";
 import showToast from "/@/hooks/useToast";
+import { loginApi } from "/@/api/login";
 interface LangListType {
 	code: LangEnum;
 	currLang: number;
@@ -126,8 +127,13 @@ export const useUserStore = defineStore("User", {
 			this.initUserMenu();
 		},
 		logOut(): void {
-			localStorage.removeItem("userInfo");
-			window.location.replace("/");
+			loginApi
+				.logout()
+				.then(() => {})
+				.finally(() => {
+					localStorage.removeItem("userInfo");
+					window.location.replace("/");
+				});
 		},
 		// 获取用户信息
 		async initUserInfo() {
@@ -146,7 +152,7 @@ export const useUserStore = defineStore("User", {
 		{
 			key: "loginInfo",
 			storage: localStorage,
-			paths: ["loginInfo","token"],
+			paths: ["loginInfo", "token"],
 		},
 	],
 });

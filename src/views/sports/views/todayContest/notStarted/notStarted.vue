@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, watchEffect, onBeforeUnmount, defineAsyncComponent } from "vue";
+import { ref, computed, onMounted, watch, watchEffect, onBeforeUnmount, defineAsyncComponent, inject } from "vue";
 import { cloneDeep, get } from "lodash-es";
 import { useRouter, useRoute } from "vue-router";
 import pubsub from "/@/pubSub/pubSub";
@@ -58,25 +58,26 @@ const leagues = computed(() => {
 const matchedLeague = ref([] as any);
 const isDataHandled = ref(false); // 标志位，确保只处理一次数据
 
-// 路由参数 sportType 变化
-watch(
-	() => route.query.sportType,
-	(newValue, oldValue) => {
-		// console.log("rollingBall --  leagues", leagues);
+const openSportPush = inject("openSportPush") as () => void;
+
+watchEffect(() => {
+	const sportType = route.query.sportType;
+	if (sportType) {
 		// 清除选择联赛缓存
 		matchedLeague.value = [];
 		// 清除数据中心数据===列表数据
-		viewSportPubSubEventData.clearState();
+		viewSportPubSubEventData.clearEventsState();
 		// 清除侧边栏数据
 		SidebarStore.clearEventsInfo();
+		openSportPush();
 	}
-);
+});
 
 // 使用 watch 监听 sportData 数据变化
 watch(
 	() => viewSportPubSubEventData.getSportData().length, // 监听数据变化
 	() => {
-		console.log("数据变化触发数据监听", viewSportPubSubEventData.getSportData());
+		// console.log("数据变化触发数据监听", viewSportPubSubEventData.getSportData());
 		// console.log("sportData", sportData);
 		// sportType 切换时会清空数据，判断是否为空对象或空数组，避免处理
 		if (

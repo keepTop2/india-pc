@@ -84,7 +84,7 @@ const toggleDisplay = (val?: number) => {
 .card-container {
 	margin-bottom: 5px;
 }
-.nonedata {
-	margin-top: 20%;
+.noData {
+	height:100%;
 }
 </style>
