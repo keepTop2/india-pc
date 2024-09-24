@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<bannerSkeleton v-if="isLoading" />
-		<banner v-else></banner>
+		<venueBanner v-else></venueBanner>
 		<div class="max-width">
 			<div class="mt_40 pr_10 pl_10">
 				<div class="search-component" ref="resultList">
@@ -65,7 +65,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import banner from "./components/venueBanner.vue";
 import bannerSkeleton from "../home/components/bannerSkeleton.vue";
 import hotGame from "../home/components/hotGame.vue";
 import hotGameSkeleton from "../home/components/hotGameSkeleton.vue";
@@ -216,7 +215,7 @@ const filteredResults = computed(() => {
 	}
 	return Array.from(
 		new Set(
-			currentTabGameData.filter((item: any) => item.name.includes(searchQuery.value)).map((item: any) => JSON.stringify(item)) // 转换对象为字符串以去重
+			currentTabGameData.filter((item: any) => item.name.toLocaleLowerCase().includes(searchQuery.value.toLocaleLowerCase())).map((item: any) => JSON.stringify(item)) // 转换对象为字符串以去重
 		)
 	).map((item: any) => JSON.parse(item)); // 将字符串转换回对象
 });

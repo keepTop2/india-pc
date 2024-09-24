@@ -171,7 +171,8 @@ onUnmounted(() => {
 	padding: 8px;
 	cursor: pointer;
 }
-.option-item.active {
+.option-item.active,
+.option-item:hover {
 	color: var(--Text_s);
 }
 

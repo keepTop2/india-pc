@@ -100,6 +100,8 @@ instance.interceptors.response.use(
 		}
 		const res = response.data;
 		// 如果自定义代码不是 200，则判断为错误。
+		console.log(res.code);
+
 		switch (res.code) {
 			// 登陆过期
 			case ResCode.LOGIN_EXPIRE:
@@ -111,7 +113,7 @@ instance.interceptors.response.use(
 			showToast("令牌错误，请先重新登录");
 		}
 
-		if (res.code !== 200) {
+		if (res.code !== ResCode.SUCCESS) {
 			if (res.type == "image/png") {
 				return res;
 			}

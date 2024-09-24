@@ -26,7 +26,7 @@
 					</span>{{ option.countryName }}</span>
 					<span>+{{ option.areaCode }}</span>
 				</li>
-				<li v-if="filteredOptions.length === 0" class="no-results">{{ $t(`login['没有数据']`)  }}</li>
+				<li v-if="filteredOptions.length === 0" class="no-results fs_12 ">{{ $t(`login['未搜索到相关区号']`)  }}</li>
 			</ul>
 		</div>
 	</div>
@@ -126,12 +126,12 @@ onUnmounted(() => {
 .trigger {
 	width: 100%;
 	padding: 8px 16px;
-	padding-left: 110px;
+	padding-left: 80px;
 	border: none;
 	height: 100%;
 	border-radius: 4px;
 	background-color: var(--Bg1);
-	height: 46px;
+	height: 34px;
 	text-align: left;
 	cursor: pointer;
 	color: var(--Text_s);
@@ -206,12 +206,13 @@ onUnmounted(() => {
 	padding: 8px;
 	cursor: pointer;
 }
-.option-item.active {
+.option-item.active,
+.option-item:hover {
 	color: var(--Text_s);
 }
 
 .no-results {
 	padding: 8px;
-	text-align: center;
+	color: var(--Text2);
 }
 </style>

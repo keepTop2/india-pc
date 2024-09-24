@@ -1,6 +1,12 @@
 <template>
 	<div class="menu_row" :class="collapse ? 'collapse' : ''">
 		<div>
+			<div>
+				<div class="menu_item" :class="openMenuIndex == 'activity' ? 'activeMenu' : ''" @click="router.push('/activity')">
+					<span class="menu_icon"><svg-icon name="activity_icon" size="17px"></svg-icon></span>
+					<span class="menu_name ellipsis">优惠活动</span>
+				</div>
+			</div>
 			<div v-for="(item, index) in routerObj" :key="index">
 				<div class="menu_item" :class="openMenuIndex == index ? 'activeMenu' : ''" @click="selectMenu(item, index)">
 					<span class="menu_icon"><img v-lazy-load="item.icon" alt="" /></span>
@@ -37,15 +43,11 @@ import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
 
 import { useMenuStore } from "/@/stores/modules/menu";
 const MenuStore = useMenuStore();
-import useSvgHoverHooks from "/@/hooks/useSvgHover";
 import Common from "/@/utils/common";
-import { activityApi } from "/@/api/activity";
-const { onMouseout, onMouseover, hoverItem } = useSvgHoverHooks();
 const router = useRouter();
 const route = useRoute();
-const openMenuIndex: Ref<number | null> = ref(null);
+const openMenuIndex: Ref<number | string | null> = ref(null);
 const openSubMenuIndex: any = ref(null);
-const activityList = ref([]);
 //菜单从缓存中拉取
 const routerObj: any = computed(() => {
 	return MenuStore.getMenu;
@@ -56,12 +58,14 @@ const collapse = computed(() => {
 });
 
 watch(
-	() => [route.query.gameTwoId, route.query.gameOneId, routerObj.value],
+	() => [route.query.gameTwoId, route.query.gameOneId, routerObj.value, route.name],
 	() => {
+		console.log(1312);
 		setOpenMenu();
 	}
 );
 const setOpenMenu = () => {
+	if (route.name === "activity") return (openMenuIndex.value = "activity");
 	openMenuIndex.value = routerObj.value.findIndex((item: any) => item.gameOneClassId == route.query.gameOneId);
 	if (openMenuIndex.value) {
 		console.log(routerObj.value);
@@ -76,13 +80,7 @@ const goToPath = (item: any, subItem: any, index: number, subIndex: number) => {
 
 onMounted(() => {
 	setOpenMenu();
-	getactivityList();
 });
-const getactivityList = () => {
-	activityApi.activityPageList().then((res) => {
-		activityList.value = res.data.records;
-	});
-};
 
 /**
  * PE:"跳转体育"
@@ -160,7 +158,10 @@ const leave = (el: Element) => {
 		color: var(--Text1);
 		z-index: 10;
 		line-height: 46px;
-
+		.menu_icon {
+			display: flex;
+			align-items: center;
+		}
 		.menu_name {
 			flex: 4;
 			overflow: hidden;
@@ -202,7 +203,11 @@ const leave = (el: Element) => {
 			width: 46px;
 			height: 100%;
 			text-align: center;
+			display: flex;
 			img {
+				margin: 13px auto;
+			}
+			svg {
 				margin: 13px auto;
 			}
 		}
