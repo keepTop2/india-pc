@@ -8,8 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch, nextTick, watchEffect } from "vue";
-import { useMenuStore } from "/@/stores/modules/menu";
+import { computed, watch } from "vue";
 import { ShopCart, ChampionCart } from "./components/index";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
@@ -38,11 +37,6 @@ watch(
 		}
 	}
 );
-
-const MenuStore = useMenuStore();
-
-onMounted(() => {});
-onUnmounted(() => {}); //离开页面时移除监听事件
 </script>
 
 <style lang="scss" scoped>

@@ -3,7 +3,6 @@ import HeaderMenuCondition from "./headerMenuCondition/headerMenuCondition.vue";
 import HeaderNotify from "./headerNotify/headerNotify.vue";
 import SportsShopCart from "./sportsShopCart/sportsShopCart.vue";
 import Sidebar from "./sidebar/sidebar.vue";
-import sportRight from "./sportRight/sportRight.vue";
 
 export {
 	/** 体育球内导航*/
@@ -16,5 +15,4 @@ export {
 	SportsShopCart,
 	/**体育-右侧-热门 */
 	Sidebar,
-	sportRight,
 };

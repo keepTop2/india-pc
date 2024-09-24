@@ -1,7 +1,3 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育-购物车- 多个单下注输入框
--->
 <template>
 	<div class="moreShop" ref="moreShopRef">
 		<div class="commodity">
