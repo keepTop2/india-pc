@@ -94,6 +94,8 @@ class WorkerManage {
 			console.error("未找到该线程");
 			resPonsedata.code = ResCode.ERR;
 			resPonsedata.message = "未找到该线程";
+			// 匹配不到线程就退出
+			return;
 			// reject(resPonsedata);
 		}
 		//关闭线程

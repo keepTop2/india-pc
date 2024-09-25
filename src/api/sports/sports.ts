@@ -156,7 +156,7 @@ class SportsApi {
 	/**
 	 *@description 更新单注的盘口数据
 	 */
-	static GetSingleTicket = (params?: object) => {
+	static GetSingleTicket = (params?: object, headers = {}) => {
 		const requireParams = { language: "zhcn" };
 		const requestParams = Object.assign({}, requireParams, params);
 		return useAxiosSabaApi(`/betting/V1/GetSingleTicket?${qs.stringify(requestParams)}`, {
@@ -178,7 +178,7 @@ class SportsApi {
 	/**
 	 *@description 更新串关注单的相关信息
 	 */
-	static GetParlayTickets = (params?: object) => {
+	static GetParlayTickets = (params?: object, headers = {}) => {
 		const requireParams = { language: "zhcn" };
 		const requestParams = Object.assign({}, requireParams, params);
 		return useAxiosSabaApi(`/betting/V1/GetParlayTickets`, {

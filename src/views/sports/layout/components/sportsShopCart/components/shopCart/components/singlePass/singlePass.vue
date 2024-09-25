@@ -1,19 +1,12 @@
-<!--
- * @Author: WangMingxin
- * @Description:  体育-购物车- 一个单下注输入框
--->
 <template>
-	<ShopCard :shopData="shopData" :hasClose="hasClose" @oddsChanges="oddsChanges" :singleTicket="state" @marketChange="marketChange"></ShopCard>
+	<ShopCard v-for="(data, index) in sportsBetEvent.sportsBetEventData" :key="index" :shopData="data" :hasClose="true" />
 	<div class="singlePass">
 		<el-input
 			v-model="stake"
 			type="number"
-			:min="state?.minBet"
-			:max="state?.maxBet"
-			:placeholder="`限额 ${Common.formatFloat(state?.minBet) || '0.00'} ～ ${Common.formatFloat(state?.maxBet) || '0.00'}`"
-			@keypress="preventDecimal"
-			@input="onInputChange"
-			@change="onInputChangeVal"
+			:min="sportsBetInfo.singleTicketInfo.minBet"
+			:max="sportsBetInfo.singleTicketInfo.maxBet"
+			:placeholder="`限额 ${common.formatFloat(sportsBetInfo.singleTicketInfo.minBet) || '0.00'} ～ ${common.formatFloat(sportsBetInfo.singleTicketInfo.maxBet) || '0.00'}`"
 		>
 			<template #suffix>USD</template>
 		</el-input>
@@ -21,395 +14,45 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, watch } from "vue";
-import { debounce, throttle, cloneDeep, isEmpty } from "lodash-es";
-import sportsApi from "/@/api/sports/sports";
-import Common from "/@/utils/common";
+import { ref, watch } from "vue";
+
+// 引入组件
 import { ShopCard } from "../index";
-import weakHint from "/@/hooks/weakHint";
+import common from "/@/utils/common";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 
-import { i18n } from "/@/i18n/index";
-import { Notification } from "/@/components/index";
-import { useToLogin } from "/@/hooks/toLogin";
-const { toLogin } = useToLogin();
-
-const $: any = i18n.global;
-export interface RootObject {
-	sportType: number;
-	marketId: number;
-	isDecimalType: boolean;
-	point: number;
-	point2?: any;
-	key: string;
-	betType: number;
-	oddsType: number;
-	price: number;
-	status: string;
-	maxBet: number;
-	minBet: number;
-	liveHomeScore: number;
-	liveAwayScore: number;
-	payoutRate: number;
-}
-
-/**投注成功/失败正常返回 */
-export interface PlaceBetRes {
-	betPrice: number;
-	transId: number;
-	currentPrice: number;
-	stake: number;
-	betStatus: number;
-	betAcceptSecond: number;
-	ticketStatus: string;
-	maxBet: number;
-	minBet: number;
-}
-
-/** maxWinnable 最高可赢     oddsChanges赔率变动   */
-const emit = defineEmits(["maxWinnable", "oddsChanges", "orderConfirmation"]);
 const sportsBetEvent = useSportsBetEventStore();
+const sportsBetInfo = useSportsBetInfoStore();
+const stake = ref(""); // 初始化 stake
 
-const { weakOpen, weakClose } = weakHint();
-
-const props = withDefaults(
-	defineProps<{
-		/** 选中的商品详细 */
-		shopData?: any;
-		/** 判断购物车数据是否异常 */
-		unusual?: boolean;
-		// vendorTransId?: string;
-		/** 接受赔率变动  */
-		isAccept?: boolean;
-		/**账户余额 */
-		balance: number;
-	}>(),
-	{
-		unusual: false,
-		// vendorTransId: "",
-		isAccept: true,
-		balance: 0,
-		shopData: () => {
-			return {};
-		},
-	}
-);
-/*更新单注的盘口数据*/
-// /betting/{version}/GetSingleTicket?SportType=1&MarketId=314297898&key=h
-/** 下注金额 */
-const stake = defineModel({ type: String });
-const state: any = ref({});
-/**  拥有close */
-const hasClose = ref(true);
-/** 订单id  */
-const vendorTransId = ref("");
-
+// 监听 stake 的变化
 watch(
-	() => props.shopData,
-	(newValue, oldValue) => {
-		GetSingleTicket();
-	},
-	{ deep: true }
-);
-/**赔率发生变化时激活一次计算 */
-watch(
-	() => state.value.payoutRate,
-	(newValue, oldValue) => {
-		if (newValue != oldValue) {
-			if (stake.value) {
-				onInputChange(stake.value);
-				onInputChangeVal(stake.value);
-			}
+	stake, // 监听 stake 自身的变化
+	(newStake) => {
+		// 如果 newStake 为空值，直接将 stake 设为空字符串
+		if (newStake === null || newStake === undefined || newStake === "") {
+			stake.value = ""; // 设为空字符串
+			return; // 退出当前逻辑，不进行后续计算
 		}
-	}
-);
 
-onMounted(() => {
-	GetSingleTicket();
-	/**可赢金额归0 */
-	emit("maxWinnable", 0);
-});
+		const balance = Math.floor(Number(sportsBetInfo.balance));
+		const maxBet = Math.floor(Number(sportsBetInfo.singleTicketInfo.maxBet));
 
-/*异常时禁止下注输入框*/
-const disabled = ref(false);
-/**
- * @description: 获取 更新单注的盘口数据
- * @return {*}
- */
-const GetSingleTicket = throttle(async () => {
-	/**数据异常不在执行 数据查询 */
-	if (props.unusual) {
-		return false;
-	}
-	const params = {
-		/**体育项目 ID */
-		sportType: props.shopData.sportType,
-		/**  盘口ID */
-		marketId: props.shopData.betMarketInfo.marketId,
-		/**投注类型选项 */
-		key: props.shopData.betMarketInfo.key,
-		/** 盘口赔率类型 欧洲盘 */
-		oddsType: "decimalPrice",
-	};
-	try {
-		const res = await sportsApi.GetSingleTicket(params).catch((err) => {
-			return err;
-		});
-
-		const { status, data } = res;
-
-		if (status == 200) {
-			state.value = data;
-			// if (stake.value) {
-			// 	onInputChange(stake.value);
-			// 	onInputChangeVal(stake.value);
-			// }
+		// 如果余额为负，设置 stake 为 "0"
+		if (balance < 0) {
+			stake.value = "0";
 		} else {
-			const { response } = res;
-			const { status, data } = response;
-			if (status == 400 && !isEmpty(data)) {
-				const errCode = ["B005", "B015", "B016"];
-				if (errCode.indexOf(data.errorCode) != -1) {
-					marketClosingError(data);
-				} else {
-					weakOpen("服务器异常");
-				}
+			const currentBetValue = Number(newStake); // 获取变化后的 stake 值
+			// 根据 balance 和 maxBet 限制 stake 的值
+			if (balance < maxBet) {
+				stake.value = currentBetValue > balance ? balance.toString() : currentBetValue.toString();
+			} else {
+				stake.value = currentBetValue > maxBet ? maxBet.toString() : currentBetValue.toString();
 			}
 		}
-	} catch (e) {
-		weakOpen("限额获取异常");
-		disabled.value = true;
 	}
-}, 2000);
-
-/**
- * @description:  单关轮训注单信息盘口关闭的错误状态
- * @param {*} errInfo
- * @return {*}
- */
-const marketClosingError = (errInfo) => {
-	const sportsBetEvent = useSportsBetEventStore();
-	const regexes = ["B005", "B015", "B016"];
-	if (regexes.includes(errInfo.errorCode)) {
-		sportsBetEvent.sportsBetEventData.forEach((v) => {
-			v.betMarketInfo.marketStatus = "close";
-		});
-	}
-};
-
-/**
- * @description: 设置最高可赢
- */
-const setMaxWinnable = throttle(async () => {
-	if (stake.value) {
-		const sum = Common.mul(stake.value, state.value.price);
-		const winnable = Common.sub(sum, stake.value);
-		/** 直接计算可赢额度 */
-		emit("maxWinnable", Common.formatFloat(winnable));
-	} else {
-		emit("maxWinnable", 0);
-	}
-}, 300);
-
-/**
- * @description: 输入内容变更时；
- * @param {*} val 输入的值
- * @return {*}
- */
-const onInputChange = (value: string) => {
-	const val: any = Number(value);
-	if (val == "" || val == "NaN") {
-		stake.value = "";
-	} else if (val > state.value.maxBet) {
-		/** 用户金额和最大金额判断 */
-		if (state.value.maxBet > props.balance) {
-			stake.value = Math.floor(props.balance);
-		} else if (state.value.maxBet < props.balance) {
-			stake.value = state.value.maxBet;
-		}
-	}
-	setMaxWinnable();
-};
-/**
- * @description: input失去焦点时（最小值处理逻辑）
- * @param {*} val
- * @return {*}
- */
-const onInputChangeVal = throttle(
-	(val: string) => {
-		if (val == "" || val == "NaN") {
-			stake.value = "";
-		} else if (val < state.value.minBet) {
-			weakOpen("未达到投注金额最低限额：" + state.value.minBet);
-		}
-		setMaxWinnable();
-	},
-	3000,
-	{ trailing: false }
 );
-
-/**
- * @description: 键盘默认事件清楚（禁止小数点和逗号输入 ）
- * @param {*} event
- * @return {*}
- */
-const preventDecimal = (event: any) => {
-	/**数字正则 */
-	const regex = /^[0-9]$/;
-	if (!regex.test(event.key)) {
-		event.preventDefault();
-	}
-};
-
-/** 下单成功返回对象 */
-export interface PlaceBetResType {
-	betPrice: number;
-	transId: number;
-	currentPrice: number;
-	stake: number;
-	/**注单状态 0 ：下注成功 ；1 ：下注失败 */
-	betStatus: number;
-	betAcceptSecond: number;
-	ticketStatus: string;
-	maxBet: number;
-	minBet: number;
-}
-/** 下注单信息 */
-const betInfo = reactive({
-	betPrice: "",
-	transId: "",
-	stake: 0,
-	winnable: 0,
-});
-/** 下单成功返回对象 */
-const placeBetRes = ref({});
-
-/**
- * @description: 单注-注单的下注
- * @return {*}
- */
-const PlaceBet = async () => {
-	if (Number(stake.value) < state.value.minBet) {
-		/** 最低限额逻辑 */
-		onInputChangeVal(stake.value as string);
-		return false;
-	}
-
-	/** 点击下注时才进形 商品单号获取 */
-	await getBetOrderId();
-	if (!vendorTransId.value) {
-		weakOpen("订单号获取异常");
-		return false;
-	}
-	await GetSingleTicket();
-	// ...state.value,
-	const params = {
-		/**订单编号 */
-		vendorTransId: vendorTransId.value,
-		sportType: state.value.sportType,
-		marketId: state.value.marketId,
-		price: state.value.price,
-		point: state.value.point,
-		key: state.value.key,
-		/** 下注金额 */
-		stake: Number(stake.value),
-		/**下注选项 0：不接受盘口变更(预设) ; 1：只接受更好的赔率; 2：接受任何赔率变更 */
-		oddsOption: sportsBetEvent.getOddsOption,
-		oddsType: state.value.oddsType,
-	};
-
-	try {
-		const res = await sportsApi.PlaceBet(params).catch((err) => {
-			return err;
-		});
-		const { status, data } = res;
-		if (status == 200) {
-			betInfo.betPrice = data.betPrice;
-			betInfo.transId = data.transId;
-			betInfo.stake = data.stake;
-			/*返回响应值*/
-			placeBetRes.value = Object.assign({}, placeBetRes.value, data);
-			/*返回计算金额*/
-			const sum = Common.mul(data.stake, betInfo.betPrice);
-			const winnable = Common.sub(sum, data.stake);
-			betInfo.winnable = winnable;
-			onOrderConfirmation();
-		} else {
-			const { response } = res;
-			const { status, data } = response;
-			if (status == 400 && !isEmpty(data)) {
-				const errCode = ["B038"];
-				if (errCode.indexOf(data.errorCode) != -1) {
-					weakOpen("超过最大赢取金额");
-				} else {
-					weakOpen("服务器异常");
-				}
-			}
-		}
-	} catch (e) {
-		weakOpen("服务器异常");
-	}
-};
-
-/**
- * @description: 订单提交后-进入确认订单
- */
-const onOrderConfirmation = () => {
-	const params = {
-		shopData: cloneDeep(props.shopData),
-		betInfo: betInfo,
-		/** 系统订单号 */
-		vendorTransId: vendorTransId.value,
-		placeBetRes: placeBetRes.value,
-	};
-	emit("orderConfirmation", params);
-};
-
-/**
- * @description: 获获取沙巴体育注单ID(获取vendorTransId)
- */
-const getBetOrderId = async () => {
-	const params = {};
-	const res = await sportsApi.getBetOrderId(params).catch((err) => {
-		return err;
-	});
-	if (res == "ERR" || res == "Error") {
-		//发布登陆弹窗事件
-		Notification({
-			title: $.t('gameList["提示"]'),
-			content: $.t('common["请登陆后再进行操作"]'),
-		});
-		toLogin();
-	} else {
-		console.info(" 获获取沙巴体育注单ID(获取vendorTransId)", res);
-		const { code, data } = res;
-		if (code == Common.ResCode.SUCCESS) {
-			vendorTransId.value = data;
-		}
-	}
-};
-
-/**
- * @description: 盘口改变
- * @return {*}
- */
-const marketChange = () => {
-	weakClose();
-	/** 金额清除 */
-	// stake.value = "";
-	/**最高可赢重置 */
-	setMaxWinnable();
-};
-
-/**
- * @description: 赔率变动激活
- * @param {*} val
- */
-const oddsChanges = (val: boolean) => {
-	emit("oddsChanges", val);
-};
-
-defineExpose({ PlaceBet, stake });
 </script>
 
 <style lang="scss" scoped>
@@ -423,9 +66,10 @@ defineExpose({ PlaceBet, stake });
 
 		:deep() {
 			.el-input__wrapper {
+				background: var(--Bg1);
 				box-shadow: none;
-				border: none;
-				background: var(--Bg4);
+				border: 1px solid var(--Line_2);
+				border-radius: 8px;
 
 				.el-input__inner {
 					color: var(--Text1);

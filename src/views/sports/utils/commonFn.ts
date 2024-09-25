@@ -1,18 +1,19 @@
 import Common from "/@/utils/common";
-import userApi from "/@/api/user";
-import sportsApi from "/@/api/venueHome/sports";
-import shopCartPubSub from "/@/views/venueHome/sports/hooks/shopCartPubSub";
-import { useSportsBetEventStore } from "/@/store/modules/sports/sportsBetData";
-import { useSportsBetInfoStore } from "/@/store/modules/sports/sportsBetInfo";
-import { useSportsBetChampionStore } from "/@/store/modules/sports/sportsBetChampionData";
-import { useLoading } from "/@/directives/loading/hooks";
+// import CommonApi from "/@/api/common";
+import sportsApi from "/@/api/sports/sports";
+// import shopCartPubSub from "/@/views/venueHome/sports/hooks/shopCartPubSub";
+import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
+// import { useSportsBetChampionStore } from "/@/store/modules/sports/sportsBetChampionData";
+// import { useLoading } from "/@/directives/loading/hooks";
 import dayjs from "dayjs";
 import { convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
+import { computed } from "vue";
 
 // 请求余额信息
 export const getIndexInfo = async () => {
 	const sportsBetInfo = useSportsBetInfoStore();
-	const res = await userApi.getIndexInfo().catch((err) => err);
+	const res = await sportsApi.getIndexInfo().catch((err) => err);
 	if (res.code == Common.ResCode.SUCCESS) {
 		sportsBetInfo.balance = res.data.totalBalance;
 	}
@@ -21,30 +22,30 @@ export const getIndexInfo = async () => {
 /**
  * @description 请求注单ID
  */
-export const getBetOrderId = async () => {
-	const sportsBetInfo = useSportsBetInfoStore();
-	const res = await sportsApi.getBetOrderId().catch((err) => err);
-	if (res.code === Common.ResCode.SUCCESS) {
-		sportsBetInfo.vendorTransId = res.data;
-	}
-};
+// export const getBetOrderId = async () => {
+// 	const sportsBetInfo = useSportsBetInfoStore();
+// 	const res = await sportsApi.getBetOrderId().catch((err) => err);
+// 	if (res.code === Common.ResCode.SUCCESS) {
+// 		sportsBetInfo.vendorTransId = res.data;
+// 	}
+// };
 
-// 请求接受赔率信息
-export const getPublicSetting = async () => {
-	const { stopLoading } = useLoading();
-	const sportsBetEvent = useSportsBetEventStore();
-	const params = {
-		type: "sport_odds",
-	};
-	const res = await sportsApi.getPublicSetting(params).catch((err) => err);
-	if (res.code == Common.ResCode.SUCCESS) {
-		stopLoading();
-		if (res.data.length > 0) {
-			const data = res.data[0];
-			sportsBetEvent.radioStatus = data.value == "0" ? false : true;
-		}
-	}
-};
+// // 请求接受赔率信息
+// export const getPublicSetting = async () => {
+// 	const { stopLoading } = useLoading();
+// 	const sportsBetEvent = useSportsBetEventStore();
+// 	const params = {
+// 		type: "sport_odds",
+// 	};
+// 	const res = await sportsApi.getPublicSetting(params).catch((err) => err);
+// 	if (res.code == Common.ResCode.SUCCESS) {
+// 		stopLoading();
+// 		if (res.data.length > 0) {
+// 			const data = res.data[0];
+// 			sportsBetEvent.radioStatus = data.value == "0" ? false : true;
+// 		}
+// 	}
+// };
 
 /**
  * @description 请求单关注单信息
@@ -65,11 +66,12 @@ export const getSingleTicket = async () => {
 		marketClosingError(err.response.data);
 	});
 	if (res?.status == 200) {
+		// 新增单关请求回的信息
 		sportsBetInfo.addSingleTicketInfo(res.data);
 		// 获取最新信息之后动态更新输入框金额
-		const stake = computed(() => shopCartPubSub.getSingleTicketBetValue());
+		// const stake = computed(() => shopCartPubSub.getSingleTicketBetValue());
 		// 读取单关投注金额
-		if (stake.value) shopCartPubSub.getSingleTicketBetValue();
+		// if (stake.value) shopCartPubSub.getSingleTicketBetValue();
 		// 处理单关赔率
 		handlingSingleTicketOdds(res.data);
 		// 正常恢复状态
@@ -98,34 +100,35 @@ export const getParlayTickets = async () => {
 		const res = await sportsApi.GetParlayTickets(params, { showLoading: false });
 		// console.log("res", res);
 		if (res?.status === 200) {
+			// 新增串关请求回的信息
 			sportsBetInfo.addParlayTicketsInfo(res.data);
 			//设置串关投注金额
-			const betValueState = computed(() => shopCartPubSub.betValueState);
-			const comboTypeData = {};
-			res.data.combos.forEach((item) => {
-				const { comboType, maxBet } = item;
-				// console.log("maxBet", maxBet);
-				if (betValueState.value[comboType]) {
-					if (!comboTypeData[comboType]) {
-						comboTypeData[comboType] = betValueState.value[comboType];
-					}
-					if (comboTypeData[comboType] > maxBet) {
-						betValueState.value[comboType] = maxBet;
-					}
-				}
-			});
+			// const betValueState = computed(() => shopCartPubSub.betValueState);
+			// const comboTypeData = {} as any;
+			// res.data.combos.forEach((item: any) => {
+			// 	const { comboType, maxBet } = item;
+			// 	// console.log("maxBet", maxBet);
+			// 	if (betValueState.value[comboType]) {
+			// 		if (!comboTypeData[comboType]) {
+			// 			comboTypeData[comboType] = betValueState.value[comboType];
+			// 		}
+			// 		if (comboTypeData[comboType] > maxBet) {
+			// 			betValueState.value[comboType] = maxBet;
+			// 		}
+			// 	}
+			// });
 			handlingParlayTicketsOdds(res.data);
 			restoreStatus();
 			const filteredPriceInfo = res.data.priceInfo.filter((price) => price.stateCode != 0);
-			// console.log("filteredPriceInfo", filteredPriceInfo);
+			console.log("filteredPriceInfo", filteredPriceInfo);
 			if (filteredPriceInfo.length > 0) {
-				filteredPriceInfo.forEach((i) => {
+				filteredPriceInfo.forEach((i: any) => {
 					const index = sportsBetEvent.sportsBetEventData.findIndex((v) => v.betMarketInfo.marketId == i.marketId);
 					if (index !== -1) {
 						sportsBetEvent.sportsBetEventData[index].betMarketInfo.stateCode = i.stateCode;
 					}
 				});
-				// console.log("sportsBetEventData", sportsBetEvent.sportsBetEventData);
+				console.log("sportsBetEventData", sportsBetEvent.sportsBetEventData);
 				sportsBetEvent.examineEventsStatus();
 			}
 			// const data = {
@@ -137,7 +140,7 @@ export const getParlayTickets = async () => {
 			// };
 			// marketClosingErrors(data);
 		} else {
-			// console.log("==", res?.data?.errorCode, res?.data?.message);
+			console.log("==", res?.data?.errorCode, res?.data?.message);
 		}
 	} catch (err: any) {
 		// console.log("err", err);
@@ -145,23 +148,23 @@ export const getParlayTickets = async () => {
 	}
 };
 
-//  请求冠军单关信息
-export const getOutrightTicket = async () => {
-	const sportsBetChampion = useSportsBetChampionStore();
-	const sportsBetInfo = useSportsBetInfoStore();
-	const singleTicketInfo = sportsBetChampion.championBetData[0];
-	// 投注参数
-	const params = {
-		sportType: singleTicketInfo.sportType,
-		orid: singleTicketInfo.orid,
-	};
-	const res = await sportsApi.GetOutrightTicket(params, { showLoading: false }).catch((err) => err);
-	if (res.status == 200) {
-		sportsBetInfo.addChampionSingleTicketInfo(res.data);
-	} else {
-		// 异常
-	}
-};
+// //  请求冠军单关信息
+// export const getOutrightTicket = async () => {
+// 	const sportsBetChampion = useSportsBetChampionStore();
+// 	const sportsBetInfo = useSportsBetInfoStore();
+// 	const singleTicketInfo = sportsBetChampion.championBetData[0];
+// 	// 投注参数
+// 	const params = {
+// 		sportType: singleTicketInfo.sportType,
+// 		orid: singleTicketInfo.orid,
+// 	};
+// 	const res = await sportsApi.GetOutrightTicket(params, { showLoading: false }).catch((err) => err);
+// 	if (res.status == 200) {
+// 		sportsBetInfo.addChampionSingleTicketInfo(res.data);
+// 	} else {
+// 		// 异常
+// 	}
+// };
 
 // 单关轮训注单信息盘口关闭的错误状态
 const marketClosingError = (errInfo) => {
@@ -190,7 +193,7 @@ const marketClosingErrors = (errInfo) => {
 				}
 			});
 		});
-		// console.log("B039marketIds", marketIds);
+		console.log("B039marketIds", marketIds);
 		if (marketIds.length > 0) {
 			sportsBetEvent.sportsBetEventData.forEach((v) => {
 				if (marketIds.includes(v.betMarketInfo.marketId)) {
@@ -200,7 +203,7 @@ const marketClosingErrors = (errInfo) => {
 		}
 		// 过滤出stateCode不等于0
 		const filteredPriceInfo = errInfo.details.getParlayTickets.priceInfo.filter((price) => price.stateCode != 0);
-		// console.log("B039filteredPriceInfo", filteredPriceInfo);
+		console.log("B039filteredPriceInfo", filteredPriceInfo);
 		if (filteredPriceInfo.length > 0) {
 			filteredPriceInfo.forEach((i) => {
 				const index = sportsBetEvent.sportsBetEventData.findIndex((v) => v.betMarketInfo.marketId == i.marketId);
@@ -209,7 +212,7 @@ const marketClosingErrors = (errInfo) => {
 				}
 			});
 		}
-		// console.log("sportsBetEvent.sportsBetEventData", sportsBetEvent.sportsBetEventData);
+		console.log("sportsBetEvent.sportsBetEventData", sportsBetEvent.sportsBetEventData);
 	} else {
 		const regexes = [
 			{ errorCode: "B005", regex: /Event Closed or Invalid Market ; Market ID (.+)/ },
@@ -289,7 +292,7 @@ const handlingParlayTicketsOdds = (data) => {
 };
 
 // 赔率变化
-const updateOddsChange = (betMarketInfo, currentPrice, previousPrice) => {
+const updateOddsChange = (betMarketInfo: any, currentPrice: any, previousPrice: any) => {
 	const sportsBetEvent = useSportsBetEventStore();
 	if (currentPrice > previousPrice) {
 		betMarketInfo.oddsChange = "oddsUp";
@@ -307,19 +310,19 @@ const updateOddsChange = (betMarketInfo, currentPrice, previousPrice) => {
 	betMarketInfo.decimalPrice = currentPrice;
 };
 
-// 格式化赛事开始日期，适应设计图格式
-export const timeFormate = (globalShowTime) => {
-	if (globalShowTime) {
-		const date = dayjs(convertUtcToUtc5AndFormat(globalShowTime)).format("MM-DD");
-		const time = dayjs(convertUtcToUtc5AndFormat(globalShowTime)).format("HH:mm");
-		return {
-			date,
-			time,
-		};
-	} else {
-		return {
-			date: "00-00",
-			time: "00:00",
-		};
-	}
-};
+// // 格式化赛事开始日期，适应设计图格式
+// export const timeFormate = (globalShowTime) => {
+// 	if (globalShowTime) {
+// 		const date = dayjs(convertUtcToUtc5AndFormat(globalShowTime)).format("MM-DD");
+// 		const time = dayjs(convertUtcToUtc5AndFormat(globalShowTime)).format("HH:mm");
+// 		return {
+// 			date,
+// 			time,
+// 		};
+// 	} else {
+// 		return {
+// 			date: "00-00",
+// 			time: "00:00",
+// 		};
+// 	}
+// };

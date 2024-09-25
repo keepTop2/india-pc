@@ -103,30 +103,6 @@ const props = withDefaults(
  * @description 判断联赛是否开赛
  */
 const isLeagueStart = computed(() => {
-	// console.info("判断联赛是否开赛", props.shopData);
-
-	// /**足球 */
-	// const soccerInfo = SportsCommonFn.safeAccess(props.shopData, ["soccerInfo"]);
-	// /** 网球 */
-	// const tennisInfo = SportsCommonFn.safeAccess(props.shopData, ["tennisInfo"]);
-	// /** 沙滩排球相关信息  */
-	// const beachVolleyBallInfo = SportsCommonFn.safeAccess(props.shopData, ["beachVolleyBallInfo"]);
-	// /**电子竞技 */
-	// const eSportInfo = SportsCommonFn.safeAccess(props.shopData, ["eSportInfo"]);
-	// /**篮球 */
-	// const basketballInfo = SportsCommonFn.safeAccess(props.shopData, ["basketballInfo"]);
-	// /** 棒球 */
-	// const baseballInfo = SportsCommonFn.safeAccess(props.shopData, ["baseballInfo"]);
-	// /**排球 */
-	// const volleyballInfo = SportsCommonFn.safeAccess(props.shopData, ["volleyballInfo"]);
-	// /**美式足球 */
-	// const footballInfo = SportsCommonFn.safeAccess(props.shopData, ["footballInfo"]);
-	/**桌球 */
-	// const tableTennisInfo = SportsCommonFn.safeAccess(props.shopData, ["tableTennisInfo"]);
-	// console.info("桌球====>", tableTennisInfo);
-	// /**羽毛球 */
-	// const badmintonInfo = SportsCommonFn.safeAccess(props.shopData, ["badmintonInfo"]);
-
 	const InfoArr = ["soccerInfo", "tennisInfo", "beachVolleyBallInfo", "eSportInfo", "basketballInfo", "baseballInfo", "volleyballInfo", "tableTennisInfo", "badmintonInfo"];
 	let infoTag = false;
 	for (let i = 0; i < InfoArr.length; i++) {
@@ -376,18 +352,6 @@ const getName = (item) => {
 	}
 };
 
-// /**
-//  * @description 切换类名
-//  */
-// const changeClass = (item) => {
-// 	if (!item?.oddsChange) {
-// 		return "";
-// 	} else if (item?.oddsChange == "oddsUp") {
-// 		return "oddsUp";
-// 	} else if (item?.oddsChange == "oddsDown") {
-// 		return "oddsDown";
-// 	}
-// };
 /**
  * 删除赛事
  */
