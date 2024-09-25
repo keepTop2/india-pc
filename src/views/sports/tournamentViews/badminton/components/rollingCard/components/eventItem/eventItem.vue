@@ -198,6 +198,7 @@ const linkDetail = () => {
 		eventId: props?.event?.eventId,
 		dataIndex: props?.dataIndex,
 	};
+	toggleEventScoreboard(props.event);
 	gotoEventDetail(params, SportTypeEnum.Badminton);
 };
 </script>

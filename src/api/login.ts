@@ -9,6 +9,13 @@ export const loginApi = {
 			headers,
 		});
 	},
+	logout: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/login/api/logout`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 	verifyCode: (data = {}, headers = {}) => {
 		return useAxiosApi(`/app/login/api/verifyCode`, {
 			method: "POST",

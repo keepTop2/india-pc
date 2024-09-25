@@ -107,12 +107,12 @@ const activeSelection = ref<string[]>([]);
 const markets = computed(() => {
 	let marketData: any = [];
 	// 获取 SidebarStore 中的 eventsInfo，确保它是响应式的
-	const eventsInfo = viewSportPubSubEventData.sidebarData?.event[0]?.events[0];
-	console.log("eventsInfo", eventsInfo);
+	const childrenViewData = viewSportPubSubEventData.getSportData('sidebarData');
+	if (childrenViewData) {	
+		const eventsInfo = childrenViewData[0]?.events[0];
+		// console.log("eventsInfo", eventsInfo);
 
-	if (eventsInfo && eventsInfo.markets) {
-		// 遍历 markets 数据
-		const markets = eventsInfo.markets;
+		const markets = eventsInfo?.markets;
 		for (const key in markets) {
 			const market = markets[key];
 			const { betTypeName, marketId, betType } = market;

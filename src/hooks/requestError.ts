@@ -2,6 +2,7 @@ import ResCode from "/@/utils/resCode";
 import { useUserStore } from "/@/stores/modules/user";
 import pubsub from "/@/pubSub/pubSub";
 import { ElMessage } from "element-plus";
+import showToast from "./useToast";
 // import dialogSingleton from "/@/layout/layout1/login/dialogSingleton";
 
 export function useRequestError() {
@@ -19,7 +20,7 @@ export function useRequestError() {
 			// 区域限制
 			pubsub.publish("accessRestriction");
 		} else {
-			ElMessage.error(res.message);
+			showToast(res.message);
 		}
 	};
 

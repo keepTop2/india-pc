@@ -16,25 +16,107 @@
 			</div>
 		</div>
 		<div class="content" :class="!show ? 'showContent' : 'hideContent'">
-			<SportEventDetail :sportInfo="sportInfo" :size="'large'" />
+			<!-- <SportEventDetail :sportInfo="sportInfo" :size="'large'" /> -->
+			<!-- 计分板组件 -->
+			<div v-if="SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
+				<!-- 动态记分板组件 -->
+				<!-- 已开赛的动态组件计分板 -->
+				<component v-if="sportInfo && SportsCommonFn.isStartMatch(sportInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="sportInfo"></component>
+				<!-- 未开赛计分板显示 -->
+				<NotStarted v-else :eventsInfo="sportInfo" />
+			</div>
+			<!-- 直播 -->
+			<div v-else-if="SidebarStore.sidebarStatus === 'live'" class="events-live">
+				<VideoSource />
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed, defineAsyncComponent, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { FootballCardApi } from "/@/api/sports/footballCard";
+import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import PubSub from "/@/pubSub/pubSub";
-import sportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
+import SportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
+import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
+const SidebarStore = useSidebarStore();
 const router = useRouter();
+const route = useRoute();
 
 const emits = defineEmits(["back", "isHidden", "isCollect", "refresh", "filter", "toggleAll"]);
+
+
+
+// 未开赛
+const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/notStarted/notStarted.vue"));
+// 视频
+const VideoSource = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/videoSource/videoSource.vue"));
+// 热门赛事
+const HotEvents = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/hotEvents/hotEvents.vue"));
+// 盘口列表
+const MarketsList = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/marketsList/marketsList.vue"));
+
+// 球类图标集合
+const ballInfo: Record<number, { iconName: string; componentName: any }> = {
+	// 足球
+	1: {
+		iconName: "sports-sidebar-football",
+		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/football/football.vue")),
+	},
+	// 篮球
+	2: {
+		iconName: "sports-sidebar-basketball",
+		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/basketball/basketball.vue")),
+	},
+	// 美式足球
+	3: {
+		iconName: "sports-sidebar-americanSoccer",
+		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/americanSoccer/americanSoccer.vue")),
+	},
+	// 冰球
+	4: {
+		iconName: "sports-sidebar-iceHockey",
+		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/iceHockey/iceHockey.vue")),
+	},
+	// 网球
+	5: {
+		iconName: "sports-sidebar-tennis",
+		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/tennis/tennis.vue")),
+	},
+	// 排球
+	6: {
+		iconName: "sports-sidebar-volleyball",
+		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/volleyball/volleyball.vue")),
+	},
+	// 斯诺克
+	7: {
+		iconName: "sports-sidebar-billiards",
+		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/billiards/billiards.vue")),
+	},
+	// 棒球
+	8: {
+		iconName: "sports-sidebar-baseBall",
+		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/baseball/baseball.vue")),
+	},
+	// 羽毛球
+	9: {
+		iconName: "sports-sidebar-badminton",
+		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/badminton/badminton.vue")),
+	},
+	// 电子竞技
+	43: {
+		iconName: "sports-sidebar-eSports",
+		componentName: defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/eSports/eSports.vue")),
+	},
+};
+
 
 interface CapotCardType {
 	sportInfo: any;

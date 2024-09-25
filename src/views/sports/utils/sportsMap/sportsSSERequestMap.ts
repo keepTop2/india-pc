@@ -207,7 +207,6 @@ const sportsEventDetailPush = {
 			webToPushApi: WebToPushApi.sportsEventDetail,
 			params: {
 				query: `$filter=eventId eq ${eventId}`,
-				includeMarkets: "none",
 			},
 		};
 	},

@@ -60,24 +60,15 @@ const state = reactive({
  * @description 获取赛事列表下的赛事
  * @returns 赛事数组
  */
-const eventsList = computed(() => {
-	const childrenViewData = viewSportPubSubEventData.viewSportData.childrenViewData;
+const eventDetail = computed(() => {
+	// const childrenViewData = viewSportPubSubEventData.viewSportData.childrenViewData;
+	const childrenViewData = viewSportPubSubEventData.getSportData('sidebarData');
+
 	// console.log(childrenViewData, "childrenViewData");
 	if (childrenViewData) {
-		return childrenViewData[0]?.events;
+		return childrenViewData[0]?.events?.[0];
 	}
-	return [];
-});
-
-/**
- * @description 根据路由中的事件ID计算事件详情
- * @returns 事件详情对象
- */
-const eventDetail = computed(() => {
-	const { eventId } = route.query;
-	const events = eventsList.value;
-	// console.log(events, "======events");
-	return events?.filter((item: { eventId: LocationQueryValue | LocationQueryValue[] }) => item.eventId == eventId)[0];
+	return {};
 });
 
 /**
@@ -114,15 +105,6 @@ const markets = computed(() => {
 		return a.betType - b.betType;
 	});
 	return marketData;
-});
-
-const openSportPush = inject("openSportPush") as () => void;
-
-watchEffect(() => {
-	const { eventId } = route.query;
-	if (eventId) {
-		openSportPush();
-	}
 });
 
 // 监听效果

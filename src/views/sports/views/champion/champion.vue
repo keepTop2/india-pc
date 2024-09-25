@@ -36,6 +36,9 @@ import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEvent
 import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+
+import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
+const { sportType, tabActive, handleSportEventsPush, openSportPush, handleSportPush } = useSportEvents();
 const SidebarStore = useSidebarStore();
 const { clearSportsOddsChange } = useSportPubSubEvents();
 const sportsBetEvent = useSportsBetEventStore();
@@ -87,17 +90,6 @@ onBeforeMount(() => {
 		state.targetEventList = getList();
 		setInitsportsActive();
 	});
-});
-
-
-
-const openSportPush = inject('openSportPush') as () => void;
-
-watchEffect(() => {
-	const sportType = route.query.sportType;
-	if (sportType) {
-    openSportPush();
-  }
 });
 
 onBeforeUnmount(() => {});

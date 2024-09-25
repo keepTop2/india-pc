@@ -190,6 +190,7 @@ const linkDetail = () => {
 		dataIndex: props?.dataIndex,
 	};
 	SportHotStore.setCurrentEvent(props.event);
+	toggleEventScoreboard(props.event);
 	gotoEventDetail(params, SportTypeEnum.Basketball);
 };
 </script>

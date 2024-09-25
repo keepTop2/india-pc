@@ -177,7 +177,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 					}
 				});
 			}
-			console.log("处理完之后的购物车数据", this.sportsBetEventData);
+			// console.log("处理完之后的购物车数据", this.sportsBetEventData);
 			// 判断投注状态
 			this.examineEventsStatus();
 		},

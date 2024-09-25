@@ -88,7 +88,7 @@ import Common from "/@/utils/common";
 import eventBus from "/@/utils/eventBus";
 import showToast from "/@/hooks/useToast";
 import { useUserStore } from "/@/stores/modules/user";
-
+import CommonRegex from "/@/utils/CommonRegex";
 const UserStore = useUserStore();
 const hcaptcha: any = ref(null);
 const certifyId = ref(null);
@@ -102,10 +102,6 @@ const payLoad = reactive({
 
 // 记住密码
 const rememberPassword = ref(false);
-
-// 输入验证正则
-const userAccountRegex = /^[a-zA-Z][a-zA-Z0-9]{3,10}$/;
-const passWordregex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@_$]{8,16}$/;
 
 // 验证提示
 const userAccountVerifyError = ref(false);
@@ -125,13 +121,13 @@ onMounted(() => {
 
 // 账号输入变化处理
 const userOnInput = () => {
-	userAccountVerifyError.value = !userAccountRegex.test(payLoad.userAccount);
+	userAccountVerifyError.value = !CommonRegex.userAccountRegex.test(payLoad.userAccount);
 	verifyBtn();
 };
 
 // 密码输入变化处理
 const passOnInput = () => {
-	passWordVerifyError.value = !passWordregex.test(payLoad.password);
+	passWordVerifyError.value = !CommonRegex.passWordregex.test(payLoad.password);
 	verifyBtn();
 };
 
@@ -146,7 +142,7 @@ const verifyBtn = () => {
 
 // 登录处理
 const onLogin = async () => {
-	if (userAccountRegex.test(payLoad.userAccount) && passWordregex.test(payLoad.password)) {
+	if (CommonRegex.userAccountRegex.test(payLoad.userAccount) && CommonRegex.passWordregex.test(payLoad.password)) {
 		captchaBtn.value?.click();
 	} else {
 		showToast("用户名或密码错误", 1500);

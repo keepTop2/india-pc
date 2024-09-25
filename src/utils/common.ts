@@ -161,7 +161,12 @@ class Common {
 	static getDateNow() {
 		return moment(moment().format("YYYY-MM-DD HH:mm:ss")).valueOf();
 	}
-
+	/**
+	 * @describe 获取今天开始时间 (YYYY-MM-DD HH:mm:ss)
+	 */
+	static parseTime(time: any) {
+		return moment(time).format("YYYY.MM.DD HH:mm:ss");
+	}
 	/**
 	 * @describe 获取今天开始时间 (YYYY-MM-DD HH:mm:ss)
 	 */
@@ -435,8 +440,6 @@ class Common {
 					default:
 						break;
 				}
-				console.log(state);
-
 				router.push({ path: "/game/gamepage", query: { ...state } });
 			} else {
 				showToast(res.message);

@@ -11,8 +11,8 @@ export default (function () {
 	 * @returns processData 处理好的数据
 	 */
 
-	const marketsProcess = (sportServerData: SportEventSourceResponse, viewSportData) => {
-		// console.log("marketsProcess 数据处理触发");
+	const marketsProcess = (sportServerData: SportEventSourceResponse, viewSportData: any) => {
+		// console.log("marketsProcess 数据处理触发", sportServerData, JSON.parse(JSON.stringify(viewSportData)));
 		let processData = {} as SportViewModels;
 		const { add, change, remove } = sportServerData.payload.markets || { add: [], change: [], remove: [] };
 		if (sportServerData.payload.markets && add.length > 0) {
@@ -24,11 +24,14 @@ export default (function () {
 		if (sportServerData.payload.markets && remove.length > 0) {
 			processData = Object.assign({}, processData, marketsProcessRemove(sportServerData, viewSportData));
 		}
+		// console.log(JSON.parse(JSON.stringify(processData)), "=========processData");
 		processData.viewSportData["childrenViewData"] = formattingChildrenViewData(viewSportData, "events");
+		// console.log(JSON.parse(JSON.stringify(processData.viewSportData)), "=========processData.viewSportData.childrenViewData");
 		return processData;
 	};
 	// 盘口信息数据源新增 GetEvents
 	const marketsProcessAdd = (sportServerData, viewSportData) => {
+		// console.log(JSON.parse(JSON.stringify(sportServerData)), JSON.parse(JSON.stringify(viewSportData)), "=========sportServerData.payload.markets.add");
 		viewSportData.markets = viewSportData.markets.concat(sportServerData.payload.markets.add);
 		return { sportServerData, viewSportData };
 	};
