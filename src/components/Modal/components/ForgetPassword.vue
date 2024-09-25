@@ -57,6 +57,15 @@
 								v-model="verificationBtn"
 								:disabled="verificationBtn"
 								ref="VerificationCodeRef"
+								v-show="verifyType == 'email'"
+							/>
+							<VerificationCode
+								@VerificationCodeInput="VerificationCodeInput"
+								@sendVerificationCode="sendVerificationCode"
+								v-model="verificationBtn2"
+								:disabled="verificationBtn2"
+								ref="VerificationCodeRef2"
+								v-show="verifyType == 'phone'"
 							/>
 						</p>
 					</div>
@@ -128,6 +137,7 @@ import { CommonApi } from "/@/api/common";
 const UserStore = useUserStore();
 const currentStep = ref(0);
 const VerificationCodeRef = ref(null);
+const VerificationCodeRef2 = ref(null);
 enum verifyTypeEnum {
 	email = "email",
 	phone = "phone",
@@ -166,9 +176,9 @@ const getAreaCodeDownBox = async () => {
 	const { code, message, data } = res;
 	if (code == Common.ResCode.SUCCESS) {
 		AreaCodeOptions.value = data;
-		payLoad.areaCode = data[0].areaCode;
-		minLength.value = data[0].minLength;
-		maxLength.value = data[0].maxLength;
+		payLoad.areaCode = data[0]?.areaCode;
+		minLength.value = data[0]?.minLength;
+		maxLength.value = data[0]?.maxLength;
 	} else {
 		showToast(message);
 	}
@@ -179,6 +189,7 @@ const userVerifyTypeVerifyError = ref(false);
 // 校验完成登陆按钮可以点击
 const disabledBtn = ref(true);
 const verificationBtn = ref(true);
+const verificationBtn2 = ref(true);
 // 显示密码
 const showPassword = ref(false);
 const showConfimPassword = ref(false);
@@ -215,7 +226,7 @@ const areaCodeInput = (data: any) => {
 		const userPhoneRegex = new RegExp(`^\\d{${minLength.value},${maxLength.value}}$`);
 		payLoad.phone = phone;
 		userPhoneRegex.test(payLoad.phone) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
-		verificationBtn.value = userVerifyTypeVerifyError.value;
+		verificationBtn2.value = userVerifyTypeVerifyError.value;
 		verifyBtn();
 	} else {
 		payLoad.areaCode = areaCode;
@@ -253,6 +264,7 @@ const changeVerifyType = () => {
 		verifyType.value = verifyTypeEnum.phone;
 	} else {
 		verifyType.value = verifyTypeEnum.email;
+		emailOnInput();
 	}
 };
 
@@ -318,7 +330,7 @@ const sendVerificationCode = async () => {
 			if (code == Common.ResCode.SUCCESS) {
 				showToast(message, 1500);
 				verificationBtn.value = true;
-				(VerificationCodeRef.value as any).startCountdown(10);
+				(VerificationCodeRef.value as any).startCountdown(60);
 			} else {
 				showToast(message, 1500);
 			}
@@ -327,7 +339,7 @@ const sendVerificationCode = async () => {
 		const userPhoneRegex = new RegExp(`^\\d{${minLength.value},${maxLength.value}}$`);
 		if (!userPhoneRegex.test(payLoad.phone)) {
 			showToast("手机号不正确", 1500);
-			verificationBtn.value = true;
+			verificationBtn2.value = true;
 			return;
 		} else {
 			const params = {
@@ -339,7 +351,8 @@ const sendVerificationCode = async () => {
 			const { code, message } = res;
 			if (code == Common.ResCode.SUCCESS) {
 				showToast(message, 1500);
-				verificationBtn.value = true;
+				verificationBtn2.value = true;
+				(VerificationCodeRef2.value as any).startCountdown(60);
 			} else {
 				showToast(message, 1500);
 			}

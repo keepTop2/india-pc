@@ -120,10 +120,9 @@ import showToast from "/@/hooks/useToast";
 import { userApi } from "/@/api/user";
 import router from "/@/router";
 import { CommonApi } from "/@/api/common";
+import CommonRegex from "/@/utils/CommonRegex";
 
 const UserStore = useUserStore();
-const userAccountRegex = /^[a-zA-Z][a-zA-Z0-9]{3,10}$/;
-const passWordregex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@_$]{8,16}$/;
 
 const hcaptcha: any = ref(null);
 const captchaBtn: any = ref(null);
@@ -153,11 +152,11 @@ onMounted(() => {
 });
 
 const passOnInput = () => {
-	passWordregex.test(payLoad.password) ? (VerifyError.passWord = false) : (VerifyError.passWord = true);
+	CommonRegex.passWordregex.test(payLoad.password) ? (VerifyError.passWord = false) : (VerifyError.passWord = true);
 	verifyBtn();
 };
 const userOnInput = () => {
-	userAccountRegex.test(payLoad.userAccount) ? (VerifyError.userAccount = false) : (VerifyError.userAccount = true);
+	CommonRegex.userAccountRegex.test(payLoad.userAccount) ? (VerifyError.userAccount = false) : (VerifyError.userAccount = true);
 	verifyBtn();
 };
 const confirmOnInput = () => {
@@ -170,7 +169,7 @@ const userAgreementOnInput = () => {
 	verifyBtn();
 };
 const verifyBtn = () => {
-	if (payLoad.password && payLoad.userAccount && payLoad.confirmPassword && payLoad.mainCurrency && userAgreement.value) {
+	if (payLoad.password && payLoad.userAccount && payLoad.confirmPassword && payLoad.mainCurrency) {
 		if (!VerifyError.userAccount && !VerifyError.passWord && !VerifyError.confirmPassword) {
 			disabledBtn.value = false;
 		} else {
@@ -195,9 +194,11 @@ const onSubmit = async (token: string) => {
 	}
 };
 const onLogin = async () => {
-	// hcaptcha.value?.validate();
-	// onSubmit("true");
-	captchaBtn.value.click();
+	if (!userAgreement.value) {
+		showToast("请确定已阅读用户协议");
+	} else {
+		captchaBtn.value.click();
+	}
 };
 const options = UserStore.getCurrencyList;
 

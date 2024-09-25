@@ -7,6 +7,7 @@ import errorPage from "./modules/errorPage";
 import layout from "../layout/layout.vue";
 
 import userRoutes from "/@/router/modules/userMenu";
+import activityRoutes from "/@/router/modules/activity";
 import sportsRoutes from "/@/router/modules/sports/sports";
 // 登录注册弹窗
 const routes = [
@@ -35,6 +36,15 @@ const routes = [
 					title: "user",
 				},
 				children: [...userRoutes],
+			},
+			{
+				path: "/activity",
+				name: "activity",
+
+				meta: {
+					title: "activity",
+				},
+				children: [...activityRoutes],
 			},
 			{
 				path: "/game",
