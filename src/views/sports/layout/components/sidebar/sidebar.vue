@@ -33,7 +33,7 @@
 			</div>
 
 			<!-- 计分板组件 -->
-			<div v-if="SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
+			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
 				<component v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="eventsInfo"></component>
@@ -41,7 +41,7 @@
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
 			<!-- 直播 -->
-			<div v-else-if="SidebarStore.sidebarStatus === 'live'" class="events-live">
+			<div v-else-if="eventsInfo && SidebarStore.sidebarStatus === 'live'" class="events-live">
 				<VideoSource />
 			</div>
 		</div>
@@ -49,7 +49,7 @@
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
 		<div class="markets-list">
 			<!-- 盘口列表 -->
-			<MarketsList />
+			<MarketsList v-if="eventsInfo" />
 			<!-- 热门赛事 -->
 			<!-- <HotEvents /> -->
 		</div>
@@ -78,7 +78,7 @@ const eventsInfo = computed(() => {
 	if (childrenViewData) {
 		return childrenViewData[0]?.events[0];
 	}
-	return {};
+	return null;
 });
 
 
