@@ -64,6 +64,9 @@ import { useLink } from "/@/views/sports/hooks/useLink";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
+import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
+const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
+
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
 const router = useRouter();
@@ -106,6 +109,7 @@ const linkDetail = () => {
 		marketCount: props?.teamData.marketCount,
 	};
 	SportHotStore.setCurrentEvent(props.teamData);
+	toggleEventScoreboard(props.teamData);
 	gotoEventDetail(params, SportTypeEnum.FootBall);
 };
 

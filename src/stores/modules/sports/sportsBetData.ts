@@ -120,7 +120,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 				this.sportsBetEventData.push(data);
 			}
 
-			console.log("this.sportsBetEventData", this.sportsBetEventData);
+			// console.log("this.sportsBetEventData", this.sportsBetEventData);
 
 			// 赛事添加格式化数据
 			this.processingInfo();
@@ -184,7 +184,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 					}
 				});
 			}
-			console.log("处理完之后的购物车数据", this.sportsBetEventData);
+			// console.log("处理完之后的购物车数据", this.sportsBetEventData);
 			// 判断投注状态
 			this.examineEventsStatus();
 		},

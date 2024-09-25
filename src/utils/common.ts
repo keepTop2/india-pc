@@ -430,7 +430,7 @@ class Common {
 					default:
 						break;
 				}
-				console.log(state);
+				// console.log(state);
 
 				router.push({ path: "/game/gamepage", query: { ...state } });
 			} else {

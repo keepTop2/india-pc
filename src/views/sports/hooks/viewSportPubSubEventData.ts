@@ -74,6 +74,11 @@ export default (function () {
 			Object.assign(this.viewSportData, viewSportData);
 		}
 
+		public setSidebarData(sidebarData: SportViewData) {
+			console.log("sidebarData", sidebarData);
+			Object.assign(this.sidebarData, sidebarData);
+		}
+
 		/**
 		 * @description 关注直接给出所有的events 不区分sportType
 		 */
@@ -85,21 +90,26 @@ export default (function () {
 		/**
 		 * 处理数据
 		 */
-		public getSportData() {
+		public getSportData(dataType: 'viewSportData' | 'sidebarData' = 'viewSportData') {
 			const sportsBetEvent = useSportsBetEventStore();
 			const leagueSelect = sportsBetEvent.getLeagueSelect;
-			const leagues = this.viewSportData.childrenViewData;
+			let data;
+			if (dataType === 'viewSportData') {
+				data = this.viewSportData.childrenViewData;
+			} else if (dataType === 'sidebarData') {
+				data = this.sidebarData.childrenViewData;
+			}
 			// 如果有筛选 则处理数据，只给出筛选的联赛列表。
-			if (leagues.length && leagueSelect.length > 0) {
+			if (data && data.length && leagueSelect.length > 0) {
 				// console.log('=======有筛选数据')
-				return leagues.filter((item) => leagueSelect.includes(item.leagueId));
+				return data.filter((item) => leagueSelect.includes(item.leagueId));
 			}
 			// 如果有热门赛事，则处理数据给出热门赛事。
 			const hotLeagueList = JSON.parse(JSON.stringify(sportsBetEvent.hotLeagueList));
-			if (leagues.length && hotLeagueList) {
+			if (data && data.length && hotLeagueList) {
 				// console.log('=========有热门数据')
 				const hotEventId = hotLeagueList.map((item) => item.eventId);
-				return leagues.filter((item) => {
+				return data.filter((item) => {
 					item.event = item.events.filter((eventItem) => hotEventId.includes(eventItem.eventId));
 					item.event.sort((a, b) => {
 						return formatDateToTimeStamp(a.globalShowTime) - formatDateToTimeStamp(b.globalShowTime);
@@ -107,9 +117,9 @@ export default (function () {
 					return item.event.length;
 				});
 			}
-			// console.log(leagues, "===leagues", hotLeagueList);
+			// console.log(data, "===data", hotLeagueList);
 
-			return leagues;
+			return data;
 		}
 	}
 

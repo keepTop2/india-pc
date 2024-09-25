@@ -47,7 +47,6 @@ class WorkerManage {
 	 * @param name  线程名称
 	 */
 	public startWorker(workerName: WorkerName) {
-		console.log(workerName, "====");
 		// return new Promise((resolve, reject) => {
 		const resPonsedata: WebResponse = {};
 
