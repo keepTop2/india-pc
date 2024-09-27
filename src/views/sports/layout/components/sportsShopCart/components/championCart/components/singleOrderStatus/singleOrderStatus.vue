@@ -10,7 +10,7 @@
 		</div>
 		<!-- 购物车卡片 -->
 		<div class="container-main">
-			<ShopCard :shopData="shopData" :hasClose="false"></ShopCard>
+			<!-- <ShopCard :shopData="shopData" :hasClose="false"></ShopCard> -->
 			<!--单串-->
 			<div class="singlePass">
 				<!--投注信息-->

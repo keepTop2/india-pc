@@ -1,7 +1,3 @@
-/*
- * @Author: WangMingxin
- * @Description: 购物车控制器
- */
 import { defineStore } from "pinia";
 interface ShopCatControlType {
 	/** 购物车全关（不保留激活区域）  */
@@ -49,7 +45,7 @@ export const useShopCatControlStore = defineStore("ShopCatControl", {
 			return this.shopCartType;
 		},
 		/**
-		 * @description: 获取购物车显示状态
+		 * @description: 获取购物车赛事列表显示状态
 		 * @return {*}
 		 */
 		getShopCatShow(): any {

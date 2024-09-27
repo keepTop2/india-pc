@@ -47,7 +47,6 @@ class WorkerManage {
 	 * @param name  线程名称
 	 */
 	public startWorker(workerName: WorkerName) {
-		console.log(workerName, "====");
 		// return new Promise((resolve, reject) => {
 		const resPonsedata: WebResponse = {};
 
@@ -94,6 +93,8 @@ class WorkerManage {
 			console.error("未找到该线程");
 			resPonsedata.code = ResCode.ERR;
 			resPonsedata.message = "未找到该线程";
+			// 匹配不到线程就退出
+			return;
 			// reject(resPonsedata);
 		}
 		//关闭线程

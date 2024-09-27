@@ -42,6 +42,8 @@ import BaseballList from "/@/views/sports/tournamentViews/baseball/components/ro
 import BadmintonList from "/@/views/sports/tournamentViews/badminton/components/rollingCard/rollingCard.vue";
 import AmericanSoccerList from "/@/views/sports/tournamentViews/americanSoccer/components/rollingCard/rollingCard.vue";
 import { useLoading } from "/@/directive/loading/hooks";
+import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
+const { sportType, tabActive, handleSportEventsPush, openSportPush, handleSportPush } = useSportEvents();
 const { startLoading, stopLoading } = useLoading();
 const popularLeague = usePopularLeague();
 popularLeague.showPopularLeague();
@@ -62,8 +64,6 @@ const computedEventId = computed(() => {
 });
 
 const isShowCollect = computed(() => route.name === "sportsCollect");
-
-const openSportPush = inject('openSportPush') as () => void;
 
 onMounted(() => {
 	openSportPush();

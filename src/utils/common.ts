@@ -11,6 +11,7 @@ import { gameApi } from "../api/game";
 import router from "../router";
 import qs from "qs";
 import showToast from "../hooks/useToast";
+import common from "../i18n/lang/en-US/common";
 // // 全局设置moment时区 (上海)
 moment.tz.setDefault("Pacific/Guadalcanal");
 class Common {
@@ -80,8 +81,8 @@ class Common {
 	 * @param n 几位小数
 	 * @returns
 	 */
-	static formatFloat = (num: number | string, n: number = 2) => {
-		const f_x = parseFloat(num as string);
+	static formatFloat(num: number | string, n: number = 2) {
+		const f_x = parseFloat(num);
 		if (isNaN(f_x)) {
 			return 0;
 		}
@@ -103,7 +104,7 @@ class Common {
 			s_x = s_x.substring(0, pos_decimal + n + 1);
 		}
 		return s_x;
-	};
+	}
 
 	/**
 	 * @description 上传验证
@@ -346,17 +347,21 @@ class Common {
 	 */
 	static formatAmount(number: number) {
 		const absNumber = Math.abs(number);
-		/**计算使用千而非万*/
-		const threshold = 1000;
+		const threshold = 10000000;
 		let formattedNumber = "" as number | string;
 		if (absNumber >= threshold) {
-			const quotient = Math.floor(this.div(absNumber, threshold));
+			const quotient = Math.floor(common.div(absNumber, 1000));
 			formattedNumber = `${quotient}K`;
 		} else {
 			formattedNumber = this.formatFloat(Number(absNumber));
 		}
+		// 处理负数情况
+		if (number < 0) {
+			formattedNumber = "-" + formattedNumber;
+		}
 		return formattedNumber;
 	}
+
 	// 获取 config 配置请求 api
 	static getUrl() {
 		switch (import.meta.env.VITE_BASEENV) {

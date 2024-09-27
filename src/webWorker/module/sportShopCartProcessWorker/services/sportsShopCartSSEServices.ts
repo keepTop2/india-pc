@@ -23,13 +23,6 @@ export default (function () {
 		 */
 		public startSEEProcess(data: SportEventSourceResponse) {
 			// console.log("第六步 对应service处理对应业务");
-
-			const processData = shopCartProcess(data) as Array<any>;
-			// console.log("processData---------------->", processData);
-
-			// senDataMain(processData, jsonData);
-			// console.log(workerToViewData);
-			// console.warn("第七步 service处理完业务 往线程管理器发送");
 			//数据返回拼装
 			const workerToViewData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
@@ -37,7 +30,7 @@ export default (function () {
 				data: {
 					webToPushApi: data.webToPushApi,
 					sportPushApi: data.sportPushApi,
-					data: processData,
+					data: Object.keys(data.payload).length !== 0 ? (shopCartProcess(data) as Array<any>) : [],
 				},
 			};
 			senDataMain(workerToViewData);
@@ -48,21 +41,13 @@ export default (function () {
 		 */
 		public startOutrightSEEProcess(data: SportEventSourceResponse) {
 			// console.log("第六步 对应service处理对应业务");
-
-			const processData = shopOutrightProcess(data) as Array<any>;
-			// console.log("processData---------------->", processData);
-
-			// senDataMain(processData, jsonData);
-			// console.log(workerToViewData);
-			// console.warn("第七步 service处理完业务 往线程管理器发送");
-			//数据返回拼装
 			const workerToViewData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
-				commandType: SportShopCartProcessWorkerCommandType.outrightShopCartViewChanges,
+				commandType: SportShopCartProcessWorkerCommandType.championShopCartViewChanges,
 				data: {
 					webToPushApi: data.webToPushApi,
 					sportPushApi: data.sportPushApi,
-					data: processData,
+					data: Object.keys(data.payload).length !== 0 ? (shopOutrightProcess(data) as Array<any>) : [],
 				},
 			};
 			senDataMain(workerToViewData);

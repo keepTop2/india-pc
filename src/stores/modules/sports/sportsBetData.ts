@@ -22,6 +22,9 @@ interface sportsBetEvent {
 	combo: number;
 	bettingStatus: number;
 
+	/**实时请求 返回禁止下注的 MarketId */
+	nobetsMarketIds: [];
+
 	//联赛筛选与热门排序
 	leagueList: [];
 	hotLeagueList: null | [];
@@ -47,6 +50,8 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 			sportsEventInfo: {}, // 储存当前选中的赛事盘口信息
 			combo: 0, // 最大需要支持多少场投注赛事
 			bettingStatus: 0, // 投注状态
+			/** 返回禁止下注的 MarketId   */
+			nobetsMarketIds: [],
 
 			sportsLeagueSelect: [], // 选择的联赛
 			leagueList: [], // 用于存储筛选的联赛列表
@@ -68,7 +73,13 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 		getEventInfo(): any {
 			return this.sportsEventInfo;
 		},
-
+		/**
+		 * @description: 禁止下注的 MarketId
+		 * @return {*}
+		 */
+		getNobetsMarketIds(): any[] {
+			return this.nobetsMarketIds;
+		},
 		/**
 		 * @description 获取选中的联赛筛选
 		 */
@@ -120,27 +131,9 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 				this.sportsBetEventData.push(data);
 			}
 
-			console.log("this.sportsBetEventData", this.sportsBetEventData);
-
 			// 赛事添加格式化数据
 			this.processingInfo();
 		},
-
-		/*/~*
-		 * @description SSE推送的最新购物车数据
-		 * @param data SSE推送数据源的数据
-		 ~/
-		shopCartSSEProcess(data) {
-			data.forEach((v) => {
-				this.sportsBetEventData.forEach((i) => {
-					if (v.eventId == i.eventId) {
-						// 如果找到匹配项，合并对象  进行深度合并不然嵌套的内容会被覆盖掉
-						i = _.merge(i, v);
-					}
-				});
-			});
-			this.processingInfo();
-		},*/
 
 		processingInfo() {
 			// 提取共同的处理逻辑
@@ -184,79 +177,10 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 					}
 				});
 			}
-			console.log("处理完之后的购物车数据", this.sportsBetEventData);
+			// console.log("处理完之后的购物车数据", this.sportsBetEventData);
 			// 判断投注状态
 			this.examineEventsStatus();
 		},
-
-		/*processingInfo() {
-			// 赛事数据只有一条 为单关处理
-			if (this.sportsBetEventData.length === 1) {
-				this.combo = 0;
-				const [v] = this.sportsBetEventData;
-				const eventInfo = this.sportsEventInfo[v.eventId];
-				const { betType, marketId, selectionKey } = eventInfo;
-				let market: any = {};
-				Object.values(v.markets).forEach((item: any) => {
-					console.log();
-					if (item.betType === betType) {
-						if (item.marketId === marketId) {
-							market = item;
-						}
-					}
-				});
-				// const market = v.markets[betType];
-				const selection: any = market.selections.find((s) => s.key === selectionKey);
-				v.betMarketInfo = {
-					betType: betType,
-					betTypeName: market.betTypeName,
-					marketId: marketId,
-					marketStatus: market.marketStatus,
-					key: selection.key,
-					keyName: selection.keyName,
-					point: selection.point,
-					decimalPrice: selection.oddsPrice.decimalPrice,
-				};
-			} else if (this.sportsBetEventData.length > 1) {
-				const comparedIndex = this.sportsBetEventData.findIndex((data) => data.eventStatus === "running" && data.isParlay);
-				this.sportsBetEventData.forEach((v) => {
-					const eventInfo = this.sportsEventInfo[v.eventId];
-					const { betType, marketId, selectionKey } = eventInfo;
-					let market: any = {};
-					Object.values(v.markets).forEach((item: any) => {
-						console.log();
-						if (item.betType === betType) {
-							if (item.marketId === marketId) {
-								market = item;
-							}
-						}
-					});
-					v.betMarketInfo = {
-						betType: betType,
-						betTypeName: market.betTypeName,
-						marketId: marketId,
-						marketStatus: market.marketStatus,
-						combo: market.combo,
-					};
-					if (comparedIndex !== -1) {
-						v.betMarketInfo.differentBalls = v.sportType != this.sportsBetEventData[comparedIndex].sportType;
-					}
-					if (market.combo > this.combo) {
-						this.combo = market.combo;
-					}
-					const selection = market.selections.find((s) => s.key === selectionKey);
-					if (selection) {
-						v.betMarketInfo.key = selection.key;
-						v.betMarketInfo.keyName = selection.keyName;
-						v.betMarketInfo.point = selection.point;
-						v.betMarketInfo.decimalPrice = selection.oddsPrice.decimalPrice;
-					}
-				});
-			}
-			console.log("处理完之后的购物车数据", this.sportsBetEventData);
-			// 判断投注状态
-			this.examineEventsStatus();
-		},*/
 
 		/**
 		 * @description 判断盘口状态是否异常；
@@ -380,6 +304,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 			this.processingInfo();
 			// 购物车数据为空关闭线程
 			if (this.sportsBetEventData.length == 0) {
+				console.log("购物车赛事清空时");
 				this.closeShopCart(); // 关闭购物车弹窗
 				this.sportsCloseSse(); // 关闭线程
 			}

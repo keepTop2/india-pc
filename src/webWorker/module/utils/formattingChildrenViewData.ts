@@ -9,7 +9,10 @@ import { formatEvent2League } from "/@/views/sports/utils/formattingViewData";
  */
 function formattingMarkets(markets: any[]) {
 	const obj: any = {};
-	markets.forEach((item: { sort: number; betType: string | number; marketId: any }) => {
+	const uniqueMarkets = Array.from(new Set(markets.map(market => market.marketId))).map(marketId => {
+		return markets.find(market => market.marketId === marketId)
+	});
+	uniqueMarkets.forEach((item: { sort: number; betType: string | number; marketId: any }) => {
 		if (item.sort == 1 || item.sort == 0) {
 			if (obj[item.betType]) {
 				obj[`${item.betType}-${item.marketId}`] = item;
@@ -78,7 +81,7 @@ export const formattingChildrenViewData = (data: any, sportKey: string, webToPus
 			// }
 		});
 	}
-	// console.log(arr, "=========arr");
+	// console.log(JSON.parse(JSON.stringify(arr)), "=========arr");
 	childrenViewData = arr;
 	// });
 	return childrenViewData;

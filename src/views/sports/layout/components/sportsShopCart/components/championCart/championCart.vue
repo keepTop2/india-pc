@@ -132,6 +132,8 @@ onMounted(() => {
 	watch(
 		() => UserStore.getUserInfo,
 		(newValue, oldValue) => {
+			console.log("触发了冠军购物车的业务？？？？？");
+
 			/**判断用户信息为空是不进行加载Api */
 			if (!isEmpty(newValue)) {
 				getIndexInfo();

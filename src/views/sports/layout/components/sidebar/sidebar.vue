@@ -22,7 +22,7 @@
 			<div class="events-content">
 				<div class="events-header">
 					<div class="icon"><svg-icon :name="ballInfo[Number(route.query.sportType)]?.iconName" size="16px"></svg-icon></div>
-					<template v-if="Object.keys(eventsInfo).length !== 0">
+					<template v-if="eventsInfo">
 						<div class="team-name">
 							<span class="name">{{ eventsInfo?.teamInfo?.homeName }}</span>
 							<span>VS</span>
@@ -33,15 +33,15 @@
 			</div>
 
 			<!-- 计分板组件 -->
-			<div v-if="SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
+			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
-				<component v-if="SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="eventsInfo"></component>
+				<component v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="eventsInfo"></component>
 				<!-- 未开赛计分板显示 -->
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
 			<!-- 直播 -->
-			<div v-else-if="SidebarStore.sidebarStatus === 'live'" class="events-live">
+			<div v-else-if="eventsInfo && SidebarStore.sidebarStatus === 'live'" class="events-live">
 				<VideoSource />
 			</div>
 		</div>
@@ -49,7 +49,7 @@
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
 		<div class="markets-list">
 			<!-- 盘口列表 -->
-			<MarketsList />
+			<MarketsList v-if="eventsInfo" />
 			<!-- 热门赛事 -->
 			<!-- <HotEvents /> -->
 		</div>
@@ -63,10 +63,27 @@ import { storeToRefs } from "pinia";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
 const route = useRoute();
 const SidebarStore = useSidebarStore();
-const { eventsInfo } = storeToRefs(SidebarStore);
+// const { eventsInfo } = storeToRefs(SidebarStore);
+
+// const eventsInfo = computed(() => SidebarStore.eventsInfo);
+// 获取到的数据
+const eventsInfo = computed(() => {
+	const childrenViewData = viewSportPubSubEventData.getSportData('sidebarData');
+	console.log(childrenViewData, '=========== viewSportPubSubEventData.sidebarData');
+
+	if (childrenViewData) {
+		return childrenViewData[0]?.events[0];
+	}
+	return null;
+});
+
+
+// console.log( eventsInfo,'=========== events, markets');
+
 
 // 未开赛
 const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/notStarted/notStarted.vue"));
@@ -76,10 +93,6 @@ const VideoSource = defineAsyncComponent(() => import("/@/views/sports/layout/co
 const HotEvents = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/hotEvents/hotEvents.vue"));
 // 盘口列表
 const MarketsList = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/marketsList/marketsList.vue"));
-
-onMounted(() => {
-	console.log("route", route);
-});
 
 // 球类图标集合
 const ballInfo: Record<number, { iconName: string; componentName: any }> = {
@@ -146,16 +159,16 @@ const computedTools = computed(() => {
 		iconName_active: "sports-score_icon_active",
 		tooltipText: "比分板",
 		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
-		param: eventsInfo, // 传递参数
+		param: eventsInfo.value, // 传递参数
 	});
 	// 判断是否有视频源
-	if (eventsInfo.value.streamingOption != 0 && eventsInfo.value.channelCode) {
+	if (eventsInfo.value && eventsInfo.value.streamingOption != 0 && eventsInfo.value.channelCode) {
 		baseTools.push({
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
 			action: switchEventVideoSource,
-			param: eventsInfo, // 传递参数
+			param: eventsInfo.value, // 传递参数
 		});
 	}
 	return baseTools;

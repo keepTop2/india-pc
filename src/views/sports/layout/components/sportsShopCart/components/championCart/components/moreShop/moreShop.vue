@@ -6,7 +6,7 @@
 	<div class="moreShop">
 		<div class="commodity">
 			<!--商品卡片-->
-			<ShopCard v-for="(item, index) in sportsBetEventData" :key="index" :shopData="item" :hasClose="true" />
+			<!-- <ShopCard v-for="(item, index) in sportsBetEventData" :key="index" :shopData="item" :hasClose="true" /> -->
 		</div>
 		<div class="money-plan">
 			<!-- 金额输入 -->

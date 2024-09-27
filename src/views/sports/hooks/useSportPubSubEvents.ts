@@ -30,10 +30,20 @@ import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSou
 import { useLoading } from "/@/directive/loading/hooks";
 import viewSportPubSubEventData from "./viewSportPubSubEventData";
 
-const { stopLoading } = useLoading();
+import { getSingleTicket, getParlayTickets, getOutrightTicket } from "/@/views/sports/utils/commonFn";
+import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 
+import { useToolsHooks } from "./scoreboardTools";
+import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+const { stopLoading } = useLoading();
 export default function useSportPubSubEvents() {
+	// 投注信息状态管理器
 	const sportsBetEvent = useSportsBetEventStore();
+	// 购物车全局状态管理器
+	const ShopCatControlStore = useShopCatControlStore();
+	const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
+	const SidebarStore = useSidebarStore();
+
 	// const sportsBetChampion = useSportsBetChampionStore();
 	//体育订阅事件
 	const initSportPubsub = () => {
@@ -156,6 +166,14 @@ export default function useSportPubSubEvents() {
 				// 派发到 viewSportPubSubEventData 数据中心
 				// console.log(processData.data.webToPushApi, processData.data.state.viewSportData);
 				viewSportPubSubEventData.setSportData(processData.data.state.viewSportData);
+				//在没有info数据时 存储赛事第一条到侧边栏
+				if (Object.keys(SidebarStore.getEventsInfo).length === 0) {
+					const childrenViewData = viewSportPubSubEventData.getSportData();
+					// console.log(childrenViewData, "childrenViewData")
+					if (childrenViewData && childrenViewData.length > 0 && childrenViewData[0]?.events && childrenViewData[0]?.events.length > 0) {
+						toggleEventScoreboard(childrenViewData[0]?.events[0]);
+					}
+				}
 			}
 			// 体育视图处理线程 赔率变更 指令
 			else if (processData.commandType == SportViewProcessWorkerCommandType.sportOddsChange) {
@@ -171,33 +189,38 @@ export default function useSportPubSubEvents() {
 			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;
 			if (processData.commandType == SportViewProcessWorkerCommandType.sidebarEventSource) {
 				// console.log("sidebarWorker -- sidebarWorker", processData.data.state.viewSportData.childrenViewData[0]?.events[0]);
-				viewSportPubSubEventData.sidebarData.event = processData.data.state.viewSportData.childrenViewData;
-				console.log("viewSportPubSubEventData.sidebarData.event", viewSportPubSubEventData.sidebarData.event);
+				viewSportPubSubEventData.setSidebarData(processData.data.state.viewSportData);
+				// console.log("viewSportPubSubEventData.sidebarData.event", processData.data.state.viewSportData);
 			}
 		}
 
 		//体育购物车线程
 		else if (event.workerName == WorkerName.sportShopCartProcessWorker) {
-			// const processData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = event as WorkerTransfer<
-			// 	WorkerToViewSportsShopCart<any>,
-			// 	SportShopCartProcessWorkerCommandType
-			// >;
-			// if (processData.commandType == SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges) {
-			// 	if (!sportsBetEvent.sportsBetShow) return; // 弹窗关闭停止对应任务
-			// 	// 接受赛事购物车数据
-			// 	/*// console.log("processData------------------>", processData);
-			// 	if (processData.data.data && processData.data.data.length > 0) {
-			// 		sportsBetEvent.shopCartSSEProcess(processData.data.data);
-			// 	}*/
-			// 	if (sportsBetEvent.sportsBetEventData.length == 1) {
-			// 		// 单关注单请求
-			// 		Common.getSingleTicket();
-			// 	}
-			// 	if (sportsBetEvent.sportsBetEventData.length > 1) {
-			// 		// 串关注单请求
-			// 		Common.getParlayTickets();
-			// 	}
-			// }
+			console.log(" 购物车的推送数据  ---------------->>>>>>>>>>", event);
+
+			const processData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = event as WorkerTransfer<
+				WorkerToViewSportsShopCart<any>,
+				SportShopCartProcessWorkerCommandType
+			>;
+			if (processData.commandType == SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges) {
+				if (!ShopCatControlStore.getShopCatShow) return; // 弹窗关闭停止对应任务
+				// 接受赛事购物车数据
+
+				/*if (processData.data.data && processData.data.data.length > 0) {
+					sportsBetEvent.shopCartSSEProcess(processData.data.data);
+				}*/
+				if (sportsBetEvent.sportsBetEventData.length == 1) {
+					// 单关注单请求
+					console.log("请求单关信息");
+					getSingleTicket();
+				}
+				if (sportsBetEvent.sportsBetEventData.length > 1) {
+					// 串关注单请求
+					console.log("请求串关信息");
+					getParlayTickets();
+				}
+			}
+			// 先屏蔽冠军购物车推送的判断
 			// if (processData.commandType == SportShopCartProcessWorkerCommandType.championShopCartViewChanges) {
 			// 	if (!sportsBetChampion.championBetShow) return; // 弹窗关闭停止对应任务
 			// 	// 冠军购物车数据
@@ -206,7 +229,7 @@ export default function useSportPubSubEvents() {
 			// 	}
 			// 	if (sportsBetChampion.championBetData.length == 1) {
 			// 		// 冠军单关注单请求
-			// 		Common.getOutrightTicket();
+			// 		getOutrightTicket();
 			// 	}
 			// }
 		}

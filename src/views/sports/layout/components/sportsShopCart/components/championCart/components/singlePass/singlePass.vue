@@ -3,7 +3,7 @@
  * @Description:  体育-购物车- 一个单下注输入框
 -->
 <template>
-	<ShopCard :shopData="shopData" :hasClose="hasClose"></ShopCard>
+	<!-- <ShopCard :shopData="shopData" :hasClose="hasClose"></ShopCard> -->
 	<div class="singlePass">
 		<el-input
 			v-model="stake"
