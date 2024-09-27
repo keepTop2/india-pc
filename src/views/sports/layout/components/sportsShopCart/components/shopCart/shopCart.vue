@@ -22,18 +22,22 @@
 			<div class="noData" v-if="!sportsBetEvent.sportsBetEventData.length"><span> 请完成您的下注 </span></div>
 			<!-- 购物车赛事列表 -->
 			<div class="shop-plan" v-else>
-				<div class="event-list">
+				<div class="event-list" ref="container" @scroll="checkScroll">
 					<!-- 赛事列表 单关串关公用 -->
 					<EventCard v-for="(data, index) in sportsBetEvent.sportsBetEventData" :key="index" :shopData="data" :hasClose="true" />
 					<!-- 单关表单 -->
 					<SingleTicketFrom v-if="sportsBetEvent.sportsBetEventData.length == 1" />
 					<!-- 串关表单 -->
 					<ParlayTicketsFrom v-if="sportsBetEvent.sportsBetEventData.length > 1" />
+					<!-- 指示箭头 -->
+					<img v-if="arrowShow" class="left_arrow" :src="left_arrow" />
 				</div>
-				<!-- 单关投注按钮 -->
-				<SingleTicketFooter v-if="sportsBetEvent.sportsBetEventData.length == 1" @singleTicketSuccess="getSingleTicketSuccess" />
-				<!-- 串关键盘按钮 -->
-				<ParlayTicketsFooter v-if="sportsBetEvent.sportsBetEventData.length > 1" @parlayTicketsSuccess="getParlayTicketsSuccess" />
+				<div class="footer-container">
+					<!-- 单关投注按钮 -->
+					<SingleTicketFooter v-if="sportsBetEvent.sportsBetEventData.length == 1" @singleTicketSuccess="getSingleTicketSuccess" />
+					<!-- 串关键盘按钮 -->
+					<ParlayTicketsFooter v-if="sportsBetEvent.sportsBetEventData.length > 1" @parlayTicketsSuccess="getParlayTicketsSuccess" />
+				</div>
 			</div>
 		</div>
 	</div>
@@ -48,9 +52,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, watch } from "vue";
+import { nextTick, onMounted, reactive, ref, watch } from "vue";
+import left_arrow from "/@/assets/zh-CN/sports/left_arrow.gif";
 import { EventCard, SingleTicketFrom, ParlayTicketsFrom, SingleTicketFooter, ParlayTicketsFooter, SingleTicketFinish, ParlayTicketsFinish } from "./components/index";
-
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import Common from "/@/utils/common";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
@@ -66,6 +70,9 @@ const isRotating = ref(false);
 const isChange = ref(false);
 /**  是否下单结束 */
 const isOrdered = ref(false);
+const container = ref<HTMLElement | null>(null);
+const hasScrollbar = ref(false);
+const arrowShow = ref(false);
 
 const state = reactive({
 	singleTicketSuccess: {}, // 单关下注详情
@@ -93,6 +100,9 @@ watch(
 		// 判断购物车弹窗层开启的时候 购物车赛事发生变化 则重新开关线程发起推送
 		// 还需要判断购物车赛事信息是否有 需要赛事信息大于0
 		if (ShopCatControlStore.getShopCatShow && newValue > 0) {
+			nextTick(() => {
+				getHasScrollbar();
+			});
 			// 开启线程
 			sportsBetEvent.sportsOpenSse();
 		}
@@ -107,10 +117,34 @@ watch(
 watch(
 	() => ShopCatControlStore.getShopCatShow,
 	(newValue) => {
-		if (newValue) {
-		}
+		nextTick(() => {
+			getHasScrollbar();
+		});
 	}
 );
+
+// 判断是否出现滚动条
+const getHasScrollbar = () => {
+	const element = container.value;
+	if (element) {
+		// 允许 scrollHeight 和 clientHeight 之间的差异在 2px 以内
+		const hasVerticalScrollbar = Math.abs(element.scrollHeight - element.clientHeight) > 2;
+		hasScrollbar.value = hasVerticalScrollbar;
+		// 根据是否有滚动条来控制 arrowShow
+		arrowShow.value = hasVerticalScrollbar;
+	}
+};
+
+const checkScroll = () => {
+	const element = container.value;
+	if (element) {
+		const hasScrollbar = element.scrollHeight > element.clientHeight;
+		// 允许一个 2px 的误差范围
+		const isAtBottom = Math.abs(element.scrollTop + element.clientHeight - element.scrollHeight) <= 2;
+		// 根据是否有滚动条和是否滚动到底部来控制 arrowShow
+		arrowShow.value = hasScrollbar && !isAtBottom;
+	}
+};
 
 /**
  * @description 单关请求回调执行
@@ -268,7 +302,7 @@ const onOrderConfirm = () => {
 	.container-main {
 		position: relative;
 		overflow-y: hidden;
-		padding: 10px 15px 15px;
+		padding: 10px 0px 15px;
 
 		&::after {
 			position: absolute;
@@ -296,13 +330,19 @@ const onOrderConfirm = () => {
 	.event-list {
 		display: grid;
 		gap: 6px;
+		padding: 0px 15px;
+		max-height: 450px;
+		overflow-y: auto;
+	}
+	.footer-container {
+		padding: 0px 15px;
 	}
 }
 
 .left_arrow {
 	position: absolute;
-	bottom: 20%;
-	left: 48%;
+	bottom: 125px;
+	left: 50%;
 	width: 22px;
 	height: 16px;
 	transform: rotate(-90deg);
