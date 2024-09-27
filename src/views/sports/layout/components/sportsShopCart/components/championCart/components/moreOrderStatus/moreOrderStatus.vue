@@ -1,7 +1,3 @@
-<!--
- * @Author: WangMingxin
- * @Description: 多个单子(串单) -下注后的结果面板
--->
 <template>
 	<div class="shopCart">
 		<div class="header-container">
@@ -12,7 +8,7 @@
 			<div class="card-all">
 				<div class="commodity">
 					<!--商品卡片-->
-					<ShopCard v-for="(item, index) in sportsBetEventData" :key="index" :shopData="item" :hasClose="false" />
+					<!-- <ShopCard v-for="(item, index) in sportsBetEventData" :key="index" :shopData="item" :hasClose="false" /> -->
 				</div>
 				<!-- 下注后的详细卡片 -->
 				<div class="money-plan">
@@ -35,7 +31,7 @@
 <script setup lang="ts">
 import { onMounted, reactive } from "vue";
 import Common from "/@/utils/common";
-import { cardStatus, ShopCard } from "../index";
+import { cardStatus } from "../index";
 import { PlaceParlayBetResult } from "./components/index";
 const emits = defineEmits(["onOrderEnd", "onKeepOrder", "refreshBalance"]);
 

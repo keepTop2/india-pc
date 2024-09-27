@@ -78,6 +78,7 @@ instance.interceptors.request.use(
 		const language = UserStore.getLang;
 		if (language) {
 			config["headers"]["Accept-Language"] = language;
+			// config["headers"]["X-Custom"] = "gw.playesoversea.store";
 		}
 		return config;
 	},

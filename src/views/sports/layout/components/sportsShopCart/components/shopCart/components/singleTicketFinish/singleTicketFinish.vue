@@ -1,81 +1,66 @@
-<!--
- * @Author: WangMingxin
- * @Description: 一个单子(单注) -下注后的结果面板
--->
 <template>
 	<div class="shopCart">
 		<div class="header-container">
-			<span class="close_icon" @click.stop="click_clear"><svg-icon name="sports-close" size="30px"></svg-icon></span>
-
-			<cardStatus :betStatus="placeBetRes.betStatus" />
+			<span class="close_icon" @click="onOrderConfirm"><svg-icon name="sports-close" size="30px"></svg-icon></span>
+			<CardStatus :betStatus="props.data.betStatus" />
 		</div>
 		<!-- 购物车卡片 -->
 		<div class="container-main">
-			<ShopCard :shopData="shopData" :hasClose="false"></ShopCard>
+			<!-- 赛事列表 单关串关公用 -->
+			<EventCard v-for="(data, index) in sportsBetEvent.sportsBetEventData" :key="index" :shopData="data" :hasClose="false" />
 			<!--单串-->
 			<div class="singlePass">
 				<!--投注信息-->
 				<div class="bet-info">
 					<div class="cell">
 						<span class="label">投注金额</span>
-						<span class="value success">{{ Common.formatFloat(betInfo?.stake) || "0.00" }}</span>
+						<span class="value success">{{ common.formatFloat(props.data.stake) }}</span>
 					</div>
 					<div class="cell">
 						<span class="label">可赢金额</span>
-						<span class="value success">{{ Common.formatFloat(betInfo?.winnable) }}</span>
+						<span class="value success">{{ singleTicketWinningAmount }}</span>
 					</div>
 					<div class="cell">
 						<span class="label">注单号</span>
-						<span class="value">{{ vendorTransId }}</span>
+						<span class="value">{{ sportsBetInfo.vendorTransId }}</span>
 					</div>
 				</div>
-				<el-button @click="onOrderEnd">确认</el-button>
+				<el-button @click="onOrderConfirm">确认</el-button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import Common from "/@/utils/common";
-import { cardStatus, ShopCard } from "../index";
+import common from "/@/utils/common";
+import { EventCard, CardStatus } from "../index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
+import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
+import { computed } from "vue";
 const sportsBetEvent = useSportsBetEventStore();
 const ShopCatControlStore = useShopCatControlStore();
+const sportsBetInfo = useSportsBetInfoStore();
 
-const emits = defineEmits(["onOrderEnd", "onKeepOrder", "refreshBalance"]);
+const emit = defineEmits(["onOrderConfirm"]);
 
 const props = withDefaults(
 	defineProps<{
-		/** 选中的商品详细 */
-		shopData?: any;
-		/** 下单值  */
-		betInfo?: any;
-		/** 下单后的返回  */
-		placeBetRes?: any;
-		/** 订单提交的订单号  */
-		vendorTransId: string;
+		data: any;
 	}>(),
 	{
-		shopData: () => {
-			return {};
-		},
+		data: {},
 	}
 );
 
-const click_clear = () => {
-	sportsBetEvent.clearShopCart();
-	ShopCatControlStore.setShopCatShow(false);
-	onOrderEnd();
-};
+const singleTicketWinningAmount = computed(() => {
+	const amount = common.mul(props.data.currentPrice, props.data.stake);
+	const result = common.sub(amount, props.data.stake);
+	return result ? common.formatFloat(result) : 0;
+});
 
-/**
- * @description: 下单确认结束
- * @return {*}
- */
-const onOrderEnd = () => {
-	emits("refreshBalance");
-	emits("onOrderEnd");
+const onOrderConfirm = () => {
+	emit("onOrderConfirm");
 };
 </script>
 

@@ -1,5 +1,6 @@
 <template>
 	<div class="shopCart" v-if="!isOrdered">
+		<!-- 头部信息 -->
 		<div class="header-container" @click="changeShopCart">
 			<div class="left">
 				<span class="label">投注单</span>
@@ -7,119 +8,69 @@
 				<span class="arrow"><svg-icon name="sports-arrow_card_header" width="12px" height="8px"></svg-icon></span>
 			</div>
 			<div class="right">
+				<!-- 余额信息 -->
 				<div class="sportsBetEventData" @click.stop="refreshBalance">
-					<!-- 余额 -->
 					<span class="stake">{{ Common.formatAmount(Number(sportsBetInfo.balance)) }}</span>
 					<span class="refresh_icon" :class="{ rotateAn: isRotating }" @animationend="handleAnimationEnd"><svg-icon name="sports-refresh" size="18px"></svg-icon></span>
 				</div>
+				<!-- 关闭按钮 -->
 				<span v-if="ShopCatControlStore.getShopCatShow" class="close_icon" @click.stop="onClickClear"><svg-icon name="sports-close" size="30px"></svg-icon></span>
 			</div>
 		</div>
 		<div v-if="ShopCatControlStore.getShopCatShow" class="container-main">
-			<div class="noData" v-if="!sportsBetEvent.sportsBetEventData.length">
-				<span> 请完成您的下注 </span>
-			</div>
-			<!-- 购物车 -->
+			<!-- 无赛事时展示 -->
+			<div class="noData" v-if="!sportsBetEvent.sportsBetEventData.length"><span> 请完成您的下注 </span></div>
+			<!-- 购物车赛事列表 -->
 			<div class="shop-plan" v-else>
-				<div class="card-all" ref="cardAllRef">
-					<!-- 单注 -->
-					<template v-if="sportsBetEvent.sportsBetEventData.length == 1">
-						<SinglePass ref="singlePassRef" />
-					</template>
-					<!-- 串关下注 -->
-					<template v-if="sportsBetEvent.sportsBetEventData.length > 1">
-						<MoreShop ref="moreShopRef" :sportsBetEventData="sportsBetEvent?.sportsBetEventData" />
-					</template>
-				</div>
-				<!-- 到底部的箭头 -->
-				<!-- <img class="left_arrow" :src="left_arrow" alt="" v-show="showArrow" @click="scrollToBottom" /> -->
-
-				<div class="bottom">
-					<div class="part1">
-						<template v-if="sportsBetEvent.sportsBetEventData.length <= 1">
-							<div class="auth">
-								<!-- <el-checkbox v-if="oddsOption == 1" v-model="oddsOptionIsAccept" label="自动接受较优赔率" @change="onOddsOptionIsAccept(2)" />
-								<el-checkbox v-if="oddsOption == 2" v-model="oddsOptionIsAccept" label="自动接受较优赔率" @change="onOddsOptionIsAccept(1)" /> -->
-								<span v-if="oddsOption == 1" class="checkbox">
-									<span class="icon"><svg-icon :name="oddsOptionIsAccept ? 'sports-checkbox' : 'sports-checkbox_active'" size="18px"></svg-icon></span>
-									<span class="label">自动接受较优赔率</span>
-								</span>
-								<span v-if="oddsOption == 2" class="checkbox">
-									<span class="icon"><svg-icon :name="oddsOptionIsAccept ? 'sports-checkbox' : 'sports-checkbox_active'" size="18px"></svg-icon></span>
-									<span class="label">自动接受较优赔率</span>
-								</span>
-							</div>
-						</template>
-
-						<template v-if="sportsBetEvent.sportsBetEventData.length > 1">
-							<div class="auth">
-								<!-- <el-checkbox v-if="priceOption == 1" v-model="priceOptionIsAccept" label="自动接受较优赔率" @change="onPriceOptionIsAccept(1)" /> -->
-								<span v-if="priceOption == 1" class="checkbox">
-									<span class="icon"><svg-icon :name="priceOptionIsAccept ? 'sports-checkbox' : 'sports-checkbox_active'" size="18px"></svg-icon></span>
-									<span class="label">自动接受较优赔率</span>
-								</span>
-							</div>
-						</template>
-						<planButton v-model:isAccept="isAccept" v-model:isChange="isChange" :maxWinnable="maxWinnable"></planButton>
-					</div>
-				</div>
+				<!-- 赛事列表 单关串关公用 -->
+				<EventCard v-for="(data, index) in sportsBetEvent.sportsBetEventData" :key="index" :shopData="data" :hasClose="true" />
+				<!-- 单关表单 -->
+				<SingleTicketFrom v-if="sportsBetEvent.sportsBetEventData.length == 1" @singleTicketSuccess="getSingleTicketSuccess" />
+				<!-- 串关表单 -->
+				<ParlayTicketsFrom v-if="sportsBetEvent.sportsBetEventData.length > 1" @parlayTicketsSuccess="getParlayTicketsSuccess" />
 			</div>
 		</div>
 	</div>
-	<!-- <auth-hint-dialog v-model="hintVisible" /> -->
 
 	<!-- 下单结束 -->
 	<template v-if="isOrdered">
 		<!-- 单关投注返回结果 -->
-		<SingleOrderStatus v-if="sportsBetEvent.sportsBetEventData.length == 1"> </SingleOrderStatus>
+		<SingleTicketFinish v-if="sportsBetEvent.sportsBetEventData.length == 1" :data="state.singleTicketSuccess" @onOrderConfirm="onOrderConfirm" />
 		<!-- 串关投注返回结果 -->
-		<MoreOrderStatus v-if="sportsBetEvent.sportsBetEventData.length > 1"> </MoreOrderStatus>
+		<ParlayTicketsFinish v-if="sportsBetEvent.sportsBetEventData.length > 1" :data="state.parlayTicketsSuccess" @onOrderConfirm="onOrderConfirm" @onSecondBet="onSecondBet" />
 	</template>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch, nextTick } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
+import { EventCard, SingleTicketFrom, ParlayTicketsFrom, SingleTicketFinish, ParlayTicketsFinish } from "./components/index";
+
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { MoreShop, planButton, SinglePass, SingleOrderStatus, MoreOrderStatus } from "./components/index";
 import Common from "/@/utils/common";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
-import { getIndexInfo } from "/@/views/sports/utils/commonFn";
-
+import { getBetOrderId } from "/@/views/sports/utils/commonFn";
+import { useUserStore } from "/@/stores/modules/user";
+import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 const sportsBetInfo = useSportsBetInfoStore();
 const ShopCatControlStore = useShopCatControlStore();
 const sportsBetEvent = useSportsBetEventStore();
 const isRotating = ref(false);
 
-/** 是否接受赔率变动  */
-const isAccept = ref(false);
-/** 单关接受赔率变动  */
-const oddsOptionIsAccept = ref(false);
-/** 串关接受赔率变动  */
-const priceOptionIsAccept = ref(false);
-
-/** 个人余额 */
-const balance = ref();
-
-/**单下注 */
-const singlePassRef = ref();
-/** 多单下单 */
-const moreShopRef = ref();
-/*赔率是否发生了变化*/
 const isChange = ref(false);
-/*最高可赢*/
-const maxWinnable: any = ref(0);
-
 /**  是否下单结束 */
 const isOrdered = ref(false);
-/** 按钮是否禁用中 */
-const btnDisabled = ref(false);
 
-const cardAllRef = ref(null);
+const state = reactive({
+	singleTicketSuccess: {}, // 单关下注详情
+	parlayTicketsSuccess: {}, // 串关下注详情
+});
 
 onMounted(() => {
 	// 请求余额信息
-	getIndexInfo();
+	// getIndexInfo();
+	// 请求注单ID
+	getBetOrderId();
 	// 请求赔率设置
 	// getPublicSetting();
 });
@@ -139,9 +90,6 @@ watch(
 			// 开启线程
 			sportsBetEvent.sportsOpenSse();
 		}
-		/**订单度发生变化时 （重置订单状态）*/
-		isOrdered.value = false;
-		nextTick(() => {});
 		/** 长度小于0时 清除改动记录 */
 		if (!newValue) {
 			isChange.value = false;
@@ -152,17 +100,39 @@ watch(
 /*购物车隐藏时 关闭错误弹框*/
 watch(
 	() => ShopCatControlStore.getShopCatShow,
-	(newValue) => {}
+	(newValue) => {
+		if (newValue) {
+		}
+	}
 );
+
+/**
+ * @description 单关请求回调执行
+ */
+const getSingleTicketSuccess = (result: any) => {
+	sportsBetEvent.closeShopCart(); // 关闭购物车弹窗
+	isOrdered.value = true; // 开启投注成功注单列表
+	state.singleTicketSuccess = result;
+};
+
+/**
+ * @description 串关请求回调执行
+ */
+const getParlayTicketsSuccess = (result: any) => {
+	sportsBetEvent.closeShopCart(); // 关闭购物车弹窗
+	isOrdered.value = true;
+	state.parlayTicketsSuccess = result;
+};
 
 // 刷新余额交互
 const refreshBalance = () => {
 	if (isRotating.value) {
 		return;
 	}
+	// 刷新余额
+	useUserStore().initUserInfo();
 	// 触发旋转动画
 	isRotating.value = true;
-	getIndexInfo();
 };
 
 // 动画结束时，移除旋转效果
@@ -179,9 +149,28 @@ const changeShopCart = () => {
 	}
 };
 
+/**
+ * @description 二次投注执行
+ */
+const onSecondBet = () => {
+	// 开启线程
+	sportsBetEvent.sportsOpenSse();
+	// 开启赛事列表
+	isOrdered.value = false;
+	// 开启购物车弹窗
+	ShopCatControlStore.setShopCatShow(true);
+};
+
 // 关闭弹窗
 const onClickClear = () => {
 	ShopCatControlStore.setShopCatShow(false);
+};
+
+// 订单确认
+const onOrderConfirm = () => {
+	sportsBetEvent.clearShopCart();
+	isOrdered.value = false;
+	shopCartPubSub.initializeState();
 };
 </script>
 
@@ -293,53 +282,6 @@ const onClickClear = () => {
 		font-size: 14px;
 		color: var(--Text1);
 	}
-
-	.bottom {
-		padding: 10px 15px 15px;
-		border-radius: 8px;
-		background: var(--Bg4);
-		.part1 {
-			.auth {
-				.checkbox {
-					width: fit-content;
-
-					display: flex;
-					align-items: center;
-					gap: 10px;
-					cursor: pointer;
-					.icon {
-						width: 18px;
-						height: 18px;
-						color: var(--Bg5);
-					}
-					.label {
-						color: var(--Text1);
-						font-family: "PingFang SC";
-						font-size: 14px;
-						font-weight: 400;
-						line-height: 20px;
-					}
-				}
-			}
-		}
-
-		.part2 {
-			margin: 5px 0;
-			padding-top: 15px;
-
-			.el-button {
-				margin: 5px 0;
-			}
-
-			.confirming {
-				& > .el-button:last-child {
-					border: 1px solid var(--Theme);
-					background: var(--Bg3);
-					color: var(--Theme);
-				}
-			}
-		}
-	}
 }
 
 .shop-plan {
@@ -347,16 +289,6 @@ const onClickClear = () => {
 	gap: 6px;
 }
 
-.card-all {
-	display: grid;
-	gap: 6px;
-	overflow: auto;
-	max-height: 420px;
-	position: relative;
-	&::-webkit-scrollbar {
-		display: none;
-	}
-}
 .left_arrow {
 	position: absolute;
 	bottom: 20%;

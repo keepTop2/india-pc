@@ -11,6 +11,7 @@ import EncryptionFn from "/@/utils/encryption";
 import { userApi } from "/@/api/user";
 import showToast from "/@/hooks/useToast";
 import { loginApi } from "/@/api/login";
+import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 interface LangListType {
 	code: LangEnum;
 	currLang: number;
@@ -137,12 +138,15 @@ export const useUserStore = defineStore("User", {
 		},
 		// 获取用户信息
 		async initUserInfo() {
+			const sportsBetInfo = useSportsBetInfoStore();
 			const res = await userApi.getIndexInfo().catch((err) => err);
 			const { code, data, message } = res;
 			if (code === Common.ResCode.SUCCESS) {
 				const userInfo = { ...this.getUserInfo, ...data };
 				this.setUserInfo(userInfo);
 				localStorage.setItem("userInfo", JSON.stringify(userInfo));
+				// 同步体育余额信息
+				sportsBetInfo.balance = data.totalBalance;
 			} else {
 				showToast(message, 1500);
 			}

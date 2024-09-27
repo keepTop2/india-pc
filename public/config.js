@@ -8,8 +8,9 @@ window.PLATFROM_CONFIG = {
 	/** s128 打包编译后地址(运维专用) */
 	productionS128Url: "https://kss.cfb2.net",
 
-	developmentBaseURL: "https://gw.playesoversea.store", //临时使用测试环境
-	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
+	// developmentBaseURL: "http://192.168.30.117:9999", // 尔顿本地地址
+	developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
+	// developmentBaseURL: "https://gw.playesoversea.pro", // 测试环境
 	developmentFileUrl: "http://192.168.30.72:7900", // 本地开发传文件
 
 	//体育本地开发地址

@@ -22,6 +22,41 @@ interface DateData {
  * @description 体育公用方法类 -- 根据体育球类字典筛选sportType
  */
 class SportsCommonFn {
+	// 串关标题
+	public static comboTypeNameMaps = {
+		Doubles: "2串1",
+		Trebles: "3串1",
+		Trixie: "3串4",
+		Lucky7: "幸运7",
+		Fold4: "4串1",
+		Yankee: "4串11",
+		Lucky15: "幸运15",
+		Fold5: "5串1",
+		Canadian: "5串26",
+		Lucky31: "幸运31",
+		Fold6: "6串1",
+		Heinz: "6串57",
+		Lucky63: "幸运63",
+		Fold7: "7串1",
+		SuperHeinz: "7串120",
+		Lucky127: "幸运127",
+		Fold8: "8串1",
+		Goliath: "8串247",
+		Lucky255: "幸运255",
+		Fold9: "9串1",
+		Fold10: "10串1",
+		Fold11: "11串1",
+		Fold12: "12串1",
+		Fold13: "13串1",
+		Fold14: "14串1",
+		Fold15: "15串1",
+		Fold16: "16串1",
+		Fold17: "17串1",
+		Fold18: "18串1",
+		Fold19: "19串1",
+		Fold20: "20串1",
+	};
+
 	// 球类表头集中的字典
 	public static betTypeMap: Record<number, string[]> = {
 		// 足球

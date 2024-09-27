@@ -9,6 +9,7 @@ import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import dayjs from "dayjs";
 import { convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { computed } from "vue";
+import shopCartPubSub from "../hooks/shopCartPubSub";
 
 // 请求余额信息
 export const getIndexInfo = async () => {
@@ -22,13 +23,13 @@ export const getIndexInfo = async () => {
 /**
  * @description 请求注单ID
  */
-// export const getBetOrderId = async () => {
-// 	const sportsBetInfo = useSportsBetInfoStore();
-// 	const res = await sportsApi.getBetOrderId().catch((err) => err);
-// 	if (res.code === Common.ResCode.SUCCESS) {
-// 		sportsBetInfo.vendorTransId = res.data;
-// 	}
-// };
+export const getBetOrderId = async () => {
+	const sportsBetInfo = useSportsBetInfoStore();
+	const res = await sportsApi.getBetOrderId().catch((err) => err);
+	if (res.code === Common.ResCode.SUCCESS) {
+		sportsBetInfo.vendorTransId = res.data;
+	}
+};
 
 // // 请求接受赔率信息
 // export const getPublicSetting = async () => {
@@ -100,6 +101,8 @@ export const getParlayTickets = async () => {
 		const res = await sportsApi.GetParlayTickets(params, { showLoading: false });
 		// console.log("res", res);
 		if (res?.status === 200) {
+			// 更新购物车数据中心 串关标识
+			shopCartPubSub.updateCombos(res.data.combos);
 			// 新增串关请求回的信息
 			sportsBetInfo.addParlayTicketsInfo(res.data);
 			//设置串关投注金额
@@ -120,7 +123,6 @@ export const getParlayTickets = async () => {
 			handlingParlayTicketsOdds(res.data);
 			restoreStatus();
 			const filteredPriceInfo = res.data.priceInfo.filter((price) => price.stateCode != 0);
-			console.log("filteredPriceInfo", filteredPriceInfo);
 			if (filteredPriceInfo.length > 0) {
 				filteredPriceInfo.forEach((i: any) => {
 					const index = sportsBetEvent.sportsBetEventData.findIndex((v) => v.betMarketInfo.marketId == i.marketId);
@@ -128,7 +130,6 @@ export const getParlayTickets = async () => {
 						sportsBetEvent.sportsBetEventData[index].betMarketInfo.stateCode = i.stateCode;
 					}
 				});
-				console.log("sportsBetEventData", sportsBetEvent.sportsBetEventData);
 				sportsBetEvent.examineEventsStatus();
 			}
 			// const data = {
@@ -143,7 +144,7 @@ export const getParlayTickets = async () => {
 			console.log("==", res?.data?.errorCode, res?.data?.message);
 		}
 	} catch (err: any) {
-		// console.log("err", err);
+		console.log("err", err);
 		marketClosingErrors(err.response.data);
 	}
 };

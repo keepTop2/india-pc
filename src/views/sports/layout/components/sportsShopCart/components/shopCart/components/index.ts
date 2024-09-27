@@ -1,11 +1,11 @@
-import SinglePass from "./singlePass/singlePass.vue";
-import ShopCard from "./shopCard/shopCard.vue";
-import MoreShop from "./moreShop/moreShop.vue";
-import cardStatus from "./cardStatus/cardStatus.vue";
-import planButton from "./planButton/planButton.vue";
+import EventCard from "./eventCard/eventCard.vue"; // 购物车赛事列表
+import SingleTicketFrom from "./singleTicketFrom/singleTicketFrom.vue"; // 单关表单
+import ParlayTicketsFrom from "./parlayTicketsFrom/parlayTicketsFrom.vue"; // 串关表单
+import SingleTicketFinish from "./singleTicketFinish/singleTicketFinish.vue"; // 单关投注成功列表
+import ParlayTicketsFinish from "./parlayTicketsFinish/parlayTicketsFinish.vue"; // 串关投注成功列表
 import authHintDialog from "./authHintDialog/authHintDialog.vue";
+import CardStatus from "../../components/cardStatus/cardStatus.vue";
 
-import SingleOrderStatus from "./singleOrderStatus/singleOrderStatus.vue";
-import MoreOrderStatus from "./moreOrderStatus/moreOrderStatus.vue";
+// import SingleOrderStatus from "./singleOrderStatus/singleOrderStatus.vue";
 
-export { SinglePass, ShopCard, MoreShop, cardStatus, planButton, authHintDialog, SingleOrderStatus, MoreOrderStatus };
+export { SingleTicketFrom, EventCard, ParlayTicketsFrom, SingleTicketFinish, ParlayTicketsFinish, CardStatus, authHintDialog };
