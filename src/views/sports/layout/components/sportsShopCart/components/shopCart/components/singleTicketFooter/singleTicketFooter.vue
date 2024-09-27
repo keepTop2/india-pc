@@ -1,0 +1,83 @@
+<template>
+	<div class="footer">
+		<div class="btns">
+			<!-- 投注按钮 -->
+			<BetButton @onClick="onBet" />
+			<!-- 加串按钮 -->
+			<AddButton />
+		</div>
+	</div>
+</template>
+
+<script setup lang="ts">
+import { BetButton, AddButton } from "../../../components/btns/index";
+import showToast from "/@/hooks/useToast";
+import sportsApi from "/@/api/sports/sports";
+import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
+import { computed } from "vue";
+import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
+
+const sportsBetEvent = useSportsBetEventStore();
+const sportsBetInfo = useSportsBetInfoStore();
+let stake = computed(() => shopCartPubSub.betValueState.singleTicketBetValue);
+
+const emit = defineEmits(["singleTicketSuccess"]);
+
+// 点击投注
+const onBet = () => {
+	if ([1].includes(sportsBetEvent.bettingStatus)) {
+		return;
+	}
+	if (stake.value == "") {
+		showToast("请输入投注金额");
+		return;
+	}
+	if (stake.value < sportsBetInfo.singleTicketInfo.minBet) {
+		showToast("投注金额未达到最低限额");
+		return;
+	}
+	if (stake.value > sportsBetInfo.balance) {
+		showToast("余额不足，请先充值");
+		return;
+	}
+	// 单关投注
+	placeBet();
+};
+
+/**
+ * 单关下注
+ */
+const placeBet = async () => {
+	// 参数拼接
+	const params = {
+		vendorTransId: sportsBetInfo.vendorTransId,
+		sportType: sportsBetInfo.singleTicketInfo.sportType,
+		marketId: sportsBetInfo.singleTicketInfo.marketId,
+		price: sportsBetInfo.singleTicketInfo.payoutRate,
+		point: sportsBetInfo.singleTicketInfo.point,
+		key: sportsBetInfo.singleTicketInfo.key,
+		stake: stake.value,
+		oddsOption: 1,
+	};
+	const res = await sportsApi.placeBet(params).catch((err) => err);
+	if (res.data) {
+		const result = res.data;
+		emit("singleTicketSuccess", result);
+	}
+};
+</script>
+
+<style scoped lang="scss">
+.footer {
+	border-radius: 8px;
+	background-color: var(--Bg);
+	padding: 10px 15px 15px;
+	.btns {
+		width: 100%;
+		height: 48px;
+		display: flex;
+		gap: 4px;
+	}
+}
+</style>

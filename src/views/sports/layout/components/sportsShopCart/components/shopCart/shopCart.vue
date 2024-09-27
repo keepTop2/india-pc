@@ -22,12 +22,18 @@
 			<div class="noData" v-if="!sportsBetEvent.sportsBetEventData.length"><span> 请完成您的下注 </span></div>
 			<!-- 购物车赛事列表 -->
 			<div class="shop-plan" v-else>
-				<!-- 赛事列表 单关串关公用 -->
-				<EventCard v-for="(data, index) in sportsBetEvent.sportsBetEventData" :key="index" :shopData="data" :hasClose="true" />
-				<!-- 单关表单 -->
-				<SingleTicketFrom v-if="sportsBetEvent.sportsBetEventData.length == 1" @singleTicketSuccess="getSingleTicketSuccess" />
-				<!-- 串关表单 -->
-				<ParlayTicketsFrom v-if="sportsBetEvent.sportsBetEventData.length > 1" @parlayTicketsSuccess="getParlayTicketsSuccess" />
+				<div class="event-list">
+					<!-- 赛事列表 单关串关公用 -->
+					<EventCard v-for="(data, index) in sportsBetEvent.sportsBetEventData" :key="index" :shopData="data" :hasClose="true" />
+					<!-- 单关表单 -->
+					<SingleTicketFrom v-if="sportsBetEvent.sportsBetEventData.length == 1" />
+					<!-- 串关表单 -->
+					<ParlayTicketsFrom v-if="sportsBetEvent.sportsBetEventData.length > 1" />
+				</div>
+				<!-- 单关投注按钮 -->
+				<SingleTicketFooter v-if="sportsBetEvent.sportsBetEventData.length == 1" @singleTicketSuccess="getSingleTicketSuccess" />
+				<!-- 串关键盘按钮 -->
+				<ParlayTicketsFooter v-if="sportsBetEvent.sportsBetEventData.length > 1" @parlayTicketsSuccess="getParlayTicketsSuccess" />
 			</div>
 		</div>
 	</div>
@@ -43,7 +49,7 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, watch } from "vue";
-import { EventCard, SingleTicketFrom, ParlayTicketsFrom, SingleTicketFinish, ParlayTicketsFinish } from "./components/index";
+import { EventCard, SingleTicketFrom, ParlayTicketsFrom, SingleTicketFooter, ParlayTicketsFooter, SingleTicketFinish, ParlayTicketsFinish } from "./components/index";
 
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import Common from "/@/utils/common";
@@ -287,6 +293,10 @@ const onOrderConfirm = () => {
 .shop-plan {
 	display: grid;
 	gap: 6px;
+	.event-list {
+		display: grid;
+		gap: 6px;
+	}
 }
 
 .left_arrow {

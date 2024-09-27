@@ -36,7 +36,26 @@ export default (function () {
 
 		//设置单关投注金额
 		public setSingleTicketBetValue(value: string) {
-			this.betValueState.singleTicketBetValue = value;
+			const sportsBetInfo = useSportsBetInfoStore();
+			// 如果 newStake 为空值，直接将 stake 设为空字符串
+			if (value === null || value === undefined || value === "") {
+				this.betValueState.singleTicketBetValue = ""; // 设为空字符串
+				return; // 退出当前逻辑，不进行后续计算
+			}
+			const balance = Math.floor(Number(sportsBetInfo.balance));
+			const maxBet = Math.floor(Number(sportsBetInfo.singleTicketInfo.maxBet));
+			// 如果余额为负，设置 stake 为 "0"
+			if (balance < 0) {
+				this.betValueState.singleTicketBetValue = "0";
+			} else {
+				const currentBetValue = Number(value); // 获取变化后的 stake 值
+				// 根据 balance 和 maxBet 限制 stake 的值
+				if (balance < maxBet) {
+					this.betValueState.singleTicketBetValue = currentBetValue > balance ? balance.toString() : currentBetValue.toString();
+				} else {
+					this.betValueState.singleTicketBetValue = currentBetValue > maxBet ? maxBet.toString() : currentBetValue.toString();
+				}
+			}
 		}
 
 		// 设置串关投注金额
