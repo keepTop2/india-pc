@@ -92,7 +92,6 @@ interface marketType {
 	betType: string;
 	marketStatus: string;
 }
-
 const sportsBetEvent = useSportsBetEventStore();
 const route = useRoute();
 const isFold = ref(false);
@@ -101,18 +100,29 @@ const activeTab = ref("all");
 const activeSelection = ref<string[]>([]);
 
 /**
+ * @description 获取赛事列表下的赛事
+ * @returns 赛事数组
+ */
+ const eventDetail = computed(() => {
+	const childrenViewData = viewSportPubSubEventData.sidebarData.childrenViewData;
+
+	console.log(childrenViewData, "childrenViewData");
+	if (childrenViewData) {
+		return childrenViewData[0]?.events?.[0];
+	}
+	return {};
+});
+
+/**
  * @description 计算并组织市场数据
  * @returns 组织和排序后的市场数据
  */
+
 const markets = computed(() => {
 	let marketData: any = [];
-	// 获取 SidebarStore 中的 eventsInfo，确保它是响应式的
-	const childrenViewData = viewSportPubSubEventData.getSportData('sidebarData');
-	if (childrenViewData) {	
-		const eventsInfo = childrenViewData[0]?.events[0];
-		// console.log("eventsInfo", eventsInfo);
-
-		const markets = eventsInfo?.markets;
+	console.log(eventDetail.value, 'eventDetail.value')
+	if (eventDetail.value) {
+		const markets = eventDetail.value?.markets;
 		for (const key in markets) {
 			const market = markets[key];
 			const { betTypeName, marketId, betType } = market;
@@ -138,6 +148,7 @@ const markets = computed(() => {
 		}
 		return a.betType - b.betType;
 	});
+	console.log(marketData, 'marketData');
 	return marketData;
 });
 

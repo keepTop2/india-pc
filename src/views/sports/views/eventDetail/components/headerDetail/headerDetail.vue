@@ -167,7 +167,7 @@ const handleGoBack = () => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .detail-container {
 	width: 100%;
 	margin-bottom: 20px;
@@ -218,16 +218,25 @@ const handleGoBack = () => {
 }
 
 .content {
-	width: 100%;
-	flex: 1;
-	height: 276px;
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: all 0.3s linear;
-	overflow: hidden;
-	z-index: 1;
+	// width: 100%;
+	// flex: 1;
+	// height: 276px;
+	// position: relative;
+	// display: flex;
+	// align-items: center;
+	// justify-content: center;
+	// transition: all 0.3s linear;
+	// overflow: hidden;
+	// z-index: 1;
+	:deep(.scoreboard-container) {
+		height: 276px;
+		.scoreboard-center {
+			width: 892px!important;
+			.scoreboard-info {
+				height: 130px!important;
+			}
+		}
+	}
 
 	> .main {
 		width: 892px;
