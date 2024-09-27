@@ -31,22 +31,22 @@ export const getBetOrderId = async () => {
 	}
 };
 
-// // 请求接受赔率信息
-// export const getPublicSetting = async () => {
-// 	const { stopLoading } = useLoading();
-// 	const sportsBetEvent = useSportsBetEventStore();
-// 	const params = {
-// 		type: "sport_odds",
-// 	};
-// 	const res = await sportsApi.getPublicSetting(params).catch((err) => err);
-// 	if (res.code == Common.ResCode.SUCCESS) {
-// 		stopLoading();
-// 		if (res.data.length > 0) {
-// 			const data = res.data[0];
-// 			sportsBetEvent.radioStatus = data.value == "0" ? false : true;
-// 		}
-// 	}
-// };
+// 请求接受赔率信息
+export const getPublicSetting = async () => {
+	// const { stopLoading } = useLoading();
+	const sportsBetEvent = useSportsBetEventStore();
+	const params = {
+		type: "sport_odds",
+	};
+	const res = await sportsApi.getPublicSetting(params).catch((err) => err);
+	if (res.code == Common.ResCode.SUCCESS) {
+		// stopLoading();
+		if (res.data.length > 0) {
+			const data = res.data[0];
+			sportsBetEvent.radioStatus = data.value == "0" ? false : true;
+		}
+	}
+};
 
 /**
  * @description 请求单关注单信息

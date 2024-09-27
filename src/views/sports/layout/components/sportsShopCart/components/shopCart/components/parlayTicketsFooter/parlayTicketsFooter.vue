@@ -1,5 +1,6 @@
 <template>
 	<div class="footer">
+		<AuthHintDialog />
 		<div class="btns">
 			<!-- 清空赛事按钮 -->
 			<DeleteButton />
@@ -20,6 +21,7 @@ import showToast from "/@/hooks/useToast";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
+import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();
 

@@ -1,5 +1,6 @@
 <template>
 	<div class="footer">
+		<AuthHintDialog />
 		<div class="btns">
 			<!-- 投注按钮 -->
 			<BetButton @onClick="onBet" />
@@ -17,6 +18,7 @@ import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import { computed } from "vue";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
+import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
 
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();
