@@ -182,11 +182,11 @@ const animationEnd = (item: any) => {
 
 <style scoped lang="scss">
 .oddsUp {
-	color: var(--Warn) !important;
+	color: var(--Theme) !important;
 }
 
 .oddsDown {
-	color: var(--Theme) !important;
+	color: var(--Success) !important;
 }
 
 .bet_slip_item {
@@ -240,7 +240,7 @@ const animationEnd = (item: any) => {
 				position: absolute;
 				top: 50%;
 				right: -15px;
-				transform: translate(-50%, 0);
+				transform: translate(0px, -50%);
 			}
 		}
 
