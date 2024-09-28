@@ -14,7 +14,7 @@
 				</div>
 				<div class="right">
 					<div class="icon2"><svg-icon name="sports-quanping" size="16px"></svg-icon></div>
-					<div class="icon2"><svg-icon name="sports-shuaxin" size="16px"></svg-icon></div>
+					<!-- <div class="icon2"><svg-icon name="sports-shuaxin" size="16px"></svg-icon></div> -->
 				</div>
 			</div>
 
