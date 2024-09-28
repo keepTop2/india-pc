@@ -13,7 +13,7 @@
 					</div>
 				</div>
 				<div class="right">
-					<div class="icon2"><svg-icon name="sports-quanping" size="16px"></svg-icon></div>
+					<div class="icon2" @click="showDetail()"><svg-icon name="sports-quanping" size="16px"></svg-icon></div>
 					<!-- <div class="icon2"><svg-icon name="sports-shuaxin" size="16px"></svg-icon></div> -->
 				</div>
 			</div>
@@ -41,9 +41,28 @@
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
 			<!-- 直播 -->
-			<div v-else-if="eventsInfo && SidebarStore.sidebarStatus === 'live'" class="events-live">
+			<!-- <div v-else-if="eventsInfo && SidebarStore.sidebarStatus === 'live'" class="events-live">
 				<VideoSource />
-			</div>
+			</div> -->
+			<!-- 虚拟赛事视频 -->
+			 <div v-show="SidebarStore.sidebarStatus === 'live'" >
+					<div v-show="myPlayer">
+						<video ref="videoPlayer" class="video-js"></video>
+					</div>
+					<!-- 真人赛事比赛 -->
+					<div v-show="iframeLoaded" class="live">
+						<iframe
+							class="eventVideo"
+							@load="onIframeLoad"
+							:src="videoSrc"
+							frameborder="0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen
+						>
+						</iframe>
+					</div>
+			 </div>
+			
 		</div>
 
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
@@ -57,15 +76,28 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted } from "vue";
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import { useLink } from "../../../hooks/useLink";
+import { SportTypeEnum } from "../../../enum/sportEnum/sportEnum";
+import { useUserStore } from "/@/stores/modules/user";
+import SportsApi from "/@/api/sports/sports";
+import videojs from "video.js";
+import "video.js/dist/video-js.css";
+
 const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
 const route = useRoute();
+const { gotoEventDetail } = useLink();
+const UserStore = useUserStore();
+const videoSrc = ref("");
+const myPlayer = ref();
+const videoPlayer = ref();
+const iframeLoaded = ref(false);
 const SidebarStore = useSidebarStore();
 // const { eventsInfo } = storeToRefs(SidebarStore);
 
@@ -148,6 +180,12 @@ const ballInfo: Record<number, { iconName: string; componentName: any }> = {
 	},
 };
 
+onUnmounted(() => {
+	if (myPlayer.value) {
+		myPlayer.value.dispose();
+	}
+});
+
 /**
  * 工具tool
  */
@@ -167,7 +205,7 @@ const computedTools = computed(() => {
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
-			action: switchEventVideoSource,
+			action: getStreaming,
 			param: eventsInfo.value, // 传递参数
 		});
 	}
@@ -189,9 +227,68 @@ const getIconName = (tool: any, index: number) => {
 	return index === activeIndex ? tool.iconName_active : tool.iconName;
 };
 
+// 当iframe加载完成时，设置iframeLoaded为true
+const onIframeLoad = () => {
+	console.log("onIframeLoad", "加载完成");
+	if (videoSrc.value) {
+		iframeLoaded.value = true;
+		// stopLoading();
+	}
+};
+
+const getStreaming = async () => {
+	const { leagueId, sportType } = eventsInfo.value;
+
+	const param = {
+		sportType,
+		streamingOption: eventsInfo.value.streamingOption,
+		channelCode: eventsInfo.value.channelCode,
+	};
+	const lang = UserStore.getLang;
+
+	const res = await SportsApi.GetStreaming(param);
+	if (res.status == 200) {
+		const { streamingUrlH5, streamingUrl, streamingUrlCN, streamingUrlNonCN } = res.data;
+		if (streamingUrlH5) {
+			// startLoading();
+			// console.log(streamingUrlH5, "==streamingUrlH5");
+			videoSrc.value = streamingUrlH5;
+		SidebarStore.getSidebarStatus("live");
+			
+		}
+		if (streamingUrl || streamingUrlCN || streamingUrlNonCN) {
+			myPlayer.value = videojs(videoPlayer.value, {
+				controls: false,
+				autoplay: true,
+				preload: "auto",
+				sources: [
+					{
+						src: lang == "zh-CN" ? streamingUrlCN : streamingUrlNonCN, // 视频源地址
+						type: "application/x-mpegURL",
+					},
+				],
+			});
+			SidebarStore.getSidebarStatus("live");
+		}
+	}
+};
+
 // 点击对应工具
 const handleClick = (tool: any) => {
 	tool.action(tool.param);
+};
+/**
+ * @description: 跳转到比赛详细
+ */
+ const showDetail = () => {
+	const params = {
+		leagueId: eventsInfo.value?.leagueId,
+		eventId: eventsInfo.value?.eventId,
+		dataIndex: eventsInfo.value?.dataIndex,
+	};
+	toggleEventScoreboard(eventsInfo.value);
+
+	gotoEventDetail(params, SportTypeEnum.Tennis);
 };
 </script>
 
@@ -201,7 +298,20 @@ const handleClick = (tool: any) => {
 
 	background-color: var(--Bg1);
 	border-radius: 8px;
-
+	.live {
+		height: 420px;
+	}
+	.eventVideo {
+		width: 390px;
+		height: 208px;
+	}
+	.video-js {
+		height: 208px;
+		width: 390px;
+	}
+	.video-js .vjs-tech {
+		width: 390px;
+	}
 	.affix {
 		position: sticky;
 		top: 0px;
