@@ -359,8 +359,8 @@ watch(
 			width: 100%;
 			.header {
 				width: 100%;
-				border-radius: 8px;
-				background: var(--Bg1);
+				// border-radius: 8px 8px 0 0;
+				// background: var(--Bg1);
 				box-sizing: border-box;
 				overflow: hidden;
 

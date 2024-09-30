@@ -92,6 +92,7 @@ onMounted(() => {});
 	display: flex;
 	align-items: center;
 	padding-left: 24px;
+	border-radius: 8px 8px 0 0;
 	background: var(--Bg1);
 	overflow: hidden;
 	box-sizing: border-box;

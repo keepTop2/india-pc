@@ -45,7 +45,7 @@
 			<span>{{ $t(`matchResult['赛事']`) }}</span>
 			<el-input v-model="modelValue.competition" :placeholder="$t(`matchResult['请输入']`)" />
 			
-			<!-- <el-checkbox v-model="modelValue.isLive">{{ $t(`matchResult['滚球']`) }}</el-checkbox> -->
+			<el-checkbox v-model="modelValue.isLive">{{ $t(`matchResult['滚球']`) }}</el-checkbox>
 		</div>
 		<el-button 
 			class="query-button" 
@@ -147,25 +147,25 @@ const formatDate = (date: any) => {
 
 <style scoped lang="scss">
 .query {
-	margin: 14px 0;
+	margin-bottom: 14px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-		height: 44px;
-		background: var(--Bg1);
-		border-radius: 8px;
-		box-sizing: border-box;
-		padding:0 24px;
-		:deep(.el-dropdown) {
-			background: var(--Bg2);
-			height:30px;
-			.el-dropdown-content {
+	height: 44px;
+	background: var(--Bg1);
+	border-radius: 0 0 8px 8px;
+	box-sizing: border-box;
+	padding:0 24px;
+	:deep(.el-dropdown) {
+		background: var(--Bg2);
+		height:30px;
+		.el-dropdown-content {
 				width: 230px;
 				height: 100%;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				    padding: 8px 10px;
+				padding: 8px 10px;
 				cursor: pointer;
 				box-sizing: border-box;
 				color: var(--Text1);
