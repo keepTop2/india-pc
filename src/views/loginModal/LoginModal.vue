@@ -164,10 +164,10 @@ const onSubmit = async () => {
 		localStorage.setItem("userInfo", JSON.stringify(data));
 		getUserInfo();
 		rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
+		modalStore.closeModal();
 	} else {
 		showToast(message, 1500);
 	}
-	modalStore.closeModal();
 };
 
 // 获取用户信息

@@ -27,7 +27,6 @@ const modalComponents: Record<string, () => Promise<any>> = {
 	ForgetPassword: () => import("/@/views/loginModal/ForgetPassword.vue"),
 	LangCurrenyConfig: () => import("/@/views/loginModal/LangCurrenyConfig.vue"),
 	InviteFriends: () => import("/@/views/user/invite_friends/InviteFriends.vue"),
-
 	...activityModal,
 };
 

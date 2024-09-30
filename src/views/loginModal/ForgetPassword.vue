@@ -39,7 +39,7 @@
 								type="text"
 								v-model="payLoad.email"
 								class="common_input"
-								:placeholder="$t(`login['输入账号']`)"
+								:placeholder="$t(`login['输入邮箱']`)"
 								@input="emailOnInput"
 								v-if="verifyType == 'email'"
 								:class="userVerifyTypeVerifyError ? 'verifyError' : ''"
@@ -55,7 +55,7 @@
 								@VerificationCodeInput="VerificationCodeInput"
 								@sendVerificationCode="sendVerificationCode"
 								v-model="verificationBtn"
-								:disabled="verificationBtn"
+								:disabled="verificationBtn && payLoad.email"
 								ref="VerificationCodeRef"
 								v-show="verifyType == 'email'"
 							/>
@@ -63,7 +63,7 @@
 								@VerificationCodeInput="VerificationCodeInput"
 								@sendVerificationCode="sendVerificationCode"
 								v-model="verificationBtn2"
-								:disabled="verificationBtn2"
+								:disabled="verificationBtn2 && payLoad.phone"
 								ref="VerificationCodeRef2"
 								v-show="verifyType == 'phone'"
 							/>
@@ -116,7 +116,8 @@
 					</div>
 				</div>
 				<div class="mt_40 mb_12">
-					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onNextStep(currentStep)">{{ $t(`login['下一步']`) }}</button>
+					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onNextStep(currentStep)">{{ currentStep === 2 ? "确定" : $t(`login['下一步']`) }}</button>
+					<div class="flex-center mt_12 Theme_text fs_12 curp" v-if="currentStep === 0">联系客服</div>
 				</div>
 			</div>
 		</div>
@@ -133,7 +134,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import VerificationCode from "/@/components/VerificationCode/index.vue";
 import showToast from "/@/hooks/useToast";
 import { CommonApi } from "/@/api/common";
-import { useModalStore } from "/@/stores/modules/useModalStore";
+import { useModalStore } from "/@/stores/modules/modalStore";
 const modalStore = useModalStore();
 const UserStore = useUserStore();
 const currentStep = ref(0);
@@ -282,6 +283,7 @@ const onNextStep = async (step: number) => {
 				userAccount: payLoad.userAccount,
 				account: verifyType.value === verifyTypeEnum.email ? payLoad.email : payLoad.phone,
 				verifyCode: payLoad.verifyCode,
+				areaCode: payLoad.areaCode,
 			};
 			res = await loginApi.checkVerifyCode(params).catch((err) => err);
 			break;
@@ -348,6 +350,7 @@ const sendVerificationCode = async () => {
 				phone: payLoad.phone,
 				areaCode: payLoad.areaCode,
 			};
+			console.log(payLoad);
 			const res = await loginApi.sendSms(params).catch((err) => err);
 			const { code, message } = res;
 			if (code == Common.ResCode.SUCCESS) {

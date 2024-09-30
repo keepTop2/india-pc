@@ -1,6 +1,6 @@
 <template>
 	<div class="modal-manager" v-if="modals">
-		<div class="modal-content">
+		<div class="modal-content fade-in">
 			<component :is="modals.component" v-bind="modals.props" @close="closeModal" />
 			<span class="close_btn" @click="modalStore.closeModal()">
 				<img src="/@/assets/common/close_btn_bg.png" alt="" />
