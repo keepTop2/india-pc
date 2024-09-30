@@ -12,7 +12,7 @@
 					<div class="header">
 						<HeaderMenuNav></HeaderMenuNav>
 						<div class="line"></div>
-						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
+						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
 					</div>
 					<div class="back-container">
 						<!-- 主体路由页面 -->
@@ -86,6 +86,13 @@ const $ = i18n.global;
  */
 const route = useRoute();
 const router = useRouter();
+
+/**
+ * @description 是否显示条件
+ */
+const isShowCondition = computed(() => {
+	return route.meta.type === 'list';
+})
 
 /**
  * @description 各种store实例

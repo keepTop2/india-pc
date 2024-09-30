@@ -8,10 +8,11 @@ import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { sportsEventDetailPush, promotionsEventsSSEPush } from "/@/views/sports/utils/sportsMap/sportsSSERequestMap";
 import workerManage from "/@/webWorker/workerManage";
+import { useUserStore } from "/@/stores/modules/user";
 export function useToolsHooks() {
 	const SidebarStore = useSidebarStore();
 	const SportsInfoStore = useSportsInfoStore();
-
+	const UserStore = useUserStore();
 	// 切换计分板功能
 	const toggleEventScoreboard = (eventInfo: any) => {
 		// console.log(eventInfo, '========toggleEventScoreboard')
@@ -36,11 +37,15 @@ export function useToolsHooks() {
 
 	// 切换视频源功能
 	const switchEventVideoSource = async (eventInfo: any) => {
-		// console.log("eventInfo", eventInfo);
+		console.log(eventInfo, '========switchEventVideoSource');
+		// 清除直播地址信息
+		SidebarStore.clearLiveUrl();
 		// 设置状态
 		SidebarStore.getSidebarStatus("live");
 		// 同步更新赛事信息
-		SidebarStore.setEventsInfo(eventInfo);
+		// SidebarStore.setEventsInfo(eventInfo);
+		const lang = UserStore.getLang;
+
 		const { sportType, channelCode, streamingOption } = eventInfo;
 		const params = {
 			sportType: sportType,
@@ -50,9 +55,9 @@ export function useToolsHooks() {
 		// console.log("params", params);
 		const res = await SportsApi.GetStreaming(params);
 		// console.log("GetStreaming -- res", res);
-		if (res) {
-			// 设置直播地址
-			SidebarStore.setLiveUrl(res.data.streamingUrlNonCN);
+		if (res.status == 200) {
+				// 设置直播数据
+			SidebarStore.setLiveUrl(res.data);
 		}
 	};
 

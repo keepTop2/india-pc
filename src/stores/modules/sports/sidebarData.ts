@@ -39,6 +39,11 @@ export const useSidebarStore = defineStore("sidebarData", {
 			this.liveUrl = liveUrl;
 		},
 
+		// 清除直播地址信息
+		clearLiveUrl() {
+			this.liveUrl = {};
+		},
+
 		// 清除暂存的侧边数据信息
 		// 每次切换球类时使用先清除数据
 		clearEventsInfo() {

@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from "vue";
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
@@ -205,7 +205,8 @@ const computedTools = computed(() => {
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
-			action: getStreaming,
+			// action: getStreaming,
+			action: switchEventVideoSource,
 			param: eventsInfo.value, // 传递参数
 		});
 	}
@@ -236,25 +237,27 @@ const onIframeLoad = () => {
 	}
 };
 
-const getStreaming = async () => {
-	const { leagueId, sportType } = eventsInfo.value;
+watch(SidebarStore.getLiveUrl, (newVal) => {
+	if (Object.keys(newVal).length) {
+		getStreaming(newVal);
+	} else {
+		iframeLoaded.value = false;
+		myPlayer.value = null;
+	}
+});
 
-	const param = {
-		sportType,
-		streamingOption: eventsInfo.value.streamingOption,
-		channelCode: eventsInfo.value.channelCode,
-	};
+const getStreaming = async (newVal: { [x: string]: any; }) => {
+
 	const lang = UserStore.getLang;
 
-	const res = await SportsApi.GetStreaming(param);
+	const res = await newVal;
 	if (res.status == 200) {
 		const { streamingUrlH5, streamingUrl, streamingUrlCN, streamingUrlNonCN } = res.data;
 		if (streamingUrlH5) {
 			// startLoading();
 			// console.log(streamingUrlH5, "==streamingUrlH5");
 			videoSrc.value = streamingUrlH5;
-		SidebarStore.getSidebarStatus("live");
-			
+			SidebarStore.getSidebarStatus("live");
 		}
 		if (streamingUrl || streamingUrlCN || streamingUrlNonCN) {
 			myPlayer.value = videojs(videoPlayer.value, {
