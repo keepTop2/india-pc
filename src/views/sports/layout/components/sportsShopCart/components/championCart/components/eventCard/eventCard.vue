@@ -7,21 +7,19 @@
 		<div class="bet_slip_info" :style="{ opacity: opacityFn() }">
 			<div class="bet_slip_label">
 				<div>{{ shopData.teamName }}</div>
-				<div style="position: relative">
-					<span>@{{ shopData.price }}</span>
-				</div>
 				<!-- <div style="position: relative">
-					<span class="value" :class="changeClass(shopData)">@{{ shopData.betMarketInfo?.decimalPrice }}</span>
+					<span>@{{ shopData.price }}</span>
+				</div> -->
+				<div style="position: relative">
+					<span class="value" :class="changeClass(shopData)">@{{ shopCartChampionPubSub.decimalPrice(props.shopData) }}</span>
 					<div class="change-icon">
 						<RiseOrFall v-if="shopData.betMarketInfo?.oddsChange" :status="shopData.betMarketInfo?.oddsChange == 'oddsUp' ? 1 : 2" />
 					</div>
-				</div> -->
+				</div>
 			</div>
 			<div class="bet_slip_type">
 				<div>
 					<span v-if="shopData.isLive" class="mr_6">[滚球]</span>
-					<!-- <span class="mr_6">{{ SportsCommonFn.betTypeMap[shopData.betMarketInfo?.betType] }}</span> -->
-					<!-- <span class="mr_10">({{ shopData.gameInfo?.liveHomeScore }} - {{ shopData.gameInfo?.liveAwayScore }})</span> -->
 					<span>[优胜冠军]</span>
 					<span>[欧洲盘]</span>
 				</div>
@@ -32,14 +30,7 @@
 			</div>
 			<div class="bet_slip_name mt_2">
 				<span>{{ shopData.leagueName }}</span>
-				<!-- v
-				<span>{{ shopData.teamInfo.awayName }}</span>
-				<span>&nbsp;</span>
-				<span>({{ shopData.gameInfo?.liveHomeScore }} - {{ shopData.gameInfo?.liveAwayScore }})</span> -->
 			</div>
-			<!-- <div class="bet_slip_name">
-				<span>{{ shopData.leagueName }}</span>
-			</div> -->
 		</div>
 	</div>
 </template>
@@ -47,11 +38,12 @@
 <script setup lang="ts">
 import { computed, watch } from "vue";
 import SportsCommonFn from "/@/views/sports/utils/common";
+import shopCartChampionPubSub from "/@/views/sports/hooks/shopCartChampionPubSub";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { RiseOrFall } from "/@/components/Sport/index";
-import { useChampionShopCartStore } from "/@/stores/modules/sports/championShopCart";
+import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 const sportsBetEvent = useSportsBetEventStore();
-const ChampionShopCartStore = useChampionShopCartStore();
+const ChampionShopCartStore = useSportsBetChampionStore();
 
 const props = withDefaults(
 	defineProps<{
@@ -85,7 +77,7 @@ const examineEventsStatus = computed(() => {
 		return "盘口已关闭";
 	}
 
-	if (ChampionShopCartStore.outrightBetData.length > 1) {
+	if (ChampionShopCartStore.championBetData.length > 1) {
 		return "不支持串关";
 	}
 });
@@ -96,7 +88,7 @@ const examineEventsStatus = computed(() => {
 const opacityFn = () => {
 	const item = props.shopData;
 	// 判断赛事状态 与 盘口状态
-	if (item.oddsStatus !== "running" || ChampionShopCartStore.outrightBetData.length > 1) {
+	if (item.oddsStatus !== "running" || ChampionShopCartStore.championBetData.length > 1) {
 		return 0.4;
 	} else {
 		return 1;
@@ -107,7 +99,20 @@ const opacityFn = () => {
  * 删除赛事
  */
 const onDeleteBetEvent = () => {
-	ChampionShopCartStore.removeOutrightTEventCart(props.shopData);
+	ChampionShopCartStore.removeChampionTEventCart(props.shopData);
+};
+
+/**
+ * @description 切换上升下降类名
+ */
+const changeClass = (item: any) => {
+	if (!item?.oddsChange) {
+		return "";
+	} else if (item?.oddsChange == "oddsUp") {
+		return "oddsUp";
+	} else if (item?.oddsChange == "oddsDown") {
+		return "oddsDown";
+	}
 };
 </script>
 

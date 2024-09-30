@@ -4,7 +4,7 @@ import sportsApi from "/@/api/sports/sports";
 // import shopCartPubSub from "/@/views/venueHome/sports/hooks/shopCartPubSub";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
-// import { useSportsBetChampionStore } from "/@/store/modules/sports/sportsBetChampionData";
+import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 // import { useLoading } from "/@/directives/loading/hooks";
 import dayjs from "dayjs";
 import { convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
@@ -149,23 +149,23 @@ export const getParlayTickets = async () => {
 	}
 };
 
-// //  请求冠军单关信息
-// export const getOutrightTicket = async () => {
-// 	const sportsBetChampion = useSportsBetChampionStore();
-// 	const sportsBetInfo = useSportsBetInfoStore();
-// 	const singleTicketInfo = sportsBetChampion.championBetData[0];
-// 	// 投注参数
-// 	const params = {
-// 		sportType: singleTicketInfo.sportType,
-// 		orid: singleTicketInfo.orid,
-// 	};
-// 	const res = await sportsApi.GetOutrightTicket(params, { showLoading: false }).catch((err) => err);
-// 	if (res.status == 200) {
-// 		sportsBetInfo.addChampionSingleTicketInfo(res.data);
-// 	} else {
-// 		// 异常
-// 	}
-// };
+//  请求冠军单关信息
+export const getOutrightTicket = async () => {
+	const sportsBetChampion = useSportsBetChampionStore();
+	const sportsBetInfo = useSportsBetInfoStore();
+	const singleTicketInfo = sportsBetChampion.championBetData[0];
+	// 投注参数
+	const params = {
+		sportType: singleTicketInfo.sportType,
+		orid: singleTicketInfo.orid,
+	};
+	const res = await sportsApi.GetOutrightTicket(params, { showLoading: false }).catch((err) => err);
+	if (res.status == 200) {
+		sportsBetInfo.addChampionSingleTicketInfo(res.data);
+	} else {
+		// 异常
+	}
+};
 
 // 单关轮训注单信息盘口关闭的错误状态
 const marketClosingError = (errInfo) => {

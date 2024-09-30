@@ -289,35 +289,39 @@ watch(
 /**
  * @description 监听路由地址的变化，清理赛事数据，清理侧边栏数据，开启对应的推送。
  */
-watch(() => route.fullPath, (newValue, oldValue) => {
-	
-	if (newValue !== oldValue) {
-		// 清除数据中心数据===列表数据
-		viewSportPubSubEventData.clearEventsState();
-		// 清除侧边栏数据
-		// SidebarStore.clearEventsInfo();
-		//开启推送
-		openSportPush(route.query.sportType as string);
+watch(
+	() => route.fullPath,
+	(newValue, oldValue) => {
+		if (newValue !== oldValue) {
+			// 清除数据中心数据===列表数据
+			viewSportPubSubEventData.clearEventsState();
+			// 清除侧边栏数据
+			// SidebarStore.clearEventsInfo();
+			//开启推送
+			openSportPush(route.query.sportType as string);
+		}
 	}
-})
+);
 /**
  * @description 监听体育球类的变化
  */
-watch(() => sportsData.value, (newValue, oldValue) => {
-	if(newValue && newValue.length > 0) {
-		const isSportType = newValue.some(item => item.sportType == Number(route.query.sportType))
-		if(!isSportType){
-		router.push({
-			path: route.path,
-			query: {
-				...route.query,
-				sportType: newValue[0].sportType
+watch(
+	() => sportsData.value,
+	(newValue, oldValue) => {
+		if (newValue && newValue.length > 0) {
+			const isSportType = newValue.some((item) => item.sportType == Number(route.query.sportType));
+			if (!isSportType) {
+				router.push({
+					path: route.path,
+					query: {
+						...route.query,
+						sportType: newValue[0].sportType,
+					},
+				});
 			}
-			})
 		}
 	}
-})
-
+);
 </script>
 
 <style lang="scss" scoped>
@@ -338,6 +342,7 @@ watch(() => sportsData.value, (newValue, oldValue) => {
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
+	// transform: scale(0.8);
 	.left-container {
 		position: relative;
 		margin: 0px 12px;

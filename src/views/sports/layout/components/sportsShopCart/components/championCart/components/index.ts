@@ -1,11 +1,6 @@
-import SinglePass from "./singlePass/singlePass.vue";
-import ShopCard from "./shopCard/shopCard.vue";
-import MoreShop from "./moreShop/moreShop.vue";
-import cardStatus from "./cardStatus/cardStatus.vue";
-import planButton from "./planButton/planButton.vue";
-import authHintDialog from "./authHintDialog/authHintDialog.vue";
-
-import SingleOrderStatus from "./singleOrderStatus/singleOrderStatus.vue";
-import MoreOrderStatus from "./moreOrderStatus/moreOrderStatus.vue";
-
-export { SinglePass, ShopCard, MoreShop, cardStatus, planButton, authHintDialog, SingleOrderStatus, MoreOrderStatus };
+import EventCard from "./eventCard/eventCard.vue";
+import SingleTicketFrom from "./singleTicketFrom/singleTicketFrom.vue";
+import SingleTicketFooter from "./singleTicketFooter/singleTicketFooter.vue";
+import SingleTicketFinish from "./singleTicketFinish/singleTicketFinish.vue";
+import CardStatus from "../../components/cardStatus/cardStatus.vue"; // 投注成功头部
+export { EventCard, SingleTicketFrom, SingleTicketFooter, SingleTicketFinish, CardStatus };
