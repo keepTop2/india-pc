@@ -168,6 +168,12 @@ class Common {
 		return moment(time).format("YYYY.MM.DD HH:mm:ss");
 	}
 	/**
+	 * @describe 获取时分秒 (HH:mm:ss)
+	 */
+	static parseHms(time: any) {
+		return moment(time).format("HH:mm:ss");
+	}
+	/**
 	 * @describe 获取今天开始时间 (YYYY-MM-DD HH:mm:ss)
 	 */
 	static startOneDay() {

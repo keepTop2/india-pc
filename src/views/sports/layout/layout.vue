@@ -12,7 +12,7 @@
 					<div class="header">
 						<HeaderMenuNav></HeaderMenuNav>
 						<div class="line"></div>
-						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab"></HeaderMenuCondition>
+						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
 					</div>
 					<div class="back-container">
 						<!-- 主体路由页面 -->
@@ -86,6 +86,13 @@ const $ = i18n.global;
  */
 const route = useRoute();
 const router = useRouter();
+
+/**
+ * @description 是否显示条件
+ */
+const isShowCondition = computed(() => {
+	return route.meta.type === 'list';
+})
 
 /**
  * @description 各种store实例
@@ -289,35 +296,39 @@ watch(
 /**
  * @description 监听路由地址的变化，清理赛事数据，清理侧边栏数据，开启对应的推送。
  */
-watch(() => route.fullPath, (newValue, oldValue) => {
-	
-	if (newValue !== oldValue) {
-		// 清除数据中心数据===列表数据
-		viewSportPubSubEventData.clearEventsState();
-		// 清除侧边栏数据
-		// SidebarStore.clearEventsInfo();
-		//开启推送
-		openSportPush(route.query.sportType as string);
+watch(
+	() => route.fullPath,
+	(newValue, oldValue) => {
+		if (newValue !== oldValue) {
+			// 清除数据中心数据===列表数据
+			viewSportPubSubEventData.clearEventsState();
+			// 清除侧边栏数据
+			// SidebarStore.clearEventsInfo();
+			//开启推送
+			openSportPush(route.query.sportType as string);
+		}
 	}
-})
+);
 /**
  * @description 监听体育球类的变化
  */
-watch(() => sportsData.value, (newValue, oldValue) => {
-	if(newValue && newValue.length > 0) {
-		const isSportType = newValue.some(item => item.sportType == Number(route.query.sportType))
-		if(!isSportType){
-		router.push({
-			path: route.path,
-			query: {
-				...route.query,
-				sportType: newValue[0].sportType
+watch(
+	() => sportsData.value,
+	(newValue, oldValue) => {
+		if (newValue && newValue.length > 0) {
+			const isSportType = newValue.some((item) => item.sportType == Number(route.query.sportType));
+			if (!isSportType) {
+				router.push({
+					path: route.path,
+					query: {
+						...route.query,
+						sportType: newValue[0].sportType,
+					},
+				});
 			}
-			})
 		}
 	}
-})
-
+);
 </script>
 
 <style lang="scss" scoped>
@@ -338,18 +349,20 @@ watch(() => sportsData.value, (newValue, oldValue) => {
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
+	// transform: scale(0.8);
 	.left-container {
 		position: relative;
 		margin: 0px 12px;
 		flex: 1;
 
 		.container {
-			width: 1246px;
+			width: 100%;
 			.header {
 				width: 100%;
-				border-radius: 8px;
-				background: var(--Bg1);
+				// border-radius: 8px 8px 0 0;
+				// background: var(--Bg1);
 				box-sizing: border-box;
+				overflow: hidden;
 
 				.line {
 					width: 100%;

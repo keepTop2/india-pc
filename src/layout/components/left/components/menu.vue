@@ -60,17 +60,14 @@ const collapse = computed(() => {
 watch(
 	() => [route.query.gameTwoId, route.query.gameOneId, routerObj.value, route.name],
 	() => {
-		console.log(1312);
 		setOpenMenu();
 	}
 );
 const setOpenMenu = () => {
 	if (route.name === "activity") return (openMenuIndex.value = "activity");
 	openMenuIndex.value = routerObj.value.findIndex((item: any) => item.gameOneClassId == route.query.gameOneId);
-	if (openMenuIndex.value) {
-		console.log(routerObj.value);
-
-		openSubMenuIndex.value = openMenuIndex.value + "," + routerObj.value[openMenuIndex.value]?.twoList?.findIndex((item: any) => item.id == route.query.gameTwoId);
+	if (openMenuIndex.value !== -1) {
+		openSubMenuIndex.value = openMenuIndex.value + "," + routerObj.value[openMenuIndex.value as number]?.twoList?.findIndex((item: any) => item.id == route.query.gameTwoId);
 	}
 };
 const goToPath = (item: any, subItem: any, index: number, subIndex: number) => {

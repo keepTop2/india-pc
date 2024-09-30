@@ -20,9 +20,12 @@ import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import Head from "./components/header/index.vue";
 import left from "./components/left/left.vue";
 import { useMenuStore } from "/@/stores/modules/menu";
-import Modal from "/@/components/Modal/index.vue";
+import Modal from "/@/components/Modal.vue";
 import Footer from "./components/footer/index.vue";
 import { useRoute } from "vue-router";
+import activitySocketService from "../utils/activitySocketService";
+const websocketService = activitySocketService.getInstance();
+import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
 const route = useRoute();
 const MenuStore = useMenuStore();
 
@@ -46,9 +49,14 @@ const resizeObserver = new ResizeObserver((entries) => {
 });
 
 onMounted(() => {
+	initializeWebSocket();
 	resizeObserver.observe(domeRef.value as any);
 });
-
+const initializeWebSocket = async () => {
+	await websocketService.connect().then(() => {
+		websocketService.send(webSocketMsgTopicEnum.redBagRain);
+	});
+};
 onUnmounted(() => {
 	resizeObserver.unobserve(domeRef.value as any);
 });

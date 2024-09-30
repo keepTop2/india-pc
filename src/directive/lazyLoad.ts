@@ -7,7 +7,6 @@ const observer = new IntersectionObserver((entries) => {
 		if (entry.isIntersecting) {
 			const imgEl = entry.target as HTMLImageElement;
 			const imageUrl = imgEl.dataset.src;
-
 			if (imageUrl) {
 				imgEl.src = resolveImageUrl(imageUrl);
 				imgEl.classList.add("fade-in");

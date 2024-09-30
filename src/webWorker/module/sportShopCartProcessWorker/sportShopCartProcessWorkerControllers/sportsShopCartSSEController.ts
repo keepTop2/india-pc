@@ -75,11 +75,10 @@ export default (function () {
 			this.sourceInstance.onopen = () => {
 				resPonsedata.code = ResCode.SUCCESS;
 				this.sourceInstance!.onmessage = (event) => {
-					if (event.data == "KEEPALIVE") return;
 					const data: SportEventSourceResponse = {
 						sportPushApi,
 						webToPushApi,
-						payload: JSON.parse(event.data).payload,
+						payload: event.data === "KEEPALIVE" ? {} : JSON.parse(event.data).payload,
 					};
 					this.sportEventSourceService?.startOutrightSEEProcess(data);
 				};

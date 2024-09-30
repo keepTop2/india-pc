@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ActivityDialog: typeof import('./src/components/ActivityDialog/index.vue')['default']
     AreaCode: typeof import('./src/components/AreaCode/index.vue')['default']
     BackToTop: typeof import('./src/components/BackToTop.vue')['default']
     Button: typeof import('./src/components/Button/Button.vue')['default']
@@ -15,6 +16,8 @@ declare module 'vue' {
     Collapse: typeof import('./src/components/Collapse/index.vue')['default']
     CollapseItem: typeof import('./src/components/Collapse/CollapseItem.vue')['default']
     CollapseTransition: typeof import('./src/components/Collapse/CollapseTransition.vue')['default']
+    CommonDialog: typeof import('./src/components/CommonDialog/index.vue')['default']
+    copy: typeof import('./src/components/ActivityDialog copy/index.vue')['default']
     Dialog: typeof import('./src/components/Dialog/Dialog.vue')['default']
     DropdownSelect: typeof import('./src/components/DropdownSelect/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -49,10 +52,11 @@ declare module 'vue' {
     LoginModal: typeof import('./src/components/Modal/components/LoginModal.vue')['default']
     M3u8Video: typeof import('./src/components/wVideo/m3u8Video.vue')['default']
     Mian: typeof import('./src/components/Notification/components/mian.vue')['default']
-    Modal: typeof import('./src/components/Modal/index.vue')['default']
+    Modal: typeof import('./src/components/Modal.vue')['default']
     NoneData: typeof import('./src/components/noneData/noneData.vue')['default']
     NoticeBar: typeof import('./src/components/noticeBar/index.vue')['default']
     Pagination: typeof import('./src/components/Pagination/Pagination.vue')['default']
+    RedbagRainCountdown: typeof import('./src/components/redbagRainCountdown.vue')['default']
     RegisterModal: typeof import('./src/components/Modal/components/RegisterModal.vue')['default']
     RiseOrFall: typeof import('./src/components/Sport/RiseOrFall.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -62,6 +66,7 @@ declare module 'vue' {
     SetEmail: typeof import('./src/components/Modal/components/setEmail.vue')['default']
     SetPhone: typeof import('./src/components/Modal/components/setPhone.vue')['default']
     SetWithdrawPwd: typeof import('./src/components/Modal/components/setWithdrawPwd.vue')['default']
+    Slide: typeof import('./src/components/slide.vue')['default']
     SpinnerRoll: typeof import('./src/components/Spinner/spinner-roll.vue')['default']
     SpinnerWrap: typeof import('./src/components/Spinner/spinner-wrap.vue')['default']
     SvgIcon: typeof import('./src/components/svgIcon/index.vue')['default']

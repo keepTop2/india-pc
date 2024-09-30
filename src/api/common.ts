@@ -22,7 +22,7 @@ export const CommonApi = {
 	/**
 	 *@description 获取通用配置
 	 */
-	getCommonBusinessDownBox: (data = {}, headers = {}) => {
+	getCommonBusinessDownBox: (data = {}, headers = { showLoading: false }) => {
 		return useAxiosApi(`/app/common/getCommonBusinessDownBox`, {
 			method: "POST",
 			data,
@@ -43,7 +43,7 @@ export const CommonApi = {
 	/**
 	 *@description 获取游戏菜单
 	 */
-	queryLobbyLabelList: (data = {}, headers = {}) => {
+	queryLobbyLabelList: (data = {}, headers = { showLoading: false }) => {
 		return useAxiosApi(`/app/game_lobby/api/queryLobbyLabelList`, {
 			method: "POST",
 			data,

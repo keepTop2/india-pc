@@ -42,7 +42,6 @@
 import { computed, onMounted, reactive, Ref, ref } from "vue";
 import { useUserStore } from "/@/stores/modules/user";
 import { userApi } from "/@/api/user";
-import eventBus from "/@/utils/eventBus";
 
 interface userGlobalSetInfoType {
 	areaCode: string | null;
@@ -64,7 +63,8 @@ const userGlobalSetInfo: userGlobalSetInfoType = reactive({
 
 onMounted(() => {
 	getUserGlobalSetInfo();
-	eventBus.on("hide-modal", () => {
+
+	nextTick(() => {
 		getUserGlobalSetInfo();
 	});
 });
@@ -78,16 +78,16 @@ const getUserGlobalSetInfo = () => {
 const modifyHandle = (type: string) => {
 	switch (type) {
 		case "password":
-			eventBus.emit("show-modal", "ChangePassword");
+			modalStore.openModal("ChangePassword");
 			break;
 		case "phone":
-			eventBus.emit("show-modal", "setPhone");
+			modalStore.openModal("setPhone");
 			break;
 		case "email":
-			eventBus.emit("show-modal", "setEmail");
+			modalStore.openModal("setEmail");
 			break;
 		case "withdrawPwd":
-			eventBus.emit("show-modal", "setWithdrawPwd");
+			modalStore.openModal("setWithdrawPwd");
 			break;
 	}
 };

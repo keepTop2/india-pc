@@ -34,7 +34,6 @@
 		"js-table2excel": "^1.0.3",
 		"jsplumb": "^2.15.6",
 		"lodash-es": "^4.17.21",
-		"mitt": "^3.0.1",
 		"moment": "^2.29.4",
 		"moment-timezone": "^0.5.43",
 		"nprogress": "^0.2.0",

@@ -10,6 +10,10 @@ p {
 	margin: 0;
 	padding: 0;
 }
+/* 取消标签下划线 */
+a {
+	text-decoration: none;
+}
 img {
 	display: inline-block;
 	vertical-align: middle;
@@ -72,5 +76,5 @@ body {
 }
 
 .fade-in {
-	animation: fadeIn 1s forwards;
+	animation: fadeIn 0.5s forwards;
 }

@@ -327,8 +327,13 @@ watch(
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			
 			:first-child {
 				color: var(--Text1);
+				max-width: 60px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
 			}
 			:last-child {
 				color: var(--Text_a);
@@ -393,7 +398,7 @@ watch(
 			position: relative;
 			border-radius: 8px;
 			background-color: var(--Bg1);
-			margin-bottom: 20px;
+			margin-bottom: 5px;
 			padding: 10px 8px 8px 8px;
 			.item-red {
 				position: absolute;
@@ -416,11 +421,14 @@ watch(
 				display: flex;
 				flex-wrap: wrap; /* 允许元素换行 */
 				// justify-content: space-between; /* 项目之间的间隔 */
-				gap: 10px;
+				gap: 4px;
 			}
 			.li_tag {
+				position: relative;
+
 				cursor: pointer;
 				padding: 7px 12px;
+				padding-right: 20px;
 				height: 34px;
 				box-sizing: border-box; /* 包括边框和内边距在内占据50% */
 				border-radius: 4px;
@@ -430,17 +438,19 @@ watch(
 				background-color: var(--Bg3);
 				flex-basis: calc(50% - 5px); /* 每个元素占据50%，减去10px的间隔 */
 				font-size: 14px;
-				margin-bottom: 10px;
+				// margin-bottom: 4px;
 				.price {
-					position: relative;
 					display: inline-block;
 					color: var(--Text_a);
-					display: flex;
-					align-items: center;
-					gap: 5px;
+					// display: flex;
+					// align-items: center;
+					// gap: 5px;
 					span {
-						width: 20px;
+						width: 10px;
 						display: inline-block;
+						position: absolute;
+						top: 10px;
+						right: 5px;
 					}
 				}
 				> div {
@@ -450,7 +460,7 @@ watch(
 			}
 
 			.threeCol {
-				flex-basis: calc(33% - 4px); /* 每个元素占据50%，减去10px的间隔 */
+				flex-basis: calc(33% - 6px); /* 每个元素占据50%，减去10px的间隔 */
 			}
 		}
 	}

@@ -21,7 +21,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { RiseOrFall } from "/@/components/Sport/index";
 import sportsApi from "/@/api/sports/sports";
-import { useChampionShopCartStore } from "/@/stores/modules/sports/championShopCart";
+import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import pubsub from "/@/pubSub/pubSub";
@@ -42,7 +42,7 @@ interface CapotCardType {
 	displayContent: boolean;
 }
 
-const ChampionShopCartStore = useChampionShopCartStore();
+const ChampionShopCartStore = useSportsBetChampionStore();
 
 onMounted(() => {
 	/**设置显示购物车为冠军 */
@@ -102,10 +102,10 @@ const onSetSportsEventData = () => {
 	//存储盘口唯一标识
 	if (isBright()) {
 		// 删除Pinia数据
-		ChampionShopCartStore.removeOutrightTEventCart(params);
+		ChampionShopCartStore.removeChampionTEventCart(params);
 	} else {
 		/**添加到购物车 */
-		ChampionShopCartStore.addOutrightToCart(JSON.parse(JSON.stringify(params)));
+		ChampionShopCartStore.addChampionToCart(JSON.parse(JSON.stringify(params)));
 	}
 };
 
@@ -117,7 +117,7 @@ const isBright = () => {
 	let data = props.sportInfo; //行数据
 	let tag = false;
 	try {
-		tag = ChampionShopCartStore.getOutrightBetObj[data.leagueId]?.orid == item.orid;
+		tag = ChampionShopCartStore.championBetObj[data.leagueId]?.orid == item.orid;
 		if (tag) {
 		}
 	} catch (error) {

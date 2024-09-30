@@ -92,6 +92,7 @@ onMounted(() => {});
 	display: flex;
 	align-items: center;
 	padding-left: 24px;
+	border-radius: 8px 8px 0 0;
 	background: var(--Bg1);
 	overflow: hidden;
 	box-sizing: border-box;
@@ -155,6 +156,20 @@ onMounted(() => {});
 					height: 16px;
 				}
 
+				a {
+					width: 100%;
+					height: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					.value {
+						color: var(--Text1, #98a7b5);
+						text-align: center;
+						font-family: "PingFang SC";
+						font-size: 14px;
+						font-weight: 400;
+					}
+				}
 				.value {
 					color: var(--Text1, #98a7b5);
 					text-align: center;

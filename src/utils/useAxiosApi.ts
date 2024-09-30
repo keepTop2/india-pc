@@ -8,10 +8,9 @@ import { useUserStore } from "/@/stores/modules/user";
 import router from "/@/router";
 import { useRequestError } from "/@/hooks/requestError";
 import showToast from "../hooks/useToast";
-import eventBus from "./eventBus";
 const { startLoading, stopLoading } = useLoading();
 const { handleRequestError } = useRequestError();
-
+import { useModalStore } from "/@/stores/modules/modalStore";
 // 获取 config 配置请求 api
 function getUrl() {
 	switch (import.meta.env.VITE_BASEENV) {
@@ -65,15 +64,16 @@ instance.interceptors.request.use(
 			showLoading(config.headers.loadingTarget);
 		}
 		const UserStore = useUserStore();
-
+		const modalStore = useModalStore();
 		// 需要登陆的处理
 		if (config["headers"]["needLogin"] == "true" && !UserStore.getUserInfo.token) {
 			hideLoading();
-			eventBus.emit("show-modal", "LoginModal");
+			modalStore.openModal("LoginModal");
 			return Promise.reject();
 		}
 
 		config["headers"]["Sign"] = EncryptionFn.encryption();
+		config["headers"]["X-Custom"] = "gw.playesoversea.store";
 
 		const language = UserStore.getLang;
 		if (language) {
@@ -101,17 +101,15 @@ instance.interceptors.response.use(
 		}
 		const res = response.data;
 		// 如果自定义代码不是 200，则判断为错误。
-		console.log(res.code);
-
 		switch (res.code) {
 			// 登陆过期
 			case ResCode.LOGIN_EXPIRE:
 				const userStore = useUserStore();
 				userStore.logOut();
 				break;
-		}
-		if (res.code === 10007) {
-			showToast("令牌错误，请先重新登录");
+			case ResCode.TOKEN_INVALID:
+				showToast("令牌错误，请先重新登录");
+				break;
 		}
 
 		if (res.code !== ResCode.SUCCESS) {

@@ -70,7 +70,6 @@ const getactivityTabsList = async () => {
 // Change current tab and reset activity list
 const setCurrentTab = async (index: number) => {
 	if (currentTab.value === index) return; // Prevent duplicate calls for the same tab
-
 	currentTab.value = index;
 	finished.value = false; // Reset finished status for new tab
 	params.pageNumber = 1; // Reset page number for new tab

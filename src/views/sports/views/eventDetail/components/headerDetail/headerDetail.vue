@@ -12,13 +12,13 @@
 					<svg-icon :name="show ? 'eyes' : 'eyes_on'" size="16px"></svg-icon>
 				</div>
 				<svg-icon class="saveFollow" :name="isAttention ? 'sports-already_collected' : 'sports-collection'" @click="attentionEvent(true)" size="20" />
-				<svg-icon name="sports-shuaxin" :class="{ cycling: loading }" size="20" @click="$emit('refresh')" />
+				<!-- <svg-icon name="sports-shuaxin" :class="{ cycling: loading }" size="20" @click="$emit('refresh')" /> -->
 			</div>
 		</div>
 		<div class="content" :class="!show ? 'showContent' : 'hideContent'">
 			<!-- <SportEventDetail :sportInfo="sportInfo" :size="'large'" /> -->
 			<!-- 计分板组件 -->
-			<div v-if="SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
+			<div class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
 				<component v-if="sportInfo && SportsCommonFn.isStartMatch(sportInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="sportInfo"></component>
@@ -26,9 +26,9 @@
 				<NotStarted v-else :eventsInfo="sportInfo" />
 			</div>
 			<!-- 直播 -->
-			<div v-else-if="SidebarStore.sidebarStatus === 'live'" class="events-live">
+			<!-- <div v-else-if="SidebarStore.sidebarStatus === 'live'" class="events-live">
 				<VideoSource />
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>

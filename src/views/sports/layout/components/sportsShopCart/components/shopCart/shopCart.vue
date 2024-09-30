@@ -67,7 +67,6 @@ const ShopCatControlStore = useShopCatControlStore();
 const sportsBetEvent = useSportsBetEventStore();
 const isRotating = ref(false);
 
-const isChange = ref(false);
 /**  是否下单结束 */
 const isOrdered = ref(false);
 const container = ref<HTMLElement | null>(null);
@@ -105,10 +104,6 @@ watch(
 			});
 			// 开启线程
 			sportsBetEvent.sportsOpenSse();
-		}
-		/** 长度小于0时 清除改动记录 */
-		if (!newValue) {
-			isChange.value = false;
 		}
 	}
 );
@@ -218,10 +213,13 @@ const onOrderConfirm = () => {
 .shopCart {
 	width: 520px;
 	min-height: 100%;
-	background: var(--Bg1);
 	color: var(--Text_s);
-	box-shadow: 0px -3px 30px 0px rgba(14, 16, 19, 0.4);
-	border-radius: 4px;
+	border-radius: 8px 8px 0px 0px;
+	border-top: 1px solid var(--Line_2);
+	border-right: 1px solid var(--Line_2);
+	border-left: 1px solid var(--Line_2);
+	background: var(--Bg1);
+	box-shadow: 0px -3px 30px 0px rgba(14, 16, 19, 0.7);
 	box-sizing: border-box;
 
 	.header-container {
