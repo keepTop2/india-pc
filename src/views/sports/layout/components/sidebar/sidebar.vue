@@ -295,7 +295,7 @@ const showDetail = () => {
 	};
 	toggleEventScoreboard(eventsInfo.value);
 
-	gotoEventDetail(params, SportTypeEnum.Tennis);
+	gotoEventDetail(params, route.query.sportType as string);
 };
 </script>
 
