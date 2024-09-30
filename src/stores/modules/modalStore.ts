@@ -1,0 +1,60 @@
+// src/store/modalStore.ts
+import { defineStore } from "pinia";
+import { ref } from "vue";
+
+// 定义模态框组件的类型
+interface ModalComponent {
+	component: any; // Vue 组件类型
+	props?: Record<string, any>; // 允许传递任意属性
+}
+
+const activityModal: Record<string, () => Promise<any>> = {
+	RED_BAG_RAIN: () => import("/@/views/activity/activityType/RED_BAG_RAIN/index.vue"),
+	FIRST_DEPOSIT: () => import("/@/views/activity/activityType/FIRST_DEPOSIT.vue"),
+	SECOND_DEPOSIT: () => import("/@/views/activity/activityType/SECOND_DEPOSIT.vue"),
+	FREE_WHEEL: () => import("/@/views/activity/activityType/FREE_WHEEL/index.vue"),
+	ASSIGN_DAY: () => import("/@/views/activity/activityType/ASSIGN_DAY.vue"),
+	LOSS_IN_SPORTS: () => import("/@/views/activity/activityType/LOSS_IN_SPORTS.vue"),
+	RECHARGE_BONUS: () => import("/@/views/activity/activityType/RECHARGE_BONUS.vue"),
+	DAILY_COMPETITION: () => import("/@/views/activity/activityType/DAILY_COMPETITION.vue"),
+	SPIN_WHEEL: () => import("/@/views/activity/activityType/SPIN_WHEEL.vue"),
+};
+
+// 定义可用的模态框组件
+const modalComponents: Record<string, () => Promise<any>> = {
+	LoginModal: () => import("/@/views/loginModal/LoginModal.vue"),
+	RegisterModal: () => import("/@/views/loginModal/RegisterModal.vue"),
+	ForgetPassword: () => import("/@/views/loginModal/ForgetPassword.vue"),
+	LangCurrenyConfig: () => import("/@/views/loginModal/LangCurrenyConfig.vue"),
+	InviteFriends: () => import("/@/views/user/invite_friends/InviteFriends.vue"),
+
+	...activityModal,
+};
+
+// 创建 Pinia store
+export const useModalStore = defineStore("modal", () => {
+	const modals = ref<ModalComponent | null>(null);
+	const modalCache = new Map<string, any>(); // 缓存已加载的组件
+	// 打开模态框
+	const openModal = async (modalName: string, props: Record<string, any> = {}) => {
+		if (modalCache.has(modalName)) {
+			const cachedModal = modalCache.get(modalName);
+			modals.value = { component: cachedModal, props };
+		} else {
+			const modalComponent = modalComponents[modalName];
+			if (modalComponent) {
+				const component = await modalComponent();
+				modalCache.set(modalName, component.default);
+				modals.value = { component: component.default, props };
+				console.log(modals.value);
+			}
+		}
+	};
+
+	// 关闭模态框
+	const closeModal = () => {
+		modals.value = null;
+	};
+
+	return { modals, openModal, closeModal };
+});

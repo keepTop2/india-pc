@@ -2,7 +2,7 @@ import useAxiosApi from "/@/utils/useAxiosApi";
 
 export const HomeApi = {
 	// 首页分类热门游戏
-	queryLobbyTopGame: (data = {}, headers = {}) => {
+	queryLobbyTopGame: (data = {}, headers = { showLoading: false }) => {
 		return useAxiosApi(`/app/game_lobby/api/queryLobbyTopGame`, {
 			method: "POST",
 			data,
@@ -10,7 +10,7 @@ export const HomeApi = {
 		});
 	},
 	// 获取热门游戏
-	queryGameInfoDetail: (data = {}, headers = {}) => {
+	queryGameInfoDetail: (data = {}, headers = { showLoading: false }) => {
 		return useAxiosApi(`/app/game_lobby/api/queryGameInfoDetail`, {
 			method: "POST",
 			data,
@@ -18,7 +18,7 @@ export const HomeApi = {
 		});
 	},
 	// 收藏游戏
-	collection: (data = {}, headers = {}) => {
+	collection: (data = {}, headers = { showLoading: false }) => {
 		return useAxiosApi(`/app/game/api/collection`, {
 			method: "POST",
 			data,

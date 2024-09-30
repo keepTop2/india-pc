@@ -2,7 +2,7 @@
 	<div class="lazy-load-container" ref="container">
 		<slot></slot>
 		<div ref="trigger" class="lazy-load-trigger">
-			<div v-if="finished" class="noData" v-ok-Loading="true">没有更多了</div>
+			<div v-if="finished" class="noData">没有更多了</div>
 		</div>
 	</div>
 </template>
