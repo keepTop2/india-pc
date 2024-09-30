@@ -15,6 +15,7 @@
 	--Bg6: linear-gradient(180deg, #404040 0%, #292929 100%);
 	--Text1: #98a7b5;
 	--Text2: #4d565e;
+	--Text3: #252c30;
 	--Text2_1: #656e78;
 	--Text_s: #ffffff;
 	--Text_a: #ffffff;
@@ -28,6 +29,6 @@
 	--popoverShadow: rgba(14, 16, 19, 0.2);
 	/* 体育计分板背景 */
 	--scoreboard_bg: rgba(26, 28, 32, 0.7);
-	--light-ok-Butter:#2D2E32;
-	--light-ok-Text-1:#98A7B5;
+	--light-ok-Butter: #2d2e32;
+	--light-ok-Text-1: #98a7b5;
 }

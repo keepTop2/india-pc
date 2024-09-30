@@ -19,9 +19,10 @@
 					class="option-item fs_10"
 					:class="option.code == selectedOption?.code ? 'active' : ''"
 				>
-					{{ option.code }}
+					<span> {{ option.value }}</span>
+					<span> {{ option.code }}</span>
 				</li>
-				<li v-if="filteredOptions.length === 0" class="no-results">No results found</li>
+				<li v-if="filteredOptions.length === 0" class="no-results">暂不支持此货币</li>
 			</ul>
 		</div>
 	</div>
@@ -33,6 +34,7 @@ import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 interface Option {
 	code: string;
 	label: string;
+	value: string;
 }
 
 const props = defineProps<{
@@ -73,7 +75,9 @@ const selectOption = (option: Option) => {
 };
 
 const filteredOptions = computed(() => {
-	return props.options.filter((option) => option.code.toLowerCase().includes(searchQuery.value?.toLowerCase()));
+	return props.options.filter(
+		(option) => option.code.toLowerCase().includes(searchQuery.value?.toLowerCase()) || option.value.toLowerCase().includes(searchQuery.value?.toLowerCase())
+	);
 });
 
 // Watch for selected option changes to update input value
@@ -170,6 +174,8 @@ onUnmounted(() => {
 .option-item {
 	padding: 8px;
 	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
 }
 .option-item.active,
 .option-item:hover {
@@ -179,5 +185,6 @@ onUnmounted(() => {
 .no-results {
 	padding: 8px;
 	text-align: center;
+	font-size: 12px;
 }
 </style>

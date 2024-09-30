@@ -2,7 +2,7 @@ import useAxiosApi from "/@/utils/useAxiosApi";
 
 export const userApi = {
 	// 登录
-	getIndexInfo: (data = {}, headers = {}) => {
+	getIndexInfo: (data = {}, headers = { showLoading: false }) => {
 		return useAxiosApi(`/app/user-info/api/getIndexInfo`, {
 			method: "POST",
 			data,

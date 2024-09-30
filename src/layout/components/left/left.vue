@@ -104,6 +104,8 @@ import useTo from "/@/hooks/ustTo";
 import PubSub from "/@/pubSub/pubSub";
 import Common from "/@/utils/common";
 import { activityApi } from "/@/api/activity";
+import { useModalStore } from "/@/stores/modules/modalStore";
+const modalStore = useModalStore();
 const { to, router } = useTo();
 const ThemesStore = useThemesStore();
 const MenuStore = useMenuStore();
@@ -116,7 +118,7 @@ onMounted(() => {
 });
 
 const showLottery = () => {
-	PubSub.publish(PubSub.PubSubEvents.LotteryEvents.LotteryDialogSwitch.eventName, PubSub.PubSubEvents.LotteryEvents.LotteryDialogSwitch.params.show);
+	modalStore.openModal("FREE_WHEEL");
 };
 
 const showTask = () => {
