@@ -11,7 +11,7 @@
 				<div class="container">
 					<div class="header">
 						<HeaderMenuNav></HeaderMenuNav>
-						<div class="line"></div>
+						<div class="line"  v-if="route.meta.type !== 'detail'"></div>
 						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
 					</div>
 					<div class="back-container">

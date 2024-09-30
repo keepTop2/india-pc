@@ -14,7 +14,7 @@ export function useToolsHooks() {
 	const SportsInfoStore = useSportsInfoStore();
 	const UserStore = useUserStore();
 	// 切换计分板功能
-	const toggleEventScoreboard = (eventInfo: any) => {
+	const toggleEventScoreboard = (eventInfo: any,isVideo:boolean = false) => {
 		// console.log(eventInfo, '========toggleEventScoreboard')
 		if (eventInfo) {
 		
@@ -27,21 +27,26 @@ export function useToolsHooks() {
 			workerManage.startWorker(workerManage.WorkerMap.sidebarWorker.workerName);
 			// console.log("更新 eventInfo 赛事数据", eventInfo);
 			// 设置状态
-			SidebarStore.getSidebarStatus("scoreboard");
 		// 切换的时候获取当前赛事信息
 			SidebarStore.setEventsInfo(eventInfo);
 			getSidebarEventSSEPush(); // 侧边赛事推送
 			getSidebarMarketSSEPush(); // 每次更新侧边赛事时都需要重新推送对应的盘口详情
+			if (isVideo) {
+				switchEventVideoSource(eventInfo);
+			} else {
+				SidebarStore.getSidebarStatus("scoreboard");
+			}
 		}
 	};
 
 	// 切换视频源功能
 	const switchEventVideoSource = async (eventInfo: any) => {
-		console.log(eventInfo, '========switchEventVideoSource');
-		// 清除直播地址信息
+		// console.log(eventInfo, '========switchEventVideoSource');
+		// if (eventInfo) {
+			// 清除直播地址信息
 		SidebarStore.clearLiveUrl();
-		// 设置状态
-		SidebarStore.getSidebarStatus("live");
+			// 设置状态
+		// SidebarStore.getSidebarStatus("live");
 		// 同步更新赛事信息
 		// SidebarStore.setEventsInfo(eventInfo);
 		const lang = UserStore.getLang;
@@ -58,7 +63,8 @@ export function useToolsHooks() {
 		if (res.status == 200) {
 				// 设置直播数据
 			SidebarStore.setLiveUrl(res.data);
-		}
+			}
+		// }
 	};
 
 	// 侧边赛事推送

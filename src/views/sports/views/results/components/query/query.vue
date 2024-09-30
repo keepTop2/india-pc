@@ -147,7 +147,7 @@ const formatDate = (date: any) => {
 
 <style scoped lang="scss">
 .query {
-	margin-bottom: 14px;
+	margin-bottom: 5px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

@@ -205,7 +205,9 @@ const handleGoBack = () => {
 	align-items: center;
 	padding: 0 12px 0 6px;
 	height: 52px;
-
+	background-color: var(--Bg1);
+	border-radius: 8px 8px 0 0;
+	margin-top: 5px;
 	.back {
 		display: flex;
 		align-items: center;

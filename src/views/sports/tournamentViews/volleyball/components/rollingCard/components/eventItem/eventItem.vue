@@ -155,7 +155,7 @@ const tools = computed(() => {
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
-			action: switchEventVideoSource,
+			action: (event: any) => toggleEventScoreboard(event,true),
 			param: props.event, // 传递参数
 		});
 	}
