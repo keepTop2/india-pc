@@ -21,7 +21,7 @@ import activityType from "../activityType";
 import { useRouter } from "vue-router";
 import { useActivityStore } from "/@/stores/modules/activity";
 import { activityApi } from "/@/api/activity";
-import { useModalStore } from "/@/stores/modules/useModalStore";
+import { useModalStore } from "/@/stores/modules/modalStore";
 const modalStore = useModalStore();
 const activityStore = useActivityStore();
 const showDetails = async (item: any) => {
