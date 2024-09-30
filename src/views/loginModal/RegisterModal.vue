@@ -80,7 +80,7 @@
 						:style="{ color: userAgreement ? 'var(--Theme)' : '' }"
 					/>
 					<span
-						>{{ $t(`login['我同意']`) }} <span class="Wran_text" @click="toHelpCenter"> {{ $t(`login['用户协议']`) }}</span> {{ $t(`login['并确认我已年满18岁']`) }}</span
+						>{{ $t(`login['我同意']`) }} <span class="Wran_text curp" @click="toHelpCenter"> {{ $t(`login['用户协议']`) }}</span> {{ $t(`login['并确认我已年满18岁']`) }}</span
 					>
 				</div>
 				<div class="fs_10 userAgreement" :class="advertise ? 'Text_s' : 'Text1'">
