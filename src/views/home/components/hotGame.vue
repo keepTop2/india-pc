@@ -32,7 +32,6 @@
 
 <script setup lang="ts">
 import Common from "/@/utils/common";
-import slide from "./slide.vue";
 import hotGameIcon from "./image/hotGameIcon.png";
 import { HomeApi } from "/@/api/home";
 import showToast from "/@/hooks/useToast";

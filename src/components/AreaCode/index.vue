@@ -21,9 +21,12 @@
 					class="option-item flex_space-between fs_12"
 					:class="option.areaCode == selectedOption?.areaCode ? 'active' : ''"
 				>
-					<span>	<span v-if='option.icon'>
+					<span>
 						<img :src="option.icon" alt="">
-					</span>{{ option.countryName }}</span>
+						{{ option.countryCode }}
+						{{ option.countryName }}
+				
+					</span>
 					<span>+{{ option.areaCode }}</span>
 				</li>
 				<li v-if="filteredOptions.length === 0" class="no-results fs_12 ">{{ $t(`login['未搜索到相关区号']`)  }}</li>
@@ -205,6 +208,13 @@ onUnmounted(() => {
 .option-item {
 	padding: 8px;
 	cursor: pointer;
+	img{
+		width: 14px;
+		height: 14px;
+		object-fit: cover;
+		margin-right: 8px;
+		border-radius: 50%;
+	}
 }
 .option-item.active,
 .option-item:hover {

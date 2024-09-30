@@ -47,7 +47,6 @@
 import { computed, ref } from "vue";
 import { useMenuStore } from "/@/stores/modules/menu";
 import { useUserStore } from "/@/stores/modules/user";
-import eventBus from "/@/utils/eventBus";
 import Common from "/@/utils/common";
 import { modalEnum } from "/@/enum/modalEnum";
 import { onClickOutside } from "@vueuse/core";
@@ -56,6 +55,9 @@ import userRoutes from "/@/router/modules/userMenu";
 import router from "/@/router";
 
 import useSvgHoverHooks from "/@/hooks/useSvgHover";
+import { useModalStore } from "/@/stores/modules/modalStore";
+
+const modalStore = useModalStore();
 const { onMouseout, onMouseover, hoverItem } = useSvgHoverHooks();
 
 const MenuStore = useMenuStore();
@@ -83,20 +85,20 @@ onClickOutside(userMenu, (event) => {
 	isOpenMenu.value = false;
 });
 const openLoginModal = () => {
-	eventBus.emit("show-modal", modalEnum.LoginModal);
+	modalStore.openModal("LoginModal");
 };
 const openRegisterModal = () => {
-	eventBus.emit("show-modal", modalEnum.RegisterModal);
+	modalStore.openModal("RegisterModal");
 };
 const openLangCurrenyConfig = () => {
-	eventBus.emit("show-modal", modalEnum.LangCurrenyConfig);
+	modalStore.openModal(modalEnum.LangCurrenyConfig);
 };
 const mouseover = (icon: string) => {
 	currentHover.value = icon;
 };
 const goToPath = (route: any) => {
 	if (route.name === "invite_friends") {
-		eventBus.emit("show-modal", "InviteFriends");
+		modalStore.openModal("InviteFriends");
 	} else {
 		isOpenMenu.value = false;
 		router.push({ name: route.name });

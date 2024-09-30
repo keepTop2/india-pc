@@ -36,7 +36,6 @@
 </template>
 
 <script setup lang="ts">
-import slide from "./slide.vue";
 import { HomeApi } from "/@/api/home";
 import showToast from "/@/hooks/useToast";
 import router from "/@/router";

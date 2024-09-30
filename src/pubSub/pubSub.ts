@@ -73,6 +73,7 @@ class PubSub {
 		// 获取特定事件的订阅者数组
 		const handlers = this.subscribers[event];
 		if (!handlers) return;
+		console.log(event);
 
 		handlers.forEach((handler) => {
 			// 对每个订阅者执行回调函数

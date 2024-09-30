@@ -9,7 +9,7 @@
 					<p class="fs_14 Text2">截止时间：{{ Common.parseTime(item.activityEndTime) }}</p>
 					<p class="fs_14">{{ item.activityNameI18nCode }}</p>
 				</div>
-				<div class="btn">查看详情</div>
+				<div class="btn" @click="showDetails(item)">查看详情</div>
 			</div>
 		</div>
 	</div>
@@ -17,12 +17,33 @@
 
 <script setup lang="ts">
 import Common from "/@/utils/common";
-
-const props = defineProps({
+import activityType from "../activityType";
+import { useRouter } from "vue-router";
+import { useActivityStore } from "/@/stores/modules/activity";
+import { activityApi } from "/@/api/activity";
+import { useModalStore } from "/@/stores/modules/modalStore";
+const modalStore = useModalStore();
+const activityStore = useActivityStore();
+const showDetails = async (item: any) => {
+	await getConfigDetail(item);
+	modalStore.openModal(item.activityTemplate);
+};
+defineProps({
 	activityList: {
 		type: Object,
 	},
 });
+const getConfigDetail = async (item: any) => {
+	console.log(item);
+
+	const params = {
+		activityTemplate: item.activityTemplate,
+		id: item.id,
+	};
+	await activityApi.getConfigDetail(params).then((res) => {
+		activityStore.setCurrentActivityData({ ...item, ...res.data });
+	});
+};
 </script>
 
 <style scoped lang="scss">

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="home-wrapper">
 		<bannerSkeleton v-if="isLoading" />
 		<banner v-else></banner>
 
@@ -7,16 +7,14 @@
 			<!-- 热门推荐 -->
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
 			<hotGame :hotGameList="hotGameList" v-else />
+
 			<div v-if="isLoading">
-				<lobbyGameSkeleton :skeletonCount="6" />
-				<lobbyGameSkeleton :skeletonCount="3" />
-				<lobbyGameSkeleton :skeletonCount="6" />
-				<lobbyGameSkeleton :skeletonCount="1" />
-				<lobbyGameSkeleton :skeletonCount="5" />
+				<lobbyGameSkeleton v-for="(count, index) in [6, 3, 6, 1, 5]" :key="index" :skeletonCount="count" />
 			</div>
 			<div v-else>
-				<lobbyGameCard v-for="item in lobbyGameList" :gameList="item" :title="item.name" />
+				<lobbyGameCard v-for="(item, index) in lobbyGameList" :key="index" :gameList="item" :title="item.name" />
 			</div>
+			<redbagRainCountdown />
 		</div>
 	</div>
 </template>
@@ -30,38 +28,48 @@ import hotGameSkeleton from "./components/hotGameSkeleton.vue";
 import lobbyGameSkeleton from "./components/lobbyGameSkeleton.vue";
 import lobbyGameCard from "./components/lobbyGameCard.vue";
 import { HomeApi } from "/@/api/home";
+
 const isLoading = ref(false);
 const lobbyGameList: any = ref([]);
 const hotGameList = ref([]);
-onMounted(() => {
-	queryGameInfoDetail();
-	queryLobbyTopGame();
-});
-onMounted(() => {
-	isLoading.value = true;
-	setTimeout(() => {
-		isLoading.value = false;
-	}, 1500);
-});
-const queryGameInfoDetail = () => {
+
+const queryGameInfoDetail = async () => {
 	const params = {
 		label: 0,
 		pageSize: 10,
 	};
-	HomeApi.queryGameInfoDetail(params).then((res) => {
-		hotGameList.value = res.data.records;
+	try {
+		const res = await HomeApi.queryGameInfoDetail(params);
+		hotGameList.value = res.data?.records || [];
 		console.log(hotGameList.value);
-	});
+	} catch (error) {
+		console.error("Error fetching hot games:", error);
+	}
 };
-const queryLobbyTopGame = () => {
-	HomeApi.queryLobbyTopGame().then((res) => {
+
+const queryLobbyTopGame = async () => {
+	try {
+		const res = await HomeApi.queryLobbyTopGame();
 		lobbyGameList.value = res.data;
-	});
+	} catch (error) {
+		console.error("Error fetching lobby games:", error);
+	}
 };
+
+onMounted(async () => {
+	isLoading.value = true;
+
+	const startTime = Date.now();
+
+	await Promise.all([queryGameInfoDetail(), queryLobbyTopGame()]);
+
+	const elapsedTime = Date.now() - startTime;
+	const delay = Math.max(0, 500 - elapsedTime);
+
+	setTimeout(() => {
+		isLoading.value = false;
+	}, delay);
+});
 </script>
 
-<style lang="scss" scoped>
-.home-wrapper {
-	padding-bottom: 40px;
-}
-</style>
+<style lang="scss" scoped></style>

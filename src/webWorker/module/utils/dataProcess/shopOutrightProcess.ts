@@ -29,7 +29,7 @@ export default (function () {
 			processData = Object.assign({}, processData, sportsProcessRemove(sportServerData));
 		}
 
-		processData.outrightBetData = dataObj.outright;
+		processData.championBetData = dataObj.outright;
 		return processData;
 	};
 
