@@ -349,12 +349,13 @@ watch(
 		flex: 1;
 
 		.container {
-			width: 1246px;
+			width: 100%;
 			.header {
 				width: 100%;
 				border-radius: 8px;
 				background: var(--Bg1);
 				box-sizing: border-box;
+				overflow: hidden;
 
 				.line {
 					width: 100%;
