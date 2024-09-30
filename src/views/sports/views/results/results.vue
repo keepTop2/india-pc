@@ -1,81 +1,71 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育-赛果
--->
 <template>
 	<div class="container">
 		<!--查询栏-->
 		<query v-model:modelValue="queryForm" :ballOptions="ballOptions" :loading="loading" @search="getEventResultsData" @updateModel="handleUpdateModel" />
 		<div class="result_content">
-		<el-table :data="paginatedData" style="width: 100%;" :max-height="tableMaxHeight">
-			<el-table-column prop="date" :label="$t(`matchResult['日期']`)" width="200" />
-			<el-table-column prop="league" :label="$t(`matchResult['联赛']`)">
-				<template #default="{ row }">
-					<div class="col-box">
-						{{ row.leagueName }}
-					</div>
-				</template>
-			</el-table-column>
-			<el-table-column prop="competition" :label="$t(`matchResult['赛事']`)">
-				<template #default="{ row }">
-					<div class="competition">
+			<el-table :data="paginatedData" style="width: 100%" :max-height="tableMaxHeight">
+				<el-table-column prop="date" :label="$t(`matchResult['日期']`)" width="200" />
+				<el-table-column prop="league" :label="$t(`matchResult['联赛']`)">
+					<template #default="{ row }">
 						<div class="col-box">
-							{{ row.awayName }}
+							{{ row.leagueName }}
 						</div>
-						<div class="col-box">
-							{{ row.homeName }}
+					</template>
+				</el-table-column>
+				<el-table-column prop="competition" :label="$t(`matchResult['赛事']`)">
+					<template #default="{ row }">
+						<div class="competition">
+							<div class="col-box">
+								{{ row.awayName }}
+							</div>
+							<div class="col-box">
+								{{ row.homeName }}
+							</div>
 						</div>
-					</div>
-				</template>
-			</el-table-column>
-			<el-table-column prop="sports-half_court" >
-				<template #header>
-					<div class="col-title-box">
-						<svg-icon name="sports-half_court" size="20" /> &nbsp; 半场
-					</div>
-				</template>
-				<template #default="{ row }">
-					<div>
-						<div class="col-content-box">
-							{{ row.htAwayScore || '-'  }}
+					</template>
+				</el-table-column>
+				<el-table-column prop="sports-half_court">
+					<template #header>
+						<div class="col-title-box"><svg-icon name="sports-half_court" size="20" /> &nbsp; 半场</div>
+					</template>
+					<template #default="{ row }">
+						<div>
+							<div class="col-content-box">
+								{{ row.htAwayScore || "-" }}
+							</div>
+							<div class="col-content-box">
+								{{ row.htHomeScore || "-" }}
+							</div>
 						</div>
-						<div class="col-content-box">
-							{{ row.htHomeScore || '-'  }}
+					</template>
+				</el-table-column>
+				<el-table-column prop="sports-full_court">
+					<template #header>
+						<div class="col-title-box"><svg-icon name="sports-full_court" size="20" /> &nbsp; 全场</div>
+					</template>
+					<template #default="{ row }">
+						<div>
+							<div class="col-content-box">
+								{{ row.awayScore || "-" }}
+							</div>
+							<div class="col-content-box">
+								{{ row.homeScore || "-" }}
+							</div>
 						</div>
-					</div>
-				</template>
-			</el-table-column>
-			<el-table-column prop="sports-full_court" >
-				<template #header>
-					<div class="col-title-box">
-					<svg-icon name="sports-full_court" size="20" /> &nbsp; 全场
-				</div>
-				</template>
-				<template #default="{ row }">
-					<div>
-						<div class="col-content-box">
-							{{ row.awayScore || '-' }}
-						</div>
-						<div class="col-content-box">
-							{{ row.homeScore || '-' }}
-						</div>
-					</div>
-				</template>
-			</el-table-column>
-			<template #empty>
-				<div class="custom-empty">
-					<!-- <svg-icon name="no_data" width="142" height="120" />
+					</template>
+				</el-table-column>
+				<template #empty>
+					<div class="custom-empty">
+						<!-- <svg-icon name="no_data" width="142" height="120" />
 					<p>哎呀！还没有数据！</p> -->
-					<NoneData/>
-
-				</div>
-			</template>
-		</el-table>
-	</div>
+						<NoneData />
+					</div>
+				</template>
+			</el-table>
+		</div>
 
 		<Pagination v-if="eventResultData?.length" v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="total" @sizeChange="sizeChange" />
-
-</div>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -121,9 +111,9 @@ const queryForm = ref<QueryFormType>({
  * @param {QueryFormType} data - 查询表单数据
  */
 const handleUpdateModel = (data: QueryFormType) => {
-	console.log(data,'====data')
+	console.log(data, "====data");
 	queryForm.value = data;
-}
+};
 
 const loading = ref<boolean>(false);
 
@@ -138,14 +128,18 @@ const params = reactive({
 	pageSize: 10,
 });
 
-watch(() => params.pageNumber, (newValue) => {
-		console.log(newValue,'===newValue')
-})
+watch(
+	() => params.pageNumber,
+	(newValue) => {
+		console.log(newValue, "===newValue");
+	}
+);
 
 /**
  * @description 计算分页后的数据
  */
 const paginatedData = computed(() => {
+	console.log("params.pageNumber", params.pageNumber);
 	const start = (params.pageNumber - 1) * params.pageSize;
 	const end = start + params.pageSize;
 	return eventResultData.value?.slice(start, end) || [];
@@ -181,16 +175,15 @@ const initRequest = async () => {
  * @description 计算表格最大高度
  */
 const tableMaxHeight = computed(() => {
-  const windowHeight = window.innerHeight;
-  
-  return windowHeight - 60 - 40 - 48 - 50 - 80 -60;
+	const windowHeight = window.innerHeight;
+	return windowHeight - 60 - 40 - 48 - 50 - 80 - 60;
 });
 
 /**
  * @description 获取赛果
  */
 const getEventResultsData = async () => {
-	console.log(queryForm,'=====queryForm')
+	console.log(queryForm, "=====queryForm");
 	loading.value = true;
 	const [startDate, endDate] = queryForm.value.date;
 	const temp = "YYYY-MM-DDTHH:mm:ss";
@@ -221,7 +214,6 @@ const sizeChange = (pageSize: number) => {
 	params.pageSize = pageSize;
 	params.pageNumber = 1;
 };
-
 </script>
 
 <style scoped lang="scss">
@@ -257,11 +249,12 @@ const sizeChange = (pageSize: number) => {
 	:deep() {
 		.el-table {
 			background: none;
-			.col-content-box,.col-title-box{
-				display:flex;
+			.col-content-box,
+			.col-title-box {
+				display: flex;
 				justify-content: center;
 			}
-			.col-content-box{
+			.col-content-box {
 				margin: 5px;
 			}
 			tr {
@@ -294,7 +287,7 @@ const sizeChange = (pageSize: number) => {
 				& > .el-table__cell:first-child {
 					border-left: 1px solid var(--Line);
 					// border-right: none;
-					padding-left:24px;
+					padding-left: 24px;
 
 					.cell {
 						padding: 0;
@@ -330,7 +323,7 @@ const sizeChange = (pageSize: number) => {
 					border-right: none !important;
 
 					border-left: 1px solid var(--Line);
-					padding-left:24px;
+					padding-left: 24px;
 
 					.cell {
 						padding: 0;

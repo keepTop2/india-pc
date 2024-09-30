@@ -36,7 +36,11 @@
 			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
-				<component v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="eventsInfo"></component>
+				<component
+					v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)"
+					:is="ballInfo[Number(route.query.sportType)]?.componentName"
+					:eventsInfo="eventsInfo"
+				></component>
 				<!-- 未开赛计分板显示 -->
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
@@ -45,24 +49,23 @@
 				<VideoSource />
 			</div> -->
 			<!-- 虚拟赛事视频 -->
-			 <div v-show="SidebarStore.sidebarStatus === 'live'" >
-					<div v-show="myPlayer">
-						<video ref="videoPlayer" class="video-js"></video>
-					</div>
-					<!-- 真人赛事比赛 -->
-					<div v-show="iframeLoaded" class="live">
-						<iframe
-							class="eventVideo"
-							@load="onIframeLoad"
-							:src="videoSrc"
-							frameborder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-							allowfullscreen
-						>
-						</iframe>
-					</div>
-			 </div>
-			
+			<div v-show="SidebarStore.sidebarStatus === 'live'">
+				<div v-show="myPlayer">
+					<video ref="videoPlayer" class="video-js"></video>
+				</div>
+				<!-- 真人赛事比赛 -->
+				<div v-show="iframeLoaded" class="live">
+					<iframe
+						class="eventVideo"
+						@load="onIframeLoad"
+						:src="videoSrc"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					>
+					</iframe>
+				</div>
+			</div>
 		</div>
 
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
@@ -104,8 +107,8 @@ const SidebarStore = useSidebarStore();
 // const eventsInfo = computed(() => SidebarStore.eventsInfo);
 // 获取到的数据
 const eventsInfo = computed(() => {
-	const childrenViewData = viewSportPubSubEventData.getSportData('sidebarData');
-	console.log(childrenViewData, '=========== viewSportPubSubEventData.sidebarData');
+	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
+	console.log(childrenViewData, "=========== viewSportPubSubEventData.sidebarData");
 
 	if (childrenViewData) {
 		return childrenViewData[0]?.events[0];
@@ -113,9 +116,7 @@ const eventsInfo = computed(() => {
 	return null;
 });
 
-
 // console.log( eventsInfo,'=========== events, markets');
-
 
 // 未开赛
 const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/notStarted/notStarted.vue"));
@@ -246,8 +247,7 @@ watch(SidebarStore.getLiveUrl, (newVal) => {
 	}
 });
 
-const getStreaming = async (newVal: { [x: string]: any; }) => {
-
+const getStreaming = async (newVal: { [x: string]: any }) => {
 	const lang = UserStore.getLang;
 
 	const res = await newVal;
@@ -283,7 +283,7 @@ const handleClick = (tool: any) => {
 /**
  * @description: 跳转到比赛详细
  */
- const showDetail = () => {
+const showDetail = () => {
 	const params = {
 		leagueId: eventsInfo.value?.leagueId,
 		eventId: eventsInfo.value?.eventId,

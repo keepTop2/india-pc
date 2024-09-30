@@ -11,7 +11,8 @@
 				<div class="container">
 					<div class="header">
 						<HeaderMenuNav></HeaderMenuNav>
-						<div class="line"></div>
+						<!-- isShowCondition 判断是否为列表页 不是列表页隐藏  -->
+						<div class="line" v-if="isShowCondition"></div>
 						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
 					</div>
 					<div class="back-container">
@@ -91,8 +92,8 @@ const router = useRouter();
  * @description 是否显示条件
  */
 const isShowCondition = computed(() => {
-	return route.meta.type === 'list';
-})
+	return route.meta.type === "list";
+});
 
 /**
  * @description 各种store实例
