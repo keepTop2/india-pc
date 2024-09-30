@@ -1,25 +1,24 @@
 <template>
 	<div class="pagination-wrapper">
-
 		<el-config-provider :locale="zhCn">
-		<el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-			popper-class="paginationPop"
-      :page-size="pageSize"
-      layout=" prev, pager, next,sizes, jumper"
-      :total="total"
-		>
-    </el-pagination>
+			<el-pagination
+				@size-change="handleSizeChange"
+				@current-change="handleCurrentChange"
+				:current-page="currentPage"
+				popper-class="paginationPop"
+				:page-size="pageSize"
+				layout=" prev, pager, next,sizes, jumper"
+				:total="total"
+			>
+			</el-pagination>
 		</el-config-provider>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { ElConfigProvider } from 'element-plus'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import { ref, computed, watch } from "vue";
+import { ElConfigProvider } from "element-plus";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
 
 const props = defineProps<{
 	currentPage: number;
@@ -27,14 +26,14 @@ const props = defineProps<{
 	total: number;
 }>();
 
-const emit = defineEmits(['update:currentPage', 'prevClick', 'nextClick','sizeChange']);
+const emit = defineEmits(["update:currentPage", "prevClick", "nextClick", "sizeChange"]);
 
 const currentPage = computed({
 	get: () => props.currentPage,
 	set: (value) => {
-		console.log(value,'----value')
-		emit('update:currentPage', value)
-	}
+		console.log(value, "----value");
+		emit("update:currentPage", value);
+	},
 });
 
 const totalPages = computed(() => Math.ceil(props.total / props.pageSize));
@@ -44,8 +43,8 @@ const handleCurrentChange = (page: number) => {
 };
 
 const handleSizeChange = (pageSize: number) => {
-	emit('sizeChange', pageSize);
-}
+	emit("sizeChange", pageSize);
+};
 
 watch([() => props.total, () => props.pageSize], () => {
 	if (currentPage.value > totalPages.value) {
@@ -55,19 +54,18 @@ watch([() => props.total, () => props.pageSize], () => {
 </script>
 
 <style lang="scss">
-.el-select__popper.el-popper.paginationPop{
-	border:0 !important;
+.el-select__popper.el-popper.paginationPop {
+	border: 0 !important;
 }
-.el-select__popper.el-popper{
-	border:0 !important;
-
+.el-select__popper.el-popper {
+	border: 0 !important;
 }
-.paginationPop{
+.paginationPop {
 	background-color: var(--Bg2);
 	color: var(--light-ok-Text-1);
-	border:0 !important;
-	
-	.is-hovering{
+	border: 0 !important;
+
+	.is-hovering {
 		background-color: var(--light-ok-Butter);
 		color: var(--Text2);
 	}
@@ -75,7 +73,6 @@ watch([() => props.total, () => props.pageSize], () => {
 .pagination-wrapper {
 	display: flex;
 	justify-content: flex-end;
-	margin-top: 20px;
 	.el-pagination {
 		display: flex;
 		align-items: center;
@@ -85,16 +82,15 @@ watch([() => props.total, () => props.pageSize], () => {
 		.el-pager {
 			margin: 0 10px;
 		}
-		.el-select__wrapper{
+		.el-select__wrapper {
 			background-color: var(--light-ok-Butter);
 			color: var(--light-ok-Text-1);
 			box-shadow: none;
 		}
-		.el-input__wrapper{
+		.el-input__wrapper {
 			background-color: var(--light-ok-Butter);
 			color: var(--light-ok-Text-1);
 			box-shadow: none;
-
 		}
 		.btn-prev,
 		.btn-next {
