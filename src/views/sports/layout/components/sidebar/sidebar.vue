@@ -36,13 +36,17 @@
 			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
-				<component v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="eventsInfo"></component>
+				<component
+					v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)"
+					:is="ballInfo[Number(route.query.sportType)]?.componentName"
+					:eventsInfo="eventsInfo"
+				></component>
 				<!-- 未开赛计分板显示 -->
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
 			<!-- 直播 -->
 			<!-- 虚拟赛事视频 -->
-			<div v-show="SidebarStore.sidebarStatus === 'live'" >
+			<div v-show="SidebarStore.sidebarStatus === 'live'">
 				<div ref="videoContainer" class="video-js"></div>
 				<!-- 真人赛事比赛 -->
 				<div v-show="iframeLoaded" class="live">
@@ -57,7 +61,6 @@
 					</iframe>
 				</div>
 			</div>
-			
 		</div>
 
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
@@ -94,19 +97,17 @@ const myPlayer = ref();
 const videoContainer = ref();
 const iframeLoaded = ref(false);
 const SidebarStore = useSidebarStore();
-const isShowHotEvents = ref(route.meta.type == 'list' ? false : true);
+const isShowHotEvents = ref(route.meta.type == "list" ? false : true);
 
 // 获取到的数据
 const eventsInfo = computed(() => {
-	const childrenViewData = viewSportPubSubEventData.getSportData('sidebarData');
-
+	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
 	if (childrenViewData) {
 		return childrenViewData[0]?.events[0];
 	}
 	return null;
 });
 
-// 未开赛
 const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/notStarted/notStarted.vue"));
 // 热门赛事
 const HotEvents = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/hotEvents/hotEvents.vue"));
@@ -231,7 +232,7 @@ watch(getLiveUrl, (newVal) => {
 		getStreaming(newVal);
 	} else {
 		iframeLoaded.value = false;
-		videoSrc.value = '';
+		videoSrc.value = "";
 		if (myPlayer.value) {
 			myPlayer.value.dispose();
 			myPlayer.value = null;
@@ -239,12 +240,12 @@ watch(getLiveUrl, (newVal) => {
 	}
 });
 
-const getStreaming = async (newVal: { [x: string]: any; }) => {
+const getStreaming = async (newVal: { [x: string]: any }) => {
 	const lang = UserStore.getLang;
 	const { streamingUrlH5, streamingUrlCN, streamingUrlNonCN } = newVal;
 
 	if (videoSrc.value) {
-		videoSrc.value = '';
+		videoSrc.value = "";
 		iframeLoaded.value = false;
 	}
 
@@ -252,16 +253,16 @@ const getStreaming = async (newVal: { [x: string]: any; }) => {
 		videoSrc.value = streamingUrlH5;
 	} else {
 		const streamingUrl = lang === "zh-CN" ? streamingUrlCN : streamingUrlNonCN;
-		
+
 		// 清除旧的视频播放器
 		if (myPlayer.value) {
 			myPlayer.value.dispose();
 		}
 
 		// 创建新的video元素
-		const videoElement = document.createElement('video');
-		videoElement.className = 'video-js';
-		videoContainer.value.innerHTML = '';
+		const videoElement = document.createElement("video");
+		videoElement.className = "video-js";
+		videoContainer.value.innerHTML = "";
 		videoContainer.value.appendChild(videoElement);
 
 		// 初始化新的视频播放器
@@ -269,10 +270,12 @@ const getStreaming = async (newVal: { [x: string]: any; }) => {
 			controls: false,
 			autoplay: true,
 			preload: "auto",
-			sources: [{
-				src: streamingUrl,
-				type: "application/x-mpegURL",
-			}],
+			sources: [
+				{
+					src: streamingUrl,
+					type: "application/x-mpegURL",
+				},
+			],
 		});
 	}
 
