@@ -36,7 +36,6 @@ const emit = defineEmits(["update:files"]);
 const handleFileChange = (event: Event) => {
 	const target = event.target as HTMLInputElement;
 	if (target.files) {
-		// console.log(target.files[0]);
 		props.onUpload(target.files[0]);
 		const newFiles = Array.from(target.files).map((file) => {
 			const reader = new FileReader();

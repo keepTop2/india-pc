@@ -1,16 +1,13 @@
 <template>
 	<div class="wrapper">
 		<div>
-			<img src="./image/404.png" alt="" />
+			<img src="./image/maintain.png" alt="" />
 		</div>
 		<div class="content">
 			<p>(图片)logo+平台名称</p>
-			<h1 class="fs_46px">页面不存在</h1>
-			<p class="fw_700 Text2_1 mb_50">您要访问的页面无效或者缺失，您所尝试的页面现在无法打开！如有疑问，请联系在线客服</p>
-			<div class="flex_space-between">
-				<button class="cancel" @click="router.back()">返回</button>
-				<button class="refresh" @click="refresh">刷新</button>
-			</div>
+			<h1 class="fs_46px">系统维护中</h1>
+			<p class="fw_700 Text2_1 mb_50">尊敬的用户，当前游戏正在维护中，维护时间： 2023-12-19 18:43:00～2023-12-19 19:00:00</p>
+
 			<button class="common_btn">联系客服</button>
 		</div>
 	</div>

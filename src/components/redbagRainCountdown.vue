@@ -3,9 +3,9 @@
 		<div class="parent">
 			<div class="child curp">
 				<div class="curp">
-					<img src="../assets/common/redbagRainCountdownClose.svg" alt="" @click.self="closeRedbagRainCountdown" />
+					<img src="/@/assets/common/redbagRainCountdownClose.svg" alt="" @click.self="closeRedbagRainCountdown" />
 				</div>
-				<img src="../assets/common/redbagRainCountdown.svg" alt="" @click.self="handleClickCountdown" />
+				<img src="/@/assets/common/redbagRainCountdown.svg" alt="" @click.self="handleClickCountdown" />
 				<div class="countdown" @click="handleClickCountdown">
 					<p>倒计时</p>
 					<p>{{ countdown }}</p>

@@ -64,8 +64,11 @@ watch(
 	}
 );
 const setOpenMenu = () => {
+	// 活动高亮
 	if (route.name === "activity") return (openMenuIndex.value = "activity");
+	// 体育高亮
 	if (route.fullPath.indexOf("/sports") !== -1) return (openMenuIndex.value = routerObj.value.findIndex((item: any) => item.modelCode == "PE"));
+	// 其他二级菜单
 	openMenuIndex.value = routerObj.value.findIndex((item: any) => item.gameOneClassId == route.query.gameOneId);
 	if (openMenuIndex.value !== -1) {
 		openSubMenuIndex.value = openMenuIndex.value + "," + routerObj.value[openMenuIndex.value as number]?.twoList?.findIndex((item: any) => item.id == route.query.gameTwoId);

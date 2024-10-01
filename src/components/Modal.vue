@@ -21,7 +21,6 @@ const closeModal = () => {
 
 <style scoped lang="scss">
 .modal-manager {
-	position: relative;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -35,9 +34,9 @@ const closeModal = () => {
 	border-radius: 12px;
 	overflow: hidden;
 	.modal-content {
-		position: relative;
 		background-color: var(--Bg);
 		border-radius: 12px;
+		position: relative;
 		.close_btn {
 			position: absolute;
 			right: 0;

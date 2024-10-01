@@ -1,16 +1,18 @@
 <template>
-	<venueBanner></venueBanner>
-	<div class="max-width">
-		<div class="tabs mt_40 mb_40">
-			<div v-for="(item, index) in activityTabsList" :key="index" class="tab" @click.stop="setCurrentTab(index)">
-				<button class="btn" :class="currentTab === index ? 'active' : ''">
-					{{ item.labNameI18Code }}
-				</button>
+	<div>
+		<venueBanner></venueBanner>
+		<div class="max-width">
+			<div class="tabs mt_40 mb_40">
+				<div v-for="(item, index) in activityTabsList" :key="index" class="tab" @click.stop="setCurrentTab(index)">
+					<button class="btn" :class="currentTab === index ? 'active' : ''">
+						{{ item.labNameI18Code }}
+					</button>
+				</div>
 			</div>
+			<LazyLoadList :loadMore="getactivityList" :finished="finished" :loading="isLoading">
+				<activityCard :activityList="activityList" />
+			</LazyLoadList>
 		</div>
-		<LazyLoadList :loadMore="getactivityList" :finished="finished" :loading="isLoading">
-			<activityCard :activityList="activityList" />
-		</LazyLoadList>
 	</div>
 </template>
 
@@ -61,7 +63,7 @@ const getactivityList = async () => {
 // Fetch activity tabs from API
 const getactivityTabsList = async () => {
 	const res = await activityApi.activityTabsList();
-	activityTabsList.value = res.data;
+	activityTabsList.value = res.data || [];
 	activityTabsList.value.unshift({
 		labNameI18Code: "全部",
 	});
@@ -82,6 +84,7 @@ const setCurrentTab = async (index: number) => {
 .tabs {
 	display: flex;
 	gap: 7px;
+	flex-wrap: wrap;
 	.btn {
 		background: var(--butter);
 		padding: 7px 12px;

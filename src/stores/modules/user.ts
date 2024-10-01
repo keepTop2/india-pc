@@ -12,16 +12,10 @@ import { userApi } from "/@/api/user";
 import showToast from "/@/hooks/useToast";
 import { loginApi } from "/@/api/login";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
-interface LangListType {
-	code: LangEnum;
-	currLang: number;
-	icon: string;
-	name: string;
-	sort: number;
-}
+
 interface StoreUser {
-	lang: LangEnum;
-	LangList: Array<LangListType> | Array<null>;
+	lang: string;
+	LangList: [];
 	currencyList: [];
 	userInfo: any;
 	loginInfo: any;
@@ -44,13 +38,13 @@ export const useUserStore = defineStore("User", {
 		};
 	},
 	getters: {
-		getLang(): LangEnum {
+		getLang(): any {
 			return this.lang;
 		},
 		getLogin(): boolean {
 			return this.userInfo.token ? true : false;
 		},
-		getLangList(): Array<LangListType> | Array<null> {
+		getLangList(): any {
 			return this.LangList;
 		},
 		getUserInfo(): any {
@@ -87,6 +81,8 @@ export const useUserStore = defineStore("User", {
 				userMenu.setMenuList(data);
 			}
 		},
+
+		// 设置货币语言下拉
 		async setCommonBusiness() {
 			const res: any = await CommonApi.getCommonBusinessDownBox().catch((err: any) => err);
 			const { code, data } = res;
@@ -95,21 +91,26 @@ export const useUserStore = defineStore("User", {
 				this.currencyList = data.currencyEnums;
 			}
 		},
+		// 设置用户信息
 		setUserGlobalSetInfo(info: Object) {
 			this.userGlobalSetInfo = info;
 		},
+		// 更新用户信息
 		uplateUserGlobalSetInfo() {
 			userApi.getUserGlobalSetInfo().then((res) => {
 				this.setUserGlobalSetInfo(res.data);
 			});
 		},
+		// 设置用户注册缓存信息
 		setRegisterModalInfo(info: Object) {
 			this.registerModalInfo = info;
 		},
+		// 设置用户信息
 		setUserInfo(info: any) {
 			this.token = info.token;
 			Object.assign(this.userInfo, info);
 		},
+
 		// 设置记住密码
 		setLoginInfo(data?: any) {
 			if (!data) {
@@ -123,15 +124,16 @@ export const useUserStore = defineStore("User", {
 			// 将 loginInfo 对象加密后转换为字符串
 			this.loginInfo = EncryptionFn.encryption(JSON.stringify(loginInfoObj));
 		},
+		// 用户初始化
 		async userInit() {
 			if (this.getUserInfo.token) {
 				this.initUserInfo();
 			}
-
 			await this.setCommonBusiness();
 			this.setLangs(this.getLang);
 			this.initUserMenu();
 		},
+		// 退出登陆
 		logOut(): void {
 			loginApi
 				.logout()
@@ -141,7 +143,7 @@ export const useUserStore = defineStore("User", {
 					window.location.replace("/");
 				});
 		},
-		// 获取用户信息
+		// 初始化用户信息
 		async initUserInfo() {
 			const sportsBetInfo = useSportsBetInfoStore();
 			const res = await userApi.getIndexInfo().catch((err) => err);

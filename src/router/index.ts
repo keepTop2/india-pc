@@ -104,7 +104,7 @@ const routes = [
 			},
 		],
 	},
-	errorPage,
+	...errorPage,
 	{
 		path: "/:pathMatch(.*)",
 		redirect: "/404",

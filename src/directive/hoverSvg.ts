@@ -1,35 +1,51 @@
 export const hoverSvg = {
 	beforeMount(el: SVGSVGElement) {
-		// 获取 <use> 元素
-		const useElement = el.querySelector("use"); // 获取 <svg-icon> 组件
-
-		const svgName = useElement?.getAttribute("xlink:href");
+		const useElement = el.querySelector("use");
+		const svgName = useElement?.getAttribute("xlink:href") || useElement?.getAttribute("href");
 
 		if (!svgName || !useElement) {
 			console.warn("SVG name or <use> element not found!");
 			return;
 		}
 
-		// 设置默认和悬停图标
 		const defaultIcon = `${svgName}`;
-		const hoverIcon = `${svgName}_on`; // 悬停图标命名规则
+		const hoverIcon = `${svgName}_on`;
 
-		// 设置初始图标
-		useElement.setAttribute("xlink:href", defaultIcon);
+		useElement.setAttribute("href", defaultIcon);
+
+		// 确保指针事件正常
+		el.style.pointerEvents = "auto";
 
 		// 鼠标进入事件
-		el.addEventListener("mouseover", () => {
-			useElement.setAttribute("xlink:href", hoverIcon);
-		});
+		const mouseOverHandler = () => {
+			useElement.setAttribute("href", hoverIcon);
+		};
 
 		// 鼠标离开事件
-		el.addEventListener("mouseout", () => {
-			useElement.setAttribute("xlink:href", defaultIcon);
-		});
+		const mouseOutHandler = () => {
+			useElement.setAttribute("href", defaultIcon);
+		};
+
+		// 点击事件
+		const clickHandler = (event: MouseEvent) => {
+			console.log("SVG clicked!");
+			event.stopPropagation(); // 可选：如果你想防止事件冒泡
+		};
+
+		// 绑定事件
+		el.addEventListener("mouseover", mouseOverHandler);
+		el.addEventListener("mouseout", mouseOutHandler);
+		el.addEventListener("click", clickHandler);
+
+		// 存储事件处理程序
+		el._mouseOverHandler = mouseOverHandler;
+		el._mouseOutHandler = mouseOutHandler;
+		el._clickHandler = clickHandler;
 	},
 	unmounted(el: SVGSVGElement) {
-		// 清除事件监听
-		el.removeEventListener("mouseover", () => {});
-		el.removeEventListener("mouseout", () => {});
+		// 清理事件监听器
+		el.removeEventListener("mouseover", el._mouseOverHandler);
+		el.removeEventListener("mouseout", el._mouseOutHandler);
+		el.removeEventListener("click", el._clickHandler);
 	},
 };

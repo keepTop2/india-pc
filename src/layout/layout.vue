@@ -3,13 +3,11 @@
 		<left :is-collapse="collapse" />
 		<div class="container">
 			<Head />
-			<transition name="slide-fade">
-				<div class="mainArea">
-					<router-view id="router-view" />
-					<Footer v-if="route.meta.showFooter" />
-					<BackToTop />
-				</div>
-			</transition>
+			<div class="mainArea">
+				<router-view id="router-view" />
+				<Footer v-if="route.meta.showFooter" />
+				<BackToTop />
+			</div>
 		</div>
 		<Modal />
 	</div>
