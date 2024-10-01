@@ -54,25 +54,7 @@ const SportsBetEvent = useSportsBetEventStore();
 const sportsActive = ref("rollingBall");
 
 const state = reactive({
-	/**
-	 * @description Sports视图数据
-	 */
-	viewSportData: {
-		/**
-		 * @description 外层Sports组件视图数据
-		 */
-		sports: [] as Sports[],
-		leagues: [],
-		events: [],
-		markets: [],
-		outrights: [],
-		results: [],
-		/**
-		 * @description 各个子路由视图数据
-		 */
-		childrenViewData: {},
-	} as SportViewData,
-	targetEvents: [], // 添加这个字段来保存目标事件数据数组
+	targetEvents: [] as any, // 添加这个字段来保存目标事件数据数组
 	/**赛选后的额数据（展示） */
 	targetEventList: [],
 });
@@ -89,7 +71,7 @@ onBeforeMount(() => {
 	watchEffect(() => {
 		/** 最新数据响应接入  */
 		state.targetEvents = viewSportPubSubEventData.getSportData();
-		// console.log("state.targetEvents", state.targetEvents);
+		console.log("state.targetEvents", state.targetEvents);
 
 		state.targetEventList = getList();
 		setInitsportsActive();
@@ -121,16 +103,16 @@ const getList = () => {
 	const SportLeagueSearchStore = useSportLeagueSearchStore();
 	const leagueSelect = SportLeagueSearchStore.getLeagueSelect;
 	// 如果有筛选 则处理数据，只给出筛选的联赛列表。
-	let newleagues: never[] = [];
+	let newLeagues: never[] = [];
 	if (leagues && leagueSelect.length > 0) {
 		for (let index = 0; index < leagues.length; index++) {
 			const item = leagues[index];
 			let bool = leagueSelect.includes(item.leagueId);
 			if (bool) {
-				newleagues.push(item);
+				newLeagues.push(item);
 			}
 		}
-		leagues = newleagues;
+		leagues = newLeagues;
 	}
 	SidebarStore.setEventsInfo(get(leagues, "[0].events.[0]", {}) as any);
 	return leagues;

@@ -103,6 +103,20 @@ const onSetSportsEventData = () => {
 		/**添加到购物车 */
 		ChampionShopCartStore.addChampionToCart(JSON.parse(JSON.stringify(params)));
 	}
+	// let item = props.cardData; //队伍
+	// let data = props.sportInfo; //行数据
+	// // console.log("item", item);
+	// // console.log("data", data);
+	// // 创建对象
+	// const obj = {
+	// 	type: "1", // 添加冠军标识
+	// 	leagueId: data.leagueId,
+	// 	sportType: data.sportType,
+	// 	teamId: item.teamId,
+	// 	events: data,
+	// };
+	// // console.log("obj", obj);
+	// ChampionShopCartStore.addChampionToCart(obj);
 };
 
 /**

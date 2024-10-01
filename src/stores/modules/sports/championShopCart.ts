@@ -57,6 +57,9 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 			this.championBetData.splice(index !== -1 ? index : this.championBetData.length, 1, data);
 			this.championOpenSse(); // 开启线程
 			this.examineEventsStatus(); // 判断赛事状态
+
+			console.log("this.championBetObj", this.championBetObj);
+			console.log("this.championBetData", this.championBetData);
 		},
 
 		examineEventsStatus() {
