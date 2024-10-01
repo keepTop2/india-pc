@@ -11,7 +11,7 @@
 				<div class="container">
 					<div class="header">
 						<HeaderMenuNav></HeaderMenuNav>
-						<div class="line"></div>
+						<div class="line" v-if="route.meta.type !== 'detail'"></div>
 						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
 					</div>
 					<div class="back-container">
@@ -91,8 +91,8 @@ const router = useRouter();
  * @description 是否显示条件
  */
 const isShowCondition = computed(() => {
-	return route.meta.type === 'list';
-})
+	return route.meta.type === "list";
+});
 
 /**
  * @description 各种store实例
@@ -316,6 +316,7 @@ watch(
 	() => sportsData.value,
 	(newValue, oldValue) => {
 		if (newValue && newValue.length > 0) {
+			if(route.query.sportType){
 			const isSportType = newValue.some((item) => item.sportType == Number(route.query.sportType));
 			if (!isSportType) {
 				router.push({
@@ -324,7 +325,8 @@ watch(
 						...route.query,
 						sportType: newValue[0].sportType,
 					},
-				});
+					});
+				}
 			}
 		}
 	}

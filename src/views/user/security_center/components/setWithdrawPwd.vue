@@ -3,68 +3,83 @@
 	<div class="ChangePasswordWrapper">
 		<div class="ChangePassword_form">
 			<div class="login_text fs_20 mb_20">
-				<span v-if="userStore.getUserGlobalSetInfo.isSetPwd"> {{ $t(`login['设置交易密码']`) }}</span>
-				<span v-else> {{ $t(`login['修改交易密码']`) }}</span>
+				<span v-if="isCreate"> {{ $t(`security_center['设置交易密码']`) }}</span>
+				<span v-else> {{ $t(`security_center['修改交易密码']`) }}</span>
 			</div>
 			<div class="login_form">
-				<div>
-					<!-- 旧密码 -->
-					<div v-if="userStore.getUserGlobalSetInfo.isSetPwd">
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['原交易密码']`) }}</p>
+				<!-- 设置交易密码 -->
+				<div v-if="isCreate">
+					<div>
+						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['交易密码']`) }}</p>
 						<p class="common_password">
-							<input
-								:type="showOldPassword ? 'text' : 'password'"
-								v-model="payLoad.oldPassword"
-								class="common_input"
-								:placeholder="$t(`login['输入密码']`)"
-								@input="oldPasswordOnInput"
-								autocomplete="new-password"
-								:class="VerifyError.oldPassword ? 'verifyError' : ''"
-							/>
+							<input :type="showPassword ? 'text' : 'password'" v-model="payLoad.password" class="common_input" @input="passwordOnInput" autocomplete="new-password" />
 							<span class="eyes">
 								<svg-icon :name="showOldPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showOldPassword = !showOldPassword" />
 							</span>
 						</p>
-						<p v-show="VerifyError.oldPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
+						<p v-show="passwordVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['请输入6位数字']`) }}</p>
 					</div>
-					<!-- 密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['交易密码']`) }}</p>
-						<p class="common_password">
-							<input
-								:type="showPassword ? 'text' : 'password'"
-								v-model="payLoad.password"
-								class="common_input"
-								:placeholder="$t(`login['输入密码']`)"
-								@input="passwordOnInput"
-								autocomplete="new-password"
-							/>
-							<span class="eyes">
-								<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showPassword = !showPassword" />
-							</span>
-						</p>
-						<p v-show="VerifyError.oldPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
-					</div>
-					<!-- 确认密码 -->
-					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
+						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['确认交易密码']`) }}</p>
 						<p class="common_password">
 							<input
 								:type="showConfirmPassword ? 'text' : 'password'"
 								v-model="payLoad.confirmPassword"
 								class="common_input"
-								:placeholder="$t(`login['输入密码']`)"
-								@input="confirmOnInput"
+								@input="confirmPasswordOnInput"
+								autocomplete="new-password"
 							/>
+							<span class="eyes">
+								<svg-icon :name="showOldPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showOldPassword = !showOldPassword" />
+							</span>
+						</p>
+						<p class="fs_14 Text1 mt_16 fw_200"></p>
+						<p v-show="confirmPasswordVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['两次密码不一致']`) }}</p>
+					</div>
+				</div>
+
+				<!-- 修改交易密码 -->
+				<div v-else>
+					<!-- 旧密码 -->
+					<div>
+						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['旧密码']`) }}</p>
+						<p class="common_password">
+							<input :type="showOldPassword ? 'text' : 'password'" v-model="payLoad.oldPassword" class="common_input" @input="oldPasswordOnInput" autocomplete="new-password" />
+							<span class="eyes">
+								<svg-icon :name="showOldPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showOldPassword = !showOldPassword" />
+							</span>
+						</p>
+						<p v-show="oldPasswordVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['请输入6位数字']`) }}</p>
+					</div>
+					<!-- 新密码 -->
+					<div>
+						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['新密码']`) }}</p>
+						<p class="common_password">
+							<input :type="showNewPassword ? 'text' : 'password'" v-model="payLoad.newPassword" class="common_input" @input="newPasswordOnInput" />
+							<span class="eyes">
+								<svg-icon :name="showNewPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showNewPassword = !showNewPassword" />
+							</span>
+						</p>
+						<p v-show="newPasswordVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['请输入6位数字']`) }}</p>
+					</div>
+					<!-- 确认密码 -->
+					<div>
+						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['确认密码']`) }}</p>
+						<p class="common_password">
+							<input :type="showConfirmPassword ? 'text' : 'password'" v-model="payLoad.confirmPassword" class="common_input" @input="confirmPasswordOnInput" />
 							<span class="eyes">
 								<svg-icon :name="showConfirmPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showConfirmPassword = !showConfirmPassword" />
 							</span>
 						</p>
-						<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
+						<p v-show="confirmPasswordVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['两次密码不一致']`) }}</p>
 					</div>
 				</div>
 				<div class="mt_40 mb_12">
-					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">{{ $t(`login['确定']`) }}</button>
+					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">{{ $t(`security_center['确定']`) }}</button>
+					<div class="findOldPwd">
+						{{ $t(`security_center['忘记了旧交易密码？']`) }}
+						<span class="Theme_text curp" @click="modalStore.openModal('FindWithdrawPwd')">{{ $t(`security_center['找回交易密码']`) }}</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -72,89 +87,123 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import Common from "/@/utils/common";
 import showToast from "/@/hooks/useToast";
 import { userApi } from "/@/api/user";
+import options from "/@/assets/ts/areaCode";
 import { useUserStore } from "/@/stores/modules/user";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import { CommonApi } from "/@/api/common";
+import CommonRegex from "/@/utils/CommonRegex";
+const modalStore = useModalStore();
 const userStore = useUserStore();
-const VerifyError = reactive({
-	oldPassword: false,
-	newPassword: false,
-	confirmPassword: false,
-	password: false,
-});
-
+const VerificationCodeRef = ref(null);
+// 验证码
+const userPhoneRegex = /^\d{8,11}$/;
 // 登陆表单
 const payLoad = reactive({
 	password: "",
+	confirmPassword: "",
 	oldPassword: "",
 	newPassword: "",
-	confirmPassword: "",
-	verifyCode: "",
 });
+const isCreate = ref(true);
+const minLength = ref(8);
+const maxLength = ref(13);
+const AreaCodeOptions = ref([]);
 
-//账号密码校验规则
-const passWordregex = /^\d{6}$/;
-
+const showPassword = ref(false);
+const showOldPassword = ref(false);
+const showNewPassword = ref(false);
+const showConfirmPassword = ref(false);
 // 校验完成登陆按钮可以点击
 const disabledBtn = ref(true);
-
-// 显示密码
-const showOldPassword = ref(false);
-const showPassword = ref(false);
-const showConfirmPassword = ref(false);
+const verificationBtn = ref(true);
+const passwordVerifyTypeVerifyError = ref(false);
+const oldPasswordVerifyTypeVerifyError = ref(false);
+const newPasswordVerifyTypeVerifyError = ref(false);
+const confirmPasswordVerifyTypeVerifyError = ref(false);
 
 const passwordOnInput = () => {
-	passWordregex.test(payLoad.password) ? (VerifyError.password = false) : (VerifyError.password = true);
+	CommonRegex.withdrawPwd.test(payLoad.password) ? (passwordVerifyTypeVerifyError.value = false) : (passwordVerifyTypeVerifyError.value = true);
+	verificationBtn.value = passwordVerifyTypeVerifyError.value;
 	verifyBtn();
 };
 const oldPasswordOnInput = () => {
-	passWordregex.test(payLoad.oldPassword) ? (VerifyError.oldPassword = false) : (VerifyError.oldPassword = true);
+	CommonRegex.withdrawPwd.test(payLoad.oldPassword) ? (oldPasswordVerifyTypeVerifyError.value = false) : (oldPasswordVerifyTypeVerifyError.value = true);
+	verificationBtn.value = confirmPasswordVerifyTypeVerifyError.value;
 	verifyBtn();
 };
-
+const confirmPasswordOnInput = () => {
+	CommonRegex.withdrawPwd.test(payLoad.confirmPassword) ? (confirmPasswordVerifyTypeVerifyError.value = false) : (confirmPasswordVerifyTypeVerifyError.value = true);
+	verificationBtn.value = confirmPasswordVerifyTypeVerifyError.value;
+	verifyBtn();
+};
 const newPasswordOnInput = () => {
-	passWordregex.test(payLoad.newPassword) ? (VerifyError.newPassword = false) : (VerifyError.newPassword = true);
-	verifyBtn();
-};
-
-const confirmOnInput = (e: any) => {
-	payLoad.confirmPassword = e.target.value;
-	passWordregex.test(payLoad.password) && payLoad.confirmPassword === payLoad.password ? (VerifyError.confirmPassword = false) : (VerifyError.confirmPassword = true);
+	CommonRegex.withdrawPwd.test(payLoad.newPassword) ? (newPasswordVerifyTypeVerifyError.value = false) : (newPasswordVerifyTypeVerifyError.value = true);
+	verificationBtn.value = confirmPasswordVerifyTypeVerifyError.value;
 	verifyBtn();
 };
 
 const verifyBtn = () => {
-	if (!VerifyError.password && !VerifyError.confirmPassword && payLoad.password == payLoad.confirmPassword) {
-		disabledBtn.value = false;
+	if (isCreate.value) {
+		if (!passwordVerifyTypeVerifyError.value && payLoad.password == payLoad.confirmPassword) {
+			disabledBtn.value = false;
+		} else {
+			disabledBtn.value = true;
+		}
 	} else {
-		disabledBtn.value = true;
+		if (
+			!newPasswordVerifyTypeVerifyError.value &&
+			!oldPasswordVerifyTypeVerifyError.value &&
+			!confirmPasswordVerifyTypeVerifyError.value &&
+			payLoad.newPassword &&
+			payLoad.newPassword == payLoad.confirmPassword
+		) {
+			disabledBtn.value = false;
+		} else {
+			disabledBtn.value = true;
+		}
 	}
 };
 
 const onSubmit = async () => {
-	let params = {};
-	if (userStore.getUserGlobalSetInfo.isSetPwd) {
-		params = {
+	verificationBtn.value = true;
+	const params = {};
+	if (isCreate.value) {
+		Object.assign(params, {
 			password: payLoad.password,
 			confirmPassword: payLoad.confirmPassword,
-		};
+		});
+		const res = await userApi.setWithdrawPwd(params).catch((error) => error);
+		if (res.code === Common.ResCode.SUCCESS) {
+			await userStore.uplateUserGlobalSetInfo();
+			modalStore.closeModal();
+		} else {
+			showToast(res.message);
+		}
 	} else {
-		params = {
-			password: payLoad.password,
+		Object.assign(params, {
+			newPassword: payLoad.newPassword,
+			oldPassword: payLoad.oldPassword,
 			confirmPassword: payLoad.confirmPassword,
-		};
-	}
-	const res = await userApi.setWithdrawPwd(params).catch((err) => err);
-	const { code, data, message } = res;
-	if (code == Common.ResCode.SUCCESS) {
-		modalStore.closeModal();
-		showToast(message);
-	} else {
-		showToast(message);
+		});
+		const res = await userApi.changeWithdrawPwd(params).catch((error) => error);
+		if (res.code === Common.ResCode.SUCCESS) {
+			await userStore.uplateUserGlobalSetInfo();
+			modalStore.closeModal();
+		} else {
+			showToast(res.message);
+		}
 	}
 };
+onMounted(() => {
+	if (userStore.getUserGlobalSetInfo.isSetPwd) {
+		isCreate.value = false;
+		verificationBtn.value = false;
+	}
+});
 </script>
 
 <style lang="scss" scoped>
@@ -174,7 +223,6 @@ const onSubmit = async () => {
 				cursor: pointer;
 			}
 		}
-
 		.login_text {
 			color: var(--Text_s);
 			font-weight: 500;
@@ -193,6 +241,12 @@ const onSubmit = async () => {
 				background-color: var(--Theme);
 			}
 		}
+	}
+	.findOldPwd {
+		text-align: right;
+		font-size: 14px;
+		color: var(--Text1);
+		margin-top: 16px;
 	}
 }
 </style>

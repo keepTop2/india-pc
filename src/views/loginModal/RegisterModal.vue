@@ -104,9 +104,11 @@
 				</div>
 			</div>
 		</div>
+		<p>
+			<div id="captcha-element" ref="captchaBtn"/>
+			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
+		</p>
 	</div>
-	<div id="captcha-element" ref="captchaBtn"></div>
-	<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
 </template>
 
 <script setup lang="ts">

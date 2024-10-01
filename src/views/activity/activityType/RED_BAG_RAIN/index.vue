@@ -28,7 +28,7 @@
 				</div>
 				<div class="activityContentCenter">
 					<slide class="sessions">
-						<div v-for="(item, index) in activityData.sessionInfoList" class="session">
+						<div v-for="(item, index) in activityData.sessionInfoList" class="session" :key="index">
 							<div>{{ Common.parseHms(item.startTime) }}</div>
 							<div class="sideBox">
 								<img src="./image/sessionCricle.svg" alt="" v-if="item.status == 0" />
@@ -57,7 +57,7 @@
 							<div>获得红包</div>
 							<div>时间</div>
 						</div>
-						<div class="winnerListBody" v-for="item in 5">
+						<div class="winnerListBody" v-for="(item, index) in 5" :key="index">
 							<div>1****7</div>
 							<div>8.6 BCD</div>
 							<div>2023-09-06 23:59:59</div>

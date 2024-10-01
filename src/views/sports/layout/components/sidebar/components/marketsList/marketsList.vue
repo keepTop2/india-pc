@@ -120,7 +120,7 @@ const activeSelection = ref<string[]>([]);
 
 const markets = computed(() => {
 	let marketData: any = [];
-	console.log(eventDetail.value, 'eventDetail.value')
+	// console.log(eventDetail.value, 'eventDetail.value')
 	if (eventDetail.value) {
 		const markets = eventDetail.value?.markets;
 		for (const key in markets) {
@@ -323,6 +323,9 @@ watch(
 	}
 	.tournament-content {
 		border-radius: 0px 0px 16px 16px;
+		li{
+			margin-bottom: 5px;
+		}
 		.selectionTitle {
 			display: flex;
 			justify-content: center;

@@ -36,41 +36,39 @@
 			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
-				<component v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="eventsInfo"></component>
+				<component
+					v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)"
+					:is="ballInfo[Number(route.query.sportType)]?.componentName"
+					:eventsInfo="eventsInfo"
+				></component>
 				<!-- 未开赛计分板显示 -->
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
 			<!-- 直播 -->
-			<!-- <div v-else-if="eventsInfo && SidebarStore.sidebarStatus === 'live'" class="events-live">
-				<VideoSource />
-			</div> -->
 			<!-- 虚拟赛事视频 -->
-			 <div v-show="SidebarStore.sidebarStatus === 'live'" >
-					<div v-show="myPlayer">
-						<video ref="videoPlayer" class="video-js"></video>
-					</div>
-					<!-- 真人赛事比赛 -->
-					<div v-show="iframeLoaded" class="live">
-						<iframe
-							class="eventVideo"
-							@load="onIframeLoad"
-							:src="videoSrc"
-							frameborder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-							allowfullscreen
-						>
-						</iframe>
-					</div>
-			 </div>
-			
+			<div v-show="SidebarStore.sidebarStatus === 'live'">
+				<div ref="videoContainer" class="video-js"></div>
+				<!-- 真人赛事比赛 -->
+				<div v-show="iframeLoaded" class="live">
+					<iframe
+						class="eventVideo"
+						@load="onIframeLoad"
+						:src="videoSrc"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					>
+					</iframe>
+				</div>
+			</div>
 		</div>
 
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
 		<div class="markets-list">
 			<!-- 盘口列表 -->
-			<MarketsList v-if="eventsInfo" />
+			<MarketsList v-if="!isShowHotEvents" />
 			<!-- 热门赛事 -->
-			<!-- <HotEvents /> -->
+			<HotEvents v-else />
 		</div>
 	</div>
 </template>
@@ -96,31 +94,21 @@ const { gotoEventDetail } = useLink();
 const UserStore = useUserStore();
 const videoSrc = ref("");
 const myPlayer = ref();
-const videoPlayer = ref();
+const videoContainer = ref();
 const iframeLoaded = ref(false);
 const SidebarStore = useSidebarStore();
-// const { eventsInfo } = storeToRefs(SidebarStore);
+const isShowHotEvents = ref(route.meta.type == "list" ? false : true);
 
-// const eventsInfo = computed(() => SidebarStore.eventsInfo);
 // 获取到的数据
 const eventsInfo = computed(() => {
-	const childrenViewData = viewSportPubSubEventData.getSportData('sidebarData');
-	console.log(childrenViewData, '=========== viewSportPubSubEventData.sidebarData');
-
+	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
 	if (childrenViewData) {
 		return childrenViewData[0]?.events[0];
 	}
 	return null;
 });
 
-
-// console.log( eventsInfo,'=========== events, markets');
-
-
-// 未开赛
 const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/notStarted/notStarted.vue"));
-// 视频
-const VideoSource = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/videoSource/videoSource.vue"));
 // 热门赛事
 const HotEvents = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/hotEvents/hotEvents.vue"));
 // 盘口列表
@@ -205,7 +193,6 @@ const computedTools = computed(() => {
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
-			// action: getStreaming,
 			action: switchEventVideoSource,
 			param: eventsInfo.value, // 传递参数
 		});
@@ -233,57 +220,77 @@ const onIframeLoad = () => {
 	console.log("onIframeLoad", "加载完成");
 	if (videoSrc.value) {
 		iframeLoaded.value = true;
-		// stopLoading();
 	}
 };
 
-watch(SidebarStore.getLiveUrl, (newVal) => {
+const getLiveUrl = computed(() => {
+	return SidebarStore.getLiveUrl;
+});
+
+watch(getLiveUrl, (newVal) => {
 	if (Object.keys(newVal).length) {
 		getStreaming(newVal);
 	} else {
 		iframeLoaded.value = false;
-		myPlayer.value = null;
+		videoSrc.value = "";
+		if (myPlayer.value) {
+			myPlayer.value.dispose();
+			myPlayer.value = null;
+		}
 	}
 });
 
-const getStreaming = async (newVal: { [x: string]: any; }) => {
-
+const getStreaming = async (newVal: { [x: string]: any }) => {
 	const lang = UserStore.getLang;
+	const { streamingUrlH5, streamingUrlCN, streamingUrlNonCN } = newVal;
 
-	const res = await newVal;
-	if (res.status == 200) {
-		const { streamingUrlH5, streamingUrl, streamingUrlCN, streamingUrlNonCN } = res.data;
-		if (streamingUrlH5) {
-			// startLoading();
-			// console.log(streamingUrlH5, "==streamingUrlH5");
-			videoSrc.value = streamingUrlH5;
-			SidebarStore.getSidebarStatus("live");
-		}
-		if (streamingUrl || streamingUrlCN || streamingUrlNonCN) {
-			myPlayer.value = videojs(videoPlayer.value, {
-				controls: false,
-				autoplay: true,
-				preload: "auto",
-				sources: [
-					{
-						src: lang == "zh-CN" ? streamingUrlCN : streamingUrlNonCN, // 视频源地址
-						type: "application/x-mpegURL",
-					},
-				],
-			});
-			SidebarStore.getSidebarStatus("live");
-		}
+	if (videoSrc.value) {
+		videoSrc.value = "";
+		iframeLoaded.value = false;
 	}
+
+	if (streamingUrlH5) {
+		videoSrc.value = streamingUrlH5;
+	} else {
+		const streamingUrl = lang === "zh-CN" ? streamingUrlCN : streamingUrlNonCN;
+
+		// 清除旧的视频播放器
+		if (myPlayer.value) {
+			myPlayer.value.dispose();
+		}
+
+		// 创建新的video元素
+		const videoElement = document.createElement("video");
+		videoElement.className = "video-js";
+		videoContainer.value.innerHTML = "";
+		videoContainer.value.appendChild(videoElement);
+
+		// 初始化新的视频播放器
+		myPlayer.value = videojs(videoElement, {
+			controls: false,
+			autoplay: true,
+			preload: "auto",
+			sources: [
+				{
+					src: streamingUrl,
+					type: "application/x-mpegURL",
+				},
+			],
+		});
+	}
+
+	SidebarStore.getSidebarStatus("live");
 };
 
 // 点击对应工具
 const handleClick = (tool: any) => {
 	tool.action(tool.param);
 };
+
 /**
  * @description: 跳转到比赛详细
  */
- const showDetail = () => {
+const showDetail = () => {
 	const params = {
 		leagueId: eventsInfo.value?.leagueId,
 		eventId: eventsInfo.value?.eventId,
@@ -291,7 +298,7 @@ const handleClick = (tool: any) => {
 	};
 	toggleEventScoreboard(eventsInfo.value);
 
-	gotoEventDetail(params, SportTypeEnum.Tennis);
+	gotoEventDetail(params, route.query.sportType as string);
 };
 </script>
 
@@ -308,12 +315,12 @@ const handleClick = (tool: any) => {
 		width: 390px;
 		height: 208px;
 	}
-	.video-js {
+	:deep(.video-js) {
 		height: 208px;
 		width: 390px;
-	}
-	.video-js .vjs-tech {
-		width: 390px;
+		.vjs-tech {
+			width: 390px;
+		}
 	}
 	.affix {
 		position: sticky;

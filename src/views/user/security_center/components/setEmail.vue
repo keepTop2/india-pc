@@ -3,38 +3,58 @@
 	<div class="ChangePasswordWrapper">
 		<div class="ChangePassword_form">
 			<div class="login_text fs_20 mb_20">
-				<span v-if="userStore.getUserGlobalSetInfo.email"> {{ $t(`login['设置邮箱']`) }}</span>
-				<span v-else> {{ $t(`login['绑定邮箱']`) }}</span>
+				<span v-if="isCreate"> {{ $t(`security_center['绑定邮箱']`) }}</span>
+				<span v-else> {{ $t(`security_center['修改邮箱']`) }}</span>
 			</div>
 			<div class="login_form">
-				<div>
-					<!-- 旧密码 -->
+				<div v-if="isCreate">
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['邮箱']`) }}</p>
+						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['邮箱账号']`) }}</p>
 						<p class="common_password">
-							<input type="text" v-model="payLoad.email" class="common_input" :placeholder="$t(`login['输入账号']`)" @input="emailOnInput" />
+							<input
+								type="text"
+								v-model="payLoad.email"
+								class="common_input"
+								:placeholder="$t(`security_center['输入邮箱']`)"
+								@input="emailOnInput"
+								:class="userVerifyTypeVerifyError ? 'verifyError' : ''"
+							/>
 						</p>
-						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`login['手机号规则']`) }}</p>
+						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['邮箱格式不正确']`) }}</p>
 					</div>
-					<!-- 新密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`login['验证码']`) }}</p>
+						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['验证码']`) }}</p>
 						<p class="common_password">
 							<VerificationCode
 								@VerificationCodeInput="VerificationCodeInput"
 								@sendVerificationCode="sendVerificationCode"
 								v-model="verificationBtn"
-								:disabled="verificationBtn"
+								:disabled="verificationBtn && payLoad.phone"
 								ref="VerificationCodeRef"
 							/>
 						</p>
 						<p class="fs_14 Text1 mt_16 fw_200">
-							{{ $t(`login['有效时间']`) }}<span class="Theme_text">{{ $t(`login['联系客服']`) }}</span>
+							{{ $t(`security_center['有效时间']`) }}<span class="Theme_text">{{ $t(`security_center['联系客服']`) }}</span>
 						</p>
 					</div>
 				</div>
+				<div v-else>
+					<div class="Text_s mb_8">{{ $t(`security_center['原邮箱账号']`) }}</div>
+					<div class="Text1">{{ $t(`security_center['验证码将发送至邮箱账号：']`) }}{{ Common.maskEmail(userStore.getUserGlobalSetInfo.email) }}</div>
+					<div class="Text1">{{ $t(`security_center['有效时间：10分钟']`) }}</div>
+					<div class="Text_s mt_16 mb_8">{{ $t(`security_center['验证码']`) }}</div>
+					<VerificationCode
+						@VerificationCodeInput="VerificationCodeInput"
+						@sendVerificationCode="sendVerificationCode"
+						v-model="verificationBtn"
+						:disabled="verificationBtn"
+						ref="VerificationCodeRef"
+					/>
+				</div>
 				<div class="mt_40 mb_12">
-					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">{{ $t(`login['确定']`) }}</button>
+					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">
+						{{ isCreate ? $t(`security_center['确定']`) : $t(`security_center['下一步']`) }}
+					</button>
 				</div>
 			</div>
 		</div>
@@ -42,13 +62,20 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import Common from "/@/utils/common";
 import showToast from "/@/hooks/useToast";
 import { userApi } from "/@/api/user";
 import options from "/@/assets/ts/areaCode";
 import { useUserStore } from "/@/stores/modules/user";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import { CommonApi } from "/@/api/common";
+import CommonRegex from "/@/utils/CommonRegex";
+const modalStore = useModalStore();
 const userStore = useUserStore();
+const VerificationCodeRef = ref(null);
+// 验证码
+const userPhoneRegex = /^\d{8,11}$/;
 // 登陆表单
 const payLoad = reactive({
 	email: "",
@@ -56,74 +83,99 @@ const payLoad = reactive({
 	type: 1,
 	areaCode: options[0].areaCode,
 });
+const isCreate = ref(true);
+const minLength = ref(8);
+const maxLength = ref(13);
+const AreaCodeOptions = ref([]);
 
 // 校验完成登陆按钮可以点击
 const disabledBtn = ref(true);
 const verificationBtn = ref(true);
 const userVerifyTypeVerifyError = ref(false);
-const userEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const VerificationCodeRef = ref(null);
+
 const sendVerificationCode = async () => {
-	if (!userEmailRegex.test(payLoad.email)) {
+	if (!CommonRegex.userEmailRegex.test(payLoad.email) && isCreate.value) {
 		showToast("手机号不正确", 1500);
 		return;
 	} else {
 		const params = {
-			phone: payLoad.email,
+			email: isCreate.value ? payLoad.email : userStore.getUserGlobalSetInfo.email,
 		};
-		const res = await userApi.globalSendSms(params).catch((err) => err);
+		const res = await userApi.globalSendMail(params).catch((err) => err);
 		const { code, message } = res;
 		if (code == Common.ResCode.SUCCESS) {
 			showToast(message, 1500);
-			(VerificationCodeRef.value as any).startCountdown(10);
 			verificationBtn.value = true;
+			(VerificationCodeRef.value as any).startCountdown(60);
 		} else {
 			showToast(message, 1500);
 		}
 	}
 };
+
 const emailOnInput = () => {
-	userEmailRegex.test(payLoad.email) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
+	CommonRegex.userEmailRegex.test(payLoad.email) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
 	verificationBtn.value = userVerifyTypeVerifyError.value;
 	verifyBtn();
 };
-
 const VerificationCodeInput = (verifyCode: string) => {
 	payLoad.verifyCode = verifyCode;
 	verifyBtn();
 };
 const verifyBtn = () => {
-	if (userVerifyTypeVerifyError && payLoad.verifyCode) {
-		disabledBtn.value = false;
+	if (isCreate.value) {
+		if (!userVerifyTypeVerifyError.value && payLoad.verifyCode) {
+			disabledBtn.value = false;
+		} else {
+			disabledBtn.value = true;
+		}
 	} else {
-		disabledBtn.value = true;
+		if (payLoad.verifyCode) {
+			disabledBtn.value = false;
+		} else {
+			disabledBtn.value = true;
+		}
 	}
 };
 
 const onSubmit = async () => {
+	verificationBtn.value = true;
 	const params = {
 		type: payLoad.type,
 		verifyCode: payLoad.verifyCode,
 	};
 	const checkVerifyRes = await userApi.checkVerifyCode(params).catch((error) => error);
 	if (checkVerifyRes.code === Common.ResCode.SUCCESS) {
-		const params = {
-			type: payLoad.type,
-			verifyCode: payLoad.verifyCode,
-			areaCode: payLoad.areaCode,
-			account: payLoad.email,
-		};
-		const res = await userApi.bindAccount(params).catch((err) => err);
-		const { code, data, message } = res;
-		if (code == Common.ResCode.SUCCESS) {
-			modalStore.closeModal();
-
-			showToast(message);
+		if (isCreate.value) {
+			const params = {
+				type: payLoad.type,
+				verifyCode: payLoad.verifyCode,
+				areaCode: payLoad.areaCode,
+				account: payLoad.email,
+			};
+			const res = await userApi.bindAccount(params).catch((err) => err);
+			await userStore.uplateUserGlobalSetInfo();
+			const { code, data, message } = res;
+			if (code == Common.ResCode.SUCCESS) {
+				modalStore.closeModal();
+				showToast(message);
+			} else {
+				showToast(message);
+			}
 		} else {
-			showToast(message);
+			payLoad.verifyCode = "";
+			showToast(checkVerifyRes.message);
+			isCreate.value = true;
+			disabledBtn.value = true;
 		}
 	}
 };
+onMounted(() => {
+	if (userStore.getUserGlobalSetInfo.email) {
+		isCreate.value = false;
+		verificationBtn.value = false;
+	}
+});
 </script>
 
 <style lang="scss" scoped>

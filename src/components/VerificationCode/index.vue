@@ -75,5 +75,8 @@ defineExpose({
 }
 .send-button:disabled {
 	cursor: not-allowed;
+	background: var(--Bg);
+	border: 1px solid var(--Line_2);
+	color: var(--Text2);
 }
 </style>

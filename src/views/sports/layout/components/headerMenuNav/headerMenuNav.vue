@@ -1,5 +1,5 @@
 <template>
-	<div class="header-container">
+	<div class="header-container" :class="route.meta.type">
 		<div class="menu-nav">
 			<div class="left">
 				<div v-for="(item, index) in Menu" :key="index" class="nva-item" :class="{ active: item.name === route.name }">
@@ -92,11 +92,16 @@ onMounted(() => {});
 	display: flex;
 	align-items: center;
 	padding-left: 24px;
-	border-radius: 8px 8px 0 0;
+	border-radius: 8px;
 	background: var(--Bg1);
 	overflow: hidden;
 	box-sizing: border-box;
-
+	&.list {
+		border-radius: 8px 8px 0 0;
+	}
+	&.result{
+		border-radius: 8px 8px 0 0;
+	}
 	.arrow_content {
 		position: absolute;
 		top: 0;
