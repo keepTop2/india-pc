@@ -92,4 +92,29 @@ export const userApi = {
 			headers,
 		});
 	},
+	//意见反馈提交
+	userFeedbackSubmit: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/userFeedback/api/submit`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
+	//意见反馈提交
+	userFeedbackPageList: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/userFeedback/api/pageList`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	//意见反馈提交
+	userFeedbackDetail: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/userFeedback/api/detail`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };

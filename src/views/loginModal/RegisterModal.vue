@@ -37,7 +37,7 @@
 							autocomplete="new-password"
 						/>
 						<span class="eyes">
-							<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="18px" @click="showPassword = !showPassword" />
+							<svg-icon :name="showPassword ? 'eyes':'eyes_on'" size="18px" @click="showPassword = !showPassword" />
 						</span>
 					</p>
 					<p v-show="VerifyError.passWord" class="Wran_text fs_10 mt_2">{{ $t(`login['密码规则']`) }}</p>
@@ -54,7 +54,7 @@
 							@input="confirmOnInput"
 						/>
 						<span class="eyes">
-							<svg-icon :name="showConfirmPassword ? 'eyes_on' : 'eyes'" size="18px" @click="showConfirmPassword = !showConfirmPassword" />
+							<svg-icon :name="showConfirmPassword ? 'eyes':'eyes_on'" size="18px" @click="showConfirmPassword = !showConfirmPassword" />
 						</span>
 					</p>
 					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_10 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
@@ -68,7 +68,10 @@
 				</div>
 
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_12 flex_start">{{ $t(`login['输入推荐码']`) }} <svg-icon name="arrow_down_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode"/></p>
+					<p class="Text_s mb_8 mt_8 fs_12 flex_start">{{ $t(`login['输入推荐码']`) }} 
+						<svg-icon name="arrow_down_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
+						<svg-icon name="arrow_up_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
+					</p>
 					<p class="common_password" v-if="openinviteCode"><input type="text" v-model="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" /></p>
 				</div>
 				<div class="fs_10 userAgreement" :class="userAgreement ? 'Text_s' : 'Text1'" >

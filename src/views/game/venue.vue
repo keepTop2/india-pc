@@ -22,9 +22,10 @@
 					</div>
 				</div>
 				<div class="tabs curp">
-					<span v-for="(item, index) in gameTab" class="tab" :class="currentTab == index ? 'active' : ''" @click="clickTab(index)">{{ item.label }}</span>
+					<span v-for="(item, index) in gameTab" class="tab" :class="currentTab == index ? 'active' : ''" @click="clickTab(index)" :key="index">{{ item.label }}</span>
 				</div>
 			</div>
+
 			<!-- 查询展示 -->
 			<div v-if="searchQuery">
 				<venueGameCard :gameList="filteredResults"></venueGameCard>
@@ -49,7 +50,8 @@
 			</div>
 			<!-- 其他tab处理 -->
 			<!-- 其他tab处理 -->
-			<div v-else-if="currentTab == 1">
+
+			<div v-else-if="currentTab == 1 && hotGameObj.gameInfoList.length">
 				<hotGame :hotGameList="hotGameObj.gameInfoList" v-if="hotGameObj.gameInfoList?.length" />
 			</div>
 			<div v-else-if="currentTab == 2 && newGameObj.length">

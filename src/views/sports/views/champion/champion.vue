@@ -36,13 +36,14 @@ import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEvent
 import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
-
+import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
 const { sportType, tabActive, handleSportEventsPush, openSportPush, handleSportPush } = useSportEvents();
 const SidebarStore = useSidebarStore();
 const { clearSportsOddsChange } = useSportPubSubEvents();
 const sportsBetEvent = useSportsBetEventStore();
 const leagueActiveList = ref(sportsBetEvent.getLeagueSelect);
+const { getSidebarEventSSEPush, getSidebarMarketSSEPush } = useToolsHooks();
 
 const route = useRoute();
 
@@ -78,7 +79,6 @@ const state = reactive({
 
 onBeforeMount(() => {
 	console.log("冠军生命周期钩子");
-	getPromotionsFirstEvents();
 	state.targetEvents = [];
 	/** 进入时获取一次页面数据 */
 	state.targetEvents = viewSportPubSubEventData.getSportData();
@@ -96,18 +96,25 @@ onBeforeMount(() => {
 	});
 });
 
-const getPromotionsFirstEvents = () => {
-	console.log("冠军页面开始在数据中心获取热门赛事");
-	// 获取到的数据
-	const promotionsViewData = computed(() => {
-		return viewSportPubSubEventData.sidebarData.promotionsViewData;
-	});
-	console.log("promotionsViewData", promotionsViewData);
-};
+// 监听热门赛事
+watch(
+	() => viewSportPubSubEventData.sidebarData.promotionsViewData.length,
+	(newValue, oldValue) => {
+		// 只监听首次变化
+		if (newValue > 0 && !oldValue) {
+			// 取第一条热门赛事ID
+			const eventInfo = viewSportPubSubEventData.sidebarData.promotionsViewData[0];
+			// 设置状态
+			SidebarStore.setEventsInfo(eventInfo); // 切换的时候获取当前赛事信息
+			getSidebarEventSSEPush(); // 侧边赛事推送
+			getSidebarMarketSSEPush(); // 每次更新侧边赛事时都需要重新推送对应的盘口详情
+		}
+	}
+);
 
 /**
  * @description: 获取筛选后的列表数据；
- * @return {*}
+ * @return {*}2
  */
 const getList = () => {
 	let leagues = cloneDeep(state.targetEvents);

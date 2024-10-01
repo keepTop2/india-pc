@@ -123,6 +123,11 @@ const sendVerificationCode = async () => {
 };
 const areaCodeInput = (data: any) => {
 	const { phone, areaCode } = data;
+	if (areaCode) {
+		const data: any = AreaCodeOptions.value.find((item: any) => item.areaCode === areaCode);
+		minLength.value = data.minLength;
+		maxLength.value = data.maxLength;
+	}
 	if (phone) {
 		payLoad.phone = phone;
 		const userPhoneRegex = new RegExp(`^\\d{${minLength.value},${maxLength.value}}$`);

@@ -14,7 +14,7 @@
 						<p class="common_password">
 							<input :type="showPassword ? 'text' : 'password'" v-model="payLoad.password" class="common_input" @input="passwordOnInput" autocomplete="new-password" />
 							<span class="eyes">
-								<svg-icon :name="showOldPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showOldPassword = !showOldPassword" />
+								<svg-icon :name="showOldPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showOldPassword = !showOldPassword" />
 							</span>
 						</p>
 						<p v-show="passwordVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['请输入6位数字']`) }}</p>
@@ -30,7 +30,7 @@
 								autocomplete="new-password"
 							/>
 							<span class="eyes">
-								<svg-icon :name="showOldPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showOldPassword = !showOldPassword" />
+								<svg-icon :name="showOldPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showOldPassword = !showOldPassword" />
 							</span>
 						</p>
 						<p class="fs_14 Text1 mt_16 fw_200"></p>
@@ -46,7 +46,7 @@
 						<p class="common_password">
 							<input :type="showOldPassword ? 'text' : 'password'" v-model="payLoad.oldPassword" class="common_input" @input="oldPasswordOnInput" autocomplete="new-password" />
 							<span class="eyes">
-								<svg-icon :name="showOldPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showOldPassword = !showOldPassword" />
+								<svg-icon :name="showOldPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showOldPassword = !showOldPassword" />
 							</span>
 						</p>
 						<p v-show="oldPasswordVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['请输入6位数字']`) }}</p>
@@ -57,7 +57,7 @@
 						<p class="common_password">
 							<input :type="showNewPassword ? 'text' : 'password'" v-model="payLoad.newPassword" class="common_input" @input="newPasswordOnInput" />
 							<span class="eyes">
-								<svg-icon :name="showNewPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showNewPassword = !showNewPassword" />
+								<svg-icon :name="showNewPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showNewPassword = !showNewPassword" />
 							</span>
 						</p>
 						<p v-show="newPasswordVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['请输入6位数字']`) }}</p>
@@ -68,7 +68,7 @@
 						<p class="common_password">
 							<input :type="showConfirmPassword ? 'text' : 'password'" v-model="payLoad.confirmPassword" class="common_input" @input="confirmPasswordOnInput" />
 							<span class="eyes">
-								<svg-icon :name="showConfirmPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showConfirmPassword = !showConfirmPassword" />
+								<svg-icon :name="showConfirmPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showConfirmPassword = !showConfirmPassword" />
 							</span>
 						</p>
 						<p v-show="confirmPasswordVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['两次密码不一致']`) }}</p>
@@ -78,7 +78,7 @@
 					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">{{ $t(`security_center['确定']`) }}</button>
 					<div class="findOldPwd">
 						{{ $t(`security_center['忘记了旧交易密码？']`) }}
-						<span class="Theme_text curp" @click="modalStore.openModal('FindWithdrawPwd')">{{ $t(`security_center['找回交易密码']`) }}</span>
+						<span class="Theme_text curp" @click="goToFindWithdrawPwd">{{ $t(`security_center['找回交易密码']`) }}</span>
 					</div>
 				</div>
 			</div>
@@ -168,6 +168,13 @@ const verifyBtn = () => {
 	}
 };
 
+const goToFindWithdrawPwd = () => {
+	if (!userStore.getUserGlobalSetInfo.phone && !userStore.getUserGlobalSetInfo.email) {
+		showToast("请先绑定手机号或邮箱");
+	} else {
+		modalStore.openModal("FindWithdrawPwd");
+	}
+};
 const onSubmit = async () => {
 	verificationBtn.value = true;
 	const params = {};
