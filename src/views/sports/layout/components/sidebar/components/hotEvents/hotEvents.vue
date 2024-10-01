@@ -134,6 +134,16 @@ const oddsChange = (item: any) => {
 		font-family: "PingFang SC";
 		font-size: 16px;
 		font-weight: 400;
+		position: relative;
+		.item-red{
+			position: absolute;
+				background-color: var(--Theme);
+				border-radius: 0 4px 4px 0;
+				width: 4px;
+				height: 22px;
+				top: 10px;
+				left: 0;
+		}
 	}
 	.event-list {
 		display: grid;
