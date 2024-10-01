@@ -15,20 +15,27 @@ const $: any = i18n.global;
 export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 	state: () => {
 		return {
+			championBetShow: false as boolean,
 			championBetData: [] as any[], // 冠军购物车数据
 			championBetObj: {} as any, // 冠军购物车数据
 			bettingStatus: 0,
 		};
 	},
-	getters: {},
+	getters: {
+		/**
+		 * @description 获取储存当前选中的冠军盘口信息
+		 */
+		getChampionBetObj(): any {
+			return this.championBetObj;
+		},
+	},
 
 	actions: {
 		/**
 		 * @description 添加冠军赛事到购物车
 		 * @param data  赛事信息
 		 */
-
-		async addChampionToCart(data: any) {
+		async addChampionToCart(data) {
 			const { isHaveToken } = useToLogin();
 			try {
 				await isHaveToken();
@@ -36,7 +43,6 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 				console.error("Error:", error);
 				return; // 如果出错直接退出方法
 			}
-
 			const { leagueId } = data;
 			const index = this.championBetData.findIndex((item) => item.leagueId === leagueId);
 			if (index !== -1) {
@@ -44,22 +50,20 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 			} else {
 				if (this.championBetData.length >= 10) {
 					// showToast($.t('sports["最多选择场比赛"]', { value: 10 }));
-					console.log("最多选择十场比赛");
 					return;
 				}
 			}
 			this.championBetObj[leagueId] = data;
 			this.championBetData.splice(index !== -1 ? index : this.championBetData.length, 1, data);
-
-			// this.championBetData.push(data);
-			console.log("this.championBetData", this.championBetData);
-
 			this.championOpenSse(); // 开启线程
 			this.examineEventsStatus(); // 判断赛事状态
+
+			console.log("this.championBetObj", this.championBetObj);
+			console.log("this.championBetData", this.championBetData);
 		},
 
 		examineEventsStatus() {
-			if (this.championBetData.some((v) => v.event.oddsStatus !== "running")) {
+			if (this.championBetData.some((v) => v.oddsStatus !== "running")) {
 				this.bettingStatus = 1;
 				console.log("==>>>>>>>盘口关闭", 1);
 				return;
@@ -119,7 +123,6 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 		 * @param data SSE推送数据源的数据
 		 */
 		championShopCartSSEProcess(data) {
-			console.log("data", data);
 			this.championBetData.forEach((v) => {
 				const championIndex = data.findIndex((i) => i.leagueId === v.leagueId);
 				data[championIndex].teams.forEach((t) => {
@@ -131,17 +134,37 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 		},
 
 		// 删除冠军购物车已添加的数据
-		removeChampionTEventCart(data: any) {
+		removeChampionTEventCart(data) {
 			const index = this.championBetData.findIndex((v) => v.leagueId == data.leagueId);
 			this.championBetData.splice(index, 1);
 			delete this.championBetObj[data.leagueId];
-			// this.championOpenSse();
-			// this.examineEventsStatus();
-			// // 购物车数据为0停止线程
-			// if (this.championBetData.length == 0) {
-			// 	this.championCloseSse();
-			// 	this.closeChampionShopCart();
-			// }
+			this.championOpenSse();
+			this.examineEventsStatus();
+			// 购物车数据为0停止线程
+			if (this.championBetData.length == 0) {
+				this.championCloseSse();
+				this.closeChampionShopCart();
+			}
+		},
+
+		// 开启冠军购物车
+		openChampionShopCart() {
+			this.championBetShow = true;
+			this.championOpenSse();
+		},
+
+		// 关闭冠军购物车
+		closeChampionShopCart() {
+			this.championBetShow = false;
+			this.championCloseSse();
+		},
+
+		// 清空冠军购物车
+		clearChampionShopCart() {
+			this.championBetData = [] as any[];
+			this.championBetObj = {} as any;
+			this.championCloseSse();
+			this.closeChampionShopCart();
 		},
 	},
 });

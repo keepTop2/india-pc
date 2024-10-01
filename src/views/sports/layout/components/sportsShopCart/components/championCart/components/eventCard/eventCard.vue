@@ -6,20 +6,20 @@
 		</div>
 		<div class="bet_slip_info" :style="{ opacity: opacityFn() }">
 			<div class="bet_slip_label">
-				<div>{{ shopData.teamName }}</div>
+				<div>{{ shopData.event.teamName }}</div>
 				<!-- <div style="position: relative">
-					<span>@{{ shopData.price }}</span>
+					<span>@{{ shopData.event.price }}</span>
 				</div> -->
 				<div style="position: relative">
-					<span class="value" :class="changeClass(shopData)">@{{ shopCartChampionPubSub.decimalPrice(props.shopData) }}</span>
+					<span class="value" :class="changeClass(shopData.event)">@{{ shopCartChampionPubSub.decimalPrice(props.shopData.event) }}</span>
 					<div class="change-icon">
-						<RiseOrFall v-if="shopData.betMarketInfo?.oddsChange" :status="shopData.betMarketInfo?.oddsChange == 'oddsUp' ? 1 : 2" />
+						<RiseOrFall v-if="shopData.event.betMarketInfo?.oddsChange" :status="shopData.event.betMarketInfo?.oddsChange == 'oddsUp' ? 1 : 2" />
 					</div>
 				</div>
 			</div>
 			<div class="bet_slip_type">
 				<div>
-					<span v-if="shopData.isLive" class="mr_6">[滚球]</span>
+					<span v-if="shopData.event.isLive" class="mr_6">[滚球]</span>
 					<span>[优胜冠军]</span>
 					<span>[欧洲盘]</span>
 				</div>
@@ -29,7 +29,7 @@
 				</div>
 			</div>
 			<div class="bet_slip_name mt_2">
-				<span>{{ shopData.leagueName }}</span>
+				<span>{{ shopData.event.leagueName }}</span>
 			</div>
 		</div>
 	</div>
@@ -71,7 +71,7 @@ const props = withDefaults(
  * @description 判断赛事文本
  */
 const examineEventsStatus = computed(() => {
-	const item = props.shopData;
+	const item = props.shopData.event;
 	// 判断赛事状态 与 盘口状态
 	if (item.oddsStatus !== "running" && item.oddsStatus !== "Running") {
 		return "盘口已关闭";
@@ -86,7 +86,7 @@ const examineEventsStatus = computed(() => {
  * @description 判断赛事状态
  */
 const opacityFn = () => {
-	const item = props.shopData;
+	const item = props.shopData.event;
 	// 判断赛事状态 与 盘口状态
 	if (item.oddsStatus !== "running" || ChampionShopCartStore.championBetData.length > 1) {
 		return 0.4;

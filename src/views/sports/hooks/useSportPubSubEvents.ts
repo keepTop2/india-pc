@@ -219,8 +219,7 @@ export default function useSportPubSubEvents() {
 			}
 			// 先屏蔽冠军购物车推送的判断
 			if (processData.commandType == SportShopCartProcessWorkerCommandType.championShopCartViewChanges) {
-				console.log("购物车收到推送消息", ChampionShopCartStore.championBetShow);
-
+				// console.log("购物车收到推送消息", ChampionShopCartStore.championBetShow);
 				if (!ShopCatControlStore.getShopCatShow) return; // 弹窗关闭停止对应任务
 				// 冠军购物车数据
 				if (processData.data.data && processData.data.data.length > 0) {

@@ -87,36 +87,46 @@ const changeClass = (cardData) => {
  * @description 处理盘口高亮状态 查看是否添加到购物车；
  */
 const onSetSportsEventData = () => {
+	// let item = props.cardData; //队伍
+	// let data = props.sportInfo; //行数据
+	// const params = {
+	// 	...item,
+	// 	leagueId: data.leagueId,
+	// 	leagueName: data.leagueName,
+	// 	sportType: data.sportType,
+	// };
+	// //存储盘口唯一标识
+	// if (isBright()) {
+	// 	// 删除Pinia数据
+	// 	ChampionShopCartStore.removeChampionTEventCart(params);
+	// } else {
+	// 	/**添加到购物车 */
+	// 	ChampionShopCartStore.addChampionToCart(JSON.parse(JSON.stringify(params)));
+	// }
 	let item = props.cardData; //队伍
 	let data = props.sportInfo; //行数据
+	// console.log("item", item);
+	// console.log("data", data);
+	// 创建对象
 	const params = {
-		...item,
+		type: "1", // 添加冠军标识
 		leagueId: data.leagueId,
-		leagueName: data.leagueName,
 		sportType: data.sportType,
+		event: {
+			...item,
+			leagueId: data.leagueId,
+			leagueName: data.leagueName,
+			sportType: data.sportType,
+		},
 	};
-	//存储盘口唯一标识
+
 	if (isBright()) {
 		// 删除Pinia数据
 		ChampionShopCartStore.removeChampionTEventCart(params);
 	} else {
 		/**添加到购物车 */
-		ChampionShopCartStore.addChampionToCart(JSON.parse(JSON.stringify(params)));
+		ChampionShopCartStore.addChampionToCart(params);
 	}
-	// let item = props.cardData; //队伍
-	// let data = props.sportInfo; //行数据
-	// // console.log("item", item);
-	// // console.log("data", data);
-	// // 创建对象
-	// const obj = {
-	// 	type: "1", // 添加冠军标识
-	// 	leagueId: data.leagueId,
-	// 	sportType: data.sportType,
-	// 	teamId: item.teamId,
-	// 	events: data,
-	// };
-	// // console.log("obj", obj);
-	// ChampionShopCartStore.addChampionToCart(obj);
 };
 
 /**
@@ -127,7 +137,7 @@ const isBright = () => {
 	let data = props.sportInfo; //行数据
 	let tag = false;
 	try {
-		tag = ChampionShopCartStore.championBetObj[data.leagueId]?.orid == item.orid;
+		tag = ChampionShopCartStore.championBetObj[data.leagueId].event?.orid == item.orid;
 		if (tag) {
 		}
 	} catch (error) {

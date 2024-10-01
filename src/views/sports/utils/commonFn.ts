@@ -157,7 +157,7 @@ export const getOutrightTicket = async () => {
 	// 投注参数
 	const params = {
 		sportType: singleTicketInfo.sportType,
-		orid: singleTicketInfo.orid,
+		orid: singleTicketInfo.event.orid,
 	};
 	const res = await sportsApi.GetOutrightTicket(params, { showLoading: false }).catch((err) => err);
 	if (res.status == 200) {
