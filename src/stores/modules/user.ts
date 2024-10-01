@@ -98,6 +98,11 @@ export const useUserStore = defineStore("User", {
 		setUserGlobalSetInfo(info: Object) {
 			this.userGlobalSetInfo = info;
 		},
+		uplateUserGlobalSetInfo() {
+			userApi.getUserGlobalSetInfo().then((res) => {
+				this.setUserGlobalSetInfo(res.data);
+			});
+		},
 		setRegisterModalInfo(info: Object) {
 			this.registerModalInfo = info;
 		},

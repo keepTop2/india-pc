@@ -32,8 +32,11 @@ const closeModal = () => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	border-radius: 12px;
+	overflow: hidden;
 	.modal-content {
 		position: relative;
+		background-color: var(--Bg);
 		.close_btn {
 			position: absolute;
 			right: 0;

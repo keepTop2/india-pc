@@ -17,11 +17,13 @@
 
 <script setup lang="ts">
 import Common from "/@/utils/common";
-import activityType from "../activityType";
 import { useRouter } from "vue-router";
 import { useActivityStore } from "/@/stores/modules/activity";
 import { activityApi } from "/@/api/activity";
 import { useModalStore } from "/@/stores/modules/modalStore";
+
+import { onMounted, ref } from "vue";
+
 const modalStore = useModalStore();
 const activityStore = useActivityStore();
 const showDetails = async (item: any) => {
@@ -33,9 +35,10 @@ defineProps({
 		type: Object,
 	},
 });
+onMounted(() => {
+	modalStore.openModal("LOSS_IN_SPORTS");
+});
 const getConfigDetail = async (item: any) => {
-	console.log(item);
-
 	const params = {
 		activityTemplate: item.activityTemplate,
 		id: item.id,
