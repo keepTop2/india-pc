@@ -232,7 +232,7 @@ const getFilterEvents = debounce((event) => {
 	height: 50px;
 	display: flex;
 	align-items: center;
-	border-radius: 0 0 8px 8px;
+	border-radius:  8px 8px 0 0;
 	background: var(--Bg1);
 	.left {
 		flex: 1;

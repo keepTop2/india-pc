@@ -10,9 +10,9 @@
 			<div class="left-container">
 				<div class="container">
 					<div class="header">
-						<HeaderMenuNav></HeaderMenuNav>
-						<div class="line" v-if="route.meta.type !== 'detail'"></div>
 						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
+						<div class="line" v-if="route.meta.type === 'list'"></div>
+						<HeaderMenuNav></HeaderMenuNav>
 					</div>
 					<div class="back-container">
 						<!-- 主体路由页面 -->
@@ -335,7 +335,7 @@ watch(
 
 <style lang="scss" scoped>
 .base-body {
-	width: 1660px;
+	width: 1308px;
 	height: 100%;
 	margin: 0 auto;
 	overflow-x: auto;
@@ -347,19 +347,21 @@ watch(
 .main-container {
 	display: flex;
 	height: calc(100% - 40px);
-	width: 1660px;
+	// width: 1660px;
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
 	// transform: scale(0.8);
 	.left-container {
 		position: relative;
-		margin: 0px 12px;
+		// margin: 0px 12px;
 		flex: 1;
-
+		width: 930px;
+		margin-right: 8px;
+		overflow: hidden;
 		.container {
 			// width: 100%;
-			width: 1246px;
+			// width: 930px;
 
 			.header {
 				width: 100%;
@@ -394,7 +396,7 @@ watch(
 	}
 
 	.right-container {
-		width: 390px;
+		width: 380px;
 		height: 100%;
 		overflow-y: auto;
 	}

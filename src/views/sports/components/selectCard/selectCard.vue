@@ -4,7 +4,7 @@
 			<div class="title">
 				<span>({{ teamData.length }})</span>
 			</div>
-			<SieveOfCases :options="teamData" />
+			<!-- <SieveOfCases :options="teamData" /> -->
 		</div>
 		<div class="select_right">
 			<span class="icon"><svg-icon name="sports-arrow_big" size="20px"></svg-icon></span>

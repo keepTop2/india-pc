@@ -83,7 +83,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .card-container {
-	width: 1246px;
+	
 	border-radius: 8px;
 	overflow: hidden;
 	.card—header {
