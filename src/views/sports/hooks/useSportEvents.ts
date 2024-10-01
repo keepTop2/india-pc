@@ -116,8 +116,10 @@ export function useSportEvents() {
     if (route.path === "/sports/collect") {
       await openAttentionSSE();
     } else if (route.path === "/sports/detail") {
-      getSidebarEventSSEPush(route.query.eventId);
-      getSidebarMarketSSEPush(route.query.eventId);
+      getSidebarEventSSEPush(Number(route.query.eventId));
+      getSidebarMarketSSEPush(Number(route.query.eventId));
+      getPromotions()
+      
     } else {
       await handleSportEventsPush(type || sportType.value);
     }

@@ -66,9 +66,9 @@
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
 		<div class="markets-list">
 			<!-- 盘口列表 -->
-			<MarketsList v-if="!isShowHotEvents" />
+			<MarketsList v-show="!isShowHotEvents" />
 			<!-- 热门赛事 -->
-			<HotEvents v-else />
+			<HotEvents v-show="isShowHotEvents" />
 		</div>
 	</div>
 </template>
@@ -97,13 +97,18 @@ const myPlayer = ref();
 const videoContainer = ref();
 const iframeLoaded = ref(false);
 const SidebarStore = useSidebarStore();
-const isShowHotEvents = ref(route.meta.type == "list" ? false : true);
+const isShowHotEvents = computed(() => route.meta.type === "list" ? false : true);
 
 // 获取到的数据
 const eventsInfo = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
-	if (childrenViewData) {
+	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData;
+
+	if (childrenViewData && !isShowHotEvents.value) {
 		return childrenViewData[0]?.events[0];
+	}
+	if (promotionsViewData && isShowHotEvents.value) {
+		return promotionsViewData[0];
 	}
 	return null;
 });
