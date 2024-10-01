@@ -359,6 +359,7 @@ onBeforeUnmount(() => {
 			> div {
 				width: 700px;
 				margin: 0 auto;
+				position: relative;
 			}
 		}
 	}

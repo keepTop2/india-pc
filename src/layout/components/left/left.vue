@@ -41,7 +41,7 @@
 				</div>
 				<!-- 菜单 -->
 				<div class="left_scroll_conatiner2">
-					<menuSkeleton v-if="isLoading" />
+					<menuSkeleton v-if="isLoading" :collapse="collapse" />
 					<Menu v-else />
 				</div>
 				<!-- 左侧底步功能区 -->

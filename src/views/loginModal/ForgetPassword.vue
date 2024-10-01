@@ -46,7 +46,9 @@
 							/>
 							<AreaCode v-else @update:modelValue="areaCodeInput" :options="AreaCodeOptions" :type="verifyType" :class="userVerifyTypeVerifyError ? 'verifyError' : ''"></AreaCode>
 						</p>
-						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ verifyType == "email" ? $t(`login['电子邮箱不正确']`) : $t(`login['电话号码不正确']`) }}</p>
+						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">
+							{{ verifyType == "email" ? $t(`login['电子邮箱不正确']`) : $t(`security_center['请输入8-12位数字']`, { min: minLength, max: maxLength }) }}
+						</p>
 					</div>
 					<div>
 						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['验证码']`) }}</p>
@@ -81,7 +83,7 @@
 						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['密码']`) }}</p>
 						<p class="common_password">
 							<input
-								:type="showPassword ? 'text' : 'password'"
+								:type="showPassword ? 'password' : 'text'"
 								v-model="payLoad.password"
 								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
@@ -100,7 +102,7 @@
 						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
 						<p class="common_password">
 							<input
-								:type="showConfimPassword ? 'text' : 'password'"
+								:type="showConfimPassword ? 'password' : 'text'"
 								v-model="payLoad.confirmPassword"
 								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
@@ -193,8 +195,8 @@ const disabledBtn = ref(true);
 const verificationBtn = ref(true);
 const verificationBtn2 = ref(true);
 // 显示密码
-const showPassword = ref(false);
-const showConfimPassword = ref(false);
+const showPassword = ref(true);
+const showConfimPassword = ref(true);
 // 监听输入框变化
 const userOnInput = () => {
 	userAccountRegex.test(payLoad.userAccount) ? (userAccountVerifyError.value = false) : (userAccountVerifyError.value = true);

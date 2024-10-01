@@ -19,7 +19,7 @@ const activityModal: Record<string, () => Promise<any>> = {
 	RED_BAG_RAIN: () => import("/@/views/activity/activityType/RED_BAG_RAIN/index.vue"),
 	FIRST_DEPOSIT: () => import("/@/views/activity/activityType/FIRST_DEPOSIT.vue"),
 	SECOND_DEPOSIT: () => import("/@/views/activity/activityType/SECOND_DEPOSIT.vue"),
-	FREE_WHEEL: () => import("../../views/activity/activityType/FREE_WHEEL.vue"),
+	FREE_WHEEL: () => import("/@/views/activity/activityType/FREE_WHEEL.vue"),
 	ASSIGN_DAY: () => import("/@/views/activity/activityType/ASSIGN_DAY.vue"),
 	LOSS_IN_SPORTS: () => import("/@/views/activity/activityType/LOSS_IN_SPORTS.vue"),
 	RECHARGE_BONUS: () => import("/@/views/activity/activityType/RECHARGE_BONUS.vue"),

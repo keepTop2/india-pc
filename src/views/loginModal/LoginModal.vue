@@ -25,7 +25,7 @@
 					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
 					<p class="common_password">
 						<input
-							:type="showPassword ? 'text' : 'password'"
+							:type="showPassword ? 'password' : 'text'"
 							v-model="payLoad.password"
 							class="common_input"
 							:placeholder="$t(`login['输入密码']`)"
@@ -110,7 +110,7 @@ const userAccountVerifyError = ref(false);
 const passWordVerifyError = ref(false);
 
 // 密码显示切换
-const showPassword = ref(false);
+const showPassword = ref(true);
 
 // 初始化验证码
 onMounted(() => {

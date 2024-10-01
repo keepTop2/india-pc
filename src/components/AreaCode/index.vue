@@ -41,8 +41,8 @@ interface Option {
 	countryName: string;
 	countryCode: string;
 	icon: string;
-	maxLength: string;
-	minLength: string;
+	maxLength: number;
+	minLength: number;
 }
 
 const props = defineProps({
@@ -70,11 +70,14 @@ const searchQuery = ref("");
 const isOpen = ref(false);
 const selectedOption = ref<Option>(props.options[0]);
 const dropdown = ref<HTMLDivElement | null>(null);
-
+const minLength = ref(props.options[0]?.minLength);
+const maxLength = ref(props.options[0]?.maxLength);
 watch(
 	() => props.options,
 	() => {
 		selectedOption.value = props.options[0];
+		minLength.value = props.options[0].minLength;
+		maxLength.value = props.options[0].maxLength;
 	}
 );
 const toggleDropdown = () => {
@@ -94,12 +97,20 @@ const filterOptions = () => {
 
 const selectOption = (option: Option) => {
 	selectedOption.value = option;
+	minLength.value = selectedOption.value.minLength;
+	maxLength.value = selectedOption.value.maxLength;
 	isOpen.value = false; // Close dropdown after selection
 	emit("update:modelValue", { areaCode: option.areaCode });
 };
 
 const onInput = (e: any) => {
 	isOpen.value = false;
+	console.log(e.target.value, maxLength.value);
+
+	if (e.target.value.length >= maxLength.value) {
+		e.target.value = e.target.value.substring(0, maxLength.value);
+	}
+
 	emit("update:modelValue", { phone: e.target.value });
 };
 const filteredOptions = computed(() => {
