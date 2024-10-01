@@ -1,7 +1,3 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育-足球-赔率卡片
--->
 <template>
 	<div class="card-container" :class="[!props.displayContent ? 'hideToggle' : 'showToggle']">
 		<div class="content-container" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">

@@ -77,6 +77,8 @@ const state = reactive({
 });
 
 onBeforeMount(() => {
+	console.log("冠军生命周期钩子");
+	getPromotionsFirstEvents();
 	state.targetEvents = [];
 	/** 进入时获取一次页面数据 */
 	state.targetEvents = viewSportPubSubEventData.getSportData();
@@ -87,12 +89,21 @@ onBeforeMount(() => {
 	watchEffect(() => {
 		/** 最新数据响应接入  */
 		state.targetEvents = viewSportPubSubEventData.getSportData();
+		// console.log("state.targetEvents", state.targetEvents);
+
 		state.targetEventList = getList();
 		setInitsportsActive();
 	});
 });
 
-onBeforeUnmount(() => {});
+const getPromotionsFirstEvents = () => {
+	console.log("冠军页面开始在数据中心获取热门赛事");
+	// 获取到的数据
+	const promotionsViewData = computed(() => {
+		return viewSportPubSubEventData.sidebarData.promotionsViewData;
+	});
+	console.log("promotionsViewData", promotionsViewData);
+};
 
 /**
  * @description: 获取筛选后的列表数据；
@@ -145,6 +156,6 @@ const toggleDisplay = (val?: number) => {
 	margin-bottom: 5px;
 }
 .noData {
-	height:100%;
+	height: 100%;
 }
 </style>

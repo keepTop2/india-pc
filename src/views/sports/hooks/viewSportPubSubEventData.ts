@@ -14,17 +14,18 @@ export default (function () {
 		private constructor() {
 			// 初始化视图数据实体
 			this.viewSportData = reactive({
-				sports: [],
+				sports: [], // 头部信息存储中心
 				leagues: [],
 				events: [],
 				markets: [],
 				outrights: [],
 				results: [],
-				childrenViewData: [],
+				childrenViewData: [], // 赛事列表存储中心
 			}) as unknown as SportViewData;
 
 			this.sidebarData = reactive({
 				event: [],
+				promotionsViewData: [], // 热门存储中心
 			} as unknown as SportViewData);
 		}
 		// 获取单例实例的静态方法
@@ -61,7 +62,7 @@ export default (function () {
 		public clearEventsState() {
 			Object.assign(this.viewSportData, {
 				childrenViewData: [],
-				markets:[]
+				markets: [],
 			});
 		}
 
@@ -75,7 +76,6 @@ export default (function () {
 		}
 
 		public setSidebarData(sidebarData: SportViewData) {
-			console.log("sidebarData", sidebarData);
 			Object.assign(this.sidebarData, sidebarData);
 		}
 
@@ -90,13 +90,13 @@ export default (function () {
 		/**
 		 * 处理数据
 		 */
-		public getSportData(dataType: 'viewSportData' | 'sidebarData' = 'viewSportData') {
+		public getSportData(dataType: "viewSportData" | "sidebarData" = "viewSportData") {
 			const sportsBetEvent = useSportsBetEventStore();
 			const leagueSelect = sportsBetEvent.getLeagueSelect;
 			let data;
-			if (dataType === 'viewSportData') {
+			if (dataType === "viewSportData") {
 				data = this.viewSportData.childrenViewData;
-			} else if (dataType === 'sidebarData') {
+			} else if (dataType === "sidebarData") {
 				data = this.sidebarData.childrenViewData;
 			}
 			// 如果有筛选 则处理数据，只给出筛选的联赛列表。

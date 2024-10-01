@@ -356,7 +356,9 @@ watch(
 		flex: 1;
 
 		.container {
-			width: 100%;
+			// width: 100%;
+			width: 1246px;
+
 			.header {
 				width: 100%;
 				// border-radius: 8px 8px 0 0;

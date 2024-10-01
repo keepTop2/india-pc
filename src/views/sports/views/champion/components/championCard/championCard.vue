@@ -1,7 +1,3 @@
-<!--
- * @Author: Relax
- * @Description: 体育-足球-冠军卡片
--->
 <template>
 	<div class="card-container">
 		<!--  头部 -->
@@ -33,7 +29,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-import MarketColumn from '../marketColumn/marketColumn.vue';
+import MarketColumn from "../marketColumn/marketColumn.vue";
 import PubSub from "/@/pubSub/pubSub";
 const SportAttentionStore = useSportAttentionStore();
 interface teamDataType {

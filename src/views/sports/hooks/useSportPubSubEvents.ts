@@ -188,9 +188,8 @@ export default function useSportPubSubEvents() {
 		else if (event.workerName == WorkerName.sidebarWorker) {
 			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;
 			if (processData.commandType == SportViewProcessWorkerCommandType.sidebarEventSource) {
-				// console.log("sidebarWorker -- sidebarWorker", processData.data.state.viewSportData.childrenViewData[0]?.events[0]);
+				console.log("收到侧边数据执行了", processData.data.state);
 				viewSportPubSubEventData.setSidebarData(processData.data.state.viewSportData);
-				// console.log("viewSportPubSubEventData.sidebarData.event", processData.data.state.viewSportData);
 			}
 		}
 
