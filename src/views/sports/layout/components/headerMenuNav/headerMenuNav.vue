@@ -181,7 +181,7 @@ watch(sportsData, () => {
 		}
 
 		.right {
-			width: 706px;
+			width: 100%;
 			// padding-right: 12px;
 			overflow: hidden;
 
