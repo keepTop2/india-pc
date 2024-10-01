@@ -47,7 +47,7 @@
 					<div class="flex-center">
 						<img src="../image/activityContentHeaderLeft.svg" alt="" />
 						<span>中奖名单</span>
-						<img src="./image/activityContentHeaderRight.svg" alt="" />
+						<img src="../image/activityContentHeaderRight.svg" alt="" />
 					</div>
 				</div>
 				<div class="activityContentCenter">
