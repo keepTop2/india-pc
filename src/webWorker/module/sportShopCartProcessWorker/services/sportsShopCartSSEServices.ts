@@ -22,12 +22,14 @@ export default (function () {
 		 * @description 购物车sse 消息处理业务
 		 */
 		public startSEEProcess(data: SportEventSourceResponse) {
-			// console.log("第六步 对应service处理对应业务");
+			console.log("第六步 对应service处理对应业务", data);
 			//数据返回拼装
 			const workerToViewData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
-				commandType: SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges,
+				commandType:
+					data.cartType === undefined ? SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges : SportShopCartProcessWorkerCommandType.championShopCartViewChanges,
 				data: {
+					cartType: data.cartType,
 					webToPushApi: data.webToPushApi,
 					sportPushApi: data.sportPushApi,
 					data: Object.keys(data.payload).length !== 0 ? (shopCartProcess(data) as Array<any>) : [],
@@ -45,6 +47,7 @@ export default (function () {
 				workerName: WorkerName.sportShopCartProcessWorker,
 				commandType: SportShopCartProcessWorkerCommandType.championShopCartViewChanges,
 				data: {
+					cartType: data.cartType,
 					webToPushApi: data.webToPushApi,
 					sportPushApi: data.sportPushApi,
 					data: Object.keys(data.payload).length !== 0 ? (shopOutrightProcess(data) as Array<any>) : [],

@@ -12,7 +12,7 @@ export default (function () {
 	onmessage = <Data, CommandType>(event) => {
 		const strData: string = new TextDecoder().decode(event.data);
 		const jsonData: WorkerTransfer<Data, CommandType> = JSON.parse(strData);
-		// console.warn("第四步 体育线程收到了数据 到对应controller", jsonData);
+		console.log("第四步 体育线程收到了数据 到对应controller", jsonData);
 		//收到体育sportEventSource 指令
 		if (jsonData.commandType == SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges) {
 			const data: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerCommandType> = jsonData as WorkerTransfer<
@@ -34,7 +34,11 @@ export default (function () {
 			const params: OpenSportEventSourceParams = {
 				...data.data,
 			};
-			SportEventSourceController.startOutrightSEE(params);
+			if (jsonData.data.cartType == "0") {
+				SportEventSourceController.startSEE(params);
+			} else if (jsonData.data.cartType == "1") {
+				SportEventSourceController.startOutrightSEE(params);
+			}
 		}
 	};
 
