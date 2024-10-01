@@ -7,7 +7,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ActivityDialog: typeof import('./src/components/ActivityDialog/index.vue')['default']
     AreaCode: typeof import('./src/components/AreaCode/index.vue')['default']
     BackToTop: typeof import('./src/components/BackToTop.vue')['default']
     Button: typeof import('./src/components/Button/Button.vue')['default']
@@ -19,18 +18,15 @@ declare module 'vue' {
     Dialog: typeof import('./src/components/Dialog/Dialog.vue')['default']
     DropdownSelect: typeof import('./src/components/DropdownSelect/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElPagination: typeof import('element-plus/es')['ElPagination']
-    ElProgress: typeof import('element-plus/es')['ElProgress']
-    ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
-    ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
+    ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
+    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     Form: typeof import('./src/components/Form/index.vue')['default']
