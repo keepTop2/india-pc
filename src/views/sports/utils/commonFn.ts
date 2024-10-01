@@ -51,6 +51,29 @@ export const getPublicSetting = async () => {
 /**
  * @description 请求单关注单信息
  */
+export const getChampionSingleTicket = async () => {
+	const ChampionShopCartStore = useSportsBetChampionStore();
+	const sportsBetInfo = useSportsBetInfoStore();
+	// 获取第一条赛事数据
+	const singleTicketInfo = ChampionShopCartStore.championBetData.find((item) => item.type === "0");
+	// 投注参数
+	const params = {
+		sportType: singleTicketInfo.sportType,
+		marketId: singleTicketInfo.event.betMarketInfo?.marketId,
+		key: singleTicketInfo.event.betMarketInfo?.key,
+	};
+	// 请求单关信息
+	const res: any = await sportsApi.GetSingleTicket(params, { showLoading: false }).catch((err) => {
+		// marketClosingError(err.response.data);
+	});
+	if (res?.status == 200) {
+		// 新增单关请求回的信息
+		sportsBetInfo.addSingleTicketInfo(res.data);
+	}
+};
+/**
+ * @description 请求单关注单信息
+ */
 export const getSingleTicket = async () => {
 	const sportsBetEvent = useSportsBetEventStore();
 	const sportsBetInfo = useSportsBetInfoStore();
@@ -157,7 +180,7 @@ export const getOutrightTicket = async () => {
 	// 投注参数
 	const params = {
 		sportType: singleTicketInfo.sportType,
-		orid: singleTicketInfo.orid,
+		orid: singleTicketInfo.event.orid,
 	};
 	const res = await sportsApi.GetOutrightTicket(params, { showLoading: false }).catch((err) => err);
 	if (res.status == 200) {

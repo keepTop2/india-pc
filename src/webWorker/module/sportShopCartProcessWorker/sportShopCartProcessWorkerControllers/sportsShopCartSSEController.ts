@@ -18,7 +18,7 @@ export default (function () {
 		private static sportEventSourceService = new SportsShopCartSSEServices();
 
 		// 体育购物车推送开启
-		public static startSEE = ({ sportPushApi, webToPushApi, params = {}, version = "V1", apiUrl, language, token }: OpenSportEventSourceParams) => {
+		public static startSEE = ({ cartType, sportPushApi, webToPushApi, params = {}, version = "V1", apiUrl, language, token }: OpenSportEventSourceParams) => {
 			//返回数据
 			const resPonsedata: WebResponse = {};
 			//连接必传的参数
@@ -38,6 +38,7 @@ export default (function () {
 				resPonsedata.code = ResCode.SUCCESS;
 				this.sourceInstance!.onmessage = (event) => {
 					const data: SportEventSourceResponse = {
+						cartType,
 						sportPushApi,
 						webToPushApi,
 						payload: event.data === "KEEPALIVE" ? {} : JSON.parse(event.data).payload,
@@ -59,7 +60,7 @@ export default (function () {
 		};
 
 		// 冠军推送开启
-		public static startOutrightSEE = ({ sportPushApi, webToPushApi, params = {}, version = "V1", apiUrl, language, token }: OpenSportEventSourceParams) => {
+		public static startOutrightSEE = ({ cartType, sportPushApi, webToPushApi, params = {}, version = "V1", apiUrl, language, token }: OpenSportEventSourceParams) => {
 			//返回数据
 			const resPonsedata: WebResponse = {};
 			//连接必传的参数
@@ -76,6 +77,7 @@ export default (function () {
 				resPonsedata.code = ResCode.SUCCESS;
 				this.sourceInstance!.onmessage = (event) => {
 					const data: SportEventSourceResponse = {
+						cartType,
 						sportPushApi,
 						webToPushApi,
 						payload: event.data === "KEEPALIVE" ? {} : JSON.parse(event.data).payload,

@@ -29,7 +29,7 @@ import { SportViewProcessWorkerCommandType, WorkerName, WorkerCommonCommadnType,
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import { useLoading } from "/@/directive/loading/hooks";
 import viewSportPubSubEventData from "./viewSportPubSubEventData";
-import { getSingleTicket, getParlayTickets, getOutrightTicket } from "/@/views/sports/utils/commonFn";
+import { getSingleTicket, getChampionSingleTicket, getParlayTickets, getOutrightTicket } from "/@/views/sports/utils/commonFn";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 
 import { useToolsHooks } from "./scoreboardTools";
@@ -199,14 +199,12 @@ export default function useSportPubSubEvents() {
 				WorkerToViewSportsShopCart<any>,
 				SportShopCartProcessWorkerCommandType
 			>;
+			console.log("processData", processData);
 			if (processData.commandType == SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges) {
 				if (!ShopCatControlStore.getShopCatShow) return; // 弹窗关闭停止对应任务
-				// 接受赛事购物车数据
 
-				/*if (processData.data.data && processData.data.data.length > 0) {
-					sportsBetEvent.shopCartSSEProcess(processData.data.data);
-				}*/
 				if (sportsBetEvent.sportsBetEventData.length == 1) {
+					// 接受赛事购物车数据
 					// 单关注单请求
 					console.log("请求单关信息");
 					getSingleTicket();
@@ -219,16 +217,19 @@ export default function useSportPubSubEvents() {
 			}
 			// 先屏蔽冠军购物车推送的判断
 			if (processData.commandType == SportShopCartProcessWorkerCommandType.championShopCartViewChanges) {
-				console.log("购物车收到推送消息", ChampionShopCartStore.championBetShow);
-
 				if (!ShopCatControlStore.getShopCatShow) return; // 弹窗关闭停止对应任务
-				// 冠军购物车数据
-				if (processData.data.data && processData.data.data.length > 0) {
-					ChampionShopCartStore.championShopCartSSEProcess(processData.data.data);
-				}
-				if (ChampionShopCartStore.championBetData.length == 1) {
-					// 冠军单关注单请求
-					getOutrightTicket();
+
+				if (processData.data.cartType === "0") {
+					getChampionSingleTicket();
+				} else if (processData.data.cartType === "1") {
+					if (processData.data.data && processData.data.data.length > 0) {
+						// 冠军购物车数据
+						ChampionShopCartStore.championShopCartSSEProcess(processData.data.data);
+					}
+					if (ChampionShopCartStore.championBetData.length == 1) {
+						// 冠军单关注单请求
+						getOutrightTicket();
+					}
 				}
 			}
 		}

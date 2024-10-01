@@ -38,7 +38,7 @@
 									>
 										<div v-if="market.marketStatus === 'running'">
 											<span :class="['fs_14', 'fw_400', 'selectionTitle']">
-												<SelectionName :name="selection?.keyName" :betType="market.betType" />
+												<SelectionName :class="{ label: isBright(market, selection) }" :name="selection?.keyName" :betType="market.betType" />
 												<span v-show="selection.key != 'x'">&nbsp;{{ SportsCommon.formatPoint({ betType: market.betType, point: selection?.point, key: selection?.key }) }}</span>
 											</span>
 											<span :class="['fs_14', 'fw_400', 'price', changeClass(selection)]"
@@ -81,7 +81,7 @@ import SelectionName from "./components/selectionName.vue";
 import { LocationQueryValue, useRoute } from "vue-router";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
-
+import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 const SidebarStore = useSidebarStore();
 /**
  * @description 市场类型接口
@@ -93,6 +93,8 @@ interface marketType {
 	marketStatus: string;
 }
 const sportsBetEvent = useSportsBetEventStore();
+const ChampionShopCartStore = useSportsBetChampionStore();
+
 const route = useRoute();
 const isFold = ref(false);
 const isFixed = ref(false);
@@ -103,7 +105,7 @@ const activeSelection = ref<string[]>([]);
  * @description 获取赛事列表下的赛事
  * @returns 赛事数组
  */
- const eventDetail = computed(() => {
+const eventDetail = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.sidebarData.childrenViewData;
 
 	console.log(childrenViewData, "childrenViewData");
@@ -148,7 +150,7 @@ const markets = computed(() => {
 		}
 		return a.betType - b.betType;
 	});
-	console.log(marketData, 'marketData');
+	console.log(marketData, "marketData");
 	return marketData;
 });
 
@@ -181,7 +183,7 @@ const filterSelections = (data: any[]) => {
  * @returns 是否高亮
  */
 const isBright = (market: { marketId: any }, selection: { key: any }) => {
-	const { eventId } = route.query;
+	const { eventId } = eventDetail.value;
 	return marketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
 };
 
@@ -191,7 +193,49 @@ const isBright = (market: { marketId: any }, selection: { key: any }) => {
  * @param selection 选择项对象
  */
 const onSetSportsEventData = (market: any, selection: any) => {
-	// 实现投注选择逻辑
+	console.log("route", route);
+	console.log("点击盘口详情");
+	console.log("eventDetail", eventDetail.value);
+	console.log("market", market);
+	console.log("selection", selection);
+	// 判断是否在冠军页面 侧边数据加入购物车做逻辑区别
+	if (route.meta.name !== "champion") {
+		// 实现投注选择逻辑
+		// 判断是否已经加入购物车，已经加入删除，则新增购物车
+		if (isBright(market, selection)) {
+			// 删除Pinia数据
+			sportsBetEvent.removeEventCart(eventDetail.value);
+		} else {
+			// 储存 赛事ID 投注类型 盘口key
+			sportsBetEvent.storeEventInfo(eventDetail.value.eventId, {
+				marketId: market.marketId,
+				betType: market.betType,
+				selectionKey: selection.key,
+			});
+			// 存储赛事数据在缓存中
+			sportsBetEvent.addEventToCart(JSON.parse(JSON.stringify(eventDetail.value)));
+		}
+	} else {
+		console.log("冠军侧边数据添加", eventDetail.value);
+		const params = {
+			type: "0",
+			eventId: eventDetail.value.eventId,
+			sportType: eventDetail.value.sportType,
+			marketId: market.marketId,
+			betType: market.betType,
+			selectionKey: selection.key,
+			event: {
+				...eventDetail.value,
+			},
+		};
+		ChampionShopCartStore.storeEventInfo(eventDetail.value.eventId, {
+			marketId: market.marketId,
+			betType: market.betType,
+			selectionKey: selection.key,
+		});
+		/**添加到购物车 */
+		ChampionShopCartStore.addChampionToCart(params);
+	}
 };
 
 /**
@@ -250,15 +294,9 @@ watch(
 		// width: 100%;
 	}
 	.isBright {
-		position: relative;
-		&::after {
-			content: "";
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			border-radius: 8px;
-			border: 2px solid;
-			box-sizing: border-box;
+		background: var(--Bg5) !important;
+		.label {
+			color: var(--Text_a) !important;
 		}
 	}
 	.tabBox {
@@ -323,14 +361,14 @@ watch(
 	}
 	.tournament-content {
 		border-radius: 0px 0px 16px 16px;
-		li{
+		li {
 			margin-bottom: 5px;
 		}
 		.selectionTitle {
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			
+
 			:first-child {
 				color: var(--Text1);
 				max-width: 60px;

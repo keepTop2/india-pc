@@ -7,7 +7,7 @@
 		<!-- 购物车卡片 -->
 		<div class="container-main">
 			<!-- 赛事列表 单关串关公用 -->
-			<EventCard v-for="(data, index) in ChampionShopCartStore.championBetData" :key="index" :shopData="data" :hasClose="true" />
+			<ChampionCard v-for="(data, index) in ChampionShopCartStore.championBetData" :key="index" :shopData="data" :hasClose="true" />
 			<!--单串-->
 			<div class="singlePass">
 				<!--投注信息-->
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { EventCard, CardStatus } from "../index";
+import { ChampionCard, CardStatus } from "../index";
 import Common from "/@/utils/common";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";

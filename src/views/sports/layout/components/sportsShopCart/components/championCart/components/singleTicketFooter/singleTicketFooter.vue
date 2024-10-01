@@ -5,7 +5,7 @@
 			<!-- 删除按钮 -->
 			<DeleteButton v-if="ChampionShopCartStore.championBetData.length > 1" />
 			<!-- 投注按钮 -->
-			<BetButton @onClick="onBet" />
+			<BetButton v-if="props.cartStatus === 'champion'" @onClick="onBet" />
 		</div>
 	</div>
 </template>
@@ -27,6 +27,16 @@ const ChampionShopCartStore = useSportsBetChampionStore();
 let stake = computed(() => shopCartChampionPubSub.betValueState.singleTicketBetValue);
 
 const emit = defineEmits(["singleTicketSuccess"]);
+
+const props = withDefaults(
+	defineProps<{
+		// 购物车状态  冠军购物车外部传递进来
+		cartStatus: "champion" | "events" | "";
+	}>(),
+	{
+		cartStatus: "",
+	}
+);
 
 const onBet = () => {
 	if (stake.value == "") {
