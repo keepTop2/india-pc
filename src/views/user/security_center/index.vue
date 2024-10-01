@@ -2,35 +2,35 @@
 	<div class="max-width security_center">
 		<div class="mt_28 mb_24 title">
 			<svg-icon name="user-security" color="#fff" size="24px" />
-			<span>安全中心</span>
+			<span> {{ $t(`security_center['安全中心']`) }}</span>
 		</div>
 		<div class="content">
 			<div @click="modifyHandle('password')">
-				<span>登陆密码</span>
+				<span>{{ $t(`security_center['登录密码']`) }}</span>
 				<span><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
 			<div @click="modifyHandle('phone')">
-				<span>手机号</span>
+				<span>{{ $t(`security_center['手机号']`) }}</span>
 				<span v-if="userGlobalSetInfo.phone">
 					<span class="info">
-						<span class="mr_8">+{{ userGlobalSetInfo.areaCode }}</span> {{ userGlobalSetInfo.phone }}
+						<span class="mr_8">+{{ userGlobalSetInfo.areaCode }}</span> {{ Common.maskString(userGlobalSetInfo.phone) }}
 					</span>
-					<span class="modifyBtn">修改</span>
+					<span class="modifyBtn">{{ $t(`security_center['修改']`) }}</span>
 				</span>
 				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
 			<div @click="modifyHandle('email')">
-				<span>电子邮箱</span>
+				<span>{{ $t(`security_center['电子邮箱']`) }}</span>
 				<span v-if="userGlobalSetInfo.email">
-					<span class="info"> {{ userGlobalSetInfo.email }} </span>
-					<span class="modifyBtn">修改</span>
+					<span class="info"> {{ Common.maskEmail(userGlobalSetInfo.email) }} </span>
+					<span class="modifyBtn">{{ $t(`security_center['修改']`) }}</span>
 				</span>
 				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
 			<div @click="modifyHandle('withdrawPwd')">
-				<span>交易密码</span>
+				<span>{{ $t(`security_center['交易密码']`) }}</span>
 				<span v-if="userGlobalSetInfo.isSetPwd">
-					<span class="modifyBtn">修改</span>
+					<span class="modifyBtn">{{ $t(`security_center['修改']`) }}</span>
 				</span>
 				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
 			</div>
@@ -42,36 +42,19 @@
 import { computed, onMounted, reactive, Ref, ref } from "vue";
 import { useUserStore } from "/@/stores/modules/user";
 import { userApi } from "/@/api/user";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import Common from "/@/utils/common";
+const modalStore = useModalStore();
 
-interface userGlobalSetInfoType {
-	areaCode: string | null;
-	email: string | null;
-	isSetPwd: Boolean;
-	nickName: string | null;
-	phone: string | null;
-	userAccount: string | null;
-}
 const userStore = useUserStore();
-const userGlobalSetInfo: userGlobalSetInfoType = reactive({
-	areaCode: null,
-	email: null,
-	isSetPwd: false,
-	nickName: null,
-	phone: null,
-	userAccount: null,
-});
+const userGlobalSetInfo = computed(() => userStore.getUserGlobalSetInfo);
 
 onMounted(() => {
 	getUserGlobalSetInfo();
-
-	nextTick(() => {
-		getUserGlobalSetInfo();
-	});
 });
 const getUserGlobalSetInfo = () => {
 	userApi.getUserGlobalSetInfo().then((res) => {
 		userStore.setUserGlobalSetInfo(res.data);
-		Object.assign(userGlobalSetInfo, res.data);
 	});
 };
 

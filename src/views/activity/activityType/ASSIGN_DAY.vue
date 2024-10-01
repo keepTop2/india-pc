@@ -1,29 +1,9 @@
 <template>
 	<div class="activityWrapper">
-		<div class="activityHeader">{{ activityData.activityNameI18nCode }}</div>
+		<div class="activityHeader">{{ activityData.activityNameI18nCode || "指定日期存款" }}</div>
 		<div class="activityMain">
 			<div class="activityImg">
 				<img src="./image/image.png" alt="" />
-			</div>
-			<div class="bonus_card">
-				<div class="bonus_card_title">红利赠送</div>
-				<div class="bonus_card_content">
-					<div>
-						<div>存款金额</div>
-						<div class="amount"><span class="Text3">$</span>{{ activityData.depositAmount || 0 }}</div>
-					</div>
-					<div class="line"></div>
-					<div>
-						<div>需打流水</div>
-						<div class="amount"><span class="Text3">$</span>{{ activityData.runningWater || 0 }}</div>
-					</div>
-				</div>
-				<div class="bonus_card_footer">
-					可得金额: <span class="Theme_text"><span class="fs_20 mr_2">$</span>{{ activityData.activityAmount || 0 }}</span>
-				</div>
-				<div>
-					<button class="common_btn" @click="getActivityReward">立即申请</button>
-				</div>
 			</div>
 			<div class="activityContent">
 				<div class="activityContentHeader">
@@ -90,33 +70,39 @@
 			</div>
 		</div>
 	</div>
+	<CommonDialog v-model="showCommonDialog" title="123123" :confirm="confirmDialog">123123</CommonDialog>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { activityApi } from "/@/api/activity";
 import { useRouter } from "vue-router";
 import { useActivityStore } from "/@/stores/modules/activity";
 import { computed } from "vue";
 import Common from "/@/utils/common";
+import CommonDialog from "../components/CommonDialog.vue";
 const activityStore = useActivityStore();
 const router = useRouter();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
 
+const showCommonDialog = ref(false);
 const getActivityReward = () => {
-	console.log(activityData.value);
-
 	activityApi.getActivityReward({ id: activityData.value.id }).then((res) => {
 		console.log(res);
 	});
+	showCommonDialog.value = true;
+};
+const confirmDialog = () => {
+	showCommonDialog.value = false;
 };
 </script>
 <style scoped lang="scss">
 .activityWrapper {
-	background: url("./image.png") no-repeat;
+	background: url("./image/commonBg.png") no-repeat;
 	background-size: 100% auto;
 	overflow: hidden;
 	padding-right: 3px;
+	border-radius: 12px;
 	.activityHeader {
 		background: url("./image/header_bg.svg") no-repeat;
 		height: 57px;
@@ -124,7 +110,7 @@ const getActivityReward = () => {
 		margin: 0 auto;
 		margin-top: 18px;
 		text-align: center;
-		line-height: 39px;
+		line-height: 42px;
 		font-size: 20px;
 		font-weight: 600;
 		color: var(--Text_a);

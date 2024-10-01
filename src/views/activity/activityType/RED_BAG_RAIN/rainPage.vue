@@ -17,7 +17,7 @@
 			</div>
 		</div>
 		<!-- 结算弹窗 -->
-		<ActivityDialog v-model="showRedBagRainResult" :title="dialogTitle" :confirm="confirmDialog" class="redBagRainResult">
+		<RED_BAG_RAIN_Dialog v-model="showRedBagRainResult" :title="dialogTitle" :confirm="confirmDialog" class="redBagRainResult">
 			<div>
 				<div class="Text2">本轮共抢到5个红包</div>
 				<div class="result mt_20">共计 5.23BCD</div>
@@ -26,7 +26,7 @@
 			<div>
 				<img src="./image/pityIcon.png" alt="" />
 			</div>
-		</ActivityDialog>
+		</RED_BAG_RAIN_Dialog>
 	</div>
 </template>
 
@@ -43,6 +43,7 @@ import pubsub from "/@/pubSub/pubSub";
 import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
 import { activityApi } from "/@/api/activity";
 import readyGo from "./image/readyGo.png";
+import RED_BAG_RAIN_Dialog from "./RED_BAG_RAIN_Dialog/index.vue";
 const activitySocket = activitySocketService.getInstance();
 const { countdown, startCountdown } = useCountdown();
 const canvas = ref<HTMLCanvasElement | null>(null);

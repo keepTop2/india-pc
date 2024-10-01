@@ -1,6 +1,6 @@
 <template>
 	<div class="activityWrapper">
-		<div class="activityHeader">{{ activityData.activityNameI18nCode }}</div>
+		<div class="activityHeader">{{ activityData.activityNameI18nCode || "次存活动" }}</div>
 		<div class="activityMain">
 			<div class="activityImg">
 				<img src="./image/image.png" alt="" />
@@ -113,7 +113,7 @@ const getActivityReward = () => {
 </script>
 <style scoped lang="scss">
 .activityWrapper {
-	background: url("./image.png") no-repeat;
+	background: url("./image/commonBg.png") no-repeat;
 	background-size: 100% auto;
 	overflow: hidden;
 	padding-right: 3px;
@@ -124,7 +124,7 @@ const getActivityReward = () => {
 		margin: 0 auto;
 		margin-top: 18px;
 		text-align: center;
-		line-height: 39px;
+		line-height: 42px;
 		font-size: 20px;
 		font-weight: 600;
 		color: var(--Text_a);
