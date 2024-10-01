@@ -68,10 +68,10 @@
 				</div>
 
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_12">{{ $t(`login['推荐码非必填']`) }}</p>
-					<p class="common_password"><input type="text" v-model="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" /></p>
+					<p class="Text_s mb_8 mt_8 fs_12 flex_start">{{ $t(`login['输入推荐码']`) }} <svg-icon name="arrow_down_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode"/></p>
+					<p class="common_password" v-if="openinviteCode"><input type="text" v-model="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" /></p>
 				</div>
-				<div class="fs_10 userAgreement" :class="userAgreement ? 'Text_s' : 'Text1'">
+				<div class="fs_10 userAgreement" :class="userAgreement ? 'Text_s' : 'Text1'" >
 					<svg-icon
 						class="curp"
 						:name="userAgreement ? 'check_icon_on' : 'check_icon'"
@@ -128,6 +128,7 @@ const UserStore = useUserStore();
 
 const hcaptcha: any = ref(null);
 const captchaBtn: any = ref(null);
+const openinviteCode = ref(true)
 const payLoad = reactive({
 	userAccount: "",
 	password: "",
@@ -171,7 +172,7 @@ const userAgreementOnInput = () => {
 	verifyBtn();
 };
 const verifyBtn = () => {
-	if (payLoad.password && payLoad.userAccount && payLoad.confirmPassword && payLoad.mainCurrency) {
+	if (payLoad.password && payLoad.userAccount && payLoad.confirmPassword && payLoad.mainCurrency &&userAgreement.value) {
 		if (!VerifyError.userAccount && !VerifyError.passWord && !VerifyError.confirmPassword) {
 			disabledBtn.value = false;
 		} else {
