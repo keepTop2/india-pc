@@ -136,9 +136,11 @@ export function useSportEvents() {
 		// 详情页
 		else if (route.path === "/sports/detail") {
 			// 开启侧边赛事推送
-			getSidebarEventSSEPush(route.query.eventId);
+			getSidebarEventSSEPush(Number(route.query.eventId));
 			// 开启侧边赛事对应盘口推送
-			getSidebarMarketSSEPush(route.query.eventId);
+			getSidebarMarketSSEPush(Number(route.query.eventId));
+			// 开启热门推送
+			getPromotions();
 		} else {
 			await handleSportEventsPush(type || sportType.value);
 		}

@@ -1,29 +1,9 @@
 <template>
 	<div class="activityWrapper">
-		<div class="activityHeader">{{ activityData.activityNameI18nCode }}</div>
+		<div class="activityHeader">{{ activityData.activityNameI18nCode || "体育负盈利" }}</div>
 		<div class="activityMain">
 			<div class="activityImg">
 				<img src="./image/image.png" alt="" />
-			</div>
-			<div class="bonus_card">
-				<div class="bonus_card_title">红利赠送</div>
-				<div class="bonus_card_content">
-					<div>
-						<div>存款金额</div>
-						<div class="amount"><span class="Text3">$</span>{{ activityData.depositAmount || 0 }}</div>
-					</div>
-					<div class="line"></div>
-					<div>
-						<div>需打流水</div>
-						<div class="amount"><span class="Text3">$</span>{{ activityData.runningWater || 0 }}</div>
-					</div>
-				</div>
-				<div class="bonus_card_footer">
-					可得金额: <span class="Theme_text"><span class="fs_20 mr_2">$</span>{{ activityData.activityAmount || 0 }}</span>
-				</div>
-				<div>
-					<button class="common_btn" @click="getActivityReward">立即申请</button>
-				</div>
 			</div>
 			<div class="activityContent">
 				<div class="activityContentHeader">
@@ -63,30 +43,26 @@
 					</div>
 				</div>
 				<div class="activityContentCenter">
+					<span>活动内容</span>
 					<div class="ruleCell">
-						<span>活动时间</span>
-						<span>2023-12-12 00:00:00～2023-12-31 23:59:59</span>
+						<span>新会员在每周六至周五（美东时间）体育场馆中负盈利≥1000$即可享受最高10%彩金返还</span>
 					</div>
-					<div class="ruleCell">
-						<span>活动对象</span>
-						<span>首存会员</span>
-					</div>
-					<div class="ruleDetails">
-						<div>
-							1、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-							动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
+					<div class="dialogTableBody">
+						<div class="dialogTableHeader">
+							<span>亏损金额</span>
+							<span>返还比例</span>
 						</div>
-						<div>
-							2、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-							动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-						</div>
-						<div>
-							3、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-							动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
+						<div v-for="(item, index) in 3" :key="index" class="dialogTableItem">
+							<span>{{ 100 }}</span>
+							<span>{{ 10 }}</span>
 						</div>
 					</div>
 				</div>
+
 				<div class="activityContentFooter" />
+			</div>
+			<div class="m_20 flex-center">
+				<button class="common_btn active">立即申请</button>
 			</div>
 		</div>
 	</div>
@@ -113,8 +89,8 @@ const getActivityReward = () => {
 </script>
 <style scoped lang="scss">
 .activityWrapper {
-	background: url("./image.png") no-repeat;
-	background-size: 100% auto;
+	background: url("./image/commonBg.png") no-repeat;
+	background-size: 100% 100%;
 	overflow: hidden;
 	padding-right: 3px;
 	.activityHeader {
@@ -124,7 +100,7 @@ const getActivityReward = () => {
 		margin: 0 auto;
 		margin-top: 18px;
 		text-align: center;
-		line-height: 39px;
+		line-height: 42px;
 		font-size: 20px;
 		font-weight: 600;
 		color: var(--Text_a);
@@ -246,7 +222,7 @@ const getActivityReward = () => {
 				}
 				.contentCell:last-child {
 					.cellValue {
-						margin-bottom: 0;
+						margin: 0;
 					}
 				}
 			}
@@ -255,6 +231,40 @@ const getActivityReward = () => {
 				text-align: center;
 				background: url("./image/activityContentFooter.png") no-repeat;
 				background-size: 100% 100%;
+			}
+			.dialogTableBody {
+				margin-top: 24px;
+				overflow: auto;
+				border-radius: 12px;
+				border-top: none;
+				padding-bottom: 10px;
+				> div {
+					display: flex;
+					height: 56px;
+					justify-content: space-around;
+					color: var(--Text_s);
+					font-size: 14px;
+					border: 2px solid rgba(255, 40, 75, 0.4);
+					border-top: none;
+					span {
+						flex: 1;
+						font-weight: 400;
+						text-align: center;
+						border-right: 2px solid rgba(255, 40, 75, 0.4);
+						display: flex;
+						justify-content: center;
+						align-items: center;
+					}
+					span:last-child {
+						border-right: none;
+					}
+				}
+				.dialogTableHeader {
+					background: linear-gradient(180deg, rgba(255, 40, 75, 0.7) 0%, rgba(255, 40, 75, 0.4) 100%);
+					font-size: 16px;
+					border: none;
+					border-bottom: 2px solid rgba(255, 40, 75, 0.4);
+				}
 			}
 		}
 	}
@@ -268,5 +278,12 @@ const getActivityReward = () => {
 		background: var(--icon);
 		border-radius: 5px;
 	}
+}
+.common_btn.active {
+	height: 45px;
+	border-radius: 10px;
+	width: 560px;
+	background: url("../activityType/SPIN_WHEEL/images/btn_active_bg.png") no-repeat;
+	background-size: 100% 100%;
 }
 </style>

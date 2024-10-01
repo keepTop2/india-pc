@@ -127,7 +127,7 @@
 				</div>
 			</div>
 			<div class="closeRecord" @click="showRecord = false">
-				<img src="./images/close.png" alt="" />
+				<img src="../../activityType/image/close.png" alt="" />
 			</div>
 		</CommonDialog>
 
@@ -143,7 +143,7 @@
 				</div>
 			</div>
 			<div class="closeRecord" @click="showbetResult = false">
-				<img src="./images/close.png" alt="" />
+				<img src="../../activityType/image/close.png" alt="" />
 			</div>
 		</CommonDialog>
 		<!-- 没中奖 -->
@@ -159,7 +159,7 @@
 				</div>
 			</div>
 			<div class="closeRecord" @click="showLosserbetResult = false">
-				<img src="./images/close.png" alt="" />
+				<img src="../../activityType/image/close.png" alt="" />
 			</div>
 		</CommonDialog>
 	</div>
@@ -260,9 +260,6 @@ const handleStartSpin = () => {
 	showbetResult.value = false;
 	showLosserbetResult.value = false;
 	SpinRef.value?.handleStartSpin();
-};
-const close = () => {
-	modalStore.closeModal();
 };
 
 const getRecordList = () => {

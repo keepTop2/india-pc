@@ -33,6 +33,14 @@ export const userApi = {
 			headers,
 		});
 	},
+	//发送手机验证码
+	globalSendMail: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/global/sendMail`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 
 	// 修改邮箱手机号码校验
 	checkVerifyCode: (data = {}, headers = {}) => {
@@ -52,9 +60,33 @@ export const userApi = {
 		});
 	},
 
-	//修改交易密码
+	//绑定交易密码
 	setWithdrawPwd: (data = {}, headers = {}) => {
 		return useAxiosApi(`/app/user-info/global/setWithdrawPwd`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	//修改交易密码
+	changeWithdrawPwd: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/global/changeWithdrawPwd`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	//校验登陆密码
+	reFindWithdrawPwd: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/global/reFindWithdrawPwd`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	//重置交易密码
+	reSetWithdrawPwd: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/global/reSetWithdrawPwd`, {
 			method: "POST",
 			data,
 			headers,

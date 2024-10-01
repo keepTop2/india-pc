@@ -1,16 +1,15 @@
 <template>
 	<div class="dropdown-select" ref="dropdown">
-		<input class="trigger common_input fs_12"  @input="onInput" placeholder="输入手机号">
-			<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between "  @click="toggleDropdown">
-				<span class="fs_12">+{{ selectedOptionLabel }}</span>
-				<svg-icon name="arrow_down_on" size="14px" fill="#fff"  class="ml_10 "/>
-			</span>
-		</input>
+		<input class="trigger common_input fs_12" @input="onInput" placeholder="输入手机号" />
+		<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between" @click="toggleDropdown">
+			<span class="fs_12">+{{ selectedOptionLabel }}</span>
+			<svg-icon name="arrow_down_on" size="14px" fill="#fff" class="ml_10" />
+		</span>
 		<div v-if="isOpen" class="dropdown-menu">
 			<div class="flex_space-between input">
 				<svg-icon name="search" size="14px" color="#fff" />
-				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`login['搜索货币名称或简称']`) " class="search-input common_input" />
-				<svg-icon name="close" size="14px" @click="searchQuery = ''"  color="#fff" />
+				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`login['搜索货币名称或简称']`)" class="search-input common_input" />
+				<svg-icon name="close" size="14px" @click="searchQuery = ''" color="#fff" />
 			</div>
 			<div class="line"></div>
 			<ul class="options-list">
@@ -22,14 +21,13 @@
 					:class="option.areaCode == selectedOption?.areaCode ? 'active' : ''"
 				>
 					<span>
-						<img :src="option.icon" alt="">
+						<img :src="option.icon" alt="" />
 						{{ option.countryCode }}
 						{{ option.countryName }}
-				
 					</span>
 					<span>+{{ option.areaCode }}</span>
 				</li>
-				<li v-if="filteredOptions.length === 0" class="no-results fs_12 ">{{ $t(`login['未搜索到相关区号']`)  }}</li>
+				<li v-if="filteredOptions.length === 0" class="no-results fs_12">{{ $t(`login['未搜索到相关区号']`) }}</li>
 			</ul>
 		</div>
 	</div>
@@ -39,12 +37,12 @@
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 
 interface Option {
-  areaCode: string,
-  countryName:  string,
-  countryCode: string,
-  icon:string,
-	maxLength: string,
-	minLength: string,
+	areaCode: string;
+	countryName: string;
+	countryCode: string;
+	icon: string;
+	maxLength: string;
+	minLength: string;
 }
 
 const props = defineProps({
@@ -53,16 +51,16 @@ const props = defineProps({
 	},
 	options: {
 		type: Array<Option>,
-		default:[]
+		default: [],
 	},
 	verifyType: {
 		type: Number,
-		default:1
+		default: 1,
 	},
 	areaCode: {
 		type: String,
-	}
-})
+	},
+});
 const emit = defineEmits<{
 	(e: "update:modelValue", value: Object): void;
 	(e: "search", query: string): void;
@@ -73,6 +71,12 @@ const isOpen = ref(false);
 const selectedOption = ref<Option>(props.options[0]);
 const dropdown = ref<HTMLDivElement | null>(null);
 
+watch(
+	() => props.options,
+	() => {
+		selectedOption.value = props.options[0];
+	}
+);
 const toggleDropdown = () => {
 	isOpen.value = !isOpen.value;
 };
@@ -91,21 +95,18 @@ const filterOptions = () => {
 const selectOption = (option: Option) => {
 	selectedOption.value = option;
 	isOpen.value = false; // Close dropdown after selection
-	emit("update:modelValue", {areaCode:option.areaCode});
+	emit("update:modelValue", { areaCode: option.areaCode });
 };
 
 const onInput = (e: any) => {
-	isOpen.value = false
-	emit("update:modelValue", {phone:e.target.value});
-}
+	isOpen.value = false;
+	emit("update:modelValue", { phone: e.target.value });
+};
 const filteredOptions = computed(() => {
-	// console.log(props.options);
-	
 	return props.options.filter(
-		(option:any) => option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase()) || option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase())
+		(option: any) => option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase()) || option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase())
 	);
 });
-
 
 const selectedOptionLabel = computed(() => {
 	return selectedOption.value ? selectedOption.value.areaCode : "";
@@ -147,7 +148,7 @@ onUnmounted(() => {
 		color: var(--Bg1);
 	}
 }
-.selectedOption{
+.selectedOption {
 	position: absolute;
 	display: inline-block;
 	display: flex;
@@ -159,7 +160,6 @@ onUnmounted(() => {
 	padding-right: 8px;
 	color: var(--Text_s);
 	border-right: 1px solid var(--Line_2);
-
 }
 .dropdown-menu {
 	position: absolute;
@@ -208,7 +208,7 @@ onUnmounted(() => {
 .option-item {
 	padding: 8px;
 	cursor: pointer;
-	img{
+	img {
 		width: 14px;
 		height: 14px;
 		object-fit: cover;

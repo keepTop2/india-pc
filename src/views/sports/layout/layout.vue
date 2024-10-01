@@ -316,6 +316,7 @@ watch(
 	() => sportsData.value,
 	(newValue, oldValue) => {
 		if (newValue && newValue.length > 0) {
+			if(route.query.sportType){
 			const isSportType = newValue.some((item) => item.sportType == Number(route.query.sportType));
 			if (!isSportType) {
 				router.push({
@@ -324,7 +325,8 @@ watch(
 						...route.query,
 						sportType: newValue[0].sportType,
 					},
-				});
+					});
+				}
 			}
 		}
 	}

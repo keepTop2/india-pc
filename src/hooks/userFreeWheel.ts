@@ -1,6 +1,6 @@
 // hooks/useRedbagRain.ts
 import { createVNode, render, ref } from "vue";
-import FREE_WHEEL from "/@/views/activity/activityType/FREE_WHEEL/index.vue"; // 你的红包雨组件路径
+import FREE_WHEEL from "../views/activity/activityType/SPIN_WHEEL/index.vue"; // 你的红包雨组件路径
 
 let instance: any = null; // 用于保存单例实例
 
