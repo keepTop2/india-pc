@@ -158,6 +158,10 @@ const markets = computed(() => {
  * @description 计算市场选择
  */
 const marketsSelect = computed(() => sportsBetEvent.getEventInfo);
+/**
+ * @description 计算冠军页面的市场选择
+ */
+const championMarketsSelect = computed(() => ChampionShopCartStore.getEventInfo);
 
 /**
  * @description 切换标签
@@ -184,7 +188,11 @@ const filterSelections = (data: any[]) => {
  */
 const isBright = (market: { marketId: any }, selection: { key: any }) => {
 	const { eventId } = eventDetail.value;
-	return marketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
+	if (route.meta.name !== "champion") {
+		return marketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
+	} else {
+		return championMarketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
+	}
 };
 
 /**
@@ -193,11 +201,6 @@ const isBright = (market: { marketId: any }, selection: { key: any }) => {
  * @param selection 选择项对象
  */
 const onSetSportsEventData = (market: any, selection: any) => {
-	console.log("route", route);
-	console.log("点击盘口详情");
-	console.log("eventDetail", eventDetail.value);
-	console.log("market", market);
-	console.log("selection", selection);
 	// 判断是否在冠军页面 侧边数据加入购物车做逻辑区别
 	if (route.meta.name !== "champion") {
 		// 实现投注选择逻辑
@@ -216,7 +219,6 @@ const onSetSportsEventData = (market: any, selection: any) => {
 			sportsBetEvent.addEventToCart(JSON.parse(JSON.stringify(eventDetail.value)));
 		}
 	} else {
-		console.log("冠军侧边数据添加", eventDetail.value);
 		const params = {
 			type: "0",
 			eventId: eventDetail.value.eventId,
@@ -228,13 +230,19 @@ const onSetSportsEventData = (market: any, selection: any) => {
 				...eventDetail.value,
 			},
 		};
-		ChampionShopCartStore.storeEventInfo(eventDetail.value.eventId, {
-			marketId: market.marketId,
-			betType: market.betType,
-			selectionKey: selection.key,
-		});
-		/**添加到购物车 */
-		ChampionShopCartStore.addChampionToCart(params);
+		// 判断是否已经加入购物车，已经加入删除，则新增购物车
+		if (isBright(market, selection)) {
+			// 删除Pinia数据
+			ChampionShopCartStore.removeEventCart(params);
+		} else {
+			ChampionShopCartStore.storeEventInfo(eventDetail.value.eventId, {
+				marketId: market.marketId,
+				betType: market.betType,
+				selectionKey: selection.key,
+			});
+			/**添加到购物车 */
+			ChampionShopCartStore.addChampionToCart(params);
+		}
 	}
 };
 

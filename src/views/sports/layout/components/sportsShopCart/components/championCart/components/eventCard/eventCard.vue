@@ -89,8 +89,6 @@ const props = withDefaults(
 
 // 判断名称
 const getName = (item: any) => {
-	console.log("item", item);
-
 	if ((item.betMarketInfo.betType == 5 || item.betMarketInfo.betType == 15) && item.betMarketInfo.key == "1") {
 		return item.teamInfo.homeName;
 	} else if ((item.betMarketInfo.betType == 5 || item.betMarketInfo.betType == 15) && item.betMarketInfo.key == "2") {
@@ -125,7 +123,7 @@ const opacityFn = (item: any) => {
 
 // 删除赛事
 const onDeleteBetEvent = (item: any) => {
-	sportsBetEvent.removeEventCart(item);
+	ChampionShopCartStore.removeEventCart(item);
 };
 
 /**

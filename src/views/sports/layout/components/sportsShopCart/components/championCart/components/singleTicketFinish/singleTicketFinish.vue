@@ -6,8 +6,12 @@
 		</div>
 		<!-- 购物车卡片 -->
 		<div class="container-main">
-			<!-- 赛事列表 单关串关公用 -->
-			<ChampionCard v-for="(data, index) in ChampionShopCartStore.championBetData" :key="index" :shopData="data" :hasClose="true" />
+			<template v-for="(data, index) in ChampionShopCartStore.championBetData" :key="index">
+				<!-- 赛事列表 单关串关公用 -->
+				<ChampionCard v-if="data.type == '1'" :shopData="data" :hasClose="true" />
+				<!-- 盘口赛事列表卡片 -->
+				<EventCard v-if="data.type == '0'" :shopData="data.event" :hasClose="true" />
+			</template>
 			<!--单串-->
 			<div class="singlePass">
 				<!--投注信息-->
@@ -32,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ChampionCard, CardStatus } from "../index";
+import { ChampionCard, EventCard, CardStatus } from "../index";
 import Common from "/@/utils/common";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";

@@ -4,50 +4,86 @@
 		<div class="btns">
 			<!-- 删除按钮 -->
 			<DeleteButton v-if="ChampionShopCartStore.championBetData.length > 1" />
-			<!-- 投注按钮 -->
-			<BetButton v-if="props.cartStatus === 'champion'" @onClick="onBet" />
+			<!-- 冠军投注按钮 -->
+			<ChampionBetButton v-if="ChampionShopCartStore.championBetData.length == 1 && ChampionShopCartStore.championBetData[0].type === '1'" @onClick="onChampionBet" />
+			<!-- 赛事投注按钮 -->
+			<EventBetButton v-if="ChampionShopCartStore.championBetData.length == 1 && ChampionShopCartStore.championBetData[0].type === '0'" @onClick="onEventBet" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { DeleteButton } from "../../../components/btns/index";
-import BetButton from "/@/views/sports/layout/components/sportsShopCart/components/components/btns/championBetButton.vue";
+import { DeleteButton, ChampionBetButton, EventBetButton } from "../../../components/btns/index";
 import showToast from "/@/hooks/useToast";
 import sportsApi from "/@/api/sports/sports";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import { computed } from "vue";
 import shopCartChampionPubSub from "/@/views/sports/hooks/shopCartChampionPubSub";
+import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
 import { i18n } from "/@/i18n/index";
 const $: any = i18n.global;
 const sportsBetInfo = useSportsBetInfoStore();
 const ChampionShopCartStore = useSportsBetChampionStore();
-let stake = computed(() => shopCartChampionPubSub.betValueState.singleTicketBetValue);
+
+let stake = computed(() => shopCartPubSub.betValueState.singleTicketBetValue);
+let championStake = computed(() => shopCartChampionPubSub.betValueState.singleTicketBetValue);
 
 const emit = defineEmits(["singleTicketSuccess"]);
 
-const props = withDefaults(
-	defineProps<{
-		// 购物车状态  冠军购物车外部传递进来
-		cartStatus: "champion" | "events" | "";
-	}>(),
-	{
-		cartStatus: "",
-	}
-);
-
-const onBet = () => {
+// 赛事投注
+const onEventBet = () => {
+	console.log("触发赛事投注");
 	if (stake.value == "") {
-		showToast($.t(`sports['请输入投注金额']`));
+		showToast("请输入投注金额");
 		return;
 	}
-	if (stake.value < sportsBetInfo.championSingleTicketInfo.minBet) {
-		showToast($.t(`sports['投注金额未达到最低限额']`));
+	if (stake.value < sportsBetInfo.singleTicketInfo.minBet) {
+		showToast("投注金额未达到最低限额");
 		return;
 	}
 	if (stake.value > sportsBetInfo.balance) {
+		showToast("余额不足，请先充值");
+		return;
+	}
+	// 单关投注
+	placeBet();
+};
+
+/**
+ * 单关下注
+ */
+const placeBet = async () => {
+	// 参数拼接
+	const params = {
+		vendorTransId: sportsBetInfo.vendorTransId,
+		sportType: sportsBetInfo.singleTicketInfo.sportType,
+		marketId: sportsBetInfo.singleTicketInfo.marketId,
+		price: sportsBetInfo.singleTicketInfo.payoutRate,
+		point: sportsBetInfo.singleTicketInfo.point,
+		key: sportsBetInfo.singleTicketInfo.key,
+		stake: stake.value,
+		oddsOption: 1,
+	};
+	const res = await sportsApi.placeBet(params).catch((err) => err);
+	if (res.data) {
+		const result = res.data;
+		emit("singleTicketSuccess", result);
+	}
+};
+
+// 冠军投注
+const onChampionBet = () => {
+	if (championStake.value == "") {
+		showToast($.t(`sports['请输入投注金额']`));
+		return;
+	}
+	if (championStake.value < sportsBetInfo.championSingleTicketInfo.minBet) {
+		showToast($.t(`sports['投注金额未达到最低限额']`));
+		return;
+	}
+	if (championStake.value > sportsBetInfo.balance) {
 		showToast($.t(`sports['余额不足，请先充值']`));
 		return;
 	}
@@ -56,7 +92,7 @@ const onBet = () => {
 };
 
 /**
- * 单关下注
+ * 冠军单关下注
  */
 const placeOutrightBet = async () => {
 	// 参数拼接
@@ -65,7 +101,7 @@ const placeOutrightBet = async () => {
 		sportType: sportsBetInfo.championSingleTicketInfo.sportType,
 		orid: sportsBetInfo.championSingleTicketInfo.orid,
 		price: sportsBetInfo.championSingleTicketInfo.price,
-		stake: stake.value,
+		stake: championStake.value,
 	};
 	const res = await sportsApi.PlaceOutrightBet(params).catch((err) => err);
 	if (res.data) {

@@ -30,15 +30,17 @@
 						<EventCard v-if="data.type == '0'" :shopData="data.event" :hasClose="true" />
 					</template>
 
-					<!-- 单关表单 -->
-					<SingleTicketFrom v-if="ChampionShopCartStore.championBetData.length == 1" />
+					<!-- 冠军单关表单 -->
+					<SingleTicketFrom v-if="ChampionShopCartStore.championBetData.length == 1 && ChampionShopCartStore.championBetData[0].type === '1'" />
+					<!-- 赛事单关表单 -->
+					<EventsSingleTicketFrom v-if="ChampionShopCartStore.championBetData.length == 1 && ChampionShopCartStore.championBetData[0].type === '0'" />
 					<!-- 指示箭头 -->
 					<img v-if="arrowShow" class="left_arrow" :src="left_arrow" />
 				</div>
 
 				<div class="footer-container">
 					<!-- 单关投注按钮 -->
-					<SingleTicketFooter :cartStatus="cartStatus" @singleTicketSuccess="getSingleTicketSuccess" />
+					<SingleTicketFooter @singleTicketSuccess="getSingleTicketSuccess" />
 				</div>
 			</div>
 		</div>
@@ -55,6 +57,8 @@
 import { computed, nextTick, onMounted, provide, reactive, ref, watch } from "vue";
 import left_arrow from "/@/assets/zh-CN/sports/left_arrow.gif";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+
+// 冠军购物车组件引用
 import {
 	ChampionCard,
 	EventCard,
@@ -62,6 +66,9 @@ import {
 	SingleTicketFooter,
 	SingleTicketFinish,
 } from "/@/views/sports/layout/components/sportsShopCart/components/championCart/components/index";
+// 赛事购物车组件引用
+import EventsSingleTicketFrom from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/singleTicketFrom/singleTicketFrom.vue";
+// import {SingleTicketFrom} from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index.ts";
 
 import sportsApi from "/@/api/sports/sports";
 import Common from "/@/utils/common";

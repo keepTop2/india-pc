@@ -19,10 +19,17 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 			championBetData: [] as any[], // 冠军购物车数据
 			championBetObj: {} as any, // 冠军购物车数据
 			bettingStatus: 0,
-			cartType: null,
+			cartType: null as null | string,
 		};
 	},
-	getters: {},
+	getters: {
+		/**
+		 * @description 获取储存当前选中的赛事盘口信息
+		 */
+		getEventInfo(): any {
+			return this.sportsEventInfo;
+		},
+	},
 
 	actions: {
 		/**
@@ -32,6 +39,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 
 		async addChampionToCart(data: any) {
 			console.log("看看是否每次都会执行");
+			// 判断登录状态
 			const { isHaveToken } = useToLogin();
 			try {
 				await isHaveToken();
@@ -39,7 +47,8 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 				console.error("Error:", error);
 				return; // 如果出错直接退出方法
 			}
-			// 冠军数据
+
+			// 冠军数据添加购物车
 			if (data.type == "1") {
 				const { leagueId } = data;
 				const index = this.championBetData.findIndex((item) => item.leagueId === leagueId);
@@ -55,7 +64,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 				this.championBetObj[leagueId] = data;
 				this.championBetData.splice(index !== -1 ? index : this.championBetData.length, 1, data);
 			}
-			// 赛事数据
+			// 赛事数据添加购物车
 			else if (data.type == "0") {
 				const eventId = data.eventId;
 				const existingIndex = this.championBetData.findIndex((item) => item.eventId === eventId);
@@ -156,8 +165,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 				console.log("==>>>>>>>不支持串关", 2);
 				return;
 			}
-			this.bettingStatus = 0;
-
+			// this.bettingStatus = 0;
 			if (this.championBetData.length > 0) {
 				const firstItem = this.championBetData[0];
 				if (firstItem.type == "0") {
@@ -268,13 +276,21 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 			const index = this.championBetData.findIndex((v) => v.leagueId == data.leagueId);
 			this.championBetData.splice(index, 1);
 			delete this.championBetObj[data.leagueId];
-			this.championOpenSse();
 			this.examineEventsStatus();
 			// 购物车数据为0停止线程
-			if (this.championBetData.length == 0) {
-				this.championCloseSse();
-				this.closeChampionShopCart();
-			}
+			// if (this.championBetData.length == 0) {
+			// 	this.championCloseSse();
+			// 	this.closeChampionShopCart();
+			// }
+		},
+
+		// 删除添加的赛事数据
+		removeEventCart(data: any) {
+			// 匹配购物车赛事善书
+			const index = this.championBetData.findIndex((v) => v.eventId == data.eventId);
+			this.championBetData.splice(index, 1);
+			// 同时删除高亮选中状态
+			delete this.sportsEventInfo[data.eventId];
 		},
 
 		// 开启冠军购物车
