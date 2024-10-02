@@ -137,9 +137,8 @@ const attentionEvent = async (isActive: boolean) => {
 
 <style scoped lang="scss">
 .league-info {
-	min-width: 284px;
+	width: 284px;
 	height: 100%;
-	flex: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -167,7 +166,7 @@ const attentionEvent = async (isActive: boolean) => {
 				font-weight: 400;
 
 				.name {
-					max-width: 242px;
+					max-width: 204px;
 					white-space: nowrap; /* 防止文本换行 */
 					overflow: hidden; /* 超出部分隐藏 */
 					text-overflow: ellipsis; /* 超出部分显示省略号 */
