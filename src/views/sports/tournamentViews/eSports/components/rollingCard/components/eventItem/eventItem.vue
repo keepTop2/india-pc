@@ -6,12 +6,15 @@
 				<TeamInfoCard :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
 				<!-- 盘口信息 -->
 				<div class="league-markets">
-					<!-- 全场独赢 -->
-					<MarketColumn cardType="capot" :sportInfo="event" :betType="20" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-					<!-- 全场让球 -->
-					<MarketColumn cardType="handicap" :sportInfo="event" :betType="1" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-					<!-- 全场大小 -->
-					<MarketColumn cardType="magnitude" :sportInfo="event" :betType="3" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+					<MarketColumn
+						v-for="(market, index) in markets"
+						:key="index"
+						:cardType="market.cardType"
+						:sportInfo="event"
+						:betType="market.betType"
+						:selectionsLength="market.selectionsLength"
+						@oddsChange="oddsChange"
+					/>
 				</div>
 			</div>
 			<div class="league-footer">
@@ -88,6 +91,12 @@ const props = withDefaults(defineProps<teamDataType>(), {
 });
 
 const emit = defineEmits(["oddsChange"]);
+
+const markets = [
+	{ cardType: "capot", betType: 20, selectionsLength: 2 }, // 全场独赢
+	{ cardType: "handicap", betType: 1, selectionsLength: 2 }, // 全场让球
+	{ cardType: "magnitude", betType: 3, selectionsLength: 2 }, // 全场大小
+];
 
 // 获取侧边栏图标
 const getIconName = (tool: any, events: any, index: number) => {
@@ -184,6 +193,8 @@ const linkDetail = () => {
 
 <style scoped lang="scss">
 .league-content {
+	width: 100%;
+	height: 114px;
 	display: flex;
 	background-color: var(--Bg1);
 	&:last-child {
@@ -194,9 +205,12 @@ const linkDetail = () => {
 	}
 
 	.content {
-		flex: 1;
+		width: 884px;
+		height: 114px;
 
 		.main {
+			width: 100%;
+			height: 84px;
 			display: flex;
 			.league-markets {
 				width: 600px;
@@ -212,9 +226,8 @@ const linkDetail = () => {
 			background: var(--Bg3);
 
 			.other-info {
-				// flex: 1;
 				width: 284px;
-				padding: 0px 14px 0px 24px;
+				padding: 0px 14px 0px 8px;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
@@ -225,7 +238,7 @@ const linkDetail = () => {
 					gap: 6px;
 					color: var(--Theme);
 					font-family: "PingFang SC";
-					font-size: 14px;
+					font-size: 12px;
 					font-weight: 400;
 				}
 				.info-list {
@@ -235,8 +248,11 @@ const linkDetail = () => {
 					align-items: center;
 
 					.collection {
-						width: 20px;
-						height: 20px;
+						width: 14px;
+						height: 14px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
 						cursor: pointer;
 					}
 
@@ -245,10 +261,9 @@ const linkDetail = () => {
 						display: flex;
 						align-items: center;
 						justify-content: flex-end;
-						color: var(--Text1, #98a7b5);
+						color: var(--Text1);
 						font-family: "PingFang SC";
-						font-size: 14px;
-						line-height: 20px;
+						font-size: 12px;
 						font-weight: 400;
 						cursor: pointer;
 						.arrow-icon {
@@ -273,7 +288,7 @@ const linkDetail = () => {
 					.item {
 						color: var(--Text1);
 						font-family: "PingFang SC";
-						font-size: 14px;
+						font-size: 12px;
 						font-weight: 400;
 					}
 					.theme {
@@ -288,7 +303,7 @@ const linkDetail = () => {
 					span {
 						color: var(--Text1);
 						font-family: "PingFang SC";
-						font-size: 14px;
+						font-size: 12px;
 						font-weight: 400;
 					}
 
@@ -301,7 +316,7 @@ const linkDetail = () => {
 	}
 
 	.league-option {
-		width: 58px;
+		width: 46px;
 		display: flex;
 		gap: 16px;
 		flex-direction: column;
