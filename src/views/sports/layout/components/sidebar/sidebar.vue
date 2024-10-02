@@ -38,7 +38,7 @@
 				<!-- 已开赛的动态组件计分板 -->
 				<component
 					v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)"
-					:is="ballInfo[Number(route.query.sportType)]?.componentName"
+					:is="ballInfo[Number(eventsInfo.sportType)]?.componentName"
 					:eventsInfo="eventsInfo"
 				></component>
 				<!-- 未开赛计分板显示 -->
@@ -100,13 +100,13 @@ const myPlayer = ref();
 const videoContainer = ref();
 const iframeLoaded = ref(false);
 const SidebarStore = useSidebarStore();
-const isShowHotEvents = computed(() => route.meta.type === "list" ? false : true);
+const isShowHotEvents = computed(() => route.meta.type === "detail" ? true : false);
 
 // 获取到的数据
 const eventsInfo = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
 	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData;
-
+	console.log('eventsInfo=======',childrenViewData, "childrenViewData")
 	if (childrenViewData && !isShowHotEvents.value) {
 		return childrenViewData[0]?.events[0];
 	}

@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref, watchEffect, Component, computed, inject } from "vue";
+import { onMounted, watch, ref, watchEffect, Component, computed, inject, onBeforeMount } from "vue";
 import pubSub from "/@/pubSub/pubSub";
 import { useRouter, useRoute } from "vue-router";
 import { map, get, isArray, filter, xorWith } from "lodash-es";
@@ -43,7 +43,13 @@ import BadmintonList from "/@/views/sports/tournamentViews/badminton/components/
 import AmericanSoccerList from "/@/views/sports/tournamentViews/americanSoccer/components/rollingCard/rollingCard.vue";
 import { useLoading } from "/@/directive/loading/hooks";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
+import { useToolsHooks } from "../../hooks/scoreboardTools";
+import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+import workerManage from "/@/webWorker/workerManage";
 const { sportType, tabActive, handleSportEventsPush, openSportPush, handleSportPush } = useSportEvents();
+const { toggleEventScoreboard, getSidebarMarketSSEPush, getPromotions } = useToolsHooks();
+const SidebarStore = useSidebarStore();
+
 const { startLoading, stopLoading } = useLoading();
 const popularLeague = usePopularLeague();
 popularLeague.showPopularLeague();
@@ -64,10 +70,6 @@ const computedEventId = computed(() => {
 });
 
 const isShowCollect = computed(() => route.name === "sportsCollect");
-
-// onMounted(() => {
-// 	openSportPush();
-// });
 
 const getEventData = () => {
 	const newEvents = map(viewSportPubSubEventData.getEvents(), (league: any) => {
@@ -93,54 +95,13 @@ const getEventData = () => {
 	});
 };
 
-const listData = computed(() => {
-	return viewSportPubSubEventData.getEvents();
-});
-
-const getAllEventIds = () => {
-	let allEventIds: number[] = [];
-	const allEvent = viewSportPubSubEventData.getEvents();
-
-	map(allEvent, (league: any) => {
-		const { events } = league;
-		if (isArray(events) && events.length) {
-			const list = map(events, "eventId");
-			allEventIds = allEventIds.concat(list);
-		}
-	});
-	return allEventIds;
-};
-
-// const canUnFollow = ref(true);
-
-// const unFollowEvent = async (list: number[]) => {
-// 	if (list.length) {
-// 		// 防止重复
-// 		if (!canUnFollow.value) {
-// 			return;
-// 		}
-// 		await sportsApi.unFollow({
-// 			thirdId: list,
-// 		});
-// 		canUnFollow.value = true;
-// 	}
-// };
-
-// watch(
-// 	() => listData.value,
-// 	(newVal) => {
-// 		if (newVal.length > 0) {
-// 			const getAllEventId = getAllEventIds();
-// 			const diffIds = xorWith(computedEventId.value, getAllEventId);
-// 			canUnFollow.value = !!diffIds.length;
-// 			unFollowEvent(diffIds);
-// 		}
-// 	}
-// );
-
 const computedSportComponent = computed(() => {
 	stopLoading();
 	const eventData = getEventData();
+	// if(eventData.length){
+	// 	toggleEventScoreboard(eventData[0].events[0]);
+	// }
+	console.log('eventData====',eventData)
 	return [
 		{
 			name: "足球",

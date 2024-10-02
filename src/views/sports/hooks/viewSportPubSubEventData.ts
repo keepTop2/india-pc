@@ -78,7 +78,12 @@ export default (function () {
 		public setSidebarData(sidebarData: SportViewData) {
 			Object.assign(this.sidebarData, sidebarData);
 		}
-
+		public clearSidebarData() {
+			Object.assign(this.sidebarData, {
+				event: [],
+				promotionsViewData: [], // 热门存储中心
+			});
+		}
 		/**
 		 * @description 关注直接给出所有的events 不区分sportType
 		 */
