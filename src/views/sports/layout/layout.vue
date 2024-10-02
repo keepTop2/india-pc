@@ -1,18 +1,15 @@
 <template>
 	<div class="base-body">
-		<!-- 公告通知 -->
-		<div class="base-container">
-			<HeaderNotify @click="openNotify"></HeaderNotify>
-		</div>
 		<!-- 体育 主体内容区域  -->
+		<!-- <Banner /> -->
 		<div class="main-container">
 			<!-- 体育游戏列表 -->
 			<div class="left-container">
 				<div class="container">
 					<div class="header">
-						<HeaderMenuNav></HeaderMenuNav>
-						<div class="line" v-if="route.meta.type !== 'detail'"></div>
 						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
+						<div class="line" v-if="route.meta.type === 'list'"></div>
+						<HeaderMenuNav :tabActive="tabActive"></HeaderMenuNav>
 					</div>
 					<div class="back-container">
 						<!-- 主体路由页面 -->
@@ -41,8 +38,6 @@ import { computed, defineAsyncComponent, markRaw, onBeforeMount, onBeforeUnmount
 import { isEmpty } from "lodash-es";
 import { useRoute, useRouter } from "vue-router";
 import { useIntervalFn } from "@vueuse/core";
-import moment from "moment";
-
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
@@ -71,7 +66,7 @@ import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
 import { WorkerName, SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
 
 import Modal from "./components/Modal/index.vue";
-import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar } from "./components";
+import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar, Banner } from "./components";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
@@ -242,7 +237,7 @@ const initSport = async () => {
  * @param {string} type - 标签类型
  */
 const onTab = (type: string) => {
-	console.log(tabActive.value, "==========", type);
+	console.log(tabActive.value, "=====onTab=====", type);
 	if (tabActive.value == type) return;
 	tabActive.value = type;
 	ShopCatControlStore.setShopCatShow(false);
@@ -264,14 +259,6 @@ const unSport = () => {
 	unSubSport();
 	sportsBetEvent.clearHotLeagueList();
 	pubSub.publish("clearHotLeagueList", "on");
-};
-
-/**
- * @description 打开通知
- */
-const openNotify = () => {
-	NotifyModal.value = markRaw(defineAsyncComponent(() => import(`./components/Notify/index.vue`)));
-	showNotifyModal.value = true;
 };
 
 /**
@@ -305,7 +292,7 @@ watch(
 			// 清除侧边栏数据
 			// SidebarStore.clearEventsInfo();
 			//开启推送
-			openSportPush(route.query.sportType as string);
+			openSportPush(route.query.sportType as string, tabActive.value);
 		}
 	}
 );
@@ -316,15 +303,15 @@ watch(
 	() => sportsData.value,
 	(newValue, oldValue) => {
 		if (newValue && newValue.length > 0) {
-			if(route.query.sportType){
-			const isSportType = newValue.some((item) => item.sportType == Number(route.query.sportType));
-			if (!isSportType) {
-				router.push({
-					path: route.path,
-					query: {
-						...route.query,
-						sportType: newValue[0].sportType,
-					},
+			if (route.query.sportType) {
+				const isSportType = newValue.some((item) => item.sportType == Number(route.query.sportType));
+				if (!isSportType) {
+					router.push({
+						path: route.path,
+						query: {
+							...route.query,
+							sportType: newValue[0].sportType,
+						},
 					});
 				}
 			}
@@ -335,36 +322,37 @@ watch(
 
 <style lang="scss" scoped>
 .base-body {
-	width: 1660px;
+	width: 1308px;
 	height: 100%;
 	margin: 0 auto;
 	overflow-x: auto;
 }
 
-.base-container {
-	width: 100%;
-}
 .main-container {
 	display: flex;
-	height: calc(100% - 40px);
-	width: 1660px;
+	height: calc(100%);
+	// width: 1660px;
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
 	// transform: scale(0.8);
 	.left-container {
 		position: relative;
-		margin: 0px 12px;
+		// margin: 0px 12px;
 		flex: 1;
-
+		width: 930px;
+		margin-right: 8px;
+		overflow: hidden;
 		.container {
-			width: 100%;
+			// width: 100%;
+			// width: 930px;
+
 			.header {
 				width: 100%;
 				// border-radius: 8px 8px 0 0;
 				// background: var(--Bg1);
 				box-sizing: border-box;
-				overflow: hidden;
+				// overflow: hidden;
 
 				.line {
 					width: 100%;
@@ -392,7 +380,7 @@ watch(
 	}
 
 	.right-container {
-		width: 390px;
+		width: 370px;
 		height: 100%;
 		overflow-y: auto;
 	}

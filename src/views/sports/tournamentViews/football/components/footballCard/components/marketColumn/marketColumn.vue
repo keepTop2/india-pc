@@ -1,10 +1,10 @@
 <template>
-	<div class="marketColumn" v-if="market?.selections">
+	<div class="marketColumn" v-if="market?.selections.length">
 		<MarketCard
 			v-for="(item, index) in market?.selections"
 			:key="index"
 			:cardType="cardType"
-			:cardData="item"
+			:cardData="item || {}"
 			:sportInfo="sportInfo"
 			:market="market"
 			:betType="betType"
@@ -63,8 +63,6 @@ const oddsChange = (obj: any) => {
 
 <style scoped lang="scss">
 .marketColumn {
-	max-width: 130px;
-	flex: 1;
 	display: flex;
 	flex-direction: column;
 	gap: 4px;

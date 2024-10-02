@@ -1,4 +1,4 @@
-@for $i from 0 through 200 {
+@for $i from 0 through 1000 {
 	.m_#{$i} {
 		margin: $i + 0px !important;
 	}

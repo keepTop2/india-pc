@@ -25,7 +25,7 @@
 					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
 					<p class="common_password">
 						<input
-							:type="showPassword ? 'text' : 'password'"
+							:type="showPassword ? 'password' : 'text'"
 							v-model="payLoad.password"
 							class="common_input"
 							:placeholder="$t(`login['输入密码']`)"
@@ -73,11 +73,12 @@
 				</div>
 			</div>
 		</div>
+		<!-- 验证码容器 -->
+		<p>	
+			<p id="captcha-element" ref="captchaBtn"/>
+		<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
+		</p>
 	</form>
-
-	<!-- 验证码容器 -->
-	<div id="captcha-element" ref="captchaBtn"></div>
-	<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
 </template>
 
 <script setup lang="ts">
@@ -110,7 +111,7 @@ const userAccountVerifyError = ref(false);
 const passWordVerifyError = ref(false);
 
 // 密码显示切换
-const showPassword = ref(false);
+const showPassword = ref(true);
 
 // 初始化验证码
 onMounted(() => {

@@ -1,90 +1,99 @@
 <template>
+	<SelectCard :teamData="listData" />
+	<!-- 联赛数据统计卡片 -->
 	<div class="box-content">
-		<!-- 日期选择区间 -->
 		<template v-if="listData.length">
-			<!-- 联赛数据统计 -->
-			<SelectCard :teamData="listData"></SelectCard>
 			<!--
-				滚球虚拟列表
-				bottomClass: 可获取间隔-底部边距
-				minDivClass: 可获取缩小时展示的-标题高度
-				childrenDivClass: 可获取展开时-子集卡片高度
-			-->
+					虚拟滚动列表组件
+					Props 说明：
+					- ref="virtualScrollRef"：用于引用虚拟滚动组件，以便操作内部方法。
+					- :list-data：展示的数据列表，优先展示匹配到的联赛数据。
+					- bottomClass：底部容器样式类名。
+					- minDivClass：收起时的标题样式类名。
+					- childrenDivClass：展开时的子集内容样式类名。
+				-->
 			<VirtualScrollVirtualList
-				ref="VirtualScrollVirtualListRef"
+				ref="virtualScrollRef"
 				bottomClass="card-container"
-				minDivClass="card—header"
+				minDivClass="card-header"
 				childrenDivClass="league-content"
 				:list-data="matchedLeague.length > 0 ? matchedLeague : listData"
 			>
 				<template #default="{ item, index, isExpand }">
-					<!-- 滚球卡片 -->
-					<FootballCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="oddsChange" @toggleDisplay="toggleDisplay"></FootballCard>
+					<!--
+						滚球卡片组件
+						Props 说明：
+						- teamData：传递当前队伍的数据。
+						- isExpand：控制卡片的展开状态。
+						- dataIndex：当前队伍在列表中的索引。
+						- oddsChange：处理赔率变化时的事件。
+						- toggleDisplay：处理卡片的展开/收起事件。
+					-->
+					<FootballCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="handleOddsChange" @toggleDisplay="handleToggleDisplay" />
 				</template>
 			</VirtualScrollVirtualList>
 		</template>
-		<!-- 无数据 -->
+		<!-- 无数据时显示的占位内容 -->
 		<div v-else class="noData">
-			<NoneData></NoneData>
+			<NoneData />
 		</div>
 	</div>
 </template>
+
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect, defineProps } from "vue";
 import { useRoute } from "vue-router";
-import { FootballCard, SelectCard, VirtualScrollVirtualList } from "./components/index";
+import { FootballCard, SelectCard, VirtualScrollVirtualList } from "./components";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
-const SidebarStore = useSidebarStore();
-const { clearSportsOddsChange } = useSportPubSubEvents();
-const route = useRoute();
-const VirtualScrollVirtualListRef = ref();
 
-/**
- * @description 组件属性定义
- */
 const props = defineProps({
-	/**
-	 * @description 列表数据
-	 * @param {Array} listData
-	 */
 	listData: {
 		type: Array,
-		default: () => [],
+		default: () => [], // 默认值
 	},
-	/**
-	 * @description 选择匹配到联赛数据
-	 * @param {Array} matchedLeague
-	 */
 	matchedLeague: {
 		type: Array,
-		default: () => [],
+		default: () => [], // 默认值
 	},
 });
 
-// // 监控 matchedLeague 的变化
-// watchEffect(() => {
-// 	console.log("Matched League Changed:", props.matchedLeague);
-// 	// 在这里处理 matchedLeague 的逻辑，确保数据发生变化时可以渲染
-// 	if (props.matchedLeague.length) {
-// 		// 进行需要的操作，比如更新显示的联赛数据
-// 		console.log("Updated matched league:", props.matchedLeague);
-// 		// 你可以在这里处理 matchedLeague 的显示逻辑
-// 	}
-// });
+// 虚拟滚动列表组件的引用
+const virtualScrollRef = ref<InstanceType<typeof VirtualScrollVirtualList>>();
+// 路由实例
+const route = useRoute();
+// 引入赔率变化事件的相关逻辑
+const { clearSportsOddsChange } = useSportPubSubEvents();
+// 侧边栏状态管理实例
+const sidebarStore = useSidebarStore();
 
 /**
- * @description 赔率发生变化后 3秒动画结束后清理掉oddsChange状态
+ * @description 处理赔率发生变化的事件，在动画结束后清除掉 `oddsChange` 状态
+ * @param {Object} params - 包含市场ID和选择项的数据
+ * @param {number} params.marketId - 市场ID
+ * @param {Array} params.selections - 选择项数组
  */
-const oddsChange = ({ marketId, selections }) => {
+const handleOddsChange = ({ marketId, selections }: { marketId: number; selections: any[] }) => {
 	clearSportsOddsChange({ webToPushApi: WebToPushApi.rollingBall, marketId, selection: selections });
 };
 
-// 卡片收起
-const toggleDisplay = (val?: number) => {
-	VirtualScrollVirtualListRef.value.setlistDataEisExpand(val);
+/**
+ * @description 处理展开/收起卡片的事件
+ * @param {number} [val] - 可选参数，指定要展开或收起的卡片索引
+ */
+const handleToggleDisplay = (val?: number) => {
+	virtualScrollRef.value?.setlistDataEisExpand(val);
 };
+
+// 监控 matchedLeague 的变化并处理逻辑
+watchEffect(() => {
+	if (props.matchedLeague?.length) {
+		// 使用可选链操作符
+		console.log("Updated matched league:", props.matchedLeague);
+		// 在此可以进一步处理 matchedLeague 的数据
+	}
+});
 </script>
 
 <style lang="scss" scoped>
@@ -96,6 +105,6 @@ const toggleDisplay = (val?: number) => {
 	margin-bottom: 5px;
 }
 .noData {
-	height:100%;
+	height: 100%;
 }
 </style>

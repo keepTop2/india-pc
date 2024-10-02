@@ -1,24 +1,32 @@
 <template>
 	<div class="header-container" :class="route.meta.type">
 		<div class="menu-nav">
-			<div class="left">
-				<div v-for="(item, index) in Menu" :key="index" class="nva-item" :class="{ active: item.name === route.name }">
-					<router-link :to="{ name: item.name }">
-						<span class="value">{{ item.meta.title }}</span>
-					</router-link>
+			<div class="right" ref="rightContainer">
+				<div class="arrow_content arrow_left" v-show="showLeftArrow" @click="scrollLeft">
+					<span class="icon">
+						<svg-icon name="arrow_left" size="12px"></svg-icon>
+					</span>
+				</div>
+				<div class="nva-item-container" ref="nvaItemContainer" @scroll="handleScroll">
+					<div v-for="(item, index) in sportsData" :key="index" class="nva-item" :class="{ active: Number(sportType) == item.sportType }" @click="toPath(item)">
+						<svg-icon class="icon" :name="`sports-sidebar-${item.icon}`" size="25px" alt="" />
+						<span class="value title">{{ item.sportName }}</span>
+						<div class="value count">{{ item.count }}</div>
+					</div>
+				</div>
+				<div class="arrow_content arrow_right" v-show="showRightArrow" @click="scrollRight">
+					<span class="icon">
+						<svg-icon name="sports-arrow" size="12px"></svg-icon>
+					</span>
 				</div>
 			</div>
 			<i class="line"></i>
-			<div class="right">
-				<div v-for="(item, index) in sportsData" :key="index" class="nva-item" :class="{ active: Number(sportType) == item.sportType }" @click="toPath(item)">
-					<img class="icon mr_6" :src="Number(route.query.sportType) == item.sportType ? item.activeIcon : item.icon" alt="" />
-					<span class="value mr_4">{{ item.sportName }}</span>
-					<div class="value">{{ item.count }}</div>
-				</div>
-				<div class="arrow_content">
-					<span class="icon">
-						<svg-icon name="sports-arrow_big" size="20px"></svg-icon>
-					</span>
+			<div class="left">
+				<div v-for="(item, index) in Menu" :key="index" class="nva-item" :class="{ active: item.name === route.name }">
+					<router-link :to="{ name: item.name }">
+						<svg-icon class="icon" :name="`sports-${item.icon}`" size="25px" alt="" />
+						<span class="value">{{ item.meta.title }}</span>
+					</router-link>
 				</div>
 			</div>
 		</div>
@@ -26,53 +34,58 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, nextTick, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import MajorCategoriesMenu from "/@/router/modules/sports/sportsRouterLeft";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+
 const router = useRouter();
 const route = useRoute();
 const Menu = ref(MajorCategoriesMenu);
 const sportsBetEvent = useSportsBetEventStore();
 const sportType = computed(() => route.query.sportType);
-
+const props = defineProps<{
+	tabActive: string;
+}>();
 // 球类tab数据
 const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
-// console.log("sportsData", sportsData);
-// console.log("route.query.sportType", route.query.sportType);
+
+const rightContainer = ref<HTMLElement | null>(null);
+const nvaItemContainer = ref<HTMLElement | null>(null);
+const showLeftArrow = ref(false);
+const showRightArrow = ref(false);
 
 // 路由初始化逻辑
 const initRoute = () => {
 	if (sportsData.value.length > 0) {
-		// 获取第一个 sportsData 项的 sportType
 		const firstSportType = sportsData.value[0].sportType;
-		// 生成拼接路径
 		const defaultPath = `${router.currentRoute.value.path}/${firstSportType}`;
-		// 跳转到拼接后的路径
 		router.push(defaultPath);
 	}
 };
-initRoute();
+
+const tabData = ref([
+	{ label: "今日", type: "todayContest", path: "/sports/todayContest" },
+	{ label: "早盘", type: "morningTrading", path: "/sports/morningTrading" },
+	{ label: "冠军", type: "champion", path: "/sports/champion" },
+]);
 
 const toPath = (item: any) => {
-	// 路由参数与点击tab类型相同退出
+	// console.log(props.tabActive,'=========topath',item,'123123======wafwafe');
 	if (route.meta.type !== "list") {
+		const path = tabData.value.find(item => item.type === props.tabActive)?.path || '/sports/todayContest';
 		router
 			.push({
-				path: "/sports/todayContest/rollingBall",
+				path: path,
 				query: { sportType: item.sportType },
 			})
 			.catch((err) => {
 				console.error("Navigation failed:", err);
-				// 可以在这里添加一些错误处理逻辑
 			});
 	} else {
-		// console.log(route.query,'=======query',router.currentRoute)
 		if (route.query.sportType == item.sportType) return;
-		// 获取当前路径
 		const currentPath = router.currentRoute.value.path;
-		// 跳转到目标路径并通过 query 传递 sportType
 		router.push({
 			path: currentPath,
 			query: { sportType: item.sportType },
@@ -80,41 +93,82 @@ const toPath = (item: any) => {
 	}
 };
 
-// 在组件挂载时执行初始化
-onMounted(() => {});
+const handleScroll = () => {
+	// console.log(nvaItemContainer.value);
+	// console.log(rightContainer.value);
+	if (nvaItemContainer.value) {
+		const { scrollLeft, scrollWidth, clientWidth } = nvaItemContainer.value;
+		showLeftArrow.value = scrollLeft > 0;
+		showRightArrow.value = scrollLeft + clientWidth < scrollWidth;
+		// console.log(scrollLeft, scrollWidth, clientWidth);
+	}
+};
+
+const scrollLeft = () => {
+	if (nvaItemContainer.value) {
+		nvaItemContainer.value.scrollLeft -= 100;
+	}
+};
+
+const scrollRight = () => {
+	if (nvaItemContainer.value) {
+		nvaItemContainer.value.scrollLeft += 100;
+	}
+};
+
+onMounted(() => {
+	initRoute();
+	nextTick(() => {
+		handleScroll();
+		window.addEventListener("resize", handleScroll);
+	});
+});
+
+watch(sportsData, () => {
+	nextTick(() => {
+		handleScroll();
+	});
+});
 </script>
 
 <style scoped lang="scss">
 .header-container {
 	position: relative;
 	width: 100%;
-	height: 48px;
+	height: 66px;
 	display: flex;
 	align-items: center;
-	padding-left: 24px;
 	border-radius: 8px;
 	background: var(--Bg1);
 	overflow: hidden;
 	box-sizing: border-box;
 	&.list {
-		border-radius: 8px 8px 0 0;
+		border-radius: 0px 0px 8px 8px;
 	}
-	&.result{
-		border-radius: 8px 8px 0 0;
+	&.result {
+		border-radius: 8px 8px 0px 0px;
+		// margin-bottom: 1px;
+		border-bottom: 1px solid var(--Line_1);
 	}
 	.arrow_content {
 		position: absolute;
-		top: 0;
-		right: 0;
-		width: 40px;
-		height: 48px;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 18px;
+		height: 28px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background-color: var(--butter);
-
+		cursor: pointer;
+		z-index: 1;
+		&.arrow_left {
+			left: 4px;
+		}
+		&.arrow_right {
+			right: 0;
+		}
 		.icon {
-			transform: rotate(90deg);
 			color: var(--Icon_1);
 		}
 	}
@@ -124,15 +178,13 @@ onMounted(() => {});
 		flex: 1;
 		display: flex;
 		align-items: center;
-		padding: 10px 0;
-		padding-right: 40px;
 		overflow: hidden;
 		box-sizing: border-box;
 
 		.line {
 			width: 1px;
 			height: 34px;
-			margin: 0 12px;
+			margin: 0 4px;
 			background: var(--Line_1);
 			box-shadow: 1px 0 0 0 #343d48;
 		}
@@ -140,78 +192,95 @@ onMounted(() => {});
 		.left,
 		.right {
 			display: flex;
+			position: relative;
+		}
 
-			.nva-item {
-				min-width: 80px;
-				height: 30px;
+		.right {
+			width: 100%;
+			// padding-right: 12px;
+			overflow: hidden;
+
+			.nva-item-container {
+				display: flex;
+				gap: 8px;
+				overflow-x: auto;
+				scrollbar-width: none;
+				// padding:0 18px;
+				-ms-overflow-style: none;
+				&::-webkit-scrollbar {
+					display: none;
+				}
+			}
+		}
+
+		.nva-item {
+			width: 82px;
+			height: 67px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			// padding: 0px 12px;
+			// background: var(--butter);
+			border-radius: 4px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			box-sizing: border-box;
+			cursor: pointer;
+			flex-shrink: 0;
+			gap: 4px;
+			flex-direction: column;
+			position: relative;
+			.icon {
+				width: 16px;
+				height: 16px;
+				color: var(--Icon_1);
+			}
+
+			a {
+				width: 100%;
+				height: 100%;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				padding: 0px 12px;
-				background: var(--butter);
-				border-radius: 4px;
-				white-space: nowrap;
+				flex-direction: column;
+				gap: 4px;
+			}
+			.value {
+				color: var(--Text1, #98a7b5);
+				text-align: center;
+				font-family: "PingFang SC";
+				font-size: 14px;
+				font-weight: 400;
+			}
+			.title {
+				//超出省略号
 				overflow: hidden;
 				text-overflow: ellipsis;
-				box-sizing: border-box;
-				cursor: pointer;
-
-				.icon {
-					width: 16px;
-					height: 16px;
-				}
-
-				a {
-					width: 100%;
-					height: 100%;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					.value {
-						color: var(--Text1, #98a7b5);
-						text-align: center;
-						font-family: "PingFang SC";
-						font-size: 14px;
-						font-weight: 400;
-					}
-				}
-				.value {
-					color: var(--Text1, #98a7b5);
-					text-align: center;
-					font-family: "PingFang SC";
-					font-size: 14px;
-					font-weight: 400;
-				}
+				white-space: nowrap;
 			}
+			.count {
+				position: absolute;
+				right: 0;
+				top: 10px;
+				font-size: 12px;
+			}
+		}
 
-			.active {
-				background-color: var(--Theme);
-				.value {
-					color: var(--Text_s);
-				}
+		.active {
+			// background-color: var(--Theme);
+			.value {
+				color: var(--Theme);
+			}
+			.icon {
+				color: var(--Theme);
 			}
 		}
 
 		.left {
-			gap: 12px;
-		}
-
-		.right {
-			width: calc(100% - 270px);
-			padding-right: 12px;
-			gap: 8px;
-			overflow-x: auto;
-			white-space: nowrap;
-			scrollbar-width: none;
-			-ms-overflow-style: none;
-
-			&::-webkit-scrollbar {
-				display: none;
-			}
-
+			gap: 4px;
 			.nva-item {
-				flex-shrink: 0;
-				gap: 6px;
+				width: 68px;
 			}
 		}
 	}

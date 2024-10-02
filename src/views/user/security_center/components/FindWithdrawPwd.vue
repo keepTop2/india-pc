@@ -11,7 +11,7 @@
 				<div v-if="currentStep === 0">
 					<p class="Text_s mb_8 mt_8">{{ verifyType == "email" ? $t(`security_center['邮箱验证']`) : $t(`security_center['手机号验证']`) }}</p>
 					<p class="Theme_text fs_12 text_unline curp">
-						<span @click="changeVerifyType">{{ $t(`security_center['其他方式']`) }}</span>
+						<span @click="changeVerifyType" v-if="UserStore.getUserGlobalSetInfo.email && UserStore.getUserGlobalSetInfo.phone">{{ $t(`security_center['其他方式']`) }}</span>
 					</p>
 					<div>
 						<p class="Text_s mb_8 mt_8">{{ $t(`security_center['登录密码']`) }}</p>
@@ -25,7 +25,7 @@
 								:class="VerifyError.passWord ? 'verifyError' : ''"
 							/>
 							<span class="eyes">
-								<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showPassword = !showPassword" />
+								<svg-icon :name="showPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showPassword = !showPassword" />
 							</span>
 						</p>
 						<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">{{ $t(`security_center['8-16位，必须包含 数字和字母']`) }}</p>
@@ -45,7 +45,7 @@
 								:class="VerifyError.newPassword ? 'verifyError' : ''"
 							/>
 							<span class="eyes">
-								<svg-icon :name="showNewPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showNewPassword = !showNewPassword" />
+								<svg-icon :name="showNewPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showNewPassword = !showNewPassword" />
 							</span>
 						</p>
 						<p v-show="VerifyError.newPassword" class="Wran_text fs_12 mt_2">{{ $t(`security_center['请输入6位数字']`) }}</p>
@@ -63,16 +63,17 @@
 								:class="VerifyError.confirmPassword ? 'verifyError' : ''"
 							/>
 							<span class="eyes">
-								<svg-icon :name="showConfimPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showConfimPassword = !showConfimPassword" />
+								<svg-icon :name="showConfimPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showConfimPassword = !showConfimPassword" />
 							</span>
 						</p>
 						<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`security_center['两次密码不一致']`) }}</p>
 					</div>
 					<div>
 						<p class="Text_s mb_8 mt_8">{{ verifyType == "email" ? $t(`security_center['邮箱账号验证']`) : $t(`security_center['手机号验证']`) }}</p>
-						<p class="Text1 mt_8">
-							{{ $t(`security_center['验证码将发送至手机号']`) }}+ {{ UserStore.getUserGlobalSetInfo.areaCode }} {{ Common.maskString(UserStore.getUserGlobalSetInfo.phone) }}
+						<p class="Text1 mt_8" v-if="verifyType == 'phone'">
+							{{ $t(`security_center['验证码将发送至手机号']`) }}+{{ UserStore.getUserGlobalSetInfo.areaCode }} {{ Common.maskString(UserStore.getUserGlobalSetInfo.phone) }}
 						</p>
+						<p class="Text1 mt_8" v-else>{{ $t(`security_center['验证码将发送至邮箱账号：']`) }}{{ Common.maskEmail(UserStore.getUserGlobalSetInfo.email) }}</p>
 						<p class="Text1 mb_8">有效时间：10分钟</p>
 					</div>
 					<div>
@@ -123,7 +124,7 @@ enum verifyTypeEnum {
 	email = "email",
 	phone = "phone",
 }
-const verifyType = ref(verifyTypeEnum.email);
+const verifyType = ref(UserStore.getUserGlobalSetInfo.email ? verifyTypeEnum.email : verifyTypeEnum.phone);
 const VerifyError = reactive({
 	newPassword: false,
 	passWord: false,

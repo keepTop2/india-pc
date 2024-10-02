@@ -36,13 +36,14 @@ import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEvent
 import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
-
+import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
 const { sportType, tabActive, handleSportEventsPush, openSportPush, handleSportPush } = useSportEvents();
 const SidebarStore = useSidebarStore();
 const { clearSportsOddsChange } = useSportPubSubEvents();
 const sportsBetEvent = useSportsBetEventStore();
 const leagueActiveList = ref(sportsBetEvent.getLeagueSelect);
+const { getSidebarEventSSEPush, getSidebarMarketSSEPush } = useToolsHooks();
 
 const route = useRoute();
 
@@ -53,30 +54,13 @@ const SportsBetEvent = useSportsBetEventStore();
 const sportsActive = ref("rollingBall");
 
 const state = reactive({
-	/**
-	 * @description Sports视图数据
-	 */
-	viewSportData: {
-		/**
-		 * @description 外层Sports组件视图数据
-		 */
-		sports: [] as Sports[],
-		leagues: [],
-		events: [],
-		markets: [],
-		outrights: [],
-		results: [],
-		/**
-		 * @description 各个子路由视图数据
-		 */
-		childrenViewData: {},
-	} as SportViewData,
-	targetEvents: [], // 添加这个字段来保存目标事件数据数组
+	targetEvents: [] as any, // 添加这个字段来保存目标事件数据数组
 	/**赛选后的额数据（展示） */
 	targetEventList: [],
 });
 
 onBeforeMount(() => {
+	console.log("冠军生命周期钩子");
 	state.targetEvents = [];
 	/** 进入时获取一次页面数据 */
 	state.targetEvents = viewSportPubSubEventData.getSportData();
@@ -87,32 +71,48 @@ onBeforeMount(() => {
 	watchEffect(() => {
 		/** 最新数据响应接入  */
 		state.targetEvents = viewSportPubSubEventData.getSportData();
+		console.log("state.targetEvents", state.targetEvents);
+
 		state.targetEventList = getList();
 		setInitsportsActive();
 	});
 });
 
-onBeforeUnmount(() => {});
+// 监听热门赛事
+watch(
+	() => viewSportPubSubEventData.sidebarData.promotionsViewData.length,
+	(newValue, oldValue) => {
+		// 只监听首次变化
+		if (newValue > 0 && !oldValue) {
+			// 取第一条热门赛事ID
+			const eventInfo = viewSportPubSubEventData.sidebarData.promotionsViewData[0];
+			// 设置状态
+			SidebarStore.setEventsInfo(eventInfo); // 切换的时候获取当前赛事信息
+			getSidebarEventSSEPush(); // 侧边赛事推送
+			getSidebarMarketSSEPush(); // 每次更新侧边赛事时都需要重新推送对应的盘口详情
+		}
+	}
+);
 
 /**
  * @description: 获取筛选后的列表数据；
- * @return {*}
+ * @return {*}2
  */
 const getList = () => {
 	let leagues = cloneDeep(state.targetEvents);
 	const SportLeagueSearchStore = useSportLeagueSearchStore();
 	const leagueSelect = SportLeagueSearchStore.getLeagueSelect;
 	// 如果有筛选 则处理数据，只给出筛选的联赛列表。
-	let newleagues: never[] = [];
+	let newLeagues: never[] = [];
 	if (leagues && leagueSelect.length > 0) {
 		for (let index = 0; index < leagues.length; index++) {
 			const item = leagues[index];
 			let bool = leagueSelect.includes(item.leagueId);
 			if (bool) {
-				newleagues.push(item);
+				newLeagues.push(item);
 			}
 		}
-		leagues = newleagues;
+		leagues = newLeagues;
 	}
 	SidebarStore.setEventsInfo(get(leagues, "[0].events.[0]", {}) as any);
 	return leagues;
@@ -145,6 +145,6 @@ const toggleDisplay = (val?: number) => {
 	margin-bottom: 5px;
 }
 .noData {
-	height:100%;
+	height: 100%;
 }
 </style>

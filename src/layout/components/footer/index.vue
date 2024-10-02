@@ -9,16 +9,18 @@
 			<div class="footer1Item">
 				<p class="mb_19">合作商</p>
 				<div class="partnersIcon">
-					<img src="../../../assets/common/partnersIcon/image1.png" alt="" />
-					<img src="../../../assets/common/partnersIcon/image2.png" alt="" />
+					<slide>
+						<img :src="item.icon" alt="" v-for="(item, index) in partnerList" :key="index" />
+					</slide>
 				</div>
 			</div>
 			<div class="line"></div>
 			<div class="footer1Item">
 				<p class="mb_19">支付方式</p>
 				<div class="paymentMethodIcon">
-					<img src="../../../assets/common/paymentMethodIcon/image1.png" alt="" />
-					<img src="../../../assets/common/paymentMethodIcon/image2.png" alt="" />
+					<slide>
+						<img :src="item.icon" alt="" v-for="(item, index) in vendorList" :key="index" />
+					</slide>
 				</div>
 			</div>
 			<div class="line"></div>
@@ -71,7 +73,24 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
+import { CommonApi } from "/@/api/common";
 import Common from "/@/utils/common";
+const partnerList = ref([]);
+const vendorList = ref([]);
+
+onMounted(() => {
+	getlist();
+});
+
+const getlist = () => {
+	CommonApi.queryPartnerList().then((res) => {
+		partnerList.value = res.data || [];
+	});
+	CommonApi.queryPaymentVendorList().then((res) => {
+		vendorList.value = res.data || [];
+	});
+};
 </script>
 
 <style scoped lang="scss">
@@ -85,11 +104,11 @@ import Common from "/@/utils/common";
 		padding: 20px 0 20px;
 	}
 	.partnersIcon {
-		display: flex;
-		gap: 40px;
 		height: 82px;
 		img {
 			height: 72px;
+			pointer-events: none;
+			margin-right: 30px;
 		}
 	}
 	.paymentMethodIcon {

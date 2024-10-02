@@ -63,6 +63,7 @@ instance.interceptors.request.use(
 		if (config.headers.showLoading !== false) {
 			showLoading(config.headers.loadingTarget);
 		}
+
 		const UserStore = useUserStore();
 		const modalStore = useModalStore();
 		// 需要登陆的处理
@@ -80,6 +81,7 @@ instance.interceptors.request.use(
 			config["headers"]["Accept-Language"] = language;
 			// config["headers"]["X-Custom"] = "gw.playesoversea.store";
 		}
+		// console.log(config);
 		return config;
 	},
 	(error) => {

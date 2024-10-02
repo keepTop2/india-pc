@@ -1,6 +1,6 @@
 <!-- 侧边栏 -->
 <template>
-	<div class="sidebar">
+	<div class="sidebar" v-show="eventsInfo">
 		<div class="affix">
 			<!-- 头部 -->
 			<div class="header">
@@ -38,7 +38,7 @@
 				<!-- 已开赛的动态组件计分板 -->
 				<component
 					v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)"
-					:is="ballInfo[Number(route.query.sportType)]?.componentName"
+					:is="ballInfo[Number(eventsInfo.sportType)]?.componentName"
 					:eventsInfo="eventsInfo"
 				></component>
 				<!-- 未开赛计分板显示 -->
@@ -66,10 +66,13 @@
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
 		<div class="markets-list">
 			<!-- 盘口列表 -->
-			<MarketsList v-if="!isShowHotEvents" />
+			<MarketsList v-show="!isShowHotEvents" />
 			<!-- 热门赛事 -->
-			<HotEvents v-else />
+			<HotEvents v-show="isShowHotEvents" />
 		</div>
+	</div>
+	<div class="sidebar no_data" v-show="!eventsInfo">
+		<svg-icon name="no_data" width="142px" height="120px"></svg-icon>
 	</div>
 </template>
 
@@ -97,13 +100,18 @@ const myPlayer = ref();
 const videoContainer = ref();
 const iframeLoaded = ref(false);
 const SidebarStore = useSidebarStore();
-const isShowHotEvents = ref(route.meta.type == "list" ? false : true);
+const isShowHotEvents = computed(() => route.meta.type === "detail" ? true : false);
 
 // 获取到的数据
 const eventsInfo = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
-	if (childrenViewData) {
+	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData;
+	console.log('eventsInfo=======',childrenViewData, "childrenViewData")
+	if (childrenViewData && !isShowHotEvents.value) {
 		return childrenViewData[0]?.events[0];
+	}
+	if (promotionsViewData && isShowHotEvents.value) {
+		return promotionsViewData[0];
 	}
 	return null;
 });
@@ -278,7 +286,6 @@ const getStreaming = async (newVal: { [x: string]: any }) => {
 			],
 		});
 	}
-
 	SidebarStore.getSidebarStatus("live");
 };
 
@@ -303,9 +310,14 @@ const showDetail = () => {
 </script>
 
 <style scoped lang="scss">
+.no_data{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 .sidebar {
 	width: 100%;
-
+	height:750px;
 	background-color: var(--Bg1);
 	border-radius: 8px;
 	.live {
@@ -383,6 +395,9 @@ const showDetail = () => {
 				.icon {
 					width: 16px;
 					height: 16px;
+					svg{
+						color:var(--Icon_1);
+					}
 				}
 				.team-name {
 					display: flex;

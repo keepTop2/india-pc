@@ -19,14 +19,21 @@
 		</div>
 		<div v-if="ShopCatControlStore.getShopCatShow" class="container-main">
 			<!-- 无赛事时展示 -->
-			<div class="noData" v-if="!ChampionShopCartStore.championBetData.length"><span> 请完成您的下注 </span></div>
+			<div class="noData" v-if="!ChampionShopCartStore.championBetData.length && !sportsBetEvent.sportsBetEventData.length"><span> 请完成您的下注 </span></div>
 			<!-- 购物车赛事列表 -->
 			<div class="shop-plan" v-else>
 				<div class="event-list" ref="container">
-					<!-- 赛事列表 单关串关公用 -->
-					<EventCard v-for="(data, index) in ChampionShopCartStore.championBetData" :key="index" :shopData="data" :hasClose="true" />
-					<!-- 单关表单 -->
-					<SingleTicketFrom v-if="ChampionShopCartStore.championBetData.length == 1" />
+					<template v-for="(data, index) in ChampionShopCartStore.championBetData" :key="index">
+						<!-- 冠军赛事列表卡片 单关串关公用 -->
+						<ChampionCard v-if="data.type == '1'" :shopData="data" :hasClose="true" />
+						<!-- 盘口赛事列表卡片 -->
+						<EventCard v-if="data.type == '0'" :shopData="data.event" :hasClose="true" />
+					</template>
+
+					<!-- 冠军单关表单 -->
+					<SingleTicketFrom v-if="ChampionShopCartStore.championBetData.length == 1 && ChampionShopCartStore.championBetData[0].type === '1'" />
+					<!-- 赛事单关表单 -->
+					<EventsSingleTicketFrom v-if="ChampionShopCartStore.championBetData.length == 1 && ChampionShopCartStore.championBetData[0].type === '0'" />
 					<!-- 指示箭头 -->
 					<img v-if="arrowShow" class="left_arrow" :src="left_arrow" />
 				</div>
@@ -50,7 +57,19 @@
 import { computed, nextTick, onMounted, provide, reactive, ref, watch } from "vue";
 import left_arrow from "/@/assets/zh-CN/sports/left_arrow.gif";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { EventCard, SingleTicketFrom, SingleTicketFooter, SingleTicketFinish } from "./components/index";
+
+// 冠军购物车组件引用
+import {
+	ChampionCard,
+	EventCard,
+	SingleTicketFrom,
+	SingleTicketFooter,
+	SingleTicketFinish,
+} from "/@/views/sports/layout/components/sportsShopCart/components/championCart/components/index";
+// 赛事购物车组件引用
+import EventsSingleTicketFrom from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/singleTicketFrom/singleTicketFrom.vue";
+// import {SingleTicketFrom} from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index.ts";
+
 import sportsApi from "/@/api/sports/sports";
 import Common from "/@/utils/common";
 import weakHint from "/@/hooks/weakHint";
@@ -71,7 +90,6 @@ const { startLoading, stopLoading } = useLoading();
 const sportsBetInfo = useSportsBetInfoStore();
 const ShopCatControlStore = useShopCatControlStore();
 const ChampionShopCartStore = useSportsBetChampionStore();
-
 const { weakOpen, weakClose } = weakHint();
 
 const sportsBetEvent = useSportsBetEventStore();
@@ -98,13 +116,13 @@ onMounted(() => {
 	// getPublicSetting();
 });
 
+// 监听冠军购物车储存数量
 watch(
 	() => ChampionShopCartStore.championBetData.length,
 	(newValue, oldValue) => {
+		console.log("冠军购物车触发", newValue);
 		// 长度变化则监听
 		if (newValue == 1 && !oldValue) {
-			console.log("???????????????????");
-
 			ShopCatControlStore.setShopCatShow(true);
 		}
 		if (ShopCatControlStore.getShopCatShow && newValue > 0) {
@@ -112,7 +130,7 @@ watch(
 				// getHasScrollbar();
 			});
 			// 开启线程
-			ChampionShopCartStore.championOpenSse();
+			// ChampionShopCartStore.championOpenSse();
 		}
 	}
 );

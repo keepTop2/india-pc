@@ -1,25 +1,25 @@
 <template>
 	<div class="card-container">
-		<!--  头部 -->
-		<div class="card—header" :class="[!displayContent ? 'toggle' : '']" @click="toggleDisplay">
+		<!-- 头部 -->
+		<div class="card-header" :class="[!displayContent ? 'toggle' : '']" @click="toggleDisplay">
 			<!-- 联赛信息 -->
 			<div class="league-info">
-				<!-- <span class="collection" @click="attentionEvent(!isAttention ? false : true)">
-					<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px"></svg-icon>
-				</span> -->
-				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
-				<div class="league_name" :style="displayContent ? `max-width:300px` : ''">{{ teamData.leagueName }}</div>
+				<img class="league_icon" :src="teamData.leagueIconUrl" alt="League Icon" />
+				<div class="league_name" :style="displayContent ? 'max-width:284px' : ''">{{ teamData.leagueName }}</div>
 			</div>
 			<!-- 盘口表头 -->
 			<div class="market-name-info" v-if="displayContent">
 				<div class="market-name-list">
+					<!-- 遍历盘口类型 -->
 					<div class="label" v-for="betType in SportsCommonFn.betTypeMap[1]" :key="betType">{{ betType }}</div>
 				</div>
 			</div>
+			<!-- 展开/收起图标 -->
 			<div class="header-icon">
 				<span class="icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 			</div>
 		</div>
+		<!-- 显示事件项 -->
 		<template v-if="displayContent">
 			<EventItem v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
 		</template>
@@ -29,173 +29,115 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import EventItem from "./components/eventItem/eventItem.vue";
-import PubSub from "/@/pubSub/pubSub";
-import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import SportsCommonFn from "/@/views/sports/utils/common";
+
+// 获取运动关注状态管理
 const SportAttentionStore = useSportAttentionStore();
 
+// 定义组件属性类型
 interface teamDataType {
 	/** 数据索引 */
 	dataIndex: number;
 	/** 队伍数据 */
 	teamData: any;
-	/** 是展开状态？ */
+	/** 是否展开状态 */
 	isExpand?: boolean;
 }
+
+// 定义组件属性，使用默认值
 const props = withDefaults(defineProps<teamDataType>(), {
 	isExpand: true,
-	/** 数据索引 */
 	dataIndex: 0,
-	/** 队伍数据 */
-	teamData: () => {
-		return {};
-	},
+	teamData: () => ({}),
 });
 
+// 控制内容显示状态
 const displayContent = ref(true);
 
+// 触发自定义事件
 const emit = defineEmits(["toggleDisplay"]);
+
 /**
- * @description: 展开折叠处理
- * @return {*}
+ * @description: 切换展开/收起状态
  */
 const toggleDisplay = () => {
-	displayContent.value = !displayContent.value;
+	displayContent.value = !displayContent.value; // 切换显示状态
 	const params = {
 		index: props.dataIndex,
 		isExpand: displayContent.value,
 	};
-	emit("toggleDisplay", params);
+	emit("toggleDisplay", params); // 触发事件
 };
 
+// 监控 props 中的 isExpand 变化，更新 displayContent
 watch(
 	() => props.isExpand,
-	(newValue, oldValue) => {
-		displayContent.value = newValue;
+	(newValue) => {
+		displayContent.value = newValue; // 更新显示状态
 	},
-	{
-		immediate: true,
-	}
+	{ immediate: true }
 );
-/** 队伍所有的ids */
+
+// 计算队伍所有事件的 ID
 const eventIds = computed(() => {
-	let ids = [];
-	if (props.teamData.events.length) {
-		const events = props.teamData.events;
-		for (let k = 0; k < events.length; k++) {
-			const str = events[k].eventId.toString();
-			ids.push(str);
-		}
-	}
-	return ids;
+	return props.teamData.events.map((event) => event.eventId.toString()) || []; // 生成 ID 数组
 });
 
-/** 计算收藏显示什么图标 */
+// 计算当前事件是否被关注
 const isAttention = computed(() => {
-	let tag = false;
-	if (eventIds.value.length) {
-		for (let i = 0; i < eventIds.value.length; i++) {
-			/*判断是否包含 */
-			const bol = SportAttentionStore.getAttentionEventIdList.includes(Number(eventIds.value[i]));
-			if (bol) {
-				tag = true;
-			} else {
-				tag = false;
-				break;
-			}
-		}
-	}
-	return tag;
+	return eventIds.value.every((id) => SportAttentionStore.getAttentionEventIdList.includes(Number(id)));
 });
 
+// 在组件挂载时初始化显示状态
 onMounted(() => {
-	displayContent.value = props.isExpand;
-
-	// console.log(props.teamData, 45612);
+	displayContent.value = props.isExpand; // 设置初始状态
 });
-
-/**
- * @description: 队伍是否添加关注
- * @param {*} isActive 是否收藏
- * @return {*}
- */
-const attentionEvent = async (isActive: boolean) => {
-	if (isActive) {
-		/**取消体育关注 */
-		await FootballCardApi.unFollow({
-			thirdId: eventIds.value,
-		});
-	} else {
-		if (eventIds.value.length) {
-			for (let i = 0; i < eventIds.value.length; i++) {
-				const str = eventIds.value[i].toString();
-				/**添加体育关注 */
-				await FootballCardApi.saveFollow({
-					thirdId: str,
-					type: 1,
-				});
-			}
-		}
-		// /**添加体育关注 */
-		// await FootballCardApi.saveFollow({
-		// 	thirdId: [eventIds.value],
-		// 	type: 1,
-		// });
-	}
-	PubSub.publish(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, {});
-};
 </script>
 
 <style scoped lang="scss">
 .card-container {
-	width: 1246px;
-	border-radius: 8px;
 	overflow: hidden;
-	.card—header {
+	.card-header {
 		display: flex;
 		width: 100%;
 		height: 34px;
 		background: var(--Bg6);
 		box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25) inset;
 		border-radius: 8px 8px 0px 0px;
+		cursor: pointer;
 
 		.league-info {
-			// width: 384px;
+			min-width: 284px;
+			// max-width: 284px;
 			flex: 1;
 			display: flex;
 			align-items: center;
 			gap: 12px;
-			padding-left: 24px;
+			padding: 8px;
 			box-sizing: border-box;
-			.collection {
-				width: 16px;
-				height: 16px;
-			}
 			.league_icon {
 				width: 20px;
 				height: 20px;
 			}
 			.league_name {
-				// max-width: 328px;
 				color: var(--Text_s);
 				font-family: "PingFang SC";
 				font-size: 16px;
-				font-weight: 400;
+				font-weight: 300;
 				white-space: nowrap; /* 防止文本换行 */
 				overflow: hidden; /* 超出部分隐藏 */
 				text-overflow: ellipsis; /* 超出部分显示省略号 */
 			}
 		}
 		.market-name-info {
-			width: 804px;
+			width: 600px;
 			.market-name-list {
 				height: 100%;
 				display: flex;
 				gap: 4px;
 				padding-right: 4px;
 				.label {
-					flex: 1;
 					height: 100%;
 					display: flex;
 					align-items: center;
@@ -205,11 +147,24 @@ const attentionEvent = async (isActive: boolean) => {
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
+					/* 根据标签的顺序设置不同的宽度 */
+					&:nth-child(1),
+					&:nth-child(3) {
+						width: 78px; /* 第一和第三个标签的宽度 */
+					}
+					&:nth-child(2),
+					&:nth-child(4) {
+						width: 92px; /* 第二和第四个标签的宽度 */
+					}
+					&:nth-child(5),
+					&:nth-child(6) {
+						width: 118px; /* 第五和第六个标签的宽度 */
+					}
 				}
 			}
 		}
 		.header-icon {
-			width: 58px;
+			width: 46px;
 			height: 100%;
 			display: flex;
 			align-items: center;

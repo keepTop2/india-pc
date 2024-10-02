@@ -53,7 +53,7 @@ const route = useRoute();
 
 const props = withDefaults(
 	defineProps<{
-		size: "small" | "large";
+		size?: "small" | "large";
 		eventsInfo: SportsRootObject;
 	}>(),
 	{

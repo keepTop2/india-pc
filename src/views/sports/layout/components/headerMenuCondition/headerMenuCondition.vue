@@ -229,10 +229,10 @@ const getFilterEvents = debounce((event) => {
 <style scoped lang="scss">
 .heaerMenuCondition-container {
 	width: 100%;
-	height: 50px;
+	height: 48px;
 	display: flex;
 	align-items: center;
-	border-radius: 0 0 8px 8px;
+	border-radius: 8px 8px 0 0;
 	background: var(--Bg1);
 	.left {
 		flex: 1;

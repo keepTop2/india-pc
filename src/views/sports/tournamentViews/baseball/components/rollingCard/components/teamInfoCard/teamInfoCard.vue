@@ -21,73 +21,53 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter, useRoute } from "vue-router";
-import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-import { useLink } from "/@/views/sports/hooks/useLink";
-import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
-const SportAttentionStore = useSportAttentionStore();
-const router = useRouter();
-const route = useRoute();
-const { gotoEventDetail } = useLink();
-
 interface teamDataType {
-	/** 数据索引 */
-	dataIndex: number;
 	/** 队伍数据 */
 	teamData: any;
 }
 
 const props = withDefaults(defineProps<teamDataType>(), {
-	/** 数据索引 */
-	dataIndex: 0,
 	teamData: () => {
 		return {};
 	},
 });
-/**
- * @description: 跳转到比赛详细
- */
-const linkDetail = () => {
-	const params = {
-		leagueId: props?.teamData?.leagueId,
-
-		eventId: props?.teamData?.eventId,
-		dataIndex: props?.dataIndex,
-	};
-	gotoEventDetail(params, SportTypeEnum.Baseball);
-};
 </script>
 
 <style scoped lang="scss">
 .league-info {
-	flex: 1;
+	width: 284px;
+	height: 100%;
 	display: flex;
 	align-items: center;
-	padding: 8px 10px 8px 24px;
+	padding: 8px;
 	.league-team-info {
 		flex: 1;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
+		gap: 4px;
 		.team {
 			display: flex;
 			align-items: center;
-			gap: 6px;
+			gap: 8px;
 			.team-icon {
 				width: 20px;
 				height: 20px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				.icon {
 					width: 100%;
 					height: 100%;
 				}
 			}
 			.team-name {
-				max-width: 286px;
+				max-width: 200px;
 				flex: 1;
 				color: var(--Text_s);
 				font-family: "PingFang SC";
-				font-size: 14px;
+				font-size: 12px;
 				font-weight: 400;
 				white-space: nowrap; /* 防止文本换行 */
 				overflow: hidden; /* 超出部分隐藏 */
@@ -96,7 +76,7 @@ const linkDetail = () => {
 
 			.score {
 				min-width: 32px;
-				height: 34px;
+				height: 32px;
 				display: flex;
 				align-items: center;
 				justify-content: center;

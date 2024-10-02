@@ -1,7 +1,3 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育-足球-赔率卡片列；
--->
 <template>
 	<div class="columns marketColumn" v-if="sportInfo" :class="[!props.displayContent ? 'hideToggle' : 'marketColumn']">
 		<template v-for="(item, index) in sportInfo.teams" :key="index">

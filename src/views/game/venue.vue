@@ -22,9 +22,10 @@
 					</div>
 				</div>
 				<div class="tabs curp">
-					<span v-for="(item, index) in gameTab" class="tab" :class="currentTab == index ? 'active' : ''" @click="clickTab(index)">{{ item.label }}</span>
+					<span v-for="(item, index) in gameTab" class="tab" :class="currentTab == index ? 'active' : ''" @click="clickTab(index)" :key="index">{{ item.label }}</span>
 				</div>
 			</div>
+
 			<!-- 查询展示 -->
 			<div v-if="searchQuery">
 				<venueGameCard :gameList="filteredResults"></venueGameCard>
@@ -34,13 +35,9 @@
 			<div v-else-if="currentTab == 0">
 				<!-- 热门推荐 -->
 				<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
-				<hotGame :hotGameList="hotGameObj.gameInfoList" v-else />
+				<hotGame :hotGameList="hotGameObj.gameInfoList" v-else-if="hotGameObj.gameInfoList?.length" />
 				<div v-if="isLoading">
-					<lobbyGameSkeleton :skeletonCount="6" />
-					<lobbyGameSkeleton :skeletonCount="3" />
-					<lobbyGameSkeleton :skeletonCount="6" />
-					<lobbyGameSkeleton :skeletonCount="1" />
-					<lobbyGameSkeleton :skeletonCount="5" />
+					<lobbyGameSkeleton v-for="count in [6, 3, 6, 1, 5]" :key="count" :skeletonCount="count" />
 				</div>
 				<div v-else>
 					<lobbyGameCard :gameList="newGameObj" title="新游戏" />
@@ -48,8 +45,7 @@
 				</div>
 			</div>
 			<!-- 其他tab处理 -->
-			<!-- 其他tab处理 -->
-			<div v-else-if="currentTab == 1">
+			<div v-else-if="currentTab == 1 && hotGameObj.gameInfoList.length">
 				<hotGame :hotGameList="hotGameObj.gameInfoList" v-if="hotGameObj.gameInfoList?.length" />
 			</div>
 			<div v-else-if="currentTab == 2 && newGameObj.length">

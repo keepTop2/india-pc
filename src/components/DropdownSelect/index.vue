@@ -27,79 +27,89 @@
 		</div>
 	</div>
 </template>
-
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 
+// 定义选项的接口
 interface Option {
-	code: string;
-	label: string;
-	value: string;
+	code: string; // 选项的代码
+	label: string; // 选项的标签
+	value: string; // 选项的值
 }
 
+// 定义组件的 props 类型
 const props = defineProps<{
-	options: Option[];
-	placeholder?: string;
-	model: string;
+	options: Option[]; // 选项数组
+	placeholder?: string; // 占位符（可选）
+	model: string; // 绑定的模型
 }>();
 
+// 定义事件发射器
 const emit = defineEmits<{
-	(e: "update:modelValue", value: Option | null): void;
-	(e: "search", query: string): void;
+	(e: "update:modelValue", value: Option | null): void; // 更新模型值的事件
+	(e: "search", query: string): void; // 搜索事件
 }>();
 
-const searchQuery = ref("");
-const isOpen = ref(false);
-const selectedOption = ref<Option | null>(null);
-const dropdown = ref<HTMLDivElement | null>(null);
+// 定义响应式变量
+const searchQuery = ref(""); // 搜索查询
+const isOpen = ref(false); // 下拉菜单是否打开
+const selectedOption = ref<Option | null>(null); // 当前选中的选项
+const dropdown = ref<HTMLDivElement | null>(null); // 下拉菜单的 DOM 引用
 
+// 切换下拉菜单的显示状态
 const toggleDropdown = () => {
 	isOpen.value = !isOpen.value;
 };
 
-// Hide dropdown when clicking outside of it
+// 点击外部时隐藏下拉菜单
 const handleClickOutside = (event: MouseEvent) => {
 	if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
-		isOpen.value = false;
+		isOpen.value = false; // 点击外部关闭下拉菜单
 	}
 };
 
+// 过滤选项以进行搜索
 const filterOptions = () => {
-	emit("search", searchQuery.value);
+	emit("search", searchQuery.value); // 发射搜索事件
 };
 
+// 选择选项
 const selectOption = (option: Option) => {
-	selectedOption.value = option;
-	isOpen.value = false; // Close dropdown after selection
-	emit("update:modelValue", option);
+	selectedOption.value = option; // 设置选中的选项
+	isOpen.value = false; // 选择后关闭下拉菜单
+	emit("update:modelValue", option); // 发射更新模型值的事件
 };
 
+// 计算过滤后的选项
 const filteredOptions = computed(() => {
 	return props.options.filter(
-		(option) => option.code.toLowerCase().includes(searchQuery.value?.toLowerCase()) || option.value.toLowerCase().includes(searchQuery.value?.toLowerCase())
+		(option) =>
+			option.code.toLowerCase().includes(searchQuery.value?.toLowerCase()) || // 根据 code 过滤
+			option.value.toLowerCase().includes(searchQuery.value?.toLowerCase()) // 根据 value 过滤
 	);
 });
 
-// Watch for selected option changes to update input value
+// 观察选中选项的变化以更新输入值
 watch(selectedOption, (newVal) => {
 	if (newVal) {
-		searchQuery.value = newVal.code;
+		searchQuery.value = newVal.code; // 如果有选中项，更新搜索查询为选中项的代码
 	} else {
-		searchQuery.value = "";
+		searchQuery.value = ""; // 如果没有选中项，清空搜索查询
 	}
 });
 
+// 计算选中选项的标签
 const selectedOptionLabel = computed(() => {
-	return props.model ? props.model : selectedOption.value ? selectedOption.value.code : "";
+	return props.model ? props.model : selectedOption.value ? selectedOption.value.code : ""; // 返回绑定的模型值或选中项的代码
 });
 
-// Add and remove global click event listener
+// 添加和移除全局点击事件监听器
 onMounted(() => {
-	document.addEventListener("click", handleClickOutside);
+	document.addEventListener("click", handleClickOutside); // 组件挂载时添加事件监听器
 });
 
 onUnmounted(() => {
-	document.removeEventListener("click", handleClickOutside);
+	document.removeEventListener("click", handleClickOutside); // 组件卸载时移除事件监听器
 });
 </script>
 

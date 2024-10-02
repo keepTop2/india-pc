@@ -13,8 +13,7 @@
 			</div>
 		</div>
 		<div class="text_content">
-			<p>{{ title || $t('common["哎呀"]') }}</p>
-			<p>{{ center || $t('common["还没有数据"]') }}</p>
+			<p>{{ title || $t('common["哎呀"]') }}{{ center || $t('common["还没有数据"]') }}</p>
 		</div>
 	</div>
 </template>

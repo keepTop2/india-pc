@@ -12,7 +12,9 @@
 				</div>
 				<div v-show="setp == 2">
 					<canvas ref="canvas"></canvas>
-					<button class="exit-button" @click="exitGame">退出</button>
+					<button class="exit-button" @click="exitGame">
+						<img src="./image/close.png" alt="" />
+					</button>
 				</div>
 			</div>
 		</div>
@@ -171,10 +173,36 @@ function animate(): void {
 
 // 绘制倒计时
 function drawCountdown() {
-	if (ctx) {
+	if (ctx && canvas.value) {
+		const countdownText = "倒计时: ";
+		const countdownValue = countdown.value.toString();
+
+		// 设置倒计时文本的样式和大小
+		ctx.font = "20px Arial"; // 较小的字体
+		const textWidth1 = ctx.measureText(countdownText).width; // 计算 "倒计时:" 的宽度
+
+		// 设置倒计时值的样式和大小
+		ctx.font = "32px Arial"; // 较大的字体
+		const textWidth2 = ctx.measureText(countdownValue).width; // 计算倒计时值的宽度
+
+		// 总文本宽度
+		const totalTextWidth = textWidth1 + textWidth2;
+
+		// 计算文本在画布的中心位置
+		const centerX = (canvas.value.width - totalTextWidth) / 2;
+		const centerY = 95;
+
+		// 清空画布
+		ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+
+		// 绘制 "倒计时:" 文本
+		ctx.font = "20px Arial"; // 较小的字体
 		ctx.fillStyle = "white"; // 设置字体颜色
-		ctx.font = "24px Arial"; // 设置字体样式
-		ctx.fillText(`倒计时: ${countdown.value}`, 10, 30); // 在画布上绘制倒计时
+		ctx.fillText(countdownText, centerX, centerY);
+
+		// 绘制倒计时值
+		ctx.font = "32px Arial"; // 较大的字体
+		ctx.fillText(countdownValue, centerX + textWidth1, centerY);
 	}
 }
 // 鼠标移动监听器
@@ -260,7 +288,7 @@ const startRedbagRain = () => {
 				addNewRedBag();
 			}
 		}, 150);
-		startCountdown(11);
+		startCountdown(100);
 		clearTimeout(timer);
 	}, 3000);
 };
@@ -359,6 +387,7 @@ onBeforeUnmount(() => {
 			> div {
 				width: 700px;
 				margin: 0 auto;
+				position: relative;
 			}
 		}
 	}
@@ -368,17 +397,16 @@ onBeforeUnmount(() => {
 	position: absolute;
 	top: 20px; /* 距离顶部的距离 */
 	right: 20px; /* 距离右侧的距离 */
-	padding: 10px 15px;
-	background-color: red; /* 按钮颜色 */
-	color: white; /* 字体颜色 */
 	border: none; /* 去掉边框 */
 	border-radius: 5px; /* 圆角 */
 	cursor: pointer; /* 鼠标悬停变为指针 */
+	background: transparent;
+	img {
+		width: 54px;
+		height: 54px;
+	}
 }
 
-.exit-button:hover {
-	background-color: darkred; /* 悬停时按钮颜色 */
-}
 @keyframes shake {
 	0% {
 		transform: translateX(0) rotate(0deg);

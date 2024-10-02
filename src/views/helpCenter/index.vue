@@ -1,12 +1,11 @@
 <template>
-	<div class="modal-overlay"></div>
 	<div class="max-width">
 		<div class="title mt_15 mb_15 ml_18">
 			<svg-icon name="logo" width="132px" height="16px" />
 			<span class="fs_14 Text1 ml_20"> 竞猜规则 </span>
 		</div>
 		<Tabs :tabs="tabs" :activeTab="activeTab" @update:activeTab="updateActiveTab" class="Text1">
-			<Tab :name="item.name" :activeTab="activeTab" v-for="item in tabs">
+			<Tab :name="item.name" :activeTab="activeTab" v-for="(item, index) in tabs" :key="index">
 				<component :is="item.component" />
 			</Tab>
 		</Tabs>

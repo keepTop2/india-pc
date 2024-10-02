@@ -2,7 +2,7 @@
 	<div class="verification-code">
 		<div class="input-container">
 			<input placeholder="验证码" @input="validateInput" class="contact-input common_input" :disabled="sendCodeText == '发送'" />
-			<button @click="sendVerificationCode" class="send-button" :disabled="disabled || countdown > 0">
+			<button @click="sendVerificationCode" class="send-button" :disabled="disabled && countdown > 0" :class="countdown > 0 ? 'iscountdown' : ''">
 				{{ isCountingDown ? countdown + "s" : sendCodeText }}
 			</button>
 		</div>
@@ -78,5 +78,9 @@ defineExpose({
 	background: var(--Bg);
 	border: 1px solid var(--Line_2);
 	color: var(--Text2);
+}
+.iscountdown.send-button:disabled {
+	border: 1px solid var(--Theme);
+	color: var(--Theme);
 }
 </style>

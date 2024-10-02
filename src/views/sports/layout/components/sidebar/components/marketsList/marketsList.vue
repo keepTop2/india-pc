@@ -4,14 +4,16 @@
 			<div class="tabBox bg_BG1" :class="{ 'fixed-tab': isFixed }">
 				<div class="tabs">
 					<ul class="tab bg_BG1">
-						<li @click="changeTab('all')" key="all" :class="{ selected: activeTab == 'all' }">{{ $t('sports["所有投注"]') }}</li>
+						<li @click="changeTab('all')" key="all" :class="{ selected: activeTab == 'all' }">{{ $t('sports["所有投注"]') }}
+						</li>
 						<!-- <li v-for="(i, index) in markets" :key="i.betTypeName" @click="changeTab(i.betTypeName)" :class="{ selected: activeTab == i.betTypeName }">{{ i.betTypeName }}</li> -->
 					</ul>
 				</div>
 			</div>
 			<div class="selections_list" v-if="markets.length">
 				<Collapse v-model="activeSelection" :accordion="false">
-					<CollapseItem class="selection_item" v-for="i in markets" v-show="activeTab == 'all' || activeTab == i.betTypeName" :key="i.betTypeName" :name="i.betTypeName">
+					<CollapseItem class="selection_item" v-for="i in markets"
+						v-show="activeTab == 'all' || activeTab == i.betTypeName" :key="i.betTypeName" :name="i.betTypeName">
 						<template #title>
 							<span class="item-red"></span>
 							<div class="tournament-header">
@@ -19,43 +21,42 @@
 									<div class="tournament-name">{{ i.betTypeName }}</div>
 								</div>
 								<!-- 收起折叠面板箭头 -->
-								<!-- <svg-icon :class="{ sport_arrow: activeSelection.includes(i.betTypeName) }" name="arrow_down" size="12" /> -->
+								<svg-icon
+									:class="{ sport_arrow: activeSelection.includes(i.betTypeName), 'rotate-right': !activeSelection.includes(i.betTypeName) }"
+									name="arrow_down" size="12" />
 							</div>
 						</template>
 						<template #default>
 							<ul class="bg_BG3 tournament-content">
 								<li v-for="market in i.markets" :key="market.marketId">
-									<div
-										class="li_tag bg_Tag1"
-										v-for="selection in filterSelections(market.selections)"
-										@click="market.marketStatus === 'running' && onSetSportsEventData(market, selection)"
-										:class="{
+									<div class="li_tag bg_Tag1" v-for="selection in filterSelections(market.selections)"
+										@click="market.marketStatus === 'running' && onSetSportsEventData(market, selection)" :class="{
 											isBright: isBright(market, selection),
 											threeCol: filterSelections(market.selections).length % 3 === 0 && !isbladder(market.betType),
 											twoCol: filterSelections(market.selections).length % 3 !== 0 && !isbladder(market.betType),
-										}"
-										:key="market.marketId + selection.key"
-									>
-										<div v-if="market.marketStatus === 'running'">
+										}" :key="market.marketId + selection.key">
+										<div>
 											<span :class="['fs_14', 'fw_400', 'selectionTitle']">
-												<SelectionName :name="selection?.keyName" :betType="market.betType" />
-												<span v-show="selection.key != 'x'">&nbsp;{{ SportsCommon.formatPoint({ betType: market.betType, point: selection?.point, key: selection?.key }) }}</span>
+												<SelectionName :class="{ label: isBright(market, selection) }" :name="selection?.keyName"
+													:betType="market.betType" />
+												<span v-show="selection.key != 'x'">&nbsp;{{ SportsCommon.formatPoint({
+													betType: market.betType,
+													point: selection?.point, key: selection?.key
+												}) }}</span>
 											</span>
-											<span :class="['fs_14', 'fw_400', 'price', changeClass(selection)]"
-												>{{ selection.oddsPrice.decimalPrice }}
-												<span>
-													<RiseOrFall
-														v-if="selection.oddsChange"
-														:time="3000"
-														:status="selection.oddsChange == 'oddsUp' ? 1 : 2"
-														@animationEnd="animationEnd(market.marketId, selection)"
-													/>
-												</span>
+											<span :class="['fs_14', 'fw_400', 'price', changeClass(selection)]">
+												<div v-if="market.marketStatus === 'running'">
+													{{ selection.oddsPrice.decimalPrice }}
+													<span>
+														<RiseOrFall v-if="selection.oddsChange" :time="3000"
+															:status="selection.oddsChange == 'oddsUp' ? 1 : 2"
+															@animationEnd="animationEnd(market.marketId, selection)" />
+													</span>
+												</div>
+												<svg-icon v-else name="sports-lock" class="icon-lock" />
 											</span>
 										</div>
-										<div v-else>
-											<svg-icon name="sport-lock" size="4.6" />
-										</div>
+
 									</div>
 								</li>
 							</ul>
@@ -81,7 +82,7 @@ import SelectionName from "./components/selectionName.vue";
 import { LocationQueryValue, useRoute } from "vue-router";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
-
+import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 const SidebarStore = useSidebarStore();
 /**
  * @description 市场类型接口
@@ -93,6 +94,8 @@ interface marketType {
 	marketStatus: string;
 }
 const sportsBetEvent = useSportsBetEventStore();
+const ChampionShopCartStore = useSportsBetChampionStore();
+
 const route = useRoute();
 const isFold = ref(false);
 const isFixed = ref(false);
@@ -103,10 +106,10 @@ const activeSelection = ref<string[]>([]);
  * @description 获取赛事列表下的赛事
  * @returns 赛事数组
  */
- const eventDetail = computed(() => {
+const eventDetail = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.sidebarData.childrenViewData;
 
-	console.log(childrenViewData, "childrenViewData");
+	console.log(childrenViewData, "childrenViewData======marketsList");
 	if (childrenViewData) {
 		return childrenViewData[0]?.events?.[0];
 	}
@@ -148,7 +151,7 @@ const markets = computed(() => {
 		}
 		return a.betType - b.betType;
 	});
-	console.log(marketData, 'marketData');
+	console.log(marketData, "marketData======marketsList");
 	return marketData;
 });
 
@@ -156,6 +159,10 @@ const markets = computed(() => {
  * @description 计算市场选择
  */
 const marketsSelect = computed(() => sportsBetEvent.getEventInfo);
+/**
+ * @description 计算冠军页面的市场选择
+ */
+const championMarketsSelect = computed(() => ChampionShopCartStore.getEventInfo);
 
 /**
  * @description 切换标签
@@ -171,7 +178,8 @@ const changeTab = (key: string) => {
  * @returns 过滤后的选择项
  */
 const filterSelections = (data: any[]) => {
-	return data.filter((item: { oddsPrice: { decimalPrice: number } }) => item.oddsPrice.decimalPrice != 0);
+	const list = data.filter((item: { oddsPrice: { decimalPrice: number } }) => item.oddsPrice.decimalPrice != 0);
+	return list
 };
 
 /**
@@ -181,8 +189,12 @@ const filterSelections = (data: any[]) => {
  * @returns 是否高亮
  */
 const isBright = (market: { marketId: any }, selection: { key: any }) => {
-	const { eventId } = route.query;
-	return marketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
+	const { eventId } = eventDetail.value;
+	if (route.meta.name !== "champion") {
+		return marketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
+	} else {
+		return championMarketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
+	}
 };
 
 /**
@@ -191,7 +203,49 @@ const isBright = (market: { marketId: any }, selection: { key: any }) => {
  * @param selection 选择项对象
  */
 const onSetSportsEventData = (market: any, selection: any) => {
-	// 实现投注选择逻辑
+	// 判断是否在冠军页面 侧边数据加入购物车做逻辑区别
+	if (route.meta.name !== "champion") {
+		// 实现投注选择逻辑
+		// 判断是否已经加入购物车，已经加入删除，则新增购物车
+		if (isBright(market, selection)) {
+			// 删除Pinia数据
+			sportsBetEvent.removeEventCart(eventDetail.value);
+		} else {
+			// 储存 赛事ID 投注类型 盘口key
+			sportsBetEvent.storeEventInfo(eventDetail.value.eventId, {
+				marketId: market.marketId,
+				betType: market.betType,
+				selectionKey: selection.key,
+			});
+			// 存储赛事数据在缓存中
+			sportsBetEvent.addEventToCart(JSON.parse(JSON.stringify(eventDetail.value)));
+		}
+	} else {
+		const params = {
+			type: "0",
+			eventId: eventDetail.value.eventId,
+			sportType: eventDetail.value.sportType,
+			marketId: market.marketId,
+			betType: market.betType,
+			selectionKey: selection.key,
+			event: {
+				...eventDetail.value,
+			},
+		};
+		// 判断是否已经加入购物车，已经加入删除，则新增购物车
+		if (isBright(market, selection)) {
+			// 删除Pinia数据
+			ChampionShopCartStore.removeEventCart(params);
+		} else {
+			ChampionShopCartStore.storeEventInfo(eventDetail.value.eventId, {
+				marketId: market.marketId,
+				betType: market.betType,
+				selectionKey: selection.key,
+			});
+			/**添加到购物车 */
+			ChampionShopCartStore.addChampionToCart(params);
+		}
+	}
 };
 
 /**
@@ -242,25 +296,29 @@ watch(
 </script>
 
 <style scoped lang="scss">
+.icon-lock {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
 .content {
 	// Add your styles here
 	border-radius: 16px 16px 0 0;
+
 	.tabBox {
 		// height: 80px;
 		// width: 100%;
 	}
+
 	.isBright {
-		position: relative;
-		&::after {
-			content: "";
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			border-radius: 8px;
-			border: 2px solid;
-			box-sizing: border-box;
+		background: var(--Bg5) !important;
+
+		.label {
+			color: var(--Text_a) !important;
 		}
 	}
+
 	.tabBox {
 		// width: 100vw;
 		overflow: hidden;
@@ -274,11 +332,13 @@ watch(
 			height: 26px;
 		}
 	}
+
 	.tabs {
 		padding: 11px 24px;
 		width: calc(100% - 48px);
 		box-sizing: border-box;
 	}
+
 	.tab {
 		padding: 0;
 		margin: 0;
@@ -292,45 +352,56 @@ watch(
 		list-style-type: none;
 		width: 100%;
 		box-sizing: border-box;
+
 		li {
 			width: 96px;
 			height: 30px;
 			color: var(--Text1);
 			text-align: center;
-			position: relative; /* 为li元素设置相对定位，以便::after伪元素可以相对于它定位 */
+			position: relative;
+			/* 为li元素设置相对定位，以便::after伪元素可以相对于它定位 */
 			font-size: 14px;
 			font-weight: 400;
 			display: inline-block;
 			border-radius: 4px;
 			border: 1px solid var(--Line_2);
 		}
+
 		.selected {
 			background-color: var(--Theme);
 			color: var(--Text_a);
 		}
 	}
+
 	.tab::-webkit-scrollbar {
-		width: 0; /* 对于横向滚动条 */
-		height: 0; /* 对于纵向滚动条 */
+		width: 0;
+		/* 对于横向滚动条 */
+		height: 0;
+		/* 对于纵向滚动条 */
 		display: none;
 	}
 
 	.fixed-tab {
 		position: sticky;
-		top: 100px; /* 与smallHeader对齐 */
+		top: 100px;
+		/* 与smallHeader对齐 */
 		width: 100%;
-		z-index: 1; /* 确保tab位于内容之上 */
+		z-index: 1;
+		/* 确保tab位于内容之上 */
 	}
+
 	.tournament-content {
 		border-radius: 0px 0px 16px 16px;
-		li{
+
+		li {
 			margin-bottom: 5px;
 		}
+
 		.selectionTitle {
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			
+
 			:first-child {
 				color: var(--Text1);
 				max-width: 60px;
@@ -338,11 +409,13 @@ watch(
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
+
 			:last-child {
 				color: var(--Text_a);
 			}
 		}
 	}
+
 	.tournament-header {
 		display: flex;
 		align-items: center;
@@ -362,6 +435,7 @@ watch(
 				width: 30px;
 				height: 30px;
 				margin: 0 12px;
+
 				img {
 					width: 100%;
 					height: 100%;
@@ -374,12 +448,26 @@ watch(
 				font-size: 16px;
 				font-weight: 400;
 				line-height: 22px;
-				white-space: nowrap; /* 禁止换行 */
-				overflow: hidden; /* 隐藏超出部分 */
-				text-overflow: ellipsis; /* 显示省略号 */
+				white-space: nowrap;
+				/* 禁止换行 */
+				overflow: hidden;
+				/* 隐藏超出部分 */
+				text-overflow: ellipsis;
+				/* 显示省略号 */
 			}
 		}
+
+		.sport_arrow {
+			transition: transform 0.3s ease;
+			// transform: rotate(-180deg);
+		}
+
+		.rotate-right {
+			transition: transform 0.3s ease;
+			transform: rotate(-180deg);
+		}
 	}
+
 	.noData {
 		display: flex;
 		align-items: center;
@@ -388,21 +476,25 @@ watch(
 		font-size: 14px;
 		color: var(--Text2);
 		height: calc(100vh - 480px);
+
 		svg {
 			width: 140px;
 			height: 120px;
 			margin-bottom: 10px;
 		}
 	}
+
 	.selections_list {
 		// padding: 20px 24px;
 		margin-top: 5px;
+
 		.selection_item {
 			position: relative;
 			border-radius: 8px;
 			background-color: var(--Bg1);
 			margin-bottom: 5px;
 			padding: 10px 8px 8px 8px;
+
 			.item-red {
 				position: absolute;
 				background-color: var(--Theme);
@@ -412,20 +504,24 @@ watch(
 				top: 10px;
 				left: 0;
 			}
-			.x-collapse-item_header {
-			}
-			.x-collapse-transition {
-			}
+
+			.x-collapse-item_header {}
+
+			.x-collapse-transition {}
 		}
+
 		ul {
 			padding: 0;
 			margin: 0;
+
 			li {
 				display: flex;
-				flex-wrap: wrap; /* 允许元素换行 */
+				flex-wrap: wrap;
+				/* 允许元素换行 */
 				// justify-content: space-between; /* 项目之间的间隔 */
 				gap: 4px;
 			}
+
 			.li_tag {
 				position: relative;
 
@@ -433,18 +529,22 @@ watch(
 				padding: 7px 12px;
 				padding-right: 20px;
 				height: 34px;
-				box-sizing: border-box; /* 包括边框和内边距在内占据50% */
+				box-sizing: border-box;
+				/* 包括边框和内边距在内占据50% */
 				border-radius: 4px;
 				display: flex;
 				justify-content: center;
 				flex-direction: column;
 				background-color: var(--Bg3);
-				flex-basis: calc(50% - 5px); /* 每个元素占据50%，减去10px的间隔 */
+				flex-basis: calc(50% - 5px);
+				/* 每个元素占据50%，减去10px的间隔 */
 				font-size: 14px;
+
 				// margin-bottom: 4px;
 				.price {
 					display: inline-block;
 					color: var(--Text_a);
+
 					// display: flex;
 					// align-items: center;
 					// gap: 5px;
@@ -456,14 +556,16 @@ watch(
 						right: 5px;
 					}
 				}
-				> div {
+
+				>div {
 					display: flex;
 					justify-content: space-between;
 				}
 			}
 
 			.threeCol {
-				flex-basis: calc(33% - 6px); /* 每个元素占据50%，减去10px的间隔 */
+				flex-basis: calc(33% - 6px);
+				/* 每个元素占据50%，减去10px的间隔 */
 			}
 		}
 	}

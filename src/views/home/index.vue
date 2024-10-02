@@ -7,7 +7,6 @@
 			<!-- 热门推荐 -->
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
 			<hotGame :hotGameList="hotGameList" v-else />
-
 			<div v-if="isLoading">
 				<lobbyGameSkeleton v-for="(count, index) in [6, 3, 6, 1, 5]" :key="index" :skeletonCount="count" />
 			</div>
@@ -41,7 +40,6 @@ const queryGameInfoDetail = async () => {
 	try {
 		const res = await HomeApi.queryGameInfoDetail(params);
 		hotGameList.value = res.data?.records || [];
-		console.log(hotGameList.value);
 	} catch (error) {
 		console.error("Error fetching hot games:", error);
 	}
@@ -58,14 +56,11 @@ const queryLobbyTopGame = async () => {
 
 onMounted(async () => {
 	isLoading.value = true;
-
 	const startTime = Date.now();
-
 	await Promise.all([queryGameInfoDetail(), queryLobbyTopGame()]);
-
+	// 最少500毫秒loading
 	const elapsedTime = Date.now() - startTime;
 	const delay = Math.max(0, 500 - elapsedTime);
-
 	setTimeout(() => {
 		isLoading.value = false;
 	}, delay);

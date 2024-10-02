@@ -11,7 +11,7 @@
 				<div class="menu_item" :class="openMenuIndex == index ? 'activeMenu' : ''" @click="selectMenu(item, index)">
 					<span class="menu_icon"><img v-lazy-load="item.icon" alt="" /></span>
 					<span class="menu_name ellipsis">{{ item.directoryName }}</span>
-					<span class="arrow" v-if="item.twoList && !collapse">
+					<span class="arrow" v-if="item.twoList?.length && !collapse">
 						<svg-icon name="arrow_up" v-if="openMenuIndex == index" height="8px" width="14px" />
 						<svg-icon name="arrow_down" v-else height="8px" width="14px" />
 					</span>
@@ -20,7 +20,7 @@
 					<div v-show="openMenuIndex == index" class="subMenu">
 						<div
 							v-for="(subItem, subIndex) in item.twoList"
-							:key="index"
+							:key="subIndex"
 							class="menu_item subItem"
 							:class="openSubMenuIndex == index + ',' + subIndex ? 'activeMenu' : ''"
 							@click="goToPath(item, subItem, index, subIndex)"
@@ -64,7 +64,11 @@ watch(
 	}
 );
 const setOpenMenu = () => {
+	// 活动高亮
 	if (route.name === "activity") return (openMenuIndex.value = "activity");
+	// 体育高亮
+	if (route.fullPath.indexOf("/sports") !== -1) return (openMenuIndex.value = routerObj.value.findIndex((item: any) => item.modelCode == "PE"));
+	// 其他二级菜单
 	openMenuIndex.value = routerObj.value.findIndex((item: any) => item.gameOneClassId == route.query.gameOneId);
 	if (openMenuIndex.value !== -1) {
 		openSubMenuIndex.value = openMenuIndex.value + "," + routerObj.value[openMenuIndex.value as number]?.twoList?.findIndex((item: any) => item.id == route.query.gameTwoId);
@@ -100,6 +104,7 @@ const selectMenu = (item: any, index: number) => {
 		router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: 0 } });
 	} else {
 		if (item.modelCode == "PE") {
+			openMenuIndex.value = index;
 			router.push("/sports");
 		} else if (item.modelCode == "LT") {
 			Common.goToGame(item.gameInfo);

@@ -1,6 +1,6 @@
 <template>
 	<div class="hot-event-container">
-		<div class="hot_header">热门赛事</div>
+		<div class="hot_header"><span data-v-a2677b2d="" class="item-red"></span>热门赛事</div>
 		<div class="event-list">
 			<div class="event-card" v-for="(item, index) in promotionsData" :key="index">
 				<div class="card-header">
@@ -18,17 +18,17 @@
 				</div>
 				<div class="event-team-info">
 					<div class="left">
-						<div class="team-icon"><img :src="item.teamInfo.homeIconUrl" alt="" /></div>
-						<div class="team-name">{{ item.teamInfo.homeName }}</div>
+						<div class="team-icon"><img :src="item.teamInfo?.homeIconUrl" alt="" /></div>
+						<div class="team-name">{{ item.teamInfo?.homeName }}</div>
 					</div>
 					<div class="right">
-						<div class="market-item">
+						<div class="market-item" v-if="item.markets && item.markets[3]">
 							<div class="label">
-								<span>{{ item.markets[3].selections[0].keyName }}</span>
-								<span>{{ item.markets[3].selections[0].point }}</span>
+								<span>{{ item.markets[3].selections[0]?.keyName }}</span>
+								<span>{{ item.markets[3].selections[0]?.point }}</span>
 							</div>
 							<div class="value">
-								<span :class="oddsClass(item)">{{ item.markets[3].selections[0].oddsPrice.decimalPrice }}</span>
+								<span :class="oddsClass(item)">{{ item.markets[3].selections[0]?.oddsPrice?.decimalPrice }}</span>
 								<div class="arrow-icon">
 									<RiseOrFall :time="3000" :status="oddsChange(item)" @animationEnd="item.oddsChange = ''" />
 								</div>
@@ -38,17 +38,17 @@
 				</div>
 				<div class="event-team-info">
 					<div class="left">
-						<div class="team-icon"><img :src="item.teamInfo.awayIconUrl" alt="" /></div>
-						<div class="team-name">{{ item.teamInfo.awayName }}</div>
+						<div class="team-icon"><img :src="item.teamInfo?.awayIconUrl" alt="" /></div>
+						<div class="team-name">{{ item.teamInfo?.awayName }}</div>
 					</div>
 					<div class="right">
-						<div class="market-item">
+						<div class="market-item" v-if="item.markets && item.markets[3]">
 							<div class="label">
-								<span>{{ item.markets[3].selections[1].keyName }}</span>
-								<span>{{ item.markets[3].selections[1].point }}</span>
+								<span>{{ item.markets[3].selections[1]?.keyName }}</span>
+								<span>{{ item.markets[3].selections[1]?.point }}</span>
 							</div>
 							<div class="value">
-								<span :class="oddsClass(item)">{{ item.markets[3].selections[1].oddsPrice.decimalPrice }}</span>
+								<span :class="oddsClass(item)">{{ item.markets[3].selections[1]?.oddsPrice?.decimalPrice }}</span>
 								<div class="arrow-icon">
 									<RiseOrFall :time="3000" :status="oddsChange(item)" @animationEnd="item.oddsChange = ''" />
 								</div>
@@ -73,11 +73,11 @@ import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention"
 const SportAttentionStore = useSportAttentionStore();
 
 const promotionsData = computed(() => {
-	return viewSportPubSubEventData.sidebarEvent.promotionsList;
+	return viewSportPubSubEventData.sidebarData.promotionsViewData || [];
 });
 
 // 点击关注按钮
-const attentionEvent = async (isActive: boolean, item) => {
+const attentionEvent = async (isActive: boolean, item: any) => {
 	if (isActive) {
 		await FootballCardApi.unFollow({
 			thirdId: [item.eventId],
@@ -97,9 +97,9 @@ const attentionEvent = async (isActive: boolean, item) => {
 const oddsClass = (item: any) => {
 	if (!item.oddsChange) {
 		return "";
-	} else if (item.oddsChange == "oddsUp") {
+	} else if (item.oddsChange === "oddsUp") {
 		return "oddsUp";
-	} else if (item.oddsChange == "oddsDown") {
+	} else if (item.oddsChange === "oddsDown") {
 		return "oddsDown";
 	}
 };
@@ -109,9 +109,9 @@ const oddsClass = (item: any) => {
 const oddsChange = (item: any) => {
 	if (!item.oddsChange) {
 		return 3;
-	} else if (item.oddsChange == "oddsUp") {
+	} else if (item.oddsChange === "oddsUp") {
 		return 1;
-	} else if (item.oddsChange == "oddsDown") {
+	} else if (item.oddsChange === "oddsDown") {
 		return 2;
 	}
 };
@@ -134,6 +134,16 @@ const oddsChange = (item: any) => {
 		font-family: "PingFang SC";
 		font-size: 16px;
 		font-weight: 400;
+		position: relative;
+		.item-red{
+			position: absolute;
+				background-color: var(--Theme);
+				border-radius: 0 4px 4px 0;
+				width: 4px;
+				height: 22px;
+				top: 10px;
+				left: 0;
+		}
 	}
 	.event-list {
 		display: grid;

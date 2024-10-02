@@ -13,7 +13,7 @@
 						<p class="common_password">
 							<input :type="showOldPassword ? 'text' : 'password'" v-model="payLoad.oldPassword" class="common_input" @input="oldPasswordOnInput" autocomplete="new-password" />
 							<span class="eyes">
-								<svg-icon :name="showOldPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showOldPassword = !showOldPassword" />
+								<svg-icon :name="showOldPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showOldPassword = !showOldPassword" />
 							</span>
 						</p>
 						<p v-show="VerifyError.oldPassword" class="Wran_text fs_12 mt_2">{{ $t(`security_center['8-16位，必须包含 数字和字母']`) }}</p>
@@ -24,7 +24,7 @@
 						<p class="common_password">
 							<input :type="showNewPassword ? 'text' : 'password'" v-model="payLoad.newPassword" class="common_input" @input="newPasswordOnInput" />
 							<span class="eyes">
-								<svg-icon :name="showNewPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showNewPassword = !showNewPassword" />
+								<svg-icon :name="showNewPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showNewPassword = !showNewPassword" />
 							</span>
 						</p>
 						<p v-show="VerifyError.newPassword" class="Wran_text fs_12 mt_2">{{ $t(`security_center['8-16位，必须包含 数字和字母']`) }}</p>
@@ -35,7 +35,7 @@
 						<p class="common_password">
 							<input :type="showConfirmPassword ? 'text' : 'password'" v-model="payLoad.confirmPassword" class="common_input" @input="confirmOnInput" />
 							<span class="eyes">
-								<svg-icon :name="showConfirmPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showConfirmPassword = !showConfirmPassword" />
+								<svg-icon :name="showConfirmPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showConfirmPassword = !showConfirmPassword" />
 							</span>
 						</p>
 						<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`security_center['两次密码不一致']`) }}</p>

@@ -50,4 +50,24 @@ export const CommonApi = {
 			headers,
 		});
 	},
+	/**
+	 *@description 获取支付商列表
+	 */
+	queryPaymentVendorList: (data = {}, headers = { showLoading: false }) => {
+		return useAxiosApi(`/app/game_lobby/api/queryPaymentVendorList`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	/**
+	 *@description 获取站点赞助商列表
+	 */
+	queryPartnerList: (data = {}, headers = { showLoading: false }) => {
+		return useAxiosApi(`/app/game_lobby/api/queryPartnerList`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };

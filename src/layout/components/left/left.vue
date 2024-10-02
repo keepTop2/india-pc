@@ -11,7 +11,7 @@
 			<div class="left_imgs_collapse collapse_icon icon" @click="changeCollpase">
 				<SvgIcon name="collapse_icon" :class="collapse ? 'active' : ''" width="36px" height="36px" />
 			</div>
-			<div class="login_plan" @click="to('/')">
+			<div class="login_plan" @click="router.push('/')">
 				<svg-icon name="logo" width="132px" height="16px" />
 			</div>
 		</div>
@@ -41,7 +41,7 @@
 				</div>
 				<!-- 菜单 -->
 				<div class="left_scroll_conatiner2">
-					<menuSkeleton v-if="isLoading" />
+					<menuSkeleton v-if="isLoading" :collapse="collapse" />
 					<Menu v-else />
 				</div>
 				<!-- 左侧底步功能区 -->
@@ -106,9 +106,9 @@ import Common from "/@/utils/common";
 import { activityApi } from "/@/api/activity";
 import { useModalStore } from "/@/stores/modules/modalStore";
 const modalStore = useModalStore();
-const { to, router } = useTo();
 const ThemesStore = useThemesStore();
 const MenuStore = useMenuStore();
+import router from "/@/router";
 const isLoading = ref(false);
 onMounted(() => {
 	isLoading.value = true;
@@ -122,17 +122,15 @@ const showLottery = () => {
 };
 
 const showTask = () => {
-	PubSub.publish(PubSub.PubSubEvents.TaskEvents.TaskDialogSwitch.eventName, true);
+	modalStore.openModal("FREE_WHEEL");
 };
 const onSetTheme = (str: ThemeKey) => {
 	ThemesStore.setTheme(str);
 };
-
 const collapse = computed(() => {
 	const val = MenuStore.getCollapse;
 	return val;
 });
-
 const changeCollpase = () => {
 	const status = collapse.value;
 	MenuStore.setCollapse(!status);

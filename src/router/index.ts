@@ -14,7 +14,7 @@ const routes = [
 	//首页模块路由
 	frontPage,
 	// 错误页
-	errorPage,
+
 	{
 		path: "/",
 		component: layout,
@@ -104,10 +104,10 @@ const routes = [
 			},
 		],
 	},
-
+	...errorPage,
 	{
 		path: "/:pathMatch(.*)",
-		redirect: "/pageLoss",
+		redirect: "/404",
 	},
 ];
 
