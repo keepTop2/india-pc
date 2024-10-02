@@ -5,7 +5,7 @@
 			<!-- 联赛信息 -->
 			<div class="league-info">
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="League Icon" />
-				<div class="league_name" :style="displayContent ? 'max-width:300px' : ''">{{ teamData.leagueName }}</div>
+				<div class="league_name" :style="displayContent ? 'max-width:284px' : ''">{{ teamData.leagueName }}</div>
 			</div>
 			<!-- 盘口表头 -->
 			<div class="market-name-info" v-if="displayContent">
@@ -97,7 +97,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .card-container {
-	// border-radius: 8px;
 	overflow: hidden;
 	.card-header {
 		display: flex;

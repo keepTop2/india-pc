@@ -1,8 +1,7 @@
 <template>
-	<!-- 联赛数据统计卡片 -->
 	<SelectCard :teamData="listData" />
+	<!-- 联赛数据统计卡片 -->
 	<div class="box-content">
-		<!-- 日期选择区间 -->
 		<template v-if="listData.length">
 			<!--
 					虚拟滚动列表组件

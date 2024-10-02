@@ -144,7 +144,7 @@ const tools = computed(() => {
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
-			action: (event: any) => toggleEventScoreboard(event,true),
+			action: (event: any) => toggleEventScoreboard(event, true),
 			param: props.event, // 传递参数
 		});
 	}
@@ -208,7 +208,7 @@ const linkDetail = () => {
 		.main {
 			display: flex;
 			.league-markets {
-				width: 804px;
+				width: 600px;
 				display: flex;
 				gap: 4px;
 				padding: 8px 4px 8px 0px;
@@ -222,7 +222,7 @@ const linkDetail = () => {
 
 			.other-info {
 				// flex: 1;
-				width: calc(100% - 804px);
+				width: 284px;
 				padding: 0px 14px 0px 24px;
 				display: flex;
 				align-items: center;
@@ -272,7 +272,7 @@ const linkDetail = () => {
 			}
 
 			.score-info {
-				width: 804px;
+				width: 600px;
 				display: flex;
 				justify-content: space-between;
 				.score-list {

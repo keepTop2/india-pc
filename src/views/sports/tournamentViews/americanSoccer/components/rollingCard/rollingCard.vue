@@ -83,7 +83,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .card-container {
-	
 	border-radius: 8px;
 	overflow: hidden;
 	.card—header {
@@ -121,7 +120,7 @@ onMounted(() => {
 			}
 		}
 		.market-name-info {
-			width: 804px;
+			width: 600px;
 			.market-name-list {
 				height: 100%;
 				display: flex;
