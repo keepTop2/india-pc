@@ -149,14 +149,14 @@ onMounted(() => {
 					font-weight: 400;
 					/* 根据标签的顺序设置不同的宽度 */
 					&:nth-child(1),
-					&:nth-child(3) {
+					&:nth-child(4) {
 						width: 78px; /* 第一和第三个标签的宽度 */
 					}
 					&:nth-child(2),
-					&:nth-child(4) {
+					&:nth-child(5) {
 						width: 92px; /* 第二和第四个标签的宽度 */
 					}
-					&:nth-child(5),
+					&:nth-child(3),
 					&:nth-child(6) {
 						width: 118px; /* 第五和第六个标签的宽度 */
 					}

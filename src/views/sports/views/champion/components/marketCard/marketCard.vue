@@ -5,7 +5,7 @@
 				<div class="label">{{ cardData.teamName }}</div>
 				<div class="value" :class="changeClass(cardData)">{{ cardData?.price }}</div>
 			</div>
-			<RiseOrFall v-if="cardData?.oddsChange" :time="3000" :status="cardData?.oddsChange == 'oddsUp' ? 1 : 2" @animationEnd="animationEnd" />
+			<RiseOrFall v-if="cardData?.oddsChange" :status="cardData?.oddsChange == 'oddsUp' ? 1 : 2" @animationEnd="animationEnd" />
 		</div>
 		<template v-else>
 			<i class="noData"></i>

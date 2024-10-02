@@ -5,12 +5,12 @@
 			<template v-if="cardType == `capot`">
 				<div class="label">{{ cardData?.key == "h" ? "主" : "客" }}</div>
 				<!-- 状态正常 -->
-				<div class="value" v-if="market.marketStatus == 'running'">
-					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<div class="arrow-icon">
-						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				<template v-if="market.marketStatus === 'running'">
+					<div class="value">
+						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
 					</div>
-				</div>
+					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				</template>
 				<!-- 锁 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 			</template>
@@ -21,12 +21,12 @@
 					<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
 				</div>
 				<!-- 状态正常 -->
-				<div class="value" v-if="market.marketStatus == 'running'">
-					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<div class="arrow-icon">
-						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				<template v-if="market.marketStatus === 'running'">
+					<div class="value">
+						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
 					</div>
-				</div>
+					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				</template>
 				<!-- 锁 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 			</template>
@@ -38,12 +38,12 @@
 					<span>{{ cardData?.point }}</span>
 				</div>
 				<!-- 状态正常 -->
-				<div class="value" v-if="market.marketStatus == 'running'">
-					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<div class="arrow-icon">
-						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				<template v-if="market.marketStatus === 'running'">
+					<div class="value">
+						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
 					</div>
-				</div>
+					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				</template>
 				<!-- 锁 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 			</template>
@@ -170,7 +170,7 @@ const isBright = () => {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 7px 18px 7px 14px;
+		padding: 8px;
 		border-radius: 4px;
 		background: var(--Bg3);
 		box-sizing: border-box;
@@ -193,13 +193,6 @@ const isBright = () => {
 			font-family: "PingFang SC";
 			font-size: 12px;
 			font-weight: 400;
-
-			.arrow-icon {
-				position: absolute;
-				top: 50%;
-				transform: translate(0px, -50%);
-				right: -16px;
-			}
 		}
 		&:hover {
 			background-color: rgba(255, 255, 255, 0.05);

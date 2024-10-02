@@ -30,7 +30,7 @@
 							<div class="value">
 								<span :class="oddsClass(item)">{{ item.markets[3].selections[0]?.oddsPrice?.decimalPrice }}</span>
 								<div class="arrow-icon">
-									<RiseOrFall :time="3000" :status="oddsChange(item)" @animationEnd="item.oddsChange = ''" />
+									<RiseOrFall :status="oddsChange(item)" @animationEnd="item.oddsChange = ''" />
 								</div>
 							</div>
 						</div>
@@ -50,7 +50,7 @@
 							<div class="value">
 								<span :class="oddsClass(item)">{{ item.markets[3].selections[1]?.oddsPrice?.decimalPrice }}</span>
 								<div class="arrow-icon">
-									<RiseOrFall :time="3000" :status="oddsChange(item)" @animationEnd="item.oddsChange = ''" />
+									<RiseOrFall :status="oddsChange(item)" @animationEnd="item.oddsChange = ''" />
 								</div>
 							</div>
 						</div>
@@ -135,14 +135,14 @@ const oddsChange = (item: any) => {
 		font-size: 16px;
 		font-weight: 400;
 		position: relative;
-		.item-red{
+		.item-red {
 			position: absolute;
-				background-color: var(--Theme);
-				border-radius: 0 4px 4px 0;
-				width: 4px;
-				height: 22px;
-				top: 10px;
-				left: 0;
+			background-color: var(--Theme);
+			border-radius: 0 4px 4px 0;
+			width: 4px;
+			height: 22px;
+			top: 10px;
+			left: 0;
 		}
 	}
 	.event-list {
