@@ -9,16 +9,17 @@
 					<div class="title">{{ championData.leagueName }}</div>
 				</div>
 				<!-- 收藏 -->
-				<div class="top_right">
-					<!-- 关注 -->
-					<svg-icon v-if="isAttention" class="sports_collection2" name="sports-already_collected" size="16" @click="attentionEvent(true)" />
-					<!-- 取消关注 -->
-					<svg-icon v-else class="sports_collection" name="sports-collection" size="16" @click="attentionEvent(false)" />
-				</div>
+				<!-- <div class="top_right"> -->
+				<!-- 关注 -->
+				<!-- <svg-icon v-if="isAttention" class="sports_collection2" name="sports-already_collected" size="16" @click="attentionEvent(true)" /> -->
+				<!-- 取消关注 -->
+				<!-- <svg-icon v-else class="sports_collection" name="sports-collection" size="16" @click="attentionEvent(false)" /> -->
+				<!-- </div> -->
 			</div>
 			<div class="box_two">
 				<div class="box_team">
-					<MarketColumn :displayContent="displayContent" :sportInfo="championData" @oddsChange="oddsChange"></MarketColumn>
+					<MarketColumn :displayContent="displayContent" :sportInfo="championData" @oddsChange="oddsChange">
+					</MarketColumn>
 				</div>
 			</div>
 		</div>
@@ -113,6 +114,7 @@ onMounted(() => {
 .card-container {
 	margin-bottom: 16px;
 }
+
 .box_one {
 	display: flex;
 	justify-content: space-between;
@@ -130,6 +132,7 @@ onMounted(() => {
 		display: flex;
 		align-items: center;
 		flex: 1;
+
 		img {
 			width: 16px;
 			height: 20px;
@@ -170,6 +173,7 @@ onMounted(() => {
 
 			color: var(--icon);
 		}
+
 		.sports_collection2 {
 			margin: 0 25px 0 18px;
 			color: var(--Warn);
@@ -222,6 +226,7 @@ onMounted(() => {
 .fade-leave-active {
 	transition: opacity 0.5s;
 }
+
 .fade-enter,
 .fade-leave-to {
 	opacity: 0;
