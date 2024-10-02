@@ -2,32 +2,39 @@
 	<div class="league-content">
 		<div class="content">
 			<div class="main">
-				<!-- 队伍信息 -->
-				<TeamInfoCard :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
+				<div class="league">
+					<!-- 显示队伍信息卡片 -->
+					<TeamInfoCard :dataIndex="dataIndex" :teamData="event" />
+				</div>
 				<!-- 盘口信息 -->
 				<div class="league-markets">
-					<!-- 全场独赢 -->
-					<MarketColumn cardType="capot" :sportInfo="event" :betType="20" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-					<!-- 全场让球 -->
-					<MarketColumn cardType="handicap" :sportInfo="event" :betType="1" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-					<!-- 全场大小 -->
-					<MarketColumn cardType="magnitude" :sportInfo="event" :betType="3" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+					<!-- 使用v-for动态生成盘口类型 -->
+					<MarketColumn
+						v-for="market in marketConfig"
+						:key="market.betType"
+						:cardType="market.cardType"
+						:sportInfo="event"
+						:betType="market.betType"
+						:selectionsLength="market.selectionsLength"
+						@oddsChange="oddsChange"
+					/>
 				</div>
 			</div>
 			<div class="league-footer">
 				<div class="other-info">
-					<!-- 塞节时间 -->
+					<!-- 显示赛事时间 -->
 					<div class="date">
 						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
+						<!-- 未开始的比赛才显示格式化时间 -->
 						<span v-if="!SportsCommonFn.isStartMatch(event.globalShowTime)">{{ formattedGameTime }}</span>
 					</div>
 					<div class="info-list">
-						<!-- 收藏 -->
+						<!-- 收藏按钮，点击切换收藏状态 -->
 						<span class="collection">
 							<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px" @click="attentionEvent(!isAttention ? false : true)"></svg-icon>
 						</span>
 						<!-- 盘口数量 -->
-						<div class="markets-stats" @click="linkDetail">
+						<div class="markets-qty" @click="linkDetail">
 							<span>+{{ event.marketCount }}</span>
 							<span class="arrow-icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 						</div>
@@ -36,40 +43,41 @@
 			</div>
 		</div>
 
-		<!-- 其他信息 -->
+		<!-- 工具栏图标 -->
 		<div class="league-option">
 			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool)">
 				<span class="icon"><svg-icon :name="getIconName(tool, event, index)" width="23px" height="16px"></svg-icon></span>
-				<!-- <span class="tooltip-text">{{ tool.tooltipText }}</span> -->
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+// 引入所需模块和工具
 import { computed } from "vue";
 import TeamInfoCard from "../teamInfoCard/teamInfoCard.vue";
 import MarketColumn from "../marketColumn/marketColumn.vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
-const SportAttentionStore = useSportAttentionStore();
 import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useRouter, useRoute } from "vue-router";
-import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import { useLink } from "/@/views/sports/hooks/useLink";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+
+const SportAttentionStore = useSportAttentionStore();
 const SidebarStore = useSidebarStore();
-const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
 const SportHotStore = useSportHotStore();
+const { toggleEventScoreboard } = useToolsHooks();
 const { gotoEventDetail } = useLink();
 
 const router = useRouter();
 const route = useRoute();
 
+// 定义属性类型和默认值
 interface teamDataType {
 	/** 数据索引 */
 	dataIndex: number;
@@ -77,19 +85,23 @@ interface teamDataType {
 	event: any;
 	displayContent: boolean;
 }
+
 const props = withDefaults(defineProps<teamDataType>(), {
-	/** 数据索引 */
 	dataIndex: 0,
 	displayContent: true,
-	/** 队伍数据 */
-	event: () => {
-		return {};
-	},
+	event: () => ({}),
 });
 
 const emit = defineEmits(["oddsChange"]);
 
-// 获取侧边栏图标
+// 盘口配置数组，便于统一管理
+const marketConfig = [
+	{ cardType: "capot", betType: 20, selectionsLength: 2 },
+	{ cardType: "handicap", betType: 1, selectionsLength: 2 },
+	{ cardType: "magnitude", betType: 3, selectionsLength: 2 },
+];
+
+// 获取侧边栏图标名称
 const getIconName = (tool: any, events: any, index: number) => {
 	const { eventId } = SidebarStore.getEventsInfo;
 	const isEventActive = events.eventId === eventId;
@@ -104,61 +116,56 @@ const getIconName = (tool: any, events: any, index: number) => {
 		case "live":
 			activeIndex = 1;
 			break;
-		// 你可以根据其他可能的状态扩展此逻辑
 	}
 	return index === activeIndex ? tool.iconName_active : tool.iconName;
 };
 
-/**
- * @description 动画结束删除oddsChange字段状态
- */
+// 处理赔率变化事件
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
 
-// 定义计算属性 格式化比赛开始时间
+// 格式化比赛开始时间
 const formattedGameTime = computed(() => {
 	const minutes = Math.floor(props.event.gameInfo.seconds / 60);
 	const seconds = props.event.gameInfo.seconds % 60;
 	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 });
 
-/**
- * @description  计算工具图标的显示状态
- */
+// 定义工具栏的图标配置
 const tools = computed(() => {
-	const baseTools = [];
-	// 判断 是否在未开赛页面
-	baseTools.push({
-		iconName: "sports-score_icon",
-		iconName_active: "sports-score_icon_active",
-		tooltipText: "比分板",
-		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
-		param: props.event, // 传递参数
-	});
-	// 判断是否有视频源
+	const baseTools = [
+		{
+			iconName: "sports-score_icon",
+			iconName_active: "sports-score_icon_active",
+			tooltipText: "比分板",
+			action: (event: any) => toggleEventScoreboard(event),
+			param: props.event,
+		},
+	];
 	if (props.event.streamingOption != 0 && props.event.channelCode) {
 		baseTools.push({
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
 			action: (event: any) => toggleEventScoreboard(event, true),
-			param: props.event, // 传递参数
+			param: props.event,
 		});
 	}
 	return baseTools;
 });
 
-// 点击对应工具
+// 点击工具图标的处理函数
 const handleClick = (tool: any) => {
 	tool.action(tool.param);
 };
 
+// 计算属性，判断当前赛事是否已经被关注
 const isAttention = computed(() => {
 	return SportAttentionStore.attentionEventIdList.includes(props.event.eventId);
 });
 
-// 点击关注按钮
+// 切换关注状态
 const attentionEvent = async (isActive: boolean) => {
 	if (isActive) {
 		await FootballCardApi.unFollow({
@@ -173,9 +180,7 @@ const attentionEvent = async (isActive: boolean) => {
 	PubSub.publish(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, {});
 };
 
-/**
- * @description: 跳转到比赛详细
- */
+// 跳转到比赛详细页面
 const linkDetail = () => {
 	const params = {
 		leagueId: props?.event?.leagueId,
@@ -189,6 +194,8 @@ const linkDetail = () => {
 
 <style scoped lang="scss">
 .league-content {
+	width: 100%;
+	height: 114px;
 	display: flex;
 	background-color: var(--Bg1);
 	&:last-child {
@@ -199,10 +206,18 @@ const linkDetail = () => {
 	}
 
 	.content {
-		flex: 1;
+		width: 100%;
+		height: 114px;
 
 		.main {
+			width: 100%;
+			height: 84px;
 			display: flex;
+
+			.league {
+				min-width: 284px;
+				height: 100%;
+			}
 			.league-markets {
 				width: 600px;
 				display: flex;
@@ -217,9 +232,8 @@ const linkDetail = () => {
 			background: var(--Bg3);
 
 			.other-info {
-				// flex: 1;
 				width: 284px;
-				padding: 0px 14px 0px 24px;
+				padding: 0px 14px 0px 8px;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
@@ -230,7 +244,7 @@ const linkDetail = () => {
 					gap: 6px;
 					color: var(--Theme);
 					font-family: "PingFang SC";
-					font-size: 14px;
+					font-size: 12px;
 					font-weight: 400;
 				}
 				.info-list {
@@ -240,23 +254,22 @@ const linkDetail = () => {
 					align-items: center;
 
 					.collection {
-						width: 20px;
-						height: 20px;
-						// display: flex;
-						// align-items: center;
-						// justify-content: center;
+						width: 14px;
+						height: 14px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
 						cursor: pointer;
 					}
 
-					.markets-stats {
+					.markets-qty {
 						min-width: 50px;
 						display: flex;
 						align-items: center;
 						justify-content: flex-end;
-						color: var(--Text1, #98a7b5);
+						color: var(--Text1);
 						font-family: "PingFang SC";
-						font-size: 14px;
-						line-height: 20px;
+						font-size: 12px;
 						font-weight: 400;
 						cursor: pointer;
 						.arrow-icon {
@@ -269,26 +282,26 @@ const linkDetail = () => {
 					}
 				}
 			}
-			// .score-list {
-			// 	width: 600px;
-			// 	display: flex;
-			// 	align-items: center;
-			// 	gap: 20px;
-			// 	.item {
-			// 		color: var(--Text1);
-			// 		font-family: "PingFang SC";
-			// 		font-size: 14px;
-			// 		font-weight: 400;
-			// 	}
-			// 	.theme {
-			// 		color: var(--Theme);
-			// 	}
-			// }
+			.score-list {
+				width: 600px;
+				display: flex;
+				align-items: center;
+				gap: 20px;
+				.item {
+					color: var(--Text1);
+					font-family: "PingFang SC";
+					font-size: 12px;
+					font-weight: 400;
+				}
+				.theme {
+					color: var(--Theme);
+				}
+			}
 		}
 	}
 
 	.league-option {
-		width: 58px;
+		width: 46px;
 		display: flex;
 		gap: 16px;
 		flex-direction: column;

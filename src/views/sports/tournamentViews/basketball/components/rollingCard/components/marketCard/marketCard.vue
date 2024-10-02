@@ -174,7 +174,7 @@ const isBright = () => {
 			max-width: calc(100% - 50px);
 			color: var(--Text1);
 			font-family: "PingFang SC";
-			font-size: 14px;
+			font-size: 12px;
 			font-weight: 400;
 			white-space: nowrap;
 			overflow: hidden;
@@ -186,7 +186,7 @@ const isBright = () => {
 			text-align: end;
 			color: var(--Text_a);
 			font-family: "PingFang SC";
-			font-size: 16px;
+			font-size: 12px;
 			font-weight: 400;
 
 			.arrow-icon {

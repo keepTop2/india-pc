@@ -266,7 +266,7 @@ const linkDetail = () => {
 						display: flex;
 						align-items: center;
 						justify-content: flex-end;
-						color: var(--Text1, #98a7b5);
+						color: var(--Text1);
 						font-family: "PingFang SC";
 						font-size: 12px;
 						font-weight: 400;

@@ -35,9 +35,7 @@
 <script setup lang="ts">
 import { onMounted, watch, ref, defineAsyncComponent } from "vue";
 import SportsCommonFn from "/@/views/sports/utils/common";
-
 const EventItem = defineAsyncComponent(() => import("/@/views/sports/tournamentViews/basketball/components/rollingCard/components/eventItem/eventItem.vue"));
-
 interface teamDataType {
 	/** 数据索引 */
 	dataIndex: number;
@@ -46,37 +44,46 @@ interface teamDataType {
 	/** 是展开状态？ */
 	isExpand?: boolean;
 }
-
 const props = withDefaults(defineProps<teamDataType>(), {
 	isExpand: true,
+	/** 数据索引 */
 	dataIndex: 0,
-	teamData: () => ({}),
+	/** 队伍数据 */
+	teamData: () => {
+		return {};
+	},
 });
 
-const displayContent = ref(true);
 const emit = defineEmits(["toggleDisplay"]);
 
-/**
- * @description: 切换展开/收起状态
- */
-const toggleDisplay = () => {
-	displayContent.value = !displayContent.value; // 切换状态
-	emit("toggleDisplay", { index: props.dataIndex, isExpand: displayContent.value }); // 触发事件
-};
+const displayContent = ref(true);
 
-// 监控 props 中的 isExpand 变化
+onMounted(() => {
+	displayContent.value = props.isExpand;
+});
+
 watch(
 	() => props.isExpand,
-	(newValue) => {
-		displayContent.value = newValue; // 更新显示状态
+	(newValue, oldValue) => {
+		displayContent.value = newValue;
 	},
-	{ immediate: true }
+	{
+		immediate: true,
+	}
 );
 
-// 在组件挂载时初始化显示状态
-onMounted(() => {
-	displayContent.value = props.isExpand; // 设置初始状态
-});
+/**
+ * @description: 展开折叠处理
+ * @return {*}
+ */
+const toggleDisplay = () => {
+	displayContent.value = !displayContent.value;
+	const params = {
+		index: props.dataIndex,
+		isExpand: displayContent.value,
+	};
+	emit("toggleDisplay", params);
+};
 </script>
 
 <style scoped lang="scss">
