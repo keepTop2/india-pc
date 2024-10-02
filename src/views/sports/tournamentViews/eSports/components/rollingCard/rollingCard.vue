@@ -1,12 +1,9 @@
 <template>
 	<div class="card-container">
 		<!--  头部 -->
-		<div class="card—header" :class="[!displayContent ? 'toggle' : '']" @click="toggleDisplay">
+		<div class="card-header" :class="[!displayContent ? 'toggle' : '']" @click="toggleDisplay">
 			<!-- 联赛信息 -->
 			<div class="league-info">
-				<span class="collection">
-					<svg-icon name="sports-collection" size="16px"></svg-icon>
-				</span>
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
 				<div class="league_name" :style="displayContent ? `max-width:300px` : ''">{{ teamData.leagueName }}</div>
 			</div>
@@ -85,28 +82,25 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .card-container {
-	border-radius: 8px;
 	overflow: hidden;
-	.card—header {
+	.card-header {
 		display: flex;
 		width: 100%;
 		height: 34px;
 		background: var(--Bg6);
 		box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25) inset;
 		border-radius: 8px 8px 0px 0px;
+		cursor: pointer;
 
 		.league-info {
-			// width: 384px;
+			min-width: 284px;
+			// max-width: 284px;
 			flex: 1;
 			display: flex;
 			align-items: center;
 			gap: 12px;
-			padding-left: 24px;
+			padding: 8px;
 			box-sizing: border-box;
-			.collection {
-				width: 16px;
-				height: 16px;
-			}
 			.league_icon {
 				width: 20px;
 				height: 20px;
@@ -114,10 +108,10 @@ onMounted(() => {
 			.league_name {
 				color: var(--Text_s);
 				font-family: "PingFang SC";
-				font-size: 16px;
-				font-weight: 400;
-				white-space: nowrap; /* 单行文本不换行 */
-				overflow: hidden; /* 隐藏超出容器的文本 */
+				font-size: 14px;
+				font-weight: 300;
+				white-space: nowrap; /* 防止文本换行 */
+				overflow: hidden; /* 超出部分隐藏 */
 				text-overflow: ellipsis; /* 超出部分显示省略号 */
 			}
 		}
@@ -129,7 +123,7 @@ onMounted(() => {
 				gap: 4px;
 				padding-right: 4px;
 				.label {
-					flex: 1;
+					width: 196px;
 					height: 100%;
 					display: flex;
 					align-items: center;
@@ -137,21 +131,18 @@ onMounted(() => {
 					color: var(--Text1);
 					text-align: center;
 					font-family: "PingFang SC";
-					font-size: 14px;
+					font-size: 12px;
 					font-weight: 400;
 				}
 			}
 		}
 		.header-icon {
-			width: 58px;
+			width: 46px;
 			height: 100%;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			.icon {
-				transform: rotate(90deg);
-			}
-			.rotate {
 				transform: rotate(-90deg);
 			}
 		}
