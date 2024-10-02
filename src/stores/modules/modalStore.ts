@@ -6,7 +6,9 @@ interface ModalComponent {
 	component: any; // Vue 组件类型
 	props?: Record<string, any>; // 允许传递任意属性
 }
-
+const message_center: Record<string, () => Promise<any>> = {
+	messageCenter: () => import("/@/views/messageCenter/index.vue"),
+};
 const security_center: Record<string, () => Promise<any>> = {
 	ChangePassword: () => import("/@/views/user/security_center/components/ChangePassword.vue"),
 	setEmail: () => import("/@/views/user/security_center/components/setEmail.vue"),
@@ -36,6 +38,7 @@ const modalComponents: Record<string, () => Promise<any>> = {
 	InviteFriends: () => import("/@/views/user/invite_friends/InviteFriends.vue"),
 	...activityModal,
 	...security_center,
+	...message_center,
 };
 
 // 创建 Pinia store

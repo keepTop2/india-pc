@@ -27,7 +27,7 @@
 					</span>
 					<span>+{{ option.areaCode }}</span>
 				</li>
-				<li v-if="filteredOptions.length === 0" class="no-results fs_12">{{ $t(`login['未搜索到相关区号']`) }}</li>
+				<li v-if="filteredOptions.length === 0" class="no-results fs_12">{{ $t(login["未搜索到相关区号"]) }}</li>
 			</ul>
 		</div>
 	</div>
@@ -36,22 +36,24 @@
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 
+// 定义选项的接口
 interface Option {
-	areaCode: string;
-	countryName: string;
-	countryCode: string;
-	icon: string;
-	maxLength: number;
-	minLength: number;
+	areaCode: string; // 区号
+	countryName: string; // 国家名称
+	countryCode: string; // 国家代码
+	icon: string; // 国家图标
+	maxLength: number; // 手机号最大长度
+	minLength: number; // 手机号最小长度
 }
 
+// 定义组件的 props
 const props = defineProps({
 	phone: {
 		type: String,
 	},
 	options: {
-		type: Array<Option>,
-		default: [],
+		type: Array as () => Option[], // 定义选项为 Option 类型数组
+		default: () => [], // 默认值为空数组
 	},
 	verifyType: {
 		type: Number,
@@ -61,77 +63,89 @@ const props = defineProps({
 		type: String,
 	},
 });
+
+// 定义 emit 事件
 const emit = defineEmits<{
-	(e: "update:modelValue", value: Object): void;
-	(e: "search", query: string): void;
+	(e: "update:modelValue", value: Object): void; // 更新手机号
+	(e: "search", query: string): void; // 搜索事件
 }>();
 
-const searchQuery = ref("");
-const isOpen = ref(false);
-const selectedOption = ref<Option>(props.options[0]);
-const dropdown = ref<HTMLDivElement | null>(null);
-const minLength = ref(props.options[0]?.minLength);
-const maxLength = ref(props.options[0]?.maxLength);
+const searchQuery = ref(""); // 搜索查询
+const isOpen = ref(false); // 下拉菜单是否打开
+const selectedOption = ref<Option>(props.options[0]); // 当前选中的选项
+const dropdown = ref<HTMLDivElement | null>(null); // 下拉框引用
+const minLength = ref(props.options[0]?.minLength); // 最小长度
+const maxLength = ref(props.options[0]?.maxLength); // 最大长度
+
+// 监听 options 的变化
 watch(
 	() => props.options,
 	() => {
-		selectedOption.value = props.options[0];
-		minLength.value = props.options[0].minLength;
-		maxLength.value = props.options[0].maxLength;
+		selectedOption.value = props.options[0]; // 选择第一个选项
+		minLength.value = props.options[0].minLength; // 更新最小长度
+		maxLength.value = props.options[0].maxLength; // 更新最大长度
 	}
 );
+
+// 切换下拉菜单
 const toggleDropdown = () => {
 	isOpen.value = !isOpen.value;
 };
 
-// Hide dropdown when clicking outside of it
+// 点击下拉框外部关闭下拉菜单
 const handleClickOutside = (event: MouseEvent) => {
 	if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
-		isOpen.value = false;
+		isOpen.value = false; // 关闭下拉菜单
 	}
 };
 
+// 过滤选项
 const filterOptions = () => {
-	emit("search", searchQuery.value);
+	emit("search", searchQuery.value); // 触发搜索事件
 };
 
+// 选择一个选项
 const selectOption = (option: Option) => {
-	selectedOption.value = option;
-	minLength.value = selectedOption.value.minLength;
-	maxLength.value = selectedOption.value.maxLength;
-	isOpen.value = false; // Close dropdown after selection
-	emit("update:modelValue", { areaCode: option.areaCode });
+	selectedOption.value = option; // 更新选中的选项
+	minLength.value = selectedOption.value.minLength; // 更新最小长度
+	maxLength.value = selectedOption.value.maxLength; // 更新最大长度
+	isOpen.value = false; // 选择后关闭下拉菜单
+	emit("update:modelValue", { areaCode: option.areaCode }); // 更新区域代码
 };
 
+// 输入框事件处理
 const onInput = (e: any) => {
-	isOpen.value = false;
+	isOpen.value = false; // 输入时关闭下拉菜单
 	console.log(e.target.value, maxLength.value);
-
+	// 限制输入长度
 	if (e.target.value.length >= maxLength.value) {
 		e.target.value = e.target.value.substring(0, maxLength.value);
 	}
-
-	emit("update:modelValue", { phone: e.target.value });
+	emit("update:modelValue", { phone: e.target.value }); // 更新手机号
 };
+
+// 过滤后的选项
 const filteredOptions = computed(() => {
 	return props.options.filter(
-		(option: any) => option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase()) || option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase())
+		(option: Option) => option.areaCode.toLowerCase().includes(searchQuery.value?.toLowerCase()) || option.countryCode.toLowerCase().includes(searchQuery.value?.toLowerCase()) // 过滤区域代码和国家代码
 	);
 });
 
+// 选中的区号标签
 const selectedOptionLabel = computed(() => {
 	return selectedOption.value ? selectedOption.value.areaCode : "";
 });
 
+// 组件挂载时添加事件监听
 onMounted(() => {
 	document.addEventListener("click", handleClickOutside);
 });
 
+// 组件卸载时移除事件监听
 onUnmounted(() => {
 	document.removeEventListener("click", handleClickOutside);
 });
 </script>
-
 <style scoped lang="scss">
 .dropdown-select {
 	position: relative;

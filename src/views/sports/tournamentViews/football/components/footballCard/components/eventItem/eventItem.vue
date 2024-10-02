@@ -1,27 +1,30 @@
 <template>
 	<div class="league-content">
 		<!-- 队伍信息 -->
-		<TeamInfoCard :dataIndex="dataIndex" :teamData="event"></TeamInfoCard>
+		<TeamInfoCard :dataIndex="dataIndex" :teamData="event" />
+
 		<!-- 盘口信息 -->
 		<div class="league-markets">
-			<!-- 全场独赢 -->
-			<MarketColumn cardType="capot" :sportInfo="event" :betType="5" :selectionsLength="3" @oddsChange="oddsChange"></MarketColumn>
-			<!-- 全场让球 -->
-			<MarketColumn cardType="handicap" :sportInfo="event" :betType="1" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-			<!-- 全场大小 -->
-			<MarketColumn cardType="magnitude" :sportInfo="event" :betType="3" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-			<!-- 半场独赢 -->
-			<MarketColumn cardType="capot" :sportInfo="event" :betType="15" :selectionsLength="3" @oddsChange="oddsChange"></MarketColumn>
-			<!-- 半场让球 -->
-			<MarketColumn cardType="handicap" :sportInfo="event" :betType="7" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
-			<!-- 半场大小 -->
-			<MarketColumn cardType="magnitude" :sportInfo="event" :betType="8" :selectionsLength="2" @oddsChange="oddsChange"></MarketColumn>
+			<!-- 动态生成盘口信息 -->
+			<MarketColumn
+				v-for="(betType, index) in betTypes"
+				:key="index"
+				:class="betType.class"
+				:cardType="betType.cardType"
+				:sportInfo="event"
+				:betType="betType.type"
+				:selectionsLength="betType.selectionsLength"
+				@oddsChange="oddsChange"
+			/>
 		</div>
+
 		<!-- 其他信息 -->
 		<div class="league-option">
+			<!-- 工具图标 -->
 			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool)">
-				<span class="icon"><svg-icon :name="getIconName(tool, event, index)" width="23px" height="16px"></svg-icon></span>
-				<!-- <span class="tooltip-text">{{ tool.tooltipText }}</span> -->
+				<span class="icon">
+					<svg-icon :name="getIconName(tool, event, index)" width="23px" height="16px" />
+				</span>
 			</div>
 		</div>
 	</div>
@@ -32,81 +35,83 @@ import { computed } from "vue";
 import { TeamInfoCard, MarketColumn } from "/@/views/sports/tournamentViews/football/components/footballCard/index";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+
+// 使用 SidebarStore 管理侧边栏状态
 const SidebarStore = useSidebarStore();
-const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
+const { toggleEventScoreboard } = useToolsHooks();
 
-interface teamDataType {
-	/** 数据索引 */
-	dataIndex: number;
-	/** 队伍数据 */
-	event: any;
-	displayContent: boolean;
-}
-const props = withDefaults(defineProps<teamDataType>(), {
-	/** 数据索引 */
-	dataIndex: 0,
-	displayContent: true,
-	/** 队伍数据 */
-	event: () => {
-		return {};
-	},
-});
+// 定义 props 类型
+const props = withDefaults(
+	defineProps<{
+		dataIndex: number; // 数据索引
+		event: any; // 队伍数据
+		displayContent: boolean; // 是否显示内容
+	}>(),
+	{
+		dataIndex: 0,
+		displayContent: true,
+		event: {}, // 默认队伍数据为空对象
+	}
+);
 
+// 定义 emits
 const emit = defineEmits(["oddsChange"]);
 
-// 获取侧边栏图标
+// 盘口信息配置数组
+const betTypes = [
+	{ class: "capot", cardType: "capot", type: 5, selectionsLength: 3 }, // 全场独赢
+	{ class: "handicap", cardType: "handicap", type: 1, selectionsLength: 2 }, // 全场让球
+	{ class: "magnitude", cardType: "magnitude", type: 3, selectionsLength: 2 }, // 全场大小
+	{ class: "capot", cardType: "capot", type: 15, selectionsLength: 3 }, // 半场独赢
+	{ class: "handicap", cardType: "handicap", type: 7, selectionsLength: 2 }, // 半场让球
+	{ class: "magnitude", cardType: "magnitude", type: 8, selectionsLength: 2 }, // 半场大小
+];
+
+// 获取侧边栏图标名称
 const getIconName = (tool: any, events: any, index: number) => {
-	const { eventId } = SidebarStore.getEventsInfo;
-	const isEventActive = events.eventId === eventId;
+	const { eventId } = SidebarStore.getEventsInfo; // 获取当前事件 ID
+	const isEventActive = events.eventId === eventId; // 判断事件是否活跃
 	if (!isEventActive) {
-		return tool.iconName;
+		return tool.iconName; // 非活跃状态返回默认图标
 	}
-	let activeIndex = -1;
-	switch (SidebarStore.sidebarStatus) {
-		case "scoreboard":
-			activeIndex = 0;
-			break;
-		case "live":
-			activeIndex = 1;
-			break;
-		// 你可以根据其他可能的状态扩展此逻辑
-	}
-	return index === activeIndex ? tool.iconName_active : tool.iconName;
+	const activeIndex = SidebarStore.sidebarStatus === "scoreboard" ? 0 : 1; // 根据侧边栏状态确定活跃索引
+	return index === activeIndex ? tool.iconName : tool.iconName_active; // 返回相应的图标名称
 };
 
+// 处理赔率变化事件
 const oddsChange = (obj: any) => {
-	emit("oddsChange", obj);
+	emit("oddsChange", obj); // 触发自定义事件
 };
 
-// 点击对应工具
+// 点击对应工具的处理逻辑
 const handleClick = (tool: any) => {
-	tool.action(tool.param);
+	tool.action(tool.param); // 执行对应工具的动作
 };
 
-/**
- * @description  计算工具图标的显示状态
- */
+// 计算工具图标的显示状态
 const tools = computed(() => {
-	const baseTools = [];
-	// 判断 是否在未开赛页面
-	baseTools.push({
-		iconName: "sports-score_icon",
-		iconName_active: "sports-score_icon_active",
-		tooltipText: "比分板",
-		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
-		param: props.event, // 传递参数
-	});
-	// 判断是否有视频源
-	if (props.event.streamingOption != 0 && props.event.channelCode) {
+	const baseTools = [
+		{
+			iconName: "sports-score_icon", // 默认图标名称
+			iconName_active: "sports-score_icon_active", // 激活状态的图标名称
+			tooltipText: "比分板", // 工具提示文本
+			action: (event: any) => toggleEventScoreboard(event), // 点击时执行的动作
+			param: props.event, // 传递的参数
+		},
+	];
+
+	// 判断是否有视频源并添加到工具数组中
+	if (props.event.streamingOption !== 0 && props.event.channelCode) {
 		baseTools.push({
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
-			action: (event: any) => toggleEventScoreboard(event,true),
-			param: props.event, // 传递参数
+			action: (event: any) => toggleEventScoreboard(event, true), // 点击时执行的动作
+			param: props.event, // 传递的参数
 		});
 	}
-	return baseTools;
+
+	return baseTools; // 返回工具数组
 });
 </script>
 
@@ -120,14 +125,23 @@ const tools = computed(() => {
 	}
 
 	.league-markets {
-		width: 804px;
+		min-width: 600px;
 		display: flex;
 		gap: 4px;
 		padding: 8px 4px 8px 0px;
 		overflow: hidden;
+		.capot {
+			width: 78px;
+		}
+		.handicap {
+			width: 92px;
+		}
+		.magnitude {
+			width: 118px;
+		}
 	}
 	.league-option {
-		width: 58px;
+		width: 46px;
 		display: flex;
 		gap: 16px;
 		flex-direction: column;

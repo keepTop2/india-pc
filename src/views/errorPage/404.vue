@@ -5,9 +5,8 @@
 		</div>
 		<div class="content">
 			<p>(图片)logo+平台名称</p>
-			<h1 class="fs_46px">访问受限</h1>
-			<p class="fw_700 Text2_1">您的IP来自于：168.162.198.122</p>
-			<p class="fw_700 Text2_1 mb_50">您所在的区域被禁止访问我们的网站，给您造成的不便，敬请谅解</p>
+			<h1 class="fs_46px">页面不存在</h1>
+			<p class="fw_700 Text2_1 mb_50">您要访问的页面无效或者缺失，您所尝试的页面现在无法打开！如有疑问，请联系在线客服</p>
 			<div class="flex_space-between">
 				<button class="cancel" @click="router.back()">返回</button>
 				<button class="refresh" @click="refresh">刷新</button>
@@ -54,6 +53,20 @@ const refresh = () => {
 				cursor: pointer;
 				height: 56px;
 				width: 168px;
+				background-color: transparent;
+				border-radius: 6px;
+			}
+			.cancel {
+				border: 2px solid var(--Text_s);
+
+				font-size: 20px;
+				color: var(--Text_s);
+			}
+			.refresh {
+				font-size: 20px;
+				color: var(--Theme);
+				border: none;
+				background: var(--Bg3);
 			}
 		}
 		.common_btn {

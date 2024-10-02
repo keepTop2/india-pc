@@ -114,7 +114,7 @@ const getActivityReward = () => {
 <style scoped lang="scss">
 .activityWrapper {
 	background: url("./image/commonBg.png") no-repeat;
-	background-size: 100% auto;
+	background-size: 100% 100%;
 	overflow: hidden;
 	padding-right: 3px;
 	.activityHeader {

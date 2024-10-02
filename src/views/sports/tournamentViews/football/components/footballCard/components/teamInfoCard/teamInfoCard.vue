@@ -42,7 +42,7 @@
 			<!-- 其他信息 -->
 			<div class="info-list">
 				<span class="collection">
-					<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="16px" @click="attentionEvent(!isAttention ? false : true)"></svg-icon>
+					<svg-icon :name="!isAttention ? 'sports-collection' : 'sports-already_collected'" size="14px" @click="attentionEvent(!isAttention ? false : true)"></svg-icon>
 				</span>
 				<div class="markets-qty" @click="linkDetail">
 					<span>+{{ teamData.marketCount }}</span>
@@ -135,11 +135,15 @@ const attentionEvent = async (isActive: boolean) => {
 
 <style scoped lang="scss">
 .league-info {
+	min-width: 284px;
 	flex: 1;
-	padding: 8px 10px 8px 24px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 8px;
 	.league-team-info {
 		display: grid;
-		row-gap: 4px;
+		row-gap: 6px;
 		.team {
 			display: flex;
 			align-items: center;
@@ -194,7 +198,7 @@ const attentionEvent = async (isActive: boolean) => {
 			}
 			.score {
 				min-width: 32px;
-				height: 34px;
+				height: 32px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -206,7 +210,6 @@ const attentionEvent = async (isActive: boolean) => {
 		}
 	}
 	.other-info {
-		margin-top: 18px;
 		padding-right: 6px;
 		display: flex;
 		align-items: center;
@@ -216,7 +219,7 @@ const attentionEvent = async (isActive: boolean) => {
 			gap: 6px;
 			color: var(--Theme);
 			font-family: "PingFang SC";
-			font-size: 14px;
+			font-size: 12px;
 			font-weight: 400;
 		}
 		.info-list {
@@ -225,11 +228,11 @@ const attentionEvent = async (isActive: boolean) => {
 			align-items: center;
 
 			.collection {
-				width: 20px;
-				height: 20px;
-				// display: flex;
-				// align-items: center;
-				// justify-content: center;
+				width: 14px;
+				height: 14px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				cursor: pointer;
 			}
 
@@ -240,7 +243,7 @@ const attentionEvent = async (isActive: boolean) => {
 				justify-content: flex-end;
 				color: var(--Text1, #98a7b5);
 				font-family: "PingFang SC";
-				font-size: 14px;
+				font-size: 12px;
 				font-weight: 400;
 				cursor: pointer;
 				.arrow-icon {

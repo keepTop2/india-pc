@@ -22,7 +22,7 @@
 								@VerificationCodeInput="VerificationCodeInput"
 								@sendVerificationCode="sendVerificationCode"
 								v-model="verificationBtn"
-								:disabled="verificationBtn && payLoad.phone"
+								:disabled="verificationBtn && payLoad.phone !== ''"
 								ref="VerificationCodeRef"
 							/>
 						</p>

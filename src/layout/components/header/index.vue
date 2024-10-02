@@ -7,10 +7,10 @@
 						<img src="/@/assets/common/coin.png" alt="" style="height: 16px" class="mr_4" />
 						<span>{{ Common.thousands(UserStore.getUserInfo.totalBalance) }}</span>
 					</div>
-					<div class="recharge">{{ $t(`common['充值']`) }}</div>
+					<div class="recharge" @click="router.push('/user/deposit')">{{ $t(`common['充值']`) }}</div>
 				</div>
-				<div class="flex-center message" @mouseover="onMouseover('message')" @mouseout="onMouseout">
-					<svg-icon name="message" size="32px" :hover="hoverItem"></svg-icon>{{}}
+				<div class="flex-center message" @click="openMessageCenter" v-hover-svg>
+					<svg-icon name="message" size="32px" />
 					<span class="notice"></span>
 				</div>
 				<div class="lang user">
@@ -48,17 +48,11 @@ import { computed, ref } from "vue";
 import { useMenuStore } from "/@/stores/modules/menu";
 import { useUserStore } from "/@/stores/modules/user";
 import Common from "/@/utils/common";
-import { modalEnum } from "/@/enum/modalEnum";
 import { onClickOutside } from "@vueuse/core";
-
 import userRoutes from "/@/router/modules/userMenu";
 import router from "/@/router";
-
-import useSvgHoverHooks from "/@/hooks/useSvgHover";
 import { useModalStore } from "/@/stores/modules/modalStore";
-
 const modalStore = useModalStore();
-const { onMouseout, onMouseover, hoverItem } = useSvgHoverHooks();
 
 const MenuStore = useMenuStore();
 const UserStore = useUserStore();
@@ -81,9 +75,13 @@ const openUserMenu = () => {
 	isOpenMenu.value = true;
 	currentHover.value = null;
 };
-onClickOutside(userMenu, (event) => {
+onClickOutside(userMenu, () => {
 	isOpenMenu.value = false;
 });
+
+const openMessageCenter = () => {
+	modalStore.openModal("messageCenter");
+};
 const openLoginModal = () => {
 	modalStore.openModal("LoginModal");
 };
@@ -91,10 +89,7 @@ const openRegisterModal = () => {
 	modalStore.openModal("RegisterModal");
 };
 const openLangCurrenyConfig = () => {
-	modalStore.openModal(modalEnum.LangCurrenyConfig);
-};
-const mouseover = (icon: string) => {
-	currentHover.value = icon;
+	modalStore.openModal("LangCurrenyConfig");
 };
 const goToPath = (route: any) => {
 	if (route.name === "invite_friends") {

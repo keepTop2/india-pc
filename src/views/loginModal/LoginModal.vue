@@ -73,11 +73,12 @@
 				</div>
 			</div>
 		</div>
+		<!-- 验证码容器 -->
+		<p>	
+			<p id="captcha-element" ref="captchaBtn"/>
+		<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
+		</p>
 	</form>
-
-	<!-- 验证码容器 -->
-	<div id="captcha-element" ref="captchaBtn"></div>
-	<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
 </template>
 
 <script setup lang="ts">

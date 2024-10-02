@@ -6,13 +6,11 @@ interface ThemesStore {
 	themeName: ThemeKey;
 }
 function applyTheme(cssContent: string) {
-	// Remove any existing theme style tag
 	const existingStyle = document.querySelector("style[data-theme]");
 	if (existingStyle) {
 		existingStyle.remove();
 	}
 
-	// Create a new style tag and set its content
 	const style = document.createElement("style");
 	style.type = "text/css";
 	style.setAttribute("data-theme", "true");

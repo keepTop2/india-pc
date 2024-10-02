@@ -137,6 +137,7 @@ import VerificationCode from "/@/components/VerificationCode/index.vue";
 import showToast from "/@/hooks/useToast";
 import { CommonApi } from "/@/api/common";
 import { useModalStore } from "/@/stores/modules/modalStore";
+import CommonRegex from "/@/utils/CommonRegex";
 const modalStore = useModalStore();
 const UserStore = useUserStore();
 const currentStep = ref(0);
@@ -155,7 +156,6 @@ const VerifyError = reactive({
 
 // 验证码
 const hcaptcha: any = ref(null);
-
 const AreaCodeOptions: any = ref([]);
 // 登陆表单
 const payLoad = reactive({
@@ -170,10 +170,6 @@ const payLoad = reactive({
 //账号密码校验规则
 const minLength = ref(8);
 const maxLength = ref(13);
-const userAccountRegex = /^[a-zA-Z][a-zA-Z0-9]{3,10}$/;
-const userEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const passWordregex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@_$]{8,16}$/;
 
 const getAreaCodeDownBox = async () => {
 	const res = await CommonApi.getAreaCodeDownBox().catch((err) => err);
@@ -199,25 +195,22 @@ const showPassword = ref(true);
 const showConfimPassword = ref(true);
 // 监听输入框变化
 const userOnInput = () => {
-	userAccountRegex.test(payLoad.userAccount) ? (userAccountVerifyError.value = false) : (userAccountVerifyError.value = true);
+	CommonRegex.userAccountRegex.test(payLoad.userAccount) ? (userAccountVerifyError.value = false) : (userAccountVerifyError.value = true);
 	verifyBtn();
 };
-
 const emailOnInput = () => {
-	userEmailRegex.test(payLoad.email) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
+	CommonRegex.userEmailRegex.test(payLoad.email) ? (userVerifyTypeVerifyError.value = false) : (userVerifyTypeVerifyError.value = true);
 	verificationBtn.value = userVerifyTypeVerifyError.value;
 	verifyBtn();
 };
-
 const passOnInput = () => {
-	passWordregex.test(payLoad.password) ? (VerifyError.passWord = false) : (VerifyError.passWord = true);
+	CommonRegex.passWordregex.test(payLoad.password) ? (VerifyError.passWord = false) : (VerifyError.passWord = true);
 	verifyBtn();
 };
 const confirmOnInput = () => {
 	payLoad.confirmPassword === payLoad.password ? (VerifyError.confirmPassword = false) : (VerifyError.confirmPassword = true);
 	verifyBtn();
 };
-
 // 手机号区号输入变化
 const areaCodeInput = (data: any) => {
 	const { phone, areaCode } = data;
@@ -226,6 +219,7 @@ const areaCodeInput = (data: any) => {
 		minLength.value = data.minLength;
 		maxLength.value = data.maxLength;
 	}
+
 	if (phone) {
 		const userPhoneRegex = new RegExp(`^\\d{${minLength.value},${maxLength.value}}$`);
 		payLoad.phone = phone;
@@ -236,6 +230,7 @@ const areaCodeInput = (data: any) => {
 		payLoad.areaCode = areaCode;
 	}
 };
+
 // 表单验证
 const verifyBtn = () => {
 	switch (currentStep.value) {
@@ -262,7 +257,7 @@ const verifyBtn = () => {
 			break;
 	}
 };
-
+// 切换类型
 const changeVerifyType = () => {
 	if (verifyType.value === verifyTypeEnum.email) {
 		verifyType.value = verifyTypeEnum.phone;
@@ -271,7 +266,7 @@ const changeVerifyType = () => {
 		emailOnInput();
 	}
 };
-
+// 下一步
 const onNextStep = async (step: number) => {
 	let res = null;
 	switch (step) {
@@ -319,10 +314,10 @@ const VerificationCodeInput = (verifyCode: string) => {
 	payLoad.verifyCode = verifyCode;
 	verifyBtn();
 };
-
+// 发送验证码
 const sendVerificationCode = async () => {
 	if (verifyType.value == verifyTypeEnum.email) {
-		if (!userEmailRegex.test(payLoad.email)) {
+		if (!CommonRegex.userEmailRegex.test(payLoad.email)) {
 			showToast("邮箱格式不正确", 1500);
 			verificationBtn.value = true;
 		} else {
