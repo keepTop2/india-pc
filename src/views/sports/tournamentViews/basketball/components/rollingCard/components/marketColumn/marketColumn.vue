@@ -61,8 +61,7 @@ const oddsChange = (obj: any) => {
 
 <style scoped lang="scss">
 .marketColumn {
-	max-width: 158px;
-	flex: 1;
+	width: 116px;
 	display: flex;
 	flex-direction: column;
 	gap: 4px;

@@ -1,53 +1,55 @@
 <template>
 	<div class="market-content">
+		<!-- 判断是否有卡片数据 -->
 		<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
-			<!-- 独赢 -->
-			<template v-if="cardType == `capot`">
+			<!-- 独赢类型 -->
+			<template v-if="cardType == 'capot'">
 				<div class="label">{{ cardData?.keyName }}</div>
-				<!-- 状态正常 -->
+				<!-- 市场状态正常时显示赔率 -->
 				<div class="value" v-if="market.marketStatus == 'running'">
 					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
 					<div class="arrow-icon">
 						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
 					</div>
 				</div>
-				<!-- 锁 -->
+				<!-- 市场状态锁定时显示锁图标 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 			</template>
 
-			<!-- 独赢 -->
-			<template v-else-if="cardType == `handicap`">
+			<!-- 让球类型 -->
+			<template v-else-if="cardType == 'handicap'">
 				<div class="label">
 					<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
 				</div>
-				<!-- 状态正常 -->
+				<!-- 市场状态正常时显示赔率 -->
 				<div class="value" v-if="market.marketStatus == 'running'">
 					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
 					<div class="arrow-icon">
 						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
 					</div>
 				</div>
-				<!-- 锁 -->
+				<!-- 市场状态锁定时显示锁图标 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 			</template>
 
-			<!-- 独赢 -->
-			<template v-else-if="cardType == `magnitude`">
+			<!-- 大小类型 -->
+			<template v-else-if="cardType == 'magnitude'">
 				<div class="label">
 					<span>{{ cardData.keyName }}</span>
 					<span>{{ cardData?.point }}</span>
 				</div>
-				<!-- 状态正常 -->
+				<!-- 市场状态正常时显示赔率 -->
 				<div class="value" v-if="market.marketStatus == 'running'">
 					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
 					<div class="arrow-icon">
 						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
 					</div>
 				</div>
-				<!-- 锁 -->
+				<!-- 市场状态锁定时显示锁图标 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 			</template>
 		</div>
+		<!-- 当没有卡片数据时显示 -->
 		<div v-else class="market-item">
 			<div class="noData">-</div>
 		</div>
@@ -62,156 +64,100 @@ import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl"
 
 const emit = defineEmits(["oddsChange"]);
 
-// /** 市场 (盘口信息) */
-// markets: any;
+// 定义传入属性的类型
 interface CapotCardType {
-	/** 卡片类型 capot:独赢  handicap:让球  magnitude: 大小 */
+	/** 卡片类型：capot - 独赢，handicap - 让球，magnitude - 大小 */
 	cardType: "capot" | "handicap" | "magnitude";
 	/** 卡片数据 */
 	cardData: any;
-	/** 体育信息（每一行）*/
+	/** 体育信息（每一行） */
 	sportInfo: any;
 	/** 投注类型 */
 	betType: number;
-	/** 赔率信息  */
+	/** 赔率信息 */
 	market: any;
 }
 
+// 使用 Pinia 状态管理
 const ShopCatControlStore = useShopCatControlStore();
 const sportsBetEvent = useSportsBetEventStore();
+
+// 设置默认属性值
 const props = withDefaults(defineProps<CapotCardType>(), {
 	cardType: "capot",
-	cardData: () => {
-		return {};
-	},
+	cardData: () => ({}),
 	sportInfo: [],
 	betType: 1,
-	market: () => {
-		return {};
-	},
+	market: () => ({}),
 });
 
+// 组件挂载时执行
 onMounted(() => {
-	/**设置显示购物车为联赛 */
+	// 设置购物车为联赛类型
 	ShopCatControlStore.setShopCartType("league");
 });
 
-const oddsChange = ref(3);
-const changeClass = {
+// 赔率变化状态：1 表示上升，2 表示下降，3 表示无变化
+// oddsChange 的类型定义为字面量联合类型
+const oddsChange = ref<1 | 2 | 3>(3);
+const changeClass: { [key in 1 | 2 | 3]: string } = {
 	1: "oddsUp",
 	2: "oddsDown",
 	3: "none",
 };
 
+// 监听赔率变化，更新状态
 watch(
 	() => props.cardData?.oddsPrice?.decimalPrice,
 	(newValue, oldValue) => {
 		if (newValue && oldValue) {
-			if (newValue > oldValue) {
-				oddsChange.value = 1;
-			} else if (newValue < oldValue) {
-				oddsChange.value = 2;
-			} else {
-				oddsChange.value = 3;
-			}
+			oddsChange.value = newValue > oldValue ? 1 : newValue < oldValue ? 2 : 3;
 		}
 	}
 );
 
 /**
- * @description 动画结束删除oddsChange字段状态
+ * @description 动画结束后重置赔率变化状态为 3（无变化）
  */
 const animationEnd = (marketId, cardData) => {
 	oddsChange.value = 3;
 };
 
 /**
- * @description 处理盘口高亮状态，拼接 marketid 与 selection key 作为唯一标识，存储值pinia中
+ * @description 处理盘口高亮状态，根据 marketId 和 selection key 生成唯一标识并存储在 Pinia 中
  */
 const onSetSportsEventData = () => {
 	if (props.market.marketStatus === "running") {
-		let selection = props.cardData;
-		//存储盘口唯一标识
+		const selection = props.cardData;
+		// 如果当前盘口已经高亮，则移除
 		if (isBright()) {
-			// 删除Pinia数据
 			sportsBetEvent.removeEventCart(props.sportInfo);
 		} else {
+			// 否则添加到购物车并存储信息
 			sportsBetEvent.storeEventInfo(props.sportInfo.eventId, {
 				marketId: props.market.marketId,
 				betType: props.betType,
 				selectionKey: selection.key,
 			});
-			// 存储Pinia数据
-			sportsBetEvent.addEventToCart(JSON.parse(JSON.stringify(props.sportInfo)));
+			sportsBetEvent.addEventToCart({ ...props.sportInfo });
 		}
 	}
 };
 
-// /**
-//  * @description: 选中时高亮处理；
-//  * @param {*} paramsObj
-//  * @return {*}
-//  */
-// const onSetSportsEventData = () => {
-// 	const paramsObj = {
-// 		marketId: marketsMatchData(props.sportInfo.markets, props.betType).marketId,
-// 		selection: props.cardData,
-// 		data: props.sportInfo,
-// 		betType: 5,
-// 	};
-
-// 	//使用 marketId 拼接 selection的key
-// 	//还需要判断当前赛事是否选择了多个 多个无法同时选择的  可以使用 eventid作为key marketId + key 作为值 可行
-// 	const { data, marketId, selection, betType } = paramsObj;
-// 	//存储盘口唯一标识
-// 	if (isBright(data.eventId, marketId, selection)) {
-// 		// 删除Pinia数据
-// 		sportsBetEvent.removeEventCart(event);
-// 	} else {
-// 		sportsBetEvent.setMarketSelect(data.eventId, `${marketId}-${selection.key}`);
-// 		sportsBetEvent.setEventSelect(data.eventId, {
-// 			marketId: marketId,
-// 			betType: betType,
-// 			key: selection.key,
-// 		});
-// 	}
-// 	// 存储Pinia数据
-// 	sportsBetEvent.setSportsEventData(data);
-// 	//同步 新增或改变高亮状态
-// 	// emit("onIsBright", { marketId: marketId, selections: selection, data: data });
-// };
-
 /**
- * @description 判断当前盘口是否存在pinia中
+ * @description 判断当前盘口是否在 Pinia 中，以确定是否高亮
+ * @returns {boolean} 是否高亮
  */
 const isBright = () => {
-	let selection = props.cardData;
-
-	return sportsBetEvent.getEventInfo[props.sportInfo.eventId]?.listKye == `${props?.market?.marketId}-${selection.key}`;
+	const selection = props.cardData;
+	return sportsBetEvent.getEventInfo[props.sportInfo.eventId]?.listKye === `${props?.market?.marketId}-${selection.key}`;
 };
-
-// /**
-//  * @description 判断当前盘口是否存在pinia中
-//  */
-// const isBright = (eventId, marketId, selection) => {
-// 	console.info("判断当前盘口是否存在pinia中", eventId, marketId, selection);
-
-// 	if (selection) {
-// 		try {
-// 			return marketsSelect.value[eventId] == `${marketId}-${selection.key}`;
-// 		} catch (error) {
-// 			return false;
-// 		}
-// 	} else {
-// 		return false;
-// 	}
-// };
 </script>
 
 <style scoped lang="scss">
 .market-content {
 	width: 100%;
-	height: 34px;
+	height: 32px;
 	cursor: pointer;
 	.market-item {
 		width: 100%;
