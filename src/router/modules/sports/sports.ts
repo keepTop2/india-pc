@@ -8,7 +8,7 @@ import { RouteLocationNormalized } from "vue-router";
 const handleSportTypeRedirect = async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: Function) => {
 	const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
 	const sportType = to.query.sportType || from.query.sportType || "1";
-	console.log(to, "========to", from, "=========from");
+	// console.log(to, "========to", from, "=========from");
 	if (!to.query.sportType) {
 		next({
 			...to,

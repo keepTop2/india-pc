@@ -72,7 +72,7 @@ const tabData = ref([
 ]);
 
 const toPath = (item: any) => {
-	console.log(props.tabActive,'=========topath',item,'123123======wafwafe');
+	// console.log(props.tabActive,'=========topath',item,'123123======wafwafe');
 	if (route.meta.type !== "list") {
 		const path = tabData.value.find(item => item.type === props.tabActive)?.path || '/sports/todayContest';
 		router
@@ -94,13 +94,13 @@ const toPath = (item: any) => {
 };
 
 const handleScroll = () => {
-	console.log(nvaItemContainer.value);
-	console.log(rightContainer.value);
+	// console.log(nvaItemContainer.value);
+	// console.log(rightContainer.value);
 	if (nvaItemContainer.value) {
 		const { scrollLeft, scrollWidth, clientWidth } = nvaItemContainer.value;
 		showLeftArrow.value = scrollLeft > 0;
 		showRightArrow.value = scrollLeft + clientWidth < scrollWidth;
-		console.log(scrollLeft, scrollWidth, clientWidth);
+		// console.log(scrollLeft, scrollWidth, clientWidth);
 	}
 };
 

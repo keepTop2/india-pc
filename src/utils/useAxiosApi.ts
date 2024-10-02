@@ -81,7 +81,7 @@ instance.interceptors.request.use(
 			config["headers"]["Accept-Language"] = language;
 			// config["headers"]["X-Custom"] = "gw.playesoversea.store";
 		}
-		console.log(config);
+		// console.log(config);
 		return config;
 	},
 	(error) => {

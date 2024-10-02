@@ -1,6 +1,7 @@
 <template>
 	<!--svg外层容器，需要配置子元素use使用-->
-	<svg :style="{ width: size ? size : width, height: size ? size : height, color: color }" style="pointer-events: none">
+	<!-- style="pointer-events: none" -->
+	<svg :style="{ width: size ? size : width, height: size ? size : height, color: color }" >
 		<!--xlink:href引用的svg图标，#icon-图标名 -->
 		<use :xlink:href="symbolId" />
 	</svg>

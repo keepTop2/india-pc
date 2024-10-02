@@ -60,7 +60,7 @@ export function useSportEvents() {
 	watch(
 		() => route.path,
 		(newPath) => {
-			console.log(newPath, "==========newPath");
+			// console.log(newPath, "==========newPath");
 			if (routeMap[newPath as keyof typeof routeMap]) {
 				tabActive.value = routeMap[newPath as keyof typeof routeMap] || "";
 			}
@@ -153,7 +153,7 @@ export function useSportEvents() {
 	 * @description 处理体育推送
 	 */
 	const handleSportPush = async (tabKey?: string) => {
-		console.log(tabKey, "tabKey",'=tabActive.value =====',tabActive.value );
+		// console.log(tabKey, "tabKey",'=tabActive.value =====',tabActive.value );
 		const params = {
 			apiUrl: SportsCommonFn.getSportPushApiUrl(),
 			token: SportsInfoStore.getSportsToken,

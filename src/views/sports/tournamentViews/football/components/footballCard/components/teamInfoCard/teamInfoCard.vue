@@ -119,6 +119,8 @@ const isAttention = computed(() => {
 
 // 点击关注按钮
 const attentionEvent = async (isActive: boolean) => {
+	alert(123123)
+	console.log(isActive,'==attentionEvent==')
 	if (isActive) {
 		await FootballCardApi.unFollow({
 			thirdId: [props.teamData.eventId],

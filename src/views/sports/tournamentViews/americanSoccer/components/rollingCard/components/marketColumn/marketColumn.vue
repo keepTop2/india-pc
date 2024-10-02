@@ -1,5 +1,5 @@
 <template>
-	<div class="marketColumn" v-if="market?.selections">
+	<div class="marketColumn" v-if="market?.selections.length">
 		<MarketCard
 			v-for="(item, index) in market?.selections"
 			:key="index"

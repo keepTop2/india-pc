@@ -108,7 +108,7 @@ const activeSelection = ref<string[]>([]);
 const eventDetail = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.sidebarData.childrenViewData;
 
-	console.log(childrenViewData, "childrenViewData");
+	console.log(childrenViewData, "childrenViewData======marketsList");
 	if (childrenViewData) {
 		return childrenViewData[0]?.events?.[0];
 	}
@@ -150,7 +150,7 @@ const markets = computed(() => {
 		}
 		return a.betType - b.betType;
 	});
-	console.log(marketData, "marketData");
+	console.log(marketData, "marketData======marketsList");
 	return marketData;
 });
 
@@ -177,7 +177,10 @@ const changeTab = (key: string) => {
  * @returns 过滤后的选择项
  */
 const filterSelections = (data: any[]) => {
-	return data.filter((item: { oddsPrice: { decimalPrice: number } }) => item.oddsPrice.decimalPrice != 0);
+	const list = data.filter((item: { oddsPrice: { decimalPrice: number } }) => item.oddsPrice.decimalPrice != 0);
+	console.log('filterSelections====', data)
+	console.log('list======',list)
+	return list
 };
 
 /**
