@@ -1,7 +1,7 @@
 <template>
 	<div class="card-container">
 		<!-- 头部 -->
-		<div class="card-header" :class="[!displayContent ? 'toggle' : '']" @click="toggleDisplay">
+		<div class="card-header" @click="toggleDisplay">
 			<!-- 联赛信息 -->
 			<div class="league-info">
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="League Icon" />
