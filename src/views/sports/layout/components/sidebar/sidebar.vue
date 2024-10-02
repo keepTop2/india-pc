@@ -286,7 +286,6 @@ const getStreaming = async (newVal: { [x: string]: any }) => {
 			],
 		});
 	}
-
 	SidebarStore.getSidebarStatus("live");
 };
 

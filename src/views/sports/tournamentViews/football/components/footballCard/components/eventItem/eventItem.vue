@@ -75,7 +75,7 @@ const getIconName = (tool: any, events: any, index: number) => {
 		return tool.iconName; // 非活跃状态返回默认图标
 	}
 	const activeIndex = SidebarStore.sidebarStatus === "scoreboard" ? 0 : 1; // 根据侧边栏状态确定活跃索引
-	return index === activeIndex ? tool.iconName : tool.iconName_active; // 返回相应的图标名称
+	return index === activeIndex ? tool.iconName_active : tool.iconName ; // 返回相应的图标名称
 };
 
 // 处理赔率变化事件

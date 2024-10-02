@@ -15,7 +15,7 @@ export function useToolsHooks() {
 	const UserStore = useUserStore();
 	// 切换计分板功能
 	const toggleEventScoreboard = (eventInfo: any, isVideo: boolean = false) => {
-		console.log("触发计分板统计，执行对应逻辑");
+		console.log("触发计分板统计，执行对应逻辑", eventInfo, isVideo);
 		if (eventInfo) {
 			if (workerManage.getWorkerList().length) {
 				// 关闭侧边栏events线程
