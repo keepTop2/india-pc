@@ -21,7 +21,7 @@
 			<!-- 让球 -->
 			<template v-else-if="cardType === 'handicap'">
 				<div class="label">
-					<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
+					<span><span v-if="cardData.point && cardData.point > 0">+</span>{{ cardData?.point }}</span>
 				</div>
 				<!-- 状态正常 -->
 				<template v-if="market.marketStatus === 'running'">
@@ -84,7 +84,8 @@ interface CapotCardType {
 		oddsPrice?: {
 			decimalPrice: number;
 		};
-	};
+		key?: string;
+	} | null;
 	/** 体育信息（每一行） */
 	sportInfo: {
 		eventId: number;
@@ -99,10 +100,10 @@ interface CapotCardType {
 }
 const props = withDefaults(defineProps<CapotCardType>(), {
 	cardType: "capot",
-	cardData: () => ({}), // 默认空对象
-	sportInfo: () => ({}),
+	cardData: null,
+	sportInfo: () => ({ eventId: 0 }),
 	betType: 1,
-	market: () => ({}), // 默认空对象
+	market: () => ({}),
 });
 
 // 组件挂载时执行
@@ -141,7 +142,7 @@ const animationEnd = (marketId: number, cardData: any) => {
  * @description 处理盘口高亮状态，拼接 marketId 与 selection key 作为唯一标识，存储值到 pinia 中
  */
 const onSetSportsEventData = () => {
-	if (props.market.marketStatus === "running") {
+	if (props.market.marketStatus === "running" && props.cardData) {
 		const selection = props.cardData;
 		// 判断当前盘口是否已经高亮
 		if (isBright()) {
@@ -165,6 +166,7 @@ const onSetSportsEventData = () => {
  * @returns {boolean} 是否高亮
  */
 const isBright = (): boolean => {
+	if (!props.cardData) return false;
 	const selection = props.cardData;
 	return sportsBetEvent.getEventInfo[props.sportInfo.eventId]?.listKye === `${props.market.marketId}-${selection.key}`;
 };
