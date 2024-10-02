@@ -136,6 +136,7 @@ const attentionEvent = async (isActive: boolean) => {
 <style scoped lang="scss">
 .league-info {
 	min-width: 284px;
+	height: 100%;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
@@ -214,6 +215,7 @@ const attentionEvent = async (isActive: boolean) => {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
 		.date {
 			display: flex;
 			gap: 6px;
