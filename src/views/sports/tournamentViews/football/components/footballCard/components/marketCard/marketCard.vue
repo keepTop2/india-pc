@@ -173,7 +173,7 @@ const isBright = (): boolean => {
 <style scoped lang="scss">
 .market-content {
 	width: 100%;
-	height: 34px;
+	height: 32px;
 	cursor: pointer;
 	.market-item {
 		width: 100%;

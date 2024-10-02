@@ -1,7 +1,9 @@
 <template>
 	<div class="league-content">
-		<!-- 队伍信息 -->
-		<TeamInfoCard :dataIndex="dataIndex" :teamData="event" />
+		<div class="league">
+			<!-- 队伍信息 -->
+			<TeamInfoCard :dataIndex="dataIndex" :teamData="event" />
+		</div>
 
 		<!-- 盘口信息 -->
 		<div class="league-markets">
@@ -117,11 +119,18 @@ const tools = computed(() => {
 
 <style scoped lang="scss">
 .league-content {
+	width: 100%;
+	height: 120px;
 	display: flex;
 	background-color: var(--Bg1);
 	border-bottom: 1px solid var(--Line_2);
 	&:last-child {
 		border-bottom: 0px;
+	}
+
+	.league {
+		min-width: 284px;
+		height: 100%;
 	}
 
 	.league-markets {
