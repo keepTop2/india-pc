@@ -131,7 +131,7 @@ const UserStore = useUserStore();
 
 const hcaptcha: any = ref(null);
 const captchaBtn: any = ref(null);
-const openinviteCode = ref(true)
+const openinviteCode = ref(false)
 const payLoad = reactive({
 	userAccount: "",
 	password: "",

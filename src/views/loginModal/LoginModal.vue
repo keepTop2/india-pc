@@ -76,7 +76,7 @@
 		<!-- 验证码容器 -->
 		<p>	
 			<p id="captcha-element" ref="captchaBtn"/>
-		<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
+			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
 		</p>
 	</form>
 </template>
