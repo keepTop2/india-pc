@@ -13,9 +13,7 @@
 					</div>
 					<Spin @start-spinning-callback="spinStart" @end-spinning-callback="spinEnd" :reward="reward" :spinList="spinList" ref="SpinRef" />
 				</div>
-				<div class="p_20">
-					<button class="common_btn active">剩余抽奖次数： 1</button>
-				</div>
+				<div class="p_20 remaining_times_bg">剩余抽奖次数： 1</div>
 				<div class="flex_space-between">
 					<div class="bonus">
 						<div>转盘奖金总计</div>
@@ -300,9 +298,17 @@ const getRecordList = () => {
 		overflow-x: hidden;
 		height: 80vh;
 		min-height: 500px;
+		.remaining_times_bg {
+			width: 404px;
+			height: 58px;
+			line-height: 26px;
+			background: url("./images/remaining_times_bg.png") no-repeat;
+			background-size: 100% 100%;
+			margin: 20px auto;
+			color: var(--Text_s);
+		}
 	}
 	.common_btn {
-		background: url("./images/btn_bg.png") no-repeat;
 		background-size: 100% 100%;
 		height: 45px;
 	}
