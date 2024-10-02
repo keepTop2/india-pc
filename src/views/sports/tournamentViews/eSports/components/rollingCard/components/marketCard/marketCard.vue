@@ -97,8 +97,10 @@ onMounted(() => {
 	ShopCatControlStore.setShopCartType("league");
 });
 
-const oddsChange = ref(3);
-const changeClass = {
+// 赔率变化状态：1 表示上升，2 表示下降，3 表示无变化
+// oddsChange 的类型定义为字面量联合类型
+const oddsChange = ref<1 | 2 | 3>(3);
+const changeClass: { [key in 1 | 2 | 3]: string } = {
 	1: "oddsUp",
 	2: "oddsDown",
 	3: "none",
@@ -147,41 +149,6 @@ const onSetSportsEventData = () => {
 		}
 	}
 };
-
-// /**
-//  * @description: 选中时高亮处理；
-//  * @param {*} paramsObj
-//  * @return {*}
-//  */
-// const onSetSportsEventData = () => {
-// 	const paramsObj = {
-// 		marketId: marketsMatchData(props.sportInfo.markets, props.betType).marketId,
-// 		selection: props.cardData,
-// 		data: props.sportInfo,
-// 		betType: 5,
-// 	};
-
-// 	//使用 marketId 拼接 selection的key
-// 	//还需要判断当前赛事是否选择了多个 多个无法同时选择的  可以使用 eventid作为key marketId + key 作为值 可行
-// 	const { data, marketId, selection, betType } = paramsObj;
-// 	//存储盘口唯一标识
-// 	if (isBright(data.eventId, marketId, selection)) {
-// 		// 删除Pinia数据
-// 		sportsBetEvent.removeEventCart(event);
-// 	} else {
-// 		sportsBetEvent.setMarketSelect(data.eventId, `${marketId}-${selection.key}`);
-// 		sportsBetEvent.setEventSelect(data.eventId, {
-// 			marketId: marketId,
-// 			betType: betType,
-// 			key: selection.key,
-// 		});
-// 	}
-// 	// 存储Pinia数据
-// 	sportsBetEvent.setSportsEventData(data);
-// 	//同步 新增或改变高亮状态
-// 	// emit("onIsBright", { marketId: marketId, selections: selection, data: data });
-// };
-
 /**
  * @description 判断当前盘口是否存在pinia中
  */
@@ -190,29 +157,12 @@ const isBright = () => {
 
 	return sportsBetEvent.getEventInfo[props.sportInfo.eventId]?.listKye == `${props?.market?.marketId}-${selection.key}`;
 };
-
-// /**
-//  * @description 判断当前盘口是否存在pinia中
-//  */
-// const isBright = (eventId, marketId, selection) => {
-// 	console.info("判断当前盘口是否存在pinia中", eventId, marketId, selection);
-
-// 	if (selection) {
-// 		try {
-// 			return marketsSelect.value[eventId] == `${marketId}-${selection.key}`;
-// 		} catch (error) {
-// 			return false;
-// 		}
-// 	} else {
-// 		return false;
-// 	}
-// };
 </script>
 
 <style scoped lang="scss">
 .market-content {
 	width: 100%;
-	height: 34px;
+	height: 32px;
 	cursor: pointer;
 	.market-item {
 		width: 100%;
@@ -229,7 +179,7 @@ const isBright = () => {
 			max-width: calc(100% - 50px);
 			color: var(--Text1);
 			font-family: "PingFang SC";
-			font-size: 14px;
+			font-size: 12px;
 			font-weight: 400;
 			white-space: nowrap;
 			overflow: hidden;
@@ -241,7 +191,7 @@ const isBright = () => {
 			text-align: end;
 			color: var(--Text_a);
 			font-family: "PingFang SC";
-			font-size: 16px;
+			font-size: 12px;
 			font-weight: 400;
 
 			.arrow-icon {

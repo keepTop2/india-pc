@@ -12,16 +12,16 @@ const route = useRoute();
 
 // 懒加载球类列表组件
 const sportsMap: Record<number, ReturnType<typeof defineAsyncComponent>> = {
-	1: defineAsyncComponent(() => import(/* webpackChunkName: "football" */ "/@/views/sports/tournamentViews/football/football.vue")),
-	2: defineAsyncComponent(() => import(/* webpackChunkName: "basketball" */ "/@/views/sports/tournamentViews/basketball/basketball.vue")),
-	3: defineAsyncComponent(() => import(/* webpackChunkName: "americanSoccer" */ "/@/views/sports/tournamentViews/americanSoccer/americanSoccer.vue")),
-	4: defineAsyncComponent(() => import(/* webpackChunkName: "iceHockey" */ "/@/views/sports/tournamentViews/iceHockey/iceHockey.vue")),
-	5: defineAsyncComponent(() => import(/* webpackChunkName: "tennis" */ "/@/views/sports/tournamentViews/tennis/tennis.vue")),
-	6: defineAsyncComponent(() => import(/* webpackChunkName: "volleyball" */ "/@/views/sports/tournamentViews/volleyball/volleyball.vue")),
-	7: defineAsyncComponent(() => import(/* webpackChunkName: "billiards" */ "/@/views/sports/tournamentViews/billiards/billiards.vue")),
-	8: defineAsyncComponent(() => import(/* webpackChunkName: "baseball" */ "/@/views/sports/tournamentViews/baseball/baseball.vue")),
-	9: defineAsyncComponent(() => import(/* webpackChunkName: "badminton" */ "/@/views/sports/tournamentViews/badminton/badminton.vue")),
-	43: defineAsyncComponent(() => import(/* webpackChunkName: "eSports" */ "/@/views/sports/tournamentViews/eSports/eSports.vue")),
+	1: defineAsyncComponent(() => import(/* webpackChunkName: "football" */ "/@/views/sports/tournamentViews/football/football.vue")), // 足球
+	2: defineAsyncComponent(() => import(/* webpackChunkName: "basketball" */ "/@/views/sports/tournamentViews/basketball/basketball.vue")), // 篮球
+	3: defineAsyncComponent(() => import(/* webpackChunkName: "americanSoccer" */ "/@/views/sports/tournamentViews/americanSoccer/americanSoccer.vue")), // 美国足球
+	4: defineAsyncComponent(() => import(/* webpackChunkName: "iceHockey" */ "/@/views/sports/tournamentViews/iceHockey/iceHockey.vue")), // 冰球
+	5: defineAsyncComponent(() => import(/* webpackChunkName: "tennis" */ "/@/views/sports/tournamentViews/tennis/tennis.vue")), // 网球
+	6: defineAsyncComponent(() => import(/* webpackChunkName: "volleyball" */ "/@/views/sports/tournamentViews/volleyball/volleyball.vue")), // 排球
+	7: defineAsyncComponent(() => import(/* webpackChunkName: "billiards" */ "/@/views/sports/tournamentViews/billiards/billiards.vue")), // 台球
+	8: defineAsyncComponent(() => import(/* webpackChunkName: "baseball" */ "/@/views/sports/tournamentViews/baseball/baseball.vue")), // 棒球
+	9: defineAsyncComponent(() => import(/* webpackChunkName: "badminton" */ "/@/views/sports/tournamentViews/badminton/badminton.vue")), // 羽毛球
+	43: defineAsyncComponent(() => import(/* webpackChunkName: "eSports" */ "/@/views/sports/tournamentViews/eSports/eSports.vue")), // 电子竞技
 };
 
 // 获取数据中心处理好的列表数据
