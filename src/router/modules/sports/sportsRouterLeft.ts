@@ -2,7 +2,7 @@ const MajorCategoriesMenu = [
 	{
 		path: "/sports/collect",
 		name: "sportsCollect",
-		icon: "collection",
+		icon: "collection_header_bar",
 		component: () => import("/@/views/sports/views/collect/collect.vue"),
 		meta: { title: "收藏", type: "collect" },
 	},

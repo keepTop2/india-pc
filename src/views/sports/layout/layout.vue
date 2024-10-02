@@ -12,7 +12,7 @@
 					<div class="header">
 						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
 						<div class="line" v-if="route.meta.type === 'list'"></div>
-						<HeaderMenuNav></HeaderMenuNav>
+						<HeaderMenuNav :tabActive="tabActive"></HeaderMenuNav>
 					</div>
 					<div class="back-container">
 						<!-- 主体路由页面 -->
@@ -242,7 +242,7 @@ const initSport = async () => {
  * @param {string} type - 标签类型
  */
 const onTab = (type: string) => {
-	console.log(tabActive.value, "==========", type);
+	console.log(tabActive.value, "=====onTab=====", type);
 	if (tabActive.value == type) return;
 	tabActive.value = type;
 	ShopCatControlStore.setShopCatShow(false);
@@ -305,7 +305,7 @@ watch(
 			// 清除侧边栏数据
 			// SidebarStore.clearEventsInfo();
 			//开启推送
-			openSportPush(route.query.sportType as string);
+			openSportPush(route.query.sportType as string, tabActive.value);
 		}
 	}
 );

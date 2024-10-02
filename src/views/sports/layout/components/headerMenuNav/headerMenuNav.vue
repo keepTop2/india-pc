@@ -45,7 +45,9 @@ const route = useRoute();
 const Menu = ref(MajorCategoriesMenu);
 const sportsBetEvent = useSportsBetEventStore();
 const sportType = computed(() => route.query.sportType);
-
+const props = defineProps<{
+	tabActive: string;
+}>();
 // 球类tab数据
 const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
 
@@ -63,11 +65,19 @@ const initRoute = () => {
 	}
 };
 
+const tabData = ref([
+	{ label: "今日", type: "todayContest", path: "/sports/todayContest" },
+	{ label: "早盘", type: "morningTrading", path: "/sports/morningTrading" },
+	{ label: "冠军", type: "champion", path: "/sports/champion" },
+]);
+
 const toPath = (item: any) => {
+	console.log(props.tabActive,'=========topath',item,'123123======wafwafe');
 	if (route.meta.type !== "list") {
+		const path = tabData.value.find(item => item.type === props.tabActive)?.path || '/sports/todayContest';
 		router
 			.push({
-				path: "/sports/todayContest/rollingBall",
+				path: path,
 				query: { sportType: item.sportType },
 			})
 			.catch((err) => {
@@ -132,8 +142,13 @@ watch(sportsData, () => {
 	background: var(--Bg1);
 	overflow: hidden;
 	box-sizing: border-box;
-	&.list, &.result {
+	&.list {
 		border-radius: 0px 0px 8px 8px;
+	}
+	&.result {
+		border-radius: 8px 8px 0px 0px;
+		// margin-bottom: 1px;
+		border-bottom: 1px solid var(--Line_1);
 	}
 	.arrow_content {
 		position: absolute;

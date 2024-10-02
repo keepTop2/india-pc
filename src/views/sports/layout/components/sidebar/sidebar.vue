@@ -1,6 +1,6 @@
 <!-- 侧边栏 -->
 <template>
-	<div class="sidebar">
+	<div class="sidebar" v-show="eventsInfo">
 		<div class="affix">
 			<!-- 头部 -->
 			<div class="header">
@@ -70,6 +70,9 @@
 			<!-- 热门赛事 -->
 			<HotEvents v-show="isShowHotEvents" />
 		</div>
+	</div>
+	<div class="sidebar no_data" v-show="!eventsInfo">
+		<svg-icon name="no_data" width="142px" height="120px"></svg-icon>
 	</div>
 </template>
 
@@ -308,9 +311,14 @@ const showDetail = () => {
 </script>
 
 <style scoped lang="scss">
+.no_data{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 .sidebar {
 	width: 100%;
-
+	height:750px;
 	background-color: var(--Bg1);
 	border-radius: 8px;
 	.live {

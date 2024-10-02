@@ -60,7 +60,10 @@ export function useSportEvents() {
 	watch(
 		() => route.path,
 		(newPath) => {
-			tabActive.value = routeMap[newPath as keyof typeof routeMap] || "";
+			console.log(newPath, "==========newPath");
+			if (routeMap[newPath as keyof typeof routeMap]) {
+				tabActive.value = routeMap[newPath as keyof typeof routeMap] || "";
+			}
 		},
 		{ immediate: true }
 	);
@@ -119,8 +122,8 @@ export function useSportEvents() {
 	 * @description 打开体育推送
 	 * @param {string | undefined} type - 体育类型
 	 */
-	const openSportPush = async (type?: string | undefined) => {
-		console.log("type", type);
+	const openSportPush = async (type?: string | undefined, tabActive?: string) => {
+		console.log("type", type,'tabActive====',tabActive);
 
 		sportsBetEvent.clearHotLeagueList();
 		pubSub.publish("clearHotLeagueList", "on");
@@ -128,7 +131,7 @@ export function useSportEvents() {
 		closeSportViewProcessWorker();
 		openSportViewProcessWorker();
 
-		await handleSportPush();
+		await handleSportPush(tabActive);
 		// 收藏页
 		if (route.path === "/sports/collect") {
 			await openAttentionSSE();
@@ -149,13 +152,14 @@ export function useSportEvents() {
 	/**
 	 * @description 处理体育推送
 	 */
-	const handleSportPush = async () => {
+	const handleSportPush = async (tabKey?: string) => {
+		console.log(tabKey, "tabKey",'=tabActive.value =====',tabActive.value );
 		const params = {
 			apiUrl: SportsCommonFn.getSportPushApiUrl(),
 			token: SportsInfoStore.getSportsToken,
 			language: SportsCommonFn.getSportLanguage(),
 		};
-		const action = sportTabPushActions[tabActive.value as keyof typeof sportTabPushActions]?.openSport || sportTabPushActions.rollingBall.openSport;
+		const action = sportTabPushActions[tabActive.value as keyof typeof sportTabPushActions]?.openSport || sportTabPushActions[tabKey as keyof typeof sportTabPushActions]?.openSport || sportTabPushActions.rollingBall.openSport;
 		sendWorkerCommand(action, params);
 	};
 
