@@ -352,7 +352,7 @@ watch(
 				// border-radius: 8px 8px 0 0;
 				// background: var(--Bg1);
 				box-sizing: border-box;
-				overflow: hidden;
+				// overflow: hidden;
 
 				.line {
 					width: 100%;

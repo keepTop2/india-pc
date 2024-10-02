@@ -395,6 +395,9 @@ const showDetail = () => {
 				.icon {
 					width: 16px;
 					height: 16px;
+					svg{
+						color:var(--Icon_1);
+					}
 				}
 				.team-name {
 					display: flex;
