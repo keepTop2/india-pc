@@ -8,8 +8,8 @@
 	>
 		<!-- 左侧头 -->
 		<div class="left_main_header">
-			<div class="left_imgs_collapse collapse_icon icon" @click="changeCollpase">
-				<SvgIcon name="collapse_icon" :class="collapse ? 'active' : ''" width="36px" height="36px" />
+			<div class="left_imgs_collapse collapse_icon icon">
+				<SvgIcon name="collapse_icon" :class="collapse ? 'active' : ''" width="36px" height="36px" @click="changeCollpase" v-hover-svg />
 			</div>
 			<div class="login_plan" @click="router.push('/')">
 				<svg-icon name="logo" width="132px" height="16px" />
@@ -34,7 +34,7 @@
 						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['任务']`) }} </span>
 					</div>
 
-					<div class="task_lottery_item" @click="showLottery" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('lottery_bg.png')})` : '' }">
+					<div class="task_lottery_item" @click="showSpin" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('lottery_bg.png')})` : '' }">
 						<img :src="Common.getCommonImgPath('lottery_icon.png')" alt="" />
 						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['抽奖']`) }}</span>
 					</div>
@@ -117,12 +117,12 @@ onMounted(() => {
 	}, 1500);
 });
 
-const showLottery = () => {
-	modalStore.openModal("FREE_WHEEL");
+const showSpin = () => {
+	modalStore.openModal("SPIN_WHEEL");
 };
 
 const showTask = () => {
-	modalStore.openModal("FREE_WHEEL");
+	modalStore.openModal("SPIN_WHEEL");
 };
 const onSetTheme = (str: ThemeKey) => {
 	ThemesStore.setTheme(str);

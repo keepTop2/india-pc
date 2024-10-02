@@ -3,9 +3,9 @@
 		<div class="parent">
 			<div class="child curp">
 				<div class="curp">
-					<img src="/@/assets/common/redbagRainCountdownClose.svg" alt="" @click.self="closeRedbagRainCountdown" />
+					<img class="close" src="/@/assets/common/redbagRainCountdownClose.png" alt="" @click.self="closeRedbagRainCountdown" />
 				</div>
-				<img src="/@/assets/common/redbagRainCountdown.svg" alt="" @click.self="handleClickCountdown" />
+				<img class="CountdownImg" src="/@/assets/common/redbagRainCountdown.png" alt="" @click.self="handleClickCountdown" />
 				<div class="countdown" @click="handleClickCountdown">
 					<p>倒计时</p>
 					<p>{{ countdown }}</p>
@@ -16,7 +16,6 @@
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, onBeforeUnmount } from "vue";
-import RED_BAG_RAIN from "../views/activity/activityType/RED_BAG_RAIN/index.vue";
 import pubsub from "../pubSub/pubSub";
 import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
 import { useCountdown } from "../hooks/countdown";
@@ -142,6 +141,14 @@ onBeforeUnmount(() => {
 			transform: translateX(-50%);
 			color: var(--Text_a);
 			text-align: center;
+		}
+		.close {
+			width: 16.5px;
+			height: 16.5px;
+		}
+		.CountdownImg {
+			width: 114.214px;
+			height: 97.5px;
 		}
 	}
 	@keyframes shake {
