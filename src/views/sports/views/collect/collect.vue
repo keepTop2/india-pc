@@ -65,9 +65,9 @@ const computedEventId = computed(() => {
 
 const isShowCollect = computed(() => route.name === "sportsCollect");
 
-onMounted(() => {
-	openSportPush();
-});
+// onMounted(() => {
+// 	openSportPush();
+// });
 
 const getEventData = () => {
 	const newEvents = map(viewSportPubSubEventData.getEvents(), (league: any) => {
