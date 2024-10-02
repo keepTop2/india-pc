@@ -110,7 +110,7 @@ onMounted(() => {
 	initRoute();
 	nextTick(() => {
 		handleScroll();
-		window.addEventListener('resize', handleScroll);
+		window.addEventListener("resize", handleScroll);
 	});
 });
 
@@ -125,14 +125,15 @@ watch(sportsData, () => {
 .header-container {
 	position: relative;
 	width: 100%;
-	height: 67px;
+	height: 66px;
 	display: flex;
 	align-items: center;
 	border-radius: 8px;
 	background: var(--Bg1);
 	overflow: hidden;
 	box-sizing: border-box;
-	&.list, &.result {
+	&.list,
+	&.result {
 		border-radius: 0px 0px 8px 8px;
 	}
 	.arrow_content {
@@ -229,7 +230,7 @@ watch(sportsData, () => {
 				align-items: center;
 				justify-content: center;
 				flex-direction: column;
-				gap:4px;
+				gap: 4px;
 			}
 			.value {
 				color: var(--Text1, #98a7b5);
@@ -237,9 +238,8 @@ watch(sportsData, () => {
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
-
 			}
-			.title{
+			.title {
 				//超出省略号
 				overflow: hidden;
 				text-overflow: ellipsis;
@@ -265,7 +265,7 @@ watch(sportsData, () => {
 
 		.left {
 			gap: 4px;
-			.nva-item{
+			.nva-item {
 				width: 68px;
 			}
 		}

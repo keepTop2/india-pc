@@ -1,10 +1,7 @@
 <template>
 	<div class="base-body">
-		<!-- 公告通知 -->
-		<div class="base-container">
-			<HeaderNotify @click="openNotify"></HeaderNotify>
-		</div>
 		<!-- 体育 主体内容区域  -->
+		<!-- <Banner /> -->
 		<div class="main-container">
 			<!-- 体育游戏列表 -->
 			<div class="left-container">
@@ -41,8 +38,6 @@ import { computed, defineAsyncComponent, markRaw, onBeforeMount, onBeforeUnmount
 import { isEmpty } from "lodash-es";
 import { useRoute, useRouter } from "vue-router";
 import { useIntervalFn } from "@vueuse/core";
-import moment from "moment";
-
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
@@ -71,7 +66,7 @@ import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
 import { WorkerName, SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
 
 import Modal from "./components/Modal/index.vue";
-import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar } from "./components";
+import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar, Banner } from "./components";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
@@ -267,14 +262,6 @@ const unSport = () => {
 };
 
 /**
- * @description 打开通知
- */
-const openNotify = () => {
-	NotifyModal.value = markRaw(defineAsyncComponent(() => import(`./components/Notify/index.vue`)));
-	showNotifyModal.value = true;
-};
-
-/**
  * @description 关闭通知模态框
  */
 const closeNotifyModal = () => {
@@ -316,15 +303,15 @@ watch(
 	() => sportsData.value,
 	(newValue, oldValue) => {
 		if (newValue && newValue.length > 0) {
-			if(route.query.sportType){
-			const isSportType = newValue.some((item) => item.sportType == Number(route.query.sportType));
-			if (!isSportType) {
-				router.push({
-					path: route.path,
-					query: {
-						...route.query,
-						sportType: newValue[0].sportType,
-					},
+			if (route.query.sportType) {
+				const isSportType = newValue.some((item) => item.sportType == Number(route.query.sportType));
+				if (!isSportType) {
+					router.push({
+						path: route.path,
+						query: {
+							...route.query,
+							sportType: newValue[0].sportType,
+						},
 					});
 				}
 			}
@@ -341,12 +328,9 @@ watch(
 	overflow-x: auto;
 }
 
-.base-container {
-	width: 100%;
-}
 .main-container {
 	display: flex;
-	height: calc(100% - 40px);
+	height: calc(100%);
 	// width: 1660px;
 	overflow: hidden;
 	overflow-x: auto;
@@ -396,7 +380,7 @@ watch(
 	}
 
 	.right-container {
-		width: 380px;
+		width: 370px;
 		height: 100%;
 		overflow-y: auto;
 	}
