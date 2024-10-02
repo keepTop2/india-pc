@@ -334,7 +334,7 @@ watch(
 	}
 
 	.tabs {
-		padding: 11px 24px;
+		padding: 10px;
 		width: calc(100% - 48px);
 		box-sizing: border-box;
 	}

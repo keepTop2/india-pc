@@ -21,7 +21,8 @@
 			<!-- 赛事数据 -->
 			<div class="events-content">
 				<div class="events-header">
-					<div class="icon"><svg-icon :name="ballInfo[Number(route.query.sportType)]?.iconName" size="16px"></svg-icon></div>
+					<div class="icon"><svg-icon :name="ballInfo[Number(route.query.sportType)]?.iconName" size="16px"></svg-icon>
+					</div>
 					<template v-if="eventsInfo">
 						<div class="team-name">
 							<span class="name">{{ eventsInfo?.teamInfo?.homeName }}</span>
@@ -36,11 +37,8 @@
 			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
-				<component
-					v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)"
-					:is="ballInfo[Number(eventsInfo.sportType)]?.componentName"
-					:eventsInfo="eventsInfo"
-				></component>
+				<component v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)"
+					:is="ballInfo[Number(eventsInfo.sportType)]?.componentName" :eventsInfo="eventsInfo"></component>
 				<!-- 未开赛计分板显示 -->
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
@@ -50,14 +48,9 @@
 				<div ref="videoContainer" class="video-js"></div>
 				<!-- 真人赛事比赛 -->
 				<div v-show="iframeLoaded" class="live">
-					<iframe
-						class="eventVideo"
-						@load="onIframeLoad"
-						:src="videoSrc"
-						frameborder="0"
+					<iframe class="eventVideo" @load="onIframeLoad" :src="videoSrc" frameborder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-						allowfullscreen
-					>
+						allowfullscreen>
 					</iframe>
 				</div>
 			</div>
@@ -106,7 +99,7 @@ const isShowHotEvents = computed(() => route.meta.type === "detail" ? true : fal
 const eventsInfo = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
 	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData;
-	console.log('eventsInfo=======',childrenViewData, "childrenViewData")
+	console.log('eventsInfo=======', childrenViewData, "childrenViewData")
 	if (childrenViewData && !isShowHotEvents.value) {
 		return childrenViewData[0]?.events[0];
 	}
@@ -310,35 +303,47 @@ const showDetail = () => {
 </script>
 
 <style scoped lang="scss">
-.no_data{
+.no_data {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
+
 .sidebar {
 	width: 100%;
-	height:750px;
+	height: 750px;
 	background-color: var(--Bg1);
 	border-radius: 8px;
+
+	.markets-list {
+		height: calc(100% - 300px);
+		overflow-y: scroll;
+	}
+
 	.live {
 		height: 420px;
 	}
+
 	.eventVideo {
 		width: 390px;
 		height: 208px;
 	}
+
 	:deep(.video-js) {
 		height: 208px;
 		width: 390px;
+
 		.vjs-tech {
 			width: 390px;
 		}
 	}
+
 	.affix {
 		position: sticky;
 		top: 0px;
 		background-color: var(--Bg1);
 		z-index: 1;
+
 		.header {
 			width: 100%;
 			height: 40px;
@@ -346,16 +351,19 @@ const showDetail = () => {
 			align-items: center;
 			justify-content: space-between;
 			padding: 0px 24px;
+
 			.left,
 			.center,
 			.right {
 				flex: 1;
 			}
+
 			.center {
 				display: flex;
 				justify-content: center;
 				gap: 24px;
 			}
+
 			.right {
 				display: flex;
 				justify-content: end;
@@ -367,14 +375,17 @@ const showDetail = () => {
 				height: 16px;
 				cursor: pointer;
 			}
+
 			.icon2 {
 				width: 16px;
 				height: 16px;
 				cursor: pointer;
 			}
 		}
+
 		.events-content {
 			position: relative;
+
 			&::after {
 				position: absolute;
 				content: "";
@@ -385,6 +396,7 @@ const showDetail = () => {
 				background-color: var(--Line_1);
 				box-shadow: 0px 1px 0px 0px #343d48;
 			}
+
 			.events-header {
 				width: 100%;
 				height: 30px;
@@ -392,13 +404,16 @@ const showDetail = () => {
 				align-items: center;
 				gap: 8px;
 				padding: 5px 12px;
+
 				.icon {
 					width: 16px;
 					height: 16px;
-					svg{
-						color:var(--Icon_1);
+
+					svg {
+						color: var(--Icon_1);
 					}
 				}
+
 				.team-name {
 					display: flex;
 					align-items: center;
@@ -408,11 +423,15 @@ const showDetail = () => {
 					font-size: 14px;
 					font-weight: 400;
 					line-height: 16px;
+
 					.name {
 						max-width: 140px;
-						white-space: nowrap; /* 禁止换行 */
-						overflow: hidden; /* 超出部分隐藏 */
-						text-overflow: ellipsis; /* 超出部分显示省略号 */
+						white-space: nowrap;
+						/* 禁止换行 */
+						overflow: hidden;
+						/* 超出部分隐藏 */
+						text-overflow: ellipsis;
+						/* 超出部分显示省略号 */
 					}
 				}
 			}
@@ -421,6 +440,7 @@ const showDetail = () => {
 				width: 100%;
 				height: 100%;
 			}
+
 			.events-live {
 				width: 100%;
 				height: 100%;
