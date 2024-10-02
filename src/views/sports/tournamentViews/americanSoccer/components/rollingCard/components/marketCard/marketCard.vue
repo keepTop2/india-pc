@@ -96,8 +96,10 @@ onMounted(() => {
 	ShopCatControlStore.setShopCartType("league");
 });
 
-const oddsChange = ref(3);
-const changeClass = {
+// 赔率变化状态：1 表示上升，2 表示下降，3 表示无变化
+// oddsChange 的类型定义为字面量联合类型
+const oddsChange = ref<1 | 2 | 3>(3);
+const changeClass: { [key in 1 | 2 | 3]: string } = {
 	1: "oddsUp",
 	2: "oddsDown",
 	3: "none",
@@ -160,7 +162,7 @@ const isBright = () => {
 <style scoped lang="scss">
 .market-content {
 	width: 100%;
-	height: 34px;
+	height: 32px;
 	cursor: pointer;
 	.market-item {
 		width: 100%;
@@ -168,7 +170,7 @@ const isBright = () => {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 7px 18px 7px 14px;
+		padding: 8px;
 		border-radius: 4px;
 		background: var(--Bg3);
 		box-sizing: border-box;
@@ -177,7 +179,7 @@ const isBright = () => {
 			max-width: calc(100% - 50px);
 			color: var(--Text1);
 			font-family: "PingFang SC";
-			font-size: 14px;
+			font-size: 12px;
 			font-weight: 400;
 			white-space: nowrap;
 			overflow: hidden;
@@ -189,7 +191,7 @@ const isBright = () => {
 			text-align: end;
 			color: var(--Text_a);
 			font-family: "PingFang SC";
-			font-size: 16px;
+			font-size: 12px;
 			font-weight: 400;
 
 			.arrow-icon {
