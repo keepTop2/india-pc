@@ -8,14 +8,12 @@
 				<!-- 状态正常 -->
 				<div class="value" v-if="market.marketStatus === 'running'">
 					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<div class="arrow-icon">
-						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
-					</div>
 				</div>
 				<!-- 锁 -->
 				<div class="lock" v-else>
 					<svg-icon name="sports-lock" size="16px"></svg-icon>
 				</div>
+				<RiseOrFall v-if="market.marketStatus === 'running'" :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
 			</template>
 
 			<!-- 让球 -->
@@ -26,14 +24,12 @@
 				<!-- 状态正常 -->
 				<div class="value" v-if="market.marketStatus === 'running'">
 					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<div class="arrow-icon">
-						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
-					</div>
 				</div>
 				<!-- 锁 -->
 				<div class="lock" v-else>
 					<svg-icon name="sports-lock" size="16px"></svg-icon>
 				</div>
+				<RiseOrFall v-if="market.marketStatus === 'running'" :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
 			</template>
 
 			<!-- 大小 -->
@@ -45,14 +41,12 @@
 				<!-- 状态正常 -->
 				<div class="value" v-if="market.marketStatus === 'running'">
 					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<div class="arrow-icon">
-						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
-					</div>
 				</div>
 				<!-- 锁 -->
 				<div class="lock" v-else>
 					<svg-icon name="sports-lock" size="16px"></svg-icon>
 				</div>
+				<RiseOrFall v-if="market.marketStatus === 'running'" :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
 			</template>
 		</div>
 
@@ -176,6 +170,7 @@ const isBright = (): boolean => {
 	height: 32px;
 	cursor: pointer;
 	.market-item {
+		position: relative;
 		width: 100%;
 		height: 100%;
 		display: flex;
@@ -203,16 +198,6 @@ const isBright = (): boolean => {
 			font-family: "PingFang SC";
 			font-size: 12px;
 			font-weight: 400;
-
-			.arrow-icon {
-				position: absolute;
-				top: 50%;
-				transform: translate(0px, -50%);
-				right: -16px;
-			}
-		}
-		&:hover {
-			background-color: rgba(255, 255, 255, 0.05);
 		}
 
 		.lock {
@@ -228,6 +213,10 @@ const isBright = (): boolean => {
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
+		}
+
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.05);
 		}
 	}
 
