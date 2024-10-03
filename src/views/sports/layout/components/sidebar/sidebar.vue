@@ -321,7 +321,6 @@ const showDetail = () => {
 .sidebar {
 	width: 100%;
 	height: 100vh;
-	// background-color: var(--Bg1);
 	border-radius: 8px;
 
 	.markets-list {
