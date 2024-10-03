@@ -1,5 +1,5 @@
 <template>
-	<div class="card-container" :class="[!props.displayContent ? 'hideToggle' : 'showToggle']">
+	<div class="card-container">
 		<div class="content-container" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
 			<div class="text-container">
 				<div class="label">{{ cardData.teamName }}</div>
@@ -87,26 +87,8 @@ const changeClass = (cardData) => {
  * @description 处理盘口高亮状态 查看是否添加到购物车；
  */
 const onSetSportsEventData = () => {
-	// let item = props.cardData; //队伍
-	// let data = props.sportInfo; //行数据
-	// const params = {
-	// 	...item,
-	// 	leagueId: data.leagueId,
-	// 	leagueName: data.leagueName,
-	// 	sportType: data.sportType,
-	// };
-	// //存储盘口唯一标识
-	// if (isBright()) {
-	// 	// 删除Pinia数据
-	// 	ChampionShopCartStore.removeChampionTEventCart(params);
-	// } else {
-	// 	/**添加到购物车 */
-	// 	ChampionShopCartStore.addChampionToCart(JSON.parse(JSON.stringify(params)));
-	// }
 	let item = props.cardData; //队伍
 	let data = props.sportInfo; //行数据
-	// console.log("item", item);
-	// console.log("data", data);
 	// 创建对象
 	const params = {
 		type: "1", // 添加冠军标识
@@ -158,46 +140,39 @@ const isBright = () => {
 
 .card-container {
 	width: 100%;
-	display: flex;
-	align-items: center;
-	height: 50px;
-	flex-shrink: 0;
-	border-radius: 4px;
-	cursor: pointer;
-	user-select: none;
-	-webkit-user-drag: none;
-	overflow: hidden;
-
+	height: 34px;
+	border-radius: 2px;
 	background: var(--Bg3);
-
+	overflow: hidden;
+	cursor: pointer;
 	&:hover {
-		background: var(--Line);
+		background-color: rgba(255, 255, 255, 0.05);
 	}
 
 	.content-container {
 		position: relative;
 		width: 100%;
 		height: 100%;
-		overflow: hidden;
 		display: flex;
 		align-items: center;
-		border-radius: 4px;
-
-		&.isBright {
-			background: var(--Bg5);
+		padding: 6px 10px;
+	}
+	.isBright {
+		background: var(--Bg5);
+		.label {
+			color: var(--Text_a) !important;
 		}
 	}
 
 	.text-container {
-		display: flex;
 		width: 100%;
+		height: 100%;
+		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0 8px;
 
 		.label {
 			color: var(--Text1);
-
 			text-align: center;
 			font-family: "PingFang SC";
 			font-size: 14px;
@@ -208,13 +183,11 @@ const isBright = () => {
 
 		.value {
 			color: var(--Text_s);
-
 			font-family: "PingFang SC";
-			font-size: 16px;
+			font-size: 14px;
 			font-style: normal;
-			font-weight: 400;
+			font-weight: 500;
 			line-height: normal;
-			margin-right: 19px;
 		}
 	}
 
@@ -222,23 +195,7 @@ const isBright = () => {
 		margin: 0 auto;
 		width: 14px;
 		height: 1px;
-
 		background: var(--Text1);
 	}
-}
-
-.item:hover {
-	background: var(--Line);
-}
-
-.hideToggle {
-	height: 0;
-	overflow: hidden;
-	transition: height 0.5s ease;
-}
-.showToggle {
-	max-height: 50px;
-	overflow: hidden;
-	transition: height 0.5s ease;
 }
 </style>
