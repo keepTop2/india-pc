@@ -1,5 +1,5 @@
 <template>
-	<div class="max-width">
+	<div class="max-width pr_10 pl_10">
 		<div class="mt_30 mb_28 Text1 fs_14 curp">赌场>游戏供应商><span class="Text_s">供应商名称</span></div>
 		<iframe
 			class="ifrmeContainerRef"
@@ -34,4 +34,9 @@ onBeforeRouteLeave(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.max-width {
+	overflow: auto;
+}
+
+</style>

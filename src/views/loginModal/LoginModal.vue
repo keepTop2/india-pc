@@ -74,10 +74,10 @@
 			</div>
 		</div>
 		<!-- 验证码容器 -->
-		<p>	
+		<article>	
 			<p id="captcha-element" ref="captchaBtn"/>
 			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
-		</p>
+		</article>
 	</form>
 </template>
 

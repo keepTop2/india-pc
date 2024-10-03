@@ -1,8 +1,7 @@
 {
-	"name": "main_app",
+	"name": "pc",
 	"version": "2.4.33",
-	"description": "vue3 vite next admin template",
-	"author": "lyt_20201208",
+	"description": "",
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite",
@@ -18,35 +17,21 @@
 		"@types/crypto-js": "^4.2.2",
 		"@vueuse/components": "^10.9.0",
 		"@vueuse/core": "^10.9.0",
-		"@wangeditor/editor": "^5.1.23",
-		"@wangeditor/editor-for-vue": "^5.1.12",
 		"axios": "^1.4.0",
 		"countup.js": "^2.6.0",
-		"cropperjs": "^1.5.13",
 		"crypto-js": "^4.2.0",
 		"dayjs": "^1.11.7",
 		"decimal.js": "^10.4.3",
-		"echarts": "^5.4.2",
-		"echarts-gl": "^2.0.9",
-		"echarts-wordcloud": "^2.1.0",
 		"element-plus": "^2.8.3",
-		"js-cookie": "^3.0.1",
-		"js-table2excel": "^1.0.3",
-		"jsplumb": "^2.15.6",
 		"lodash-es": "^4.17.21",
 		"moment": "^2.29.4",
 		"moment-timezone": "^0.5.43",
-		"nprogress": "^0.2.0",
 		"pinia": "^2.0.34",
 		"pinia-plugin-persistedstate": "^3.2.0",
-		"print-js": "^1.6.0",
 		"qrcode.vue": "^3.4.1",
-		"qrcodejs2-fixes": "^0.0.2",
 		"qs": "^6.11.1",
 		"sass": "^1.69.7",
 		"screenfull": "^6.0.2",
-		"sortablejs": "^1.15.0",
-		"splitpanes": "^3.1.5",
 		"swiper": "^11.1.1",
 		"uuid": "^3.4.0",
 		"v-calendar": "^3.1.2",
@@ -54,8 +39,6 @@
 		"vite-svg-loader": "^5.1.0",
 		"vue": "^3.4.26",
 		"vue-clipboard3": "^2.0.0",
-		"vue-demi": "^0.13.11",
-		"vue-grid-layout": "^3.0.0-beta1",
 		"vue-i18n": "^9.11.1",
 		"vue-router": "^4.1.6"
 	},
@@ -93,24 +76,8 @@
 		"last 2 versions",
 		"not dead"
 	],
-	"bugs": {
-		"url": "https://gitee.com/lyt-top/vue-next-admin/issues"
-	},
 	"engines": {
 		"node": ">=16.0.0",
 		"npm": ">= 7.0.0"
-	},
-	"keywords": [
-		"vue",
-		"vue3",
-		"vuejs/vue-next",
-		"element-ui",
-		"element-plus",
-		"vue-next-admin",
-		"next-admin"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://gitee.com/lyt-top/vue-next-admin.git"
 	}
 }

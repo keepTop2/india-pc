@@ -267,13 +267,11 @@ const sendVerificationCode = async () => {
 			phone: UserStore.getUserGlobalSetInfo.phone,
 			areaCode: UserStore.getUserGlobalSetInfo.areaCode,
 		};
-		console.log(payLoad);
 		const res = await userApi.globalSendSms(params).catch((err) => err);
 		const { code, message } = res;
 		if (code == Common.ResCode.SUCCESS) {
 			showToast(message, 1500);
-			verificationBtn.value = true;
-			(VerificationCodeRef2.value as any).startCountdown(60);
+			(VerificationCodeRef.value as any).startCountdown(60);
 		} else {
 			showToast(message, 1500);
 		}
