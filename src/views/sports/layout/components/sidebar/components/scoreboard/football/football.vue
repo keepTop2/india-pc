@@ -85,6 +85,7 @@
 				</div>
 			</div>
 		</div>
+		<div class="line"></div>
 	</div>
 </template>
 
@@ -116,7 +117,7 @@ const props = withDefaults(
 		background: url("/@/assets/zh-CN/sports/sidebar/football_s.png") center center / 100% 100% no-repeat;
 		.scoreboard-center {
 			position: relative;
-			width: 366px;
+			width: 354px;
 			border-radius: 8px;
 			background-color: var(--scoreboard_bg);
 			overflow: hidden;
@@ -144,6 +145,9 @@ const props = withDefaults(
 					.icon {
 						width: 20px;
 						height: 20px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
 						img {
 							width: 100%;
 							height: 100%;
@@ -204,8 +208,7 @@ const props = withDefaults(
 		height: 68px;
 		display: flex;
 		padding: 0px 12px;
-		border-radius: 0px 0px 8px 8px;
-		background-color: var(--Bg3);
+		background-color: var(--Bg1);
 		.team {
 			width: 30%;
 			margin-top: 8px;
@@ -216,6 +219,9 @@ const props = withDefaults(
 				.icon {
 					width: 20px;
 					height: 20px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
 					img {
 						width: 100%;
 						height: 100%;
@@ -304,6 +310,13 @@ const props = withDefaults(
 				}
 			}
 		}
+	}
+
+	.line {
+		width: 370px;
+		height: 1px;
+		background: var(--Line_1);
+		box-shadow: 0px 1px 0px 0px var(--Line_2, #373a40);
 	}
 }
 </style>

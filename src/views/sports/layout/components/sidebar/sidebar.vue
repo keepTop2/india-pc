@@ -106,11 +106,9 @@ const isShowHotEvents = computed(() => (route.meta.type === "detail" ? true : fa
 const eventsInfo = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
 	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData;
-
 	if (route.meta.name === "champion" && promotionsViewData.length) {
 		return promotionsViewData[0];
 	}
-
 	if (childrenViewData?.length && !isShowHotEvents.value) {
 		return childrenViewData[0]?.events[0];
 	}
@@ -322,8 +320,8 @@ const showDetail = () => {
 
 .sidebar {
 	width: 100%;
-	height: 750px;
-	background-color: var(--Bg1);
+	height: 100vh;
+	// background-color: var(--Bg1);
 	border-radius: 8px;
 
 	.markets-list {
@@ -357,11 +355,11 @@ const showDetail = () => {
 
 		.header {
 			width: 100%;
-			height: 40px;
+			height: 34px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding: 0px 24px;
+			padding: 0px 14px;
 
 			.left,
 			.center,
@@ -410,7 +408,7 @@ const showDetail = () => {
 
 			.events-header {
 				width: 100%;
-				height: 30px;
+				height: 36px;
 				display: flex;
 				align-items: center;
 				gap: 8px;

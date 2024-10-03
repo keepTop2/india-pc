@@ -112,7 +112,7 @@ const backgroundImage = computed(() => {
 
 		.scoreboard-center {
 			position: relative;
-			width: 366px;
+			width: 354px;
 			border-radius: 8px;
 			background-color: var(--scoreboard_bg);
 			overflow: hidden;

@@ -159,7 +159,7 @@ const compareSets = (scores: number[], opponentScores: number[], setIndex: numbe
 		background: url("/@/assets/zh-CN/sports/sidebar/volleyball_s.png") center center / 100% 100% no-repeat;
 		.scoreboard-center {
 			position: relative;
-			width: 366px;
+			width: 354px;
 			border-radius: 8px;
 			background-color: var(--scoreboard_bg);
 			overflow: hidden;
@@ -199,6 +199,9 @@ const compareSets = (scores: number[], opponentScores: number[], setIndex: numbe
 					.icon {
 						width: 20px;
 						height: 20px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
 						img {
 							width: 100%;
 							height: 100%;
