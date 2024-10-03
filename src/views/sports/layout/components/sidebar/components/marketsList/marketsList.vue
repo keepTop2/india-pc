@@ -50,13 +50,13 @@
 												})
 											}}</span>
 										</span>
-										<span class="price" :class="changeClass(selection)">
-											<div v-if="market.marketStatus === 'running'">
+										<template v-if="market.marketStatus === 'running'">
+											<div class="price" :class="changeClass(selection)">
 												<span>{{ selection.oddsPrice.decimalPrice }}</span>
-												<RiseOrFall v-if="selection.oddsChange" :status="selection.oddsChange == 'oddsUp' ? 1 : 2" @animationEnd="animationEnd(market.marketId, selection)" />
 											</div>
-											<svg-icon v-else name="sports-lock" class="icon-lock" />
-										</span>
+											<RiseOrFall v-if="selection.oddsChange" :status="selection.oddsChange == 'oddsUp' ? 1 : 2" @animationEnd="animationEnd(market.marketId, selection)" />
+										</template>
+										<svg-icon v-else name="sports-lock" class="icon-lock" />
 									</div>
 								</li>
 							</ul>
@@ -420,6 +420,7 @@ watch(
 			}
 
 			.market-item {
+				position: relative;
 				width: 100%;
 				height: 34px;
 				display: flex;

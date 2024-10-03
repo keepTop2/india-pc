@@ -45,7 +45,7 @@ import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import PubSub from "/@/pubSub/pubSub";
-import SportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
+// import SportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 
 const SportAttentionStore = useSportAttentionStore();

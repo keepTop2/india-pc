@@ -316,7 +316,7 @@ const props = withDefaults(
 		width: 370px;
 		height: 1px;
 		background: var(--Line_1);
-		box-shadow: 0px 1px 0px 0px var(--Line_2, #373a40);
+		box-shadow: 0px 1px 0px 0px var(--Line_2);
 	}
 }
 </style>
