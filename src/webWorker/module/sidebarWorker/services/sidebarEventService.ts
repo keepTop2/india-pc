@@ -16,6 +16,7 @@ import { SportViewProcessWorkerCommandType, WorkerCommonCommadnType, WorkerName 
 import { WebResponse } from "/@/models/commonInterface";
 import senDataMain from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorker";
 import viewSportDataU from "/@/webWorker/module/utils/viewSportDataU";
+import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 
 export default (function () {
 	/**
@@ -44,9 +45,12 @@ export default (function () {
 			if (data.payload?.events) {
 				const processData = eventsProcess(data, viewSportDataU.viewSportData) as SportViewModels;
 				// console.log("processData===========processData", processData);
-
-				//处理好的数据赋值给state
-				viewSportDataU.viewSportData.events = processData.viewSportData.events as never[];
+				if (data.webToPushApi === WebToPushApi.promotionsEvent) {
+					viewSportDataU.viewSportData.hotEvents = processData.viewSportData.hotEvents as never[];
+				} else {
+					//处理好的数据赋值给state
+					viewSportDataU.viewSportData.events = processData.viewSportData.events as never[];
+				}
 			}
 			// 处理markets数据变化方法
 			if (data.payload?.markets && data.sportPushApi == "GetMarkets") {
@@ -90,7 +94,7 @@ export default (function () {
 			};
 
 			// console.log(workerToViewData);
-			// console.warn("第七步 service处理完业务 往线程管理器发送");
+			console.warn("侧边栏 第七步 service处理完业务 往线程管理器发送");
 			senDataMain(workerToViewData);
 		}
 

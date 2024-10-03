@@ -32,6 +32,7 @@ export default (function () {
 			sports: [] as Sports[],
 			leagues: [],
 			events: [],
+			hotEvents: [],
 			markets: [],
 			outrights: [],
 			results: [],

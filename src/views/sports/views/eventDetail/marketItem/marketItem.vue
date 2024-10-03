@@ -290,6 +290,7 @@ watch(
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			padding-left: 10px;
 			:first-child {
 				color: var(--Text1);
 			}
@@ -383,7 +384,7 @@ watch(
 			}
 			.li_tag {
 				cursor: pointer;
-				padding: 7px 12px;
+				// padding: 7px 12px;
 				height: 34px;
 				box-sizing: border-box; /* 包括边框和内边距在内占据50% */
 				border-radius: 4px;
@@ -402,13 +403,14 @@ watch(
 					align-items: center;
 					gap: 5px;
 					span {
-						width: 20px;
+						width: 10px;
 						display: inline-block;
 					}
 				}
 				> div {
 					display: flex;
 					justify-content: space-between;
+					height: 100%;
 				}
 				.lock {
 					display: flex;

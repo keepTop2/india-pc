@@ -14,6 +14,7 @@ export default (function () {
 	 */
 
 	const eventsProcess = (sportServerData: SportEventSourceResponse, viewSportData: SportViewData) => {
+		console.log(sportServerData, "========sportServerData");
 		let processData = {} as SportViewModels;
 		const { add, change, remove } = sportServerData.payload.events || { add: [], change: [], remove: [] };
 		if (add.length > 0) {
@@ -41,8 +42,14 @@ export default (function () {
 		// console.log("sportServerData.webToPushApi", sportServerData.webToPushApi);
 
 		// 判断如果不是热门赛事sse推送标识，则就正常格式化为联赛
+		console.log(
+			sportServerData.webToPushApi === WebToPushApi.promotionsEvent,
+			"===========================sportServerData.webToPushApi === WebToPushApi.promotionsEvent========",
+			sportServerData.webToPushApi,
+			WebToPushApi.promotionsEvent
+		);
 		if (sportServerData.webToPushApi === WebToPushApi.promotionsEvent) {
-			processData.viewSportData["promotionsViewData"] = formattingChildrenViewData(viewSportData, "events", sportServerData.webToPushApi);
+			processData.viewSportData["promotionsViewData"] = formattingChildrenViewData(viewSportData, "hotEvents", sportServerData.webToPushApi);
 		} else {
 			processData.viewSportData["childrenViewData"] = formattingChildrenViewData(viewSportData, "events", sportServerData.webToPushApi);
 		}
@@ -53,7 +60,11 @@ export default (function () {
 
 	// 赛事相关信息数据源新增 GetEvents
 	const eventsProcessAdd = (sportServerData: SportEventSourceResponse, viewSportData: SportViewData) => {
-		viewSportData.events = viewSportData.events.concat(sportServerData.payload.events?.add || []);
+		if (sportServerData.webToPushApi === WebToPushApi.promotionsEvent) {
+			viewSportData.hotEvents = viewSportData.hotEvents.concat(sportServerData.payload.events?.add || []);
+		} else {
+			viewSportData.events = viewSportData.events.concat(sportServerData.payload.events?.add || []);
+		}
 		return { sportServerData, viewSportData };
 	};
 	// 盘口信息数据源新增 GetEvents
@@ -64,15 +75,20 @@ export default (function () {
 
 	// 赛事相关信息数据源变化 GetEvents
 	const eventsProcessChange = (sportServerData: SportEventSourceResponse, viewSportData: SportViewData) => {
-		/**
-		 * @description 处理events数据源
-		 */
 		// 根据eventsId 匹配被修改的数据
 		sportServerData.payload.events?.change.forEach((item) => {
-			const index = viewSportData.events.findIndex((i) => i.eventId === item.eventId);
-			if (index !== -1) {
-				// 如果找到匹配项，合并对象  进行深度合并不然嵌套的内容会被覆盖掉
-				viewSportData.events[index] = _.merge(viewSportData.events[index], item);
+			if (sportServerData.webToPushApi === WebToPushApi.promotionsEvent) {
+				const index = viewSportData.hotEvents.findIndex((i) => i.eventId === item.eventId);
+				if (index !== -1) {
+					// 如果找到匹配项，合并对象  进行深度合并不然嵌套的内容会被覆盖掉
+					viewSportData.hotEvents[index] = _.merge(viewSportData.hotEvents[index], item);
+				}
+			} else {
+				const index = viewSportData.events.findIndex((i) => i.eventId === item.eventId);
+				if (index !== -1) {
+					// 如果找到匹配项，合并对象  进行深度合并不然嵌套的内容会被覆盖掉
+					viewSportData.events[index] = _.merge(viewSportData.events[index], item);
+				}
 			}
 		});
 		return { sportServerData, viewSportData };
@@ -120,10 +136,16 @@ export default (function () {
 		 * 删除events数据
 		 */
 		sportServerData.payload.events?.remove.forEach((item) => {
-			const index = viewSportData.events.findIndex((event) => event.eventId === item);
-
-			if (index !== -1) {
-				viewSportData.events.splice(index, 1);
+			if (sportServerData.webToPushApi === WebToPushApi.promotionsEvent) {
+				const index = viewSportData.hotEvents.findIndex((event) => event.eventId === item);
+				if (index !== -1) {
+					viewSportData.hotEvents.splice(index, 1);
+				}
+			} else {
+				const index = viewSportData.events.findIndex((event) => event.eventId === item);
+				if (index !== -1) {
+					viewSportData.events.splice(index, 1);
+				}
 			}
 		});
 		return { sportServerData, viewSportData };

@@ -9,8 +9,8 @@ import { formatEvent2League } from "/@/views/sports/utils/formattingViewData";
  */
 function formattingMarkets(markets: any[]) {
 	const obj: any = {};
-	const uniqueMarkets = Array.from(new Set(markets.map(market => market.marketId))).map(marketId => {
-		return markets.find(market => market.marketId === marketId)
+	const uniqueMarkets = Array.from(new Set(markets.map((market) => market.marketId))).map((marketId) => {
+		return markets.find((market) => market.marketId === marketId);
 	});
 	uniqueMarkets.forEach((item: { sort: number; betType: string | number; marketId: any }) => {
 		if (item.sort == 1 || item.sort == 0) {
@@ -46,9 +46,10 @@ export const formattingChildrenViewData = (data: any, sportKey: string, webToPus
 
 	// sportsType.forEach((type) => {
 	let arr;
-	if (sportKey == "events") {
+	if (sportKey == "events" || sportKey == "hotEvents") {
 		// 除电子竞技 其他都取等于0的数据
-		arr = data["events"];
+		console.log(JSON.parse(JSON.stringify(data)), "==============datasssssssss", webToPushApi);
+		arr = data[sportKey];
 		// 电子竞技单独处理，其他类型统一处理
 		arr.forEach((item: { eventId: any; markets: any }) => {
 			const markets = data.markets.filter((market: { eventId: any }) => market.eventId == item.eventId);
