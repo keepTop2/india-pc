@@ -2,61 +2,60 @@
 	<div class="content">
 		<div :class="['content', 'bg_BG1']">
 			<div class="tabBox bg_BG1" :class="{ 'fixed-tab': isFixed }">
-				<div class="tabs">
-					<ul class="tab bg_BG1">
-						<li @click="changeTab('all')" key="all" :class="{ selected: activeTab == 'all' }">{{ $t('sports["所有投注"]') }}
-						</li>
-						<!-- <li v-for="(i, index) in markets" :key="i.betTypeName" @click="changeTab(i.betTypeName)" :class="{ selected: activeTab == i.betTypeName }">{{ i.betTypeName }}</li> -->
-					</ul>
-				</div>
+				<ul class="tabs">
+					<li @click="changeTab('all')" key="all" :class="{ selected: activeTab == 'all' }">{{ $t('sports["所有投注"]') }}</li>
+					<!-- <li v-for="(i, index) in markets" :key="i.betTypeName" @click="changeTab(i.betTypeName)" :class="{ selected: activeTab == i.betTypeName }">{{ i.betTypeName }}</li> -->
+				</ul>
 			</div>
 			<div class="selections_list" v-if="markets.length">
 				<Collapse v-model="activeSelection" :accordion="false">
-					<CollapseItem class="selection_item" v-for="i in markets"
-						v-show="activeTab == 'all' || activeTab == i.betTypeName" :key="i.betTypeName" :name="i.betTypeName">
+					<CollapseItem class="selection_item" v-for="i in markets" v-show="activeTab == 'all' || activeTab == i.betTypeName" :key="i.betTypeName" :name="i.betTypeName">
 						<template #title>
-							<span class="item-red"></span>
 							<div class="tournament-header">
-								<div class="tournament-info">
-									<div class="tournament-name">{{ i.betTypeName }}</div>
-								</div>
-								<!-- 收起折叠面板箭头 -->
+								<span class="header-icon"></span>
+								<div class="tournament-name">{{ i.betTypeName }}</div>
 								<svg-icon
 									:class="{ sport_arrow: activeSelection.includes(i.betTypeName), 'rotate-right': !activeSelection.includes(i.betTypeName) }"
-									name="arrow_down" size="12" />
+									name="arrow_down"
+									width="12px"
+									height="8px"
+								/>
 							</div>
 						</template>
 						<template #default>
-							<ul class="bg_BG3 tournament-content">
-								<li v-for="market in i.markets" :key="market.marketId">
-									<div class="li_tag bg_Tag1" v-for="selection in filterSelections(market.selections)"
-										@click="market.marketStatus === 'running' && onSetSportsEventData(market, selection)" :class="{
-											isBright: isBright(market, selection),
-											threeCol: filterSelections(market.selections).length % 3 === 0 && !isbladder(market.betType),
-											twoCol: filterSelections(market.selections).length % 3 !== 0 && !isbladder(market.betType),
-										}" :key="market.marketId + selection.key">
-										<div>
-											<span :class="['fs_14', 'fw_400', 'selectionTitle']">
-												<SelectionName :class="{ label: isBright(market, selection) }" :name="selection?.keyName"
-													:betType="market.betType" />
-												<span v-show="selection.key != 'x'">&nbsp;{{ SportsCommon.formatPoint({
+							<ul class="tournament-content">
+								<li
+									v-for="market in i.markets"
+									:key="market.marketId"
+									:class="{
+										threeCol: filterSelections(market.selections).length % 3 === 0,
+										twoCol: filterSelections(market.selections).length % 3 !== 0,
+									}"
+								>
+									<div
+										class="market-item"
+										v-for="selection in filterSelections(market.selections)"
+										@click="market.marketStatus === 'running' && onSetSportsEventData(market, selection)"
+										:class="{ isBright: isBright(market, selection) }"
+										:key="market.marketId + selection.key"
+									>
+										<span class="label">
+											<SelectionName class="label_one" :class="[selection.key != 'x' ? 'narrow' : 'wide']" :name="selection?.keyName" :betType="market.betType" />
+											<span class="label_two" v-show="selection.key != 'x'">{{
+												SportsCommon.formatPoint({
 													betType: market.betType,
-													point: selection?.point, key: selection?.key
-												}) }}</span>
-											</span>
-											<span :class="['fs_14', 'fw_400', 'price', changeClass(selection)]">
-												<div v-if="market.marketStatus === 'running'">
-													{{ selection.oddsPrice.decimalPrice }}
-													<span>
-														<RiseOrFall v-if="selection.oddsChange" :time="3000"
-															:status="selection.oddsChange == 'oddsUp' ? 1 : 2"
-															@animationEnd="animationEnd(market.marketId, selection)" />
-													</span>
-												</div>
-												<svg-icon v-else name="sports-lock" class="icon-lock" />
-											</span>
-										</div>
-
+													point: selection?.point,
+													key: selection?.key,
+												})
+											}}</span>
+										</span>
+										<span class="price" :class="changeClass(selection)">
+											<div v-if="market.marketStatus === 'running'">
+												<span>{{ selection.oddsPrice.decimalPrice }}</span>
+												<RiseOrFall v-if="selection.oddsChange" :status="selection.oddsChange == 'oddsUp' ? 1 : 2" @animationEnd="animationEnd(market.marketId, selection)" />
+											</div>
+											<svg-icon v-else name="sports-lock" class="icon-lock" />
+										</span>
 									</div>
 								</li>
 							</ul>
@@ -179,7 +178,7 @@ const changeTab = (key: string) => {
  */
 const filterSelections = (data: any[]) => {
 	const list = data.filter((item: { oddsPrice: { decimalPrice: number } }) => item.oddsPrice.decimalPrice != 0);
-	return list
+	return list;
 };
 
 /**
@@ -303,168 +302,167 @@ watch(
 }
 
 .content {
-	// Add your styles here
 	border-radius: 16px 16px 0 0;
 
 	.tabBox {
-		// height: 80px;
-		// width: 100%;
-	}
-
-	.isBright {
-		background: var(--Bg5) !important;
-
-		.label {
-			color: var(--Text_a) !important;
-		}
-	}
-
-	.tabBox {
-		// width: 100vw;
-		overflow: hidden;
-		display: flex;
-		align-items: center;
+		width: 100%;
+		height: 40px;
 		background-color: var(--Bg1);
 		border-radius: 0px 0px 8px 8px;
-
-		svg {
-			width: 26px;
-			height: 26px;
-		}
-	}
-
-	.tabs {
-		padding: 10px;
-		width: calc(100% - 48px);
-		box-sizing: border-box;
-	}
-
-	.tab {
-		padding: 0;
-		margin: 0;
-		width: 100%;
-		line-height: 30px;
-		display: flex;
-		gap: 10px;
-		overflow-x: auto;
-		overflow-y: hidden;
-		white-space: nowrap;
-		list-style-type: none;
-		width: 100%;
-		box-sizing: border-box;
-
-		li {
-			width: 96px;
-			height: 30px;
-			color: var(--Text1);
-			text-align: center;
-			position: relative;
-			/* 为li元素设置相对定位，以便::after伪元素可以相对于它定位 */
-			font-size: 14px;
-			font-weight: 400;
-			display: inline-block;
-			border-radius: 4px;
-			border: 1px solid var(--Line_2);
-		}
-
-		.selected {
-			background-color: var(--Theme);
-			color: var(--Text_a);
-		}
-	}
-
-	.tab::-webkit-scrollbar {
-		width: 0;
-		/* 对于横向滚动条 */
-		height: 0;
-		/* 对于纵向滚动条 */
-		display: none;
-	}
-
-	.fixed-tab {
-		position: sticky;
-		top: 100px;
-		/* 与smallHeader对齐 */
-		width: 100%;
-		z-index: 1;
-		/* 确保tab位于内容之上 */
-	}
-
-	.tournament-content {
-		border-radius: 0px 0px 16px 16px;
-
-		li {
-			margin-bottom: 5px;
-		}
-
-		.selectionTitle {
+		overflow: hidden;
+		.tabs {
+			width: 100%;
+			height: 100%;
 			display: flex;
-			justify-content: center;
 			align-items: center;
-
-			:first-child {
+			gap: 10px;
+			margin: 0;
+			padding: 0px 8px;
+			li {
+				display: inline-block;
+				display: flex;
+				align-items: center;
+				height: 24px;
+				padding: 0px 10px;
 				color: var(--Text1);
-				max-width: 60px;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				text-align: center;
+				font-size: 12px;
+				font-weight: 400;
+				border-radius: 4px;
+				border: 1px solid var(--Line_2);
 			}
 
-			:last-child {
+			.selected {
 				color: var(--Text_a);
+				background-color: var(--Theme);
+				border: 1px solid var(--Theme);
 			}
 		}
 	}
-
-	.tournament-header {
-		display: flex;
-		align-items: center;
-		// padding: 8px 12px;
-		margin-bottom: 10px;
-		padding-left: 10px;
-		border-radius: 16px 16px 0px 0px;
-		box-sizing: border-box;
-
-		.tournament-info {
-			flex: 1;
+	// 盘口列表
+	.selections_list {
+		margin-top: 8px;
+		// 盘口子项
+		.selection_item {
+			margin-bottom: 4px;
+		}
+		// 头部
+		.tournament-header {
+			position: relative;
+			width: 100%;
+			height: 38px;
 			display: flex;
 			align-items: center;
-			margin-right: 18px;
-
-			.tournament-icon {
-				width: 30px;
-				height: 30px;
-				margin: 0 12px;
-
-				img {
-					width: 100%;
-					height: 100%;
-				}
+			padding: 0px 12px;
+			border-radius: 4px;
+			background: var(--Bg6);
+			box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.1) inset;
+			cursor: pointer;
+			.header-icon {
+				position: absolute;
+				width: 4px;
+				height: 22px;
+				top: 50%;
+				left: 0;
+				transform: translate(0px, -50%);
+				background-color: var(--Theme);
+				border-radius: 0 4px 4px 0;
 			}
 
 			.tournament-name {
+				flex: 1;
 				color: var(--Text_a);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;
-				line-height: 22px;
-				white-space: nowrap;
-				/* 禁止换行 */
-				overflow: hidden;
-				/* 隐藏超出部分 */
-				text-overflow: ellipsis;
-				/* 显示省略号 */
+			}
+			.sport_arrow {
+				transition: transform 0.3s ease;
+			}
+			.rotate-right {
+				transition: transform 0.3s ease;
+				transform: rotate(-180deg);
 			}
 		}
+		// 主体
+		.tournament-content {
+			display: grid;
+			gap: 2px;
+			padding: 4px 2px;
+			margin: 0;
+			background-color: var(--Bg1);
 
-		.sport_arrow {
-			transition: transform 0.3s ease;
-			// transform: rotate(-180deg);
-		}
+			.threeCol {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr); // 设置为三列，每列平分宽度
+				gap: 2px; // 设置行与列之间的间距为 10px
 
-		.rotate-right {
-			transition: transform 0.3s ease;
-			transform: rotate(-180deg);
+				.wide {
+					max-width: 65px;
+				}
+				.narrow {
+					max-width: 50px;
+				}
+			}
+
+			.twoCol {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr); // 设置为两列，每列平分宽度
+				gap: 2px; // 设置行与列之间的间距为 10px
+
+				.wide {
+					max-width: 120px;
+				}
+				.narrow {
+					max-width: 100px;
+				}
+			}
+
+			.market-item {
+				width: 100%;
+				height: 34px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 8px;
+				padding: 6px 8px;
+				background-color: var(--Bg3);
+				border-radius: 4px;
+				cursor: pointer;
+				.label {
+					display: flex;
+					align-items: center;
+					gap: 4px;
+					font-size: 12px;
+					text-align: left;
+
+					.label_one {
+						color: var(--Text1);
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+					}
+
+					.label_two {
+						color: var(--Text_s);
+					}
+				}
+
+				.price {
+					display: inline-block;
+					font-size: 14px;
+					font-weight: 500;
+					color: var(--Text_a);
+					text-align: right;
+				}
+			}
+
+			.isBright {
+				background: var(--Bg5) !important;
+				.label_one {
+					color: var(--Text_s) !important;
+				}
+			}
 		}
 	}
 
@@ -481,92 +479,6 @@ watch(
 			width: 140px;
 			height: 120px;
 			margin-bottom: 10px;
-		}
-	}
-
-	.selections_list {
-		// padding: 20px 24px;
-		margin-top: 5px;
-
-		.selection_item {
-			position: relative;
-			border-radius: 8px;
-			background-color: var(--Bg1);
-			margin-bottom: 5px;
-			padding: 10px 8px 8px 8px;
-
-			.item-red {
-				position: absolute;
-				background-color: var(--Theme);
-				border-radius: 0 4px 4px 0;
-				width: 4px;
-				height: 22px;
-				top: 10px;
-				left: 0;
-			}
-
-			.x-collapse-item_header {}
-
-			.x-collapse-transition {}
-		}
-
-		ul {
-			padding: 0;
-			margin: 0;
-
-			li {
-				display: flex;
-				flex-wrap: wrap;
-				/* 允许元素换行 */
-				// justify-content: space-between; /* 项目之间的间隔 */
-				gap: 4px;
-			}
-
-			.li_tag {
-				position: relative;
-
-				cursor: pointer;
-				padding: 7px 12px;
-				padding-right: 20px;
-				height: 34px;
-				box-sizing: border-box;
-				/* 包括边框和内边距在内占据50% */
-				border-radius: 4px;
-				display: flex;
-				justify-content: center;
-				flex-direction: column;
-				background-color: var(--Bg3);
-				flex-basis: calc(50% - 5px);
-				/* 每个元素占据50%，减去10px的间隔 */
-				font-size: 14px;
-
-				// margin-bottom: 4px;
-				.price {
-					display: inline-block;
-					color: var(--Text_a);
-
-					// display: flex;
-					// align-items: center;
-					// gap: 5px;
-					span {
-						width: 10px;
-						display: inline-block;
-						position: absolute;
-						top: 10px;
-						right: 5px;
-					}
-				}
-
-				>div {
-					display: flex;
-					justify-content: space-between;
-				}
-			}
-
-			.threeCol {
-				flex-basis: calc(33% - 6px);
-				/* 每个元素占据50%，减去10px的间隔 */
-			}
 		}
 	}
 }
