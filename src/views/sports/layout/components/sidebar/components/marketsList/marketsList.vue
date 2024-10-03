@@ -11,6 +11,7 @@
 				<Collapse v-model="activeSelection" :accordion="false">
 					<CollapseItem class="selection_item" v-for="i in markets" v-show="activeTab == 'all' || activeTab == i.betTypeName" :key="i.betTypeName" :name="i.betTypeName">
 						<template #title>
+							<span class="item-red"></span>
 							<div class="tournament-header">
 								<span class="header-icon"></span>
 								<div class="tournament-name">{{ i.betTypeName }}</div>

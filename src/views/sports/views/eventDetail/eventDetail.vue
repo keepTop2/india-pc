@@ -62,7 +62,7 @@ const state = reactive({
  */
 const eventDetail = computed(() => {
 	// const childrenViewData = viewSportPubSubEventData.viewSportData.childrenViewData;
-	const childrenViewData = viewSportPubSubEventData.getSportData('sidebarData');
+	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
 
 	// console.log(childrenViewData, "childrenViewData");
 	if (childrenViewData) {

@@ -32,7 +32,7 @@
 										:class="{
 											isBright: isBright(market, selection),
 											threeCol: filterSelections(market.selections).length % 3 === 0 && !isbladder(market.betType),
-											twoCol: filterSelections(market.selections).length % 3 !== 0 && !isbladder(market.betType)
+											twoCol: filterSelections(market.selections).length % 3 !== 0 && !isbladder(market.betType),
 										}"
 										:key="market.marketId + selection.key"
 									>
@@ -45,13 +45,12 @@
 												>{{ selection.oddsPrice.decimalPrice }}
 												<span>
 													<RiseOrFall
-													v-if="selection.oddsChange"
-													:time="3000"
-													:status="selection.oddsChange == 'oddsUp' ? 1 : 2"
-													@animationEnd="animationEnd(market.marketId, selection)"
-												/>
+														v-if="selection.oddsChange"
+														:time="3000"
+														:status="selection.oddsChange == 'oddsUp' ? 1 : 2"
+														@animationEnd="animationEnd(market.marketId, selection)"
+													/>
 												</span>
-												
 											</span>
 										</div>
 										<div v-else class="lock">
@@ -66,8 +65,8 @@
 			</div>
 			<div v-if="!markets.length" class="noData color_T3">
 				<svg-icon name="sports-no_markets" />
-				<div >{{ $t('sports["盘口已关闭"]') }}</div>
-				<div >{{ $t('sports["当前无法进行投注"]') }}</div>
+				<div>{{ $t('sports["盘口已关闭"]') }}</div>
+				<div>{{ $t('sports["当前无法进行投注"]') }}</div>
 			</div>
 		</div>
 	</div>
@@ -86,7 +85,7 @@ import { useRoute } from "vue-router";
  */
 interface marketType {
 	markets: any;
-	betTypeName: string ;
+	betTypeName: string;
 	marketId: string;
 	betType: string;
 	marketStatus: string;
@@ -99,7 +98,7 @@ const props = withDefaults(
 	defineProps<{
 		markets: marketType[];
 	}>(),
-	{},
+	{}
 );
 
 const sportsBetEvent = useSportsBetEventStore();
@@ -113,7 +112,7 @@ const activeSelection = ref<string[]>([]);
  * @description 计算赛事详情
  */
 const eventDetail = computed(() => {
-  // 实现赛事详情计算逻辑
+	// 实现赛事详情计算逻辑
 });
 
 /**
@@ -126,7 +125,7 @@ const marketsSelect = computed(() => sportsBetEvent.getEventInfo);
  * @param key 标签键值
  */
 const changeTab = (key: string) => {
-  activeTab.value = key;
+	activeTab.value = key;
 };
 
 /**
@@ -135,7 +134,7 @@ const changeTab = (key: string) => {
  * @returns 过滤后的选择项
  */
 const filterSelections = (data: any[]) => {
-  return data.filter((item: { oddsPrice: { decimalPrice: number; }; }) => item.oddsPrice.decimalPrice != 0);
+	return data.filter((item: { oddsPrice: { decimalPrice: number } }) => item.oddsPrice.decimalPrice != 0);
 };
 
 /**
@@ -144,9 +143,9 @@ const filterSelections = (data: any[]) => {
  * @param selection 选择项对象
  * @returns 是否高亮
  */
-const isBright = (market: { marketId: any; }, selection: { key: any; }) => {
-  const { eventId } = route.query;
-  return marketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
+const isBright = (market: { marketId: any }, selection: { key: any }) => {
+	const { eventId } = route.query;
+	return marketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
 };
 
 /**
@@ -155,7 +154,7 @@ const isBright = (market: { marketId: any; }, selection: { key: any; }) => {
  * @param selection 选择项对象
  */
 const onSetSportsEventData = (market: any, selection: any) => {
-  // 实现投注选择逻辑
+	// 实现投注选择逻辑
 };
 
 /**
@@ -163,9 +162,9 @@ const onSetSportsEventData = (market: any, selection: any) => {
  * @param item 选择项对象
  * @returns 类名
  */
-const changeClass = (item: { oddsChange: string; }) => {
-  if (!item.oddsChange) return "";
-  return item.oddsChange == "oddsUp" ? "oddsUp" : "oddsDown";
+const changeClass = (item: { oddsChange: string }) => {
+	if (!item.oddsChange) return "";
+	return item.oddsChange == "oddsUp" ? "oddsUp" : "oddsDown";
 };
 
 /**
@@ -173,10 +172,10 @@ const changeClass = (item: { oddsChange: string; }) => {
  * @param marketId 市场ID
  * @param selection 选择项对象
  */
-const animationEnd = (marketId: any, selection: { oddsChange: string; }) => {
-  if (selection.oddsChange) {
-    selection.oddsChange = "";
-  }
+const animationEnd = (marketId: any, selection: { oddsChange: string }) => {
+	if (selection.oddsChange) {
+		selection.oddsChange = "";
+	}
 };
 
 /**
@@ -185,244 +184,242 @@ const animationEnd = (marketId: any, selection: { oddsChange: string; }) => {
  * @returns 是否为特殊类型
  */
 const isbladder = (type: number) => {
-  const arr = [4, 30, 152, 416, 413, 414, 165, 166, 392, 399, 405, 413, 414, 1302, 1317, 3900, 3910, 3917];
-  return arr.includes(type);
+	const arr = [4, 30, 152, 416, 413, 414, 165, 166, 392, 399, 405, 413, 414, 1302, 1317, 3900, 3910, 3917];
+	return arr.includes(type);
 };
 
 /**
  * @description 监听activeSelection变化
  */
 watch(
-  () => activeSelection.value.length,
-  (newValue, oldValue) => {
-    if (newValue == 0 || newValue < oldValue) {
-      isFold.value = false;
-    }
-    if (newValue >= props.markets.length) {
-      isFold.value = true;
-    }
-  }
+	() => activeSelection.value.length,
+	(newValue, oldValue) => {
+		if (newValue == 0 || newValue < oldValue) {
+			isFold.value = false;
+		}
+		if (newValue >= props.markets.length) {
+			isFold.value = true;
+		}
+	}
 );
 </script>
 
 <style scoped lang="scss">
 .content {
-  // Add your styles here
-		border-radius: 16px 16px 0 0;
-		.tabBox {
-			// height: 80px;
-			// width: 100%;
+	// Add your styles here
+	border-radius: 16px 16px 0 0;
+	.tabBox {
+		// height: 80px;
+		// width: 100%;
+	}
+	.isBright {
+		position: relative;
+		&::after {
+			content: "";
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border-radius: 8px;
+			border: 2px solid;
+			box-sizing: border-box;
 		}
-		.isBright {
-			position: relative;
-			&::after {
-				content: "";
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				border-radius: 8px;
-				border: 2px solid;
-				box-sizing: border-box;
+	}
+	.tabBox {
+		// width: 100vw;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		background-color: var(--Bg1);
+		border-radius: 0px 0px 8px 8px;
+
+		svg {
+			width: 26px;
+			height: 26px;
+		}
+	}
+	.tabs {
+		padding: 11px 24px;
+		width: calc(100% - 48px);
+		box-sizing: border-box;
+	}
+	.tab {
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		line-height: 30px;
+		display: flex;
+		gap: 10px;
+		overflow-x: auto;
+		overflow-y: hidden;
+		white-space: nowrap;
+		list-style-type: none;
+		width: 100%;
+		box-sizing: border-box;
+		li {
+			width: 96px;
+			height: 30px;
+			color: var(--Text1);
+			text-align: center;
+			position: relative; /* 为li元素设置相对定位，以便::after伪元素可以相对于它定位 */
+			font-size: 14px;
+			font-weight: 400;
+			display: inline-block;
+			border-radius: 4px;
+			border: 1px solid var(--Line_2);
+		}
+		.selected {
+			background-color: var(--Theme);
+			color: var(--Text_a);
+		}
+	}
+	.tab::-webkit-scrollbar {
+		width: 0; /* 对于横向滚动条 */
+		height: 0; /* 对于纵向滚动条 */
+		display: none;
+	}
+
+	.fixed-tab {
+		position: sticky;
+		top: 100px; /* 与smallHeader对齐 */
+		width: 100%;
+		z-index: 1; /* 确保tab位于内容之上 */
+	}
+	.tournament-content {
+		border-radius: 0px 0px 16px 16px;
+		.selectionTitle {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			:first-child {
+				color: var(--Text1);
+			}
+			:last-child {
+				color: var(--Text_a);
 			}
 		}
-		.tabBox {
-			// width: 100vw;
-			overflow: hidden;
+	}
+	.tournament-header {
+		display: flex;
+		align-items: center;
+		// padding: 8px 12px;
+		margin-bottom: 10px;
+		padding-left: 10px;
+		border-radius: 16px 16px 0px 0px;
+		box-sizing: border-box;
+
+		.tournament-info {
+			flex: 1;
 			display: flex;
 			align-items: center;
-			background-color: var(--Bg1);
-			border-radius: 0px 0px 8px 8px;
+			margin-right: 18px;
 
-			svg {
-				width: 26px;
-				height: 26px;
+			.tournament-icon {
+				width: 30px;
+				height: 30px;
+				margin: 0 12px;
+				img {
+					width: 100%;
+					height: 100%;
+				}
+			}
+
+			.tournament-name {
+				color: var(--Text_a);
+				font-family: "PingFang SC";
+				font-size: 16px;
+				font-weight: 400;
+				line-height: 22px;
+				white-space: nowrap; /* 禁止换行 */
+				overflow: hidden; /* 隐藏超出部分 */
+				text-overflow: ellipsis; /* 显示省略号 */
 			}
 		}
-		.tabs {
-			padding: 11px 24px;
-			width: calc(100% - 48px);
-			box-sizing: border-box;
+	}
+	.noData {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		font-size: 14px;
+		color: var(--Text2);
+		height: calc(100vh - 480px);
+		svg {
+			width: 140px;
+			height: 120px;
+			margin-bottom: 10px;
 		}
-		.tab {
-			padding:0;
+	}
+	.selections_list {
+		// padding: 20px 24px;
+		margin-top: 5px;
+		.selection_item {
+			position: relative;
+			border-radius: 8px;
+			background-color: var(--Bg1);
+			margin-bottom: 20px;
+			padding: 10px 8px 8px 8px;
+			.item-red {
+				position: absolute;
+				background-color: var(--Theme);
+				border-radius: 0 4px 4px 0;
+				width: 4px;
+				height: 22px;
+				top: 10px;
+				left: 0;
+			}
+			.x-collapse-item_header {
+			}
+			.x-collapse-transition {
+			}
+		}
+		ul {
+			padding: 0;
 			margin: 0;
-			width: 100%;
-			line-height: 30px;
-			display: flex;
-			gap:10px;
-			overflow-x: auto;
-			overflow-y: hidden;
-			white-space: nowrap;
-			list-style-type: none;
-			width: 100%;
-			box-sizing: border-box;
-				li {
-					width: 96px;
-					height:30px;
-					color: var(--Text1);
-					text-align: center;
-					position: relative; /* 为li元素设置相对定位，以便::after伪元素可以相对于它定位 */
-					font-size: 14px;
-					font-weight: 400;
-					display: inline-block;
-					border-radius: 4px;
-					border: 1px solid var(--Line_2);
-				}
-				.selected{
-					background-color: var(--Theme);
-					color:var(--Text_a)
-				}
-		}
-		.tab::-webkit-scrollbar {
-			width: 0; /* 对于横向滚动条 */
-			height: 0; /* 对于纵向滚动条 */
-			display: none;
-		}
-
-		.fixed-tab {
-			position: sticky;
-			top: 100px; /* 与smallHeader对齐 */
-			width: 100%;
-			z-index: 1; /* 确保tab位于内容之上 */
-		}
-		.tournament-content {
-			border-radius: 0px 0px 16px 16px;
-			.selectionTitle {
+			li {
+				display: flex;
+				flex-wrap: wrap; /* 允许元素换行 */
+				// justify-content: space-between; /* 项目之间的间隔 */
+				gap: 10px;
+			}
+			.li_tag {
+				cursor: pointer;
+				padding: 7px 12px;
+				height: 34px;
+				box-sizing: border-box; /* 包括边框和内边距在内占据50% */
+				border-radius: 4px;
 				display: flex;
 				justify-content: center;
-				align-items: center;
-				:first-child{
-					color:var(--Text1)
-				}
-				:last-child {
-					color:var(--Text_a)
-				}
-			}
-		}
-		.tournament-header {
-			display: flex;
-			align-items: center;
-			// padding: 8px 12px;
-			margin-bottom: 10px;
-			padding-left: 10px;
-			border-radius: 16px 16px 0px 0px;
-			box-sizing: border-box;
-
-			.tournament-info {
-				flex: 1;
-				display: flex;
-				align-items: center;
-				margin-right: 18px;
-
-				.tournament-icon {
-					width: 30px;
-					height: 30px;
-					margin: 0 12px;
-					img {
-						width: 100%;
-						height: 100%;
+				flex-direction: column;
+				background-color: var(--Bg3);
+				flex-basis: calc(50% - 5px); /* 每个元素占据50%，减去10px的间隔 */
+				font-size: 14px;
+				margin-bottom: 10px;
+				.price {
+					position: relative;
+					display: inline-block;
+					color: var(--Text_a);
+					display: flex;
+					align-items: center;
+					gap: 5px;
+					span {
+						width: 20px;
+						display: inline-block;
 					}
 				}
-
-				.tournament-name {
-					color:var(--Text_a);
-					font-family: "PingFang SC";
-					font-size: 16px;
-					font-weight: 400;
-					line-height: 22px;
-					white-space: nowrap; /* 禁止换行 */
-					overflow: hidden; /* 隐藏超出部分 */
-					text-overflow: ellipsis; /* 显示省略号 */
-				}
-			}
-		}
-		.noData {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			font-size: 14px;
-			color:var(--Text2);
-			height: calc(100vh - 480px);
-			svg{
-				width: 140px;
-				height: 120px;
-				margin-bottom: 10px;
-			}
-		}
-		.selections_list {
-			// padding: 20px 24px;
-			margin-top:5px;
-			.selection_item {
-				position: relative;
-				border-radius: 8px;
-				background-color: var(--Bg1);
-				margin-bottom: 20px;
-				padding:10px 8px 8px 8px;
-				.item-red{
-					position: absolute;
-					background-color: var(--Theme);
-					border-radius: 0 4px 4px 0;
-					width: 4px;
-					height: 22px;
-					top:10px;
-					left: 0;
-				}
-				.x-collapse-item_header{
-
-				}
-				.x-collapse-transition{
-
-				}
-			}
-			ul {
-				padding:0;
-				margin:0;
-				li {
+				> div {
 					display: flex;
-					flex-wrap: wrap; /* 允许元素换行 */
-					// justify-content: space-between; /* 项目之间的间隔 */
-					gap: 10px;
+					justify-content: space-between;
 				}
-				.li_tag {
-					cursor: pointer;
-					padding:7px 12px;
-					height: 34px;
-					box-sizing: border-box; /* 包括边框和内边距在内占据50% */
-					border-radius: 4px;
+				.lock {
 					display: flex;
 					justify-content: center;
-					flex-direction: column;
-					background-color: var(--Bg3);
-					flex-basis: calc(50% - 5px); /* 每个元素占据50%，减去10px的间隔 */
-					font-size: 14px;
-					margin-bottom: 10px;
-					.price {
-						position: relative;
-						display: inline-block;
-						color:var(--Text_a);
-						display: flex;
-						align-items: center;
-						gap:5px;
-						span{
-							width: 20px;
-							display: inline-block;
-						}
-					}
-					>div{
-						display: flex;
-						justify-content: space-between;
-					}
-					.lock{
-						display: flex;
-						justify-content: center;
-					}
-				}
-
-				.threeCol {
-					flex-basis: calc(33% - 4px); /* 每个元素占据50%，减去10px的间隔 */
 				}
 			}
+
+			.threeCol {
+				flex-basis: calc(33% - 4px); /* 每个元素占据50%，减去10px的间隔 */
+			}
 		}
+	}
 }
 </style>

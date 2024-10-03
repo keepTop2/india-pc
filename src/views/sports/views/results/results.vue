@@ -284,7 +284,8 @@ const sizeChange = (pageSize: number) => {
 					background: var(--Bg3);
 					color: var(--Text1);
 					font-weight: normal;
-					border: 1px solid var(--Line);
+					border: 0;
+					border-right: 1px solid var(--Line_2);
 					// border-left: none;
 				}
 
@@ -298,11 +299,11 @@ const sizeChange = (pageSize: number) => {
 					}
 				}
 
-				& > .el-table__cell:nth-of-type(2) {
-					.cell {
-						padding-left: 0;
-					}
-				}
+				// & > .el-table__cell:nth-of-type(2) {
+				// 	.cell {
+				// 		padding-left: 0;
+				// 	}
+				// }
 			}
 		}
 
