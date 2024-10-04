@@ -15,11 +15,12 @@
 
 		<!-- 投注列表 -->
 		<BetTable :data="tableData as any" />
+
 		<!-- 表格底部 -->
-		<div class="bottom">
+		<div class="bottom" v-if="tableData.length > 0">
 			<div class="info">
 				<span>{{ $t(`sports.betRecord['总计单数']`) }} {{ total }}</span>
-				<span>{{ $t(`sports.betRecord['总投注额']`) }} 2000.00</span>
+				<!-- <span>{{ $t(`sports.betRecord['总投注额']`) }} 2000.00</span> -->
 			</div>
 			<Pagination v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="total" @sizeChange="sizeChange" />
 		</div>
@@ -46,7 +47,7 @@ const popularLeague = usePopularLeague();
 popularLeague.hidePopularLeague();
 
 // 选中的tab 结算未结算区分
-const active = ref(1);
+const active = ref(0);
 
 // 定义日期范围变量，默认为当天时间
 const dateRange = ref({

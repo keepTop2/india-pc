@@ -1,116 +1,121 @@
 <template>
 	<div class="container">
-		<el-table :data="props.data" border :row-class-name="'row-cell'" :header-cell-class-name="'table-header-cell'" :highlight-current-row="false">
-			<!-- 编号 使用索引 + 1 -->
-			<el-table-column :label="$t(`sports.betRecord['编号']`)" width="75" align="center" :resizable="false">
-				<template #default="{ row, column, $index }">
-					<div class="serial-number">{{ $index + 1 }}</div>
-				</template>
-			</el-table-column>
+		<template v-if="props.data.length > 0">
+			<el-table :data="props.data" border :row-class-name="'row-cell'" :header-cell-class-name="'table-header-cell'" :highlight-current-row="false">
+				<!-- 编号 使用索引 + 1 -->
+				<el-table-column :label="$t(`sports.betRecord['编号']`)" width="75" align="center" :resizable="false">
+					<template #default="{ row, column, $index }">
+						<div class="serial-number">{{ $index + 1 }}</div>
+					</template>
+				</el-table-column>
 
-			<!-- 投注详情 -->
-			<el-table-column :label="$t(`sports.betRecord['投注详情']`)" width="232" align="center" :resizable="false">
-				<template #default="{ row, column }">
-					<div class="bet-details">
-						<div class="bet-date">{{ Common.getYMDHms(row.transTime) }}</div>
-						<div class="bet-order-ID">
-							<span>{{ row.transId }}</span>
-							<svg-icon name="copy" size="16px" v-hover-svg class="curp" />
-						</div>
-					</div>
-				</template>
-			</el-table-column>
-
-			<!-- 投注玩法 -->
-			<el-table-column :label="$t(`sports.betRecord['投注玩法']`)" width="168" align="center" :resizable="false">
-				<template #default="{ row, column }">
-					<div class="betting" v-if="!row.parlayInfo">{{ row.betTypeName }}</div>
-					<div class="betting" v-else="!row.parlayInfo">{{ row.comboType }}</div>
-				</template>
-			</el-table-column>
-
-			<!-- 选项 -->
-			<el-table-column :label="$t(`sports.betRecord['选项']`)" width="292" align="center" :resizable="false">
-				<template #default="{ row, column }">
-					<div v-if="!row.parlayInfo" class="options">
-						<div class="events-name">{{ row.leagueName }}</div>
-						<div class="market-info">
-							<span class="market-name">{{ row.keyName }}</span>
-							<span class="market-point">@{{ row.point }}</span>
-						</div>
-						<div class="event-info">
-							<span>{{ "滚球" }}</span>
-							<span>{{ row.betTypeName }}</span>
-							<span>[{{ row.oddsTypeName }}]</span>
-						</div>
-						<div class="team-info">
-							<span>{{ row.homeTeamName }}</span>
-							<span>VS</span>
-							<span>{{ row.awayTeamName }}</span>
-							<span>{{ Common.getYMDHms(row.globalShowTime) }}</span>
-						</div>
-						<div class="homeScore-info">
-							<span>全场比分</span>
-							<span>{{ row.homeScore }}-{{ row.awayScore }}</span>
-						</div>
-					</div>
-					<template v-else>
-						<div class="options-list">
-							<div v-for="item in row.parlayInfo" class="options">
-								<div class="events-name">{{ item.leagueName }}</div>
-								<div class="market-info">
-									<span class="market-name">{{ item.keyName }}</span>
-									<span class="market-point">@{{ item.point }}</span>
-								</div>
-								<div class="event-info">
-									<span>{{ "滚球" }}</span>
-									<span>{{ item.betTypeName }}</span>
-									<span>{{ item.oddsTypeName }}</span>
-								</div>
-								<div class="team-info">
-									<span>{{ item.homeTeamName }}</span>
-									<span>VS</span>
-									<span>{{ item.awayTeamName }}</span>
-									<span>[{{ Common.getYMDHms(item.globalShowTime) }}]</span>
-								</div>
-								<div class="homeScore-info">
-									<span>全场比分</span>
-									<span>{{ item.homeScore }}-{{ item.awayScore }}</span>
-								</div>
+				<!-- 投注详情 -->
+				<el-table-column :label="$t(`sports.betRecord['投注详情']`)" width="232" align="center" :resizable="false">
+					<template #default="{ row, column }">
+						<div class="bet-details">
+							<div class="bet-date">{{ Common.getYMDHms(row.transTime) }}</div>
+							<div class="bet-order-ID">
+								<span>{{ row.transId }}</span>
+								<svg-icon name="copy" size="16px" v-hover-svg class="curp" />
 							</div>
 						</div>
 					</template>
-				</template>
-			</el-table-column>
+				</el-table-column>
 
-			<!-- 结果 -->
-			<el-table-column :label="$t(`sports.betRecord['结果']`)" width="116" align="center" :resizable="false">
-				<template #default="{ row, column }">
-					<div class="bet-amount">{{ Common.formatFloat(row.stake) }}</div>
-				</template>
-			</el-table-column>
+				<!-- 投注玩法 -->
+				<el-table-column :label="$t(`sports.betRecord['投注玩法']`)" width="168" align="center" :resizable="false">
+					<template #default="{ row, column }">
+						<div class="betting" v-if="!row.parlayInfo">{{ row.betTypeName }}</div>
+						<div class="betting" v-else="!row.parlayInfo">{{ row.comboType }}</div>
+					</template>
+				</el-table-column>
 
-			<!-- 投注额 -->
-			<el-table-column :label="$t(`sports.betRecord['投注额']`)" width="116" align="center" :resizable="false">
-				<template #default="{ row, column }">
-					<div class="bet-amount">{{ Common.formatFloat(row.stake) }}</div>
-				</template>
-			</el-table-column>
+				<!-- 选项 -->
+				<el-table-column :label="$t(`sports.betRecord['选项']`)" width="292" align="center" :resizable="false">
+					<template #default="{ row, column }">
+						<div v-if="!row.parlayInfo" class="options">
+							<div class="events-name">{{ row.leagueName }}</div>
+							<div class="market-info">
+								<span class="market-name">{{ row.keyName }}</span>
+								<span class="market-point">@{{ row.point }}</span>
+							</div>
+							<div class="event-info">
+								<span>{{ "滚球" }}</span>
+								<span>{{ row.betTypeName }}</span>
+								<span>[{{ row.oddsTypeName }}]</span>
+							</div>
+							<div class="team-info">
+								<span>{{ row.homeTeamName }}</span>
+								<span>VS</span>
+								<span>{{ row.awayTeamName }}</span>
+								<span>{{ Common.getYMDHms(row.globalShowTime) }}</span>
+							</div>
+							<div class="homeScore-info">
+								<span>全场比分</span>
+								<span>{{ row.homeScore }}-{{ row.awayScore }}</span>
+							</div>
+						</div>
+						<template v-else>
+							<div class="options-list">
+								<div v-for="item in row.parlayInfo" class="options">
+									<div class="events-name">{{ item.leagueName }}</div>
+									<div class="market-info">
+										<span class="market-name">{{ item.keyName }}</span>
+										<span class="market-point">@{{ item.point }}</span>
+									</div>
+									<div class="event-info">
+										<span>{{ "滚球" }}</span>
+										<span>{{ item.betTypeName }}</span>
+										<span>{{ item.oddsTypeName }}</span>
+									</div>
+									<div class="team-info">
+										<span>{{ item.homeTeamName }}</span>
+										<span>VS</span>
+										<span>{{ item.awayTeamName }}</span>
+										<span>[{{ Common.getYMDHms(item.globalShowTime) }}]</span>
+									</div>
+									<div class="homeScore-info">
+										<span>全场比分</span>
+										<span>{{ item.homeScore }}-{{ item.awayScore }}</span>
+									</div>
+								</div>
+							</div>
+						</template>
+					</template>
+				</el-table-column>
 
-			<!-- 最高可赢 -->
-			<el-table-column :label="$t(`sports.betRecord['最高可赢']`)" width="116" align="center" :resizable="false">
-				<template #default="{ row, column }">
-					<div class="maximum-win">{{ Common.formatFloat(row.cashoutPrice) }}</div>
-				</template>
-			</el-table-column>
+				<!-- 结果 -->
+				<el-table-column :label="$t(`sports.betRecord['结果']`)" width="116" align="center" :resizable="false">
+					<template #default="{ row, column }">
+						<div class="bet-amount">{{ Common.formatFloat(row.stake) }}</div>
+					</template>
+				</el-table-column>
 
-			<!-- 状态 -->
-			<el-table-column :label="$t(`sports.betRecord['状态']`)" width="192" align="center" :resizable="false">
-				<template #default="{ row, column }">
-					<div class="bet-status" :class="computedStatusLabel[row.status].className">{{ computedStatusLabel[row.status].label }}</div>
-				</template>
-			</el-table-column>
-		</el-table>
+				<!-- 投注额 -->
+				<el-table-column :label="$t(`sports.betRecord['投注额']`)" width="116" align="center" :resizable="false">
+					<template #default="{ row, column }">
+						<div class="bet-amount">{{ Common.formatFloat(row.stake) }}</div>
+					</template>
+				</el-table-column>
+
+				<!-- 最高可赢 -->
+				<el-table-column :label="$t(`sports.betRecord['最高可赢']`)" width="116" align="center" :resizable="false">
+					<template #default="{ row, column }">
+						<div class="maximum-win">{{ Common.formatFloat(row.cashoutPrice) }}</div>
+					</template>
+				</el-table-column>
+
+				<!-- 状态 -->
+				<el-table-column :label="$t(`sports.betRecord['状态']`)" width="192" align="center" :resizable="false">
+					<template #default="{ row, column }">
+						<div class="bet-status" :class="computedStatusLabel[row.status].className">{{ computedStatusLabel[row.status].label }}</div>
+					</template>
+				</el-table-column>
+			</el-table>
+		</template>
+		<div v-else class="no-data">
+			<NoneData :showText="false"> </NoneData>
+		</div>
 	</div>
 </template>
 
@@ -219,6 +224,14 @@ function formatDateTime(dateTimeStr: Date | string): string {
 .container {
 	width: 100%;
 	height: calc(100vh - 250px);
+
+	.no-data {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
 	// 头部字体样式调整
 	:deep(.table-header-cell) {
