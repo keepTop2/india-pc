@@ -1,7 +1,7 @@
 <template>
 	<div class="base-body">
 		<!-- 体育 主体内容区域  -->
-		<!-- <Banner /> -->
+		<Banner />
 		<div class="main-container">
 			<!-- 体育游戏列表 -->
 			<div class="left-container">
@@ -18,7 +18,7 @@
 						<div class="overlay" v-if="isShowMask"></div>
 					</div>
 					<!-- 购物车 -->
-					<SportsShopCart></SportsShopCart>
+					<SportsShopCart v-if="popularLeague.visible"></SportsShopCart>
 				</div>
 			</div>
 			<!-- 右边侧边栏 -->
@@ -341,7 +341,6 @@ watch(
 		// margin: 0px 12px;
 		flex: 1;
 		width: 930px;
-		margin-right: 8px;
 		overflow: hidden;
 		.container {
 			// width: 100%;
@@ -382,6 +381,7 @@ watch(
 	.right-container {
 		width: 370px;
 		height: 100%;
+		margin-left: 8px;
 		overflow-y: auto;
 	}
 	.right-container::-webkit-scrollbar {
