@@ -8,8 +8,8 @@
 			</div>
 
 			<div class="query" v-show="active === 1">
-				<el-date-picker :clearable="false" class="date-picker" v-model="dateRange" type="daterange" start-placeholder="Start Date" end-placeholder="End Date" />
-				<el-button icon="Search">{{ $t(`betRecord['查询']`) }}</el-button>
+				<!-- 使用封装后的日期选择器组件 -->
+				<DatePickerWrapper v-model="dateRange" />
 			</div>
 		</div>
 
@@ -28,9 +28,12 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from "vue";
-
+import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
+import dayjs from "dayjs";
 // 表格组件
 import BetTable from "./components/Table.vue";
+// 引入封装的日期选择器组件
+import DatePickerWrapper from "./components/DatePickerWrapper.vue";
 // 分页组件
 import { Pagination } from "/@/components/Pagination";
 // 注单记录接口
@@ -38,68 +41,93 @@ import BetRecordApi from "/@/api/sports/betRecord";
 // 体育公用方法
 import SportsCommon from "/@/views/sports/utils/common";
 
+const popularLeague = usePopularLeague();
+/*隐藏热门联赛*/
+popularLeague.hidePopularLeague();
+
 // 选中的tab 结算未结算区分
-const active = ref(0);
+const active = ref(1);
 
-/** 默认今日时间 */
-const { startDate, endDate } = SportsCommon.getQueryDateRange();
-// 日期范围
-const dateRange = ref([startDate, endDate]);
-// 总数据
+// 定义日期范围变量，默认为当天时间
+const dateRange = ref({
+	start: dayjs().startOf("day").valueOf(),
+	end: dayjs().endOf("day").valueOf(),
+});
+
+// 当前请求的注单列表和总数
 const list = ref([]);
-
-// 监听标识变化 请求注单历史记录
-watch(active, () => getBetDetails(), { immediate: true });
-
 const total = ref(0);
-
 const params = reactive({
 	pageNumber: 1,
 	pageSize: 10,
 });
 
-watch(
-	() => params.pageNumber,
-	(newValue) => {
-		console.log(newValue, "===newValue");
-	}
-);
+// 防抖函数，防止频繁调用请求
+function debounce(fn: { (): Promise<void>; (arg0: any): void }, delay: number | undefined) {
+	let timer: string | number | NodeJS.Timeout | undefined;
+	return function (...args: any) {
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			fn(...args);
+		}, delay);
+	};
+}
 
-const tableData = computed(() => {
-	console.log("params.pageNumber", params.pageNumber);
+// 获取注单详情的防抖包装函数
+const debouncedGetBetDetails = debounce(getBetDetails, 300);
 
-	const start = (params.pageNumber - 1) * params.pageSize;
-	const end = start + params.pageSize;
-	console.log("start", start);
-	console.log("end", end);
-	return list.value?.slice(start, end) || [];
-});
+// 监听日期范围的变化，请求注单详情
+watch(dateRange, debouncedGetBetDetails);
+
+// 监听 active 状态的变化，请求注单详情
+watch(active, debouncedGetBetDetails);
 
 /**
- * @description: 获取注单详情
+ * @description: 获取注单详情（已结算和未结算共用）
  */
 async function getBetDetails() {
-	const [start, end] = dateRange.value;
-	const settledParams = {
+	// 构造请求参数，根据 active 的值区分已结算和未结算
+	let requestParams = {};
+	if (active.value === 1) {
+		const { start, end } = dateRange.value;
+		requestParams = getRequestParams(start, end, true);
+	} else {
+		const { startDate, endDate } = SportsCommon.getQueryDateRange(30);
+		// 这里直接将 startDate 和 endDate 传递给 getRequestParams
+		requestParams = getRequestParams(startDate, endDate, false);
+	}
+	// 使用 then 和 catch 处理异步请求
+	BetRecordApi.GetBetDetails(requestParams).then((res) => {
+		if (res.data) {
+			list.value = res.data; // 注单记录
+			total.value = list.value.length; // 注单条数
+			params.pageNumber = 1; // 重置页码
+		}
+	});
+}
+
+getBetDetails();
+
+/**
+ * @description: 获取请求参数
+ * @param {String} start - 开始时间
+ * @param {String} end - 结束时间
+ * @param {Boolean} isSettled - 是否已结算
+ * @returns {Object} 请求参数
+ */
+function getRequestParams(start: number, end: number | boolean, isSettled: boolean | undefined) {
+	return {
 		start: `${SportsCommon.formatDateBySign(start)}T00:00:00`,
 		end: `${SportsCommon.formatDateBySign(end)}T23:59:59`,
-		isSettled: true,
+		isSettled,
 	};
-
-	const { startDate, endDate } = SportsCommon.getQueryDateRange(30);
-	const unsettledParams = {
-		isSettled: false,
-		start: `${SportsCommon.formatDateBySign(startDate)}T00:00:00`,
-		end: `${SportsCommon.formatDateBySign(endDate)}T23:59:59`,
-	};
-
-	let res = await BetRecordApi.GetBetDetails(!!active.value ? settledParams : unsettledParams);
-	if (res.data) {
-		list.value = res.data; // 注单记录
-		total.value = list.value.length; // 注单条数
-		params.pageNumber = 1;
-	}
 }
+
+const tableData = computed(() => {
+	const start = (params.pageNumber - 1) * params.pageSize;
+	const end = start + params.pageSize;
+	return list.value?.slice(start, end) || [];
+});
 
 /**
  * @description 修改每页展示条数
@@ -157,21 +185,7 @@ const sizeChange = (pageSize: number) => {
 		}
 
 		.query {
-			display: flex;
-			align-items: center;
-			gap: 16px;
-
-			:deep() {
-				.date-picker {
-					height: 44px;
-					width: 240px;
-				}
-			}
-
-			.el-button {
-				width: 108px;
-				height: 44px;
-			}
+			margin-right: 24px;
 		}
 	}
 
