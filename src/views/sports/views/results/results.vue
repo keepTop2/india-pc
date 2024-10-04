@@ -146,14 +146,11 @@ const paginatedData = computed(() => {
 });
 
 onMounted(async () => {
-	ShopCatControlStore.setShopCatClose(true);
 	await sportsLogin();
 	await initRequest();
 });
 
-onUnmounted(() => {
-	ShopCatControlStore.setShopCatClose(false);
-});
+onUnmounted(() => {});
 
 /**
  * @description 初始化请求

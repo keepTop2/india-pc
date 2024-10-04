@@ -1,7 +1,7 @@
 <template>
 	<div class="base-body">
 		<!-- 体育 主体内容区域  -->
-		<Banner />
+		<!-- <Banner /> -->
 		<div class="main-container">
 			<!-- 体育游戏列表 -->
 			<div class="left-container">
