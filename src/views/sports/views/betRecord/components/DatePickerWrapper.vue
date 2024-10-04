@@ -134,6 +134,9 @@ const updateModelValue = (e: any) => {
 		}
 	}
 	.vc-weeks {
+		.vc-focus:focus-within {
+			box-shadow: none;
+		}
 		.vc-weekdays {
 			.vc-weekday {
 				height: 26px;
