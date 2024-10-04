@@ -4,7 +4,9 @@
 		<div class="header-container" @click="changeShopCart">
 			<div class="left">
 				<span class="label">投注单</span>
-				<span class="num_total" v-if="sportsBetEvent.sportsBetEventData.length">{{ sportsBetEvent.sportsBetEventData.length }}</span>
+				<span v-if="sportsBetEvent.sportsBetEventData.length > 0" class="num_total" :class="{ shake: isShaking }" @animationend="totalAnimationEnd">{{
+					sportsBetEvent.sportsBetEventData.length
+				}}</span>
 				<span class="arrow" :class="{ up_arrow: ShopCatControlStore.getShopCatShow }"><svg-icon name="sports-arrow_card_header" width="12px" height="8px"></svg-icon></span>
 			</div>
 			<div class="right">
@@ -13,8 +15,6 @@
 					<span class="stake">{{ Common.formatAmount(Number(sportsBetInfo.balance)) }}</span>
 					<span class="refresh_icon" :class="{ rotateAn: isRotating }" @animationend="handleAnimationEnd"><svg-icon name="sports-refresh" size="18px"></svg-icon></span>
 				</div>
-				<!-- 关闭按钮 -->
-				<!-- <span v-if="ShopCatControlStore.getShopCatShow" class="close_icon" @click.stop="onClickClear"><svg-icon name="sports-close" size="30px"></svg-icon></span> -->
 			</div>
 		</div>
 		<transition name="fade">
@@ -69,7 +69,10 @@ import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 const sportsBetInfo = useSportsBetInfoStore();
 const ShopCatControlStore = useShopCatControlStore();
 const sportsBetEvent = useSportsBetEventStore();
+
 const isRotating = ref(false);
+
+const isShaking = ref(false); // 创建一个响应式变量，用于控制摇摆动画的状态
 
 /**  是否下单结束 */
 const isOrdered = ref(false);
@@ -88,11 +91,7 @@ const state = reactive({
 
 onMounted(() => {
 	// 请求余额信息
-	// getIndexInfo();
-	// 请求注单ID
 	getBetOrderId();
-	// 请求赔率设置
-	// getPublicSetting();
 });
 
 // 监听购物车赛事变化
@@ -104,16 +103,15 @@ watch(
 			// 首次有赛事加入开启弹窗
 			ShopCatControlStore.setShopCatShow(true);
 		}
-
 		// 当购物车弹窗层开启时，判断赛事数量变化
 		if (ShopCatControlStore.getShopCatShow) {
 			// 在 nextTick 中获取高度
 			nextTick(() => {
-				handleContainerHeight(true); // 处理高度
 				getHasScrollbar();
 			});
 			// 开启线程
 			if (newValue > 0) {
+				isShaking.value = true;
 				sportsBetEvent.sportsOpenSse();
 			}
 		}
@@ -124,16 +122,21 @@ watch(
 watch(
 	() => ShopCatControlStore.getShopCatShow,
 	(newValue) => {
+		if (newValue) {
+			// 初始化 MutationObserver 并开始监听
+			initializeObserver();
+		} else if (observer) {
+			// 当购物车隐藏时断开观察器
+			observer.disconnect();
+		}
+
 		nextTick(() => {
 			handleContainerHeight(newValue); // 处理高度
+			getHasScrollbar();
 		});
 	}
 );
 
-// 使用 MutationObserver 监听子节点变化
-onMounted(() => {
-	initializeObserver();
-});
 // 在组件卸载前断开观察器
 onBeforeUnmount(() => {
 	if (observer) {
@@ -228,11 +231,6 @@ const refreshBalance = () => {
 	isRotating.value = true;
 };
 
-// 动画结束时，移除旋转效果
-function handleAnimationEnd() {
-	isRotating.value = false;
-}
-
 // 打开关闭弹窗
 const changeShopCart = () => {
 	if (ShopCatControlStore.getShopCatShow) {
@@ -264,6 +262,18 @@ const onOrderConfirm = () => {
 	sportsBetEvent.clearShopCart();
 	isOrdered.value = false;
 	shopCartPubSub.initializeState();
+};
+
+// 动画结束后的处理函数
+const handleAnimationEnd = () => {
+	isRotating.value = false; // 动画结束后将 isShaking 重置为 false，以便下次可以重新触发动画
+};
+
+// 动画结束时，移除旋转效果
+const totalAnimationEnd = () => {
+	console.log("1231");
+
+	isShaking.value = false;
 };
 </script>
 
@@ -310,6 +320,9 @@ const onOrderConfirm = () => {
 				font-size: 14px;
 				color: #fff;
 				border-radius: 50%;
+			}
+
+			.shake {
 			}
 
 			.arrow {
