@@ -155,7 +155,7 @@ const canScrollRight = computed(() => scrollPosition.value < maxScrollPosition.v
 		background: url("/@/assets/zh-CN/sports/sidebar/baseBall_s.png") center center / 100% 100% no-repeat;
 		.scoreboard-center {
 			position: relative;
-			width: 366px;
+			width: 354px;
 			border-radius: 8px;
 			background-color: var(--scoreboard_bg);
 			overflow: hidden;
@@ -195,6 +195,9 @@ const canScrollRight = computed(() => scrollPosition.value < maxScrollPosition.v
 					.icon {
 						width: 20px;
 						height: 20px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
 						img {
 							width: 100%;
 							height: 100%;

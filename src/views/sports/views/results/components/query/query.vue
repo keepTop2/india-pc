@@ -22,12 +22,7 @@
 					<svg-icon class="searchIcon" name="arrow_down" size="14" />
 				</div>
 				<template #dropdown>
-					<VDatePicker 
-						class="v-Date" 
-						v-model.range.number="range" 
-						locale="en" 
-						@update:pages="handlePanelChange"
-					>
+					<VDatePicker class="v-Date" v-model.range.number="range" locale="en" @update:pages="handlePanelChange">
 						<template #header-title-wrapper>{{ selectDateYM }}</template>
 						<template #header-prev-button>
 							<svg-icon class="searchIcon" name="arrow_up" size="14" />
@@ -38,20 +33,16 @@
 					</VDatePicker>
 				</template>
 			</el-dropdown>
-			
+
 			<span>{{ $t(`matchResult['联赛']`) }}</span>
 			<el-input v-model="modelValue.league" :placeholder="$t(`matchResult['请输入关键字搜索']`)" />
-			
+
 			<span>{{ $t(`matchResult['赛事']`) }}</span>
 			<el-input v-model="modelValue.competition" :placeholder="$t(`matchResult['请输入']`)" />
-			
+
 			<!-- <el-checkbox v-model="modelValue.isLive">{{ $t(`matchResult['滚球']`) }}</el-checkbox> -->
 		</div>
-		<el-button 
-			class="query-button" 
-			@click="handleSearch" 
-			:disabled="loading"
-		>
+		<el-button class="query-button" @click="handleSearch" :disabled="loading">
 			<svg-icon class="searchIcon" name="result_search" size="14" /> &nbsp;
 			{{ $t(`matchResult['搜索']`) }}
 		</el-button>
@@ -101,7 +92,7 @@ const handleSearch = () => emits("search");
  * @description 监听 range 变化
  */
 watch(range, () => {
-	console.log(range.value, '=range', props.modelValue);
+	console.log(range.value, "=range", props.modelValue);
 	emits("updateModel", { ...props.modelValue, date: [range.value.start, range.value.end] });
 });
 
@@ -130,7 +121,7 @@ const visibleChange = (visible: boolean) => {
  * @param {any} newPanel - 新的面板数据
  */
 const handlePanelChange = (newPanel: any) => {
-	console.log(newPanel, '=newPanel');
+	console.log(newPanel, "=newPanel");
 	selectDateYM.value = dayjs(newPanel[0].monthComps.firstDayOfMonth).format("YYYY-MM");
 };
 
@@ -140,7 +131,7 @@ const handlePanelChange = (newPanel: any) => {
  * @returns {string} - 格式化后的日期字符串
  */
 const formatDate = (date: any) => {
-	console.log(date, '=====date');
+	console.log(date, "=====date");
 	return date ? Common.getYMD(date, "YYYY/MM/DD") : "";
 };
 </script>
@@ -155,118 +146,118 @@ const formatDate = (date: any) => {
 	background: var(--Bg1);
 	border-radius: 0 0 8px 8px;
 	box-sizing: border-box;
-	padding:0 24px;
+	padding: 0 24px;
 	:deep(.el-dropdown) {
 		background: var(--Bg2);
-		height:30px;
+		height: 30px;
 		.el-dropdown-content {
-				width: 230px;
-				height: 100%;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				padding: 8px 10px;
-				cursor: pointer;
-				box-sizing: border-box;
-				color: var(--Text1);
-				font-family: "PingFang SC";
-				font-size: 14px;
-				font-weight: 400;
-			}
-			.popperClass {
-				background-color: var(--Bg1);
-				box-shadow: 0px 0px 8px 0px var(--popoverShadow);
-				border-radius: 8px;
-				border-color:var(--Line_2);
-				.el-scrollbar {
+			width: 230px;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 8px 10px;
+			cursor: pointer;
+			box-sizing: border-box;
+			color: var(--Text1);
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-weight: 400;
+		}
+		.popperClass {
+			background-color: var(--Bg1);
+			box-shadow: 0px 0px 8px 0px var(--popoverShadow);
+			border-radius: 8px;
+			border-color: var(--Line_2);
+			.el-scrollbar {
+				overflow: unset;
+				.el-scrollbar__wrap {
 					overflow: unset;
-					.el-scrollbar__wrap {
-						overflow: unset;
-						.el-dropdown__list {
-							margin: 0px !important;
-							// padding: 8px 12px !important;
-							border: 0;
-									.vc-bordered {
-										width: 268px;
-										border-radius: 8px;
-										border: 1px solid var(--Line);
-										background-color: var(--Bg4);
-										box-shadow: 0px 0px 8px 0px var(--popoverShadow);
+					.el-dropdown__list {
+						margin: 0px !important;
+						// padding: 8px 12px !important;
+						border: 0;
+						.vc-bordered {
+							width: 268px;
+							border-radius: 8px;
+							border: 1px solid var(--Line);
+							background-color: var(--Bg4);
+							box-shadow: 0px 0px 8px 0px var(--popoverShadow);
 
-										.vc-pane-container {
-											.vc-header {
-												height: 26px;
-												margin: 4px 8px 0px;
-												padding: 0px;
-												grid-gap: 0px;
-												.vc-title-wrapper {
-													color: var(--Text1);
-													font-family: "PingFang SC";
-													font-size: 14px;
-													font-weight: 500;
-													line-height: 22px;
-												}
-												.vc-arrow {
-													width: 22px;
-													height: 22px;
-													background-color: transparent;
-												}
+							.vc-pane-container {
+								.vc-header {
+									height: 26px;
+									margin: 4px 8px 0px;
+									padding: 0px;
+									grid-gap: 0px;
+									.vc-title-wrapper {
+										color: var(--Text1);
+										font-family: "PingFang SC";
+										font-size: 14px;
+										font-weight: 500;
+										line-height: 22px;
+									}
+									.vc-arrow {
+										width: 22px;
+										height: 22px;
+										background-color: transparent;
+									}
 
-												.vc-focus:focus-within {
-													box-shadow: 0 0 0 2px var(--Bg5);
-												}
-											}
-
-											.vc-weeks {
-												.vc-weekdays {
-													color: var(--Text2_1);
-													font-family: "PingFang SC";
-													font-size: 14px;
-													line-height: 22px;
-												}
-
-												.vc-day-content {
-													color: var(--Text1);
-													font-family: "PingFang SC";
-													font-size: 14px;
-													font-weight: 500;
-													line-height: 22px;
-												}
-
-												.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-solid.vc-blue {
-													color: var(--Text_s);
-													background-color: var(--Theme);
-												}
-												.vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light,
-												.vc-highlight.vc-highlight-base-start.vc-highlight-bg-light,
-												.vc-highlight.vc-highlight-base-end.vc-highlight-bg-light,
-												.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-outline.vc-blue {
-													background-color: var(--Bg5);
-													box-shadow: 0px 0px 0px 1px var(--Bg5);
-												}
-
-												.vc-focus:focus-within {
-													box-shadow: none;
-												}
-
-												.vc-light .vc-attr {
-													background-color: var(--Bg5);
-												}
-											}
-										}
+									.vc-focus:focus-within {
+										box-shadow: 0 0 0 2px var(--Bg5);
+									}
 								}
 
-							.el-dropdown-menu__item:focus {
-								background-color: var(--Bg3);
+								.vc-weeks {
+									.vc-weekdays {
+										color: var(--Text2_1);
+										font-family: "PingFang SC";
+										font-size: 14px;
+										line-height: 22px;
+									}
+
+									.vc-day-content {
+										color: var(--Text1);
+										font-family: "PingFang SC";
+										font-size: 14px;
+										font-weight: 500;
+										line-height: 22px;
+									}
+
+									.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-solid.vc-blue {
+										color: var(--Text_s);
+										background-color: var(--Theme);
+									}
+									.vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light,
+									.vc-highlight.vc-highlight-base-start.vc-highlight-bg-light,
+									.vc-highlight.vc-highlight-base-end.vc-highlight-bg-light,
+									.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-outline.vc-blue {
+										background-color: var(--Bg5);
+										box-shadow: 0px 0px 0px 1px var(--Bg5);
+									}
+
+									.vc-focus:focus-within {
+										box-shadow: none;
+									}
+
+									.vc-light .vc-attr {
+										background-color: var(--Bg5);
+									}
+								}
 							}
+						}
+
+						.el-dropdown-menu__item:focus {
+							background-color: var(--Bg3);
 						}
 					}
 				}
-
-				.el-popper__arrow {
-					display: none;
-				}
 			}
+
+			.el-popper__arrow {
+				display: none;
+			}
+		}
 	}
 	.condition {
 		display: flex;
@@ -276,7 +267,7 @@ const formatDate = (date: any) => {
 		span {
 			color: var(--Text1);
 		}
-		
+
 		& > * {
 			flex-shrink: 0;
 		}
@@ -287,11 +278,11 @@ const formatDate = (date: any) => {
 		height: 30px;
 		background-color: var(--Theme);
 		color: var(--Text_a);
-		border:0;
+		border: 0;
 		&.is-disabled :deep(.el-icon) {
 			animation: rotate 1.5s linear infinite;
 		}
-		
+
 		.searchIcon {
 			color: var(--Text_a);
 		}
@@ -299,8 +290,12 @@ const formatDate = (date: any) => {
 }
 
 @keyframes rotate {
-	from { transform: rotate(0deg); }
-	to { transform: rotate(360deg); }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 :deep {
@@ -308,7 +303,7 @@ const formatDate = (date: any) => {
 		width: 163px;
 		height: 30px;
 	}
-	
+
 	.select-date {
 		width: 98px;
 		height: 30px;
@@ -339,12 +334,12 @@ const formatDate = (date: any) => {
 	.el-checkbox__input.is-checked {
 		.el-checkbox__inner {
 			border-color: var(--Theme);
-			
+
 			&::after {
 				border-color: var(--Theme);
 			}
 		}
-		.el-checkbox__label{
+		.el-checkbox__label {
 			color: var(--Text1);
 			font-weight: normal;
 		}

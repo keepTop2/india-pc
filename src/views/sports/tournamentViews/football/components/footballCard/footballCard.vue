@@ -1,7 +1,7 @@
 <template>
 	<div class="card-container">
 		<!-- 头部 -->
-		<div class="card-header" :class="[!displayContent ? 'toggle' : '']" @click="toggleDisplay">
+		<div class="card-header" @click="toggleDisplay">
 			<!-- 联赛信息 -->
 			<div class="league-info">
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="League Icon" />
@@ -97,6 +97,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .card-container {
+	padding-bottom: 5px;
 	overflow: hidden;
 	.card-header {
 		display: flex;
@@ -149,14 +150,14 @@ onMounted(() => {
 					font-weight: 400;
 					/* 根据标签的顺序设置不同的宽度 */
 					&:nth-child(1),
-					&:nth-child(3) {
+					&:nth-child(4) {
 						width: 78px; /* 第一和第三个标签的宽度 */
 					}
 					&:nth-child(2),
-					&:nth-child(4) {
+					&:nth-child(5) {
 						width: 92px; /* 第二和第四个标签的宽度 */
 					}
-					&:nth-child(5),
+					&:nth-child(3),
 					&:nth-child(6) {
 						width: 118px; /* 第五和第六个标签的宽度 */
 					}

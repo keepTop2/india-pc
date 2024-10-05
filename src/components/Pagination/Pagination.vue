@@ -62,12 +62,15 @@ watch([() => props.total, () => props.pageSize], () => {
 }
 .paginationPop {
 	background-color: var(--Bg2);
-	color: var(--light-ok-Text-1);
+	color: var(--Theme);
 	border: 0 !important;
 
 	.is-hovering {
 		background-color: var(--light-ok-Butter);
-		color: var(--Text2);
+		color: var(--Theme);
+	}
+	.el-select-dropdown__item.is-selected {
+		color: var(--Theme);
 	}
 }
 .pagination-wrapper {
@@ -77,19 +80,28 @@ watch([() => props.total, () => props.pageSize], () => {
 		display: flex;
 		align-items: center;
 		.el-pager li.is-active {
-			color: var(--el-pagination-hover-color);
+			color: var(--Theme);
 		}
 		.el-pager {
 			margin: 0 10px;
 		}
+		.el-pagination__jump {
+			color: var(--Text2);
+			.el-input {
+				--el-input-text-color: var(--Text1);
+			}
+		}
+		.el-select__placeholder {
+			color: var(--Text1);
+		}
 		.el-select__wrapper {
-			background-color: var(--light-ok-Butter);
+			background-color: var(--Bg2);
 			color: var(--light-ok-Text-1);
 			box-shadow: none;
 		}
 		.el-input__wrapper {
-			background-color: var(--light-ok-Butter);
-			color: var(--light-ok-Text-1);
+			background-color: var(--Bg2);
+			color: var(--Text1);
 			box-shadow: none;
 		}
 		.btn-prev,
@@ -103,7 +115,7 @@ watch([() => props.total, () => props.pageSize], () => {
 			border-radius: 4px;
 
 			&:hover {
-				color: var(--el-pagination-hover-color);
+				color: var(--Theme);
 			}
 
 			&.disabled {
@@ -127,7 +139,7 @@ watch([() => props.total, () => props.pageSize], () => {
 			}
 
 			&:hover {
-				color: var(--el-pagination-hover-color);
+				color: var(--Theme);
 			}
 		}
 	}

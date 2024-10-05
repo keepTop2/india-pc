@@ -154,6 +154,8 @@ class Common {
 	 * @param value
 	 */
 	static async copy(value: string | number): Promise<void> {
+		console.log("123123", 123123);
+
 		const { toClipboard } = useClipboard();
 		try {
 			//复制
@@ -172,6 +174,15 @@ class Common {
 	 */
 	static getYMD(timeStamp: number, format?: string) {
 		return moment(timeStamp).format(format || "YYYY-MM-DD");
+	}
+
+	/**
+	 * @description 转化年月日 时分秒时间
+	 * @params timeStamp 时间戳
+	 * @params format 格式 默认'YYYY-MM-DD HH:mm:ss'
+	 */
+	static getYMDHms(timeStamp: number, format?: string) {
+		return moment(timeStamp).format(format || "YYYY-MM-DD HH:mm:ss");
 	}
 
 	/**

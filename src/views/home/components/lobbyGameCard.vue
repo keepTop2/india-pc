@@ -10,11 +10,11 @@
 			<div class="more Text1 fs_18 curp" @click="gotoVenue(gameList)" v-if="gameList?.gameInfoList?.length !== 1">更多</div>
 		</div>
 		<div class="lobbyGameList">
-			<div class="onlyOneGame" v-if="bigOneItem && gameList?.gameInfoList?.length == 1" click="Common.goToGame(item)">
+			<div class="onlyOneGame" v-if="bigOneItem && gameList?.gameInfoList?.length == 1" @click="Common.goToGame(gameList?.gameInfoList[0])">
 				<img v-lazy-load="gameList?.gameInfoList[0].icon" alt="" />
 			</div>
 			<slide v-else>
-				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
+				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem" @click="Common.goToGame(item)">
 					<div class="cornerMark">
 						<svg-icon name="new_game_icon" v-if="item.cornerLabels == 1" size="60" />
 						<svg-icon name="hot_game_icon" v-else-if="item.cornerLabels == 2" size="60" />

@@ -45,10 +45,10 @@
 					</template>
 					<template #default="{ row }">
 						<div>
-							<div class="col-content-box">
+							<div class="col-content-box color_Theme">
 								{{ row.awayScore || "-" }}
 							</div>
-							<div class="col-content-box">
+							<div class="col-content-box color_Theme">
 								{{ row.homeScore || "-" }}
 							</div>
 						</div>
@@ -64,7 +64,7 @@
 			</el-table>
 		</div>
 
-		<Pagination v-if="eventResultData?.length" v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="total" @sizeChange="sizeChange" />
+		<Pagination class="pagination" v-if="eventResultData?.length" v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="total" @sizeChange="sizeChange" />
 	</div>
 </template>
 
@@ -146,14 +146,11 @@ const paginatedData = computed(() => {
 });
 
 onMounted(async () => {
-	ShopCatControlStore.setShopCatClose(true);
 	await sportsLogin();
 	await initRequest();
 });
 
-onUnmounted(() => {
-	ShopCatControlStore.setShopCatClose(false);
-});
+onUnmounted(() => {});
 
 /**
  * @description 初始化请求
@@ -193,7 +190,8 @@ const getEventResultsData = async () => {
 			language: "zhcn",
 			from: moment(startDate).startOf("days").add(5, "hour").format(temp),
 			until: moment(endDate).endOf("days").add(5, "hour").subtract(1, "millisecond").format(temp),
-			query: `$filter=contains(leagueName,'${queryForm.value.league}') and (contains(homename,'${queryForm.value.competition}') or contains(awayname,'${queryForm.value.competition}')) and sportType eq ${queryForm.value.ballType}`,
+			// and isLive eq ${queryForm.value.isLive}
+			query: `$filter=contains(leagueName,'${queryForm.value.league}') and (contains(homename,'${queryForm.value.competition}') or contains(awayname,'${queryForm.value.competition}')) and sportType eq ${queryForm.value.ballType} `,
 		})
 		.finally(() => {
 			loading.value = false;
@@ -218,6 +216,9 @@ const sizeChange = (pageSize: number) => {
 
 <style scoped lang="scss">
 .container {
+	.pagination {
+		margin-top: 15px;
+	}
 	.col-box {
 		display: flex;
 		align-items: center;
@@ -257,6 +258,7 @@ const sizeChange = (pageSize: number) => {
 			.col-content-box {
 				margin: 5px;
 			}
+
 			tr {
 				background: transparent;
 				overflow: hidden;
@@ -268,7 +270,6 @@ const sizeChange = (pageSize: number) => {
 				}
 			}
 		}
-
 		.el-table__header {
 			border-radius: 8px;
 			overflow: hidden;
@@ -280,7 +281,8 @@ const sizeChange = (pageSize: number) => {
 					background: var(--Bg3);
 					color: var(--Text1);
 					font-weight: normal;
-					border: 1px solid var(--Line);
+					border: 0;
+					border-right: 1px solid var(--Line_2);
 					// border-left: none;
 				}
 
@@ -294,11 +296,11 @@ const sizeChange = (pageSize: number) => {
 					}
 				}
 
-				& > .el-table__cell:nth-of-type(2) {
-					.cell {
-						padding-left: 0;
-					}
-				}
+				// & > .el-table__cell:nth-of-type(2) {
+				// 	.cell {
+				// 		padding-left: 0;
+				// 	}
+				// }
 			}
 		}
 
@@ -352,6 +354,7 @@ const sizeChange = (pageSize: number) => {
 
 				& > .el-table__cell:last-child {
 					border-radius: 0 8px 8px 0;
+					color: var(--Theme);
 				}
 			}
 		}

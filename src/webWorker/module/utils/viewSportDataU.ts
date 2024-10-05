@@ -32,14 +32,15 @@ export default (function () {
 			sports: [] as Sports[],
 			leagues: [],
 			events: [],
+			hotEvents: [],
 			markets: [],
 			outrights: [],
 			results: [],
 			/**
 			 * @description 各个子路由视图数据
 			 */
-			childrenViewData: {},
-			promotionsViewData: {},
+			childrenViewData: [],
+			promotionsViewData: [],
 		};
 	}
 

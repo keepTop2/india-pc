@@ -101,7 +101,7 @@ const computedSportComponent = computed(() => {
 	// if(eventData.length){
 	// 	toggleEventScoreboard(eventData[0].events[0]);
 	// }
-	console.log('eventData====',eventData)
+	console.log("eventData====", eventData);
 	return [
 		{
 			name: "足球",
@@ -182,8 +182,7 @@ const selectEvent = () => {
 
 <style scoped lang="scss">
 .box-content {
-	// height: 840px;
-	height: calc(100vh - 200px);
+	height: calc(100vh - 227px);
 
 	overflow-y: auto;
 	.box_navigation {

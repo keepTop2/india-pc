@@ -20,6 +20,7 @@ export interface SportViewData {
 	sports: Sports[];
 	leagues: Array<any>;
 	events: Array<any>;
+	hotEvents: Array<any>;
 	markets: Array<any>;
 	outrights: Array<any>;
 	results: Array<any>;

@@ -21,8 +21,7 @@
 			<!-- 赛事数据 -->
 			<div class="events-content">
 				<div class="events-header">
-					<div class="icon"><svg-icon :name="ballInfo[Number(route.query.sportType)]?.iconName" size="16px"></svg-icon>
-					</div>
+					<div class="icon"><svg-icon :name="ballInfo[Number(eventsInfo?.sportType)]?.iconName" size="16px"></svg-icon></div>
 					<template v-if="eventsInfo">
 						<div class="team-name">
 							<span class="name">{{ eventsInfo?.teamInfo?.homeName }}</span>
@@ -37,8 +36,11 @@
 			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
-				<component v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)"
-					:is="ballInfo[Number(eventsInfo.sportType)]?.componentName" :eventsInfo="eventsInfo"></component>
+				<component
+					v-if="eventsInfo && SportsCommonFn.isStartMatch(eventsInfo.globalShowTime)"
+					:is="ballInfo[Number(eventsInfo?.sportType)]?.componentName"
+					:eventsInfo="eventsInfo"
+				></component>
 				<!-- 未开赛计分板显示 -->
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
@@ -48,9 +50,14 @@
 				<div ref="videoContainer" class="video-js"></div>
 				<!-- 真人赛事比赛 -->
 				<div v-show="iframeLoaded" class="live">
-					<iframe class="eventVideo" @load="onIframeLoad" :src="videoSrc" frameborder="0"
+					<iframe
+						class="eventVideo"
+						@load="onIframeLoad"
+						:src="videoSrc"
+						frameborder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-						allowfullscreen>
+						allowfullscreen
+					>
 					</iframe>
 				</div>
 			</div>
@@ -93,17 +100,19 @@ const myPlayer = ref();
 const videoContainer = ref();
 const iframeLoaded = ref(false);
 const SidebarStore = useSidebarStore();
-const isShowHotEvents = computed(() => route.meta.type === "detail" ? true : false);
+const isShowHotEvents = computed(() => (route.meta.type === "detail" ? true : false));
 
 // 获取到的数据
 const eventsInfo = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
 	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData;
-	console.log('eventsInfo=======', childrenViewData, "childrenViewData")
-	if (childrenViewData && !isShowHotEvents.value) {
+	if (route.meta.name === "champion" && promotionsViewData.length) {
+		return promotionsViewData[0];
+	}
+	if (childrenViewData?.length && !isShowHotEvents.value) {
 		return childrenViewData[0]?.events[0];
 	}
-	if (promotionsViewData && isShowHotEvents.value) {
+	if (promotionsViewData.length && isShowHotEvents.value) {
 		return promotionsViewData[0];
 	}
 	return null;
@@ -311,13 +320,15 @@ const showDetail = () => {
 
 .sidebar {
 	width: 100%;
-	height: 750px;
-	background-color: var(--Bg1);
+	height: calc(100vh - 66px);
+	display: flex;
+	flex-direction: column;
 	border-radius: 8px;
+	overflow: hidden;
 
 	.markets-list {
-		height: calc(100% - 300px);
-		overflow-y: scroll;
+		flex: 1;
+		overflow: hidden;
 	}
 
 	.live {
@@ -346,11 +357,11 @@ const showDetail = () => {
 
 		.header {
 			width: 100%;
-			height: 40px;
+			height: 34px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding: 0px 24px;
+			padding: 0px 14px;
 
 			.left,
 			.center,
@@ -399,7 +410,7 @@ const showDetail = () => {
 
 			.events-header {
 				width: 100%;
-				height: 30px;
+				height: 36px;
 				display: flex;
 				align-items: center;
 				gap: 8px;

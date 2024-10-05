@@ -2,25 +2,16 @@
 	<div class="card-container">
 		<!--  头部 -->
 		<div class="box sticky">
-			<div class="box_one" :class="[!displayContent ? 'toggle' : '']">
+			<div class="header" @click="toggleDisplay">
 				<!-- 联赛信息 -->
-				<div class="top_left" @click="toggleDisplay">
-					<!-- <img :src="championData.leagueIconUrl" alt="" /> -->
-					<div class="title">{{ championData.leagueName }}</div>
+				<div class="league_name">{{ championData.leagueName }}</div>
+				<!-- 展开/收起图标 -->
+				<div class="header-icon">
+					<span class="icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 				</div>
-				<!-- 收藏 -->
-				<!-- <div class="top_right"> -->
-				<!-- 关注 -->
-				<!-- <svg-icon v-if="isAttention" class="sports_collection2" name="sports-already_collected" size="16" @click="attentionEvent(true)" /> -->
-				<!-- 取消关注 -->
-				<!-- <svg-icon v-else class="sports_collection" name="sports-collection" size="16" @click="attentionEvent(false)" /> -->
-				<!-- </div> -->
 			</div>
-			<div class="box_two">
-				<div class="box_team">
-					<MarketColumn :displayContent="displayContent" :sportInfo="championData" @oddsChange="oddsChange">
-					</MarketColumn>
-				</div>
+			<div v-if="displayContent" class="content">
+				<MarketColumn :displayContent="displayContent" :sportInfo="championData" @oddsChange="oddsChange" />
 			</div>
 		</div>
 	</div>
@@ -28,10 +19,8 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import { FootballCardApi } from "/@/api/sports/footballCard";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import MarketColumn from "../marketColumn/marketColumn.vue";
-import PubSub from "/@/pubSub/pubSub";
 const SportAttentionStore = useSportAttentionStore();
 interface teamDataType {
 	/** 数据索引 */
@@ -65,21 +54,6 @@ const isAttention = computed(() => {
 	return SportAttentionStore.attentionLeagueIdList.includes(props.championData.leagueId);
 });
 
-// 点击关注按钮
-const attentionEvent = async (isActive: boolean) => {
-	if (isActive) {
-		await FootballCardApi.unFollow({
-			thirdId: [props.championData.leagueId],
-		});
-	} else {
-		await FootballCardApi.saveFollow({
-			thirdId: props.championData.leagueId,
-			type: 1,
-		});
-	}
-	PubSub.publish(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, {});
-};
-
 const displayContent = ref(true);
 
 /**
@@ -106,134 +80,51 @@ watch(
 
 onMounted(() => {
 	displayContent.value = props.isExpand;
-	// console.log(props.teamData, 45612);
 });
 </script>
 
 <style scoped lang="scss">
 .card-container {
-	margin-bottom: 16px;
+	margin-bottom: 4px;
 }
-
-.box_one {
+.header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	height: 40px;
-	flex-shrink: 0;
+	height: 34px;
+	padding: 6px 14px 6px 8px;
 	border-radius: 8px 8px 0px 0px;
-
 	background: var(--Bg6);
+	box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.1) inset;
+	cursor: pointer;
 
-	box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25) inset;
-
-	.top_left {
-		margin: 9px 24px;
-		display: flex;
-		align-items: center;
-		flex: 1;
-
-		img {
-			width: 16px;
-			height: 20px;
-		}
-
-		.title {
-			color: var(--Text_s);
-
-			font-family: "PingFang SC";
-			font-size: 16px;
-			font-style: normal;
-			font-weight: 400;
-			line-height: normal;
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-		}
+	.league_name {
+		color: var(--Text_s);
+		font-family: "PingFang SC";
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 300;
+		line-height: normal;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
-
-	.top_right {
+	.header-icon {
+		width: 20px;
+		height: 20px;
 		display: flex;
 		align-items: center;
-
-		.text {
-			color: var(--Text1);
-
-			text-align: center;
-			font-family: "PingFang SC";
-			font-size: 14px;
-			font-style: normal;
-			font-weight: 400;
-			line-height: normal;
-			width: 134px;
-		}
-
-		.sports_collection {
-			margin: 0 25px 0 18px;
-
-			color: var(--icon);
-		}
-
-		.sports_collection2 {
-			margin: 0 25px 0 18px;
-			color: var(--Warn);
+		justify-content: center;
+		.icon {
+			transform: rotate(-90deg);
 		}
 	}
 }
 
-// .box_two {
-// 	display: flex;
-// 	flex-direction: column;
-// 	justify-content: center;
-// 	align-items: flex-start;
-
-// 	.record {
-// 		display: flex;
-// 		align-items: center;
-// 		margin: 15px 0 20px 0;
-
-// 		.record_one {
-// 			width: 4px;
-// 			height: 22px;
-// 			border-radius: 0px 4px 4px 0px;
-// 			background: var(--Theme-, #3bc116);
-// 			margin-right: 10px;
-// 		}
-
-// 		.record_two {
-// 			color: var(--Text1-1, #98a7b5);
-// 			font-family: "PingFang SC";
-// 			font-size: 16px;
-// 			font-style: normal;
-// 			font-weight: 400;
-// 			line-height: normal;
-// 		}
-// 	}
-// }
-
-.box_two {
-	border-radius: 0px 0px 8px 8px;
+.content {
 	width: 100%;
-	background: var(--Bg1-1, #24262b);
-}
-
-.toggle {
-	border-radius: 8px;
-	transition: border-radius 0.8s ease;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-	transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-	opacity: 0;
-}
-
-.toggle {
-	border-radius: 8px;
-	transition: border-radius 0.8s ease;
+	padding: 10px;
+	background: var(--Bg1);
+	border-radius: 0px 0px 8px 8px;
 }
 </style>

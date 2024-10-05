@@ -6,7 +6,7 @@
 			<div class="mainArea">
 				<router-view id="router-view" />
 				<Footer v-if="route.meta.showFooter" />
-				<BackToTop />
+				<!-- <BackToTop /> -->
 			</div>
 		</div>
 		<Modal />

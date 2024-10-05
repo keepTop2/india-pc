@@ -1,188 +1,115 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育赔率组件(上升下降标识)
--->
 <template>
-	<div class="RiseOrFall-container">
-		<div class="centent" :class="statusValue[state?.status as keyof number & 3]">
-			<div class="icon">
-				<svg-icon name="direction" class="directionSvg"></svg-icon>
-			</div>
-		</div>
-	</div>
+	<div v-if="isVisible" :class="['triangle-indicator', indicatorClass]"></div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from "vue";
+import { defineProps, defineEmits, computed, watch, onMounted, onBeforeUnmount } from "vue";
 
-interface RiseOrFallType {
-	/** 宽度 */
-	// width?: number;
-	// /**高度 */
-	// height?: number;
-	// /**右边距 */
-	// right?: number;
-	/** 动画执行时长 */
-	time?: number;
-	/** 状态 1:上升 2:下降 3:无状态  */
-	status?: number;
-}
-const props = withDefaults(defineProps<RiseOrFallType>(), {
-	// height: 20,
-	// width: 14,
-	// right: 10,
-	time: 4500,
-	status: 1 as number,
-});
+// 定义属性
+const props = defineProps<{
+	status: 1 | 2 | 3; // 使用数字状态
+}>();
 
-const state: RiseOrFallType = reactive({
-	// height: 20,
-	// width: 14,
-	// right: 10,
-	time: props.time,
-	status: 1 as number & string,
-});
+// 定义事件发射器
+const emit = defineEmits<{
+	(e: "animationEnd"): void;
+	(e: "update:status", value: 1 | 2 | 3): void; // 新增事件用于更新 status 状态
+}>();
 
-const statusValue = {
-	1: "rise",
-	2: "fall",
-	3: "unDome",
+let timer: ReturnType<typeof setTimeout> | null = null;
+
+// 状态映射字典
+const statusMap = {
+	1: "up", // 上升
+	2: "down", // 下降
+	3: "none", // 无状态
 };
 
-// const timer = ref();
-
-const emit = defineEmits(["animationEnd"]);
-
-// const setTime = () => {
-// 	if (state.time) {
-// 		if (state.status == 3) {
-// 			clearTimeout(timer.value);
-// 		} else {
-// 			clearTimeout(timer.value);
-// 			timer.value = setTimeout(() => {
-// 				// 动画结束对外暴露事件
-// 				emit("animationEnd");
-// 				state.status = 3;
-// 			}, state.time);
-// 		}
-// 	}
-// };
-
-let start: number | null = null;
-let animationFrameId: number | null = null;
-//使用 requestAnimationFrame 替代setTimeout
-const setTime = () => {
-	if (state.time) {
-		if (state.status == 3) {
-			if (animationFrameId !== null) {
-				cancelAnimationFrame(animationFrameId);
-			}
-		} else {
-			if (animationFrameId !== null) {
-				cancelAnimationFrame(animationFrameId);
-			}
-			start = null;
-			const step = (timestamp: number) => {
-				if (!start) start = timestamp;
-				const elapsed = timestamp - start;
-				if (elapsed >= (state.time as number)) {
-					emit("animationEnd");
-					state.status = 3;
-				} else {
-					animationFrameId = requestAnimationFrame(step);
-				}
-			};
-			animationFrameId = requestAnimationFrame(step);
-		}
+// 计算属性：确定指示器的 CSS 类
+const indicatorClass = computed(() => {
+	switch (statusMap[props.status]) {
+		case "up":
+			return "up";
+		case "down":
+			return "down";
+		default:
+			return "";
 	}
+});
+
+// 计算属性：确定组件是否可见
+const isVisible = computed(() => props.status !== 3); // 3 为 'none'
+
+// 计时器函数
+const startTimer = () => {
+	if (timer) {
+		clearTimeout(timer);
+	}
+	timer = setTimeout(() => {
+		emit("animationEnd");
+		emit("update:status", 3); // 定时器结束时，将 status 更新为 3
+		timer = null; // 清空计时器引用
+	}, 3000);
 };
 
+// 监听状态变化，启动计时器
 watch(
 	() => props.status,
-	(newValue, oldValue) => {
-		state.status = newValue;
-	},
-	{
-		immediate: true,
+	(newStatus) => {
+		if (newStatus === 1 || newStatus === 2) {
+			startTimer();
+		} else if (timer) {
+			// 如果状态为 3，清除定时器
+			clearTimeout(timer);
+			timer = null;
+		}
 	}
 );
 
-watch(
-	() => state.status,
-	(newValue, oldValue) => {
-		setTime();
+// 在组件挂载时启动计时器
+onMounted(() => {
+	if (props.status === 1 || props.status === 2) {
+		startTimer();
 	}
-);
+});
 
-setTime();
-
-defineExpose({ state });
+// 在组件卸载前清除计时器
+onBeforeUnmount(() => {
+	if (timer) {
+		clearTimeout(timer);
+	}
+});
 </script>
 
-<style scoped lang="scss">
-.RiseOrFall-container {
-	// position: absolute;
-	// right: 1px;
-	// top: 0px;
-	// height: 100%;
-	// width: 12px;
-
-	.centent {
-		height: 100%;
-		width: 12px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		animation: scaleout 1s infinite ease-in-out;
-
-		&.unDome {
-			display: none;
-		}
-
-		.icon {
-			display: none;
-			width: 12px;
-			height: 12px;
-			// display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-
-			.directionSvg {
-				height: 100%;
-				width: 100%;
-			}
-		}
-
-		&.rise {
-			.icon {
-				display: flex;
-				transform: rotate(0deg);
-			}
-
-			color: var(--Theme);
-		}
-
-		&.fall {
-			.icon {
-				display: flex;
-				transform: rotate(180deg);
-			}
-
-			color: var(--Success);
-		}
-	}
+<style scoped>
+.triangle-indicator {
+	width: 0;
+	height: 0;
+	margin: 0 auto;
+	transition: all 0.2s ease-in-out; /* 添加过渡动画 */
 }
 
-@keyframes scaleout {
-	0% {
-		transform: scale(1);
-	}
+/* 上升状态的三角形（红色） */
+.triangle-indicator.up {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	border-top-right-radius: 2px;
+	border-top: 4px solid red;
+	border-right: 4px solid red;
+	border-left: 4px solid transparent;
+	border-bottom: 4px solid transparent;
+}
 
-	100% {
-		transform: scale(1.1);
-		opacity: 0;
-	}
+/* 下降状态的三角形（绿色） */
+.triangle-indicator.down {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	border-bottom-right-radius: 2px;
+	border-top: 4px solid transparent;
+	border-right: 4px solid green;
+	border-left: 4px solid transparent;
+	border-bottom: 4px solid green;
 }
 </style>

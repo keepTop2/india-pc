@@ -5,9 +5,15 @@
 				<img src="./image/header.png" alt="" />
 				<div class="Text3 fs_20">{{ title }}</div>
 			</div>
-			<div class="dialog-content"><slot></slot></div>
+			<div class="dialog-content">
+				<slot></slot>
+			</div>
 			<div class="dialog-footer">
-				<button class="common_btn" @click="close">确认</button>
+				<footer>
+					<button class="common_btn" @click="confirm">
+						<slot name="footer"> 确认 </slot>
+					</button>
+				</footer>
 			</div>
 		</div>
 		<div class="closeDialog" @click="close">
@@ -19,10 +25,8 @@
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
 import { defineProps, defineEmits } from "vue";
-
-// Props and emits setup
 const props = defineProps({
-	modelValue: Boolean, // The `modelValue` prop for v-model
+	modelValue: Boolean,
 	title: {
 		type: String,
 		default: "",
@@ -32,21 +36,17 @@ const props = defineProps({
 		default: () => {},
 	},
 });
-
-const emit = defineEmits(["update:modelValue"]); // Emits the update event for v-model
-
-// Z-index management
+const emit = defineEmits(["update:modelValue"]);
 const baseZIndex = 1000;
 const currentZIndex = ref(baseZIndex);
-
 onMounted(() => {
-	// Increment the zIndex based on the number of open dialogs
 	currentZIndex.value += document.getElementsByClassName("dialog-backdrop").length + 1;
 });
-
-const close = () => {
-	// emit("update:modelValue", false);
+const confirm = () => {
 	props.confirm();
+};
+const close = () => {
+	emit("update:modelValue", false);
 };
 </script>
 

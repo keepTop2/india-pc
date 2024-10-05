@@ -40,7 +40,6 @@ const routes = [
 			{
 				path: "/activity",
 				name: "activity",
-
 				meta: {
 					title: "activity",
 				},

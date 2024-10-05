@@ -5,12 +5,12 @@
 			<template v-if="cardType == `capot`">
 				<div class="label">{{ cardData?.key == "h" ? "主" : "客" }}</div>
 				<!-- 状态正常 -->
-				<div class="value" v-if="market.marketStatus == 'running'">
-					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<div class="arrow-icon">
-						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				<template v-if="market.marketStatus === 'running'">
+					<div class="value">
+						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
 					</div>
-				</div>
+					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				</template>
 				<!-- 锁 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 			</template>
@@ -21,12 +21,12 @@
 					<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
 				</div>
 				<!-- 状态正常 -->
-				<div class="value" v-if="market.marketStatus == 'running'">
-					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<div class="arrow-icon">
-						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				<template v-if="market.marketStatus === 'running'">
+					<div class="value">
+						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
 					</div>
-				</div>
+					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				</template>
 				<!-- 锁 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 			</template>
@@ -38,12 +38,12 @@
 					<span>{{ cardData?.point }}</span>
 				</div>
 				<!-- 状态正常 -->
-				<div class="value" v-if="market.marketStatus == 'running'">
-					<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					<div class="arrow-icon">
-						<RiseOrFall :time="3000" :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				<template v-if="market.marketStatus === 'running'">
+					<div class="value">
+						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
 					</div>
-				</div>
+					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+				</template>
 				<!-- 锁 -->
 				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 			</template>
@@ -150,40 +150,6 @@ const onSetSportsEventData = () => {
 	}
 };
 
-// /**
-//  * @description: 选中时高亮处理；
-//  * @param {*} paramsObj
-//  * @return {*}
-//  */
-// const onSetSportsEventData = () => {
-// 	const paramsObj = {
-// 		marketId: marketsMatchData(props.sportInfo.markets, props.betType).marketId,
-// 		selection: props.cardData,
-// 		data: props.sportInfo,
-// 		betType: 5,
-// 	};
-
-// 	//使用 marketId 拼接 selection的key
-// 	//还需要判断当前赛事是否选择了多个 多个无法同时选择的  可以使用 eventid作为key marketId + key 作为值 可行
-// 	const { data, marketId, selection, betType } = paramsObj;
-// 	//存储盘口唯一标识
-// 	if (isBright(data.eventId, marketId, selection)) {
-// 		// 删除Pinia数据
-// 		sportsBetEvent.removeEventCart(event);
-// 	} else {
-// 		sportsBetEvent.setMarketSelect(data.eventId, `${marketId}-${selection.key}`);
-// 		sportsBetEvent.setEventSelect(data.eventId, {
-// 			marketId: marketId,
-// 			betType: betType,
-// 			key: selection.key,
-// 		});
-// 	}
-// 	// 存储Pinia数据
-// 	sportsBetEvent.setSportsEventData(data);
-// 	//同步 新增或改变高亮状态
-// 	// emit("onIsBright", { marketId: marketId, selections: selection, data: data });
-// };
-
 /**
  * @description 判断当前盘口是否存在pinia中
  */
@@ -192,23 +158,6 @@ const isBright = () => {
 
 	return sportsBetEvent.getEventInfo[props.sportInfo.eventId]?.listKye == `${props?.market?.marketId}-${selection.key}`;
 };
-
-// /**
-//  * @description 判断当前盘口是否存在pinia中
-//  */
-// const isBright = (eventId, marketId, selection) => {
-// 	console.info("判断当前盘口是否存在pinia中", eventId, marketId, selection);
-
-// 	if (selection) {
-// 		try {
-// 			return marketsSelect.value[eventId] == `${marketId}-${selection.key}`;
-// 		} catch (error) {
-// 			return false;
-// 		}
-// 	} else {
-// 		return false;
-// 	}
-// };
 </script>
 
 <style scoped lang="scss">
@@ -245,13 +194,6 @@ const isBright = () => {
 			font-family: "PingFang SC";
 			font-size: 12px;
 			font-weight: 400;
-
-			.arrow-icon {
-				position: absolute;
-				top: 50%;
-				transform: translate(0px, -50%);
-				right: -16px;
-			}
 		}
 		&:hover {
 			background-color: rgba(255, 255, 255, 0.05);

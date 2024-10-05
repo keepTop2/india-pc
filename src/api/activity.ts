@@ -25,6 +25,14 @@ export const activityApi = {
 			headers,
 		});
 	},
+	// 申请活动校验
+	getToActivity: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/toActivity`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 	// 领取活动
 	getActivityReward: (data = {}, headers = {}) => {
 		return useAxiosApi(`/app/activityParticipate/api/getActivityReward`, {

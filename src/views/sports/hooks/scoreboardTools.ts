@@ -107,7 +107,8 @@ export function useToolsHooks() {
 			const events = res.data.events;
 			// 获取赛事id集合
 			const eventIds = events.map((event) => event.eventId).join(",");
-			// 发起热门赛事推送
+			// webToPushApi: WebToPushApi.sportsShopCart,
+			// 发起热门赛事推送 promotionsEvent
 			const params = {
 				apiUrl: SportsCommonFn.getSportPushApiUrl(),
 				token: SportsInfoStore.getSportsToken,

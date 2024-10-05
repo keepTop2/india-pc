@@ -92,7 +92,7 @@ const backgroundMap = {
 // 响应式计算属性获取背景图像
 const backgroundImage = computed(() => {
 	const size = props.size; // 根据实际的 prop 获取值
-	const sportType = route.query.sportType || "1"; // 默认值为 "1"
+	const sportType = props.eventsInfo.sportType || "1"; // 默认值为 "1"
 	return backgroundMap[size]?.[sportType] || backgroundMap[size]?.["1"]; // 返回对应的背景图像或默认图像
 });
 </script>
@@ -112,7 +112,7 @@ const backgroundImage = computed(() => {
 
 		.scoreboard-center {
 			position: relative;
-			width: 366px;
+			width: 354px;
 			border-radius: 8px;
 			background-color: var(--scoreboard_bg);
 			overflow: hidden;

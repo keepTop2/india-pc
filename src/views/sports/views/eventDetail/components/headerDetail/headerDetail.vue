@@ -21,7 +21,11 @@
 			<div class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
-				<component v-if="sportInfo && SportsCommonFn.isStartMatch(sportInfo.globalShowTime)" :is="ballInfo[Number(route.query.sportType)]?.componentName" :eventsInfo="sportInfo"></component>
+				<component
+					v-if="sportInfo && SportsCommonFn.isStartMatch(sportInfo.globalShowTime)"
+					:is="ballInfo[Number(route.query.sportType)]?.componentName"
+					:eventsInfo="sportInfo"
+				></component>
 				<!-- 未开赛计分板显示 -->
 				<NotStarted v-else :eventsInfo="sportInfo" />
 			</div>
@@ -41,7 +45,7 @@ import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import PubSub from "/@/pubSub/pubSub";
-import SportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
+// import SportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 
 const SportAttentionStore = useSportAttentionStore();
@@ -51,8 +55,6 @@ const router = useRouter();
 const route = useRoute();
 
 const emits = defineEmits(["back", "isHidden", "isCollect", "refresh", "filter", "toggleAll"]);
-
-
 
 // 未开赛
 const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/notStarted/notStarted.vue"));
@@ -117,7 +119,6 @@ const ballInfo: Record<number, { iconName: string; componentName: any }> = {
 	},
 };
 
-
 interface CapotCardType {
 	sportInfo: any;
 	loading?: boolean;
@@ -170,7 +171,7 @@ const handleGoBack = () => {
 <style lang="scss" scoped>
 .detail-container {
 	width: 100%;
-	margin-bottom: 20px;
+	// margin-bottom: 20px;
 	border-radius: 0 0 8px 8px;
 	color: var(--Text1);
 
@@ -231,12 +232,15 @@ const handleGoBack = () => {
 	// overflow: hidden;
 	// z-index: 1;
 	:deep(.scoreboard-container) {
-		height: 276px;
+		height: 208px;
+		& > div:nth-child(2) {
+			display: none;
+		}
 		.scoreboard-center {
-			width: 892px!important;
-			.scoreboard-info {
-				height: 130px!important;
-			}
+			width: 892px !important;
+		}
+		.scoreboard-info {
+			height: 130px !important;
 		}
 	}
 
@@ -245,7 +249,7 @@ const handleGoBack = () => {
 	}
 
 	&.showContent {
-		height: 276px;
+		height: 208px;
 	}
 
 	&.hideContent {

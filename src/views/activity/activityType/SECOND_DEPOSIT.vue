@@ -22,7 +22,7 @@
 					可得金额: <span class="Theme_text"><span class="fs_20 mr_2">$</span>{{ activityData.activityAmount || 0 }}</span>
 				</div>
 				<div>
-					<button class="common_btn" @click="getActivityReward">立即申请</button>
+					<button class="common_btn" @click="getToActivity">立即申请</button>
 				</div>
 			</div>
 			<div class="activityContent">
@@ -89,25 +89,39 @@
 				<div class="activityContentFooter" />
 			</div>
 		</div>
+		<activityDialog v-model="showDialog" title="温馨提示" :confirm="confirmDialog">
+			{{ dialogInfo.message }}
+			<template v-slot:footer v-if="dialogInfo.status === 30049"> 去存款 </template>
+		</activityDialog>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { ref } from "vue";
 import { activityApi } from "/@/api/activity";
 import { useRouter } from "vue-router";
 import { useActivityStore } from "/@/stores/modules/activity";
 import { computed } from "vue";
 import Common from "/@/utils/common";
+import showToast from "/@/hooks/useToast";
+import activityDialog from "../components/activityDialog.vue";
 const activityStore = useActivityStore();
 const router = useRouter();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
-
-const getActivityReward = () => {
-	console.log(activityData.value);
-
-	activityApi.getActivityReward({ id: activityData.value.id }).then((res) => {
-		console.log(res);
+const showDialog = ref(false);
+const dialogInfo: any = ref({});
+const confirmDialog = () => {
+	if (dialogInfo.value.status === 30049) {
+		router.push("/user/deposit");
+	}
+	showDialog.value = false;
+};
+const getToActivity = () => {
+	activityApi.getToActivity({ id: activityData.value.id }).then((res) => {
+		if (res.data.status !== Common.ResCode.SUCCESS) {
+			showDialog.value = true;
+			dialogInfo.value = res.data;
+		}
 	});
 };
 </script>

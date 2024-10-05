@@ -30,9 +30,9 @@ const onSwiper = (swiper: any) => {
 <style scoped lang="scss">
 .banner {
 	width: 100%;
-	height: 256px;
+	height: 240px;
 	padding-top: 16px;
-	padding-bottom: 16px;
+	padding-bottom: 10px;
 	box-sizing: border-box;
 }
 .swiper {

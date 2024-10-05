@@ -135,7 +135,7 @@ class WorkerManage {
 	 * @param data
 	 */
 	public onMessage<T1, T2>(data) {
-		// console.error("第八步  线程管理器收到处理好的数据准备发送到视图", JSON.parse(data.data));
+		console.error("第八步  线程管理器收到处理好的数据准备发送到视图", JSON.parse(data.data));
 		const workerToViewData: WorkerTransfer<T1, T2> = JSON.parse(data.data);
 		// // 将处理好的体育数据发送到Vue组件
 		// if (childrenWorkerData.serverType == "sportServer") {
