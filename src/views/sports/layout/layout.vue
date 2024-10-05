@@ -16,14 +16,14 @@
 					<!-- 搜索触发的遮罩 -->
 					<div class="overlay" v-if="isShowMask"></div>
 				</div>
-				<!-- 购物车 -->
-				<SportsShopCart v-if="popularLeague.visible"></SportsShopCart>
 			</div>
 			<!-- 右边侧边栏 -->
 			<div class="right-container" v-if="popularLeague.visible">
 				<Sidebar v-if="SportsInfoStore.getSportsToken"></Sidebar>
 			</div>
 		</div>
+		<!-- 购物车 -->
+		<SportsShopCart v-if="popularLeague.visible"></SportsShopCart>
 		<!-- 公告弹窗 -->
 		<Modal v-if="showNotifyModal" :before-close="closeNotifyModal" @close="closeNotifyModal">
 			<component :is="NotifyModal" />
@@ -306,21 +306,22 @@ watch(
 <style lang="scss" scoped>
 .base-body {
 	width: 1308px;
+	height: calc(100vh - 64px);
 	margin: 0 auto;
-	overflow-x: auto;
+	// overflow-x: auto;
 }
 
 .main-container {
 	width: 100%;
-	height: calc(100vh - 66px);
+	height: 100%;
 	display: flex;
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
-	margin-top: 6px;
+	padding-top: 6px;
 	.left-container {
-		position: relative;
-		width: 930px;
+		// width: 930px;
+		flex: 1;
 		height: 100%;
 		overflow: hidden;
 
