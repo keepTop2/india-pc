@@ -86,7 +86,6 @@ onUnmounted(() => {
 	margin: 64px auto 0;
 	overflow-y: auto;
 	height: calc(100vh - 64px);
-	position: relative;
 }
 .mainArea::-webkit-scrollbar {
 	display: none;
