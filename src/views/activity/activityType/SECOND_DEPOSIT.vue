@@ -105,6 +105,7 @@ import { computed } from "vue";
 import Common from "/@/utils/common";
 import showToast from "/@/hooks/useToast";
 import activityDialog from "../components/activityDialog.vue";
+import { useModalStore } from "/@/stores/modules/modalStore";
 const activityStore = useActivityStore();
 const router = useRouter();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
@@ -112,10 +113,12 @@ const showDialog = ref(false);
 const dialogInfo: any = ref({});
 const confirmDialog = () => {
 	if (dialogInfo.value.status === 30049) {
+		useModalStore().closeModal();
 		router.push("/user/deposit");
 	}
 	showDialog.value = false;
 };
+
 const getToActivity = () => {
 	activityApi.getToActivity({ id: activityData.value.id }).then((res) => {
 		if (res.data.status !== Common.ResCode.SUCCESS) {
