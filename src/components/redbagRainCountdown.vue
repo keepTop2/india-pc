@@ -1,5 +1,5 @@
 <template>
-	<div ref="draggable" class="draggable" :style="{ position: 'fixed', left: `${position.x}px`, top: `${position.y}px` }" @mousedown="onMouseDown">
+	<div ref="draggable" class="draggable" :style="{ position: 'fixed', left: `${position.x}px`, top: `${position.y}px` }" @mousedown="onMouseDown" v-if="modelValue">
 		<div class="parent">
 			<div class="child curp">
 				<div class="curp">
@@ -23,6 +23,7 @@ import { activityApi } from "../api/activity";
 import { useActivityStore } from "../stores/modules/activity";
 
 import { useModalStore } from "/@/stores/modules/modalStore";
+import Common from "../utils/common";
 const modalStore = useModalStore();
 const activityStore = useActivityStore();
 const { countdown } = useCountdown();
@@ -32,37 +33,42 @@ const isDragging = ref(false);
 const offset = ref({ x: 0, y: 0 });
 const clickDisabled = ref(false);
 let startMousePosition = ref({ x: 0, y: 0 });
+
+const props = defineProps(["modelValue"]);
+const emit = defineEmits(["update:modelValue"]);
+// 订阅红包雨消息
 pubsub.subscribe(webSocketMsgTopicEnum.redBagRain, (data) => {
 	console.log("Received:", data);
 });
+// 打开红包雨页面
 const handleClickCountdown = async () => {
 	if (!clickDisabled.value) {
-		await activityApi.getRedBagInfo().then((res) => {
-			activityStore.setCurrentActivityData({ ...res.data });
+		await activityApi.getRedBagInfo().then(async (res) => {
+			if (res.code == Common.ResCode.SUCCESS) {
+				await activityStore.setCurrentActivityData({ ...res.data });
+				modalStore.openModal("RED_BAG_RAIN");
+			}
 		});
-		modalStore.openModal("RED_BAG_RAIN");
 	}
 };
-
 const closeRedbagRainCountdown = () => {
-	// Implement close functionality if needed
+	emit("update:modelValue", false);
 };
 
+// 拖拽功能
 const onMouseDown = (event: MouseEvent) => {
 	event.preventDefault();
 	clickDisabled.value = false;
 	startMousePosition.value = { x: event.clientX, y: event.clientY };
-
 	offset.value = {
 		x: event.clientX - position.value.x,
 		y: event.clientY - position.value.y,
 	};
-
 	// 添加事件监听
 	window.addEventListener("mousemove", onMouseMove);
 	window.addEventListener("mouseup", onMouseUp);
 };
-
+// 拖拽功能
 const onMouseMove = (event: MouseEvent) => {
 	const distanceMoved = Math.sqrt(Math.pow(event.clientX - startMousePosition.value.x, 2) + Math.pow(event.clientY - startMousePosition.value.y, 2));
 	if (distanceMoved > 5) {
@@ -80,7 +86,7 @@ const onMouseMove = (event: MouseEvent) => {
 		}
 	}
 };
-
+// 拖拽功能
 const onMouseUp = () => {
 	if (isDragging.value) {
 		isDragging.value = false;
@@ -89,6 +95,7 @@ const onMouseUp = () => {
 	window.removeEventListener("mousemove", onMouseMove);
 	window.removeEventListener("mouseup", onMouseUp);
 };
+// 拖拽功能
 const updatePosition = () => {
 	const parentElement = draggable.value?.parentElement; // 获取父元素
 	const grandParentElement: any = draggable.value?.parentElement;
@@ -99,7 +106,7 @@ const updatePosition = () => {
 		position.value.y = Math.max(64, Math.min(window.innerHeight - 100, position.value.y)); // Y 轴限制
 	}
 };
-
+// 初始化
 onMounted(() => {
 	const parentElement = draggable.value?.parentElement;
 	if (parentElement) {
