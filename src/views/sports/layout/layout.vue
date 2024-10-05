@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, provide, reactive, ref, watch, watchEffect } from "vue";
+import { computed, onBeforeMount, onBeforeUnmount, onUnmounted, ref, watch } from "vue";
 import { isEmpty } from "lodash-es";
 import { useRoute, useRouter } from "vue-router";
 import { useIntervalFn } from "@vueuse/core";
@@ -45,28 +45,19 @@ import { useLayoutStore } from "/@/stores/modules/layout";
 import { useUserStore } from "/@/stores/modules/user";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
-import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
-
 import { i18n } from "/@/i18n/index";
 import { useLoading } from "/@/directive/loading/hooks";
 import { useToLogin } from "/@/hooks/toLogin";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 
-import workerManage from "/@/webWorker/workerManage";
-import sportsApi from "/@/api/sports/sports";
+import SkeletonList from "/@/views/sports/layout/components/SkeletonList/SkeletonList.vue";
 import pubSub from "/@/pubSub/pubSub";
-import { formattingResultViewData } from "/@/views/sports/utils/formattingViewData";
-import { sportTabPushActions, sportsEventDetailPush } from "/@/views/sports/utils/sportsMap/sportsSSERequestMap";
-import SportsCommonFn from "/@/views/sports/utils/common";
 import { FootballCardApi } from "/@/api/sports/footballCard";
-import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
-
-import { WorkerName, SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
 
 import Modal from "./components/Modal/index.vue";
-import { HeaderMenuNav, HeaderMenuCondition, HeaderNotify, SportsShopCart, Sidebar, Banner } from "./components";
+import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar } from "./components";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
@@ -85,9 +76,7 @@ const router = useRouter();
 /**
  * @description 是否显示条件
  */
-const isShowCondition = computed(() => {
-	return route.meta.type === "list";
-});
+const isShowCondition = computed(() => route.meta.type === "list");
 
 /**
  * @description 各种store实例
@@ -100,7 +89,6 @@ const SportAttentionStore = useSportAttentionStore();
 const SportMorningTradingStore = useSportMorningTradingStore();
 const LayoutStore = useLayoutStore();
 const UserStore = useUserStore();
-const SportLeagueSearchStore = useSportLeagueSearchStore();
 const ShopCatControlStore = useShopCatControlStore();
 const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
 
@@ -127,12 +115,6 @@ const { getSidebarEventSSEPush, getSidebarMarketSSEPush, getPromotions } = useTo
 /**
  * @description 是否显示遮罩层
  */
-const isShowoVerlay = ref(false);
-
-/**
- * @description 数据是否已处理
- */
-// const tabActive = computed(() => routeMap[route.path as keyof typeof routeMap]);
 const isShowMask = ref(false);
 
 // 公告数据
@@ -229,6 +211,7 @@ const getAttention = async (isLogin = true) => {
 const initSport = async () => {
 	initSportPubsub();
 	const sportType = (route.query.sportType as string) || "1";
+	pubSub.publish("showSkeleton", true);
 	openSportPush(sportType);
 };
 
@@ -238,7 +221,7 @@ const initSport = async () => {
  */
 const onTab = (type: string) => {
 	console.log(tabActive.value, "=====onTab=====", type);
-	if (tabActive.value == type) return;
+	if (tabActive.value === type) return;
 	tabActive.value = type;
 	ShopCatControlStore.setShopCatShow(false);
 };
@@ -274,7 +257,7 @@ const closeNotifyModal = () => {
 watch(
 	() => SportMorningTradingStore.getActiveDate,
 	(newValue) => {
-		if (newValue && tabActive.value == "morningTrading") {
+		if (newValue && tabActive.value === "morningTrading") {
 			initSport();
 		}
 	}
@@ -293,18 +276,20 @@ watch(
 			// SidebarStore.clearEventsInfo();
 			//开启推送
 			openSportPush(route.query.sportType as string, tabActive.value);
+			pubSub.publish("SkeletonLoading", true);
 		}
 	}
 );
+
 /**
  * @description 监听体育球类的变化
  */
 watch(
 	() => sportsData.value,
-	(newValue, oldValue) => {
+	(newValue) => {
 		if (newValue && newValue.length > 0) {
 			if (route.query.sportType) {
-				const isSportType = newValue.some((item) => item.sportType == Number(route.query.sportType));
+				const isSportType = newValue.some((item) => item.sportType === Number(route.query.sportType));
 				if (!isSportType) {
 					router.push({
 						path: route.path,
@@ -331,28 +316,19 @@ watch(
 .main-container {
 	display: flex;
 	height: calc(100%);
-	// width: 1660px;
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
-	// transform: scale(0.8);
 	.left-container {
 		position: relative;
-		// margin: 0px 12px;
 		flex: 1;
 		width: 930px;
 		margin-right: 8px;
 		overflow: hidden;
 		.container {
-			// width: 100%;
-			// width: 930px;
-
 			.header {
 				width: 100%;
-				// border-radius: 8px 8px 0 0;
-				// background: var(--Bg1);
 				box-sizing: border-box;
-				// overflow: hidden;
 
 				.line {
 					width: 100%;
