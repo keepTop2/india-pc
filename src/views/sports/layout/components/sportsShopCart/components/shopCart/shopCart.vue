@@ -4,8 +4,10 @@
 		<div class="header-container" @click="changeShopCart">
 			<div class="left">
 				<span class="label">投注单</span>
-				<span class="num_total" v-if="sportsBetEvent.sportsBetEventData.length">{{ sportsBetEvent.sportsBetEventData.length }}</span>
-				<span class="arrow"><svg-icon name="sports-arrow_card_header" width="12px" height="8px"></svg-icon></span>
+				<span v-if="sportsBetEvent.sportsBetEventData.length > 0" class="num_total" :class="{ shake: isShaking }" @animationend="totalAnimationEnd">{{
+					sportsBetEvent.sportsBetEventData.length
+				}}</span>
+				<span class="arrow" :class="{ up_arrow: ShopCatControlStore.getShopCatShow }"><svg-icon name="sports-arrow_card_header" width="12px" height="8px"></svg-icon></span>
 			</div>
 			<div class="right">
 				<!-- 余额信息 -->
@@ -13,33 +15,35 @@
 					<span class="stake">{{ Common.formatAmount(Number(sportsBetInfo.balance)) }}</span>
 					<span class="refresh_icon" :class="{ rotateAn: isRotating }" @animationend="handleAnimationEnd"><svg-icon name="sports-refresh" size="18px"></svg-icon></span>
 				</div>
-				<!-- 关闭按钮 -->
-				<span v-if="ShopCatControlStore.getShopCatShow" class="close_icon" @click.stop="onClickClear"><svg-icon name="sports-close" size="30px"></svg-icon></span>
 			</div>
 		</div>
-		<div v-if="ShopCatControlStore.getShopCatShow" class="container-main">
-			<!-- 无赛事时展示 -->
-			<div class="noData" v-if="!sportsBetEvent.sportsBetEventData.length"><span> 请完成您的下注 </span></div>
-			<!-- 购物车赛事列表 -->
-			<div class="shop-plan" v-else>
-				<div class="event-list" ref="container" @scroll="checkScroll">
-					<!-- 赛事列表 单关串关公用 -->
-					<EventCard v-for="(data, index) in sportsBetEvent.sportsBetEventData" :key="index" :shopData="data" :hasClose="true" />
-					<!-- 单关表单 -->
-					<SingleTicketFrom v-if="sportsBetEvent.sportsBetEventData.length == 1" />
-					<!-- 串关表单 -->
-					<ParlayTicketsFrom v-if="sportsBetEvent.sportsBetEventData.length > 1" />
-					<!-- 指示箭头 -->
-					<img v-if="arrowShow" class="left_arrow" :src="left_arrow" />
-				</div>
-				<div class="footer-container">
-					<!-- 单关投注按钮 -->
-					<SingleTicketFooter v-if="sportsBetEvent.sportsBetEventData.length == 1" @singleTicketSuccess="getSingleTicketSuccess" />
-					<!-- 串关键盘按钮 -->
-					<ParlayTicketsFooter v-if="sportsBetEvent.sportsBetEventData.length > 1" @parlayTicketsSuccess="getParlayTicketsSuccess" />
+		<transition name="fade">
+			<div class="container-main" ref="containerMain">
+				<div class="main" ref="main">
+					<!-- 无赛事时展示 -->
+					<div class="noData" v-if="!sportsBetEvent.sportsBetEventData.length"><span> 请完成您的下注 </span></div>
+					<!-- 购物车赛事列表 -->
+					<div class="shop-plan" v-else>
+						<div class="event-list" ref="container" @scroll="checkScroll">
+							<!-- 赛事列表 单关串关公用 -->
+							<EventCard v-for="(data, index) in sportsBetEvent.sportsBetEventData" :key="index" :shopData="data" :hasClose="true" />
+							<!-- 单关表单 -->
+							<SingleTicketFrom v-if="sportsBetEvent.sportsBetEventData.length == 1" />
+							<!-- 串关表单 -->
+							<ParlayTicketsFrom v-if="sportsBetEvent.sportsBetEventData.length > 1" />
+							<!-- 指示箭头 -->
+							<img v-if="arrowShow" class="left_arrow" :src="left_arrow" />
+						</div>
+						<div class="footer-container">
+							<!-- 单关投注按钮 -->
+							<SingleTicketFooter v-if="sportsBetEvent.sportsBetEventData.length == 1" @singleTicketSuccess="getSingleTicketSuccess" />
+							<!-- 串关键盘按钮 -->
+							<ParlayTicketsFooter v-if="sportsBetEvent.sportsBetEventData.length > 1" @parlayTicketsSuccess="getParlayTicketsSuccess" />
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
+		</transition>
 	</div>
 
 	<!-- 下单结束 -->
@@ -52,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, reactive, ref, watch } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
 import left_arrow from "/@/assets/zh-CN/sports/left_arrow.gif";
 import { EventCard, SingleTicketFrom, ParlayTicketsFrom, SingleTicketFooter, ParlayTicketsFooter, SingleTicketFinish, ParlayTicketsFinish } from "./components/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
@@ -65,13 +69,20 @@ import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 const sportsBetInfo = useSportsBetInfoStore();
 const ShopCatControlStore = useShopCatControlStore();
 const sportsBetEvent = useSportsBetEventStore();
+
 const isRotating = ref(false);
+
+const isShaking = ref(false); // 创建一个响应式变量，用于控制摇摆动画的状态
 
 /**  是否下单结束 */
 const isOrdered = ref(false);
 const container = ref<HTMLElement | null>(null);
 const hasScrollbar = ref(false);
 const arrowShow = ref(false);
+
+const containerMain = ref<HTMLElement | null>(null);
+const main = ref<HTMLElement | null>(null);
+let observer: MutationObserver | null = null;
 
 const state = reactive({
 	singleTicketSuccess: {}, // 单关下注详情
@@ -80,11 +91,7 @@ const state = reactive({
 
 onMounted(() => {
 	// 请求余额信息
-	// getIndexInfo();
-	// 请求注单ID
 	getBetOrderId();
-	// 请求赔率设置
-	// getPublicSetting();
 });
 
 // 监听购物车赛事变化
@@ -92,31 +99,85 @@ watch(
 	() => sportsBetEvent.sportsBetEventData.length,
 	(newValue, oldValue) => {
 		// 长度变化则监听
-		if (newValue == 1 && !oldValue) {
+		if (newValue === 1 && !oldValue) {
 			// 首次有赛事加入开启弹窗
 			ShopCatControlStore.setShopCatShow(true);
 		}
-		// 判断购物车弹窗层开启的时候 购物车赛事发生变化 则重新开关线程发起推送
-		// 还需要判断购物车赛事信息是否有 需要赛事信息大于0
-		if (ShopCatControlStore.getShopCatShow && newValue > 0) {
+		// 当购物车弹窗层开启时，判断赛事数量变化
+		if (ShopCatControlStore.getShopCatShow) {
+			// 在 nextTick 中获取高度
 			nextTick(() => {
 				getHasScrollbar();
 			});
 			// 开启线程
-			sportsBetEvent.sportsOpenSse();
+			if (newValue > 0) {
+				isShaking.value = true;
+				sportsBetEvent.sportsOpenSse();
+			}
 		}
 	}
 );
 
-/*购物车隐藏时 关闭错误弹框*/
+/* 购物车隐藏时关闭错误弹框 */
 watch(
 	() => ShopCatControlStore.getShopCatShow,
 	(newValue) => {
+		if (newValue) {
+			// 初始化 MutationObserver 并开始监听
+			initializeObserver();
+		} else if (observer) {
+			// 当购物车隐藏时断开观察器
+			observer.disconnect();
+		}
+
 		nextTick(() => {
+			handleContainerHeight(newValue); // 处理高度
 			getHasScrollbar();
 		});
 	}
 );
+
+// 在组件卸载前断开观察器
+onBeforeUnmount(() => {
+	if (observer) {
+		observer.disconnect();
+	}
+});
+
+// 控制高度的函数
+const handleContainerHeight = (isVisible: any) => {
+	if (main.value) {
+		if (isVisible) {
+			nextTick(() => {
+				const height = main.value?.scrollHeight; // 获取内容的实际高度
+				containerMain.value.style.height = `${height}px`; // 设置 containerMain 的高度
+			});
+		} else {
+			containerMain.value.style.height = "0"; // 隐藏内容
+		}
+	}
+};
+
+// 初始化 MutationObserver 的函数，用于监听子节点的变化
+const initializeObserver = () => {
+	// 创建一个 MutationObserver 实例，并定义当监控的 DOM 发生变化时执行的回调函数
+	observer = new MutationObserver(() => {
+		// 当被观察的元素的内容或属性发生变化时，调用 handleContainerHeight(true) 来调整 containerMain 的高度
+		handleContainerHeight(true);
+	});
+	// 检查 main 元素是否存在
+	if (main.value) {
+		// 通过 observer.observe() 方法开始观察 main 元素
+		observer.observe(main.value, {
+			// 监听子节点的添加或删除操作
+			childList: true,
+			// 监听子节点及后代节点的变化
+			subtree: true,
+			// 监听元素属性的变化，例如 class、style 等
+			attributes: true,
+		});
+	}
+};
 
 // 判断是否出现滚动条
 const getHasScrollbar = () => {
@@ -170,11 +231,6 @@ const refreshBalance = () => {
 	isRotating.value = true;
 };
 
-// 动画结束时，移除旋转效果
-function handleAnimationEnd() {
-	isRotating.value = false;
-}
-
 // 打开关闭弹窗
 const changeShopCart = () => {
 	if (ShopCatControlStore.getShopCatShow) {
@@ -207,6 +263,18 @@ const onOrderConfirm = () => {
 	isOrdered.value = false;
 	shopCartPubSub.initializeState();
 };
+
+// 动画结束后的处理函数
+const handleAnimationEnd = () => {
+	isRotating.value = false; // 动画结束后将 isShaking 重置为 false，以便下次可以重新触发动画
+};
+
+// 动画结束时，移除旋转效果
+const totalAnimationEnd = () => {
+	console.log("1231");
+
+	isShaking.value = false;
+};
 </script>
 
 <style scoped lang="scss">
@@ -232,6 +300,7 @@ const onOrderConfirm = () => {
 
 		.left {
 			display: flex;
+			align-items: center;
 			gap: 8px;
 
 			.label {
@@ -253,10 +322,21 @@ const onOrderConfirm = () => {
 				border-radius: 50%;
 			}
 
+			.shake {
+			}
+
 			.arrow {
 				width: 12px;
 				height: 8px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				transition: 0.3s ease;
+				transform: rotate(-180deg); /* 鼠标悬停时旋转 */
+			}
+			.up_arrow {
+				transform: rotate(0deg); /* 鼠标悬停时旋转 */
+				transform-origin: center; /* 设置旋转中心为元素的中心 */
 			}
 		}
 
@@ -290,17 +370,37 @@ const onOrderConfirm = () => {
 					height: 18px;
 				}
 			}
-			.close_icon {
-				width: 30px;
-				height: 30px;
-			}
+			// .close_icon {
+			// 	width: 30px;
+			// 	height: 30px;
+			// 	transition: transform 0.6s ease; /* 设置旋转过渡 */
+			// }
+			// .close_icon:hover {
+			// 	transform: rotate(-180deg); /* 鼠标悬停时旋转 */
+			// }
 		}
+	}
+
+	.fade-enter-active,
+	.fade-leave-active {
+		transition: height 0.2s cubic-bezier(0.65, 0, 0.35, 1); /* 过渡时间 */
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active 在 CSS 中使用 */ {
+		height: 0; /* 初始高度 */
+	}
+	.fade-enter-to {
+		height: auto; /* 结束时的高度 */
 	}
 
 	.container-main {
 		position: relative;
 		overflow-y: hidden;
-		padding: 10px 0px 15px;
+		transition: height 0.2s cubic-bezier(0.65, 0, 0.35, 1); /* 设置过渡效果 */
+		height: 0; /* 初始高度为 0 */
+
+		.main {
+			padding: 10px 0px 15px;
+		}
 
 		&::after {
 			position: absolute;

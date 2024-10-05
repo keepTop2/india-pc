@@ -13,7 +13,7 @@
 			<div v-else>
 				<lobbyGameCard v-for="(item, index) in lobbyGameList" :key="index" :gameList="item" :title="item.name" />
 			</div>
-			<redbagRainCountdown />
+			<redbagRainCountdown v-model="showCountdown" />
 		</div>
 	</div>
 </template>
@@ -27,7 +27,7 @@ import hotGameSkeleton from "./components/hotGameSkeleton.vue";
 import lobbyGameSkeleton from "./components/lobbyGameSkeleton.vue";
 import lobbyGameCard from "./components/lobbyGameCard.vue";
 import { HomeApi } from "/@/api/home";
-
+const showCountdown = ref(true);
 const isLoading = ref(false);
 const lobbyGameList: any = ref([]);
 const hotGameList = ref([]);

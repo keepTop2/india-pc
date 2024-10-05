@@ -1,25 +1,23 @@
 <template>
 	<div class="base-body">
 		<!-- 体育 主体内容区域  -->
-		<!-- <Banner /> -->
+		<Banner />
 		<div class="main-container">
 			<!-- 体育游戏列表 -->
 			<div class="left-container">
-				<div class="container">
-					<div class="header">
-						<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
-						<div class="line" v-if="route.meta.type === 'list'"></div>
-						<HeaderMenuNav :tabActive="tabActive"></HeaderMenuNav>
-					</div>
-					<div class="back-container">
-						<!-- 主体路由页面 -->
-						<router-view v-cloak />
-						<!-- 搜索触发的遮罩 -->
-						<div class="overlay" v-if="isShowMask"></div>
-					</div>
-					<!-- 购物车 -->
-					<SportsShopCart></SportsShopCart>
+				<div class="header">
+					<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
+					<div class="line" v-if="route.meta.type === 'list'"></div>
+					<HeaderMenuNav :tabActive="tabActive"></HeaderMenuNav>
 				</div>
+				<div class="back-container">
+					<!-- 主体路由页面 -->
+					<router-view v-cloak />
+					<!-- 搜索触发的遮罩 -->
+					<div class="overlay" v-if="isShowMask"></div>
+				</div>
+				<!-- 购物车 -->
+				<SportsShopCart v-if="popularLeague.visible"></SportsShopCart>
 			</div>
 			<!-- 右边侧边栏 -->
 			<div class="right-container" v-if="popularLeague.visible">
@@ -308,49 +306,49 @@ watch(
 <style lang="scss" scoped>
 .base-body {
 	width: 1308px;
-	height: 100%;
 	margin: 0 auto;
 	overflow-x: auto;
 }
 
 .main-container {
+	width: 100%;
+	height: calc(100vh - 66px);
 	display: flex;
-	height: calc(100%);
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
+	margin-top: 6px;
 	.left-container {
 		position: relative;
-		flex: 1;
 		width: 930px;
-		margin-right: 8px;
+		height: 100%;
 		overflow: hidden;
-		.container {
-			.header {
+
+		.header {
+			width: 100%;
+			box-sizing: border-box;
+			.line {
 				width: 100%;
-				box-sizing: border-box;
-
-				.line {
-					width: 100%;
-					height: 1px;
-					background: var(--Line_1);
-					box-shadow: 0px 1px 0px 0px #343d48;
-				}
+				height: 1px;
+				background: var(--Line_1);
+				box-shadow: 0px 1px 0px 0px #343d48;
 			}
+		}
 
-			.back-container {
-				background-color: var(--Bg);
-				position: relative;
+		.back-container {
+			position: relative;
+			width: 100%;
+			height: calc(100% - 119px);
+			background-color: var(--Bg);
 
-				.overlay {
-					position: absolute;
-					top: 0;
-					left: 0;
-					right: 0;
-					bottom: 0;
-					background-color: rgba(0, 0, 0, 0.5);
-					z-index: 1;
-				}
+			.overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: rgba(0, 0, 0, 0.5);
+				z-index: 1;
 			}
 		}
 	}
@@ -358,6 +356,7 @@ watch(
 	.right-container {
 		width: 370px;
 		height: 100%;
+		margin-left: 8px;
 		overflow-y: auto;
 	}
 	.right-container::-webkit-scrollbar {

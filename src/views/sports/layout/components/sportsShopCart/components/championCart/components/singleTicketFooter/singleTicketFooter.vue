@@ -5,7 +5,7 @@
 			<!-- 删除按钮 -->
 			<DeleteButton v-if="ChampionShopCartStore.championBetData.length > 1" />
 			<!-- 冠军投注按钮 -->
-			<ChampionBetButton v-if="ChampionShopCartStore.championBetData.length == 1 && ChampionShopCartStore.championBetData[0].type === '1'" @onClick="onChampionBet" />
+			<ChampionBetButton v-if="ChampionShopCartStore.championBetData.length >= 1 && ChampionShopCartStore.championBetData[0].type === '1'" @onClick="onChampionBet" />
 			<!-- 赛事投注按钮 -->
 			<EventBetButton v-if="ChampionShopCartStore.championBetData.length == 1 && ChampionShopCartStore.championBetData[0].type === '0'" @onClick="onEventBet" />
 		</div>

@@ -97,7 +97,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .card-container {
-	padding-bottom: 5px;
 	overflow: hidden;
 	.card-header {
 		display: flex;

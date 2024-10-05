@@ -2,7 +2,6 @@
 	<SelectCard :teamData="listData" />
 	<!-- 联赛数据统计卡片 -->
 	<div class="box-content">
-		<!-- <template v-if="listData.length"> -->
 		<!--
 					虚拟滚动列表组件
 					Props 说明：
@@ -12,15 +11,15 @@
 					- minDivClass：收起时的标题样式类名。
 					- childrenDivClass：展开时的子集内容样式类名。
 				-->
-		<VirtualScrollVirtualList
-			ref="virtualScrollRef"
-			bottomClass="card-container"
-			minDivClass="card-header"
-			childrenDivClass="league-content"
-			:list-data="matchedLeague.length > 0 ? matchedLeague : listData"
-		>
-			<template #default="{ item, index, isExpand }">
-				<!--
+		<!--		<VirtualScrollVirtualList
+				ref="virtualScrollRef"
+				bottomClass="card-container"
+				minDivClass="card-header"
+				childrenDivClass="league-content"
+				:list-data="matchedLeague.length > 0 ? matchedLeague : listData"
+			>
+				<template #default="{ item, index, isExpand }">
+					<!~~
 						滚球卡片组件
 						Props 说明：
 						- teamData：传递当前队伍的数据。
@@ -28,15 +27,19 @@
 						- dataIndex：当前队伍在列表中的索引。
 						- oddsChange：处理赔率变化时的事件。
 						- toggleDisplay：处理卡片的展开/收起事件。
-					-->
-				<FootballCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="handleOddsChange" @toggleDisplay="handleToggleDisplay" />
+					~~>
+					<FootballCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="handleOddsChange" @toggleDisplay="handleToggleDisplay" />
+				</template>
+			</VirtualScrollVirtualList>
+-->
+
+		<DynamicScroller :items="listData" :min-item-size="34" class="scroller" key-field="leagueId" :prerender="10">
+			<template v-slot="{ item, index, active }">
+				<DynamicScrollerItem :item="item" :active="active" :data-index="index" :data-active="active">
+					<FootballCard :teamData="item" :dataIndex="index" @oddsChange="handleOddsChange" @toggleDisplay="handleToggleDisplay" />
+				</DynamicScrollerItem>
 			</template>
-		</VirtualScrollVirtualList>
-		<!-- </template> -->
-		<!-- 无数据时显示的占位内容 -->
-		<!-- <div v-else class="noData">
-			<NoneData />
-		</div> -->
+		</DynamicScroller>
 	</div>
 </template>
 
@@ -99,11 +102,12 @@ watchEffect(() => {
 <style lang="scss" scoped>
 .box-content {
 	width: 100%;
-	height: calc(100vh - 200px);
+	height: calc(100vh - 227px);
+	.scroller {
+		height: 100%;
+	}
 }
-.card-container {
-	margin-bottom: 5px;
-}
+
 .noData {
 	height: 100%;
 }

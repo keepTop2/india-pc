@@ -4,8 +4,6 @@ interface ShopCatControlType {
 	shopCatClose: boolean;
 	/** 购物车关闭开启状态 */
 	shopCatShow: boolean;
-	/** 购物车显示次数 */
-	shopCatShowCount: number;
 	/** 购物车类型  league｜champion */
 	shopCartType: string;
 }
@@ -13,13 +11,9 @@ interface ShopCatControlType {
 export const useShopCatControlStore = defineStore("ShopCatControl", {
 	state: (): ShopCatControlType => {
 		return {
-			/**购物车全关（不保留激活区域） */
-			shopCatClose: false,
+			shopCatClose: false, // 购物车全关（不保留激活区域）
 			shopCatShow: false, // 购物车关闭开启状态
-			/** 购物车显示次数 */
-			shopCatShowCount: 0,
-			/** 购物车类型  league｜champion */
-			shopCartType: "league",
+			shopCartType: "league", // 购物车类型
 		};
 	},
 	getters: {
@@ -30,13 +24,7 @@ export const useShopCatControlStore = defineStore("ShopCatControl", {
 		getShopCatClose(): any {
 			return this.shopCatClose;
 		},
-		/**
-		 * @description: 获取购物车显示次数
-		 * @return {*}
-		 */
-		getShopCatShowCount(): any {
-			return this.shopCatShowCount;
-		},
+
 		/**
 		 * @description: 获取购物车类型
 		 * @return {*}
@@ -44,6 +32,7 @@ export const useShopCatControlStore = defineStore("ShopCatControl", {
 		getShopCartType(): any {
 			return this.shopCartType;
 		},
+
 		/**
 		 * @description: 获取购物车赛事列表显示状态
 		 * @return {*}
@@ -61,13 +50,7 @@ export const useShopCatControlStore = defineStore("ShopCatControl", {
 		setShopCatClose(data: boolean) {
 			this.shopCatClose = data;
 		},
-		/**
-		 * @description: 设置显示次数（每次调用加1）
-		 * @return {*}
-		 */
-		setShopCatShowCount() {
-			this.shopCatShowCount = this.shopCatShowCount + 1;
-		},
+
 		/**
 		 * @description: 更改购物车类型；
 		 * @param {string} data
@@ -76,15 +59,13 @@ export const useShopCatControlStore = defineStore("ShopCatControl", {
 		setShopCartType(data: string) {
 			this.shopCartType = data;
 		},
+
 		/**
 		 * @description: 设置购物车显示
 		 * @param {boolean} data
 		 * @return {*}
 		 */
 		setShopCatShow(data: boolean) {
-			if (data) {
-				this.shopCatShowCount += 1;
-			}
 			this.shopCatShow = data;
 		},
 	},

@@ -1,74 +1,72 @@
 <template>
 	<div class="content">
-		<div :class="['content', 'bg_BG1']">
-			<div class="tabBox bg_BG1" :class="{ 'fixed-tab': isFixed }">
-				<ul class="tabs">
-					<li @click="changeTab('all')" key="all" :class="{ selected: activeTab == 'all' }">{{ $t('sports["所有投注"]') }}</li>
-					<!-- <li v-for="(i, index) in markets" :key="i.betTypeName" @click="changeTab(i.betTypeName)" :class="{ selected: activeTab == i.betTypeName }">{{ i.betTypeName }}</li> -->
-				</ul>
-			</div>
-			<div class="selections_list" v-if="markets.length">
-				<Collapse v-model="activeSelection" :accordion="false">
-					<CollapseItem class="selection_item" v-for="i in markets" v-show="activeTab == 'all' || activeTab == i.betTypeName" :key="i.betTypeName" :name="i.betTypeName">
-						<template #title>
-							<span class="item-red"></span>
-							<div class="tournament-header">
-								<span class="header-icon"></span>
-								<div class="tournament-name">{{ i.betTypeName }}</div>
-								<svg-icon
-									:class="{ sport_arrow: activeSelection.includes(i.betTypeName), 'rotate-right': !activeSelection.includes(i.betTypeName) }"
-									name="arrow_down"
-									width="12px"
-									height="8px"
-								/>
-							</div>
-						</template>
-						<template #default>
-							<ul class="tournament-content">
-								<li
-									v-for="market in i.markets"
-									:key="market.marketId"
-									:class="{
-										threeCol: filterSelections(market.selections).length % 3 === 0,
-										twoCol: filterSelections(market.selections).length % 3 !== 0,
-									}"
+		<div class="header">
+			<ul class="tabs">
+				<li @click="changeTab('all')" key="all" :class="{ selected: activeTab == 'all' }">{{ $t('sports["所有投注"]') }}</li>
+				<!-- <li v-for="(i, index) in markets" :key="i.betTypeName" @click="changeTab(i.betTypeName)" :class="{ selected: activeTab == i.betTypeName }">{{ i.betTypeName }}</li> -->
+			</ul>
+		</div>
+		<div class="selections_list" v-if="markets.length">
+			<Collapse v-model="activeSelection" :accordion="false">
+				<CollapseItem class="selection_item" v-for="i in markets" v-show="activeTab == 'all' || activeTab == i.betTypeName" :key="i.betTypeName" :name="i.betTypeName">
+					<template #title>
+						<span class="item-red"></span>
+						<div class="tournament-header">
+							<span class="header-icon"></span>
+							<div class="tournament-name">{{ i.betTypeName }}</div>
+							<svg-icon
+								:class="{ sport_arrow: activeSelection.includes(i.betTypeName), 'rotate-right': !activeSelection.includes(i.betTypeName) }"
+								name="arrow_down"
+								width="12px"
+								height="8px"
+							/>
+						</div>
+					</template>
+					<template #default>
+						<ul class="tournament-content">
+							<li
+								v-for="market in i.markets"
+								:key="market.marketId"
+								:class="{
+									threeCol: filterSelections(market.selections).length % 3 === 0,
+									twoCol: filterSelections(market.selections).length % 3 !== 0,
+								}"
+							>
+								<div
+									class="market-item"
+									v-for="selection in filterSelections(market.selections)"
+									@click="market.marketStatus === 'running' && onSetSportsEventData(market, selection)"
+									:class="{ isBright: isBright(market, selection) }"
+									:key="market.marketId + selection.key"
 								>
-									<div
-										class="market-item"
-										v-for="selection in filterSelections(market.selections)"
-										@click="market.marketStatus === 'running' && onSetSportsEventData(market, selection)"
-										:class="{ isBright: isBright(market, selection) }"
-										:key="market.marketId + selection.key"
-									>
-										<span class="label">
-											<SelectionName class="label_one" :class="[selection.key != 'x' ? 'narrow' : 'wide']" :name="selection?.keyName" :betType="market.betType" />
-											<span class="label_two" v-show="selection.key != 'x'">{{
-												SportsCommon.formatPoint({
-													betType: market.betType,
-													point: selection?.point,
-													key: selection?.key,
-												})
-											}}</span>
-										</span>
-										<template v-if="market.marketStatus === 'running'">
-											<div class="price" :class="changeClass(selection)">
-												<span>{{ selection.oddsPrice.decimalPrice }}</span>
-											</div>
-											<RiseOrFall v-if="selection.oddsChange" :status="selection.oddsChange == 'oddsUp' ? 1 : 2" @animationEnd="animationEnd(market.marketId, selection)" />
-										</template>
-										<svg-icon v-else name="sports-lock" class="icon-lock" />
-									</div>
-								</li>
-							</ul>
-						</template>
-					</CollapseItem>
-				</Collapse>
-			</div>
-			<div v-if="!markets.length" class="noData color_T3">
-				<svg-icon name="sports-no_markets" />
-				<div>{{ $t('sports["盘口已关闭"]') }}</div>
-				<div>{{ $t('sports["当前无法进行投注"]') }}</div>
-			</div>
+									<span class="label">
+										<SelectionName class="label_one" :class="[selection.key != 'x' ? 'narrow' : 'wide']" :name="selection?.keyName" :betType="market.betType" />
+										<span class="label_two" v-show="selection.key != 'x'">{{
+											SportsCommon.formatPoint({
+												betType: market.betType,
+												point: selection?.point,
+												key: selection?.key,
+											})
+										}}</span>
+									</span>
+									<template v-if="market.marketStatus === 'running'">
+										<div class="price" :class="changeClass(selection)">
+											<span>{{ selection.oddsPrice.decimalPrice }}</span>
+										</div>
+										<RiseOrFall v-if="selection.oddsChange" :status="selection.oddsChange == 'oddsUp' ? 1 : 2" @animationEnd="animationEnd(market.marketId, selection)" />
+									</template>
+									<svg-icon v-else name="sports-lock" class="icon-lock" />
+								</div>
+							</li>
+						</ul>
+					</template>
+				</CollapseItem>
+			</Collapse>
+		</div>
+		<div v-if="!markets.length" class="noData color_T3">
+			<svg-icon name="sports-no_markets" />
+			<div>{{ $t('sports["盘口已关闭"]') }}</div>
+			<div>{{ $t('sports["当前无法进行投注"]') }}</div>
 		</div>
 	</div>
 </template>
@@ -303,9 +301,12 @@ watch(
 }
 
 .content {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 	border-radius: 16px 16px 0 0;
 
-	.tabBox {
+	.header {
 		width: 100%;
 		height: 40px;
 		background-color: var(--Bg1);
@@ -340,8 +341,11 @@ watch(
 			}
 		}
 	}
+
 	// 盘口列表
 	.selections_list {
+		flex: 1;
+		overflow-y: auto;
 		margin-top: 8px;
 		// 盘口子项
 		.selection_item {
