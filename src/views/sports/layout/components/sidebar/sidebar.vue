@@ -320,7 +320,7 @@ const showDetail = () => {
 
 .sidebar {
 	width: 100%;
-	height: calc(100vh - 66px);
+	height: calc(100vh - 70px);
 	display: flex;
 	flex-direction: column;
 	border-radius: 8px;
