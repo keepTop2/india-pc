@@ -1,5 +1,12 @@
 <template>
-	<component v-if="leagues && selectedComponent" :is="selectedComponent" :listData="leagues" :matchedLeague="matchedLeague" />
+	<Skeleton>
+		<template #skeleton>
+			<SkeletonList />
+		</template>
+		<template #default>
+			<component v-if="leagues && selectedComponent" :is="selectedComponent" :listData="leagues" :matchedLeague="matchedLeague" />
+		</template>
+	</Skeleton>
 </template>
 
 <script setup lang="ts">
@@ -7,6 +14,7 @@ import { ref, computed, onMounted, watch, defineAsyncComponent, onBeforeUnmount 
 import { useRoute } from "vue-router";
 import pubsub from "/@/pubSub/pubSub";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import SkeletonList from "/@/views/sports/layout/components/SkeletonList/SkeletonList.vue";
 
 const route = useRoute();
 
@@ -25,7 +33,13 @@ const sportsMap: Record<number, ReturnType<typeof defineAsyncComponent>> = {
 };
 
 // 获取数据中心处理好的列表数据
-const leagues = computed(() => viewSportPubSubEventData.getSportData());
+const leagues = computed(() => {
+	const data = viewSportPubSubEventData.getSportData();
+	if (data.length > 0) {
+		pubsub.publish("SkeletonLoading", false);
+	}
+	return data;
+});
 
 // 用于存储匹配的联赛数据
 const matchedLeague = ref<any[]>([]);

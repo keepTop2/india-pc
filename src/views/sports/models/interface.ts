@@ -29,6 +29,7 @@ export interface SportViewData {
 	 * @description 各个子路由视图数据
 	 */
 	childrenViewData: [];
+	promotionsViewData?: [];
 }
 
 /**

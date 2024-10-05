@@ -123,7 +123,7 @@ export function useSportEvents() {
 	 * @param {string | undefined} type - 体育类型
 	 */
 	const openSportPush = async (type?: string | undefined, tabActive?: string) => {
-		console.log("type", type,'tabActive====',tabActive);
+		console.log("type", type, "tabActive====", tabActive);
 
 		sportsBetEvent.clearHotLeagueList();
 		pubSub.publish("clearHotLeagueList", "on");
@@ -159,7 +159,10 @@ export function useSportEvents() {
 			token: SportsInfoStore.getSportsToken,
 			language: SportsCommonFn.getSportLanguage(),
 		};
-		const action = sportTabPushActions[tabActive.value as keyof typeof sportTabPushActions]?.openSport || sportTabPushActions[tabKey as keyof typeof sportTabPushActions]?.openSport || sportTabPushActions.rollingBall.openSport;
+		const action =
+			sportTabPushActions[tabActive.value as keyof typeof sportTabPushActions]?.openSport ||
+			sportTabPushActions[tabKey as keyof typeof sportTabPushActions]?.openSport ||
+			sportTabPushActions.rollingBall.openSport;
 		sendWorkerCommand(action, params);
 	};
 

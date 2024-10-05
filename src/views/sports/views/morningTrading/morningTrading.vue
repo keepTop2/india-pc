@@ -1,5 +1,12 @@
 <template>
-	<component v-if="leagues && selectedComponent" :is="selectedComponent" :listData="leagues" :matchedLeague="matchedLeague" />
+	<Skeleton>
+		<template #skeleton>
+			<SkeletonList />
+		</template>
+		<template #default>
+			<component v-if="leagues && selectedComponent" :is="selectedComponent" :listData="leagues" :matchedLeague="matchedLeague" />
+		</template>
+	</Skeleton>
 </template>
 
 <script setup lang="ts">
@@ -7,7 +14,7 @@ import { ref, computed, onMounted, watch, defineAsyncComponent, onBeforeUnmount 
 import { useRoute } from "vue-router";
 import pubsub from "/@/pubSub/pubSub";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-
+import SkeletonList from "/@/views/sports/layout/components/SkeletonList/SkeletonList.vue";
 const route = useRoute();
 
 // 懒加载球类列表组件

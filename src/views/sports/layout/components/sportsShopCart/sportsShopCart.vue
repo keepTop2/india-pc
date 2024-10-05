@@ -1,11 +1,15 @@
 <template>
-	<div class="sportsShopCart">
-		<template v-if="!ShopCatControlStore.getShopCatClose">
-			<!-- 赛事购物车 -->
-			<ShopCart v-if="shopCartTyp == `league`"></ShopCart>
-			<!-- 冠军购物车 -->
-			<ChampionCart v-if="shopCartTyp == `champion`"></ChampionCart>
-		</template>
+	<div class="sports-container">
+		<div class="content">
+			<div class="sportsShopCart">
+				<template v-if="!ShopCatControlStore.getShopCatClose">
+					<!-- 赛事购物车 -->
+					<ShopCart v-if="shopCartTyp == `league`"></ShopCart>
+					<!-- 冠军购物车 -->
+					<ChampionCart v-if="shopCartTyp == `champion`"></ChampionCart>
+				</template>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -22,10 +26,20 @@ const shopCartTyp = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.sportsShopCart {
-	position: absolute;
-	bottom: 0px;
-	left: 50%;
-	transform: translate(-50%, 0px);
+.sports-container {
+	position: fixed;
+	bottom: 0;
+	z-index: 2;
+
+	.content {
+		position: relative;
+		.sportsShopCart {
+			position: absolute;
+			left: 205px;
+			bottom: 0px;
+			display: flex;
+			justify-content: center;
+		}
+	}
 }
 </style>

@@ -31,7 +31,7 @@
 				</el-table-column>
 
 				<!-- 选项 -->
-				<el-table-column :label="$t(`sports.betRecord['选项']`)" width="292" align="center" :resizable="false">
+				<el-table-column :label="$t(`sports.betRecord['选项']`)" align="center" :resizable="false">
 					<template #default="{ row, column }">
 						<div v-if="!row.parlayInfo" class="options">
 							<div class="events-name">{{ row.leagueName }}</div>
@@ -223,7 +223,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 
 .container {
 	width: 100%;
-	height: calc(100vh - 250px);
+	max-height: calc(100vh - 250px);
 
 	.no-data {
 		width: 100%;
@@ -353,16 +353,22 @@ function formatDateTime(dateTimeStr: Date | string): string {
 
 :deep(.el-table) {
 	height: 100%;
+	max-height: inherit;
 	background-color: transparent;
 	--el-table-row-hover-bg-color: var(--Line_2);
 	border-radius: 8px;
 	border: 1px solid var(--Line_2);
+
+	.el-table__inner-wrapper {
+		max-height: inherit;
+	}
 
 	th.is-leaf {
 		border-bottom: 1px solid var(--Line_2) !important;
 	}
 
 	.el-table__body-wrapper {
+		overflow: auto;
 		border-right: 0;
 		border-bottom: 0;
 	}

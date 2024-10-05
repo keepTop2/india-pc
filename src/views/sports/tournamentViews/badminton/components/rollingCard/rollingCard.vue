@@ -1,22 +1,31 @@
 <template>
 	<div class="card-container">
-		<!--  头部 -->
-		<div class="card—header" :class="[!displayContent ? 'toggle' : '']" @click="toggleDisplay">
+		<!-- 头部 -->
+		<div class="card-header" :class="{ toggle: !displayContent }" @click="toggleDisplay">
 			<!-- 联赛信息 -->
 			<div class="league-info">
+				<!-- 联赛图标 -->
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
-				<div class="league_name" :style="displayContent ? `max-width:284px` : ''">{{ teamData.leagueName }}</div>
+				<!-- 联赛名称，最大宽度根据展开状态动态调整 -->
+				<div class="league_name" :style="{ maxWidth: displayContent ? '284px' : '' }">{{ teamData.leagueName }}</div>
 			</div>
-			<!-- 盘口表头 -->
+			<!-- 盘口表头，只有在展开状态下显示 -->
 			<div class="market-name-info" v-if="displayContent">
 				<div class="market-name-list">
-					<div class="label" v-for="(betType, index) in SportsCommonFn.betTypeMap[9]" :key="betType">{{ betType }}</div>
+					<!-- 渲染盘口类型列表 -->
+					<div class="label" v-for="(betType, index) in SportsCommonFn.betTypeMap[2]" :key="betType">
+						{{ betType }}
+					</div>
 				</div>
 			</div>
+			<!-- 头部图标，根据展开状态旋转 -->
 			<div class="header-icon">
-				<span class="icon" :class="{ rotate: displayContent }"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
+				<span class="icon" :class="{ rotate: displayContent }">
+					<svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon>
+				</span>
 			</div>
 		</div>
+		<!-- 展开状态下显示事件项 -->
 		<template v-if="displayContent">
 			<EventItem v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
 		</template>

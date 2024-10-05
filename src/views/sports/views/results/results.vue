@@ -3,7 +3,7 @@
 		<!--查询栏-->
 		<query v-model:modelValue="queryForm" :ballOptions="ballOptions" :loading="loading" @search="getEventResultsData" @updateModel="handleUpdateModel" />
 		<div class="result_content">
-			<el-table :data="paginatedData" style="width: 100%" :max-height="tableMaxHeight">
+			<el-table :data="paginatedData" :highlight-current-row="false">
 				<el-table-column prop="date" :label="$t(`matchResult['日期']`)" width="200" />
 				<el-table-column prop="league" :label="$t(`matchResult['联赛']`)">
 					<template #default="{ row }">
@@ -169,14 +169,6 @@ const initRequest = async () => {
 };
 
 /**
- * @description 计算表格最大高度
- */
-const tableMaxHeight = computed(() => {
-	const windowHeight = window.innerHeight;
-	return windowHeight - 60 - 40 - 48 - 50 - 80 - 60;
-});
-
-/**
  * @description 获取赛果
  */
 const getEventResultsData = async () => {
@@ -216,6 +208,10 @@ const sizeChange = (pageSize: number) => {
 
 <style scoped lang="scss">
 .container {
+	.result_content {
+		width: 100%;
+		max-height: calc(100vh - 240px);
+	}
 	.pagination {
 		margin-top: 15px;
 	}
@@ -249,7 +245,9 @@ const sizeChange = (pageSize: number) => {
 
 	:deep() {
 		.el-table {
-			background: none;
+			height: 100%;
+			max-height: inherit;
+			background-color: transparent;
 			.col-content-box,
 			.col-title-box {
 				display: flex;
@@ -265,9 +263,15 @@ const sizeChange = (pageSize: number) => {
 			}
 
 			.el-table__inner-wrapper {
+				max-height: inherit;
 				&::before {
 					display: none;
 				}
+			}
+			.el-table__body-wrapper {
+				overflow: auto;
+				border-right: 0;
+				border-bottom: 0;
 			}
 		}
 		.el-table__header {
