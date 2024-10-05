@@ -128,6 +128,9 @@ const oddsChange = (item: any) => {
 }
 
 .hot-event-container {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 	margin-top: 8px;
 	background-color: var(--Bg4);
 
@@ -157,6 +160,8 @@ const oddsChange = (item: any) => {
 		}
 	}
 	.event-list {
+		flex: 1;
+		overflow: auto; /* 下容器内容超出时显示滚动条 */
 		padding: 0px 4px 4px 4px;
 		.event-card {
 			// padding: 12px 14px;

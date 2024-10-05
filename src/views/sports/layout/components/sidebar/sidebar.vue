@@ -320,12 +320,15 @@ const showDetail = () => {
 
 .sidebar {
 	width: 100%;
-	height: 100vh;
+	height: calc(100vh - 66px);
+	display: flex;
+	flex-direction: column;
 	border-radius: 8px;
+	overflow: hidden;
 
 	.markets-list {
-		height: calc(100% - 300px);
-		overflow-y: scroll;
+		flex: 1;
+		overflow: hidden;
 	}
 
 	.live {
