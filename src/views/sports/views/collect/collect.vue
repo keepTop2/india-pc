@@ -182,8 +182,7 @@ const selectEvent = () => {
 
 <style scoped lang="scss">
 .box-content {
-	// height: 840px;
-	height: calc(100vh - 200px);
+	height: calc(100vh - 227px);
 
 	overflow-y: auto;
 	.box_navigation {

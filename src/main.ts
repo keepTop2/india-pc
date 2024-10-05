@@ -10,6 +10,8 @@ import "/@/styles/app.css";
 import "/@/styles/index.scss";
 import VCalendar from "v-calendar";
 import "v-calendar/style.css";
+import VueVirtualScroller from "vue-virtual-scroller";
+import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 window.__VUE_PROD_DEVTOOLS__ = false;
 window.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
 const app = createApp(App);
@@ -18,7 +20,7 @@ const app = createApp(App);
 Object.keys(directives).forEach((key) => {
 	app.directive(key, (directives as { [key: string]: Directive })[key]);
 });
-
+app.use(VueVirtualScroller);
 app.use(VCalendar, {});
 app.use(store);
 
