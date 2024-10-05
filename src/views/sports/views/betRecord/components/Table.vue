@@ -223,7 +223,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 
 .container {
 	width: 100%;
-	height: calc(100vh - 250px);
+	max-height: calc(100vh - 250px);
 
 	.no-data {
 		width: 100%;
@@ -368,6 +368,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 	}
 
 	.el-table__body-wrapper {
+		overflow: auto;
 		border-right: 0;
 		border-bottom: 0;
 	}

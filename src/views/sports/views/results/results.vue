@@ -268,6 +268,11 @@ const sizeChange = (pageSize: number) => {
 					display: none;
 				}
 			}
+			.el-table__body-wrapper {
+				overflow: auto;
+				border-right: 0;
+				border-bottom: 0;
+			}
 		}
 		.el-table__header {
 			border-radius: 8px;
