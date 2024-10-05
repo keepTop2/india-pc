@@ -2,8 +2,7 @@
 	<SelectCard :teamData="listData" />
 	<!-- 联赛数据统计卡片 -->
 	<div class="box-content">
-		<template v-if="listData.length">
-			<!--
+		<!--
 				滚球虚拟列表
 				Props 说明：
 				- ref="virtualScrollRef"：用于引用虚拟滚动组件，以便操作内部方法。
@@ -11,15 +10,15 @@
 				- minDivClass：收起时的标题样式类名。
 				- childrenDivClass：展开时的子集内容样式类名。
 			-->
-			<VirtualScrollVirtualList
-				ref="virtualScrollRef"
-				bottomClass="card-container"
-				minDivClass="card-header"
-				childrenDivClass="league-content"
-				:list-data="matchedLeague.length > 0 ? matchedLeague : listData"
-			>
-				<template #default="{ item, index, isExpand }">
-					<!--
+		<VirtualScrollVirtualList
+			ref="virtualScrollRef"
+			bottomClass="card-container"
+			minDivClass="card-header"
+			childrenDivClass="league-content"
+			:list-data="matchedLeague.length > 0 ? matchedLeague : listData"
+		>
+			<template #default="{ item, index, isExpand }">
+				<!--
 						滚球卡片组件
 						Props 说明：
 						- teamData：传递当前队伍的数据。
@@ -28,14 +27,9 @@
 						- oddsChange：处理赔率变化时的事件。
 						- toggleDisplay：处理卡片的展开/收起事件。
 					-->
-					<RollingCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="handleOddsChange" @toggleDisplay="handleToggleDisplay" />
-				</template>
-			</VirtualScrollVirtualList>
-		</template>
-		<!-- 无数据时显示的占位内容 -->
-		<div v-else class="noData">
-			<NoneData />
-		</div>
+				<RollingCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="handleOddsChange" @toggleDisplay="handleToggleDisplay" />
+			</template>
+		</VirtualScrollVirtualList>
 	</div>
 </template>
 
