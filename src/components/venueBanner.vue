@@ -54,7 +54,6 @@ const activeIndex = ref(0);
 const announcementList = [banner1, banner2, banner3, banner1, banner2, banner3];
 const onSwiper = (swiper: any) => {
 	swiperRef.value = swiper;
-	console.log(swiperRef.value, 8888);
 };
 const goToNextSlide = () => {
 	swiperRef.value?.slideNext();

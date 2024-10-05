@@ -43,7 +43,7 @@ const routes = [
 				meta: {
 					title: "activity",
 				},
-				children: [...activityRoutes],
+				component: () => import("/@/views/activity/index.vue"),
 			},
 			{
 				path: "/game",
@@ -73,14 +73,7 @@ const routes = [
 					},
 				],
 			},
-			{
-				path: "/sports",
-				name: "sports",
-				meta: {
-					title: "sports",
-				},
-				children: [...sportsRoutes],
-			},
+			...sportsRoutes,
 			// 用户相关路由页面
 
 			{

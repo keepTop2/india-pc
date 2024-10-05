@@ -2,7 +2,7 @@
 	<div class="activityWrapper">
 		<div class="activityCenter">
 			<div class="activityHeader">
-				{{ activityData.activityNameI18nCode || "幸运转盘" }}
+				{{ activityData?.activityNameI18nCode || "幸运转盘" }}
 			</div>
 			<div class="activityMain">
 				<div class="spinContainer">
@@ -11,7 +11,13 @@
 							{{ item.name }}
 						</div>
 					</div>
-					<Spin @start-spinning-callback="spinStart" @end-spinning-callback="spinEnd" :reward="reward" :spinList="spinList" ref="SpinRef" />
+					<Spin
+						@start-spinning-callback="spinStart"
+						@end-spinning-callback="spinEnd"
+						:reward="reward"
+						:spinList="currentTab == '1' ? activityData?.bronze : currentTab == '2' ? activityData?.silver : activityData?.gold"
+						ref="SpinRef"
+					/>
 				</div>
 				<div class="p_20 remaining_times_bg">剩余抽奖次数： 1</div>
 				<div class="flex_space-between">
@@ -43,14 +49,6 @@
 								1、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
 								动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
 							</div>
-							<div>
-								2、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-								动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-							</div>
-							<div>
-								3、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-								动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-							</div>
 						</div>
 					</div>
 					<div class="activityContentFooter" />
@@ -70,49 +68,6 @@
 								<span>奖品名称</span>
 								<span>奖品价值</span>
 								<span>中奖时间</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
 							</div>
 							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
 								<span>{{ item.rewardRankText }}</span>
@@ -172,7 +127,7 @@ import { ref, onMounted } from "vue";
 import Spin from "./spin.vue";
 import { mockDoGetReward, mockGetSpinList } from "./api";
 const activityStore = useActivityStore();
-const activityData: any = computed(() => activityStore.getCurrentActivityData);
+const activityData: any = ref({});
 const showRecord = ref(false);
 const showbetResult = ref(false);
 const showLosserbetResult = ref(false);
@@ -242,8 +197,9 @@ const selectTab = (tabKey: string) => {
  * @description 抽奖开始
  */
 const spinStart = () => {
-	mockDoGetReward().then((res: any) => {
+	activityApi.getSpinprizeResult().then((res) => {
 		reward.value = res.data;
+		SpinRef.value?.endSpinning();
 	});
 };
 
@@ -261,8 +217,13 @@ const handleStartSpin = () => {
 };
 
 const getRecordList = () => {
-	console.log(9999);
+	activityApi.getSpindetail().then((res) => {
+		activityData.value = res.data;
+	});
 };
+onMounted(() => {
+	getRecordList();
+});
 </script>
 <style scoped lang="scss">
 .activityWrapper {
