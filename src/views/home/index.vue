@@ -57,7 +57,7 @@ const queryLobbyTopGame = async () => {
 onMounted(async () => {
 	isLoading.value = true;
 	const startTime = Date.now();
-	await Promise.all([queryGameInfoDetail(), queryLobbyTopGame()]);
+	await queryGameInfoDetail(), queryLobbyTopGame();
 	// 最少500毫秒loading
 	const elapsedTime = Date.now() - startTime;
 	const delay = Math.max(0, 500 - elapsedTime);
