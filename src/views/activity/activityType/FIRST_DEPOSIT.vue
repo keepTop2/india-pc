@@ -100,7 +100,7 @@ import { useRouter } from "vue-router";
 import { useActivityStore } from "/@/stores/modules/activity";
 import { computed } from "vue";
 import Common from "/@/utils/common";
-import CommonDialog from "../components/CommonDialog.vue";
+import CommonDialog from "../components/activityDialog.vue";
 const activityStore = useActivityStore();
 const router = useRouter();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);

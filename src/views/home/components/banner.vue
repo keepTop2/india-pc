@@ -1,6 +1,6 @@
 <template>
 	<div class="banner">
-		<img src="./image/image.png" alt="" />
+		<img src="./image/image.webp" alt="" style="width: 100%" />
 		<div class="swiper-box">
 			<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
 				<SwiperSlide v-for="(item, index) in announcementList" :key="index">
