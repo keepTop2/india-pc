@@ -45,7 +45,7 @@ import Skeleton from "/@/components/Skeleton/Skeleton.vue";
 import ChampionSkeletonList from "./components/ChampionSkeletonList/ChampionSkeletonList.vue";
 import pubsub from "/@/pubSub/pubSub";
 
-// Store, hooks, and route
+/*** @description 初始化Store、hooks和路由 */
 const route = useRoute();
 const sportsBetEvent = useSportsBetEventStore();
 const SidebarStore = useSidebarStore();
@@ -53,86 +53,80 @@ const SportLeagueSearchStore = useSportLeagueSearchStore();
 const { clearSportsOddsChange } = useSportPubSubEvents();
 const { getSidebarEventSSEPush, getSidebarMarketSSEPush } = useToolsHooks();
 
-// Reference for Virtual Scroll
+/*** @description 虚拟滚动列表引用 */
 const VirtualScrollVirtualListRef = ref();
 
-// Reactive State
+/*** @description 响应式状态 */
 const sportsActive = ref("rollingBall");
 const state = reactive({
-	targetEvents: [] as any, // 保存目标事件数据
-	targetEventList: [], // 筛选后的展示数据
+	targetEvents: [] as any[], // 保存目标事件数据
+	targetEventList: [] as any[], // 筛选后的展示数据
 });
 
-// 生命周期钩子 - 组件挂载前
+/*** @description 组件挂载前的生命周期钩子 */
 onBeforeMount(() => {
+	initializeData();
+	setupWatchers();
+});
+
+/*** @description 初始化数据 */
+const initializeData = () => {
 	state.targetEvents = viewSportPubSubEventData.getSportData();
 	state.targetEventList = getFilteredList();
 	setInitialSportsActive();
+};
 
-	// 使用 watchEffect 来监听响应式的数据变化
+/*** @description 设置观察者 */
+const setupWatchers = () => {
 	watchEffect(() => {
 		state.targetEvents = viewSportPubSubEventData.getSportData();
 		state.targetEventList = getFilteredList();
 		setInitialSportsActive();
 	});
 
-	// 添加以下代码来处理骨架屏的显示和隐藏
 	watchEffect(() => {
 		if (state.targetEvents.length > 0) {
 			pubsub.publish("SkeletonLoading", false);
 		}
 	});
-});
 
-// 监听热门赛事的变化
-watch(
-	() => viewSportPubSubEventData.sidebarData.promotionsViewData.length,
-	(newValue, oldValue) => {
-		if (newValue > 0 && !oldValue) {
-			const eventInfo = viewSportPubSubEventData.sidebarData.promotionsViewData[0];
-			SidebarStore.setEventsInfo(eventInfo);
-			getSidebarEventSSEPush();
-			getSidebarMarketSSEPush();
+	watch(
+		() => viewSportPubSubEventData.sidebarData?.promotionsViewData?.length,
+		(newValue, oldValue) => {
+			if (newValue != null && newValue > 0 && !oldValue) {
+				const eventInfo = viewSportPubSubEventData.sidebarData?.promotionsViewData?.[0];
+				SidebarStore.setEventsInfo(eventInfo);
+				getSidebarEventSSEPush();
+				getSidebarMarketSSEPush();
+			}
 		}
-	}
-);
+	);
+};
 
-/**
- * @description 获取筛选后的联赛列表数据
- * @returns {Array} 筛选后的联赛列表
- */
+/*** @description 获取筛选后的联赛列表数据 */
 const getFilteredList = () => {
 	let leagues = cloneDeep(state.targetEvents);
 	const leagueSelect = SportLeagueSearchStore.getLeagueSelect;
 
 	if (leagues && leagueSelect.length > 0) {
-		leagues = leagues.filter((item) => leagueSelect.includes(item.leagueId));
+		leagues = leagues.filter((item: any) => leagueSelect.includes(item.leagueId));
 	}
 
-	// 设置侧边栏的赛事信息
 	SidebarStore.setEventsInfo(get(leagues, "[0].events.[0]", {}) as any);
 	return leagues;
 };
 
-/**
- * @description 设置初始化分类选中值
- */
+/*** @description 设置初始化分类选中值 */
 const setInitialSportsActive = () => {
 	sportsActive.value = route.query.sportsActive as string;
 };
 
-/**
- * @description 赔率发生变化后，3秒动画清理掉 oddsChange 状态
- * @param {Object} param 参数对象，包含 marketId 和 selections
- */
-const oddsChange = ({ marketId, selections }) => {
+/*** @description 处理赔率变化 */
+const oddsChange = ({ marketId, selections }: { marketId: string; selections: any[] }) => {
 	clearSportsOddsChange({ webToPushApi: WebToPushApi.rollingBall, marketId, selection: selections });
 };
 
-/**
- * @description 切换展开状态
- * @param {number} val 要展开的索引值
- */
+/*** @description 切换展开状态 */
 const toggleDisplay = (val?: number) => {
 	VirtualScrollVirtualListRef.value.setlistDataEisExpand(val);
 };
