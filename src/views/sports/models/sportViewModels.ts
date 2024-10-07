@@ -12,6 +12,9 @@ export interface Sports {
 	icon: string;
 	activeIcon: string;
 	sportName: string;
+	count: number;
+	gameCount: number;
+	outrightGame: number;
 }
 
 /**
