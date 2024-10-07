@@ -1,7 +1,5 @@
-// 体育静态文件
-import sportsMap from "/@/views/sports/utils/sportsMap/sportsMap";
 import moment from "moment";
-import { WebToPushApi, SportPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
+import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { formatEvent2League } from "/@/views/sports/utils/formattingViewData";
 
 /**
@@ -39,8 +37,6 @@ function formattingMarkets(markets: any[]) {
  */
 export const formattingChildrenViewData = (data: any, sportKey: string, webToPushApi?: string) => {
 	// console.log(webToPushApi, "======webToPushApi");
-	// 获取体育字典 球类型
-	const sportsType = Object.keys(sportsMap);
 	// 遍历data将体育类型提取为一级分类，对应的冠军列表配置在children
 	let childrenViewData = {};
 
@@ -48,14 +44,12 @@ export const formattingChildrenViewData = (data: any, sportKey: string, webToPus
 	let arr;
 	if (sportKey == "events" || sportKey == "hotEvents") {
 		// 除电子竞技 其他都取等于0的数据
-		console.log(JSON.parse(JSON.stringify(data)), "==============datasssssssss", webToPushApi);
 		arr = data[sportKey];
 		// 电子竞技单独处理，其他类型统一处理
 		arr.forEach((item: { eventId: any; markets: any }) => {
 			const markets = data.markets.filter((market: { eventId: any }) => market.eventId == item.eventId);
 			item.markets = formattingMarkets(markets);
 		});
-		// console.log("arr", arr);
 		// 判断如果不是热门赛事sse推送标识，则就正常格式化为联赛
 		if (webToPushApi !== WebToPushApi.promotionsEvent) {
 			//格式化为联赛

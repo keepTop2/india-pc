@@ -87,20 +87,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import Common from "/@/utils/common";
 import showToast from "/@/hooks/useToast";
 import { userApi } from "/@/api/user";
-import options from "/@/assets/ts/areaCode";
 import { useUserStore } from "/@/stores/modules/user";
 import { useModalStore } from "/@/stores/modules/modalStore";
-import { CommonApi } from "/@/api/common";
 import CommonRegex from "/@/utils/CommonRegex";
 const modalStore = useModalStore();
 const userStore = useUserStore();
-const VerificationCodeRef = ref(null);
-// 验证码
-const userPhoneRegex = /^\d{8,11}$/;
 // 登陆表单
 const payLoad = reactive({
 	password: "",
@@ -109,9 +104,6 @@ const payLoad = reactive({
 	newPassword: "",
 });
 const isCreate = ref(true);
-const minLength = ref(8);
-const maxLength = ref(13);
-const AreaCodeOptions = ref([]);
 
 const showPassword = ref(false);
 const showOldPassword = ref(false);
