@@ -59,7 +59,7 @@ import TeamInfoCard from "../teamInfoCard/teamInfoCard.vue";
 import MarketColumn from "../marketColumn/marketColumn.vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
-import { FootballCardApi } from "/@/api/sports/footballCard";
+import SportsApi from "/@/api/sports/sports";
 import { useRouter, useRoute } from "vue-router";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
@@ -168,11 +168,11 @@ const isAttention = computed(() => {
 // 切换关注状态
 const attentionEvent = async (isActive: boolean) => {
 	if (isActive) {
-		await FootballCardApi.unFollow({
+		await SportsApi.unFollow({
 			thirdId: [props.event.eventId],
 		});
 	} else {
-		await FootballCardApi.saveFollow({
+		await SportsApi.saveFollow({
 			thirdId: props.event.eventId,
 			type: 2,
 		});

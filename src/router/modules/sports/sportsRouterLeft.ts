@@ -1,3 +1,4 @@
+import { useHaveToken } from "/@/hooks/useHaveToken";
 const MajorCategoriesMenu = [
 	{
 		path: "/sports/collect",
@@ -5,6 +6,14 @@ const MajorCategoriesMenu = [
 		icon: "collection_header_bar",
 		component: () => import("/@/views/sports/views/collect/collect.vue"),
 		meta: { title: "收藏", type: "collect" },
+		beforeEnter: (to, from, next) => {
+			const haveToken = useHaveToken();
+			if (!haveToken()) {
+				next(false); // 取消导航
+			} else {
+				next(); // 继续导航
+			}
+		},
 	},
 	{
 		path: "/sports/betRecord",
@@ -12,6 +21,14 @@ const MajorCategoriesMenu = [
 		icon: "betRecord",
 		component: () => import("/@/views/sports/views/betRecord/betRecord.vue"),
 		meta: { title: "注单", type: "betRecord" },
+		beforeEnter: (to, from, next) => {
+			const haveToken = useHaveToken();
+			if (!haveToken()) {
+				next(false); // 取消导航
+			} else {
+				next(); // 继续导航
+			}
+		},
 	},
 	{
 		path: "/sports/results",
@@ -19,6 +36,14 @@ const MajorCategoriesMenu = [
 		icon: "amidithion",
 		component: () => import("/@/views/sports/views/results/results.vue"),
 		meta: { title: "赛果", type: "result" },
+		beforeEnter: (to, from, next) => {
+			const haveToken = useHaveToken();
+			if (!haveToken()) {
+				next(false); // 取消导航
+			} else {
+				next(); // 继续导航
+			}
+		},
 	},
 ];
 

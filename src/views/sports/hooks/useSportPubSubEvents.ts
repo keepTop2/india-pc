@@ -112,12 +112,14 @@ export default function useSportPubSubEvents() {
 		if (showLoadingObject) {
 			headers = showLoadingObject;
 		}
-		// console.log(store.token, "=====store");
+
 		try {
 			let res: any;
 			if (store.token) {
+				console.log("有触发体育登录吗？？？？？ ----- 1");
 				res = await sportsApi.sportsLogin(params, headers);
 			} else {
+				console.log("有触发体育登录吗？？？？？ ----- 2");
 				res = await sportsApi.sbaAnonLogin(params);
 			}
 			if (res.code === Common.ResCode.SUCCESS) {

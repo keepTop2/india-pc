@@ -2,305 +2,148 @@
 	<div class="base-body">
 		<!-- 体育 主体内容区域  -->
 		<Banner />
+
 		<div class="main-container">
-			<!-- 体育游戏列表 -->
+			<!-- 左侧 体育游戏列表 -->
 			<div class="left-container">
 				<div class="header">
-					<HeaderMenuCondition @onRefresh="onRefresh" @onType="onTab" v-if="isShowCondition"></HeaderMenuCondition>
-					<div class="line" v-if="route.meta.type === 'list'"></div>
-					<HeaderMenuNav :tabActive="tabActive"></HeaderMenuNav>
+					<!-- 条件选择菜单 -->
+					<HeaderMenuCondition @onType="onTab" v-if="isShowCondition" />
+					<!-- 下划线装饰，用于区分不同部分 -->
+					<div class="line" v-if="isShowCondition"></div>
+					<!-- 顶部菜单导航 -->
+					<HeaderMenuNav :tabActive="tabActive" />
 				</div>
 				<div class="back-container">
-					<!-- 主体路由页面 -->
+					<!-- 主体路由页面显示区域 -->
 					<router-view v-cloak />
 					<!-- 搜索触发的遮罩 -->
 					<div class="overlay" v-if="isShowMask"></div>
 				</div>
 			</div>
-			<!-- 右边侧边栏 -->
+
+			<!-- 右边侧边栏，只有在特定条件下显示 -->
 			<div class="right-container" v-if="popularLeague.visible">
-				<Sidebar v-if="SportsInfoStore.getSportsToken"></Sidebar>
+				<Sidebar v-if="SportsInfoStore.getSportsToken" />
 			</div>
 		</div>
-		<!-- 购物车 -->
-		<SportsShopCart v-if="popularLeague.visible"></SportsShopCart>
-		<!-- 公告弹窗 -->
-		<Modal v-if="showNotifyModal" :before-close="closeNotifyModal" @close="closeNotifyModal">
-			<component :is="NotifyModal" />
-		</Modal>
+
+		<!-- 购物车，特定条件下显示 -->
+		<SportsShopCart v-if="popularLeague.visible" />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, onUnmounted, ref, watch } from "vue";
-import { isEmpty } from "lodash-es";
 import { useRoute, useRouter } from "vue-router";
 import { useIntervalFn } from "@vueuse/core";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
-import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-import { useLayoutStore } from "/@/stores/modules/layout";
 import { useUserStore } from "/@/stores/modules/user";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
-import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
-import { i18n } from "/@/i18n/index";
-import { useLoading } from "/@/directive/loading/hooks";
-import { useToLogin } from "/@/hooks/toLogin";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
-import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-
-import SkeletonList from "/@/views/sports/layout/components/SkeletonList/SkeletonList.vue";
 import pubSub from "/@/pubSub/pubSub";
-import { FootballCardApi } from "/@/api/sports/footballCard";
-
-import Modal from "./components/Modal/index.vue";
+import SportsApi from "/@/api/sports/sports";
 import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar, Banner } from "./components";
-import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
-import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
 
-/**
- * @description 国际化实例
- */
-const $ = i18n.global;
-
-/**
- * @description 路由实例
- */
+// 路由实例
 const route = useRoute();
 const router = useRouter();
 
-/**
- * @description 是否显示条件
- */
-const isShowCondition = computed(() => route.meta.type === "list");
-
-/**
- * @description 各种store实例
- */
+// 各种 store 实例
 const sportsBetEvent = useSportsBetEventStore();
-const SidebarStore = useSidebarStore();
 const popularLeague = usePopularLeague();
 const SportsInfoStore = useSportsInfoStore();
-const SportAttentionStore = useSportAttentionStore();
-const SportMorningTradingStore = useSportMorningTradingStore();
-const LayoutStore = useLayoutStore();
 const UserStore = useUserStore();
-const ShopCatControlStore = useShopCatControlStore();
-const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
-
-/**
- * @description 登录相关hooks
- */
-const { isHaveToken, toLogin } = useToLogin();
-
-/**
- * @description 加载相关hooks
- */
-const { startLoading, stopLoading } = useLoading();
-
-/**
- * @description 体育相关事件hooks
- */
+const { openSportPush } = useSportEvents();
 const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
 
-/**
- * @description 工具相关hooks
- */
-const { getSidebarEventSSEPush, getSidebarMarketSSEPush, getPromotions } = useToolsHooks();
-
-/**
- * @description 是否显示遮罩层
- */
+// 是否显示遮罩层
 const isShowMask = ref(false);
+// 体育相关事件 hooks
+// 当前选中的标签，用于顶部菜单导航
+const tabActive = ref("");
+// 是否显示条件菜单，根据路由 meta 类型判断
+const isShowCondition = computed(() => route.meta.type === "list");
 
-// 公告数据
-const NotifyModal = ref();
-// 公告弹窗状态
-const showNotifyModal = ref(false);
-
-/**
- * @description 体育事件相关hooks
- */
-const { sportType, tabActive, handleSportEventsPush, openSportPush, handleSportPush } = useSportEvents();
-
-onBeforeMount(() => {
-	/**
-	 * @description 订阅遮罩层显示事件
-	 */
-	pubSub.subscribe("showoVerlay", (data) => {
-		isShowMask.value = data;
-	});
-
-	/**
-	 * @description 设置大屏模式
-	 */
-	LayoutStore.setBigScreen(true);
-
-	/**
-	 * @description 订阅关注变化事件
-	 */
-	pubSub.subscribe(pubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
-
-	/**
-	 * @description 初始化体育请求
-	 */
-	initSportRequest();
-});
-
-/**
- * @description 定时执行体育登录
- */
-const { pause, resume } = useIntervalFn(() => sportsLogin(), 8 * 60 * 1000);
-
-onBeforeUnmount(() => {
-	/**
-	 * @description 卸载体育相关事件
-	 */
-	unSport();
-
-	/**
-	 * @description 暂停定时执行
-	 */
-	pause();
-});
-
-onUnmounted(() => {
-	/**
-	 * @description 取消大屏模式
-	 */
-	LayoutStore.setBigScreen(false);
-});
-
-/**
- * @description 初始化体育请求
- */
-const initSportRequest = async () => {
-	// 获取关注列表
-	await getAttention();
-	// 体育登录
-	await sportsLogin();
-	// 初始化体育
-	await initSport();
-};
-
-/**
- * @description 获取关注列表
- * @param {boolean} isLogin - 是否登录
- */
-const getAttention = async (isLogin = true) => {
-	if ((isLogin && !isEmpty(UserStore.getUserInfo)) || !isLogin) {
-		try {
-			const res = await FootballCardApi.getAttentionList();
-			if (res.data) {
-				SportAttentionStore.setAttentionList(res.data);
-				return res.data;
-			}
-		} catch (error) {
-			console.error("获取关注列表失败", error);
-		}
-	}
-};
-
-/**
- * @description 初始化体育
- */
-const initSport = async () => {
-	initSportPubsub();
-	const sportType = (route.query.sportType as string) || "1";
-	pubSub.publish("showSkeleton", true);
-	openSportPush(sportType);
-};
-
-/**
- * @description 切换标签
- * @param {string} type - 标签类型
- */
-const onTab = (type: string) => {
-	console.log(tabActive.value, "=====onTab=====", type);
-	if (tabActive.value === type) return;
-	tabActive.value = type;
-	ShopCatControlStore.setShopCatShow(false);
-};
-
-/**
- * @description 刷新
- */
-const onRefresh = () => {
-	initSport();
-};
-
-/**
- * @description 卸载体育
- */
-const unSport = () => {
-	console.error("卸载体育");
-	clearState();
-	unSubSport();
-	sportsBetEvent.clearHotLeagueList();
-	pubSub.publish("clearHotLeagueList", "on");
-};
-
-/**
- * @description 关闭通知模态框
- */
-const closeNotifyModal = () => {
-	showNotifyModal.value = false;
-};
-
-/**
- * @description 监听早盘交易活跃日期变化
- */
-watch(
-	() => SportMorningTradingStore.getActiveDate,
-	(newValue) => {
-		if (newValue && tabActive.value === "morningTrading") {
-			initSport();
-		}
-	}
-);
-
-/**
- * @description 监听路由地址的变化，清理赛事数据，清理侧边栏数据，开启对应的推送。
- */
+// 监听路由地址变化，切换推送
 watch(
 	() => route.fullPath,
 	(newValue, oldValue) => {
 		if (newValue !== oldValue) {
-			// 清除数据中心数据===列表数据
-			viewSportPubSubEventData.clearEventsState();
-			// 清除侧边栏数据
-			// SidebarStore.clearEventsInfo();
-			//开启推送
+			sportsBetEvent.clearHotLeagueList();
 			openSportPush(route.query.sportType as string, tabActive.value);
 			pubSub.publish("SkeletonLoading", true);
 		}
 	}
 );
 
-/**
- * @description 监听体育球类的变化
- */
-watch(
-	() => sportsData.value,
-	(newValue) => {
-		if (newValue && newValue.length > 0) {
-			if (route.query.sportType) {
-				const isSportType = newValue.some((item) => item.sportType === Number(route.query.sportType));
-				if (!isSportType) {
-					router.push({
-						path: route.path,
-						query: {
-							...route.query,
-							sportType: newValue[0].sportType,
-						},
-					});
-				}
-			}
+// 生命周期钩子函数
+onBeforeMount(() => {
+	// 订阅遮罩层显示事件
+	pubSub.subscribe("showOverlay", (data) => {
+		isShowMask.value = data;
+	});
+	// 订阅关注变化事件
+	pubSub.subscribe(pubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
+	// 初始化体育请求
+	initSportRequest();
+});
+
+onBeforeUnmount(() => {
+	// 卸载体育相关事件
+	unSport();
+	// 暂停定时执行
+	pauseInterval();
+});
+
+// 定时执行体育登录，间隔 8 分钟
+const { pause: pauseInterval } = useIntervalFn(() => sportsLogin(), 8 * 60 * 1000);
+
+// 初始化体育请求
+const initSportRequest = async () => {
+	// 判断token状态
+	if (UserStore.getUserInfo.token) {
+		// 获取关注列表
+		await getAttention();
+	}
+	// 体育登录
+	await sportsLogin();
+	// 初始化体育订阅
+	initSportPubsub();
+	const sportType = (route.query.sportType as string) || "1";
+	pubSub.publish("showSkeleton", true);
+	openSportPush(sportType); // 恢复 openSportPush 调用
+};
+
+// 获取用户关注的体育列表
+const getAttention = async (isLogin = true) => {
+	if ((isLogin && UserStore.getUserInfo) || !isLogin) {
+		const res = await SportsApi.getAttentionList();
+		if (res.data) {
+			sportsBetEvent.setAttentionList(res.data);
 		}
 	}
-);
+};
+
+// 切换顶部标签
+const onTab = (type: string) => {
+	if (tabActive.value === type) return;
+	tabActive.value = type;
+};
+
+// 卸载体育相关事件
+const unSport = () => {
+	// 清除当前体育的状态，重置所有相关状态变量
+	clearState();
+	// 取消体育推送订阅，停止接收新的体育数据更新
+	unSubSport();
+	// 清空热门联赛列表数据，避免残留数据影响后续操作
+	sportsBetEvent.clearHotLeagueList();
+	// 发布清除热门联赛列表的事件，通知其他组件进行相关处理
+	pubSub.publish("clearHotLeagueList", "on");
+};
 </script>
 
 <style lang="scss" scoped>

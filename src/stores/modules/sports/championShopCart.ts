@@ -9,7 +9,7 @@ import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { SportPushApi, WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 import pubsub from "/@/pubSub/pubSub";
-import { useToLogin } from "/@/hooks/toLogin";
+import { useHaveToken } from "/@/hooks/useHaveToken";
 const $: any = i18n.global;
 
 export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
@@ -38,15 +38,9 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 		 */
 
 		async addChampionToCart(data: any) {
-			console.log("看看是否每次都会执行");
-			// 判断登录状态
-			const { isHaveToken } = useToLogin();
-			try {
-				await isHaveToken();
-			} catch (error) {
-				console.error("Error:", error);
-				return; // 如果出错直接退出方法
-			}
+			const haveToken = useHaveToken();
+			// 用户未登录，直接返回
+			if (!haveToken()) return;
 
 			// 冠军数据添加购物车
 			if (data.type == "1") {
@@ -118,7 +112,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 
 		// 储存当前选中的赛事盘口信息
 		async storeEventInfo(key: any, data: any) {
-			const { isHaveToken } = useToLogin();
+			const { isHaveToken } = useHaveToken();
 			try {
 				await isHaveToken();
 			} catch (error) {

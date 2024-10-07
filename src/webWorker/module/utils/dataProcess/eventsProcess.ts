@@ -4,6 +4,12 @@ import { SportViewModels } from "/@/views/sports/models/sportViewModels";
 import { SportViewData, SportsRootObject } from "/@/views/sports/models/interface";
 import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourceModel";
 import { WebToPushApi, SportPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
+
+interface ViewSportData {
+	promotionsViewData?: any;
+	childrenViewData?: any;
+}
+
 // 每个赛事联系数量 数据线程处理 GetEvents
 export default (function () {
 	/**
@@ -49,12 +55,10 @@ export default (function () {
 			WebToPushApi.promotionsEvent
 		);
 		if (sportServerData.webToPushApi === WebToPushApi.promotionsEvent) {
-			processData.viewSportData["promotionsViewData"] = formattingChildrenViewData(viewSportData, "hotEvents", sportServerData.webToPushApi);
+			(processData.viewSportData as ViewSportData)["promotionsViewData"] = formattingChildrenViewData(viewSportData, "hotEvents", sportServerData.webToPushApi);
 		} else {
-			processData.viewSportData["childrenViewData"] = formattingChildrenViewData(viewSportData, "events", sportServerData.webToPushApi);
+			(processData.viewSportData as ViewSportData)["childrenViewData"] = formattingChildrenViewData(viewSportData, "events", sportServerData.webToPushApi);
 		}
-
-		// console.log(JSON.parse(JSON.stringify(processData)), "==events===processData");
 		return processData;
 	};
 

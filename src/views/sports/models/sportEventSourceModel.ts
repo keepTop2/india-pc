@@ -73,7 +73,7 @@ export interface OpenSportSourceParams {
 	 * 清理赔率状态
 	 */
 	oddsChange?: object;
-};
+}
 
 
 /**

@@ -78,11 +78,9 @@ import { useLoading } from "/@/directive/loading/hooks";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import { i18n } from "/@/i18n/index";
 import { getBetOrderId } from "/@/views/sports/utils/commonFn";
-import { useToLogin } from "/@/hooks/toLogin";
 import { useUserStore } from "/@/stores/modules/user";
 import shopCartChampionPubSub from "/@/views/sports/hooks/shopCartChampionPubSub";
 const UserStore = useUserStore();
-const { toLogin } = useToLogin();
 const $: any = i18n.global;
 const { startLoading, stopLoading } = useLoading();
 const sportsBetInfo = useSportsBetInfoStore();
@@ -106,8 +104,11 @@ const state = reactive({
 });
 
 onMounted(() => {
-	// 请求余额信息
-	getBetOrderId();
+	// 判断token状态
+	if (UserStore.getUserInfo.token) {
+		// 请求余额信息
+		getBetOrderId();
+	}
 });
 
 // 监听冠军购物车储存数量

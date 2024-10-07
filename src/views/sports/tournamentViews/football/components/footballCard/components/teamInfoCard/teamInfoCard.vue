@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 import { useRouter, useRoute } from "vue-router";
-import { FootballCardApi } from "/@/api/sports/footballCard";
+import SportsApi from "/@/api/sports/sports";
 import { computed } from "vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
@@ -120,11 +120,11 @@ const isAttention = computed(() => {
 // 点击关注按钮
 const attentionEvent = async (isActive: boolean) => {
 	if (isActive) {
-		await FootballCardApi.unFollow({
+		await SportsApi.unFollow({
 			thirdId: [props.teamData.eventId],
 		});
 	} else {
-		await FootballCardApi.saveFollow({
+		await SportsApi.saveFollow({
 			thirdId: props.teamData.eventId,
 			type: 2,
 		});
