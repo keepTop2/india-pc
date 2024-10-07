@@ -2,18 +2,22 @@
 	<div class="header-container" :class="route.meta.type">
 		<div class="menu-nav">
 			<div class="right" ref="rightContainer">
+				<!-- 左侧滚动箭头，只有在有滚动时才显示 -->
 				<div class="arrow_content arrow_left" v-show="showLeftArrow" @click="scrollLeft">
 					<span class="icon">
 						<svg-icon name="arrow_left" size="12px"></svg-icon>
 					</span>
 				</div>
+				<!-- 导航项容器，支持水平滚动 -->
 				<div class="nva-item-container" ref="nvaItemContainer" @scroll="handleScroll">
+					<!-- 遍历体育数据，动态生成导航项 -->
 					<div v-for="(item, index) in sportsData" :key="index" class="nva-item" :class="{ active: Number(sportType) == item.sportType }" @click="toPath(item)">
 						<svg-icon class="icon" :name="`sports-sidebar-${item.icon}`" size="25px" alt="" />
 						<span class="value title">{{ item.sportName }}</span>
 						<div class="value count">{{ item.count }}</div>
 					</div>
 				</div>
+				<!-- 右侧滚动箭头，只有在有滚动时才显示 -->
 				<div class="arrow_content arrow_right" v-show="showRightArrow" @click="scrollRight">
 					<span class="icon">
 						<svg-icon name="sports-arrow" size="12px"></svg-icon>
@@ -21,6 +25,7 @@
 				</div>
 			</div>
 			<i class="line"></i>
+			<!-- 左侧菜单项 -->
 			<div class="left">
 				<div v-for="(item, index) in Menu" :key="index" class="nva-item" :class="{ active: item.name === route.name }">
 					<router-link :to="{ name: item.name }">
@@ -34,99 +39,109 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import MajorCategoriesMenu from "/@/router/modules/sports/sportsRouterLeft";
-import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import { ref, computed, onMounted, nextTick, watch } from "vue"; // 引入Vue相关的API
+import { useRouter, useRoute } from "vue-router"; // 引入路由相关的API
+import MajorCategoriesMenu from "/@/router/modules/sports/sportsRouterLeft"; // 导入左侧菜单数据
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData"; // 导入体育数据
+import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData"; // 引入状态管理
 
-const router = useRouter();
-const route = useRoute();
-const Menu = ref(MajorCategoriesMenu);
-const sportsBetEvent = useSportsBetEventStore();
-const sportType = computed(() => route.query.sportType);
+const router = useRouter(); // 获取路由实例
+const route = useRoute(); // 获取当前路由实例
+const Menu = ref(MajorCategoriesMenu); // 将左侧菜单数据存储为响应式引用
+const sportsBetEvent = useSportsBetEventStore(); // 获取体育赛事相关的状态
+const sportType = computed(() => route.query.sportType); // 计算当前的运动类型
 const props = defineProps<{
-	tabActive: string;
+	tabActive: string; // 当前激活的标签
 }>();
-// 球类tab数据
+
+// 获取球类tab数据
 const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
 
-const rightContainer = ref<HTMLElement | null>(null);
-const nvaItemContainer = ref<HTMLElement | null>(null);
-const showLeftArrow = ref(false);
-const showRightArrow = ref(false);
+const rightContainer = ref<HTMLElement | null>(null); // 右侧容器的引用
+const nvaItemContainer = ref<HTMLElement | null>(null); // 导航项容器的引用
+const showLeftArrow = ref(false); // 控制左箭头显示的状态
+const showRightArrow = ref(false); // 控制右箭头显示的状态
 
-// 路由初始化逻辑
+// 初始化路由的逻辑
 const initRoute = () => {
 	if (sportsData.value.length > 0) {
-		const firstSportType = sportsData.value[0].sportType;
-		const defaultPath = `${router.currentRoute.value.path}/${firstSportType}`;
-		router.push(defaultPath);
+		// 确保有体育数据
+		const firstSportType = sportsData.value[0].sportType; // 获取第一个体育类型
+		const defaultPath = `${router.currentRoute.value.path}/${firstSportType}`; // 构建默认路径
+		router.push(defaultPath); // 跳转到默认路径
 	}
 };
 
+// 标签数据
 const tabData = ref([
 	{ label: "今日", type: "todayContest", path: "/sports/todayContest" },
 	{ label: "早盘", type: "morningTrading", path: "/sports/morningTrading" },
 	{ label: "冠军", type: "champion", path: "/sports/champion" },
 ]);
 
+// 路由跳转函数
 const toPath = (item: any) => {
-	// console.log(props.tabActive,'=========topath',item,'123123======wafwafe');
 	if (route.meta.type !== "list") {
-		const path = tabData.value.find(item => item.type === props.tabActive)?.path || '/sports/todayContest';
+		// 检查路由类型
+		// 根据当前激活的标签获取路径
+		const path = tabData.value.find((tab) => tab.type === props.tabActive)?.path || "/sports/todayContest";
 		router
 			.push({
 				path: path,
-				query: { sportType: item.sportType },
+				query: { sportType: item.sportType }, // 传递运动类型作为查询参数
 			})
 			.catch((err) => {
-				console.error("Navigation failed:", err);
+				console.error("导航失败:", err); // 错误处理
 			});
 	} else {
-		if (route.query.sportType == item.sportType) return;
-		const currentPath = router.currentRoute.value.path;
+		if (route.query.sportType == item.sportType) return; // 如果当前运动类型相同，不做跳转
+		const currentPath = router.currentRoute.value.path; // 获取当前路径
 		router.push({
 			path: currentPath,
-			query: { sportType: item.sportType },
+			query: { sportType: item.sportType }, // 更新查询参数
 		});
 	}
 };
 
+// 处理滚动事件
 const handleScroll = () => {
-	// console.log(nvaItemContainer.value);
-	// console.log(rightContainer.value);
 	if (nvaItemContainer.value) {
-		const { scrollLeft, scrollWidth, clientWidth } = nvaItemContainer.value;
-		showLeftArrow.value = scrollLeft > 0;
-		showRightArrow.value = scrollLeft + clientWidth < scrollWidth;
-		// console.log(scrollLeft, scrollWidth, clientWidth);
+		// 确保导航项容器存在
+		const { scrollLeft, scrollWidth, clientWidth } = nvaItemContainer.value; // 获取滚动信息
+		showLeftArrow.value = scrollLeft > 0; // 控制左箭头的显示
+		showRightArrow.value = scrollLeft + clientWidth < scrollWidth; // 控制右箭头的显示
 	}
 };
 
+// 向左滚动函数
 const scrollLeft = () => {
 	if (nvaItemContainer.value) {
-		nvaItemContainer.value.scrollLeft -= 100;
+		// 确保导航项容器存在
+		nvaItemContainer.value.scrollLeft -= 100; // 向左滚动100像素
 	}
 };
 
+// 向右滚动函数
 const scrollRight = () => {
 	if (nvaItemContainer.value) {
-		nvaItemContainer.value.scrollLeft += 100;
+		// 确保导航项容器存在
+		nvaItemContainer.value.scrollLeft += 100; // 向右滚动100像素
 	}
 };
 
+// 组件挂载后初始化路由和事件监听
 onMounted(() => {
-	initRoute();
+	initRoute(); // 初始化路由
 	nextTick(() => {
-		handleScroll();
-		window.addEventListener("resize", handleScroll);
+		handleScroll(); // 初始处理滚动状态
+		window.addEventListener("resize", handleScroll); // 窗口尺寸变化时重新处理滚动状态
 	});
 });
 
+// 观察体育数据的变化
 watch(sportsData, () => {
 	nextTick(() => {
-		handleScroll();
+		handleScroll(); // 数据变化后处理滚动状态
 	});
 });
 </script>

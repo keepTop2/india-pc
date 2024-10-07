@@ -1,10 +1,6 @@
-<!--
- * @Author: WangMingxin
- * @Description: 自定义体育-按钮组件
--->
 <template>
 	<div class="wbutton" :class="active ? 'active' : ''">
-		<slot>按钮</slot>
+		<slot></slot>
 	</div>
 </template>
 
@@ -21,12 +17,6 @@ const props = withDefaults(
 		active: false,
 	}
 );
-
-// @click="onClick"
-// const emit = defineEmits(['click']);
-// const onClick = () => {
-//   emit('click');
-// }
 </script>
 
 <style scoped lang="scss">

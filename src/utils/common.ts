@@ -489,6 +489,25 @@ class Common {
 			}
 		});
 	}
+
+	/**
+	 * @description 自定义防抖函数
+	 * @param func 要防抖的函数
+	 * @param delay 防抖延迟时间（毫秒）
+	 * @returns 防抖后的函数
+	 */
+	static debounce(func: Function, delay: number) {
+		let timeoutId: NodeJS.Timeout;
+
+		return (...args: any[]) => {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+			timeoutId = setTimeout(() => {
+				func(...args);
+			}, delay);
+		};
+	}
 }
 
 export default Common;

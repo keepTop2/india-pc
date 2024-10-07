@@ -4,13 +4,9 @@
 		<div class="left">
 			<template v-for="(item, index) in MajorCategoriesMenu" :key="index">
 				<!-- 今日分类特殊处理，包含开关 -->
-				<template v-if="item.type == `todayContest`">
-					<wButton :active="route.path == '/sports/todayContest/rollingBall' || route.path == '/sports/todayContest/notStarted'" @click="onType(item)"> {{ item.label }}</wButton>
-					<wSwitch
-						:switchObj="eventStatusData"
-						:disabled="route.path != '/sports/todayContest/rollingBall' && route.path != '/sports/todayContest/notStarted'"
-						@selected="onEventStatusData"
-					></wSwitch>
+				<template v-if="item.type == 'todayContest'">
+					<wButton :active="isTodayContestActive(item)" @click="onType(item)"> {{ item.label }}</wButton>
+					<wSwitch :switchObj="eventStatusData" :disabled="!isTodayContestRoute" @selected="onEventStatusData"></wSwitch>
 				</template>
 				<!-- 其他分类 -->
 				<template v-else>
@@ -18,34 +14,29 @@
 				</template>
 			</template>
 		</div>
+
 		<!-- 右侧功能区 -->
 		<div class="right">
 			<div class="filter_operation">
 				<!-- 搜索框占位 -->
-				<div class="search">
+				<div class="search" @click="handleSearch(true)">
 					<div class="icon"><svg-icon name="sports-search" size="14px" /></div>
-					<input type="text" placeholder="请输入赛事名称/球队名" @click="handleSearch(true)" />
+					<input type="text" placeholder="请输入赛事名称/球队名" />
 				</div>
 				<!-- 时间/热门开关，仅在特定条件下显示 -->
-				<wSwitch v-if="isShowTime" :switchObj="switchObjRight" :disabled="switchDisable.right" @selected="wSwitchSelectRight"></wSwitch>
+				<wSwitch v-if="isShowTime" class="ml_12" :switchObj="switchObjRight" :disabled="switchDisable.right" @selected="wSwitchSelectRight"></wSwitch>
 			</div>
-			<!--  -->
-			<!-- <span class="icon"><svg-icon name="sports-screening" size="20px"></svg-icon></span> -->
-			<!-- 教程 -->
+			<!-- 教程按钮 -->
 			<span class="icon"><svg-icon name="sports-tutorial" size="20px"></svg-icon></span>
 		</div>
-
-		<!-- 教程 -->
-		<!-- <Modal v-if="showBettingRules" :before-close="closeBettingRules" @close="closeBettingRules">
-			<component :is="bettingRulesModal" />
-		</Modal> -->
 	</div>
+
 	<!-- 搜索框组件 -->
 	<searchBar v-else @cancel="handleSearch(false)" />
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, DefineComponent, markRaw, onBeforeMount, onMounted, reactive, Ref, ref, watch } from "vue";
+import { computed, defineAsyncComponent, ref, onBeforeMount, onMounted } from "vue";
 import { debounce } from "lodash-es";
 import { wButton, wSwitch } from "./components";
 import { useRouter, useRoute } from "vue-router";
@@ -55,13 +46,11 @@ import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorni
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useMatchEvents } from "/@/views/sports/hooks/eventMatch";
-import sportsApi from "/@/api/sports/sports";
+import sportsApi from "/@/api/sports/sports"; // 保留引用
 import searchBar from "./components/searchBar/searchBar.vue";
-import Modal from "../Modal/index.vue";
 import pubsub from "/@/pubSub/pubSub";
+
 const sportsBetEvent = useSportsBetEventStore();
-// 初始化所需的store
-const isSearch = ref(false);
 const SportAttentionStore = useSportAttentionStore();
 const router = useRouter();
 const route = useRoute();
@@ -69,123 +58,117 @@ const SportLeagueSearchStore = useSportLeagueSearchStore();
 const popularLeague = usePopularLeague();
 const SportMorningTradingStore = useSportMorningTradingStore();
 const { searchMatches } = useMatchEvents();
-const bettingRulesModal: any = ref(null);
-const showBettingRules = ref(true);
-// 展示热门联赛
+
+// 控制是否显示搜索框
+const isSearch = ref(false);
+
+// 热门联赛展示
 popularLeague.showPopularLeague();
 
-// 组件props定义
-const props = withDefaults(
-	defineProps<{
-		/**
-		 * @description: 选中的赛选类型
-		 */
-		sportsActive?: string;
-	}>(),
-	{
-		sportsActive: "",
-	}
-);
-// 定义组件事件
-const emit = defineEmits(["onRefresh", "onExpand", "onCollapse", "onType"]);
-
-// 分类数据
-const MajorCategoriesMenu = ref([
-	{ label: "今日", type: "todayContest", path: "/sports/todayContest" },
-	{ label: "早盘", type: "morningTrading", path: "/sports/morningTrading" },
-	{ label: "冠军", type: "champion", path: "/sports/champion" },
-]);
-// switch组件禁用状态
+// 开关组件禁用状态
 const switchDisable = ref({
 	left: false,
 	right: false,
 });
 
-// 今日下-按钮配置
+// 分类数据，用于左侧按钮生成
+const MajorCategoriesMenu = ref([
+	{ label: "今日", type: "todayContest", path: "/sports/todayContest" },
+	{ label: "早盘", type: "morningTrading", path: "/sports/morningTrading" },
+	{ label: "冠军", type: "champion", path: "/sports/champion" },
+]);
+
+// 今日赛事下的开关状态配置
 const eventStatusData = ref({
-	on: { label: "滚球", type: "rollingBall", active: route.path === "/sports/todayContest/rollingBall" ? true : false, path: "/sports/todayContest/rollingBall" },
-	off: { label: "未开赛", type: "todayContest", active: route.path === "/sports/todayContest/notStarted" ? true : false, path: "/sports/todayContest/notStarted" },
+	on: { label: "滚球", type: "rollingBall", active: route.path === "/sports/todayContest/rollingBall", path: "/sports/todayContest/rollingBall" },
+	off: { label: "未开赛", type: "todayContest", active: route.path === "/sports/todayContest/notStarted", path: "/sports/todayContest/notStarted" },
 });
 
-// 热门-时间开关配置
+// 热门/时间开关状态配置
 const switchObjRight = ref({
 	on: { label: "时间", type: "time", active: true },
 	off: { label: "热门", type: "hot", active: false },
 });
 
-// 组件挂载后的初始化操作
-onMounted(() => {});
-
+// 组件挂载前的初始化
 onBeforeMount(() => {
+	// 订阅热门联赛列表清除事件
 	pubsub.subscribe("clearHotLeagueList", wSwitchSelectRight);
 });
 
+// 处理搜索框的显示/隐藏
 const handleSearch = (data: boolean) => {
 	isSearch.value = data;
 };
 
-// 点击大类
+// 判断是否是今日赛事路由
+const isTodayContestRoute = computed(() => {
+	return route.path === "/sports/todayContest/rollingBall" || route.path === "/sports/todayContest/notStarted";
+});
+
+// 判断今日赛事按钮是否激活
+const isTodayContestActive = (item: any) => {
+	return route.path == "/sports/todayContest/rollingBall" || route.path == "/sports/todayContest/notStarted";
+};
+
+// 点击分类切换
 const onType = (item: any) => {
+	// 检查点击的分类是否是 "今日比赛"
 	if (item.path === "/sports/todayContest") {
-		// eventStatusData.value.on.active = true;
+		// 判断 "今日比赛" 下的所有状态是否都是非激活状态
 		const allInactive = Object.keys(eventStatusData.value).every((key) => !eventStatusData.value[key].active);
+		// 如果所有状态均未激活，默认激活 "on" 状态
 		if (allInactive) {
 			eventStatusData.value.on.active = true;
 		}
-		if (route.path == "/sports/todayContest/rollingBall" || route.path == "/sports/todayContest/notStarted") return;
+		// 如果当前路由已经是 "今日比赛" 页面，则无需做进一步操作
+		if (isTodayContestRoute.value) return;
 	} else {
+		// 对于非 "今日比赛" 的其他分类
+		// 如果当前点击的分类和当前路由相同，则不进行任何操作
 		if (item.path === route.path) return;
+		// 将 "今日比赛" 下的所有状态都设置为非激活状态
 		Object.keys(eventStatusData.value).forEach((key) => {
 			eventStatusData.value[key as "off" | "on"].active = false;
 		});
 	}
+
+	// 跳转到所选分类对应的路径
 	router.push(item.path);
-	if (item.type === "todayContest") {
-		const activeItem: any = Object.values(eventStatusData.value).find((item) => item.active);
-		// console.log("activeItem", activeItem);
-		emit("onType", activeItem.type);
-	} else {
-		emit("onType", item.type);
-	}
 };
 
+// 切换今日赛事下的滚球/未开赛
 const onEventStatusData = (e: "off" | "on") => {
+	// 如果当前的路径与所选状态的路径相同，直接返回，不执行任何操作
 	if (eventStatusData.value[e].path === route.path) return;
+	// 从当前路由中提取 sportType 查询参数
 	const { sportType } = route.query;
+	// 将 eventStatusData 中所有状态的 active 属性设置为 false，确保只有一个状态处于激活状态
 	Object.keys(eventStatusData.value).forEach((key) => {
 		eventStatusData.value[key as "off" | "on"].active = false;
 	});
-	// 将传入的 e 对应的对象 active 改为 true
+	// 将传入的 e 对应的对象 active 设置为 true，激活用户选择的状态
 	eventStatusData.value[e].active = true;
-	// 跳转到对应路由
-	const targetPath = eventStatusData.value[e].path;
+	// 跳转到激活状态对应的路径，并保留查询参数 sportType
 	router.push({
-		path: targetPath,
+		path: eventStatusData.value[e].path,
 		query: { sportType: sportType },
 	});
-	// console.log("e=================>", e);
-
-	emit("onType", eventStatusData.value[e].type);
 };
 
-/**
- * @description: 是否显示排序方式按钮
- */
+// 是否显示时间/热门开关
 const isShowTime = computed(() => {
+	// 在路由上获取球类标识参数
 	const sportType = route.query.sportType;
-	// console.log(route, "======route");
+	// 只有足球篮球显示热门切换按钮 其余赛事统一显示时间赛事
 	if ((sportType === "1" || sportType === "2") && route.meta?.type === "list") {
 		return true;
 	}
 	return false;
 });
-/**
- * @description: 右侧热门时间变动处理
- * @param {boolean} checked 选中状态
- * @param {boolean} isMounted 是否是挂载时调用
- * on 时间 off 热门
- */
-const wSwitchSelectRight = async (checked: string, isMounted: boolean = false) => {
+
+// 处理右侧热门时间的切换
+const wSwitchSelectRight = async (checked: string) => {
 	if (checked == "on") {
 		sportsBetEvent.clearHotLeagueList();
 		switchObjRight.value.on.active = true;
@@ -195,12 +178,9 @@ const wSwitchSelectRight = async (checked: string, isMounted: boolean = false) =
 		switchObjRight.value.off.active = true;
 		await GetPromotions();
 	}
-	// !isMounted && onRefresh();
 };
 
-/**
- * @description 获取热门赛事
- */
+// 获取热门赛事
 const GetPromotions = async () => {
 	let sportType = route.query.sportType;
 	const params = {
@@ -208,22 +188,11 @@ const GetPromotions = async () => {
 		includeMarkets: "none",
 	};
 	const res = await sportsApi.GetPromotions(params).catch((err) => err);
-	console.log(res.data, "-----re");
 	if (res.data) {
 		const list = res.data.events;
 		sportsBetEvent.setHotLeagueList(list);
-		// SportSortStore.setIsActiveHot(true);
 	}
 };
-
-// 输入框事件监听
-const getFilterEvents = debounce((event) => {
-	const query = event.target.value;
-	console.log("event", query);
-	if (!query) return;
-	// 直接调用 searchMatches 方法
-	searchMatches(query);
-}, 500);
 </script>
 
 <style scoped lang="scss">
@@ -258,10 +227,10 @@ const getFilterEvents = debounce((event) => {
 				display: flex;
 				gap: 10px;
 				align-items: center;
-				margin-right: 12px;
 				padding: 4px 10px;
 				border-radius: 4px;
 				background-color: var(--Bg2);
+				cursor: pointer;
 				.icon {
 					width: 14px;
 					height: 14px;
