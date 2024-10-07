@@ -4,7 +4,7 @@
 		<div class="modal-overlay" @click="handleOverlayClick">
 			<div class="modal-content" @click.stop>
 				<!-- <button class="close-btn" @click="close">×</button> -->
-				<slot></slot>
+				<slot> 123123 </slot>
 			</div>
 		</div>
 	</Transition>

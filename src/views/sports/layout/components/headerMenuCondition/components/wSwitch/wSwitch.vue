@@ -1,7 +1,9 @@
 <template>
 	<div class="tabs_content">
+		<!-- 遍历 'on' 和 'off'，为每个状态渲染一个标签 -->
 		<div v-for="(key, index) in ['on', 'off']" :key="index" :disable="true" :class="['tab', { tab_active: switchObj[key].active, disabled: disabled }]" @click="handleSwitch(key)">
 			{{ switchObj[key].label }}
+			<!-- 显示状态标签 -->
 		</div>
 	</div>
 </template>
@@ -9,27 +11,35 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
 
+// SwitchItem 接口定义单个开关项的结构
 interface SwitchItem {
-	label: string;
-	type: string;
-	active: boolean;
+	label: string; // 显示的标签
+	type: string; // 开关类型
+	active: boolean; // 是否处于激活状态
 }
 
+// SwitchObject 接口定义开关对象的结构
 interface SwitchObject {
-	[key: string]: { active: boolean; label: string };
-	on: SwitchItem;
-	off: SwitchItem;
+	[key: string]: { active: boolean; label: string }; // 动态键值，表示状态和对应的属性
+	on: SwitchItem; // 开启状态的详细信息
+	off: SwitchItem; // 关闭状态的详细信息
 }
 
+// 定义组件接收的 props
 const props = defineProps<{
-	switchObj: SwitchObject;
-	disabled?: boolean;
+	switchObj: SwitchObject; // 开关对象，包含 'on' 和 'off' 状态的信息
+	disabled?: boolean; // 可选属性，指示组件是否禁用
 }>();
 
+// 定义组件发出的事件
 const emit = defineEmits(["selected"]);
 
+// 处理开关点击事件
 const handleSwitch = (key: string) => {
+	// 如果组件被禁用，则不执行任何操作
 	if (props.disabled) return;
+
+	// 发出 selected 事件，并传递当前状态的 key（'on' 或 'off'）
 	emit("selected", key);
 };
 </script>
