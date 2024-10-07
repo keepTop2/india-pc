@@ -45,8 +45,7 @@
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
 			<!-- 直播 -->
-			<!-- 虚拟赛事视频 -->
-			<div v-show="SidebarStore.sidebarStatus === 'live'">
+			<div v-show="eventsInfo && SidebarStore.sidebarStatus === 'live'">
 				<div ref="videoContainer" class="video-js"></div>
 				<!-- 真人赛事比赛 -->
 				<div v-show="iframeLoaded" class="live">
@@ -203,7 +202,7 @@ const computedTools = computed(() => {
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
-			action: switchEventVideoSource,
+			action: (event: any) => toggleEventScoreboard(event, true),
 			param: eventsInfo.value, // 传递参数
 		});
 	}

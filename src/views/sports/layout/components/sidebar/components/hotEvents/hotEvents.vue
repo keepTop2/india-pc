@@ -68,7 +68,7 @@ import { computed } from "vue";
 import { RiseOrFall } from "/@/components/Sport/index";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import SportsCommonFn from "/@/views/sports/utils/common";
-import { FootballCardApi } from "/@/api/sports/footballCard";
+import SportsApi from "/@/api/sports/sports";
 import PubSub from "/@/pubSub/pubSub";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 
@@ -81,11 +81,11 @@ const promotionsData = computed(() => {
 // 点击关注按钮
 const attentionEvent = async (isActive: boolean, item: any) => {
 	if (isActive) {
-		await FootballCardApi.unFollow({
+		await SportsApi.unFollow({
 			thirdId: [item.eventId],
 		});
 	} else {
-		await FootballCardApi.saveFollow({
+		await SportsApi.saveFollow({
 			thirdId: item.eventId,
 			type: 2,
 		});

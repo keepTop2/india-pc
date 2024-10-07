@@ -58,7 +58,7 @@ import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
 const SportAttentionStore = useSportAttentionStore();
-import { FootballCardApi } from "/@/api/sports/footballCard";
+import SportsApi from "/@/api/sports/sports";
 import { useRouter, useRoute } from "vue-router";
 import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import SportsCommonFn from "/@/views/sports/utils/common";
@@ -173,11 +173,11 @@ const isAttention = computed(() => {
 // 点击关注按钮
 const attentionEvent = async (isActive: boolean) => {
 	if (isActive) {
-		await FootballCardApi.unFollow({
+		await SportsApi.unFollow({
 			thirdId: [props.event.eventId],
 		});
 	} else {
-		await FootballCardApi.saveFollow({
+		await SportsApi.saveFollow({
 			thirdId: props.event.eventId,
 			type: 2,
 		});

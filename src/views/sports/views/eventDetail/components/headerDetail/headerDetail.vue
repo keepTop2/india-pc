@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { FootballCardApi } from "/@/api/sports/footballCard";
+import SportsApi from "/@/api/sports/sports";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
@@ -147,11 +147,11 @@ const isAttention = computed(() => SportAttentionStore.attentionEventIdList.incl
  */
 const attentionEvent = async (isActive: boolean) => {
 	if (isActive) {
-		await FootballCardApi.unFollow({
+		await SportsApi.unFollow({
 			thirdId: [props.sportInfo.eventId],
 		});
 	} else {
-		await FootballCardApi.saveFollow({
+		await SportsApi.saveFollow({
 			thirdId: props.sportInfo.eventId,
 			type: 2,
 		});

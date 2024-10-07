@@ -1,7 +1,4 @@
-import LoginEvents from "./module/loginEvents/loginEvents";
-
 import SportEvents from "./module/sportEvents/sportEvents";
-
 import LotteryEvents from "./module/lotteryEvents/lotteryEvents";
 import TaskEvents from "./module/taskEvents/taskEvents";
 import WorkerEvents from "./module/workerEvents/workerEvents";
@@ -10,10 +7,6 @@ import PreFetchViewEvents from "/@/pubSub/pubSubEvents/module/preFetchViewEvents
  * @description 统一订阅事件(主题)出口
  */
 const PubSubEvents = {
-	/**
-	 * @description — 登录模块发布订阅事件名(主题)
-	 */
-	LoginEvents,
 	/**
 	 * @description — 抽奖发布订阅事件名(主题)
 	 */
