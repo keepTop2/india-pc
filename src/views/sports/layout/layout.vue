@@ -55,7 +55,7 @@ import pubSub from "/@/pubSub/pubSub";
 import { FootballCardApi } from "/@/api/sports/footballCard";
 
 import Modal from "./components/Modal/index.vue";
-import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar } from "./components";
+import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar, Banner } from "./components";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
