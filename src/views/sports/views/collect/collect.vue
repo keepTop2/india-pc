@@ -1,8 +1,3 @@
-<!--
- * @Author: WangMingxin
- * @Description: 体育-关注收藏
--->
-
 <template>
 	<div class="box-content" v-show="isShowCollect">
 		<div v-for="(sport, index) in computedSportComponent" v-if="computedSportComponent.length" :key="index">
@@ -19,11 +14,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref, watchEffect, Component, computed, inject, onBeforeMount } from "vue";
-import pubSub from "/@/pubSub/pubSub";
+import { ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { map, get, isArray, filter, xorWith } from "lodash-es";
-import sportsApi from "/@/api/sports/sports";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
@@ -42,13 +35,6 @@ import BaseballList from "/@/views/sports/tournamentViews/baseball/components/ro
 import BadmintonList from "/@/views/sports/tournamentViews/badminton/components/rollingCard/rollingCard.vue";
 import AmericanSoccerList from "/@/views/sports/tournamentViews/americanSoccer/components/rollingCard/rollingCard.vue";
 import { useLoading } from "/@/directive/loading/hooks";
-import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
-import { useToolsHooks } from "../../hooks/scoreboardTools";
-import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
-import workerManage from "/@/webWorker/workerManage";
-const { sportType, tabActive, handleSportEventsPush, openSportPush, handleSportPush } = useSportEvents();
-const { toggleEventScoreboard, getSidebarMarketSSEPush, getPromotions } = useToolsHooks();
-const SidebarStore = useSidebarStore();
 
 const { startLoading, stopLoading } = useLoading();
 const popularLeague = usePopularLeague();
@@ -98,10 +84,6 @@ const getEventData = () => {
 const computedSportComponent = computed(() => {
 	stopLoading();
 	const eventData = getEventData();
-	// if(eventData.length){
-	// 	toggleEventScoreboard(eventData[0].events[0]);
-	// }
-	console.log("eventData====", eventData);
 	return [
 		{
 			name: "足球",

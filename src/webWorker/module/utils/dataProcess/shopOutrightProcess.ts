@@ -1,8 +1,4 @@
-// 体育静态文件
-import sportsMap from "/@/views/sports/utils/sportsMap/sportsMap";
-import { formattingChildrenViewData } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { merge } from "lodash-es";
-import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourceModel";
 
 // 每个运动项目的赛事数量及串关赛事数量  数据线程处理 GetSports
 export default (function () {
@@ -17,7 +13,11 @@ export default (function () {
 		outright: [] as any,
 	};
 
-	const sportsProcess = (sportServerData) => {
+	const sportsProcess = (sportServerData: {
+		payload: {
+			outrights: { add: any[]; change: any[]; remove: any[] };
+		};
+	}) => {
 		let processData = {} as any;
 		if (sportServerData.payload.outrights && sportServerData.payload.outrights.add.length > 0) {
 			processData = Object.assign({}, processData, sportsProcessAdd(sportServerData));
@@ -34,7 +34,7 @@ export default (function () {
 	};
 
 	// 每个运动项目的冠军数量新增
-	const sportsProcessAdd = (sportServerData) => {
+	const sportsProcessAdd = (sportServerData: { payload: any }) => {
 		// 初始化数据
 		dataObj.outright = [];
 		dataObj.outright = dataObj.outright.concat(sportServerData.payload.outrights && sportServerData.payload.outrights.add);
@@ -42,18 +42,18 @@ export default (function () {
 	};
 
 	// 每个运动项目的冠军数量发生变化
-	const sportsProcessChange = (sportServerData) => {
+	const sportsProcessChange = (sportServerData: { payload: any }) => {
 		sportServerData.payload.outrights &&
 			sportServerData.payload.outrights.change.forEach((item: { teams: any; leagueId: any; count: any; outrightGame: any }) => {
 				//获取old数据index
-				const index = dataObj.outright.findIndex((i) => i.leagueId === item.leagueId);
+				const index = dataObj.outright.findIndex((i: { leagueId: any }) => i.leagueId === item.leagueId);
 				const oldOutright = dataObj.outright[index];
 				/**
 				 * @description 判断赔率是否发生变化，设置对应的变动状态
 				 */
-				item.teams.forEach((teamItem) => {
+				item.teams.forEach((teamItem: { orid: any; price: number; oddsChange: string }) => {
 					//获取对应更新的teamItem
-					const oldTeamIndex = oldOutright?.teams.findIndex((i) => i.orid === teamItem.orid);
+					const oldTeamIndex = oldOutright?.teams.findIndex((i: { orid: any }) => i.orid === teamItem.orid);
 					// 获取oldPrice 用于判断赔率是否发生变化
 					/**
 					 * @description oddsChange 上升[up] 下降[down]
@@ -76,7 +76,11 @@ export default (function () {
 	};
 
 	// 每个运动项目的冠军数量删除
-	const sportsProcessRemove = (sportServerData) => {
+	const sportsProcessRemove = (sportServerData: {
+		payload: {
+			outrights: { add: any[]; change: any[]; remove: any[] };
+		};
+	}) => {
 		return { sportServerData };
 	};
 
