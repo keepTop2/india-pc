@@ -1,23 +1,30 @@
 <template>
-	<SelectCard v-if="state.targetEvents?.length" :sportsActive="sportsActive" :teamData="state.targetEvents" />
-	<div class="box-content" v-if="state.targetEvents?.length">
-		<VirtualScrollVirtualList
-			ref="VirtualScrollVirtualListRef"
-			bottomClass="card-container"
-			minDivClass="card-header"
-			childrenDivClass="league-content"
-			:list-data="state.targetEvents"
-			:childrenKey="'teams'"
-		>
-			<template #default="{ item, index, isExpand }">
-				<!-- 冠军卡片 -->
-				<championCard :championData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="oddsChange" @toggleDisplay="toggleDisplay" />
-			</template>
-		</VirtualScrollVirtualList>
-	</div>
-	<div class="nonedata" v-else>
-		<NoneData />
-	</div>
+	<Skeleton>
+		<template #skeleton>
+			<ChampionSkeletonList />
+		</template>
+		<template #default>
+			<SelectCard v-show="state.targetEvents?.length" :sportsActive="sportsActive" :teamData="state.targetEvents" />
+			<div class="box-content" v-show="state.targetEvents?.length">
+				<VirtualScrollVirtualList
+					ref="VirtualScrollVirtualListRef"
+					bottomClass="card-container"
+					minDivClass="card-header"
+					childrenDivClass="league-content"
+					:list-data="state.targetEvents"
+					:childrenKey="'teams'"
+				>
+					<template #default="{ item, index, isExpand }">
+						<!-- 冠军卡片 -->
+						<championCard :championData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="oddsChange" @toggleDisplay="toggleDisplay" />
+					</template>
+				</VirtualScrollVirtualList>
+			</div>
+			<!-- <div class="nonedata" v-show="!state.targetEvents?.length">
+				<NoneData />
+			</div> -->
+		</template>
+	</Skeleton>
 </template>
 
 <script setup lang="ts">
@@ -34,6 +41,9 @@ import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
+import Skeleton from "/@/components/Skeleton/Skeleton.vue";
+import ChampionSkeletonList from "./components/ChampionSkeletonList/ChampionSkeletonList.vue";
+import pubsub from "/@/pubSub/pubSub";
 
 // Store, hooks, and route
 const route = useRoute();
@@ -64,6 +74,13 @@ onBeforeMount(() => {
 		state.targetEvents = viewSportPubSubEventData.getSportData();
 		state.targetEventList = getFilteredList();
 		setInitialSportsActive();
+	});
+
+	// 添加以下代码来处理骨架屏的显示和隐藏
+	watchEffect(() => {
+		if (state.targetEvents.length > 0) {
+			pubsub.publish("SkeletonLoading", false);
+		}
 	});
 });
 

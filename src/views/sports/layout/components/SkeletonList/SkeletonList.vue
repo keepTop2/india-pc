@@ -1,4 +1,7 @@
 <template>
+	<div class="selectCard">
+		<el-skeleton-item variant="text" style="width: 30px" />
+	</div>
 	<div class="skeleton-card" v-for="i in 3" :key="i">
 		<!-- 模拟 card-header -->
 		<div class="skeleton-header">
@@ -56,6 +59,21 @@ const getMarketItemStyle = (index: number) => {
 </script>
 
 <style lang="scss" scoped>
+.selectCard {
+	width: 100%;
+	height: 34px;
+	background: var(--Bg1);
+	border-radius: 4px;
+	margin: 4px 0;
+	padding: 0px 19px;
+	line-height: 34px;
+	:deep(.el-skeleton__item) {
+		// background: linear-gradient(90deg, #8c8c8c 25%, #737373 37%, #8a8a8a 63%);
+		background: linear-gradient(90deg, var(--Bg3) 25%, var(--Bg1) 37%, var(--Bg3) 63%);
+
+		background-size: 400% 100%;
+	}
+}
 .skeleton-card {
 	margin-bottom: 5px;
 	background-color: var(--Bg1);
