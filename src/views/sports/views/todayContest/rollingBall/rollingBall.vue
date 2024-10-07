@@ -4,7 +4,7 @@
 			<SkeletonList />
 		</template>
 		<template #default>
-			<component v-if="leagues && selectedComponent" :is="selectedComponent" :listData="leagues" :matchedLeague="matchedLeague" />
+			<component v-show="leagues && selectedComponent" :is="selectedComponent" :listData="leagues" :matchedLeague="matchedLeague" />
 		</template>
 	</Skeleton>
 </template>
