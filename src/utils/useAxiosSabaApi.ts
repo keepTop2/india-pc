@@ -1,6 +1,8 @@
 import axios from "axios";
 import _ from "lodash-es";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
+import { useUserStore } from "/@/stores/modules/user";
+import { useModalStore } from "/@/stores/modules/modalStore";
 // 获取 config 配置请求 api
 function getUrl() {
 	switch (import.meta.env.VITE_BASEENV) {
@@ -23,7 +25,14 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
 	(config) => {
+		const UserStore = useUserStore();
 		const sportsInfoStore = useSportsInfoStore();
+		const modalStore = useModalStore();
+		// 需要登陆的处理
+		if (config["headers"]["needLogin"] == "true" && !UserStore.getUserInfo.token) {
+			modalStore.openModal("LoginModal");
+			return Promise.reject();
+		}
 		if (sportsInfoStore.getSportsToken) {
 			config["headers"]["Authorization"] = `Bearer ${sportsInfoStore.getSportsToken}`;
 		}

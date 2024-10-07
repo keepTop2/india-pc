@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { useRouter, useRoute } from "vue-router";
-import { FootballCardApi } from "/@/api/sports/footballCard";
+import SportsApi from "/@/api/sports/sports";
 import { computed } from "vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";

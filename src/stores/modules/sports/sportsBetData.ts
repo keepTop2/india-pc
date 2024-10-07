@@ -11,7 +11,7 @@ import { SportPushApi, WebToPushApi } from "/@/views/sports/enum/sportEnum/sport
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 import pubsub from "/@/pubSub/pubSub";
 import { SportsRootObject, BetMarketInfo } from "/@/views/sports/models/interface";
-import { useToLogin } from "/@/hooks/toLogin";
+import { useHaveToken } from "/@/hooks/useHaveToken";
 const $: any = i18n.global;
 interface sportsBetEvent {
 	sportsBetShow: boolean;
@@ -111,13 +111,9 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 		 * @param data  赛事信息
 		 */
 		async addEventToCart(data) {
-			const { isHaveToken } = useToLogin();
-			try {
-				await isHaveToken();
-			} catch (error) {
-				console.error("Error:", error);
-				return; // 如果出错直接退出方法
-			}
+			const haveToken = useHaveToken();
+			// 用户未登录，直接返回
+			if (!haveToken()) return;
 			const eventId = data.eventId;
 			const existingIndex = this.sportsBetEventData.findIndex((item) => item.eventId === eventId);
 			if (existingIndex !== -1) {
@@ -228,13 +224,9 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 
 		// 储存当前选中的赛事盘口信息
 		async storeEventInfo(key, data) {
-			const { isHaveToken } = useToLogin();
-			try {
-				await isHaveToken();
-			} catch (error) {
-				console.error("Error:", error);
-				return; // 如果出错直接退出方法
-			}
+			const haveToken = useHaveToken();
+			// 用户未登录，直接返回
+			if (!haveToken()) return;
 			if (!this.sportsEventInfo[key] && this.sportsBetEventData.length >= 10) {
 				return;
 			} else {

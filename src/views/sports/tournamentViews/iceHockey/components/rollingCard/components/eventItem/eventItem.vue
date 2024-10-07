@@ -56,7 +56,7 @@ import TeamInfoCard from "../teamInfoCard/teamInfoCard.vue";
 import MarketColumn from "../marketColumn/marketColumn.vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
-import { FootballCardApi } from "/@/api/sports/footballCard";
+import SportsApi from "/@/api/sports/sports";
 import { useRouter, useRoute } from "vue-router";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
@@ -136,7 +136,7 @@ const isAttention = computed(() => {
 
 // 点击关注按钮
 const toggleAttention = async () => {
-	const action = isAttention.value ? FootballCardApi.unFollow : FootballCardApi.saveFollow;
+	const action = isAttention.value ? SportsApi.unFollow : SportsApi.saveFollow;
 	const params = isAttention.value ? { thirdId: [props.event.eventId] } : { thirdId: props.event.eventId, type: 2 };
 	await action(params);
 	PubSub.publish(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, {});

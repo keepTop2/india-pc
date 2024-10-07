@@ -9,6 +9,7 @@ import SportsCommonFn from "/@/views/sports/utils/common";
 import { sportsEventDetailPush, promotionsEventsSSEPush } from "/@/views/sports/utils/sportsMap/sportsSSERequestMap";
 import workerManage from "/@/webWorker/workerManage";
 import { useUserStore } from "/@/stores/modules/user";
+import { useHaveToken } from "/@/hooks/useHaveToken";
 export function useToolsHooks() {
 	const SidebarStore = useSidebarStore();
 	const SportsInfoStore = useSportsInfoStore();
@@ -16,6 +17,14 @@ export function useToolsHooks() {
 	// 切换计分板功能
 	const toggleEventScoreboard = (eventInfo: any, isVideo: boolean = false) => {
 		console.log("触发计分板统计，执行对应逻辑", eventInfo, isVideo);
+		// 如果是切换视频，先判断登录状态
+		if (isVideo) {
+			const haveToken = useHaveToken();
+			// 用户未登录，直接返回
+			if (!haveToken()) return;
+		}
+		// 清空状态
+		SidebarStore.clearEventsInfo();
 		if (eventInfo) {
 			if (workerManage.getWorkerList().length) {
 				// 关闭侧边栏events线程

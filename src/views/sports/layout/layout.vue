@@ -43,7 +43,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import pubSub from "/@/pubSub/pubSub";
-import { FootballCardApi } from "/@/api/sports/footballCard";
+import SportsApi from "/@/api/sports/sports";
 import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar, Banner } from "./components";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
 
@@ -103,8 +103,11 @@ const { pause: pauseInterval } = useIntervalFn(() => sportsLogin(), 8 * 60 * 100
 
 // 初始化体育请求
 const initSportRequest = async () => {
-	// 获取关注列表
-	await getAttention();
+	// 判断token状态
+	if (UserStore.getUserInfo.token) {
+		// 获取关注列表
+		await getAttention();
+	}
 	// 体育登录
 	await sportsLogin();
 	// 初始化体育订阅
@@ -117,7 +120,7 @@ const initSportRequest = async () => {
 // 获取用户关注的体育列表
 const getAttention = async (isLogin = true) => {
 	if ((isLogin && UserStore.getUserInfo) || !isLogin) {
-		const res = await FootballCardApi.getAttentionList();
+		const res = await SportsApi.getAttentionList();
 		if (res.data) {
 			sportsBetEvent.setAttentionList(res.data);
 		}

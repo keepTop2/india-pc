@@ -69,7 +69,7 @@ import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 const sportsBetInfo = useSportsBetInfoStore();
 const ShopCatControlStore = useShopCatControlStore();
 const sportsBetEvent = useSportsBetEventStore();
-
+const UserStore = useUserStore();
 const isRotating = ref(false);
 
 const isShaking = ref(false); // 创建一个响应式变量，用于控制摇摆动画的状态
@@ -90,8 +90,11 @@ const state = reactive({
 });
 
 onMounted(() => {
-	// 请求余额信息
-	getBetOrderId();
+	// 判断token状态
+	if (UserStore.getUserInfo.token) {
+		// 请求余额信息
+		getBetOrderId();
+	}
 });
 
 // 监听购物车赛事变化
