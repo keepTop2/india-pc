@@ -472,7 +472,7 @@ const onOrderConfirm = () => {
 
 .rotateAn {
 	transform-origin: 50% 50%;
-	animation: reflash 1s infinite linear;
+	animation: reflash 1s linear 1;
 }
 
 @keyframes reflash {

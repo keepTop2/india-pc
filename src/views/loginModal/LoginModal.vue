@@ -74,8 +74,8 @@
 			</div>
 		</div>
 		<!-- 验证码容器 -->
-		<article>	
-			<p id="captcha-element" ref="captchaBtn"/>
+		<article>
+			<p id="captcha-element" ref="captchaBtn" />
 			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
 		</article>
 	</form>
@@ -163,7 +163,8 @@ const onSubmit = async () => {
 		showToast(message, 1500);
 		await UserStore.setUserInfo(data);
 		localStorage.setItem("userInfo", JSON.stringify(data));
-		getUserInfo();
+		UserStore.initUserInfo();
+		// getUserInfo();
 		rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
 		modalStore.closeModal();
 	} else {
@@ -172,17 +173,17 @@ const onSubmit = async () => {
 };
 
 // 获取用户信息
-const getUserInfo = async () => {
-	const res = await userApi.getIndexInfo().catch((err) => err);
-	const { code, data, message } = res;
-	if (code === Common.ResCode.SUCCESS) {
-		const userInfo = { ...UserStore.getUserInfo, ...data };
-		UserStore.setUserInfo(userInfo);
-		localStorage.setItem("userInfo", JSON.stringify(userInfo));
-	} else {
-		showToast(message, 1500);
-	}
-};
+// const getUserInfo = async () => {
+// 	const res = await userApi.getIndexInfo().catch((err) => err);
+// 	const { code, data, message } = res;
+// 	if (code === Common.ResCode.SUCCESS) {
+// 		const userInfo = { ...UserStore.getUserInfo, ...data };
+// 		UserStore.setUserInfo(userInfo);
+// 		localStorage.setItem("userInfo", JSON.stringify(userInfo));
+// 	} else {
+// 		showToast(message, 1500);
+// 	}
+// };
 
 // 忘记密码处理
 const forgetPassword = () => {
