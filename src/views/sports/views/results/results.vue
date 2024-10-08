@@ -81,6 +81,7 @@ import { useResultHook } from "./useResultHook";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import useSportPubSubEvents from "../../hooks/useSportPubSubEvents";
+import dayjs from "dayjs";
 const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
 const ShopCatControlStore = useShopCatControlStore();
 const popularLeague = usePopularLeague();
@@ -180,8 +181,8 @@ const getEventResultsData = async () => {
 	const res = await sportsApi
 		.GetEventResults({
 			language: "zhcn",
-			from: moment(startDate).startOf("days").add(5, "hour").format(temp),
-			until: moment(endDate).endOf("days").add(5, "hour").subtract(1, "millisecond").format(temp),
+			from: dayjs(startDate).startOf("days").toISOString(),
+			until: dayjs(endDate).endOf("days").subtract(1, "millisecond").toISOString(),
 			// and isLive eq ${queryForm.value.isLive}
 			query: `$filter=contains(leagueName,'${queryForm.value.league}') and (contains(homename,'${queryForm.value.competition}') or contains(awayname,'${queryForm.value.competition}')) and sportType eq ${queryForm.value.ballType} `,
 		})

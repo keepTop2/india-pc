@@ -89,12 +89,12 @@ export const formatDateToTimeStamp = (date: string): number => {
 	return moment(date).valueOf();
 };
 
-// 格式化沙巴日期为utc-5
+// 将UTC时间转换为本地时区时间
 export const convertUtcToUtc5AndFormat = (date: moment.MomentInput) => {
-	return moment(date).subtract(5, "hour").format("YYYY-MM-DD HH:mm:ss");
+	return moment.utc(date).local().format("YYYY-MM-DD HH:mm:ss");
 };
 
-// 格式化沙巴日期为utc-5
-export const convertUtcToUtc5AndFormatMD = (date: string, temp = "MM-DD HH:mm") => {
-	return moment(date).subtract(5, "hour").format(temp);
+// 将UTC时间转换为本地时区时间，并按指定格式输出
+export const convertUtcToUtc5AndFormatMD = (date: string, format = "MM-DD HH:mm") => {
+	return moment.utc(date).local().format(format);
 };
