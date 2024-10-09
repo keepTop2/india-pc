@@ -8,7 +8,7 @@
 			:placeholder="`限额 ${common.formatFloat(sportsBetInfo.championSingleTicketInfo.minBet)} ～ ${common.formatFloat(sportsBetInfo.championSingleTicketInfo.maxBet)}`"
 			@input="onInputEnter"
 		>
-			<template #suffix>USD</template>
+			<template #suffix>{{ UserStore.getUserInfo.mainCurrency }}</template>
 		</el-input>
 	</div>
 </template>
@@ -18,6 +18,8 @@ import { computed } from "vue";
 import common from "/@/utils/common";
 import shopCartChampionPubSub from "/@/views/sports/hooks/shopCartChampionPubSub";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
+import { useUserStore } from "/@/stores/modules/user";
+const UserStore = useUserStore();
 const sportsBetInfo = useSportsBetInfoStore();
 let stake = computed(() => shopCartChampionPubSub.betValueState.singleTicketBetValue);
 
