@@ -136,12 +136,12 @@ const viteConfig = defineConfig(({ command, mode }: ConfigEnv) => {
 				...(JSON.parse(env.VITE_OPEN_CDN) ? { external: buildConfig.external } : {}),
 			},
 			terserOptions: {
-				// compress: {
-				// 	//生产环境时移除console
-				// 	drop_console: isProduction,
-				// 	// drop_console: false,
-				// 	drop_debugger: true,
-				// },
+				compress: {
+					//生产环境时移除console
+					drop_console: isProduction,
+					// drop_console: false,
+					drop_debugger: true,
+				},
 			},
 		},
 		css: {
