@@ -1,10 +1,9 @@
 <template>
-	<div class="box_select">
+	<div class="box_select" @click="onToggleAllStates">
 		<div class="select_left">
 			<div class="title">
 				<span>({{ teamData.length }})</span>
 			</div>
-			<!-- <SieveOfCases :options="teamData" /> -->
 		</div>
 		<div class="select_right">
 			<span class="icon"><svg-icon name="sports-arrow_big" size="20px"></svg-icon></span>
@@ -13,8 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { SieveOfCases } from "./index";
-
 interface teamDataType {
 	/** 队伍数据 */
 	teamData: any;
@@ -25,6 +22,12 @@ const props = withDefaults(defineProps<teamDataType>(), {
 		return {};
 	},
 });
+
+const emit = defineEmits(["onToggleAllStates"]);
+
+const onToggleAllStates = () => {
+	emit("onToggleAllStates");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -39,6 +42,7 @@ const props = withDefaults(defineProps<teamDataType>(), {
 	padding: 4px 19px 4px 28px;
 	border-radius: 8px;
 	background-color: var(--Bg1);
+	cursor: pointer;
 
 	.select_left {
 		display: flex;
