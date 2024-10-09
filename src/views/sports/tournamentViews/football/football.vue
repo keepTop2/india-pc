@@ -1,42 +1,11 @@
 <template>
-	<SelectCard :teamData="listData" />
+	<SelectCard :teamData="listData" @onToggleAllStates="onToggleAllStates" />
 	<!-- 联赛数据统计卡片 -->
 	<div class="box-content">
-		<!--
-					虚拟滚动列表组件
-					Props 说明：
-					- ref="virtualScrollRef"：用于引用虚拟滚动组件，以便操作内部方法。
-					- :list-data：展示的数据列表，优先展示匹配到的联赛数据。
-					- bottomClass：底部容器样式类名。
-					- minDivClass：收起时的标题样式类名。
-					- childrenDivClass：展开时的子集内容样式类名。
-				-->
-		<!--		<VirtualScrollVirtualList
-				ref="virtualScrollRef"
-				bottomClass="card-container"
-				minDivClass="card-header"
-				childrenDivClass="league-content"
-				:list-data="matchedLeague.length > 0 ? matchedLeague : listData"
-			>
-				<template #default="{ item, index, isExpand }">
-					<!~~
-						滚球卡片组件
-						Props 说明：
-						- teamData：传递当前队伍的数据。
-						- isExpand：控制卡片的展开状态。
-						- dataIndex：当前队伍在列表中的索引。
-						- oddsChange：处理赔率变化时的事件。
-						- toggleDisplay：处理卡片的展开/收起事件。
-					~~>
-					<FootballCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="handleOddsChange" @toggleDisplay="handleToggleDisplay" />
-				</template>
-			</VirtualScrollVirtualList>
--->
-
 		<DynamicScroller :items="listData" :min-item-size="34" class="scroller" key-field="leagueId" :prerender="10">
 			<template v-slot="{ item, index, active }">
 				<DynamicScrollerItem :item="item" :active="active" :data-index="index" :data-active="active">
-					<FootballCard :teamData="item" :dataIndex="index" @oddsChange="handleOddsChange" @toggleDisplay="handleToggleDisplay" />
+					<FootballCard :teamData="item" :dataIndex="index" :allStatus="allStatus" @oddsChange="handleOddsChange" />
 				</DynamicScrollerItem>
 			</template>
 		</DynamicScroller>
@@ -62,14 +31,8 @@ const props = defineProps({
 	},
 });
 
-// 虚拟滚动列表组件的引用
-const virtualScrollRef = ref<InstanceType<typeof VirtualScrollVirtualList>>();
-// 路由实例
-const route = useRoute();
 // 引入赔率变化事件的相关逻辑
 const { clearSportsOddsChange } = useSportPubSubEvents();
-// 侧边栏状态管理实例
-const sidebarStore = useSidebarStore();
 
 /**
  * @description 处理赔率发生变化的事件，在动画结束后清除掉 `oddsChange` 状态
@@ -81,22 +44,12 @@ const handleOddsChange = ({ marketId, selections }: { marketId: number; selectio
 	clearSportsOddsChange({ webToPushApi: WebToPushApi.rollingBall, marketId, selection: selections });
 };
 
-/**
- * @description 处理展开/收起卡片的事件
- * @param {number} [val] - 可选参数，指定要展开或收起的卡片索引
- */
-const handleToggleDisplay = (val?: number) => {
-	virtualScrollRef.value?.setlistDataEisExpand(val);
+// 用来存储所有 FootballCard 组件的 refs
+const allStatus = ref(true);
+const onToggleAllStates = () => {
+	allStatus.value = !allStatus.value;
+	console.log("触发全部状态", allStatus.value);
 };
-
-// 监控 matchedLeague 的变化并处理逻辑
-watchEffect(() => {
-	if (props.matchedLeague?.length) {
-		// 使用可选链操作符
-		console.log("Updated matched league:", props.matchedLeague);
-		// 在此可以进一步处理 matchedLeague 的数据
-	}
-});
 </script>
 
 <style lang="scss" scoped>
