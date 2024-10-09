@@ -72,7 +72,7 @@ watch(
 	() => route.fullPath,
 	(newValue, oldValue) => {
 		if (newValue !== oldValue) {
-			sportsBetEvent.clearHotLeagueList();
+			// sportsBetEvent.clearHotLeagueList();
 			openSportPush(route.query.sportType as string, tabActive.value);
 			pubSub.publish("SkeletonLoading", true);
 		}
