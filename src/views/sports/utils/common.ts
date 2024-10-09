@@ -552,7 +552,7 @@ class SportsCommonFn {
 	};
 
 	/**
-	 * @description: 根据utc-5的当天日期 生成当天零点与23点59分59秒
+	 * @description: 根据utc-0的当天日期 生成当天零点与23点59分59秒
 	 * @param {*} date
 	 * @param {*} dayEnd  结束时的间隔天数
 	 * @return {*}
@@ -561,12 +561,13 @@ class SportsCommonFn {
 		// 传入的日期为UTC-5时间
 		const easternTime = dayjs(date);
 		// 计算0点（开始时间）
-		const startDate = easternTime.startOf("days").add(5, "hour").format(format);
+		const startDate = easternTime.startOf("days").toISOString();
 		// 计算23:59:59（结束时间），注意endOf返回的是下一周期的开始，所以需要减去1毫秒
-		const endDate = easternTime.add(dayEnd, "days").endOf("days").add(5, "hour").subtract(1, "millisecond").format(format);
+		const endDate = easternTime.add(dayEnd, "days").endOf("days").subtract(1, "millisecond").toISOString();
 
 		return { startDate, endDate };
 	};
+
 	/**
 	 * @description: 提供一个数据区间 startDate 今天12点 endDate 明天12点
 	 * @param {*} date
@@ -577,9 +578,9 @@ class SportsCommonFn {
 		const tomorrow = dayjs(date).format("YYYY-MM-DDT12:00:00");
 		return { startDate: today, endDate: tomorrow };
 	};
-	// 获取 utc-5的当天 日期
+	// 获取 utc0 的当天 日期
 	public static todayDate = () => {
-		return dayjs.utc().subtract(5, "hour").format("YYYY-MM-DD");
+		return dayjs.utc().format("YYYY-MM-DD");
 	};
 
 	/**

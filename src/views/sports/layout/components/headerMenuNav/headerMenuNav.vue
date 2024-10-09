@@ -1,5 +1,5 @@
 <template>
-	<div class="header-container" :class="route.meta.type">
+	<div class="header-container" :class="[route.meta.type, route.meta.name]">
 		<div class="menu-nav">
 			<div class="right" ref="rightContainer">
 				<!-- 左侧滚动箭头，只有在有滚动时才显示 -->
@@ -164,6 +164,9 @@ watch(sportsData, () => {
 		border-radius: 8px 8px 0px 0px;
 		// margin-bottom: 1px;
 		border-bottom: 1px solid var(--Line_1);
+	}
+	&.morningTrading {
+		border-radius: 0;
 	}
 	.arrow_content {
 		position: absolute;

@@ -30,17 +30,17 @@ export default (function () {
 			 * @description 外层Sports组件视图数据
 			 */
 			sports: [] as Sports[],
-			leagues: [],
-			events: [],
-			hotEvents: [],
-			markets: [],
-			outrights: [],
-			results: [],
+			leagues: [] as any[],
+			events: [] as any[],
+			hotEvents: [] as any[],
+			markets: [] as any[],
+			outrights: [] as any[],
+			results: [] as any[],
 			/**
 			 * @description 各个子路由视图数据
 			 */
-			childrenViewData: [],
-			promotionsViewData: [],
+			childrenViewData: [] as [],
+			promotionsViewData: [] as any[],
 		};
 	}
 

@@ -1,6 +1,6 @@
 // import sportEventSource from "/@/eventSource/sportEventSource/sportEventSource";
 import SportsCommonFn from "../common";
-import moment from "moment";
+import dayjs from "dayjs";
 import { WebToPushApi, SportPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { OpenSportEventSourceParams, OpenSportSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import { betTypes } from "./sportsBetType";
@@ -71,8 +71,8 @@ const sportTabPushActions = {
 			webToPushApi: WebToPushApi.todayContest,
 			params: {
 				query: `$filter= sportType in (${SportsCommonFn.getRequestSportsType()})`,
-				from: moment.utc().subtract(5, "hour").startOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
-				until: moment.utc().subtract(5, "hour").endOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
+				from: dayjs().startOf("day").toISOString(),
+				until: dayjs().endOf("day").toISOString(),
 			},
 		},
 
@@ -84,8 +84,8 @@ const sportTabPushActions = {
 			webToPushApi: WebToPushApi.eventsTodayContest,
 			params: {
 				query: `$filter= sportType in (${sportType}) and islive eq false &$orderby=globalShowTime asc `,
-				from: moment.utc().subtract(5, "hour").startOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
-				until: moment.utc().subtract(5, "hour").endOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
+				from: dayjs().startOf("day").toISOString(),
+				until: dayjs().endOf("day").toISOString(),
 				includeMarkets: `$filter=bettype in (${betTypes})`,
 			},
 			isMultiple: true,
@@ -105,7 +105,8 @@ const sportTabPushActions = {
 			webToPushApi: WebToPushApi.morningTrading,
 			params: {
 				query: `$filter= sportType in (${SportsCommonFn.getRequestSportsType()})`,
-				from: moment.utc().subtract(5, "hour").endOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
+				from: dayjs().add(1, "day").startOf("day").toISOString(),
+				until: dayjs().add(15, "day").endOf("day").toISOString(),
 			},
 		},
 
@@ -117,7 +118,7 @@ const sportTabPushActions = {
 			webToPushApi: WebToPushApi.eventsMorningTrading,
 			params: {
 				query: `$filter= sportType in (${sportType})&$orderby=globalShowTime asc `,
-				from: moment.utc().subtract(5, "hour").endOf("day").add(5, "hour").format("YYYY-MM-DDTHH:mm:ss"),
+				from: dayjs().add(1, "day").startOf("day").toISOString(),
 				includeMarkets: `$filter=bettype in (${betTypes})`,
 			},
 			isMultiple: true,

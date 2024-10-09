@@ -16,6 +16,7 @@ declare module 'vue' {
     CollapseTransition: typeof import('./src/components/Collapse/CollapseTransition.vue')['default']
     CommonDialog: typeof import('./src/components/CommonDialog/index.vue')['default']
     copy: typeof import('./src/components/Sport/RiseOrFall copy.vue')['default']
+    DateSelector: typeof import('./src/components/dateSelector/dateSelector.vue')['default']
     Dialog: typeof import('./src/components/Dialog/Dialog.vue')['default']
     DropdownSelect: typeof import('./src/components/DropdownSelect/index.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']

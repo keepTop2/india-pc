@@ -5,6 +5,7 @@
 import { defineStore } from "pinia";
 import moment from "moment";
 import SportsCommon from "/@/views/sports/utils/common";
+import dayjs from "dayjs";
 interface timeIntervalType {
 	startDate: string;
 	endDate: string;
@@ -18,7 +19,7 @@ interface SportMorningTradingType {
 export const useSportMorningTradingStore = defineStore("SportMorningTrading", {
 	state(): SportMorningTradingType {
 		/** 默认今日时间 */
-		const todayDate = moment(SportsCommon.todayDate()).add(1, "day").format("YYYY-MM-DD");
+		const todayDate = dayjs(SportsCommon.todayDate()).add(1, "day").toISOString();
 		/** 今日15天的开始结束 */
 		const { startDate, endDate } = SportsCommon.getResultDateRange(todayDate, 15);
 

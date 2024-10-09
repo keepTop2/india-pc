@@ -4,6 +4,7 @@
 			<SkeletonList />
 		</template>
 		<template #default>
+			<DateSelector :daysNumber="7" :other="true" :direction="true" />
 			<component v-show="leagues && selectedComponent" :is="selectedComponent" :listData="leagues" :matchedLeague="matchedLeague" />
 		</template>
 	</Skeleton>

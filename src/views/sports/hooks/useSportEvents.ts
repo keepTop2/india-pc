@@ -20,6 +20,7 @@ import moment from "moment";
 import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
 import workerManage from "/@/webWorker/workerManage";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+import dayjs from "dayjs";
 
 export function useSportEvents() {
 	const route = useRoute();
@@ -68,6 +69,15 @@ export function useSportEvents() {
 		{ immediate: true }
 	);
 
+	const morningTradingParam = () => {
+		const { startDate, endDate } = SportMorningTradingStore.getTimeInterval;
+		return {
+			query: `$filter=sportType in (${SportsCommonFn.getRequestSportsType()})&$orderby=globalShowTime asc `,
+			from: startDate,
+			until: endDate,
+		};
+	};
+
 	/**
 	 * @description 处理体育赛事推送
 	 * @param {string} type - 体育类型
@@ -78,29 +88,11 @@ export function useSportEvents() {
 			token: SportsInfoStore.getSportsToken,
 			language: SportsCommonFn.getSportLanguage(),
 		};
-
 		const pushActions = {
 			rollingBall: () => sendWorkerCommand(sportTabPushActions.rollingBall.openEvents(type), params),
 			todayContest: () => sendWorkerCommand(sportTabPushActions.todayContest.openEvents(type), params),
 			morningTrading: () => {
-				const { startDate, endDate } = SportMorningTradingStore.getTimeInterval;
-				const queryParams = SportMorningTradingStore.getActiveDate
-					? {
-							query: `$filter= sportType in (${type})`,
-							from: startDate,
-							until: endDate,
-							includeMarkets: `$filter=bettype in (${betTypes})`,
-					  }
-					: {
-							query: `$filter= sportType in (${type})`,
-							includeMarkets: `$filter=bettype in (${betTypes})`,
-							from: moment
-								.utc()
-								.add(8 - 5 / 24, "day")
-								.startOf("day")
-								.add(5, "hour")
-								.format("YYYY-MM-DDTHH:mm:ss"),
-					  };
+				const queryParams = morningTradingParam();
 				sendWorkerCommand(sportTabPushActions.morningTrading.openEvents(type), params, { params: queryParams });
 			},
 			champion: () => {

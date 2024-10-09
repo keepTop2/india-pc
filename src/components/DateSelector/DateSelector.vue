@@ -30,6 +30,9 @@ import { ref, onMounted, computed } from "vue";
 import SportsCommon from "/@/views/sports/utils/common";
 import { i18n } from "/@/i18n/index";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
+import dayjs from "dayjs";
+import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
+const { openSportPush } = useSportEvents();
 
 const $: any = i18n.global;
 export interface dateActiveType {
@@ -74,7 +77,7 @@ const props = withDefaults(
 	}
 );
 /** 今日 */
-const todayDate = moment(SportsCommon.todayDate()).add(1, "day").format("YYYY-MM-DD");
+const todayDate = dayjs(SportsCommon.todayDate()).add(1, "day").toISOString();
 /** 日期数组 */
 const dateList = ref(SportsCommon.generateDateArray(todayDate, props.daysNumber, props.direction));
 // const emit = defineEmits(["update:modelValue"]);
@@ -109,6 +112,7 @@ const changeDate = (item) => {
 		SportMorningTradingStore.setActiveDate(item.date);
 		// const params = { startDate, endDate };
 		SportMorningTradingStore.setTimeInterval(params);
+		openSportPush();
 	}
 };
 
@@ -119,13 +123,16 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .dateSelector {
+	height: 48px;
 	width: 100%;
 	display: flex;
 	gap: 24px;
-	padding: 24px;
+	padding: 9px 16px;
 	box-sizing: border-box;
 	overflow-x: auto;
 	white-space: nowrap;
+	background-color: var(--Bg1);
+	border-radius: 0 0 8px 8px;
 	-ms-overflow-style: none; /* IE 和 Edge */
 	&::-webkit-scrollbar {
 		/* WebKit 浏览器，如 Chrome、Safari */
@@ -134,25 +141,21 @@ onMounted(() => {
 	}
 	// scrollbar-width: none;
 	.date_item {
-		padding: 4px 10px;
-		height: 40px;
-		border-radius: 16px;
+		padding: 9px 12px;
+		height: 30px;
+		border-radius: 4px;
+		font-size: 14px;
 		text-align: center;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		border: 2px solid var(--Line);
-		color: var(--TB);
-		.date {
-			white-space: nowrap;
-			font-size: 22px;
-			font-weight: 400;
+		border: 1px solid var(--Line_2);
+		color: var(--Text1);
+
+		&.active {
+			border-color: var(--Theme);
+			color: var(--Theme);
 		}
-	}
-	.active {
-		background-color: var(--Theme);
-		color: themed("TB-P");
-		border: 0;
 	}
 }
 </style>
