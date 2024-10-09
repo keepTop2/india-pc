@@ -17,18 +17,19 @@
 				</el-input>
 			</div>
 			<div v-if="combos[item.comboType]" class="singlePass_buttom">
-				<span>小计:{{ Common.mul(combos[item.comboType], item.betCount) }}USD</span>
+				<span>小计:{{ Common.mul(combos[item.comboType], item.betCount) }}{{ UserStore.getUserInfo.mainCurrency }}</span>
 			</div>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
+import { computed } from "vue";
 import Common from "/@/utils/common";
-
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
-import { computed } from "vue";
+import { useUserStore } from "/@/stores/modules/user";
+const UserStore = useUserStore();
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();
 

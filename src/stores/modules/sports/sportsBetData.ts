@@ -136,7 +136,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 			const processEvent = (v) => {
 				const eventInfo = this.sportsEventInfo[v.eventId];
 				const { betType, marketId, selectionKey } = eventInfo;
-				const market: any = Object.values(v.markets).find((item: any) => item.betType === betType && item.marketId === marketId) || {};
+				const market: any = Object.values(v.markets).find((item: any) => item.betType == betType && item.marketId == marketId) || {};
 				v.betMarketInfo = {
 					betType: betType,
 					betTypeName: market.betTypeName,
@@ -144,7 +144,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 					marketStatus: market.marketStatus,
 					combo: market.combo || 0,
 				};
-				const selection = market.selections ? market.selections.find((s) => s.key === selectionKey) : null;
+				const selection = market.selections ? market.selections.find((s) => s.key == selectionKey) : null;
 				if (selection) {
 					v.betMarketInfo = {
 						...v.betMarketInfo,
