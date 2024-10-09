@@ -8,20 +8,25 @@
 				<div class="league_name" :style="displayContent ? 'max-width:284px' : ''">{{ teamData.leagueName }}</div>
 			</div>
 			<!-- 盘口表头 -->
-			<div class="market-name-info" v-if="displayContent">
-				<div class="market-name-list">
-					<!-- 遍历盘口类型 -->
-					<div class="label" v-for="betType in SportsCommonFn.betTypeMap[1]" :key="betType">{{ betType }}</div>
+			<template v-if="allStatus">
+				<div class="market-name-info" v-if="displayContent">
+					<div class="market-name-list">
+						<!-- 遍历盘口类型 -->
+						<div class="label" v-for="betType in SportsCommonFn.betTypeMap[1]" :key="betType">{{ betType }}</div>
+					</div>
 				</div>
-			</div>
+			</template>
+
 			<!-- 展开/收起图标 -->
 			<div class="header-icon">
-				<span class="icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
+				<span class="icon" :class="{ rotate: !displayContent }"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 			</div>
 		</div>
 		<!-- 显示事件项 -->
-		<template v-if="displayContent">
-			<EventItem v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
+		<template v-if="allStatus">
+			<template v-if="displayContent">
+				<EventItem v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
+			</template>
 		</template>
 	</div>
 </template>
@@ -41,15 +46,14 @@ interface teamDataType {
 	dataIndex: number;
 	/** 队伍数据 */
 	teamData: any;
-	/** 是否展开状态 */
-	isExpand?: boolean;
+	allStatus: boolean;
 }
 
 // 定义组件属性，使用默认值
 const props = withDefaults(defineProps<teamDataType>(), {
-	isExpand: true,
 	dataIndex: 0,
 	teamData: () => ({}),
+	allStatus: true,
 });
 
 // 控制内容显示状态
@@ -63,21 +67,7 @@ const emit = defineEmits(["toggleDisplay"]);
  */
 const toggleDisplay = () => {
 	displayContent.value = !displayContent.value; // 切换显示状态
-	const params = {
-		index: props.dataIndex,
-		isExpand: displayContent.value,
-	};
-	emit("toggleDisplay", params); // 触发事件
 };
-
-// 监控 props 中的 isExpand 变化，更新 displayContent
-watch(
-	() => props.isExpand,
-	(newValue) => {
-		displayContent.value = newValue; // 更新显示状态
-	},
-	{ immediate: true }
-);
 
 // 计算队伍所有事件的 ID
 const eventIds = computed(() => {
@@ -89,9 +79,9 @@ const isAttention = computed(() => {
 	return eventIds.value.every((id) => SportAttentionStore.getAttentionEventIdList.includes(Number(id)));
 });
 
-// 在组件挂载时初始化显示状态
-onMounted(() => {
-	displayContent.value = props.isExpand; // 设置初始状态
+// 使用 defineExpose 来暴露子组件的函数给父组件使用
+defineExpose({
+	toggleDisplay,
 });
 </script>
 
@@ -172,6 +162,9 @@ onMounted(() => {
 			justify-content: center;
 			.icon {
 				transform: rotate(-90deg);
+			}
+			.rotate {
+				transform: rotate(90deg);
 			}
 		}
 	}

@@ -118,6 +118,8 @@ watch(
 				sportsBetEvent.sportsOpenSse();
 			}
 		}
+		// 添加赛事发生变化，清空购物车计算 缓存数值
+		shopCartPubSub.initializeState();
 	}
 );
 
