@@ -29,13 +29,6 @@ interface sportsBetEvent {
 	leagueList: [];
 	hotLeagueList: null | [];
 
-	//关注列表与赛事联赛id存储
-	attentionList: [];
-	attentionEventIdList: number[];
-	attentionLeagueIdList: number[];
-	// 判断当前关注的列表是赛事还是联赛
-	attentionType: string;
-
 	//存储折叠状态
 	isFold: boolean;
 	foldCount: number;
@@ -56,11 +49,6 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 			sportsLeagueSelect: [], // 选择的联赛
 			leagueList: [], // 用于存储筛选的联赛列表
 			hotLeagueList: null, // 存储热门联赛列表
-
-			attentionList: [], //关注的赛事列表
-			attentionEventIdList: [], //关注的赛事id列表
-			attentionLeagueIdList: [], //关注的冠军id列表
-			attentionType: "event", //当前显示的关注列表为冠军联赛还是赛事
 
 			isFold: false, //是否折叠
 			foldCount: 0,
@@ -96,12 +84,6 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 		 */
 		getLeagueList(): [] {
 			return this.leagueList;
-		},
-		getAttentionLeagueIdList(): number[] {
-			return this.attentionLeagueIdList;
-		},
-		getAttentionEventIdList(): number[] {
-			return this.attentionEventIdList;
 		},
 	},
 
@@ -347,31 +329,6 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 		// 清理热门赛事
 		clearHotLeagueList() {
 			this.hotLeagueList = null;
-		},
-		//存储关注数据
-		setAttentionList(data) {
-			this.attentionList = data;
-			this.clearAttentionList();
-			//筛选出对应的关注列表 赛事或冠军
-			data.forEach((item) => {
-				const { eventIds } = SportsCommonFn.formatAttention(item.list);
-				if (item.type == 2) {
-					// console.log(eventIds, "======eventIds");
-					this.attentionEventIdList = eventIds;
-				}
-				if (item.type == 1) {
-					this.attentionLeagueIdList = eventIds;
-				}
-			});
-		},
-		//清理关注列表
-		clearAttentionList() {
-			this.attentionEventIdList = [];
-			this.attentionLeagueIdList = [];
-		},
-		//设置当前展示的是冠军关注还是赛事关注
-		setAttentionType(type) {
-			this.attentionType = type;
 		},
 		setIsFold(isFold) {
 			this.isFold = isFold;
