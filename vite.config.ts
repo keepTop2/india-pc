@@ -27,12 +27,10 @@ const alias = [
 		find: "vue-i18n",
 		replacement: "vue-i18n/dist/vue-i18n.cjs.js",
 	},
-	// /@/xxxx => src/xxxx
 	{
 		find: /\/@\//,
 		replacement: pathResolve("src") + "/",
 	},
-	// /#/xxxx => types/xxxx
 	{
 		find: /\/#\//,
 		replacement: pathResolve("types") + "/",
@@ -115,28 +113,7 @@ const viteConfig = defineConfig(({ command, mode }: ConfigEnv) => {
 			hmr: true,
 			open: false,
 			port: 5001,
-			proxy: {
-				// "/app-foreign": {
-				// 	target: env.VITE_API_URL,
-				// 	// target: 'http://192.168.27.127:7070/',
-				// 	changeOrigin: true,
-				// 	ws: true,
-				// 	secure: true,
-				// 	//重写代理tag（app-foreign）
-				// 	// rewrite: (path) => path.replace(/^\/app-foreign/, ''),
-				// },
-				// "/S128": {
-				// 	// target: env.VITE_API_URL,
-				// 	target: "https://kss.cfb2.net/",
-				// 	changeOrigin: true,
-				// 	ws: true,
-				// 	secure: true,
-				// 	//重写代理tag（S128）
-				// 	rewrite: (path) => path.replace(/^\/S128/, ""),
-				// 	// bypass(req, res, options) {
-				// 	// },
-				// },
-			},
+			proxy: {},
 		},
 
 		build: {
@@ -159,12 +136,12 @@ const viteConfig = defineConfig(({ command, mode }: ConfigEnv) => {
 				...(JSON.parse(env.VITE_OPEN_CDN) ? { external: buildConfig.external } : {}),
 			},
 			terserOptions: {
-				compress: {
-					//生产环境时移除console
-					drop_console: isProduction,
-					// drop_console: false,
-					drop_debugger: true,
-				},
+				// compress: {
+				// 	//生产环境时移除console
+				// 	drop_console: isProduction,
+				// 	// drop_console: false,
+				// 	drop_debugger: true,
+				// },
 			},
 		},
 		css: {
