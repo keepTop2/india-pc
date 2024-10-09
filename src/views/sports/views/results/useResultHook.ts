@@ -30,8 +30,8 @@ export const useResultHook = () => {
 		//今日日期筛选；
 		const params = {
 			language: "zhcn",
-			from: `${sevenDays.add(5, "hour").toISOString()}`,
-			until: `${moment(Today).add(5, "hour").toISOString()}`,
+			from: `${sevenDays.toISOString()}`,
+			until: `${moment(Today).toISOString()}`,
 		};
 
 		const { data } = await sportsApi.GetSportResults(params).catch((err) => err);
