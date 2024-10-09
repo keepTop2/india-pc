@@ -393,7 +393,7 @@ class Common {
 		const threshold = 10000000;
 		let formattedNumber = "" as number | string;
 		if (absNumber >= threshold) {
-			const quotient = Math.floor(common.div(absNumber, 1000));
+			const quotient = Math.floor(this.div(absNumber, 1000));
 			formattedNumber = `${quotient}K`;
 		} else {
 			formattedNumber = this.formatFloat(Number(absNumber));
