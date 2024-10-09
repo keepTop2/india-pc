@@ -193,7 +193,7 @@ const onSubmit = async (token: string) => {
 		modalStore.closeModal();
 		localStorage.setItem("userInfo", JSON.stringify(data));
 		UserStore.setUserInfo(data);
-		getUserInfo();
+		UserStore.initUserInfo();
 		showToast(message, 1500);
 	} else {
 		showToast(message, 1500);
@@ -213,17 +213,17 @@ const handleSelect = (option: any) => {
 	verifyBtn();
 };
 
-const getUserInfo = async () => {
-	const res = await userApi.getIndexInfo().catch((err) => err);
-	const { code, data, message } = res;
-	if (code == Common.ResCode.SUCCESS) {
-		const userInfo = { ...UserStore.getUserInfo, ...data };
-		UserStore.setUserInfo(userInfo);
-		localStorage.setItem("userInfo", JSON.stringify(userInfo));
-	} else {
-		showToast(message, 1500);
-	}
-};
+// const getUserInfo = async () => {
+// 	const res = await userApi.getIndexInfo().catch((err) => err);
+// 	const { code, data, message } = res;
+// 	if (code == Common.ResCode.SUCCESS) {
+// 		const userInfo = { ...UserStore.getUserInfo, ...data };
+// 		UserStore.setUserInfo(userInfo);
+// 		localStorage.setItem("userInfo", JSON.stringify(userInfo));
+// 	} else {
+// 		showToast(message, 1500);
+// 	}
+// };
 const toHelpCenter = () => {
 	UserStore.setRegisterModalInfo(payLoad);
 	router.push({

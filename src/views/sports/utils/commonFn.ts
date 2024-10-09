@@ -79,6 +79,7 @@ export const getSingleTicket = async () => {
 	const sportsBetInfo = useSportsBetInfoStore();
 	// 取单关赛事盘口投注信息 单关赛事为一条 取购物车数据第一条
 	const singleTicketInfo = sportsBetEvent.sportsBetEventData[0];
+	console.log("singleTicketInfo", singleTicketInfo);
 	// 投注参数
 	const params = {
 		sportType: singleTicketInfo.sportType,

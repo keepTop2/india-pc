@@ -8,7 +8,7 @@
 			:placeholder="`限额 ${common.formatFloat(sportsBetInfo.singleTicketInfo.minBet) || '0.00'} ～ ${common.formatFloat(sportsBetInfo.singleTicketInfo.maxBet) || '0.00'}`"
 			@input="onInputEnter"
 		>
-			<template #suffix>USD</template>
+			<template #suffix>{{ UserStore.getUserInfo.mainCurrency }}</template>
 		</el-input>
 	</div>
 </template>
@@ -21,7 +21,8 @@ import sportsApi from "/@/api/sports/sports";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
-
+import { useUserStore } from "/@/stores/modules/user";
+const UserStore = useUserStore();
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();
 let stake = computed(() => shopCartPubSub.betValueState.singleTicketBetValue);
