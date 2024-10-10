@@ -12,6 +12,7 @@ import { WorkerTransfer } from "/@/models/webWorkerModel";
 import pubsub from "/@/pubSub/pubSub";
 import { SportsRootObject, BetMarketInfo } from "/@/views/sports/models/interface";
 import { useHaveToken } from "/@/hooks/useHaveToken";
+import showToast from "/@/hooks/useToast";
 const $: any = i18n.global;
 interface sportsBetEvent {
 	sportsBetShow: boolean;
@@ -120,7 +121,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 				// 当前数据对象已存在于数组中，替换它
 				this.sportsBetEventData.splice(existingIndex, 1, data);
 			} else if (this.sportsBetEventData.length >= 10) {
-				// showToast($.t('sports["最多选择场比赛"]', { value: 10 }));
+				showToast($.t('sports["最多选择场比赛"]', { value: 10 }));
 				return;
 			} else {
 				// 当前数据对象不存在于数组中，新增它

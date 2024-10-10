@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-// import { showToast } from "vant";
 import { i18n } from "/@/i18n/index";
 import workerManage from "/@/webWorker/workerManage";
 import { SportShopCartProcessWorkerCommandType, WorkerName } from "/@/enum/workerTransferEnum";
@@ -10,6 +9,7 @@ import { SportPushApi, WebToPushApi } from "/@/views/sports/enum/sportEnum/sport
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 import pubsub from "/@/pubSub/pubSub";
 import { useHaveToken } from "/@/hooks/useHaveToken";
+import showToast from "/@/hooks/useToast";
 const $: any = i18n.global;
 
 export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
@@ -50,8 +50,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 					this.championBetData[index] = data;
 				} else {
 					if (this.championBetData.length >= 10) {
-						// showToast($.t('sports["最多选择场比赛"]', { value: 10 }));
-						console.log("最多选择十场比赛");
+						showToast($.t('sports["最多选择场比赛"]', { value: 10 }));
 						return;
 					}
 				}
@@ -66,8 +65,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 					// 当前数据对象已存在于数组中，替换它
 					this.championBetData.splice(existingIndex, 1, data);
 				} else if (this.championBetData.length >= 10) {
-					// showToast($.t('sports["最多选择场比赛"]', { value: 10 }));
-					console.log("最多选择十场比赛");
+					showToast($.t('sports["最多选择场比赛"]', { value: 10 }));
 					return;
 				} else {
 					// 当前数据对象不存在于数组中，新增它

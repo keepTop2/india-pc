@@ -154,16 +154,13 @@ class Common {
 	 * @param value
 	 */
 	static async copy(value: string | number): Promise<void> {
-		console.log("123123", 123123);
-
 		const { toClipboard } = useClipboard();
 		try {
 			//复制
 			await toClipboard(String(value));
-			ElMessage.success("success");
+			showToast("复制成功");
 		} catch (e) {
-			//复制失败
-			ElMessage.error("error");
+			console.log("复制失败");
 		}
 	}
 
