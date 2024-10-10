@@ -72,7 +72,7 @@ export function useSportEvents() {
 	const morningTradingParam = () => {
 		const { startDate, endDate } = SportMorningTradingStore.getTimeInterval;
 		return {
-			query: `$filter=sportType in (${SportsCommonFn.getRequestSportsType()})&$orderby=globalShowTime asc `,
+			query: `$filter=sportType in (${sportType.value})&$orderby=globalShowTime asc `,
 			from: startDate,
 			until: endDate,
 		};
