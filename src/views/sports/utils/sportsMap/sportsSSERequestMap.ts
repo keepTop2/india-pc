@@ -70,7 +70,7 @@ const sportTabPushActions = {
 			sportPushApi: SportPushApi.GetSports_push,
 			webToPushApi: WebToPushApi.todayContest,
 			params: {
-				query: `$filter= sportType in (${SportsCommonFn.getRequestSportsType()})`,
+				query: `$filter=sportType in (${SportsCommonFn.getRequestSportsType()}) and isLive eq false`,
 				from: dayjs().startOf("day").toISOString(),
 				until: dayjs().endOf("day").toISOString(),
 			},
@@ -83,7 +83,7 @@ const sportTabPushActions = {
 			sportPushApi: SportPushApi.GetEvents_push,
 			webToPushApi: WebToPushApi.eventsTodayContest,
 			params: {
-				query: `$filter= sportType in (${sportType}) and islive eq false &$orderby=globalShowTime asc `,
+				query: `$filter= sportType in (${sportType}) and isLive eq false &$orderby=globalShowTime asc `,
 				from: dayjs().startOf("day").toISOString(),
 				until: dayjs().endOf("day").toISOString(),
 				includeMarkets: `$filter=bettype in (${betTypes})`,
