@@ -16,7 +16,7 @@
 							<div class="bet-date">{{ Common.getYMDHms(row.transTime) }}</div>
 							<div class="bet-order-ID">
 								<span>{{ row.transId }}</span>
-								<svg-icon name="copy" size="16px" v-hover-svg class="curp" />
+								<svg-icon name="copy" size="16px" v-hover-svg class="curp" @click="Common.copy(row.transId)" />
 							</div>
 						</div>
 					</template>

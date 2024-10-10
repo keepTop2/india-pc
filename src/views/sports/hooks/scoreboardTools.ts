@@ -41,6 +41,8 @@ export function useToolsHooks() {
 			if (isVideo) {
 				switchEventVideoSource(eventInfo);
 			} else {
+				console.log("???");
+
 				SidebarStore.getSidebarStatus("scoreboard");
 			}
 		}

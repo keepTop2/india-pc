@@ -6,7 +6,9 @@
 					<div class="scoreboard-header">{{ eventsInfo.leagueName }}</div>
 					<div class="scoreboard-info">
 						<div class="home-team-info">
-							<div class="home-team-name">{{ eventsInfo?.teamInfo?.homeName }}</div>
+							<div class="left">
+								<div class="home-team-name">{{ eventsInfo?.teamInfo?.homeName }}</div>
+							</div>
 							<div class="home-team-icon"><img :src="eventsInfo?.teamInfo?.homeIconUrl" alt="" /></div>
 						</div>
 						<div class="score-info">
@@ -122,6 +124,10 @@ const props = withDefaults(
 						width: 100%;
 						height: 100%;
 					}
+				}
+				.left {
+					display: flex;
+					justify-content: end;
 				}
 				.home-team-name,
 				.away-team-name {
