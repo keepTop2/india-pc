@@ -98,7 +98,7 @@
 					<span>{{ $t(`login['我同意接收']`) }}[<span class="Wran_text">oksport</span>]{{ $t(`login['的营销促销信息']`) }}</span>
 				</div>
 				<div class="mt_16 mb_16">
-					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onLogin">{{ $t(`login['注册']`) }}</button>
+					<button class="common_btn" :disabled="disabledBtn || !isOnloadScript" type="button" @click="onLogin">{{ $t(`login['注册']`) }}</button>
 				</div>
 				<div class="flex-center fs_12">
 					<div class="Text1">
@@ -109,7 +109,7 @@
 		</div>
 		<p>
 			<div id="captcha-element" ref="captchaBtn"/>
-			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
+			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript"/>
 		</p>
 	</div>
 </template>
@@ -132,6 +132,8 @@ const UserStore = useUserStore();
 const hcaptcha: any = ref(null);
 const captchaBtn: any = ref(null);
 const openinviteCode = ref(false)
+const isOnloadScript =ref(false)
+
 const payLoad = reactive({
 	userAccount: "",
 	password: "",

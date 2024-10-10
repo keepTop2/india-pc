@@ -1,9 +1,12 @@
 <template>
 	<div class="activityWrapper">
-		<div class="activityHeader">{{ activityData.activityNameI18nCode || "免费旋转" }}</div>
+		<div class="activityHeader">
+			{{ activityData.activityNameI18nCode || "免费旋转" }}
+			<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../components/image/close_icon.svg" alt="" /></span>
+		</div>
 		<div class="activityMain">
 			<div class="activityImg">
-				<img src="./image/image.png" alt="" />
+				<img v-lazy-load="activityData.headPicturePcI18nCode" alt="" />
 			</div>
 			<div class="activityContent">
 				<div class="activityContentHeader">
@@ -19,7 +22,7 @@
 					</div>
 					<div class="contentCell">
 						<div class="cellLabel">活动对象</div>
-						<div class="cellValue">{{ activityData.userTypeName }}</div>
+						<div class="cellValue">{{ activityData.userTypeText }}</div>
 					</div>
 					<div class="contentCell">
 						<div class="cellLabel">活动时间</div>
@@ -43,37 +46,24 @@
 					</div>
 				</div>
 				<div class="activityContentCenter">
-					<div class="ruleCell">
-						<span>活动时间</span>
-						<span>2023-12-12 00:00:00～2023-12-31 23:59:59</span>
-					</div>
-					<div class="ruleCell">
-						<span>活动对象</span>
-						<span>首存会员</span>
-					</div>
 					<div class="ruleDetails">
-						<div>
-							1、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-							动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-						</div>
-						<div>
-							2、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-							动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-						</div>
-						<div>
-							3、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-							动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-						</div>
+						<div v-html="activityData.activityRuleI18nCode"></div>
 					</div>
 				</div>
 				<div class="activityContentFooter" />
 			</div>
+			<div class="apply_btn">
+				<div class="curp" :class="activityData.status == 10000 ? 'active' : ''" @click="apply">{{ activityData.status == 10000 ? "立即申请" : "您已申请" }}</div>
+			</div>
 		</div>
 	</div>
-	<CommonDialog v-model="showCommonDialog" title="123123" :confirm="confirmDialog">123123</CommonDialog>
+	<CommonDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
+		{{ dialogInfo.message }}
+	</CommonDialog>
 </template>
 
 <script setup lang="ts">
+import "../components/common.scss";
 import { onMounted, ref } from "vue";
 import { activityApi } from "/@/api/activity";
 import { useRouter } from "vue-router";
@@ -81,178 +71,173 @@ import { useActivityStore } from "/@/stores/modules/activity";
 import { computed } from "vue";
 import Common from "/@/utils/common";
 import CommonDialog from "../components/activityDialog.vue";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import "../components/common.scss";
+import showToast from "/@/hooks/useToast";
 const activityStore = useActivityStore();
 const router = useRouter();
+const dialogInfo: any = ref({});
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
 
 const showCommonDialog = ref(false);
-const getActivityReward = () => {
-	activityApi.getActivityReward({ id: activityData.value.id }).then((res) => {
-		console.log(res);
+const apply = () => {
+	activityApi.getToActivity({ id: activityData.value.id }).then((res: any) => {
+		if (res.code.status !== 10000) {
+			dialogInfo.value = res.data;
+			showCommonDialog.value = true;
+		} else {
+			showToast(res.data.message);
+			activityStore.updateCurrentActivityData;
+		}
 	});
-	showCommonDialog.value = true;
 };
 const confirmDialog = () => {
 	showCommonDialog.value = false;
 };
 </script>
 <style scoped lang="scss">
-.activityWrapper {
-	background: url("./image/commonBg.png") no-repeat;
-	background-size: 100% 100%;
-	overflow: hidden;
-	padding-right: 3px;
-	border-radius: 12px;
-	.activityHeader {
-		background: url("./image/header_bg.svg") no-repeat;
-		height: 57px;
-		width: 580px;
-		margin: 0 auto;
-		margin-top: 18px;
-		text-align: center;
-		line-height: 42px;
-		font-size: 20px;
-		font-weight: 600;
-		color: var(--Text_a);
-	}
-	.activityImg {
-		img {
-			width: 100%;
-		}
-	}
-	.activityMain {
-		overflow: auto;
-		width: 760px;
-		height: 80vh;
-		min-height: 500px;
-		padding: 0 24px;
+// .activityWrapper {
+// 	background: url("./image/commonBg.png") no-repeat;
+// 	background-size: 100% 100%;
+// 	overflow: hidden;
+// 	padding-right: 3px;
+// 	border-radius: 12px;
+// 	.activityHeader {
+// 		background: url("./image/header_bg.svg") no-repeat;
+// 		background-size: 100% 100%;
+// 		height: 54px;
+// 		width: 366px;
+// 		margin: 0 auto;
+// 		text-align: center;
+// 		line-height: 54px;
+// 		font-size: 16px;
+// 		font-weight: 600;
+// 		color: var(--Text_a);
+// 		position: relative;
+// 		.closeIcon {
+// 			position: absolute;
+// 			right: -30px;
+// 			top: -1px;
+// 			img {
+// 				width: 30px;
+// 				height: 30px;
+// 			}
+// 		}
+// 	}
+// 	.activityImg {
+// 		img {
+// 			width: 100%;
+// 			height: 197px;
+// 			object-fit: cover;
+// 		}
+// 	}
+// 	.activityMain {
+// 		overflow: auto;
+// 		width: 480px;
+// 		height: 80vh;
+// 		min-height: 500px;
 
-		.bonus_card {
-			height: 273px;
-			margin-top: 15px;
-			background: url("./image/bonus_card_bg.svg") no-repeat;
-			background-size: 100% 100%;
-			padding: 0 52px;
-			.bonus_card_title {
-				text-align: center;
-				height: 41px;
-				line-height: 41px;
-				font-size: 20px;
-				color: var(--Text_a);
-			}
-			.bonus_card_content {
-				display: flex;
-				justify-content: space-around;
-				border-bottom: 1px solid var(--Line_2);
-				height: 92px;
-				display: flex;
-				align-items: center;
-				color: var(--Text2);
-				.amount {
-					text-align: center;
-					margin-top: 8px;
-					font-size: 24px;
-					font-weight: 700;
-					.Text3 {
-						font-size: 20px;
-						margin-right: 3px;
-					}
-				}
-				.line {
-					width: 1px;
-					height: 58px;
-					background-color: var(--Line_2);
-				}
-			}
-			.bonus_card_footer {
-				text-align: center;
-				padding: 13px 23px;
-				font-size: 16px;
-				font-size: 16px;
-				color: var(--Text2);
-				.Theme_text {
-					font-size: 24px;
-					font-weight: 700;
-				}
-			}
-			.common_btn {
-				height: 48px;
-				background: linear-gradient(279deg, #ff284b 8.07%, #fd677f 104.14%);
-			}
-		}
-		.activityContent {
-			color: var(--Text1);
-			margin-top: 16px;
-
-			.activityContentHeader {
-				height: 108px;
-				padding-top: 30px;
-				text-align: center;
-				background: url("./image/activityContentHeader.png") no-repeat;
-				background-size: 100% 100%;
-				.flex-center {
-					gap: 34px;
-					font-size: 24px;
-					font-weight: 500;
-					color: var(--Text_s);
-				}
-			}
-			.activityContentCenter {
-				background: url("./image/activityContentCenter.png");
-				background-size: 100% auto;
-				padding: 0 25px;
-				position: relative;
-				.activityContentImg {
-					position: absolute;
-					right: 47px;
-					top: 40px;
-					img {
-						height: 152px;
-						width: 149px;
-						border-radius: 15px;
-					}
-				}
-				.contentCell {
-					.cellLabel {
-						height: 46px;
-						background: url("./image/cellLabelBg.png") no-repeat;
-						background-size: auto 100%;
-						line-height: 46px;
-						padding-left: 67px;
-						color: var(--Text_s);
-						font-size: 16px;
-						font-weight: 600;
-					}
-					.cellValue {
-						padding-left: 67px;
-						margin: 12px 0;
-						font-weight: 400;
-						width: 500px;
-					}
-				}
-				.contentCell:last-child {
-					.cellValue {
-						margin-bottom: 0;
-					}
-				}
-			}
-			.activityContentFooter {
-				height: 108px;
-				text-align: center;
-				background: url("./image/activityContentFooter.png") no-repeat;
-				background-size: 100% 100%;
-			}
-		}
-	}
-	.activityMain::-webkit-scrollbar {
-		width: 6px;
-	}
-	.activityMain::-webkit-scrollbar-track {
-		background-color: transparent;
-	}
-	.activityMain::-webkit-scrollbar-thumb {
-		background: var(--icon);
-		border-radius: 5px;
-	}
-}
+// 		.activityContent {
+// 			color: var(--Text1);
+// 			margin-top: 16px;
+// 			padding: 0 16px;
+// 			.activityContentHeader {
+// 				height: 64px;
+// 				padding-top: 30px;
+// 				text-align: center;
+// 				background: url("./image/activityContentHeader.png") no-repeat;
+// 				background-size: 100% 100%;
+// 				.flex-center {
+// 					font-size: 16px;
+// 					font-weight: 500;
+// 					color: var(--Text_s);
+// 				}
+// 			}
+// 			.activityContentCenter {
+// 				background: url("./image/activityContentCenter.png");
+// 				background-size: 100% auto;
+// 				padding: 0 25px;
+// 				position: relative;
+// 				.activityContentImg {
+// 					position: absolute;
+// 					right: 14px;
+// 					top: 40px;
+// 					z-index: 0;
+// 					img {
+// 						z-index: -1;
+// 						height: 152px;
+// 						width: 149px;
+// 						border-radius: 15px;
+// 					}
+// 				}
+// 				.contentCell {
+// 					z-index: 10;
+// 					.cellLabel {
+// 						height: 28px;
+// 						background: url("./image/cellLabelBg.png") no-repeat;
+// 						background-size: auto 100%;
+// 						line-height: 28px;
+// 						padding-left: 35px;
+// 						color: var(--Text_s);
+// 						font-size: 14px;
+// 						font-weight: 600;
+// 					}
+// 					.cellValue {
+// 						padding-left: 35px;
+// 						margin: 12px 0;
+// 						font-size: 14px;
+// 						font-weight: 400;
+// 					}
+// 				}
+// 				.contentCell:last-child {
+// 					.cellValue {
+// 						margin-bottom: 0;
+// 					}
+// 				}
+// 				.ruleDetails {
+// 					font-size: 12px;
+// 				}
+// 			}
+// 			.activityContentFooter {
+// 				height: 66px;
+// 				text-align: center;
+// 				background: url("./image/activityContentFooter.png") no-repeat;
+// 				background-size: 100% 100%;
+// 			}
+// 		}
+// 		.apply_btn {
+// 			width: 320px;
+// 			height: 36px;
+// 			margin: 20px auto;
+// 			div {
+// 				height: 36px;
+// 				background: url("./image/btn_bg.png");
+// 				background-size: 100% 100%;
+// 				line-height: 36px;
+// 				text-align: center;
+// 				color: var(--Text_a);
+// 				font-size: 14px;
+// 			}
+// 			div.active {
+// 				height: 36px;
+// 				background: url("./image/btn_active_bg.png");
+// 				background-size: 100% 100%;
+// 				line-height: 36px;
+// 				text-align: center;
+// 				color: var(--Text_a);
+// 				font-size: 14px;
+// 			}
+// 		}
+// 	}
+// 	.activityMain::-webkit-scrollbar {
+// 		width: 6px;
+// 	}
+// 	.activityMain::-webkit-scrollbar-track {
+// 		background-color: transparent;
+// 	}
+// 	.activityMain::-webkit-scrollbar-thumb {
+// 		background: var(--icon);
+// 		border-radius: 5px;
+// 	}
+// }
 </style>

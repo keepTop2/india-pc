@@ -56,7 +56,7 @@
 					</div>
 
 					<!-- 帮助中心 -->
-					<div class="helpcenter_container" @click="to('/helpCenter')">
+					<div class="helpcenter_container" @click="router.push('/helpCenter')">
 						<svg-icon name="help_icon" size="17px" />
 						<span class="left_text1">
 							{{ $t(`layout['layout1']['帮助中心']`) }}
@@ -108,7 +108,9 @@ import { useModalStore } from "/@/stores/modules/modalStore";
 const modalStore = useModalStore();
 const ThemesStore = useThemesStore();
 const MenuStore = useMenuStore();
-import router from "/@/router";
+import { useRouter } from "vue-router";
+import { useUserStore } from "/@/stores/modules/user";
+const router = useRouter();
 const isLoading = ref(false);
 onMounted(() => {
 	isLoading.value = true;
@@ -118,11 +120,23 @@ onMounted(() => {
 });
 
 const showSpin = () => {
-	modalStore.openModal("SPIN_WHEEL");
+	if (useUserStore().getLogin) {
+		activityApi.getToSpinActivity().then((res) => {
+			if (res.code == Common.ResCode.SUCCESS) {
+				modalStore.openModal("SPIN_WHEEL");
+			}
+		});
+	} else {
+		modalStore.openModal("LoginModal");
+	}
 };
 
 const showTask = () => {
-	modalStore.openModal("SPIN_WHEEL");
+	if (useUserStore().getLogin) {
+		modalStore.openModal("SPIN_WHEEL");
+	} else {
+		modalStore.openModal("LoginModal");
+	}
 };
 const onSetTheme = (str: ThemeKey) => {
 	ThemesStore.setTheme(str);

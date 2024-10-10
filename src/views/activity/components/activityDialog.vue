@@ -3,17 +3,15 @@
 		<div class="dialog fade-in">
 			<div class="dialog-header">
 				<img src="./image/header.png" alt="" />
-				<div class="Text3 fs_20">{{ title }}</div>
+				<div class="Text3 fs_16">{{ title }}</div>
 			</div>
-			<div class="dialog-content">
+			<div class="dialog-content fs_14">
 				<slot></slot>
 			</div>
 			<div class="dialog-footer">
-				<footer>
-					<button class="common_btn" @click="confirm">
-						<slot name="footer"> 确认 </slot>
-					</button>
-				</footer>
+				<button class="common_btn" @click="confirm">
+					<slot name="footer"> 确认 </slot>
+				</button>
 			</div>
 		</div>
 		<div class="closeDialog" @click="close">
@@ -65,8 +63,7 @@ const close = () => {
 	.dialog {
 		position: relative;
 		margin: 0 auto;
-		width: 400px;
-		padding: 40px;
+		width: 310px;
 		padding-bottom: 10px;
 		.dialog-header {
 			text-align: center;
@@ -83,6 +80,7 @@ const close = () => {
 			padding: 20px;
 			background: white;
 			text-align: center;
+			color: var(--Text3);
 		}
 		.dialog-footer {
 			background: white;
@@ -95,6 +93,7 @@ const close = () => {
 				width: 158px;
 				height: 46px;
 				margin: 0 auto;
+				font-size: 14px;
 				border-radius: 10px;
 				background: linear-gradient(278deg, #ff284b 4.74%, #fd677f 92.73%);
 			}
@@ -102,8 +101,8 @@ const close = () => {
 	}
 	.closeDialog {
 		img {
-			width: 40px;
-			height: 40px;
+			width: 32px;
+			height: 32px;
 			cursor: pointer;
 		}
 	}

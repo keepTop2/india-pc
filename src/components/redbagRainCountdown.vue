@@ -1,5 +1,5 @@
 <template>
-	<div ref="draggable" class="draggable" :style="{ position: 'fixed', left: `${position.x}px`, top: `${position.y}px` }" @mousedown="onMouseDown" v-if="modelValue">
+	<div ref="draggable" class="draggable" :style="{ position: 'fixed', left: `${position.x}px`, top: `${position.y}px` }" @mousedown="onMouseDown" v-show="modelValue">
 		<div class="parent">
 			<div class="child curp">
 				<div class="curp">
@@ -7,26 +7,26 @@
 				</div>
 				<img class="CountdownImg" src="/@/assets/common/redbagRainCountdown.png" alt="" @click.self="handleClickCountdown" />
 				<div class="countdown" @click="handleClickCountdown">
-					<p>倒计时</p>
-					<p>{{ countdown }}</p>
+					<p v-if="countdown > 0">倒计时</p>
+					<p>{{ countdown > 0 ? Common.convertMilliseconds(countdown * 1000) : "进行中" }}</p>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, onBeforeUnmount } from "vue";
+import { onMounted, ref, onBeforeUnmount, watch } from "vue";
 import pubsub from "../pubSub/pubSub";
 import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
 import { useCountdown } from "../hooks/countdown";
 import { activityApi } from "../api/activity";
 import { useActivityStore } from "../stores/modules/activity";
-
 import { useModalStore } from "/@/stores/modules/modalStore";
 import Common from "../utils/common";
+
 const modalStore = useModalStore();
 const activityStore = useActivityStore();
-const { countdown } = useCountdown();
+const { countdown, startCountdown, stopCountdown } = useCountdown();
 const draggable = ref<HTMLElement | null>(null);
 const position = ref({ x: 0, y: 0 });
 const isDragging = ref(false);
@@ -34,12 +34,16 @@ const offset = ref({ x: 0, y: 0 });
 const clickDisabled = ref(false);
 let startMousePosition = ref({ x: 0, y: 0 });
 
-const props = defineProps(["modelValue"]);
-const emit = defineEmits(["update:modelValue"]);
-// 订阅红包雨消息
-pubsub.subscribe(webSocketMsgTopicEnum.redBagRain, (data) => {
-	console.log("Received:", data);
+const props = defineProps({
+	modelValue: Boolean,
+	redBagInfo: {} as any,
 });
+const emit = defineEmits(["update:modelValue"]);
+
+// 订阅红包雨消息
+// pubsub.subscribe(webSocketMsgTopicEnum.redBagRain, (data) => {
+// 	console.log("Received:", data);
+// });
 // 打开红包雨页面
 const handleClickCountdown = async () => {
 	if (!clickDisabled.value) {
@@ -54,7 +58,24 @@ const handleClickCountdown = async () => {
 const closeRedbagRainCountdown = () => {
 	emit("update:modelValue", false);
 };
-
+watch(
+	() => countdown.value,
+	() => {
+		if (countdown.value == 0) {
+			stopCountdown();
+		}
+	},
+	{ once: true }
+);
+watch(
+	() => props.redBagInfo,
+	() => {
+		if (props.redBagInfo.advanceTime) {
+			startCountdown(props.redBagInfo.advanceTime);
+		}
+	},
+	{ once: true }
+);
 // 拖拽功能
 const onMouseDown = (event: MouseEvent) => {
 	event.preventDefault();

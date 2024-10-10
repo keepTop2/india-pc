@@ -56,7 +56,6 @@ export const useModalStore = defineStore("modal", () => {
 				const component = await modalComponent();
 				modalCache.set(modalName, component.default);
 				modals.value = { component: shallowRef(component.default), props };
-				console.log(modals.value);
 			}
 		}
 	};

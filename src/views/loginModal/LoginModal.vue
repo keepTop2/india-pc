@@ -54,7 +54,7 @@
 
 				<!-- 登录按钮 -->
 				<div class="mt_40 mb_12">
-					<button class="common_btn fs_12" type="button" @click="onLogin" :disabled="disabledBtn">
+					<button class="common_btn fs_12" type="button" @click="onLogin" :disabled="disabledBtn || !isOnloadScript">
 						{{ $t(`login['登陆']`) }}
 					</button>
 				</div>
@@ -74,9 +74,9 @@
 			</div>
 		</div>
 		<!-- 验证码容器 -->
-		<article>	
-			<p id="captcha-element" ref="captchaBtn"/>
-			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" />
+		<article>
+			<p id="captcha-element" ref="captchaBtn" />
+			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript" />
 		</article>
 	</form>
 </template>
@@ -94,7 +94,7 @@ import { useModalStore } from "/@/stores/modules/modalStore";
 const modalStore = useModalStore();
 const UserStore = useUserStore();
 const hcaptcha: any = ref(null);
-const certifyId = ref(null);
+const isOnloadScript = ref(false);
 const captchaBtn: any = ref(null);
 const disabledBtn = ref(false);
 // 表单数据

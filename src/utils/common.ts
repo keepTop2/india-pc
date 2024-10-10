@@ -2,7 +2,7 @@ import { ElMessage } from "element-plus";
 import moment from "moment-timezone";
 import Decimal from "decimal.js";
 import { useThemesStore } from "../stores/modules/themes";
-
+import dayjs from "dayjs";
 // import download from './download.js';
 // 引入复制插件
 import useClipboard from "vue-clipboard3";
@@ -211,6 +211,12 @@ class Common {
 		return moment(time).format("HH:mm:ss");
 	}
 	/**
+	 * @describe 获取时分秒 (HH:mm:ss)
+	 */
+	static parseHm(time: any) {
+		return dayjs(time).format("HH:mm");
+	}
+	/**
 	 * @describe 获取今天开始时间 (YYYY-MM-DD HH:mm:ss)
 	 */
 	static startOneDay() {
@@ -416,7 +422,15 @@ class Common {
 				return "";
 		}
 	}
+	static convertMilliseconds(ms: number) {
+		const seconds = Math.floor(ms / 1000);
+		const minutes = Math.floor(seconds / 60);
+		const hours = Math.floor(minutes / 60);
+		const remainingSeconds = seconds % 60;
+		const remainingMinutes = minutes % 60;
 
+		return `${String(hours).padStart(2, "0")}:${String(remainingMinutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+	}
 	/**
 	 * @description 获取根据主题语言获取图片
 	 */

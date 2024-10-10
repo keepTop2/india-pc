@@ -26,8 +26,20 @@ import { onMounted, ref } from "vue";
 const modalStore = useModalStore();
 const activityStore = useActivityStore();
 const showDetails = async (item: any) => {
-	await getConfigDetail(item);
-	modalStore.openModal(item.activityTemplate);
+	if (item.activityTemplate == "RED_BAG_RAIN") {
+		activityApi.getRedBagInfo().then((res) => {
+			activityStore.setCurrentActivityData(res.data);
+			modalStore.openModal(item.activityTemplate);
+		});
+	} else if (item.activityTemplate == "SPIN_WHEEL") {
+		activityApi.getSpindetail().then((res) => {
+			activityStore.setCurrentActivityData(res.data);
+			modalStore.openModal(item.activityTemplate);
+		});
+	} else {
+		await getConfigDetail(item);
+		modalStore.openModal(item.activityTemplate);
+	}
 };
 defineProps({
 	activityList: {

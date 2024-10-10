@@ -19,7 +19,7 @@
 					</div>
 					<div class="contentCell">
 						<div class="cellLabel">活动对象</div>
-						<div class="cellValue">{{ activityData.userTypeName }}</div>
+						<div class="cellValue">{{ activityData.userTypeText }}</div>
 					</div>
 					<div class="contentCell">
 						<div class="cellLabel">活动时间</div>

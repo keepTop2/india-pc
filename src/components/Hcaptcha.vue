@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { loginApi } from "/@/api/login";
 import Common from "/@/utils/common";
 const certifyId = ref(null);
@@ -12,8 +12,43 @@ const props = defineProps({
 		type: Function,
 		default: () => {},
 	},
+	modelValue: Boolean,
 });
-onMounted(() => {
+const isScriptLoaded = ref(false);
+watch(
+	() => isScriptLoaded.value,
+	() => {
+		if (isScriptLoaded.value) {
+			AliyunCaptcha();
+		}
+	},
+	{ once: true }
+);
+const emit = defineEmits(["update:modelValue"]);
+const loadScript = () => {
+	const script = document.createElement("script");
+	script.src = "https://o.alicdn.com/captcha-frontend/aliyunCaptcha/AliyunCaptcha.js"; // 替换为你需要的 CDN URL
+	script.onload = () => {
+		isScriptLoaded.value = true;
+		emit("update:modelValue", true);
+	};
+	document.head.appendChild(script);
+};
+
+loadScript();
+onMounted(async () => {
+	if (isScriptLoaded.value) {
+		AliyunCaptcha();
+	}
+});
+const captcha = ref(null);
+const getInstance = (instance: any) => {
+	captcha.value = instance;
+};
+const AliyunCaptcha = () => {
+	initAliyunCaptcha();
+};
+const initAliyunCaptcha = () => {
 	(window as any).initAliyunCaptcha({
 		SceneId: "qxye14r6d",
 		prefix: "5zbecta",
@@ -30,11 +65,6 @@ onMounted(() => {
 		language: "cn",
 		region: "sgp",
 	});
-});
-
-const captcha = ref(null);
-const getInstance = (instance: any) => {
-	captcha.value = instance;
 };
 // 验证码验证回调
 const captchaVerifyCallback = (captchaVerifyParam: any) => {
