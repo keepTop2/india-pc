@@ -117,8 +117,8 @@ export function useSportEvents() {
 	const openSportPush = async (type?: string | undefined, tabActive?: string) => {
 		console.log("type", type, "tabActive====", tabActive);
 
-		sportsBetEvent.clearHotLeagueList();
-		pubSub.publish("clearHotLeagueList", "on");
+		// sportsBetEvent.clearHotLeagueList();
+		// pubSub.publish("clearHotLeagueList", "on");
 		clearStore();
 		closeSportViewProcessWorker();
 		openSportViewProcessWorker();

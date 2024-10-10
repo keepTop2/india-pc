@@ -39,6 +39,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useIntervalFn } from "@vueuse/core";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
+import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useUserStore } from "/@/stores/modules/user";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
@@ -47,6 +48,7 @@ import SportsApi from "/@/api/sports/sports";
 import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar, Banner } from "./components";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
 
+const SportAttentionStore = useSportAttentionStore();
 // 路由实例
 const route = useRoute();
 const router = useRouter();
@@ -72,7 +74,7 @@ watch(
 	() => route.fullPath,
 	(newValue, oldValue) => {
 		if (newValue !== oldValue) {
-			sportsBetEvent.clearHotLeagueList();
+			// sportsBetEvent.clearHotLeagueList();
 			openSportPush(route.query.sportType as string, tabActive.value);
 			pubSub.publish("SkeletonLoading", true);
 		}
@@ -122,7 +124,7 @@ const getAttention = async (isLogin = true) => {
 	if ((isLogin && UserStore.getUserInfo) || !isLogin) {
 		const res = await SportsApi.getAttentionList();
 		if (res.data) {
-			sportsBetEvent.setAttentionList(res.data);
+			SportAttentionStore.setAttentionList(res.data);
 		}
 	}
 };

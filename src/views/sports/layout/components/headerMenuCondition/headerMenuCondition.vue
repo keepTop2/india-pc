@@ -113,6 +113,8 @@ const isTodayContestActive = (item: any) => {
 
 // 点击分类切换
 const onType = (item: any) => {
+	//  sportsBetEvent.clearHotLeagueList();
+	pubsub.publish("clearHotLeagueList", "on");
 	// 检查点击的分类是否是 "今日比赛"
 	if (item.path === "/sports/todayContest") {
 		// 判断 "今日比赛" 下的所有状态是否都是非激活状态
@@ -161,7 +163,7 @@ const isShowTime = computed(() => {
 	// 在路由上获取球类标识参数
 	const sportType = route.query.sportType;
 	// 只有足球篮球显示热门切换按钮 其余赛事统一显示时间赛事
-	if ((sportType === "1" || sportType === "2") && route.meta?.type === "list") {
+	if ((sportType === "1" || sportType === "2") && route.meta?.showHotSwitch) {
 		return true;
 	}
 	return false;

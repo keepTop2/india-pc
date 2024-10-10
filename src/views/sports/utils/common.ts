@@ -563,7 +563,7 @@ class SportsCommonFn {
 		// 计算0点（开始时间）
 		const startDate = easternTime.startOf("days").toISOString();
 		// 计算23:59:59（结束时间），注意endOf返回的是下一周期的开始，所以需要减去1毫秒
-		const endDate = easternTime.add(dayEnd, "days").endOf("days").subtract(1, "millisecond").toISOString();
+		const endDate = easternTime.add(dayEnd, "days").subtract(1, "millisecond").toISOString();
 
 		return { startDate, endDate };
 	};
