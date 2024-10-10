@@ -14,8 +14,8 @@ import {} from "vue";
 
 <style scoped lang="scss">
 .loading-mask {
-	width: 100%;
-	min-height: 100%;
+	width: 100vw;
+	min-height: 100vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -23,7 +23,7 @@ import {} from "vue";
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 9999;
+	z-index: 10000001;
 
 	.typing-indicator {
 		width: 60px;

@@ -51,15 +51,17 @@ const rewardAni = ref(false);
 interface Spin {
 	spinList: any; //奖品列表
 	reward: any; //选中的奖品
+	balanceCount: number;
 }
 
 const props = withDefaults(defineProps<Spin>(), {
 	spinList: () => [],
 	reward: () => ({} as any),
+	balanceCount: Number,
 });
 
 // startSpinningCallback 开始旋转的回掉函数
-const emit = defineEmits(["startSpinningCallback", "endSpinningCallback"]);
+const emit = defineEmits(["startSpinningCallback", "endSpinningCallback", "handleNoMoreBet"]);
 
 // 监听props中的reward变化，以触发停止旋转
 
@@ -100,6 +102,9 @@ const clearSpin = () => {
 
 // 处理开始旋转的逻辑
 const handleStartSpin = () => {
+	if (props.balanceCount < 1) {
+		return emit("handleNoMoreBet");
+	}
 	if (spinning.value) return;
 	clearSpin();
 	activityApi.getToSpinActivity().then((res) => {
@@ -114,6 +119,7 @@ const handleStartSpin = () => {
 defineExpose({
 	handleStartSpin,
 	endSpinning,
+	spinning,
 });
 </script>
 

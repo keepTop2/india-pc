@@ -13,13 +13,13 @@
 			<div v-else>
 				<lobbyGameCard v-for="(item, index) in lobbyGameList" :key="index" :gameList="item" :title="item.name" />
 			</div>
-			<redbagRainCountdown v-model="showCountdown" />
+			<redbagRainCountdown v-model="showCountdown" :redBagInfo="redBagInfo" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import banner from "./components/banner.vue";
 import bannerSkeleton from "./components/bannerSkeleton.vue";
 import hotGame from "./components/hotGame.vue";
@@ -27,14 +27,16 @@ import hotGameSkeleton from "./components/hotGameSkeleton.vue";
 import lobbyGameSkeleton from "./components/lobbyGameSkeleton.vue";
 import lobbyGameCard from "./components/lobbyGameCard.vue";
 import { HomeApi } from "/@/api/home";
-const showCountdown = ref(true);
-const isLoading = ref(false);
+import pubsub from "/@/pubSub/pubSub";
+
+const showCountdown = ref(false);
+const isLoading = ref(true);
 const lobbyGameList: any = ref([]);
 const hotGameList = ref([]);
-
+const redBagInfo = ref({});
 const queryGameInfoDetail = async () => {
 	const params = {
-		label: 0,
+		label: 1,
 		pageSize: 10,
 	};
 	try {
@@ -61,9 +63,14 @@ onMounted(async () => {
 	// 最少500毫秒loading
 	const elapsedTime = Date.now() - startTime;
 	const delay = Math.max(0, 500 - elapsedTime);
-	setTimeout(() => {
+	const timer = setTimeout(() => {
+		clearTimeout(timer);
 		isLoading.value = false;
 	}, delay);
+	pubsub.subscribe("/activity/redBagRain", (data) => {
+		showCountdown.value = true;
+		redBagInfo.value = data;
+	});
 });
 </script>
 

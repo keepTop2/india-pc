@@ -2,7 +2,7 @@
 	<div class="modal-manager" v-if="modals">
 		<div class="modal-content fade-in">
 			<component :is="modals.component" v-bind="modals.props" @close="closeModal" />
-			<span class="close_btn" @click="modalStore.closeModal()">
+			<span class="close_btn" @click="modalStore.closeModal()" v-if="hasCloseBtn.includes(modals.component.__name)">
 				<img src="/@/assets/common/close_btn_bg.png" alt="" />
 			</span>
 		</div>
@@ -14,6 +14,7 @@ import { computed, onMounted, watch } from "vue";
 import { useModalStore } from "/@/stores/modules/modalStore"; // 确保路径正确
 const modalStore = useModalStore(); // 使用 Pinia store
 const modals = computed(() => modalStore.modals);
+const hasCloseBtn = ["LoginModal", "RegisterModal", "ForgetPassword", "LangCurrenyConfig", "InviteFriends"];
 const closeModal = () => {
 	modalStore.closeModal(); // 调用 store 中的 closeModal 方法
 };

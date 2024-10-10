@@ -59,6 +59,16 @@ export const activityApi = {
 			headers,
 		});
 	},
+	// 获取转盘记录
+	querySpinWheelOrderRecord: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/querySpinWheelOrderRecord`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: true,
+			},
+		});
+	},
 	// 领取活动
 	getActivityReward: (data = {}, headers = {}) => {
 		return useAxiosApi(`/app/activityParticipate/api/getActivityReward`, {
