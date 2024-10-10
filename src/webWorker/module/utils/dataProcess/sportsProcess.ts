@@ -12,7 +12,8 @@ const setItemCount = (item: Sports, webToPushApi: WebToPushApi): Sports => {
 			item.count = item.liveGameCount;
 			break;
 		case WebToPushApi.todayContest:
-			item.count = item.liveGameCount + item.gameCount;
+			// item.count = item.liveGameCount + item.gameCount;
+			item.count = item.gameCount;
 			break;
 		case WebToPushApi.morningTrading:
 			item.count = item.gameCount;

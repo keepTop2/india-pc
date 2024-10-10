@@ -1,7 +1,7 @@
 <template>
 	<SelectCard :teamData="listData" @onToggleAllStates="onToggleAllStates" />
 	<!-- 联赛数据统计卡片 -->
-	<div class="box-content">
+	<div :style="computedHeight" class="box-content">
 		<DynamicScroller :items="listData" :min-item-size="34" class="scroller" key-field="leagueId" :prerender="10">
 			<template v-slot="{ item, index, active }">
 				<DynamicScrollerItem :item="item" :active="active" :data-index="index" :data-active="active">
@@ -13,12 +13,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, defineProps } from "vue";
+import { ref, defineProps, computed } from "vue";
 import { useRoute } from "vue-router";
-import { FootballCard, SelectCard, VirtualScrollVirtualList } from "./components";
+import { FootballCard, SelectCard } from "./components";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
-import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 
 const props = defineProps({
 	listData: {
@@ -30,6 +29,9 @@ const props = defineProps({
 		default: () => [], // 默认值
 	},
 });
+
+// 获取当前路由
+const route = useRoute();
 
 // 引入赔率变化事件的相关逻辑
 const { clearSportsOddsChange } = useSportPubSubEvents();
@@ -50,12 +52,26 @@ const onToggleAllStates = () => {
 	allStatus.value = !allStatus.value;
 	console.log("触发全部状态", allStatus.value);
 };
+
+// 计算高度，根据不同的路由动态设置高度
+const computedHeight = computed(() => {
+	// 默认高度
+	let baseHeight = "calc(100vh - 227px)";
+	// 如果当前路由是 /sports/morningTrading, 加上 48px
+	if (route.path === "/sports/morningTrading") {
+		baseHeight = `calc(100vh - 276px)`;
+	}
+	return {
+		height: baseHeight,
+	};
+});
 </script>
 
 <style lang="scss" scoped>
 .box-content {
 	width: 100%;
-	height: calc(100vh - 227px);
+	// height: calc(100vh - 227px);
+
 	.scroller {
 		height: 100%;
 	}
