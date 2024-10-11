@@ -13,7 +13,9 @@
 					</div>
 				</div>
 				<div class="right">
-					<div class="icon2" @click="showDetail()"><svg-icon name="sports-quanping" size="16px"></svg-icon></div>
+					<div class="icon2" @click="handleRefresh">
+						<el-icon size="18px" class="Text1" :style="{ transform: `rotate(${refresh.rotation}deg)`, transition: 'transform 1s ease' }"><Refresh /></el-icon>
+					</div>
 					<!-- <div class="icon2"><svg-icon name="sports-shuaxin" size="16px"></svg-icon></div> -->
 				</div>
 			</div>
@@ -63,7 +65,7 @@
 		</div>
 
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
-		<div class="markets-list">
+		<div class="markets-list" v-loading="refresh.loading">
 			<!-- 盘口列表 -->
 			<MarketsList v-show="!isShowHotEvents" />
 			<!-- 热门赛事 -->
@@ -76,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, defineAsyncComponent, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
@@ -88,9 +90,10 @@ import { SportTypeEnum } from "../../../enum/sportEnum/sportEnum";
 import { useUserStore } from "/@/stores/modules/user";
 import SportsApi from "/@/api/sports/sports";
 import videojs from "video.js";
+import { Refresh } from "@element-plus/icons-vue";
 import "video.js/dist/video-js.css";
 
-const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
+const { toggleEventScoreboard, switchEventVideoSource, getSidebarEventSSEPush } = useToolsHooks();
 const route = useRoute();
 const { gotoEventDetail } = useLink();
 const UserStore = useUserStore();
@@ -101,10 +104,17 @@ const iframeLoaded = ref(false);
 const SidebarStore = useSidebarStore();
 const isShowHotEvents = computed(() => (route.meta.type === "detail" ? true : false));
 
+// 刷新按钮数据
+const refresh = reactive({
+	rotation: 0, //旋转角度
+	loading: false, //盘口数据loading状态
+});
+
 // 获取到的数据
 const eventsInfo = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
 	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData;
+
 	if (route.meta.name === "champion" && promotionsViewData.length) {
 		return promotionsViewData[0];
 	}
@@ -299,15 +309,26 @@ const handleClick = (tool: any) => {
  * @description: 跳转到比赛详细
  */
 const showDetail = () => {
-	const params = {
-		leagueId: eventsInfo.value?.leagueId,
-		eventId: eventsInfo.value?.eventId,
-		dataIndex: eventsInfo.value?.dataIndex,
-	};
-	toggleEventScoreboard(eventsInfo.value);
-
-	gotoEventDetail(params, route.query.sportType as string);
+	// const params = {
+	// 	leagueId: eventsInfo.value?.leagueId,
+	// 	eventId: eventsInfo.value?.eventId,
+	// 	dataIndex: eventsInfo.value?.dataIndex,
+	// };
+	// toggleEventScoreboard(eventsInfo.value);
+	// gotoEventDetail(params, route.query.sportType as string);
 };
+
+/**
+ * @description: 刷新数据
+ */
+const handleRefresh = SportsCommonFn.throttle(() => {
+	// 切换旋转状态
+	refresh.rotation += 180;
+	//打开盘口数据loading状态
+	refresh.loading = true;
+	// 获取盘口数据
+	getSidebarEventSSEPush();
+}, 1000);
 </script>
 
 <style scoped lang="scss">

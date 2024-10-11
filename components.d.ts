@@ -16,6 +16,7 @@ declare module 'vue' {
     CollapseItem: typeof import('./src/components/Collapse/CollapseItem.vue')['default']
     CollapseTransition: typeof import('./src/components/Collapse/CollapseTransition.vue')['default']
     CommonDialog: typeof import('./src/components/CommonDialog/index.vue')['default']
+    copy: typeof import('./src/components/Sport/RiseOrFall copy.vue')['default']
     DateSelector: typeof import('./src/components/DateSelector/DateSelector.vue')['default']
     Dialog: typeof import('./src/components/Dialog/Dialog.vue')['default']
     DropdownSelect: typeof import('./src/components/DropdownSelect/index.vue')['default']
@@ -25,6 +26,7 @@ declare module 'vue' {
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
@@ -66,5 +68,8 @@ declare module 'vue' {
     VerificationCode: typeof import('./src/components/VerificationCode/index.vue')['default']
     VirtualScrollVirtualList: typeof import('./src/components/virtualScrollVirtualList/virtualScrollVirtualList.vue')['default']
     WVideo: typeof import('./src/components/wVideo/wVideo.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

@@ -109,7 +109,7 @@ const eventDetail = computed(() => {
 
 	console.log(childrenViewData, "childrenViewData======marketsList");
 	if (childrenViewData) {
-		return childrenViewData[0]?.events?.[0];
+		return JSON.parse(JSON.stringify(childrenViewData))[0]?.events?.[0];
 	}
 	return {};
 });

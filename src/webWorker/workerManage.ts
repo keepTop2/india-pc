@@ -116,7 +116,7 @@ class WorkerManage {
 	 * @param data
 	 */
 	public onMessage<T1, T2>(data: { data: string }) {
-		console.error("第八步  线程管理器收到处理好的数据准备发送到视图", JSON.parse(data.data));
+		console.warn("第八步  线程管理器收到处理好的数据准备发送到视图", JSON.parse(data.data));
 		const workerToViewData: WorkerTransfer<T1, T2> = JSON.parse(data.data);
 		pubsub.PubSubEvents.WorkerEvents.workerToView.params = workerToViewData;
 		pubsub.publish(pubsub.PubSubEvents.WorkerEvents.workerToView.eventName, pubsub.PubSubEvents.WorkerEvents.workerToView.params);

@@ -230,7 +230,7 @@ class SportEventSourceController {
 				webToPushApi,
 				payload: JSON.parse(event.data).payload,
 			};
-			// console.warn("第五步 controller到对应service");
+			console.warn("第五步 controller到对应service");
 			this.sportEventSourceService.eventSourceOnMessageProcess(data);
 		};
 	}
