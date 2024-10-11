@@ -25,7 +25,7 @@ const activityModal: Record<string, () => Promise<any>> = {
 	ASSIGN_DAY: () => import("/@/views/activity/activityType/ASSIGN_DAY.vue"),
 	LOSS_IN_SPORTS: () => import("/@/views/activity/activityType/LOSS_IN_SPORTS.vue"),
 	RECHARGE_BONUS: () => import("/@/views/activity/activityType/RECHARGE_BONUS.vue"),
-	DAILY_COMPETITION: () => import("/@/views/activity/activityType/DAILY_COMPETITION.vue"),
+	DAILY_COMPETITION: () => import("/@/views/activity/activityType/DAILY_COMPETITION/index.vue"),
 	SPIN_WHEEL: () => import("../../views/activity/activityType/SPIN_WHEEL/index.vue"),
 };
 

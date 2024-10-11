@@ -20,14 +20,15 @@
 		</div>
 		<!-- 结算弹窗 -->
 		<RED_BAG_RAIN_Dialog v-model="showRedBagRainResult" :title="dialogTitle" :confirm="confirmDialog" class="redBagRainResult">
-			<div v-if="settlement">
-				{{ settlement }}
-				<div class="Text2">本轮共抢到5个红包</div>
-				<div class="result mt_20">共计 5.23BCD</div>
+			<div v-if="settlement.amount == 0">
+				<div class="Text3">没有戳中有奖红包</div>
+				<div>
+					<img src="./image/pityIcon.png" alt="" />
+				</div>
 			</div>
-			<div class="Text3">您领取的红包太多啦，请下一场次再参与</div>
-			<div>
-				<img src="./image/pityIcon.png" alt="" />
+			<div v-else>
+				<div class="Text2">本轮共抢到{{ settlement.redbagCount }}个红包</div>
+				<div class="result mt_20">共计{{ settlement.amount }}</div>
 			</div>
 		</RED_BAG_RAIN_Dialog>
 	</div>
@@ -58,7 +59,7 @@ const setp: any = ref(null);
 const showRedBagRainResult = ref(false);
 const getReadyCountdown = ref(3);
 const dialogTitle = ref("温馨提示");
-const settlement = ref({});
+const settlement: any = ref({});
 let ctx: CanvasRenderingContext2D | null = null;
 // 创建红包图片对象
 const img = new Image();
@@ -290,7 +291,7 @@ const startRedbagRain = () => {
 				addNewRedBag();
 			}
 		}, 150);
-		startCountdown(100);
+		startCountdown(activityData.value.dropTime);
 		clearTimeout(timer);
 	}, 3000);
 };

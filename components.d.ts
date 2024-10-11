@@ -10,6 +10,7 @@ declare module 'vue' {
     AreaCode: typeof import('./src/components/AreaCode/index.vue')['default']
     BackToTop: typeof import('./src/components/BackToTop.vue')['default']
     Button: typeof import('./src/components/Button/Button.vue')['default']
+    CalendarPicker: typeof import('./src/components/CalendarPicker.vue')['default']
     CententItem: typeof import('./src/components/virtualScrollVirtualList/cententItem/cententItem.vue')['default']
     Collapse: typeof import('./src/components/Collapse/index.vue')['default']
     CollapseItem: typeof import('./src/components/Collapse/CollapseItem.vue')['default']

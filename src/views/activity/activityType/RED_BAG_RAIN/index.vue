@@ -140,7 +140,7 @@ watch(
 	}
 );
 const getActivityReward = async () => {
-	redbagRainSingleton.showRedbagRain();
+	if (activityData.value.clientStatus !== 1) return;
 	await activityApi.redBagParticipate({ redbagSessionId: activityData.value.redbagSessionId }).then((res) => {
 		if (res.code === 10000) {
 			if (res.data.status === 10000) {

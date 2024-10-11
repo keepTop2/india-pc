@@ -131,11 +131,10 @@ import Common from "/@/utils/common";
 import { ref, onMounted } from "vue";
 import Spin from "./spin.vue";
 import { useModalStore } from "/@/stores/modules/modalStore";
-import { mockDoGetReward, mockGetSpinList } from "./api";
 import "../../components/common.scss";
 import router from "/@/router";
 const activityStore = useActivityStore();
-const activityData: any = ref({});
+const activityData: any = computed(() => activityStore.getCurrentActivityData);
 const showRecord = ref(false);
 const showbetResult = ref(false);
 const showNoMoreBet = ref(false);
@@ -241,6 +240,7 @@ onMounted(() => {
 		height: 80px;
 		line-height: 80px;
 		font-size: 20px;
+		margin: 0 auto;
 	}
 	.remaining_times_bg {
 		width: 404px;

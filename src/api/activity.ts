@@ -93,4 +93,45 @@ export const activityApi = {
 			headers,
 		});
 	},
+
+	// 每日竞赛分类
+	queryActivityDailyContestVenueCode: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/queryActivityDailyContestVenueCode`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: true,
+			},
+		});
+	},
+	// 每日竞赛信息
+	queryActivityDailyContest: (data = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/queryActivityDailyContest`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: true,
+			},
+		});
+	},
+	// 每日竞赛奖池
+	queryActivityDailyPrizePool: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/queryActivityDailyPrizePool`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: false,
+			},
+		});
+	},
+	// 每日竞赛奖池
+	queryActivityDailyRecord: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/queryActivityDailyRecord`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: false,
+			},
+		});
+	},
 };

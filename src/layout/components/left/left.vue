@@ -90,6 +90,9 @@
 				</div>
 			</div>
 		</div>
+		<activityDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
+			{{ dialogInfo.message }}
+		</activityDialog>
 	</div>
 </template>
 
@@ -100,6 +103,7 @@ import menuSkeleton from "./components/menuSkeleton.vue";
 import { computed, onMounted, ref } from "vue";
 import { useThemesStore } from "/@/stores/modules/themes";
 import { useMenuStore } from "/@/stores/modules/menu";
+import activityDialog from "/@/views/activity/components/activityDialog.vue";
 import useTo from "/@/hooks/ustTo";
 import PubSub from "/@/pubSub/pubSub";
 import Common from "/@/utils/common";
@@ -108,9 +112,13 @@ import { useModalStore } from "/@/stores/modules/modalStore";
 const modalStore = useModalStore();
 const ThemesStore = useThemesStore();
 const MenuStore = useMenuStore();
+const showCommonDialog = ref(false);
 import { useRouter } from "vue-router";
 import { useUserStore } from "/@/stores/modules/user";
+import { useActivityStore } from "/@/stores/modules/activity";
+const activityStore = useActivityStore();
 const router = useRouter();
+const dialogInfo: any = ref({});
 const isLoading = ref(false);
 onMounted(() => {
 	isLoading.value = true;
@@ -121,16 +129,26 @@ onMounted(() => {
 
 const showSpin = () => {
 	if (useUserStore().getLogin) {
-		activityApi.getToSpinActivity().then((res) => {
+		activityApi.getToSpinActivity().then((res: any) => {
 			if (res.code == Common.ResCode.SUCCESS) {
-				modalStore.openModal("SPIN_WHEEL");
+				if (res.data.status == Common.ResCode.SUCCESS) {
+					activityApi.getSpindetail().then((res) => {
+						activityStore.setCurrentActivityData(res.data);
+						modalStore.openModal("SPIN_WHEEL");
+					});
+				} else {
+					dialogInfo.value = res.data;
+					showCommonDialog.value = true;
+				}
 			}
 		});
 	} else {
 		modalStore.openModal("LoginModal");
 	}
 };
-
+const confirmDialog = () => {
+	showCommonDialog.value = false;
+};
 const showTask = () => {
 	if (useUserStore().getLogin) {
 		modalStore.openModal("SPIN_WHEEL");
