@@ -26,8 +26,26 @@ import { onMounted, ref } from "vue";
 const modalStore = useModalStore();
 const activityStore = useActivityStore();
 const showDetails = async (item: any) => {
-	await getConfigDetail(item);
-	modalStore.openModal(item.activityTemplate);
+	// 红包雨
+	if (item.activityTemplate == "RED_BAG_RAIN") {
+		activityApi.getRedBagInfo().then((res) => {
+			activityStore.setCurrentActivityData(res.data);
+			modalStore.openModal(item.activityTemplate);
+		});
+		// 转盘
+	} else if (item.activityTemplate == "SPIN_WHEEL") {
+		activityApi.getSpindetail().then((res) => {
+			activityStore.setCurrentActivityData(res.data);
+			modalStore.openModal(item.activityTemplate);
+		});
+		// 每日竞赛
+	} else if (item.activityTemplate == "DAILY_COMPETITION") {
+		modalStore.openModal(item.activityTemplate);
+		// 其他活动
+	} else {
+		await getConfigDetail(item);
+		modalStore.openModal(item.activityTemplate);
+	}
 };
 defineProps({
 	activityList: {

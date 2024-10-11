@@ -46,25 +46,37 @@ const modules = ref([Autoplay, Pagination, Navigation]);
 import banner1 from "./image/banner1.png";
 import banner2 from "./image/banner2.png";
 import banner3 from "./image/banner3.png";
-import { onMounted, ref } from "vue";
-import { url } from "inspector";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 const swiperRef: any = ref(null);
-const isLoading = ref(false);
 const activeIndex = ref(0);
 const announcementList = [banner1, banner2, banner3, banner1, banner2, banner3];
+
 const onSwiper = (swiper: any) => {
 	swiperRef.value = swiper;
-	console.log(swiperRef.value, 8888);
 };
 const goToNextSlide = () => {
-	swiperRef.value?.slideNext();
+	swiperRef.value.slideNext();
 };
 const goToPrevSlide = () => {
-	swiperRef.value?.slidePrev();
+	swiperRef.value.slidePrev();
 };
 const slideChange = (value: any) => {
 	activeIndex.value = value.realIndex;
 };
+// 组件挂载时更新 Swiper
+onMounted(() => {
+	if (swiperRef.value) {
+		swiperRef.value.update();
+	}
+});
+
+// 组件销毁时清除 Swiper 实例
+onBeforeUnmount(() => {
+	if (swiperRef.value) {
+		swiperRef.value.destroy();
+		swiperRef.value = null; // 重置 swiperRef
+	}
+});
 </script>
 
 <style scoped lang="scss">

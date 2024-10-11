@@ -22,7 +22,9 @@ export const activityApi = {
 		return useAxiosApi(`/app/activityParticipate/api/getConfigDetail`, {
 			method: "POST",
 			data,
-			headers,
+			headers: {
+				needLogin: true,
+			},
 		});
 	},
 	// 申请活动校验
@@ -31,6 +33,40 @@ export const activityApi = {
 			method: "POST",
 			data,
 			headers,
+		});
+	},
+	// 申请活动校验
+	getSpindetail: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activity/spin/api/detail`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	// 申请转盘校验
+	getToSpinActivity: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activity/spin/api/toActivity`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	// 获取转盘结果
+	getSpinprizeResult: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activity/spin/api/prizeResult`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	// 获取转盘记录
+	querySpinWheelOrderRecord: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/querySpinWheelOrderRecord`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: true,
+			},
 		});
 	},
 	// 领取活动
@@ -55,6 +91,47 @@ export const activityApi = {
 			method: "POST",
 			data,
 			headers,
+		});
+	},
+
+	// 每日竞赛分类
+	queryActivityDailyContestVenueCode: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/queryActivityDailyContestVenueCode`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: true,
+			},
+		});
+	},
+	// 每日竞赛信息
+	queryActivityDailyContest: (data = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/queryActivityDailyContest`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: true,
+			},
+		});
+	},
+	// 每日竞赛奖池
+	queryActivityDailyPrizePool: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/queryActivityDailyPrizePool`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: false,
+			},
+		});
+	},
+	// 每日竞赛奖池
+	queryActivityDailyRecord: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/activityParticipate/api/queryActivityDailyRecord`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: false,
+			},
 		});
 	},
 };

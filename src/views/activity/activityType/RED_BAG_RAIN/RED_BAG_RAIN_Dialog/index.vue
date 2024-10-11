@@ -7,7 +7,9 @@
 			</div>
 			<div class="dialog-content"><slot></slot></div>
 			<div class="dialog-footer">
-				<button class="common_btn" @click="close">确认</button>
+				<button class="common_btn" @click="close">
+					<slot name="footer">确认</slot>
+				</button>
 			</div>
 		</div>
 	</div>
@@ -89,6 +91,8 @@ const close = () => {
 				width: 158px;
 				height: 46px;
 				margin: 0 auto;
+				border-radius: 10px;
+				background: linear-gradient(278deg, #ff284b 4.74%, #fd677f 92.73%);
 			}
 		}
 	}

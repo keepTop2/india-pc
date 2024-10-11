@@ -7,8 +7,9 @@
 
 			<div class="currency">
 				<div v-for="(i, index) in spinList" :key="index" class="spin-item" :style="getItemStyle(index)">
-					<span class="amount">{{ showCoin(i.coin) }}</span>
-					<img :src="getImg(i.currency)" />
+					<span class="amount">
+						<img v-lazy-load="i.prizePictureUrl" alt="" />
+					</span>
 				</div>
 			</div>
 		</div>
@@ -29,6 +30,9 @@ import crypto_point from "./img/crypto_point.png";
 import crypto_btn from "./img/crypto_btn.png";
 import spinBG from "./img/spin_bg.png";
 import spinBorder from "./img/spin-img-border.png";
+import { activityApi } from "/@/api/activity";
+import showToast from "/@/hooks/useToast";
+import Common from "/@/utils/common";
 
 const lightActive = ref(false);
 const spinning = ref(false);
@@ -44,48 +48,40 @@ const rewardAni = ref(false);
  * @param {Function} endSpinningCallback 结束旋转的回掉函数
  */
 
-interface Coin {
-	coin: string;
-	currency: string;
-}
-
 interface Spin {
-	spinList: Coin[]; //奖品列表
-	reward: Coin; //选中的奖品
+	spinList: any; //奖品列表
+	reward: any; //选中的奖品
+	balanceCount: number;
 }
 
 const props = withDefaults(defineProps<Spin>(), {
 	spinList: () => [],
-	reward: () => ({} as Coin),
+	reward: () => ({} as any),
+	balanceCount: Number,
 });
 
 // startSpinningCallback 开始旋转的回掉函数
-const emit = defineEmits(["startSpinningCallback", "endSpinningCallback"]);
+const emit = defineEmits(["startSpinningCallback", "endSpinningCallback", "handleNoMoreBet"]);
 
 // 监听props中的reward变化，以触发停止旋转
-watch(
-	() => props.reward,
-	async () => {
-		await nextTick();
-		spinOver.value = true;
-		const { coin, currency } = props.reward;
-		const findIndex = props.spinList.findIndex((i) => i.coin === coin && i.currency === currency);
-		if (findIndex === -1) {
-			// 错误处理
-			console.error("奖品信息错误");
-			return;
-		}
-		spinRotate.value = `${(360 / 16) * (16 - findIndex) + 90}deg`;
-		await nextTick();
-		rewardAni.value = true;
-		const timer = setTimeout(() => {
-			spinning.value = false;
-			emit("endSpinningCallback");
-			clearTimeout(timer);
-		}, 2500);
-	}
-);
 
+const endSpinning = async () => {
+	spinOver.value = true;
+	const findIndex = props.spinList.findIndex((i: any) => i.id === props.reward?.id);
+	if (findIndex === -1) {
+		// 错误处理
+		clearSpin();
+		return;
+	}
+	spinRotate.value = `${(360 / 16) * (16 - findIndex) + 90}deg`;
+	await nextTick();
+	rewardAni.value = true;
+	const timer = setTimeout(() => {
+		spinning.value = false;
+		emit("endSpinningCallback");
+		clearTimeout(timer);
+	}, 2500);
+};
 onMounted(async () => {
 	lightActive.value = true;
 	pageLoading.value = false;
@@ -96,18 +92,7 @@ const getItemStyle = (index: number) => ({
 	opacity: "1",
 	transform: `rotate(${(360 / 16) * index}deg)`,
 });
-// 获取奖品图标的路径
-const getImg = (url: string) => {
-	return new URL(`./img/coin/${url}.black.png`, import.meta.url).href;
-};
-// 格式化显示币种小数点数
-const showCoin = (c: string) => {
-	let coin = Number(c).toFixed(7).toString().slice(0, 7);
-	if (coin.indexOf(".") === 6) {
-		coin = coin.slice(0, 6);
-	}
-	return coin;
-};
+
 // 重置旋转动画状态
 const clearSpin = () => {
 	spinOver.value = false;
@@ -117,13 +102,24 @@ const clearSpin = () => {
 
 // 处理开始旋转的逻辑
 const handleStartSpin = () => {
+	if (props.balanceCount < 1) {
+		return emit("handleNoMoreBet");
+	}
 	if (spinning.value) return;
 	clearSpin();
-	spinning.value = true;
-	emit("startSpinningCallback");
+	activityApi.getToSpinActivity().then((res) => {
+		if (res.code === Common.ResCode.SUCCESS) {
+			spinning.value = true;
+			emit("startSpinningCallback");
+		} else {
+			showToast(res.message);
+		}
+	});
 };
 defineExpose({
 	handleStartSpin,
+	endSpinning,
+	spinning,
 });
 </script>
 
@@ -173,17 +169,17 @@ defineExpose({
 				align-items: center;
 				justify-content: space-between;
 				img {
-					width: 16px;
-					height: 16px;
+					width: 30px;
+					height: 30px;
+					object-fit: cover;
 				}
 
 				.amount {
-					text-align: right;
 					margin-right: 4px;
 					font-weight: 700;
 					font-size: 12px;
 					color: #fff;
-					padding-left: 8px;
+					padding-left: 45px;
 					font-family: "DIN Alternate";
 				}
 			}

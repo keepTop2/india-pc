@@ -1,0 +1,193 @@
+.activityWrapper {
+	background: url("../activityType/image/commonBg.png") no-repeat;
+	background-size: 100% 100%;
+	overflow: hidden;
+	padding-right: 3px;
+	border-radius: 12px;
+	.activityHeader {
+		background: url("../activityType/image/header_bg.png") center no-repeat;
+		background-size: 100% 34px;
+		height: 54px;
+		width: 366px;
+		margin: 10px auto 10px;
+		text-align: center;
+		line-height: 54px;
+		font-size: 16px;
+		font-weight: 600;
+		color: var(--Text_a);
+		position: relative;
+		.closeIcon {
+			position: absolute;
+			right: -30px;
+			top: -1px;
+			img {
+				width: 30px;
+				height: 30px;
+			}
+		}
+	}
+	.activityImg {
+		img {
+			width: 100%;
+			height: 197px;
+			object-fit: cover;
+		}
+	}
+	.activityMain {
+		overflow: auto;
+		width: 480px;
+		height: 80vh;
+		min-height: 500px;
+		.bonus_card {
+			height: 226px;
+			margin-top: 15px;
+			background: url("../activityType/image/bonus_card_bg.png") no-repeat;
+			background-size: 100% 100%;
+			padding: 0 52px;
+			.bonus_card_title {
+				text-align: center;
+				height: 30px;
+				line-height: 30px;
+				font-size: 16px;
+				color: var(--Text_a);
+			}
+			.bonus_card_content {
+				display: flex;
+				justify-content: space-around;
+				border-bottom: 1px solid var(--Line_2);
+				height: 80px;
+				display: flex;
+				align-items: center;
+				color: var(--Text2);
+				.amount {
+					text-align: center;
+					font-family: "DIN Alternate";
+					margin-top: 8px;
+					font-weight: 700;
+					.Text3 {
+						margin-right: 3px;
+					}
+				}
+				.line {
+					width: 1px;
+					height: 52px;
+					background-color: var(--Line_2);
+				}
+			}
+			.bonus_card_footer {
+				text-align: center;
+				padding: 15px 23px;
+				font-size: 14px;
+				color: var(--Text2);
+				.Theme_text {
+					font-size: 14px;
+					font-weight: 700;
+				}
+			}
+			.apply_btn {
+				margin: 0 auto;
+			}
+		}
+		.activityContent {
+			color: var(--Text1);
+			margin-top: 16px;
+			padding: 0 16px;
+			.activityContentHeader {
+				height: 64px;
+				padding-top: 30px;
+				text-align: center;
+				background: url("../activityType/image/activityContentHeader.png") no-repeat;
+				background-size: 100% 100%;
+				.flex-center {
+					font-size: 16px;
+					font-weight: 500;
+					color: var(--Text_s);
+				}
+			}
+			.activityContentCenter {
+				background: url("../activityType/image/activityContentCenter.png");
+				background-size: 100% auto;
+				padding: 0 25px;
+				position: relative;
+				.activityContentImg {
+					position: absolute;
+					right: 14px;
+					top: 40px;
+					z-index: 0;
+					img {
+						z-index: -1;
+						height: 152px;
+						width: 149px;
+						border-radius: 15px;
+					}
+				}
+				.contentCell {
+					z-index: 10;
+					.cellLabel {
+						height: 28px;
+						background: url("../activityType/image/cellLabelBg.png") no-repeat;
+						background-size: auto 100%;
+						line-height: 28px;
+						padding-left: 35px;
+						color: var(--Text_s);
+						font-size: 14px;
+						font-weight: 600;
+					}
+					.cellValue {
+						padding-left: 35px;
+						margin: 12px 0;
+						font-size: 14px;
+						font-weight: 400;
+					}
+				}
+				.contentCell:last-child {
+					.cellValue {
+						margin-bottom: 0;
+					}
+				}
+				.ruleDetails {
+					font-size: 12px;
+				}
+			}
+			.activityContentFooter {
+				height: 66px;
+				text-align: center;
+				background: url("../activityType/image/activityContentFooter.png") no-repeat;
+				background-size: 100% 100%;
+			}
+		}
+		.apply_btn {
+			width: 320px;
+			height: 36px;
+			margin: 20px auto;
+			div {
+				height: 36px;
+				background: url("../activityType/image/btn_bg.png");
+				background-size: 100% 100%;
+				line-height: 36px;
+				text-align: center;
+				color: var(--Text_a);
+				font-size: 14px;
+			}
+			div.active {
+				height: 36px;
+				background: url("../activityType/image/btn_active_bg.png");
+				background-size: 100% 100%;
+				line-height: 36px;
+				text-align: center;
+				color: var(--Text_a);
+				font-size: 14px;
+			}
+		}
+	}
+	.activityMain::-webkit-scrollbar {
+		width: 6px;
+	}
+	.activityMain::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+	.activityMain::-webkit-scrollbar-thumb {
+		background: var(--Line_2);
+		border-radius: 5px;
+	}
+}

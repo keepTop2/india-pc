@@ -1,20 +1,26 @@
 <template>
 	<div class="activityWrapper">
-		<div class="activityHeader">{{ activityData.activityNameI18nCode || "红包雨" }}</div>
+		<div class="activityHeader">
+			{{ activityData.activityNameI18nCode || "红包雨" }}
+			<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../../components/image/close_icon.svg" alt="" /></span>
+		</div>
 
 		<div class="activityMain">
 			<div class="activityImg">
-				<img src="./image/redBagRainImg.png" alt="" />
-				<div class="shadow"></div>
+				<img v-lazy-load="activityData.headPicturePcI18nCode" alt="" />
 			</div>
-			<div class="bonus_card">
-				<div class="bonus_card_title">红包雨</div>
-				<div class="bonus_card_content">
-					<div>距离下一场红包雨还有</div>
-					<div class="countdownBg">00:08:08</div>
-				</div>
-				<div class="bonus_card_btn">
-					<button class="common_btn" @click="getActivityReward" :disabled="false">立即申请</button>
+			<div class="activityContent">
+				<div class="bonus_card">
+					<div class="bonus_card_title">红包雨</div>
+					<div class="mt_20 mb_20">
+						{{ activityData.clientStatus == 1 ? "距离本场红包雨结束" : "距离下一场红包雨还有" }}
+					</div>
+					<div class="countdown mb_20">
+						<span>{{ Common.convertMilliseconds(countdown * 1000) }}</span>
+					</div>
+					<div class="apply_btn">
+						<div class="curp" :class="activityData.clientStatus == 1 ? 'active' : ''" @click="getActivityReward">抢</div>
+					</div>
 				</div>
 			</div>
 
@@ -29,7 +35,7 @@
 				<div class="activityContentCenter">
 					<slide class="sessions">
 						<div v-for="(item, index) in activityData.sessionInfoList" class="session" :key="index">
-							<div>{{ Common.parseHms(item.startTime) }}</div>
+							<div>{{ Common.parseHm(item.startTime) }}</div>
 							<div class="sideBox">
 								<img src="./image/sessionCricle.svg" alt="" v-if="item.status == 0" />
 								<img src="./image/sessionCricle1.svg" alt="" v-if="item.status == 1" />
@@ -42,7 +48,7 @@
 				</div>
 				<div class="activityContentFooter" />
 			</div>
-			<div class="activityContent">
+			<div class="activityContent" v-if="activityData?.winnerList.length > 1">
 				<div class="activityContentHeader">
 					<div class="flex-center">
 						<img src="../image/activityContentHeaderLeft.svg" alt="" />
@@ -57,10 +63,10 @@
 							<div>获得红包</div>
 							<div>时间</div>
 						</div>
-						<div class="winnerListBody" v-for="(item, index) in 5" :key="index">
-							<div>1****7</div>
-							<div>8.6 BCD</div>
-							<div>2023-09-06 23:59:59</div>
+						<div class="winnerListBody" v-for="(item, index) in activityData.winnerList" :key="index">
+							<div>{{ item.userId }}</div>
+							<div>{{ item.redBagAmount }}</div>
+							<div>{{ item.hitTime }}</div>
 						</div>
 					</div>
 				</div>
@@ -75,283 +81,209 @@
 					</div>
 				</div>
 				<div class="activityContentCenter ruleCenter">
-					<div class="ruleCell">
-						<span>活动时间</span>
-						<span>2023-12-12 00:00:00～2023-12-31 23:59:59</span>
-					</div>
-					<div class="ruleCell">
-						<span>活动对象</span>
-						<span>首存会员</span>
-					</div>
 					<div class="ruleDetails">
-						<div>
-							1、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-							动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-						</div>
-						<div>
-							2、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-							动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-						</div>
-						<div>
-							3、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-							动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-						</div>
+						<div v-html="activityData.ruleDesc"></div>
 					</div>
 				</div>
 				<div class="activityContentFooter" />
 			</div>
 		</div>
+
+		<!-- 结算弹窗 -->
+		<RED_BAG_RAIN_Dialog v-model="showDialog" title="温馨提示" :confirm="confirmDialog" class="redBagRainResult">
+			<div class="Text3">{{ dialogInfo.message }}</div>
+			<template v-slot:footer v-if="[30045, 30053].includes(dialogInfo.status)"> 去绑定 </template>
+		</RED_BAG_RAIN_Dialog>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import "../../components/common.scss";
+import { onMounted, ref, watch } from "vue";
 import { activityApi } from "/@/api/activity";
 import { useRouter } from "vue-router";
 import { useActivityStore } from "/@/stores/modules/activity";
+import RED_BAG_RAIN_Dialog from "./RED_BAG_RAIN_Dialog/index.vue";
 import { computed } from "vue";
 import Common from "/@/utils/common";
 import { redbagRainSingleton } from "/@/hooks/useRedbagRain"; // 引入自定义 hook
-
+import { useModalStore } from "/@/stores/modules/modalStore";
+import { useCountdown } from "/@/hooks/countdown";
+import router from "/@/router";
+import showToast from "/@/hooks/useToast";
+const { countdown, startCountdown, stopCountdown } = useCountdown();
 const activityStore = useActivityStore();
+const showDialog = ref(false);
+const dialogInfo: any = ref({});
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
-
+const confirmDialog = () => {
+	showDialog.value = false;
+	if ([30045, 30053].includes(dialogInfo.value.status)) {
+		router.push("/user/security_center");
+	}
+};
 const status: any = {
 	0: "未开始",
 	1: "进行中",
 	2: "已结束",
 };
+onMounted(() => {
+	initCountown();
+});
+watch(
+	() => countdown.value,
+	() => {
+		if (countdown.value == 0) {
+			stopCountdown();
+			getRedBagInfo();
+		}
+	}
+);
+const getActivityReward = async () => {
+	if (activityData.value.clientStatus !== 1) return;
+	await activityApi.redBagParticipate({ redbagSessionId: activityData.value.redbagSessionId }).then((res) => {
+		if (res.code === 10000) {
+			if (res.data.status === 10000) {
+				redbagRainSingleton.showRedbagRain();
+			} else {
+				dialogInfo.value = res.data;
+				showDialog.value = true;
+			}
+		}
+	});
+};
 
-const getActivityReward = () => {
-	redbagRainSingleton.showRedbagRain();
+const getRedBagInfo = async () => {
+	stopCountdown();
+	await activityApi.getRedBagInfo().then((res: any) => {
+		if (res.code === 10000) {
+			activityStore.setCurrentActivityData(res.data);
+			initCountown();
+		} else {
+			showToast(res.message);
+		}
+	});
+};
+const initCountown = () => {
+	if (activityData.value.clientStatus === 1) {
+		// 进行中倒计时
+		startCountdown(activityData.value.advanceTime);
+		// 判断活动已活动已全部结束
+	} else if (activityData.value.clientStatus === 2) {
+		//  获取明天第一场的时间
+		const time = activityData.value.sessionInfoList[0].startTime + 1000 * 60 * 60 * 24 - new Date().getTime();
+		startCountdown(Math.floor(time / 1000));
+	} else if (activityData.value.clientStatus === 0) {
+		//  获取下一场比赛的时间
+		const time = activityData.value.sessionInfoList.find((item: any) => item.redbagSessionId == activityData.value.redbagSessionId).startTime - new Date().getTime();
+		startCountdown(Math.floor(time / 1000));
+	}
 };
 </script>
 <style scoped lang="scss">
 .activityWrapper {
-	background: url("../image/commonBg.png") no-repeat;
-	background-size: 100% auto;
-	overflow: hidden;
-	.activityHeader {
-		background: url("../image/header_bg.svg") no-repeat;
-		height: 57px;
-		width: 580px;
-		margin: 0 auto;
-		margin-top: 18px;
-		text-align: center;
-		line-height: 42px;
-		font-size: 20px;
-		font-weight: 600;
-		color: var(--Text_a);
-	}
-	.activityImg {
-		width: 100%;
-		background: url("./image/redBagRainBg.png") no-repeat;
-		background-size: 100% auto;
-		position: relative;
-		img {
-			width: 100%;
-			padding: 0 49px;
-		}
-		.shadow {
-			height: 84px;
-			background: linear-gradient(180deg, rgba(34, 36, 42, 0) 0%, #22242a 100%);
-			position: absolute;
-			bottom: 0;
-			width: 100%;
-		}
-	}
-	.activityMain {
-		overflow: auto;
-		width: 760px;
-		height: 80vh;
-		min-height: 500px;
-		// padding-right: 0px !important;
-		.bonus_card {
-			height: 273px;
-			margin-top: 15px;
-			background: url("../image/bonus_card_bg.svg") no-repeat;
-			background-size: 100% 100%;
-			padding: 0 52px;
-			.bonus_card_title {
-				text-align: center;
-				height: 41px;
-				line-height: 41px;
-				font-size: 20px;
-				color: var(--Text_a);
-			}
-			.bonus_card_content {
-				text-align: center;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				gap: 20px;
-				height: 130px;
-				color: var(--Text2);
-				.countdownBg {
-					height: 56px;
-					line-height: 56px;
-					font-weight: 600;
-					font-size: 20px;
-					color: var(--Theme);
-					background: url("./image/countdownBg.png") no-repeat center;
-				}
-			}
-			.bonus_card_btn {
-				padding: 0 81px;
-				.common_btn:disabled {
-					height: 48px;
-					background: url("./image/btnBg.png") no-repeat;
-					background-size: 100% 100%;
-				}
-				.common_btn {
-					height: 48px;
-					background: url("./image/btnActiveBg.png") no-repeat;
-					background-size: 100% 100%;
-				}
-			}
-			.bonus_card_footer {
-				text-align: center;
-				padding: 13px 23px;
-				font-size: 16px;
-				font-size: 16px;
-				color: var(--Text2);
-				.Theme_text {
-					font-size: 24px;
-					font-weight: 700;
-				}
-			}
-		}
-		.activityContent {
-			color: var(--Text1);
-			margin-top: 16px;
+	// background: url("../image/commonBg.png") no-repeat;
+	// background-size: 100% auto;
+	// overflow: hidden;
+	// .activityHeader {
+	// 	background: url("../image/header_bg.svg") no-repeat;
+	// 	height: 57px;
+	// 	width: 580px;
+	// 	margin: 0 auto;
+	// 	margin-top: 18px;
+	// 	text-align: center;
+	// 	line-height: 42px;
+	// 	font-size: 20px;
+	// 	font-weight: 600;
+	// 	color: var(--Text_a);
+	// }
 
-			.activityContentHeader {
-				height: 108px;
-				padding-top: 30px;
-				text-align: center;
-				background: url("../image/activityContentHeader.png") no-repeat;
-				background-size: 100% 100%;
-				.flex-center {
-					gap: 34px;
-					font-size: 24px;
-					font-weight: 500;
-					color: var(--Text_s);
+	.sessions {
+		display: flex;
+		justify-content: center;
+		font-size: 14px;
+		.session {
+			min-width: 60px;
+			text-align: center;
+			position: relative;
+			.sideBox {
+				height: 24px;
+				margin: 5px 0;
+				img {
+					height: 16px;
+					pointer-events: none;
 				}
 			}
-			.activityContentCenter {
-				background: url("../image/activityContentCenter.png");
-				background-size: 100% auto;
-				padding: 0 25px;
-				position: relative;
-				.sessions {
-					display: flex;
-					justify-content: center;
-					.session {
-						min-width: 115px;
-						text-align: center;
-						position: relative;
-						.sideBox {
-							height: 24px;
-							margin: 12px 0;
-						}
-						.side {
-							display: inline-block;
-							width: 70px;
-							height: 6px;
-							background-color: var(--Line_2);
-							position: absolute;
-							left: calc(50% + 21px);
-							top: 50%;
-							transform: translateY(-50%);
-						}
-						.type2 {
-							background-color: var(--Theme);
-						}
-						.status2 {
-							color: var(--Theme);
-						}
-						.status1 {
-							color: var(--F1);
-						}
-					}
-				}
-				.winnerListTable {
-					margin: 0 45px;
-					border: 2px solid rgba(255, 40, 75, 0.4);
-					border-radius: 12px;
-					.winnerListHeader,
-					.winnerListBody {
-						width: 100%;
-						display: flex;
-						height: 48px;
-						line-height: 48px;
-						justify-content: center;
-						border-bottom: 2px solid rgba(255, 40, 75, 0.4);
-						> div {
-							flex: 1;
-							text-align: center;
-						}
-						> div:first-child {
-							border-right: 2px solid rgba(255, 40, 75, 0.4);
-						}
-						> div:nth-child(2) {
-							border-right: 2px solid rgba(255, 40, 75, 0.4);
-						}
-					}
-					.winnerListBody:last-child {
-						border-bottom: none;
-					}
-					.winnerListHeader {
-						border-top-left-radius: 10px;
-						border-top-right-radius: 10px;
-						background: linear-gradient(180deg, rgba(255, 40, 75, 0.7) 0%, rgba(255, 40, 75, 0.4) 100%);
-					}
-				}
-				.contentCell {
-					.cellLabel {
-						height: 46px;
-						background: url("../image/cellLabelBg.png") no-repeat;
-						background-size: auto 100%;
-						line-height: 46px;
-						padding-left: 67px;
-						color: var(--Text_s);
-						font-size: 16px;
-						font-weight: 600;
-					}
-					.cellValue {
-						padding-left: 67px;
-						margin: 12px 0;
-						font-weight: 400;
-						width: 500px;
-					}
-				}
-				.contentCell:last-child {
-					.cellValue {
-						margin: 0;
-					}
-				}
+			.side {
+				display: inline-block;
+				width: 30px;
+				height: 2px;
+				background-color: var(--Line_2);
+				position: absolute;
+				left: calc(50% + 15px);
+				top: 50%;
+				transform: translateY(-50%);
 			}
-			.activityContentFooter {
-				height: 108px;
-				text-align: center;
-				background: url("../image/activityContentFooter.png") no-repeat;
-				background-size: 100% 100%;
+			.type2 {
+				background-color: var(--Theme);
 			}
-			.ruleCenter {
-				padding: 0 35px;
+			.status2 {
+				color: var(--Theme);
+			}
+			.status1 {
+				color: var(--F1);
 			}
 		}
 	}
-	.activityMain::-webkit-scrollbar {
-		// width: 6px;
-		display: none;
+	.winnerListTable {
+		border: 2px solid rgba(255, 40, 75, 0.4);
+		border-radius: 12px;
+		.winnerListHeader,
+		.winnerListBody {
+			width: 100%;
+			display: flex;
+			height: 40px;
+			justify-content: center;
+			border-bottom: 2px solid rgba(255, 40, 75, 0.4);
+			> div {
+				line-height: 40px;
+				text-align: center;
+			}
+			> div:first-child {
+				width: 25%;
+				border-right: 2px solid rgba(255, 40, 75, 0.4);
+			}
+			> div:nth-child(2) {
+				width: 25%;
+				border-right: 2px solid rgba(255, 40, 75, 0.4);
+			}
+			> div:nth-child(3) {
+				width: 50%;
+			}
+		}
+		.winnerListBody:last-child {
+			border-bottom: none;
+		}
+		.winnerListHeader {
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			background: linear-gradient(180deg, rgba(255, 40, 75, 0.7) 0%, rgba(255, 40, 75, 0.4) 100%);
+		}
 	}
-	.activityMain::-webkit-scrollbar-track {
-		background-color: transparent;
-	}
-	.activityMain::-webkit-scrollbar-thumb {
-		background: var(--icon);
-		border-radius: 5px;
+	.bonus_card {
+		text-align: center;
+		color: var(--Theme);
+		font-weight: 500;
+		.countdown {
+			width: 274px;
+			height: 56px;
+			margin: 0 auto;
+			line-height: 56px;
+			background: url("./image/countdownBg.png") no-repeat;
+			background-size: 100% 100%;
+			font-size: 20px;
+			font-weight: 600;
+		}
 	}
 }
 </style>

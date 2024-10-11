@@ -1,28 +1,37 @@
-import { ref, onUnmounted } from 'vue';
+import { ref, onUnmounted } from "vue";
 
 export function useCountdown() {
 	const countdown = ref(0); // 倒计时时长
 	const isCountingDown = ref(false); // 倒计时状态
-	let timer: NodeJS.Timeout | null = null;
+	let timer: number | null = null;
+	let startTime = 0; // 记录倒计时开始的时间
+	let endTime = 0; // 记录倒计时结束的时间
 
 	/**
 	 * @param duration 倒计时参数
 	 * @annotation 倒计时启动函数
 	 */
-	const startCountdown = (duration?: number) => {
-		countdown.value = duration || 60;
+	const startCountdown = (duration = 60) => {
+		countdown.value = duration;
 		isCountingDown.value = true;
+		startTime = Date.now();
+		endTime = startTime + duration * 1000;
 
 		const count = () => {
-			countdown.value--;
-			if (countdown.value === 0) {
+			const now = Date.now();
+			const remainingTime = Math.max(Math.floor((endTime - now) / 1000), 0);
+
+			countdown.value = remainingTime;
+
+			if (remainingTime === 0) {
 				stopCountdown();
-				countdown.value = 0; // 倒计时结束后将倒计时值重置为0
-				isCountingDown.value = false; // 进入未在倒计时状态
+				isCountingDown.value = false;
 			} else {
-				timer = setTimeout(count, 1000);
+				const nextTick = 1000 - (now % 1000); // 保证每秒执行一次
+				timer = window.setTimeout(count, nextTick);
 			}
 		};
+
 		count();
 	};
 
@@ -30,7 +39,7 @@ export function useCountdown() {
 	 * @annotation 倒计时停止函数
 	 */
 	const stopCountdown = () => {
-		if (timer) {
+		if (timer !== null) {
 			clearTimeout(timer);
 			timer = null;
 		}

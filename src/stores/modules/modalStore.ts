@@ -9,6 +9,9 @@ interface ModalComponent {
 const message_center: Record<string, () => Promise<any>> = {
 	messageCenter: () => import("/@/views/messageCenter/index.vue"),
 };
+const vip: Record<string, () => Promise<any>> = {
+	vip: () => import("/@/views/user/vip/index.vue"),
+};
 const security_center: Record<string, () => Promise<any>> = {
 	ChangePassword: () => import("/@/views/user/security_center/components/ChangePassword.vue"),
 	setEmail: () => import("/@/views/user/security_center/components/setEmail.vue"),
@@ -25,7 +28,7 @@ const activityModal: Record<string, () => Promise<any>> = {
 	ASSIGN_DAY: () => import("/@/views/activity/activityType/ASSIGN_DAY.vue"),
 	LOSS_IN_SPORTS: () => import("/@/views/activity/activityType/LOSS_IN_SPORTS.vue"),
 	RECHARGE_BONUS: () => import("/@/views/activity/activityType/RECHARGE_BONUS.vue"),
-	DAILY_COMPETITION: () => import("/@/views/activity/activityType/DAILY_COMPETITION.vue"),
+	DAILY_COMPETITION: () => import("/@/views/activity/activityType/DAILY_COMPETITION/index.vue"),
 	SPIN_WHEEL: () => import("../../views/activity/activityType/SPIN_WHEEL/index.vue"),
 };
 
@@ -39,6 +42,7 @@ const modalComponents: Record<string, () => Promise<any>> = {
 	...activityModal,
 	...security_center,
 	...message_center,
+	...vip,
 };
 
 // 创建 Pinia store
@@ -56,7 +60,6 @@ export const useModalStore = defineStore("modal", () => {
 				const component = await modalComponent();
 				modalCache.set(modalName, component.default);
 				modals.value = { component: shallowRef(component.default), props };
-				console.log(modals.value);
 			}
 		}
 	};

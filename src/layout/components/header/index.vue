@@ -94,6 +94,8 @@ const openLangCurrenyConfig = () => {
 const goToPath = (route: any) => {
 	if (route.name === "invite_friends") {
 		modalStore.openModal("InviteFriends");
+	} else if (route.name === "vip") {
+		modalStore.openModal("vip");
 	} else {
 		isOpenMenu.value = false;
 		router.push({ name: route.name });

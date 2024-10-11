@@ -25,22 +25,28 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-const modules = ref([Autoplay, Pagination, Navigation]);
+
 import banner1 from "./image/banner1.png";
 import banner2 from "./image/banner2.png";
 import banner3 from "./image/banner3.png";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 const swiperRef: any = ref(null);
-const isLoading = ref(false);
+const modules = ref([Autoplay, Pagination, Navigation]);
 const announcementList = [banner1, banner2, banner3, banner1, banner2, banner3];
 const onSwiper = (swiper: any) => {
-	swiperRef.value = swiper;
+	if (swiperRef.value) {
+		swiperRef.value = swiper;
+	}
 };
 const goToNextSlide = () => {
-	swiperRef.value?.slideNext();
+	if (swiperRef.value) {
+		swiperRef.value?.slideNext();
+	}
 };
 const goToPrevSlide = () => {
-	swiperRef.value?.slidePrev();
+	if (swiperRef.value) {
+		swiperRef.value?.slidePrev();
+	}
 };
 </script>
 

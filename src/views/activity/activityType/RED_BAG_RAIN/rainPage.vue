@@ -20,13 +20,15 @@
 		</div>
 		<!-- 结算弹窗 -->
 		<RED_BAG_RAIN_Dialog v-model="showRedBagRainResult" :title="dialogTitle" :confirm="confirmDialog" class="redBagRainResult">
-			<div>
-				<div class="Text2">本轮共抢到5个红包</div>
-				<div class="result mt_20">共计 5.23BCD</div>
+			<div v-if="settlement.amount == 0">
+				<div class="Text3">没有戳中有奖红包</div>
+				<div>
+					<img src="./image/pityIcon.png" alt="" />
+				</div>
 			</div>
-			<div class="Text3">您领取的红包太多啦，请下一场次再参与</div>
-			<div>
-				<img src="./image/pityIcon.png" alt="" />
+			<div v-else>
+				<div class="Text2">本轮共抢到{{ settlement.redbagCount }}个红包</div>
+				<div class="result mt_20">共计{{ settlement.amount }}</div>
 			</div>
 		</RED_BAG_RAIN_Dialog>
 	</div>
@@ -57,6 +59,7 @@ const setp: any = ref(null);
 const showRedBagRainResult = ref(false);
 const getReadyCountdown = ref(3);
 const dialogTitle = ref("温馨提示");
+const settlement: any = ref({});
 let ctx: CanvasRenderingContext2D | null = null;
 // 创建红包图片对象
 const img = new Image();
@@ -154,7 +157,7 @@ watch(
 	}
 );
 // 动画函数
-function animate(): void {
+const animate = () => {
 	if (ctx && !isPaused.value) {
 		ctx.clearRect(0, 0, canvas.value!.width, canvas.value!.height); // 清空画布
 		drawCountdown(); // 绘制倒计时
@@ -169,10 +172,10 @@ function animate(): void {
 
 		requestAnimationFrame(animate);
 	}
-}
+};
 
 // 绘制倒计时
-function drawCountdown() {
+const drawCountdown = () => {
 	if (ctx && canvas.value) {
 		const countdownText = "倒计时: ";
 		const countdownValue = countdown.value.toString();
@@ -204,9 +207,9 @@ function drawCountdown() {
 		ctx.font = "32px Arial"; // 较大的字体
 		ctx.fillText(countdownValue, centerX + textWidth1, centerY);
 	}
-}
+};
 // 鼠标移动监听器
-function handleMouseMove(event: MouseEvent) {
+const handleMouseMove = (event: MouseEvent) => {
 	if (isPaused.value)
 		return redBags.forEach((redBag) => {
 			redBag.isHovered = false; // 重置所有红包的悬停状态
@@ -235,37 +238,37 @@ function handleMouseMove(event: MouseEvent) {
 	if (hoveredRedBag) {
 		hoveredRedBag.isHovered = true; // 设置为悬停
 	}
-}
+};
 
 // 鼠标点击监听
-function handleClick() {
+const handleClick = () => {
 	if (isPaused.value) return;
 	redBags.forEach((redBag) => {
 		if (redBag.isHovered) {
-			activitySocket.send(JSON.stringify({ redbagSessionId: activityData.value.redbagSessionId }));
+			activitySocket.send("/activity/redBagRain/grab:" + JSON.stringify({ redbagSessionId: activityData.value.redbagSessionId }));
 			redBag.isClicked = true; // 标记红包为已点击
 		}
 	});
-}
+};
 
 // 调整画布大小
 const adjustCanvasSize = () => {
 	if (canvas.value) {
-		canvas.value.width = 700; // 设置画布宽度
+		canvas.value.width = 750; // 设置画布宽度
 		canvas.value.height = window.innerHeight; // 设置画布高度
 		ctx = canvas.value.getContext("2d");
 	}
 };
 
 // 添加新红包
-function addNewRedBag() {
+const addNewRedBag = () => {
 	const width = 76; // 红包宽度
 	const height = 102; // 红包高度
 	const x = Math.random() * (canvas.value!.width - width); // 随机生成 X 坐标
 	const speed = Math.random() * 3 + 1; // 随机生成速度
 	const newRedBag = new RedBagImpl(x, -height, width, height, speed, img, openedImg);
 	redBags.push(newRedBag); // 添加红包到数组
-}
+};
 
 const initReadyTime = () => {
 	setp.value = 0;
@@ -288,7 +291,7 @@ const startRedbagRain = () => {
 				addNewRedBag();
 			}
 		}, 150);
-		startCountdown(100);
+		startCountdown(activityData.value.dropTime);
 		clearTimeout(timer);
 	}, 3000);
 };
@@ -300,37 +303,38 @@ const initRedbagRain = () => {
 };
 
 // 退出游戏函数
-function exitGame() {
+const exitGame = () => {
 	isPaused.value = true; // 暂停游戏
 	setp.value = 3;
 	ctx!.clearRect(0, 0, canvas.value!.width, canvas.value!.height); // 清空画布
 	redBags.length = 0; // 清空红包数组
-	pubsub.subscribe(webSocketMsgTopicEnum.settlement, (data) => {});
 	const parmas =
-		webSocketMsgTopicEnum.settlement +
+		"/activity/redBagRain/settlement" +
 		":" +
 		JSON.stringify({
 			redbagSessionId: activityData.value.redbagSessionId,
 		});
 	activitySocket.send(parmas);
-	dialogTitle.value = "恭喜你";
-	showRedBagRainResult.value = true;
-}
+};
 const confirmDialog = () => {
 	isVisible.value = false;
 	redbagRainSingleton.hideRedbagRain();
 };
 // 生命周期管理
 onMounted(async () => {
-	await redBagParticipate();
 	initReadyTime();
 	initRedbagRain();
-});
-const redBagParticipate = async () => {
-	await activityApi.redBagParticipate({ redbagSessionId: activityData.value.redbagSessionId }).then((res) => {
-		console.log(res);
+	pubsub.subscribe("/activity/redBagRain/settlement", (data) => {
+		if (data.data.redbagCount > 0) {
+			dialogTitle.value = "恭喜你";
+		} else {
+			dialogTitle.value = "很遗憾";
+		}
+		settlement.value = data.data;
+		showRedBagRainResult.value = true;
 	});
-};
+});
+
 onBeforeUnmount(() => {
 	isVisible.value = false;
 	canvas.value!.removeEventListener("mousemove", handleMouseMove);
@@ -382,10 +386,10 @@ onBeforeUnmount(() => {
 			width: 100%;
 			height: 100vh;
 			background: url("./image/redBagBg.png") no-repeat center;
-			background-size: 700px 100%;
+			background-size: 750px 100%;
 			cursor: pointer;
 			> div {
-				width: 700px;
+				width: 750px;
 				margin: 0 auto;
 				position: relative;
 			}

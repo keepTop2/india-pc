@@ -21,9 +21,9 @@ import { useMenuStore } from "/@/stores/modules/menu";
 import Modal from "/@/components/Modal.vue";
 import Footer from "./components/footer/index.vue";
 import { useRoute } from "vue-router";
+import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
 import activitySocketService from "../utils/activitySocketService";
 const websocketService = activitySocketService.getInstance();
-import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
 const route = useRoute();
 const MenuStore = useMenuStore();
 
@@ -47,14 +47,13 @@ const resizeObserver = new ResizeObserver((entries) => {
 });
 
 onMounted(() => {
-	initializeWebSocket();
 	resizeObserver.observe(domeRef.value as any);
-});
-const initializeWebSocket = async () => {
-	await websocketService.connect().then(() => {
-		websocketService.send(webSocketMsgTopicEnum.redBagRain);
+	// ws连接
+	websocketService.connect().then(() => {
+		websocketService.send("/activity/redBagRain");
 	});
-};
+});
+
 onUnmounted(() => {
 	resizeObserver.unobserve(domeRef.value as any);
 });
@@ -90,4 +89,14 @@ onUnmounted(() => {
 .mainArea::-webkit-scrollbar {
 	display: none;
 }
+// .mainArea::-webkit-scrollbar {
+// 	width: 6px;
+// }
+// .mainArea::-webkit-scrollbar-track {
+// 	background-color: transparent;
+// }
+// .mainArea::-webkit-scrollbar-thumb {
+// 	background: var(--icon);
+// 	border-radius: 5px;
+// }
 </style>

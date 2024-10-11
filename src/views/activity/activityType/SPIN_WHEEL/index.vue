@@ -2,24 +2,34 @@
 	<div class="activityWrapper">
 		<div class="activityCenter">
 			<div class="activityHeader">
-				{{ activityData.activityNameI18nCode || "幸运转盘" }}
+				{{ activityData?.activityNameI18nCode || "幸运转盘" }}
+				<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../../components/image/close_icon.svg" alt="" /></span>
 			</div>
 			<div class="activityMain">
 				<div class="spinContainer">
 					<div class="tabs">
-						<div v-for="(item, index) in tabs" :key="index" :class="currentTab === item.value ? 'tab tab' + item.value + '_active' : 'tab'" @click="currentTab = item.value">
+						<div v-for="(item, index) in tabs" :key="index" :class="currentTab === item.value ? 'tab tab' + item.value + '_active' : 'tab'" @click="selectTab(item.value)">
 							{{ item.name }}
 						</div>
 					</div>
-					<Spin @start-spinning-callback="spinStart" @end-spinning-callback="spinEnd" :reward="reward" :spinList="spinList" ref="SpinRef" />
+					<Spin
+						@start-spinning-callback="spinStart"
+						@end-spinning-callback="spinEnd"
+						@handleNoMoreBet="handleNoMoreBet"
+						:reward="reward"
+						:spinList="currentTab == '1' ? activityData?.bronze : currentTab == '2' ? activityData?.silver : activityData?.gold"
+						:balanceCount="activityData?.balanceCount"
+						ref="SpinRef"
+					/>
+					<div class="vipLevel color_TB fw_600" :class="'vip' + currentTab">{{ activityData?.vipRankConfig?.[currentTab - 1]?.maxVipGradeName }}级或以上</div>
 				</div>
-				<div class="p_20 remaining_times_bg">剩余抽奖次数： 1</div>
+				<div class="p_20 remaining_times_bg">剩余抽奖次数： {{ activityData?.balanceCount }}</div>
 				<div class="flex_space-between">
 					<div class="bonus">
 						<div>转盘奖金总计</div>
-						<div class="fs_14 Theme_text">987,654,321.00</div>
+						<div class="fs_14 Theme_text">{{ activityData?.totalAmount }}</div>
 					</div>
-					<div class="record" @click="showRecord = true">我的抽奖记录 <svg-icon name="arrow_right" size="16px"></svg-icon></div>
+					<div class="record" @click="handleRecord">我的抽奖记录 <svg-icon name="arrow_right" size="16px"></svg-icon></div>
 				</div>
 				<div class="activityContent">
 					<div class="activityContentHeader">
@@ -30,27 +40,8 @@
 						</div>
 					</div>
 					<div class="activityContentCenter ruleCenter">
-						<div class="ruleCell">
-							<span>活动时间</span>
-							<span>2023-12-12 00:00:00～2023-12-31 23:59:59</span>
-						</div>
-						<div class="ruleCell">
-							<span>活动对象</span>
-							<span>首存会员</span>
-						</div>
 						<div class="ruleDetails">
-							<div>
-								1、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-								动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-							</div>
-							<div>
-								2、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-								动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-							</div>
-							<div>
-								3、活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活
-								动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则活动规则
-							</div>
+							<div v-html="activityData?.activityRuleI18nCode"></div>
 						</div>
 					</div>
 					<div class="activityContentFooter" />
@@ -77,49 +68,6 @@
 								<span>{{ item.activityAmount }}</span>
 								<span>{{ item.receiveTime }}</span>
 							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
-							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
-								<span>{{ item.rewardRankText }}</span>
-								<span>{{ item.prizeName }}</span>
-								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
-							</div>
 						</div>
 					</LazyLoadList>
 				</div>
@@ -128,7 +76,6 @@
 				<img src="../../activityType/image/close.png" alt="" />
 			</div>
 		</CommonDialog>
-
 		<!-- 中奖了 -->
 		<CommonDialog v-model="showbetResult">
 			<div class="betResult">
@@ -136,7 +83,7 @@
 				<div class="Text_s fs_20 fw_600">恭喜您获得</div>
 				<div class="amunt mt_40 mb_33">$9.03121</div>
 				<div class="againBtn">
-					<div class="bubble">剩余次数</div>
+					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
 					<button class="common_btn active" @click="handleStartSpin">再抽一次：1</button>
 				</div>
 			</div>
@@ -144,19 +91,32 @@
 				<img src="../../activityType/image/close.png" alt="" />
 			</div>
 		</CommonDialog>
-		<!-- 没中奖 -->
 
+		<!-- 没中奖 -->
 		<CommonDialog v-model="showLosserbetResult">
-			<div class="losserbetResult">
-				<img src="./images/result_img.png" alt="" />
-				<div class="Text_s fs_20 fw_600">恭喜您获得</div>
-				<div class="amunt mt_40 mb_33">$9.03121</div>
+			<div class="losserbetResult pt_240">
+				<div class="Text_s fs_20 tishi">没有中奖</div>
+				<div class="mt_80 mb_80 Theme_text fs_20">谢谢惠顾</div>
 				<div class="againBtn">
-					<div class="bubble">剩余次数</div>
+					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
 					<button class="common_btn active" @click="handleStartSpin">再抽一次：1</button>
 				</div>
 			</div>
 			<div class="closeRecord" @click="showLosserbetResult = false">
+				<img src="../../activityType/image/close.png" alt="" />
+			</div>
+		</CommonDialog>
+
+		<!-- 抽奖次数不足 -->
+		<CommonDialog v-model="showNoMoreBet">
+			<div class="losserbetResult pt_240">
+				<div class="Text_s fs_20 tishi">温馨提示</div>
+				<div class="mt_80 mb_80 Text1">您的抽奖次数不足</div>
+				<div class="againBtn">
+					<button class="common_btn active fs_16" @click="goToDeposit">去获取</button>
+				</div>
+			</div>
+			<div class="closeRecord" @click="showNoMoreBet = false">
 				<img src="../../activityType/image/close.png" alt="" />
 			</div>
 		</CommonDialog>
@@ -170,41 +130,25 @@ import { computed } from "vue";
 import Common from "/@/utils/common";
 import { ref, onMounted } from "vue";
 import Spin from "./spin.vue";
-import { mockDoGetReward, mockGetSpinList } from "./api";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import "../../components/common.scss";
+import router from "/@/router";
 const activityStore = useActivityStore();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
 const showRecord = ref(false);
 const showbetResult = ref(false);
+const showNoMoreBet = ref(false);
 const showLosserbetResult = ref(false);
 const recordFinished = ref(false);
 const recordIsLoading = ref(false);
 const SpinRef: any = ref(null);
-const recordList = [
-	{
-		receiveTime: "2022-05-12 14:11:23",
-		rewardRankText: "青铜",
-		prizeName: "手机",
-		activityAmount: "9999",
-	},
-	{
-		receiveTime: "2022-05-12 14:11:23",
-		rewardRankText: "青铜",
-		prizeName: "手机",
-		activityAmount: "9999",
-	},
-	{
-		receiveTime: "2022-05-12 14:11:23",
-		rewardRankText: "青铜",
-		prizeName: "手机",
-		activityAmount: "9999",
-	},
-];
+const recordList: any = ref([]);
 // 奖项列表
 const spinList = ref();
 // 获得的奖励
 const reward = ref();
 // 当前选中的标签
-const currentTab = ref("1");
+const currentTab: any = ref("1");
 // 标签列表
 const tabs = ref([
 	{
@@ -222,12 +166,7 @@ const tabs = ref([
 ]);
 
 onMounted(() => {
-	/**
-	 * @description 获取奖项列表
-	 */
-	mockGetSpinList().then((res: any) => {
-		spinList.value = res.data;
-	});
+	// showbetResult.value = true;
 });
 
 /**
@@ -235,6 +174,7 @@ onMounted(() => {
  * @param {string} tabKey - 选中的标签值
  */
 const selectTab = (tabKey: string) => {
+	if (SpinRef.value?.spinning) return;
 	currentTab.value = tabKey;
 };
 
@@ -242,8 +182,9 @@ const selectTab = (tabKey: string) => {
  * @description 抽奖开始
  */
 const spinStart = () => {
-	mockDoGetReward().then((res: any) => {
+	activityApi.getSpinprizeResult().then((res) => {
 		reward.value = res.data;
+		SpinRef.value?.endSpinning();
 	});
 };
 
@@ -255,58 +196,60 @@ const spinEnd = () => {
 	showLosserbetResult.value = true;
 };
 const handleStartSpin = () => {
+	// if (activityData.value?.balanceCount < 1) return;
 	showbetResult.value = false;
 	showLosserbetResult.value = false;
 	SpinRef.value?.handleStartSpin();
 };
-
-const getRecordList = () => {
-	console.log(9999);
+const handleRecord = async () => {
+	await getRecordList();
+	showRecord.value = true;
 };
+const getRecordList = () => {
+	activityApi.querySpinWheelOrderRecord().then((res) => {
+		if (res.code === 10000) {
+			recordList.value = res.data.records || [];
+		}
+	});
+};
+const handleNoMoreBet = () => {
+	showNoMoreBet.value = true;
+};
+const goToDeposit = () => {
+	showNoMoreBet.value = false;
+	useModalStore().closeModal();
+	router.push("/user/deposit");
+};
+onMounted(() => {
+	getRecordList();
+});
 </script>
 <style scoped lang="scss">
 .activityWrapper {
-	background-size: 100% auto;
-	overflow: hidden;
+	background: none;
 	.activityCenter {
-		width: 444px;
-		margin: 0 auto;
 		background: url("../image/commonBg2.png") no-repeat;
-		background-color: var(--Bg1);
 		background-size: 100% 100%;
-		position: relative;
-		border-radius: 15px;
+		width: 444px;
+	}
+	.activityContent {
+		width: 444px;
 	}
 	.activityHeader {
-		height: 57px;
-		margin: 0 auto;
-		text-align: center;
-		line-height: 42px;
+		background: none;
+		height: 80px;
+		line-height: 80px;
 		font-size: 20px;
-		padding-top: 8px;
-		font-weight: 600;
-		color: var(--Text_a);
-		.close {
-			position: absolute;
-			right: 20px;
-			top: 23px;
-			cursor: pointer;
-		}
+		margin: 0 auto;
 	}
-	.activityMain {
-		overflow-y: auto;
-		overflow-x: hidden;
-		height: 80vh;
-		min-height: 500px;
-		.remaining_times_bg {
-			width: 404px;
-			height: 58px;
-			line-height: 26px;
-			background: url("./images/remaining_times_bg.png") no-repeat;
-			background-size: 100% 100%;
-			margin: 20px auto;
-			color: var(--Text_s);
-		}
+	.remaining_times_bg {
+		width: 404px;
+		height: 58px;
+		line-height: 26px;
+		background: url("./images/remaining_times_bg.png") no-repeat;
+		background-size: 100% 100%;
+		margin: 20px;
+		color: var(--Text_s);
 	}
 	.common_btn {
 		background-size: 100% 100%;
@@ -314,10 +257,12 @@ const getRecordList = () => {
 	}
 
 	.flex_space-between {
+		width: 444px;
 		padding: 0 20px;
 		color: var(--Text_s);
 		> div {
 			flex: 1;
+			width: 50%;
 			height: 68px;
 			display: flex;
 			align-items: center;
@@ -341,11 +286,13 @@ const getRecordList = () => {
 	}
 
 	.spinContainer {
+		width: 404px;
 		background: url("./images/contentBg.png") no-repeat;
 		background-size: 100% 100%;
 		background-position: 0 20px;
 		margin: 0 20px;
 		padding-bottom: 16px;
+		position: relative;
 		.tabs {
 			display: flex;
 			justify-content: space-around;
@@ -372,138 +319,31 @@ const getRecordList = () => {
 			background: url("./images/tab_bg3.png");
 			background-size: 100% 100%;
 		}
+		.vipLevel {
+			position: absolute;
+			right: 0;
+			top: 70px;
+			width: 144px;
+			height: 32px;
+			line-height: 32px;
+			text-align: center;
+			font-size: 14px;
+			color: var(--Text_s);
+		}
+		.vip1 {
+			background: url("./images/vipbg_1.png");
+			background-size: 100% 100%;
+		}
+		.vip2 {
+			background: url("./images/vipbg_2.png");
+			background-size: 100% 100%;
+		}
+		.vip3 {
+			background: url("./images/vipbg_3.png");
+			background-size: 100% 100%;
+		}
 	}
 
-	.activityContent {
-		color: var(--Text1);
-		margin: 16px 15px 16px;
-		.activityContentHeader {
-			height: 78px;
-			padding-top: 30px;
-			text-align: center;
-			background: url("../image/activityContentHeader.png") no-repeat;
-			background-size: 100% 100%;
-			.flex-center {
-				gap: 30px;
-				font-size: 20px;
-				font-weight: 500;
-				color: var(--Text_s);
-			}
-		}
-		.activityContentCenter {
-			background: url("../image/activityContentCenter.png");
-			background-size: 100% auto;
-			padding: 0 15px;
-			position: relative;
-			.sessions {
-				display: flex;
-				justify-content: center;
-				.session {
-					min-width: 115px;
-					text-align: center;
-					position: relative;
-					.sideBox {
-						height: 24px;
-						margin: 12px 0;
-					}
-					.side {
-						display: inline-block;
-						width: 70px;
-						height: 6px;
-						background-color: var(--Line_2);
-						position: absolute;
-						left: calc(50% + 21px);
-						top: 50%;
-						transform: translateY(-50%);
-					}
-					.type2 {
-						background-color: var(--Theme);
-					}
-					.status2 {
-						color: var(--Theme);
-					}
-					.status1 {
-						color: var(--F1);
-					}
-				}
-			}
-			.winnerListTable {
-				margin: 0 45px;
-				border: 2px solid rgba(255, 40, 75, 0.4);
-				border-radius: 12px;
-				.winnerListHeader,
-				.winnerListBody {
-					width: 100%;
-					display: flex;
-					height: 48px;
-					line-height: 48px;
-					justify-content: center;
-					border-bottom: 2px solid rgba(255, 40, 75, 0.4);
-					> div {
-						flex: 1;
-						text-align: center;
-					}
-					> div:first-child {
-						border-right: 2px solid rgba(255, 40, 75, 0.4);
-					}
-					> div:nth-child(2) {
-						border-right: 2px solid rgba(255, 40, 75, 0.4);
-					}
-				}
-				.winnerListBody:last-child {
-					border-bottom: none;
-				}
-				.winnerListHeader {
-					border-top-left-radius: 10px;
-					border-top-right-radius: 10px;
-					background: linear-gradient(180deg, rgba(255, 40, 75, 0.7) 0%, rgba(255, 40, 75, 0.4) 100%);
-				}
-			}
-			.contentCell {
-				.cellLabel {
-					height: 46px;
-					background: url("../image/cellLabelBg.png") no-repeat;
-					background-size: auto 100%;
-					line-height: 46px;
-					padding-left: 67px;
-					color: var(--Text_s);
-					font-size: 16px;
-					font-weight: 600;
-				}
-				.cellValue {
-					padding-left: 67px;
-					margin: 12px 0;
-					font-weight: 400;
-					width: 500px;
-				}
-			}
-			.contentCell:last-child {
-				.cellValue {
-					margin: 0;
-				}
-			}
-		}
-		.activityContentFooter {
-			height: 48px;
-			text-align: center;
-			background: url("../image/activityContentFooter.png") no-repeat;
-			background-size: 100% 100%;
-		}
-		.ruleCenter {
-			padding: 0 25px;
-		}
-	}
-	.activityMain::-webkit-scrollbar {
-		width: 6px;
-		display: none;
-	}
-	.activityMain::-webkit-scrollbar-track {
-		background-color: transparent;
-	}
-	.activityMain::-webkit-scrollbar-thumb {
-		background: var(--icon);
-		border-radius: 5px;
-	}
 	.dialogCenter {
 		width: 444px;
 		margin: 0 auto;
@@ -592,18 +432,15 @@ const getRecordList = () => {
 		height: 544px;
 		padding-top: 180px;
 		text-align: center;
-		.amunt {
-			width: 278px;
+		.tishi {
+			width: 334px;
 			height: 42px;
-			line-height: 42px;
-			border-radius: 30px;
-			background: linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0%, rgba(11, 4, 4, 0.2) 100%);
-			box-shadow: 0px -2.222px 1.481px 0px rgba(255, 92, 92, 0.25) inset, 0px 2.963px 2.963px 0px rgba(0, 0, 0, 0.25) inset;
-			backdrop-filter: blur(7.407407283782959px);
+			border-radius: 53px;
 			margin: 0 auto;
-			color: var(--Theme);
-			font-size: 24px;
-			font-weight: 700;
+			line-height: 42px;
+			border: 1px solid #e2e2e2;
+			background: linear-gradient(90deg, rgba(79, 73, 73, 0.3) 0%, rgba(56, 52, 52, 0.2) 100%);
+			backdrop-filter: blur(15px);
 		}
 		img {
 			width: 135px;
@@ -659,6 +496,10 @@ const getRecordList = () => {
 			line-height: 27.5px;
 			font-size: 14px;
 		}
+		// .common_btn {
+		// 	background: url("../image/btn_bg.png") no-repeat;
+		// 	background-size: 100% 100%;
+		// }
 	}
 }
 </style>

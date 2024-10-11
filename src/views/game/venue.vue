@@ -78,7 +78,7 @@ import { gameApi } from "/@/api/game";
 import { useRoute } from "vue-router";
 import { reactive } from "vue";
 import router from "/@/router";
-const isLoading = ref(false);
+const isLoading = ref(true);
 const searchinputFocus = ref(false);
 
 const hotGameObj: any = reactive({});
