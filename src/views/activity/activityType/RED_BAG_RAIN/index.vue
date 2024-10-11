@@ -2,7 +2,7 @@
 	<div class="activityWrapper">
 		<div class="activityHeader">
 			{{ activityData.activityNameI18nCode || "红包雨" }}
-			<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../../components/image/close_icon.svg" alt="" /></span>
+			<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../../components/image/close_icon.png" alt="" /></span>
 		</div>
 
 		<div class="activityMain">
@@ -37,9 +37,9 @@
 						<div v-for="(item, index) in activityData.sessionInfoList" class="session" :key="index">
 							<div>{{ Common.parseHm(item.startTime) }}</div>
 							<div class="sideBox">
-								<img src="./image/sessionCricle.svg" alt="" v-if="item.status == 0" />
-								<img src="./image/sessionCricle1.svg" alt="" v-if="item.status == 1" />
-								<img src="./image/sessionCricle2.svg" alt="" v-if="item.status == 2" />
+								<img :src="sessionCricle" alt="" v-if="item.status == 0" />
+								<img :src="sessionCricle1" alt="" v-if="item.status == 1" />
+								<img :src="sessionCricle2" alt="" v-if="item.status == 2" />
 							</div>
 							<div :class="'status' + item.status">{{ status[item.status] }}</div>
 							<span class="side" v-if="index !== activityData.sessionInfoList.length - 1" :class="'type' + item.status"></span>
@@ -111,6 +111,9 @@ import { useModalStore } from "/@/stores/modules/modalStore";
 import { useCountdown } from "/@/hooks/countdown";
 import router from "/@/router";
 import showToast from "/@/hooks/useToast";
+import sessionCricle from "./image/sessionCricle.png";
+import sessionCricle1 from "./image/sessionCricle1.png";
+import sessionCricle2 from "./image/sessionCricle2.png";
 const { countdown, startCountdown, stopCountdown } = useCountdown();
 const activityStore = useActivityStore();
 const showDialog = ref(false);

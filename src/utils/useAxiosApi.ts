@@ -109,9 +109,6 @@ instance.interceptors.response.use(
 				const userStore = useUserStore();
 				userStore.logOut();
 				break;
-			case ResCode.TOKEN_INVALID:
-				showToast("令牌错误，请先登录");
-				break;
 		}
 
 		if (res.code !== ResCode.SUCCESS) {

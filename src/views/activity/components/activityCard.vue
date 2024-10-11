@@ -6,13 +6,17 @@
 			</div>
 			<div class="itemDetails">
 				<div>
-					<p class="fs_14 Text2">截止时间：{{ Common.parseTime(item.activityEndTime) }}</p>
+					<p class="fs_14 Text2" v-if="item.activityDeadline !== 1">{{ Common.parseTime(item.activityEndTime) }}～{{ Common.parseTime(item.activityEndTime) }}</p>
+					<p class="fs_14 Text2" v-else>长期活动</p>
 					<p class="fs_14">{{ item.activityNameI18nCode }}</p>
 				</div>
 				<div class="btn" @click="showDetails(item)">查看详情</div>
 			</div>
 		</div>
 	</div>
+	<activityDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog" :nofooter="false">
+		<div>您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册</div>
+	</activityDialog>
 </template>
 
 <script setup lang="ts">
@@ -20,27 +24,42 @@ import Common from "/@/utils/common";
 import { useActivityStore } from "/@/stores/modules/activity";
 import { activityApi } from "/@/api/activity";
 import { useModalStore } from "/@/stores/modules/modalStore";
-
+import activityDialog from "./activityDialog.vue";
 import { onMounted, ref } from "vue";
+import { useUserStore } from "/@/stores/modules/user";
 
 const modalStore = useModalStore();
 const activityStore = useActivityStore();
+const showCommonDialog = ref(false);
+const confirmDialog = () => {};
 const showDetails = async (item: any) => {
 	// 红包雨
 	if (item.activityTemplate == "RED_BAG_RAIN") {
-		activityApi.getRedBagInfo().then((res) => {
-			activityStore.setCurrentActivityData(res.data);
-			modalStore.openModal(item.activityTemplate);
-		});
+		if (useUserStore().getLogin) {
+			activityApi.getRedBagInfo().then((res) => {
+				activityStore.setCurrentActivityData(res.data);
+				modalStore.openModal(item.activityTemplate);
+			});
+		} else {
+			showCommonDialog.value = true;
+		}
 		// 转盘
 	} else if (item.activityTemplate == "SPIN_WHEEL") {
-		activityApi.getSpindetail().then((res) => {
-			activityStore.setCurrentActivityData(res.data);
-			modalStore.openModal(item.activityTemplate);
-		});
+		if (useUserStore().getLogin) {
+			activityApi.getSpindetail().then((res) => {
+				activityStore.setCurrentActivityData(res.data);
+				modalStore.openModal(item.activityTemplate);
+			});
+		} else {
+			showCommonDialog.value = true;
+		}
 		// 每日竞赛
 	} else if (item.activityTemplate == "DAILY_COMPETITION") {
-		modalStore.openModal(item.activityTemplate);
+		if (useUserStore().getLogin) {
+			modalStore.openModal(item.activityTemplate);
+		} else {
+			showCommonDialog.value = true;
+		}
 		// 其他活动
 	} else {
 		await getConfigDetail(item);

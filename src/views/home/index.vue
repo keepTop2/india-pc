@@ -28,7 +28,8 @@ import lobbyGameSkeleton from "./components/lobbyGameSkeleton.vue";
 import lobbyGameCard from "./components/lobbyGameCard.vue";
 import { HomeApi } from "/@/api/home";
 import pubsub from "/@/pubSub/pubSub";
-
+import activitySocketService from "/@/utils/activitySocketService";
+const websocketService: any = activitySocketService.getInstance();
 const showCountdown = ref(false);
 const isLoading = ref(true);
 const lobbyGameList: any = ref([]);
@@ -67,6 +68,17 @@ onMounted(async () => {
 		clearTimeout(timer);
 		isLoading.value = false;
 	}, delay);
+	// 如果socket连接成功
+	if (websocketService.socket.readyState) {
+		//直接发订阅
+		websocketService.send("/activity/redBagRain");
+	} else {
+		// 如果socket连接不成功，等待成功指令
+		pubsub.subscribe("websocketReady", () => {
+			websocketService.send("/activity/redBagRain");
+		});
+	}
+
 	pubsub.subscribe("/activity/redBagRain", (data) => {
 		showCountdown.value = true;
 		redBagInfo.value = data;
