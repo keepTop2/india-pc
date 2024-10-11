@@ -58,6 +58,9 @@ class activitySocketService {
 					case "/activity/redBagRain/settlement":
 						pubsub.publish("/activity/redBagRain/settlement", data.data); // 红包雨结算消息
 						break;
+					case "/activity/redBagRain/end":
+						pubsub.publish("/activity/redBagRain/end"); // 红包雨结束消息
+						break;
 				}
 			};
 

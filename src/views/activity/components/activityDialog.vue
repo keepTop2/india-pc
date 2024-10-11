@@ -8,10 +8,15 @@
 			<div class="dialog-content fs_14">
 				<slot></slot>
 			</div>
-			<div class="dialog-footer">
+
+			<div class="dialog-footer" v-if="nofooter">
 				<button class="common_btn" @click="confirm">
 					<slot name="footer"> 确认 </slot>
 				</button>
+			</div>
+			<div class="dialog-footer2" v-else>
+				<button class="common_btn" @click="goToRegister">去注册</button>
+				<button class="common_btn" @click="goToLogin">去登陆</button>
 			</div>
 		</div>
 		<div class="closeDialog" @click="close">
@@ -23,11 +28,18 @@
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
 import { defineProps, defineEmits } from "vue";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import router from "/@/router";
+const modalStore = useModalStore();
 const props = defineProps({
 	modelValue: Boolean,
 	title: {
 		type: String,
 		default: "",
+	},
+	nofooter: {
+		type: Boolean,
+		default: true,
 	},
 	confirm: {
 		type: Function,
@@ -45,6 +57,15 @@ const confirm = () => {
 };
 const close = () => {
 	emit("update:modelValue", false);
+};
+const goToRegister = () => {
+	emit("update:modelValue", false);
+	modalStore.openModal("RegisterModal");
+};
+
+const goToLogin = () => {
+	emit("update:modelValue", false);
+	modalStore.openModal("LoginModal");
 };
 </script>
 
@@ -96,6 +117,27 @@ const close = () => {
 				font-size: 14px;
 				border-radius: 10px;
 				background: linear-gradient(278deg, #ff284b 4.74%, #fd677f 92.73%);
+			}
+		}
+		.dialog-footer2 {
+			background: white;
+			padding: 0 20px 20px;
+			border-bottom-left-radius: 24px;
+			border-bottom-right-radius: 24px;
+			display: flex;
+			gap: 35px;
+			.common_btn {
+				width: 158px;
+				height: 46px;
+				margin: 0 auto;
+				font-size: 14px;
+				border-radius: 10px;
+				background: linear-gradient(278deg, #ff284b 4.74%, #fd677f 92.73%);
+			}
+			.common_btn:first-child {
+				background: transparent;
+				color: var(--Theme);
+				border: 1px solid var(--Theme);
 			}
 		}
 	}

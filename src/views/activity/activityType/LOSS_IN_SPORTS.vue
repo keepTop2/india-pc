@@ -26,7 +26,10 @@
 					</div>
 					<div class="contentCell">
 						<div class="cellLabel">活动时间</div>
-						<div class="cellValue">{{ Common.parseTime(activityData.activityStartTime) }}～{{ Common.parseTime(activityData.activityEndTime) }}</div>
+						<div class="cellValue" v-if="activityData.activityDeadline !== 1">
+							{{ Common.parseTime(activityData.activityStartTime) }}～{{ Common.parseTime(activityData.activityEndTime) }}
+						</div>
+						<div class="cellValue" v-else>长期活动</div>
 					</div>
 					<div class="contentCell">
 						<div class="cellLabel">活动描述</div>
@@ -56,10 +59,13 @@
 				<div class="curp" :class="activityData.status == 10000 ? 'active' : ''" @click="apply">{{ activityData.status == 10000 ? "立即申请" : "您已申请" }}</div>
 			</div>
 		</div>
+		<CommonDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
+			{{ dialogInfo.message }}
+		</CommonDialog>
+		<CommonDialog v-model="showNeedLogin" title="温馨提示" :confirm="confirmDialog" :nofooter="false">
+			<div>您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册</div>
+		</CommonDialog>
 	</div>
-	<CommonDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
-		{{ dialogInfo.message }}
-	</CommonDialog>
 </template>
 
 <script setup lang="ts">
@@ -78,9 +84,13 @@ const router = useRouter();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
 const dialogInfo: any = ref({});
 const showCommonDialog = ref(false);
-
+const showNeedLogin = ref(false);
 const apply = () => {
 	activityApi.getToActivity({ id: activityData.value.id }).then((res: any) => {
+		if (res.code === 10007) {
+			showNeedLogin.value = true;
+			return;
+		}
 		if (res.code.status !== 10000) {
 			dialogInfo.value = res.data;
 			showCommonDialog.value = true;
