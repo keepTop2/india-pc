@@ -36,7 +36,7 @@ const userRoutes = [
 		path: "vip",
 		name: "vip",
 		layout: true,
-		component: () => import("/@/views/user/vip/vip.vue"),
+		component: () => import("../../views/user/vip/index.vue"),
 		meta: {
 			title: "VIP俱乐部",
 			idx: 1,
