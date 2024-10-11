@@ -16,6 +16,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import Head from "./components/header/index.vue";
+
 import left from "./components/left/left.vue";
 import { useMenuStore } from "/@/stores/modules/menu";
 import Modal from "/@/components/Modal.vue";
@@ -23,10 +24,10 @@ import Footer from "./components/footer/index.vue";
 import { useRoute } from "vue-router";
 import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
 import activitySocketService from "../utils/activitySocketService";
+import pubsub from "../pubSub/pubSub";
 const websocketService = activitySocketService.getInstance();
 const route = useRoute();
 const MenuStore = useMenuStore();
-
 const collapse = computed(() => {
 	return MenuStore.getCollapse;
 });
@@ -50,7 +51,7 @@ onMounted(() => {
 	resizeObserver.observe(domeRef.value as any);
 	// ws连接
 	websocketService.connect().then(() => {
-		websocketService.send("/activity/redBagRain");
+		pubsub.publish("websocketReady");
 	});
 });
 

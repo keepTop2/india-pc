@@ -55,9 +55,7 @@ const handleClickCountdown = async () => {
 		});
 	}
 };
-const closeRedbagRainCountdown = () => {
-	emit("update:modelValue", false);
-};
+
 watch(
 	() => countdown.value,
 	() => {
@@ -127,6 +125,9 @@ const updatePosition = () => {
 		position.value.y = Math.max(64, Math.min(window.innerHeight - 100, position.value.y)); // Y 轴限制
 	}
 };
+const closeRedbagRainCountdown = () => {
+	emit("update:modelValue", false);
+};
 // 初始化
 onMounted(() => {
 	const parentElement = draggable.value?.parentElement;
@@ -137,6 +138,10 @@ onMounted(() => {
 		position.value.y = 500; // Y 轴限制仍在窗口内
 	}
 	window.addEventListener("resize", updatePosition); // 添加窗口变化监听
+
+	pubsub.subscribe("/activity/redBagRain/end", () => {
+		closeRedbagRainCountdown();
+	});
 });
 // 在组件卸载时移除事件监听
 onBeforeUnmount(() => {

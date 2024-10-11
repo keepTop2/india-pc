@@ -22,9 +22,6 @@ export const activityApi = {
 		return useAxiosApi(`/app/activityParticipate/api/getConfigDetail`, {
 			method: "POST",
 			data,
-			headers: {
-				needLogin: true,
-			},
 		});
 	},
 	// 申请活动校验

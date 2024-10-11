@@ -93,6 +93,9 @@
 		<activityDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
 			{{ dialogInfo.message }}
 		</activityDialog>
+		<activityDialog v-model="showNeedLogin" title="温馨提示" :confirm="confirmDialog" :nofooter="false">
+			<div>您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册</div>
+		</activityDialog>
 	</div>
 </template>
 
@@ -120,6 +123,7 @@ const activityStore = useActivityStore();
 const router = useRouter();
 const dialogInfo: any = ref({});
 const isLoading = ref(false);
+const showNeedLogin = ref(false);
 onMounted(() => {
 	isLoading.value = true;
 	setTimeout(() => {
@@ -143,7 +147,7 @@ const showSpin = () => {
 			}
 		});
 	} else {
-		modalStore.openModal("LoginModal");
+		showNeedLogin.value = true;
 	}
 };
 const confirmDialog = () => {

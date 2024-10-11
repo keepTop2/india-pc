@@ -160,7 +160,6 @@ const onSubmit = async () => {
 	const res = await loginApi.userLogin({ ...payLoad, certifyId }).catch((err) => err);
 	const { code, data, message } = res;
 	if (code === Common.ResCode.SUCCESS) {
-		showToast(message, 1500);
 		await UserStore.setUserInfo(data);
 		localStorage.setItem("userInfo", JSON.stringify(data));
 		UserStore.initUserInfo();
