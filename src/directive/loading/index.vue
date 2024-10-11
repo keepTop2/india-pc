@@ -14,8 +14,8 @@ import {} from "vue";
 
 <style scoped lang="scss">
 .loading-mask {
-	width: 100vw;
-	min-height: 100vh;
+	width: 100%;
+	min-height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
