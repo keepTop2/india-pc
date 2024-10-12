@@ -31,6 +31,7 @@
 						<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">{{ $t(`security_center['8-16位，必须包含 数字和字母']`) }}</p>
 					</div>
 				</div>
+				<!-- 第二部 -->
 				<div v-else-if="currentStep === 1">
 					<!-- 密码 -->
 					<div>

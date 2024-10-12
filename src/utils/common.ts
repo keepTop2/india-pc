@@ -68,7 +68,7 @@ class Common {
 	static maskEmail(email: string) {
 		const [localPart, domain] = email.split("@"); // 将email按@分割
 		const prefix = localPart.slice(0, 2); // 前2位
-		const masked = "*"; // 中间字符为*
+		const masked = "***"; // 中间字符为*
 		return prefix + masked + "@" + domain; // 重新组合
 	}
 	/**
@@ -274,7 +274,6 @@ class Common {
 	static startMonth() {
 		return moment().month(moment().month()).startOf("month").valueOf();
 	}
-
 	/**
 	 *  @describe 获取当月结束时间(YYYY-MM-DD HH:mm:ss)
 	 */

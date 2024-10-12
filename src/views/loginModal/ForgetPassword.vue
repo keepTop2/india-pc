@@ -21,6 +21,7 @@
 							:placeholder="$t(`login['输入账号']`)"
 							@input="userOnInput"
 							:class="userAccountVerifyError ? 'verifyError' : ''"
+							maxlength="11"
 						/>
 					</p>
 					<p v-show="userAccountVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`login['账号规则']`) }}</p>
@@ -57,7 +58,7 @@
 								@VerificationCodeInput="VerificationCodeInput"
 								@sendVerificationCode="sendVerificationCode"
 								v-model="verificationBtn"
-								:disabled="verificationBtn && payLoad.email"
+								:disabled="verificationBtn && !!payLoad.email"
 								ref="VerificationCodeRef"
 								v-show="verifyType == 'email'"
 							/>
@@ -65,7 +66,7 @@
 								@VerificationCodeInput="VerificationCodeInput"
 								@sendVerificationCode="sendVerificationCode"
 								v-model="verificationBtn2"
-								:disabled="verificationBtn2 && payLoad.phone"
+								:disabled="verificationBtn2 && !!payLoad.phone"
 								ref="VerificationCodeRef2"
 								v-show="verifyType == 'phone'"
 							/>
@@ -88,6 +89,7 @@
 								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
 								@input="passOnInput"
+								maxlength="16"
 								autocomplete="new-password"
 								:class="VerifyError.passWord ? 'verifyError' : ''"
 							/>
@@ -107,6 +109,7 @@
 								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
 								@input="confirmOnInput"
+								maxlength="16"
 								autocomplete="new-password"
 								:class="VerifyError.confirmPassword ? 'verifyError' : ''"
 							/>

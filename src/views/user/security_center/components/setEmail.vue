@@ -29,7 +29,7 @@
 								@VerificationCodeInput="VerificationCodeInput"
 								@sendVerificationCode="sendVerificationCode"
 								v-model="verificationBtn"
-								:disabled="verificationBtn && payLoad.phone"
+								:disabled="verificationBtn && payLoad.email"
 								ref="VerificationCodeRef"
 							/>
 						</p>
@@ -66,27 +66,20 @@ import { computed, onMounted, reactive, ref } from "vue";
 import Common from "/@/utils/common";
 import showToast from "/@/hooks/useToast";
 import { userApi } from "/@/api/user";
-import options from "/@/assets/ts/areaCode";
 import { useUserStore } from "/@/stores/modules/user";
 import { useModalStore } from "/@/stores/modules/modalStore";
-import { CommonApi } from "/@/api/common";
 import CommonRegex from "/@/utils/CommonRegex";
 const modalStore = useModalStore();
 const userStore = useUserStore();
 const VerificationCodeRef = ref(null);
-// 验证码
-const userPhoneRegex = /^\d{8,11}$/;
+
 // 登陆表单
 const payLoad = reactive({
 	email: "",
 	verifyCode: "",
 	type: 1,
-	areaCode: options[0].areaCode,
 });
 const isCreate = ref(true);
-const minLength = ref(8);
-const maxLength = ref(13);
-const AreaCodeOptions = ref([]);
 
 // 校验完成登陆按钮可以点击
 const disabledBtn = ref(true);
@@ -94,22 +87,17 @@ const verificationBtn = ref(true);
 const userVerifyTypeVerifyError = ref(false);
 
 const sendVerificationCode = async () => {
-	if (!CommonRegex.userEmailRegex.test(payLoad.email) && isCreate.value) {
-		showToast("手机号不正确", 1500);
-		return;
+	const params = {
+		email: isCreate.value ? payLoad.email : userStore.getUserGlobalSetInfo.email,
+	};
+	const res = await userApi.globalSendMail(params).catch((err) => err);
+	const { code, message } = res;
+	if (code == Common.ResCode.SUCCESS) {
+		showToast(message, 1500);
+		verificationBtn.value = true;
+		(VerificationCodeRef.value as any).startCountdown(60);
 	} else {
-		const params = {
-			email: isCreate.value ? payLoad.email : userStore.getUserGlobalSetInfo.email,
-		};
-		const res = await userApi.globalSendMail(params).catch((err) => err);
-		const { code, message } = res;
-		if (code == Common.ResCode.SUCCESS) {
-			showToast(message, 1500);
-			verificationBtn.value = true;
-			(VerificationCodeRef.value as any).startCountdown(60);
-		} else {
-			showToast(message, 1500);
-		}
+		showToast(message, 1500);
 	}
 };
 
@@ -150,7 +138,6 @@ const onSubmit = async () => {
 			const params = {
 				type: payLoad.type,
 				verifyCode: payLoad.verifyCode,
-				areaCode: payLoad.areaCode,
 				account: payLoad.email,
 			};
 			const res = await userApi.bindAccount(params).catch((err) => err);

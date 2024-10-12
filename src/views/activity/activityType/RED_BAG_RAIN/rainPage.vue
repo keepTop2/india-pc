@@ -44,8 +44,6 @@ import { useActivityStore } from "/@/stores/modules/activity";
 import { computed } from "vue";
 import { redbagRainSingleton } from "/@/hooks/useRedbagRain";
 import pubsub from "/@/pubSub/pubSub";
-import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
-import { activityApi } from "/@/api/activity";
 import readyGo from "./image/readyGo.png";
 import RED_BAG_RAIN_Dialog from "./RED_BAG_RAIN_Dialog/index.vue";
 const activitySocket = activitySocketService.getInstance();
@@ -61,6 +59,7 @@ const getReadyCountdown = ref(3);
 const dialogTitle = ref("温馨提示");
 const settlement: any = ref({});
 let ctx: CanvasRenderingContext2D | null = null;
+
 // 创建红包图片对象
 const img = new Image();
 img.src = redBagImg;

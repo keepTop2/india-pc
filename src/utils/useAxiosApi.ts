@@ -63,7 +63,6 @@ instance.interceptors.request.use(
 		if (config.headers.showLoading !== false) {
 			showLoading(config.headers.loadingTarget);
 		}
-
 		const UserStore = useUserStore();
 		const modalStore = useModalStore();
 		// 需要登陆的处理
@@ -72,14 +71,10 @@ instance.interceptors.request.use(
 			modalStore.openModal("LoginModal");
 			return Promise.reject();
 		}
-
 		config["headers"]["Sign"] = EncryptionFn.encryption();
-		config["headers"]["X-Custom"] = "gw.playesoversea.store";
-
 		const language = UserStore.getLang;
 		if (language) {
 			config["headers"]["Accept-Language"] = language;
-			// config["headers"]["X-Custom"] = "gw.playesoversea.store";
 		}
 		// console.log(config);
 		return config;

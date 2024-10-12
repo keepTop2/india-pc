@@ -16,7 +16,15 @@
 				<div class="mb_12">
 					<p class="Text_s fs_12"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
-						<input type="text" v-model="payLoad.userAccount" class="common_input mt_8" :placeholder="$t(`login['输入账号']`)" @input="userOnInput" autocomplete="new-password" />
+						<input
+							type="text"
+							v-model="payLoad.userAccount"
+							class="common_input mt_8"
+							:placeholder="$t(`login['输入账号']`)"
+							@input="userOnInput"
+							autocomplete="new-password"
+							maxlength="11"
+						/>
 					</p>
 				</div>
 
@@ -31,6 +39,7 @@
 							:placeholder="$t(`login['输入密码']`)"
 							@input="passOnInput"
 							autocomplete="new-password"
+							maxlength="16"
 						/>
 						<span class="eyes" @click="showPassword = !showPassword">
 							<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" />
