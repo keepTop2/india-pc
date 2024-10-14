@@ -19,6 +19,7 @@
 							class="common_input"
 							:placeholder="$t(`login['输入账号']`)"
 							@input="userOnInput"
+									maxlength="11"
 							:class="VerifyError.userAccount ? 'verifyError' : ''"
 						/>
 					</p>
@@ -35,6 +36,7 @@
 							:placeholder="$t(`login['输入密码']`)"
 							@input="passOnInput"
 							autocomplete="new-password"
+										maxlength="16"
 						/>
 						<span class="eyes">
 							<svg-icon :name="showPassword ? 'eyes':'eyes_on'" size="18px" @click="showPassword = !showPassword" />
@@ -52,6 +54,7 @@
 							class="common_input"
 							:placeholder="$t(`login['输入确认密码']`)"
 							@input="confirmOnInput"
+								maxlength="16"
 						/>
 						<span class="eyes">
 							<svg-icon :name="showConfirmPassword ? 'eyes':'eyes_on'" size="18px" @click="showConfirmPassword = !showConfirmPassword" />
