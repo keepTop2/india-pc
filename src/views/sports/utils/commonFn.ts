@@ -27,6 +27,8 @@ export const getBetOrderId = async () => {
 	const sportsBetInfo = useSportsBetInfoStore();
 	const res = await sportsApi.getBetOrderId().catch((err) => err);
 	if (res.code === Common.ResCode.SUCCESS) {
+		console.log("注单id赋值。。。", res.data);
+
 		sportsBetInfo.vendorTransId = res.data;
 	}
 };

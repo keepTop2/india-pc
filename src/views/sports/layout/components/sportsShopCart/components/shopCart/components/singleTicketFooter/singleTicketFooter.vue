@@ -19,7 +19,7 @@ import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import { computed } from "vue";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
-
+import { getBetOrderId } from "/@/views/sports/utils/commonFn";
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();
 let stake = computed(() => shopCartPubSub.betValueState.singleTicketBetValue);
@@ -51,6 +51,8 @@ const onBet = () => {
  * 单关下注
  */
 const placeBet = async () => {
+	//	请求最新注单号
+	await getBetOrderId();
 	// 参数拼接
 	const params = {
 		vendorTransId: sportsBetInfo.vendorTransId,
