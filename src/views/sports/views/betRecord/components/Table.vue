@@ -37,7 +37,7 @@
 							<div class="events-name">{{ row.leagueName }}</div>
 							<div class="market-info">
 								<span class="market-name">{{ row.keyName }}</span>
-								<span class="market-point">@{{ row.point }}</span>
+								<span class="market-point">@{{ row.price }}</span>
 							</div>
 							<div class="event-info">
 								<span>{{ "滚球" }}</span>
@@ -61,7 +61,7 @@
 									<div class="events-name">{{ item.leagueName }}</div>
 									<div class="market-info">
 										<span class="market-name">{{ item.keyName }}</span>
-										<span class="market-point">@{{ item.point }}</span>
+										<span class="market-point">@{{ item.price }}</span>
 									</div>
 									<div class="event-info">
 										<span>{{ "滚球" }}</span>

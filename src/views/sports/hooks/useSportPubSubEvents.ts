@@ -159,7 +159,7 @@ export default function useSportPubSubEvents() {
 
 	//收到线程处理好的数据
 	const workerToviewSportProcess = <T, T2>(event: WorkerTransfer<T, T2>) => {
-		// console.log("第九步 视图收到线程管理器发送的数据", event);
+		console.log("第九步 视图收到线程管理器发送的数据", event);
 		//体育视图处理线程
 		if (event.workerName == WorkerName.sportViewProcessWorker) {
 			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;

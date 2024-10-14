@@ -50,6 +50,8 @@ export function useToolsHooks() {
 
 	// 切换视频源功能
 	const switchEventVideoSource = async (eventInfo: any) => {
+		// 回调函数，打开视频播放loading
+		eventInfo?.callback?.(true);
 		// if (eventInfo) {
 		// 清除直播地址信息
 		SidebarStore.clearLiveUrl();
@@ -65,12 +67,20 @@ export function useToolsHooks() {
 			streamingOption: streamingOption,
 			channelCode: encodeURIComponent(channelCode),
 		};
-		// console.log("params", params);
-		const res = await SportsApi.GetStreaming(params);
-		// console.log("GetStreaming -- res", res);
-		if (res.status == 200) {
-			// 设置直播数据
-			SidebarStore.setLiveUrl(res.data);
+
+		try {
+			// console.log("params", params);
+			const res = await SportsApi.GetStreaming(params);
+			// console.log("GetStreaming -- res", res);
+			if (res.status == 200) {
+				// 设置直播数据
+				SidebarStore.setLiveUrl(res.data);
+				eventInfo.callback(false);
+			} else {
+				eventInfo.callback(new Error("直播视频请求失败！"));
+			}
+		} catch (error) {
+			eventInfo.callback(new Error("直播视频请求失败！"));
 		}
 		// }
 	};
