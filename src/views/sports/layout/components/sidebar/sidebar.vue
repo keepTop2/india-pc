@@ -94,7 +94,6 @@ import videojs from "video.js";
 import { Refresh } from "@element-plus/icons-vue";
 import "video.js/dist/video-js.css";
 import { debounce } from "lodash-es";
-import requestFailedSvg from "/@/assets/svg/dark/sports/request_failed.svg";
 
 const { toggleEventScoreboard, switchEventVideoSource, getSidebarEventSSEPush } = useToolsHooks();
 const route = useRoute();

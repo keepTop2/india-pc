@@ -81,6 +81,7 @@ import { LocationQueryValue, useRoute } from "vue-router";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
+import { useCommonShopCat } from "/@/stores/modules/sports/commonShopCat";
 const SidebarStore = useSidebarStore();
 /**
  * @description 市场类型接口
@@ -93,7 +94,8 @@ interface marketType {
 }
 const sportsBetEvent = useSportsBetEventStore();
 const ChampionShopCartStore = useSportsBetChampionStore();
-
+// 公共购物车
+const commonShopCat = useCommonShopCat();
 const route = useRoute();
 const isFold = ref(false);
 const isFixed = ref(false);
@@ -106,8 +108,6 @@ const activeSelection = ref<string[]>([]);
  */
 const eventDetail = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.sidebarData.childrenViewData;
-
-	console.log(childrenViewData, "childrenViewData======marketsList");
 	if (childrenViewData) {
 		return JSON.parse(JSON.stringify(childrenViewData))[0]?.events?.[0];
 	}
@@ -121,7 +121,6 @@ const eventDetail = computed(() => {
 
 const markets = computed(() => {
 	let marketData: any = [];
-	// console.log(eventDetail.value, 'eventDetail.value')
 	if (eventDetail.value) {
 		const markets = eventDetail.value?.markets;
 		for (const key in markets) {
@@ -149,7 +148,6 @@ const markets = computed(() => {
 		}
 		return a.betType - b.betType;
 	});
-	console.log(marketData, "marketData======marketsList");
 	return marketData;
 });
 
@@ -201,49 +199,7 @@ const isBright = (market: { marketId: any }, selection: { key: any }) => {
  * @param selection 选择项对象
  */
 const onSetSportsEventData = (market: any, selection: any) => {
-	// 判断是否在冠军页面 侧边数据加入购物车做逻辑区别
-	if (route.meta.name !== "champion") {
-		// 实现投注选择逻辑
-		// 判断是否已经加入购物车，已经加入删除，则新增购物车
-		if (isBright(market, selection)) {
-			// 删除Pinia数据
-			sportsBetEvent.removeEventCart(eventDetail.value);
-		} else {
-			// 储存 赛事ID 投注类型 盘口key
-			sportsBetEvent.storeEventInfo(eventDetail.value.eventId, {
-				marketId: market.marketId,
-				betType: market.betType,
-				selectionKey: selection.key,
-			});
-			// 存储赛事数据在缓存中
-			sportsBetEvent.addEventToCart(JSON.parse(JSON.stringify(eventDetail.value)));
-		}
-	} else {
-		const params = {
-			type: "0",
-			eventId: eventDetail.value.eventId,
-			sportType: eventDetail.value.sportType,
-			marketId: market.marketId,
-			betType: market.betType,
-			selectionKey: selection.key,
-			event: {
-				...eventDetail.value,
-			},
-		};
-		// 判断是否已经加入购物车，已经加入删除，则新增购物车
-		if (isBright(market, selection)) {
-			// 删除Pinia数据
-			ChampionShopCartStore.removeEventCart(params);
-		} else {
-			ChampionShopCartStore.storeEventInfo(eventDetail.value.eventId, {
-				marketId: market.marketId,
-				betType: market.betType,
-				selectionKey: selection.key,
-			});
-			/**添加到购物车 */
-			ChampionShopCartStore.addChampionToCart(params);
-		}
-	}
+	commonShopCat.addEventToCart({ data: eventDetail.value, market, selection, type: route.meta.name === "champion" ? 2 : 1 });
 };
 
 /**

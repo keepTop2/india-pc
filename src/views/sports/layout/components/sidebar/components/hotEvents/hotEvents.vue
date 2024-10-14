@@ -23,7 +23,12 @@
 							<div class="team-name">{{ item.teamInfo?.homeName }}</div>
 						</div>
 						<div class="right">
-							<div class="market-item" v-if="item.markets && item.markets[3]">
+							<div
+								class="market-item"
+								:class="{ isBright: isBright(item.markets[3], item.markets[3].selections[0]) }"
+								@click="onSetSportsEventData(item, item.markets[3], item.markets[3].selections[0])"
+								v-if="item.markets && item.markets[3]"
+							>
 								<div class="label">
 									<span>{{ item.markets[3].selections[0]?.keyName }}</span>
 									<span>{{ item.markets[3].selections[0]?.point }}</span>
@@ -43,7 +48,12 @@
 							<div class="team-name">{{ item.teamInfo?.awayName }}</div>
 						</div>
 						<div class="right">
-							<div class="market-item" v-if="item.markets && item.markets[3]">
+							<div
+								class="market-item"
+								:class="{ isBright: isBright(item.markets[3], item.markets[3].selections[1]) }"
+								@click="onSetSportsEventData(item, item.markets[3], item.markets[3].selections[1])"
+								v-if="item.markets && item.markets[3]"
+							>
 								<div class="label">
 									<span>{{ item.markets[3].selections[1]?.keyName }}</span>
 									<span>{{ item.markets[3].selections[1]?.point }}</span>
@@ -71,7 +81,15 @@ import SportsCommonFn from "/@/views/sports/utils/common";
 import SportsApi from "/@/api/sports/sports";
 import PubSub from "/@/pubSub/pubSub";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
+import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
+import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import { useCommonShopCat } from "/@/stores/modules/sports/commonShopCat";
+import { useRoute } from "vue-router";
 
+const commonShopCat = useCommonShopCat();
+const sportsBetEvent = useSportsBetEventStore();
+const ChampionShopCartStore = useSportsBetChampionStore();
+const route = useRoute();
 const SportAttentionStore = useSportAttentionStore();
 
 const promotionsData = computed(() => {
@@ -115,6 +133,41 @@ const oddsChange = (item: any) => {
 		return 1;
 	} else if (item.oddsChange === "oddsDown") {
 		return 2;
+	}
+};
+/**
+ * @description 设置体育事件数据
+ * @param market 市场对象
+ * @param selection 选择项对象
+ */
+const onSetSportsEventData = (data: any, market: any, selection: any) => {
+	console.log(promotionsData, "654321");
+
+	commonShopCat.addEventToCart({ data, market, selection, type: route.meta.name === "champion" ? 2 : 1 });
+};
+
+/**
+ * @description 计算市场选择
+ */
+const marketsSelect = computed(() => sportsBetEvent.getEventInfo);
+/**
+ * @description 计算冠军页面的市场选择
+ */
+const championMarketsSelect = computed(() => ChampionShopCartStore.getEventInfo);
+
+/**
+ * @description 判断是否高亮
+ * @param market 市场对象
+ * @param selection 选择项对象
+ * @returns 是否高亮
+ */
+const isBright = (market: { marketId: any; eventId: string }, selection: { key: any }) => {
+	console.log(sportsBetEvent.getEventInfo, market, selection, "marketsSelect.value===");
+
+	if (route.meta.name !== "champion") {
+		return marketsSelect.value[market.eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
+	} else {
+		return championMarketsSelect.value[market.eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
 	}
 };
 </script>
@@ -242,6 +295,12 @@ const oddsChange = (item: any) => {
 						text-overflow: ellipsis; /* 使用省略号显示超出的文本 */
 						white-space: nowrap; /* 强制在一行显示，避免换行 */
 						cursor: pointer;
+					}
+					.isBright {
+						background: var(--Bg5) !important;
+						.label_one {
+							color: var(--Text_s) !important;
+						}
 					}
 					.market-item {
 						width: 100%;

@@ -79,6 +79,11 @@ import SportsCommon from "/@/views/sports/utils/common";
 import RiseOrFall from "/@/components/Sport/RiseOrFall.vue";
 import SelectionName from "../components/selectionName.vue";
 import { useRoute } from "vue-router";
+import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
+import { useCommonShopCat } from "/@/stores/modules/sports/commonShopCat";
+
+const commonShopCat = useCommonShopCat();
+const ChampionShopCartStore = useSportsBetChampionStore();
 
 /**
  * @description 市场类型接口
@@ -97,6 +102,7 @@ interface marketType {
 const props = withDefaults(
 	defineProps<{
 		markets: marketType[];
+		eventDetail: any;
 	}>(),
 	{}
 );
@@ -107,13 +113,6 @@ const isFold = ref(false);
 const isFixed = ref(false);
 const activeTab = ref("all");
 const activeSelection = ref<string[]>([]);
-
-/**
- * @description 计算赛事详情
- */
-const eventDetail = computed(() => {
-	// 实现赛事详情计算逻辑
-});
 
 /**
  * @description 计算市场选择
@@ -138,23 +137,12 @@ const filterSelections = (data: any[]) => {
 };
 
 /**
- * @description 判断是否高亮
- * @param market 市场对象
- * @param selection 选择项对象
- * @returns 是否高亮
- */
-const isBright = (market: { marketId: any }, selection: { key: any }) => {
-	const { eventId } = route.query;
-	return marketsSelect.value[eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
-};
-
-/**
  * @description 设置体育事件数据
  * @param market 市场对象
  * @param selection 选择项对象
  */
 const onSetSportsEventData = (market: any, selection: any) => {
-	// 实现投注选择逻辑
+	commonShopCat.addEventToCart({ data: props.eventDetail, market, selection, type: route.meta.name === "champion" ? 2 : 1 });
 };
 
 /**
@@ -189,8 +177,27 @@ const isbladder = (type: number) => {
 };
 
 /**
+ * @description 计算冠军页面的市场选择
+ */
+const championMarketsSelect = computed(() => ChampionShopCartStore.getEventInfo);
+
+/**
  * @description 监听activeSelection变化
  */
+
+/**
+ * @description 判断是否高亮
+ * @param market 市场对象
+ * @param selection 选择项对象
+ * @returns 是否高亮
+ */
+const isBright = (market: { marketId: any; eventId: string }, selection: { key: any }) => {
+	if (route.meta.name !== "champion") {
+		return marketsSelect.value[market.eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
+	} else {
+		return championMarketsSelect.value[market.eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
+	}
+};
 watch(
 	() => activeSelection.value.length,
 	(newValue, oldValue) => {
@@ -214,6 +221,7 @@ watch(
 	}
 	.isBright {
 		position: relative;
+		background: var(--Bg5) !important;
 		&::after {
 			content: "";
 			position: absolute;
@@ -222,6 +230,9 @@ watch(
 			border-radius: 8px;
 			border: 2px solid;
 			box-sizing: border-box;
+		}
+		.label_one {
+			color: var(--Text_s) !important;
 		}
 	}
 	.tabBox {

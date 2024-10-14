@@ -37,7 +37,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 		 * @param data  赛事信息
 		 */
 
-		async addChampionToCart(data: any) {
+		async addEventToCart(data: any) {
 			const haveToken = useHaveToken();
 			// 用户未登录，直接返回
 			if (!haveToken()) return;
