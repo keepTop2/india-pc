@@ -28,10 +28,10 @@
 						<!-- 可赢价格 -->
 						<div class="cell">
 							<div class="left">
-								<span class="success">预计可赢:</span> <span>{{ getParlayTicketsWinningAmount(item) }} USD</span>
+								<span class="success">预计可赢:</span> <span>{{ getParlayTicketsWinningAmount(item) }} {{ UserStore.getUserInfo.mainCurrency }}</span>
 							</div>
 							<div class="right">
-								<span>小计: {{ Common.formatFloat(Common.mul(item.stake, item.betCount)) }} USD</span>
+								<span>小计: {{ Common.formatFloat(Common.mul(item.stake, item.betCount)) }} {{ UserStore.getUserInfo.mainCurrency }}</span>
 							</div>
 						</div>
 					</div>
@@ -55,6 +55,8 @@ import Common from "/@/utils/common";
 import SportsCommon from "/@/views/sports/utils/common";
 import { EventCard, CardStatus } from "../index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import { useUserStore } from "/@/stores/modules/user";
+const UserStore = useUserStore();
 const sportsBetEvent = useSportsBetEventStore();
 
 const emit = defineEmits(["onOrderConfirm", "onSecondBet"]);
