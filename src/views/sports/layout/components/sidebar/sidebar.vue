@@ -5,7 +5,7 @@
 			<!-- 头部 -->
 			<div class="header">
 				<div class="left">
-					<div class="icon"><svg-icon name="sports-tv_icon_on" width="23px" height="16px"></svg-icon></div>
+					<div class="icon" @click="handleChangeTV"><svg-icon :name="`sports-tv_icon${tvState.isOpen ? '_on' : ''}`" width="23px" height="16px"></svg-icon></div>
 				</div>
 				<div class="center">
 					<div class="icon" v-for="(tool, index) in computedTools" :key="tool.iconName" @click="handleClick(tool)">
@@ -13,7 +13,9 @@
 					</div>
 				</div>
 				<div class="right">
-					<div class="icon2" @click="showDetail()"><svg-icon name="sports-quanping" size="16px"></svg-icon></div>
+					<div class="icon2" @click="handleRefresh">
+						<el-icon size="18px" class="Text1" :style="{ transform: `rotate(${refresh.rotation}deg)`, transition: 'transform 1s ease' }"><Refresh /></el-icon>
+					</div>
 					<!-- <div class="icon2"><svg-icon name="sports-shuaxin" size="16px"></svg-icon></div> -->
 				</div>
 			</div>
@@ -33,7 +35,7 @@
 			</div>
 
 			<!-- 计分板组件 -->
-			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard'" class="events-container">
+			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard' && tvState.isOpen" class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
 				<component
@@ -45,8 +47,9 @@
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
 			<!-- 直播 -->
-			<div v-show="eventsInfo && SidebarStore.sidebarStatus === 'live'">
+			<div class="live-box" v-ok-loading="tvState.videoLoading" v-show="eventsInfo && SidebarStore.sidebarStatus === 'live' && tvState.isOpen">
 				<div ref="videoContainer" class="video-js"></div>
+				<svg-icon class="request-failed-svg" v-if="!tvState.isSuccess" name="sports-request_failed"></svg-icon>
 				<!-- 真人赛事比赛 -->
 				<div v-show="iframeLoaded" class="live">
 					<iframe
@@ -63,7 +66,7 @@
 		</div>
 
 		<!-- 盘口数据 与 热门推荐盘口 动态组件切换 -->
-		<div class="markets-list">
+		<div class="markets-list" v-ok-loading="refresh.loading">
 			<!-- 盘口列表 -->
 			<MarketsList v-show="!isShowHotEvents" />
 			<!-- 热门赛事 -->
@@ -76,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, defineAsyncComponent, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
@@ -88,9 +91,11 @@ import { SportTypeEnum } from "../../../enum/sportEnum/sportEnum";
 import { useUserStore } from "/@/stores/modules/user";
 import SportsApi from "/@/api/sports/sports";
 import videojs from "video.js";
+import { Refresh } from "@element-plus/icons-vue";
 import "video.js/dist/video-js.css";
+import { debounce } from "lodash-es";
 
-const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
+const { toggleEventScoreboard, switchEventVideoSource, getSidebarEventSSEPush } = useToolsHooks();
 const route = useRoute();
 const { gotoEventDetail } = useLink();
 const UserStore = useUserStore();
@@ -101,10 +106,17 @@ const iframeLoaded = ref(false);
 const SidebarStore = useSidebarStore();
 const isShowHotEvents = computed(() => (route.meta.type === "detail" ? true : false));
 
+// 刷新按钮数据
+const refresh = reactive({
+	rotation: 0, //旋转角度
+	loading: false, //盘口数据loading状态
+});
+
 // 获取到的数据
 const eventsInfo = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
 	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData;
+
 	if (route.meta.name === "champion" && promotionsViewData.length) {
 		return promotionsViewData[0];
 	}
@@ -193,6 +205,7 @@ const computedTools = computed(() => {
 		iconName: "sports-score_icon",
 		iconName_active: "sports-score_icon_active",
 		tooltipText: "比分板",
+		name: "scoreboard",
 		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
 		param: eventsInfo.value, // 传递参数
 	});
@@ -202,7 +215,26 @@ const computedTools = computed(() => {
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
-			action: (event: any) => toggleEventScoreboard(event, true),
+			name: "live",
+			action: (event: any) =>
+				toggleEventScoreboard(
+					{
+						...event,
+						/**
+						 * @description 请求视频直播回调函数
+						 * @param status boolean值表示打开或关闭; error表示网络请求失败
+						 */
+						callback: (status: string | Error) => {
+							if (typeof status === "boolean") {
+								tvState.isSuccess = status;
+							} else {
+								tvState.isSuccess = false;
+							}
+							tvState.videoLoading = false;
+						},
+					},
+					true
+				),
 			param: eventsInfo.value, // 传递参数
 		});
 	}
@@ -211,17 +243,19 @@ const computedTools = computed(() => {
 
 // 获取侧边栏图标
 const getIconName = (tool: any, index: number) => {
-	let activeIndex = -1;
-	switch (SidebarStore.sidebarStatus) {
-		case "scoreboard":
-			activeIndex = 0;
-			break;
-		case "live":
-			activeIndex = 1;
-			break;
-		// 你可以根据其他可能的状态扩展此逻辑
+	console.log(SidebarStore, tool, "SidebarStore");
+
+	const { iconName_active, iconName, name } = tool;
+	const { sidebarStatus } = SidebarStore;
+	// 根据tv状态判断
+	if (tvState.isOpen) {
+		/**
+		 * scoreboard:比分板
+		 * live:直播
+		 */
+		return sidebarStatus === name ? iconName_active : iconName;
 	}
-	return index === activeIndex ? tool.iconName_active : tool.iconName;
+	return iconName;
 };
 
 // 当iframe加载完成时，设置iframeLoaded为true
@@ -293,20 +327,56 @@ const getStreaming = async (newVal: { [x: string]: any }) => {
 // 点击对应工具
 const handleClick = (tool: any) => {
 	tool.action(tool.param);
+	SidebarStore.getSidebarStatus(tool.name);
+	// 激活tv状态
+	tvState.isOpen = true;
 };
 
 /**
  * @description: 跳转到比赛详细
  */
 const showDetail = () => {
-	const params = {
-		leagueId: eventsInfo.value?.leagueId,
-		eventId: eventsInfo.value?.eventId,
-		dataIndex: eventsInfo.value?.dataIndex,
-	};
-	toggleEventScoreboard(eventsInfo.value);
+	// const params = {
+	// 	leagueId: eventsInfo.value?.leagueId,
+	// 	eventId: eventsInfo.value?.eventId,
+	// 	dataIndex: eventsInfo.value?.dataIndex,
+	// };
+	// toggleEventScoreboard(eventsInfo.value);
+	// gotoEventDetail(params, route.query.sportType as string);
+};
 
-	gotoEventDetail(params, route.query.sportType as string);
+/**
+ * @description: 刷新数据
+ */
+const handleRefresh = debounce(
+	() => {
+		// 切换旋转状态
+		refresh.rotation += 180;
+		//打开盘口数据loading状态
+		refresh.loading = true;
+		// 获取盘口数据
+		getSidebarEventSSEPush();
+		setTimeout(() => {
+			refresh.loading = false;
+		}, 1000);
+	},
+	1000,
+	{ leading: true }
+);
+
+const tvState = reactive({
+	//当前状态是否打开
+	isOpen: true,
+	// 视频播放loading状态
+	videoLoading: false,
+	// 视频是否播放成功
+	isSuccess: false,
+});
+/**
+ * @description: 切换TV
+ */
+const handleChangeTV = () => {
+	tvState.isOpen = !tvState.isOpen;
 };
 </script>
 
@@ -338,7 +408,17 @@ const showDetail = () => {
 		width: 390px;
 		height: 208px;
 	}
-
+	.live-box {
+		position: relative;
+		.request-failed-svg {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 200px;
+			height: 200px;
+		}
+	}
 	:deep(.video-js) {
 		height: 208px;
 		width: 390px;
@@ -414,13 +494,17 @@ const showDetail = () => {
 				align-items: center;
 				gap: 8px;
 				padding: 5px 12px;
-
+				.icon.is-active {
+					svg {
+						color: var(--Icon_1);
+					}
+				}
 				.icon {
 					width: 16px;
 					height: 16px;
 
 					svg {
-						color: var(--Icon_1);
+						color: var(--Text1);
 					}
 				}
 

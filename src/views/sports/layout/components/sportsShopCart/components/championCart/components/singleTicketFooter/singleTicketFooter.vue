@@ -23,6 +23,7 @@ import shopCartChampionPubSub from "/@/views/sports/hooks/shopCartChampionPubSub
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
 import { i18n } from "/@/i18n/index";
+import { getBetOrderId } from "/@/views/sports/utils/commonFn";
 const $: any = i18n.global;
 const sportsBetInfo = useSportsBetInfoStore();
 const ChampionShopCartStore = useSportsBetChampionStore();
@@ -55,6 +56,8 @@ const onEventBet = () => {
  * 单关下注
  */
 const placeBet = async () => {
+	//	请求最新注单号
+	await getBetOrderId();
 	// 参数拼接
 	const params = {
 		vendorTransId: sportsBetInfo.vendorTransId,

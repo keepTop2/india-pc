@@ -13,6 +13,9 @@ import pubsub from "/@/pubSub/pubSub";
 import { SportsRootObject, BetMarketInfo } from "/@/views/sports/models/interface";
 import { useHaveToken } from "/@/hooks/useHaveToken";
 import showToast from "/@/hooks/useToast";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import { useRoute } from "vue-router";
+const route = useRoute();
 const $: any = i18n.global;
 interface sportsBetEvent {
 	sportsBetShow: boolean;
@@ -33,6 +36,12 @@ interface sportsBetEvent {
 	//存储折叠状态
 	isFold: boolean;
 	foldCount: number;
+}
+
+interface AddCarEvent {
+	market: any;
+	selection: any;
+	callback?: (data: { status: string }) => void;
 }
 
 export const useSportsBetEventStore = defineStore("sportsBetEvent", {
@@ -93,7 +102,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 		 * @description 添加赛事到购物车
 		 * @param data  赛事信息
 		 */
-		async addEventToCart(data) {
+		async addEventToCart(data: { [key: string]: any }) {
 			const haveToken = useHaveToken();
 			// 用户未登录，直接返回
 			if (!haveToken()) return;
@@ -219,7 +228,6 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 				// 处理选中赛事ID
 				this.getEventIdCollection();
 			}
-			console.log("this.sportsEventInfo", this.sportsEventInfo);
 		},
 
 		/**

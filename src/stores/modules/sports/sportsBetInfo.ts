@@ -3,12 +3,13 @@ export const useSportsBetInfoStore = defineStore("sportsBetInfo", {
 	state: () => {
 		return {
 			balance: "", // 余额信息
-			vendorTransId: "", // 注单ID
+			vendorTransId: "", // 厂商注单注单ID
 			singleTicketInfo: {
 				minBet: 0,
 				maxBet: 0,
 				point: undefined,
 				payoutRate: 0,
+				transId: "", //沙巴注单号码-下注成功后返回
 			} as any, // 单关注单信息
 			parlayTicketsInfo: {} as any, //串关注单信息
 			championSingleTicketInfo: {} as any, //串关注单信息

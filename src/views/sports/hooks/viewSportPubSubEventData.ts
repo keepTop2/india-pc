@@ -74,6 +74,8 @@ export default (function () {
 		 * 设置数据
 		 */
 		public setSportData(viewSportData: SportViewData): void {
+			console.log(viewSportData, "viewSportData=====");
+
 			// 收到数据推送派发 使用Object.assign来确保响应式数据的正确更新
 			Object.assign(this.viewSportData, viewSportData);
 			pubSub.publish("SkeletonLoading", false);

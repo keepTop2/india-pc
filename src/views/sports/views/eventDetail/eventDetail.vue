@@ -12,7 +12,7 @@
 			></HeaderDetail>
 			<div class="competition_two">
 				<div class="box_team" v-if="eventDetail?.markets !== ''">
-					<MarketItem :markets="markets" />
+					<MarketItem :eventDetail="eventDetail" :markets="markets" />
 				</div>
 				<div class="nonedata" v-else>
 					<NoneData></NoneData>

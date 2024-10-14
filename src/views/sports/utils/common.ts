@@ -664,6 +664,34 @@ class SportsCommonFn {
 	public static getSportLanguage(): string {
 		return "zhcn";
 	}
+
+	/**
+	 * @description 防抖函数
+	 */
+	public static throttle<T extends (...args: any[]) => void, U>(func: T, delay: number): (this: U, ...args: Parameters<T>) => void {
+		let lastTime = 0;
+		let timer: ReturnType<typeof setTimeout> | null = null;
+
+		return function (this: U, ...args: Parameters<T>) {
+			const context = this;
+			const now = Date.now();
+
+			if (now - lastTime >= delay) {
+				if (timer) clearTimeout(timer); // 清除之前的定时器
+				lastTime = now;
+				func.apply(context, args); // 立即执行
+			} else {
+				if (!timer) {
+					// 在首次点击后的延迟时间内执行
+					timer = setTimeout(() => {
+						lastTime = Date.now();
+						func.apply(context, args); // 延迟结束后执行
+						timer = null; // 重置定时器
+					}, delay - (now - lastTime));
+				}
+			}
+		};
+	}
 }
 
 export default SportsCommonFn;

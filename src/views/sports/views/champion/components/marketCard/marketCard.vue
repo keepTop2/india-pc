@@ -107,7 +107,7 @@ const onSetSportsEventData = () => {
 		ChampionShopCartStore.removeChampionTEventCart(params);
 	} else {
 		/**添加到购物车 */
-		ChampionShopCartStore.addChampionToCart(params);
+		ChampionShopCartStore.addEventToCart(params);
 	}
 };
 
