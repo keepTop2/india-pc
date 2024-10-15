@@ -125,7 +125,7 @@ export function useToolsHooks() {
 		const res = await SportsApi.GetPromotions();
 		// 获取 eventId 并集合成逗号分隔的字符串
 		if (res) {
-			const events = res.data.events;
+			const events = res.data.events?.filter((item: any) => item.sportType === 1);
 			// 获取赛事id集合
 			const eventIds = events.map((event) => event.eventId).join(",");
 			// webToPushApi: WebToPushApi.sportsShopCart,

@@ -558,12 +558,14 @@ class SportsCommonFn {
 	 * @return {*}
 	 */
 	public static getResultDateRange = (date: string, dayEnd: number = 0, format = "YYYY-MM-DDTHH:mm:ss") => {
-		// 传入的日期为UTC-5时间
-		const easternTime = dayjs(date);
+		// 确保解析时按照 YYYY-MM-DD 格式
+		const easternTime = dayjs(date, "YYYY-MM-DD").utcOffset(-5);
+
 		// 计算0点（开始时间）
-		const startDate = easternTime.startOf("days").toISOString();
-		// 计算23:59:59（结束时间），注意endOf返回的是下一周期的开始，所以需要减去1毫秒
-		const endDate = easternTime.add(dayEnd, "days").subtract(1, "millisecond").toISOString();
+		const startDate = easternTime.startOf("day").toISOString();
+
+		// 计算结束时间：23:59:59，当天的结束
+		const endDate = easternTime.add(dayEnd, "days").endOf("day").toISOString();
 
 		return { startDate, endDate };
 	};
