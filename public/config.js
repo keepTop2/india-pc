@@ -7,18 +7,20 @@ window.PLATFROM_CONFIG = {
 	productionSportUrl: "https://apistaging.wx7777.com",
 	/** s128 打包编译后地址(运维专用) */
 	productionS128Url: "https://kss.cfb2.net",
+	/** ws 打包编译后地址(运维专用) */
+	productionWsUrl: "wss://gw.playesoversea.store/ws",
 
 	// developmentBaseURL: "http://192.168.30.117:9999", // 尔顿本地地址
-	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
+	developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
 	developmentBaseURL: "https://backend.bwsh.store", // 测试环境
-	developmentWsURL: "wss://gw.playesoversea.store/ws", // 开发环境
+	// developmentWsURL: "wss://gw.playesoversea.store/ws", // 开发环境
+	developmentWsURL: "wss://backend.bwsh.store/ws", // 开发环境
 	developmentFileUrl: "http://192.168.30.72:7900", // 本地开发传文件
-
 	//体育本地开发地址
 	developSportUrl: "https://apistaging.wx7777.com",
 	/***  s128 开发地址 */
 	// developS128Url: "/S128",
-	developS128Url: "https://kss.cfb2.net",
+	developS128Url: "https://digmaantest.cm3645.com",
 	// 加密密钥
 	encryptedCiphertext: {
 		key: "6XGTv3TWSQEMcRs2/zitwkoImRCH6JmUi4372d7ZDfs=",

@@ -6,7 +6,7 @@
 			</div>
 			<div class="itemDetails">
 				<div>
-					<p class="fs_14 Text2" v-if="item.activityDeadline !== 1">{{ Common.parseTime(item.activityEndTime) }}～{{ Common.parseTime(item.activityEndTime) }}</p>
+					<p class="fs_14 Text2" v-if="item.activityDeadline !== 1">{{ Common.parseTime(item.activityStartTime) }}～{{ Common.parseTime(item.activityEndTime) }}</p>
 					<p class="fs_14 Text2" v-else>长期活动</p>
 					<p class="fs_14">{{ item.activityNameI18nCode }}</p>
 				</div>

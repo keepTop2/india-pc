@@ -85,7 +85,7 @@
 		<!-- 验证码容器 -->
 		<article>
 			<p id="captcha-element" ref="captchaBtn" />
-			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript" />
+			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript" v-if="HcaptchaMounted" />
 		</article>
 	</form>
 </template>
@@ -99,7 +99,7 @@ import showToast from "/@/hooks/useToast";
 import { useUserStore } from "/@/stores/modules/user";
 import CommonRegex from "/@/utils/CommonRegex";
 import { useModalStore } from "/@/stores/modules/modalStore";
-
+const HcaptchaMounted = ref(false);
 const modalStore = useModalStore();
 const UserStore = useUserStore();
 const hcaptcha: any = ref(null);
@@ -124,6 +124,9 @@ const showPassword = ref(true);
 
 // 初始化验证码
 onMounted(() => {
+	Common.loadScript("https://o.alicdn.com/captcha-frontend/aliyunCaptcha/AliyunCaptcha.js").then(() => {
+		HcaptchaMounted.value = true;
+	});
 	if (UserStore.getLoginInfo) {
 		Object.assign(payLoad, UserStore.getLoginInfo);
 		rememberPassword.value = true;
@@ -172,7 +175,6 @@ const onSubmit = async () => {
 		await UserStore.setUserInfo(data);
 		localStorage.setItem("userInfo", JSON.stringify(data));
 		UserStore.initUserInfo();
-		// getUserInfo();
 		rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
 		modalStore.closeModal();
 	} else {

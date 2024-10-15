@@ -14,7 +14,7 @@
 				<img v-lazy-load="gameList?.gameInfoList[0].icon" alt="" />
 			</div>
 			<slide v-else>
-				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem" @click="Common.goToGame(item)">
+				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
 					<div class="cornerMark">
 						<svg-icon name="new_game_icon" v-if="item.cornerLabels == 1" size="60" />
 						<svg-icon name="hot_game_icon" v-else-if="item.cornerLabels == 2" size="60" />
