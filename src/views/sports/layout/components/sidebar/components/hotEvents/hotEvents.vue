@@ -143,7 +143,7 @@ const oddsChange = (item: any) => {
 const onSetSportsEventData = (data: any, market: any, selection: any) => {
 	console.log(promotionsData, "654321");
 
-	commonShopCat.addEventToCart({ data, market, selection, type: route.meta.name === "champion" ? 2 : 1 });
+	commonShopCat.addEventToCart({ data, market, selection, type: route.meta.name === "champion" ? "1" : "0" });
 };
 
 /**
