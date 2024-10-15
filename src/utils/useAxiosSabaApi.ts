@@ -3,6 +3,7 @@ import _ from "lodash-es";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { useUserStore } from "/@/stores/modules/user";
 import { useModalStore } from "/@/stores/modules/modalStore";
+import { jsonlint } from "./jsonlint";
 // 获取 config 配置请求 api
 function getUrl() {
 	switch (import.meta.env.VITE_BASEENV) {
@@ -20,6 +21,19 @@ const instance = axios.create({
 	baseURL: getUrl(),
 	withCredentials: false,
 	timeout: 30000,
+	transformResponse: [
+		function (data) {
+			try {
+				// 转换并校验JSON格式
+				const parsedData = jsonlint.parse(data);
+				return parsedData;
+			} catch (error) {
+				// 捕获解析错误
+				console.error("Response JSON parsing failed", error);
+				return data; // 如果失败，返回原始数据
+			}
+		},
+	],
 });
 
 // 请求拦截器
