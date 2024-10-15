@@ -43,7 +43,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 			if (!haveToken()) return;
 
 			// 冠军数据添加购物车
-			if (data.type == "1") {
+			if (data.isChampionData) {
 				const { leagueId } = data;
 				const index = this.championBetData.findIndex((item) => item.leagueId === leagueId);
 				if (index !== -1) {
@@ -58,7 +58,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 				this.championBetData.splice(index !== -1 ? index : this.championBetData.length, 1, data);
 			}
 			// 赛事数据添加购物车
-			else if (data.type == "0") {
+			else if (!data.isChampionData) {
 				const eventId = data.eventId;
 				const existingIndex = this.championBetData.findIndex((item) => item.eventId === eventId);
 				if (existingIndex !== -1) {
@@ -81,9 +81,12 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 		processingInfo() {
 			// 提取共同的处理逻辑
 			const processEvent = (v: any) => {
+				console.log(this.sportsEventInfo, v, "提取共同的处理逻辑");
+
 				const eventInfo = this.sportsEventInfo[v.eventId];
 				const { betType, marketId, selectionKey } = eventInfo;
 				const market: any = Object.values(v.event.markets).find((item: any) => item.betType === betType && item.marketId === marketId) || {};
+
 				v.event.betMarketInfo = {
 					betType: betType,
 					betTypeName: market.betTypeName,
@@ -103,7 +106,9 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 				}
 			};
 			// 获取第一条赛事数据
-			const v = this.championBetData.find((item) => item.type === "0");
+			const v = this.championBetData.find((item) => !item.isChampionData);
+			console.log(v, "获取第一条赛事数据");
+
 			// 进行格式化逻辑
 			processEvent(v);
 		},
@@ -161,12 +166,12 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 			// this.bettingStatus = 0;
 			if (this.championBetData.length > 0) {
 				const firstItem = this.championBetData[0];
-				if (firstItem.type == "0") {
+				if (!firstItem.isChampionData) {
 					// 赛事数据逻辑
 					this.cartType = "0";
 					console.log("执行赛事数据逻辑", this.cartType);
 					this.sportsOpenSse();
-				} else if (firstItem.type == "1") {
+				} else if (firstItem.isChampionData) {
 					console.log("执行冠军数据逻辑", this.cartType);
 					this.cartType = "1";
 					this.championOpenSse();
