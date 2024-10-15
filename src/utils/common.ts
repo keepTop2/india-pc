@@ -11,7 +11,6 @@ import { gameApi } from "../api/game";
 import router from "../router";
 import qs from "qs";
 import showToast from "../hooks/useToast";
-import common from "../i18n/lang/en-US/common";
 // // 全局设置moment时区 (上海)
 moment.tz.setDefault("Pacific/Guadalcanal");
 class Common {

@@ -21,7 +21,7 @@ export const useCommonShopCat = defineStore("commonShopCat", {
 				{ key } = selection;
 
 			//冠军页面：ChampionShopCartStore 非冠军：sportsBetEvent
-			const isChampion = type === 2;
+			const isChampion = type == 1;
 			const curEvent = isChampion ? ChampionShopCartStore : sportsBetEvent;
 			const isHas = curEvent.sportsEventInfo[data.eventId]?.listKye === `${marketId}-${key}`;
 			if (isHas) {
@@ -33,8 +33,25 @@ export const useCommonShopCat = defineStore("commonShopCat", {
 					betType: betType,
 					selectionKey: key,
 				});
+				console.log(JSON.parse(JSON.stringify(data)), "JSON.parse(JSON.stringify(data))==");
+
 				// 存储赛事数据在缓存中
-				curEvent.addEventToCart(JSON.parse(JSON.stringify(data)));
+				curEvent.addEventToCart(
+					JSON.parse(
+						JSON.stringify(
+							type == 1
+								? {
+										type, // 添加冠军标识
+										leagueId: data.leagueId,
+										sportType: data.sportType,
+										event: {
+											...data,
+										},
+								  }
+								: data
+						)
+					)
+				);
 			}
 		},
 		hasEvent() {},

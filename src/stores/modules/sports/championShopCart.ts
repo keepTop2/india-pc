@@ -110,9 +110,10 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 
 		// 储存当前选中的赛事盘口信息
 		async storeEventInfo(key: any, data: any) {
-			const { isHaveToken } = useHaveToken();
+			const haveToken = useHaveToken();
 			try {
-				await isHaveToken();
+				// 用户未登录，直接返回
+				if (!haveToken()) return;
 			} catch (error) {
 				console.error("Error:", error);
 				return; // 如果出错直接退出方法
