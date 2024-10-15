@@ -35,11 +35,11 @@ const onBet = () => {
 		showToast("请输入投注金额");
 		return;
 	}
-	if (stake.value < sportsBetInfo.singleTicketInfo.minBet) {
+	if (Number(stake.value) < Number(sportsBetInfo.singleTicketInfo.minBet)) {
 		showToast("投注金额未达到最低限额");
 		return;
 	}
-	if (stake.value > sportsBetInfo.balance) {
+	if (Number(stake.value) > Number(sportsBetInfo.balance)) {
 		showToast("余额不足，请先充值");
 		return;
 	}

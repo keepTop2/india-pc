@@ -40,11 +40,11 @@ const onEventBet = () => {
 		showToast("请输入投注金额");
 		return;
 	}
-	if (stake.value < sportsBetInfo.singleTicketInfo.minBet) {
+	if (Number(stake.value) < Number(sportsBetInfo.singleTicketInfo.minBet)) {
 		showToast("投注金额未达到最低限额");
 		return;
 	}
-	if (stake.value > sportsBetInfo.balance) {
+	if (Number(stake.value) > Number(sportsBetInfo.balance)) {
 		showToast("余额不足，请先充值");
 		return;
 	}
@@ -82,11 +82,11 @@ const onChampionBet = () => {
 		showToast($.t(`sports['请输入投注金额']`));
 		return;
 	}
-	if (championStake.value < sportsBetInfo.championSingleTicketInfo.minBet) {
+	if (Number(championStake.value) < Number(sportsBetInfo.championSingleTicketInfo.minBet)) {
 		showToast($.t(`sports['投注金额未达到最低限额']`));
 		return;
 	}
-	if (championStake.value > sportsBetInfo.balance) {
+	if (Number(championStake.value) > Number(sportsBetInfo.balance)) {
 		showToast($.t(`sports['余额不足，请先充值']`));
 		return;
 	}
