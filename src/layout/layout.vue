@@ -50,9 +50,9 @@ const resizeObserver = new ResizeObserver((entries) => {
 onMounted(() => {
 	resizeObserver.observe(domeRef.value as any);
 	// ws连接
-	websocketService.connect().then(() => {
-		pubsub.publish("websocketReady");
-	});
+	// websocketService.connect().then(() => {
+	// 	pubsub.publish("websocketReady");
+	// });
 });
 
 onUnmounted(() => {

@@ -29,6 +29,7 @@
 				<div class="responsibleGameIcon">
 					<img src="../../../assets/common/responsibleGameIcon/image1.png" alt="" />
 					<img src="../../../assets/common/responsibleGameIcon/image2.png" alt="" />
+					<img src="../../../assets/common/responsibleGameIcon/image3.png" alt="" />
 				</div>
 			</div>
 		</div>

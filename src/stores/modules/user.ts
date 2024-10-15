@@ -12,6 +12,8 @@ import { userApi } from "/@/api/user";
 import showToast from "/@/hooks/useToast";
 import { loginApi } from "/@/api/login";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
+import activitySocketService from "/@/utils/activitySocketService";
+import pubsub from "/@/pubSub/pubSub";
 
 interface StoreUser {
 	lang: string;
@@ -145,6 +147,7 @@ export const useUserStore = defineStore("User", {
 		},
 		// 初始化用户信息
 		async initUserInfo() {
+			const websocketService: any = activitySocketService.getInstance();
 			const sportsBetInfo = useSportsBetInfoStore();
 			const res = await userApi.getIndexInfo().catch((err) => err);
 			const { code, data, message } = res;
@@ -154,6 +157,9 @@ export const useUserStore = defineStore("User", {
 				localStorage.setItem("userInfo", JSON.stringify(userInfo));
 				// 同步体育余额信息
 				sportsBetInfo.balance = data.totalBalance;
+				websocketService.connect().then(() => {
+					pubsub.publish("websocketReady");
+				});
 			} else {
 				showToast(message, 1500);
 			}

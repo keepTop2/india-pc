@@ -443,6 +443,35 @@ class Common {
 		return new URL(`../assets/lang/${i18n.global.locale.value}/${themesStore.themeName}/${path}`, import.meta.url).href;
 	}
 
+	// 加载脚本
+	static loadScript(url: string): Promise<void> {
+		return new Promise((resolve, reject) => {
+			// 检查脚本是否已存在，防止重复加载
+			const existingScript = document.querySelector(`script[src="${url}"]`);
+			if (existingScript) {
+				resolve();
+				return;
+			}
+
+			// 创建一个新的脚本元素
+			const script = document.createElement("script");
+			script.src = url;
+			script.async = true;
+
+			// 当脚本加载成功时
+			script.onload = () => {
+				resolve();
+			};
+
+			// 当脚本加载失败时
+			script.onerror = (error) => {
+				reject(new Error(`Failed to load script: ${url}`));
+			};
+
+			// 将脚本添加到文档中
+			document.head.appendChild(script);
+		});
+	}
 	/**
 	 * 进入游戏
 	 */

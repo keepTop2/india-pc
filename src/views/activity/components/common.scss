@@ -2,7 +2,6 @@
 	background: url("../activityType/image/commonBg.png") no-repeat;
 	background-size: 100% 100%;
 	overflow: hidden;
-	padding-right: 3px;
 	border-radius: 12px;
 	.activityHeader {
 		background: url("../activityType/image/header_bg.png") center no-repeat;
@@ -181,6 +180,7 @@
 		}
 	}
 	.activityMain::-webkit-scrollbar {
+		display: none;
 		width: 6px;
 	}
 	.activityMain::-webkit-scrollbar-track {
