@@ -68,7 +68,7 @@ watch(
 watch(
 	() => props.redBagInfo,
 	() => {
-		if (props.redBagInfo.advanceTime) {
+		if (props.redBagInfo?.advanceTime) {
 			startCountdown(props.redBagInfo.advanceTime);
 		}
 	},

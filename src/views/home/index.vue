@@ -69,7 +69,7 @@ onMounted(async () => {
 		isLoading.value = false;
 	}, delay);
 	// 如果socket连接成功
-	if (websocketService.socket.readyState) {
+	if (websocketService.socket?.readyState) {
 		//直接发订阅
 		websocketService.send("/activity/redBagRain");
 	} else {

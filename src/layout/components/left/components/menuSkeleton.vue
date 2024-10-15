@@ -77,7 +77,7 @@ const props = defineProps<{
 		height: 18px;
 		background: var(--Bg1);
 		margin-right: 0;
-		border-radius: 50%; /* Added for circular icon */
+		border-radius: 4px; /* Added for circular icon */
 	}
 
 	.skeleton-content {

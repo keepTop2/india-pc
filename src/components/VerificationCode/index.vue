@@ -1,7 +1,7 @@
 <template>
 	<div class="verification-code">
 		<div class="input-container">
-			<input placeholder="验证码" @input="validateInput" class="contact-input common_input" :disabled="sendCodeText == '发送'" />
+			<input placeholder="验证码" @input="validateInput" class="contact-input common_input" :disabled="sendCodeText == '发送'" :maxlength="6" />
 			<button @click="sendVerificationCode" class="send-button" :disabled="disabled && countdown > 0" :class="countdown > 0 ? 'iscountdown' : ''">
 				{{ isCountingDown ? countdown + "s" : sendCodeText }}
 			</button>

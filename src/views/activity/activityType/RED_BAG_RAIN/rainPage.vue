@@ -329,6 +329,8 @@ onMounted(async () => {
 		} else {
 			dialogTitle.value = "很遗憾";
 		}
+		console.log(123123123123);
+
 		settlement.value = data.data;
 		showRedBagRainResult.value = true;
 	});

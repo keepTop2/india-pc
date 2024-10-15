@@ -112,7 +112,7 @@
 		</div>
 		<p>
 			<div id="captcha-element" ref="captchaBtn"/>
-			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript"/>
+			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript" v-if="HcaptchaMounted"/>
 		</p>
 	</div>
 </template>
@@ -135,7 +135,8 @@ const UserStore = useUserStore();
 const hcaptcha: any = ref(null);
 const captchaBtn: any = ref(null);
 const openinviteCode = ref(false)
-const isOnloadScript =ref(false)
+const isOnloadScript = ref(false)
+const HcaptchaMounted = ref(false)
 
 const payLoad = reactive({
 	userAccount: "",
@@ -157,6 +158,9 @@ const VerifyError = reactive({
 });
 
 onMounted(() => {
+	Common.loadScript("https://o.alicdn.com/captcha-frontend/aliyunCaptcha/AliyunCaptcha.js").then(() => {
+		HcaptchaMounted.value = true;
+	});
 	if (UserStore.getRegisterModalInfo) {
 		Object.assign(payLoad, UserStore.getRegisterModalInfo);
 	}

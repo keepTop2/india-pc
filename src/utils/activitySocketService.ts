@@ -28,7 +28,7 @@ class activitySocketService {
 			case "development":
 				return (window as any)["PLATFROM_CONFIG"].developmentWsURL;
 			case "production":
-				return `wss://${window.location.host}/websocket/baowang/websocket`;
+				return (window as any)["PLATFROM_CONFIG"].productionWsUrl;
 			default:
 				return "";
 		}
@@ -53,6 +53,7 @@ class activitySocketService {
 				const data = JSON.parse(event.data);
 				switch (data.msgTopic) {
 					case "/activity/redBagRain":
+						if (data.data.code !== 10000) return;
 						pubsub.publish("/activity/redBagRain", data.data.data); // 红包雨活动消息
 						break;
 					case "/activity/redBagRain/settlement":
@@ -72,6 +73,7 @@ class activitySocketService {
 
 			// WebSocket连接关闭时
 			this.socket.onclose = () => {
+				pubsub.publish("/activity/redBagRain/end");
 				console.log("WebSocket连接已关闭"); // 打印连接关闭日志
 				this.stopHeartbeat(); // 停止心跳
 				if (!this.isManuallyClosed) {

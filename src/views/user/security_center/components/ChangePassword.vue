@@ -11,7 +11,14 @@
 					<div>
 						<p class="Text_s mb_8 mt_8">{{ $t(`security_center['旧密码']`) }}</p>
 						<p class="common_password">
-							<input :type="showOldPassword ? 'text' : 'password'" v-model="payLoad.oldPassword" class="common_input" @input="oldPasswordOnInput" autocomplete="new-password" />
+							<input
+								:type="showOldPassword ? 'text' : 'password'"
+								v-model="payLoad.oldPassword"
+								class="common_input"
+								@input="oldPasswordOnInput"
+								autocomplete="new-password"
+								:maxlength="16"
+							/>
 							<span class="eyes">
 								<svg-icon :name="showOldPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showOldPassword = !showOldPassword" />
 							</span>
@@ -22,7 +29,7 @@
 					<div>
 						<p class="Text_s mb_8 mt_8">{{ $t(`security_center['新密码']`) }}</p>
 						<p class="common_password">
-							<input :type="showNewPassword ? 'text' : 'password'" v-model="payLoad.newPassword" class="common_input" @input="newPasswordOnInput" />
+							<input :type="showNewPassword ? 'text' : 'password'" v-model="payLoad.newPassword" class="common_input" @input="newPasswordOnInput" :maxlength="16" />
 							<span class="eyes">
 								<svg-icon :name="showNewPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showNewPassword = !showNewPassword" />
 							</span>
@@ -33,7 +40,7 @@
 					<div>
 						<p class="Text_s mb_8 mt_8">{{ $t(`security_center['确认密码']`) }}</p>
 						<p class="common_password">
-							<input :type="showConfirmPassword ? 'text' : 'password'" v-model="payLoad.confirmPassword" class="common_input" @input="confirmOnInput" />
+							<input :type="showConfirmPassword ? 'text' : 'password'" v-model="payLoad.confirmPassword" class="common_input" @input="confirmOnInput" :maxlength="16" />
 							<span class="eyes">
 								<svg-icon :name="showConfirmPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showConfirmPassword = !showConfirmPassword" />
 							</span>
