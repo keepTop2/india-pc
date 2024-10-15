@@ -17,11 +17,9 @@
 			<div class="line"></div>
 			<div class="footer1Item">
 				<p class="mb_19">支付方式</p>
-				<div class="paymentMethodIcon">
-					<slide>
-						<img :src="item.icon" alt="" v-for="(item, index) in vendorList" :key="index" />
-					</slide>
-				</div>
+				<slide class="paymentMethodIcon">
+					<img :src="item.icon" alt="" v-for="(item, index) in vendorList" :key="index" />
+				</slide>
 			</div>
 			<div class="line"></div>
 			<div class="footer1Item">
@@ -113,12 +111,14 @@ const getlist = () => {
 		}
 	}
 	.paymentMethodIcon {
-		display: flex;
-		gap: 40px;
 		height: 82px;
-		align-items: center;
 		img {
 			height: 44px;
+			width: 44px;
+			object-fit: cover;
+			border-radius: 50%;
+			pointer-events: none;
+			margin-right: 69px;
 		}
 	}
 	.responsibleGameIcon {

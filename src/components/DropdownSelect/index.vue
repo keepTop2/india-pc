@@ -89,15 +89,6 @@ const filteredOptions = computed(() => {
 	);
 });
 
-// 观察选中选项的变化以更新输入值
-watch(selectedOption, (newVal) => {
-	if (newVal) {
-		searchQuery.value = newVal.code; // 如果有选中项，更新搜索查询为选中项的代码
-	} else {
-		searchQuery.value = ""; // 如果没有选中项，清空搜索查询
-	}
-});
-
 // 计算选中选项的标签
 const selectedOptionLabel = computed(() => {
 	return props.model ? props.model : selectedOption.value ? selectedOption.value.code : ""; // 返回绑定的模型值或选中项的代码

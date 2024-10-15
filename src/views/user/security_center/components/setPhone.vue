@@ -38,13 +38,19 @@
 					</div>
 					<div class="Text1">{{ $t(`security_center['有效时间：10分钟']`) }}</div>
 					<div class="Text_s mt_16 mb_8">{{ $t(`security_center['验证码']`) }}</div>
-					<VerificationCode
-						@VerificationCodeInput="VerificationCodeInput"
-						@sendVerificationCode="sendVerificationCode"
-						v-model="verificationBtn"
-						:disabled="verificationBtn"
-						ref="VerificationCodeRef"
-					/>
+					<p class="common_password">
+						<VerificationCode
+							@VerificationCodeInput="VerificationCodeInput"
+							@sendVerificationCode="sendVerificationCode"
+							v-model="verificationBtn"
+							:disabled="verificationBtn"
+							ref="VerificationCodeRef"
+						/>
+					</p>
+
+					<p class="fs_14 Text1 mt_16 fw_200">
+						{{ $t(`security_center['有效时间']`) }}<span class="Theme_text curp">{{ $t(`security_center['联系客服']`) }}</span>
+					</p>
 				</div>
 				<div class="mt_40 mb_12">
 					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">
