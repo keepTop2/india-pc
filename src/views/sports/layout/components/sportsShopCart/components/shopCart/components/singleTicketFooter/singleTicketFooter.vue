@@ -20,6 +20,7 @@ import { computed } from "vue";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
 import { getBetOrderId } from "/@/views/sports/utils/commonFn";
+import { userApi } from "/@/api/user";
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();
 let stake = computed(() => shopCartPubSub.betValueState.singleTicketBetValue);
@@ -65,9 +66,17 @@ const placeBet = async () => {
 		oddsOption: 1,
 	};
 	const res = await sportsApi.placeBet(params).catch((err) => err);
-	if (res.data) {
-		const result = res.data;
-		emit("singleTicketSuccess", result);
+	try {
+		if (res.data) {
+			const result = res.data;
+			emit("singleTicketSuccess", result);
+			// 刷新余额
+			await userApi.getIndexInfo();
+		} else {
+			showToast(`投注失败！`);
+		}
+	} catch {
+		showToast(`投注失败！`);
 	}
 };
 </script>

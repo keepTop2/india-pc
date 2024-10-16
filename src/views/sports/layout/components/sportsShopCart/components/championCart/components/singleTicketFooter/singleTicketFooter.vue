@@ -24,6 +24,7 @@ import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
 import { i18n } from "/@/i18n/index";
 import { getBetOrderId } from "/@/views/sports/utils/commonFn";
+import { userApi } from "/@/api/user";
 const $: any = i18n.global;
 const sportsBetInfo = useSportsBetInfoStore();
 const ChampionShopCartStore = useSportsBetChampionStore();
@@ -70,9 +71,17 @@ const placeBet = async () => {
 		oddsOption: 1,
 	};
 	const res = await sportsApi.placeBet(params).catch((err) => err);
-	if (res.data) {
-		const result = res.data;
-		emit("singleTicketSuccess", result);
+	try {
+		if (res.data) {
+			const result = res.data;
+			emit("singleTicketSuccess", result);
+		} else {
+			showToast(`sports['投注失败！']`);
+			// 刷新余额
+			await userApi.getIndexInfo();
+		}
+	} catch {
+		showToast(`sports['投注失败！']`);
 	}
 };
 
