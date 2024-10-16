@@ -21,6 +21,7 @@
 								v-model="payLoad.password"
 								class="common_input"
 								@input="passOnInput"
+								maxlength="16"
 								autocomplete="new-password"
 								:class="VerifyError.passWord ? 'verifyError' : ''"
 							/>
@@ -42,6 +43,7 @@
 								v-model="payLoad.newPassword"
 								class="common_input"
 								@input="newPassOnInput"
+								maxlength="6"
 								autocomplete="new-password"
 								:class="VerifyError.newPassword ? 'verifyError' : ''"
 							/>
@@ -60,6 +62,7 @@
 								v-model="payLoad.confirmPassword"
 								class="common_input"
 								@input="confirmOnInput"
+								maxlength="6"
 								autocomplete="new-password"
 								:class="VerifyError.confirmPassword ? 'verifyError' : ''"
 							/>

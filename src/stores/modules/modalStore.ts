@@ -30,6 +30,7 @@ const activityModal: Record<string, () => Promise<any>> = {
 	RECHARGE_BONUS: () => import("/@/views/activity/activityType/RECHARGE_BONUS.vue"),
 	DAILY_COMPETITION: () => import("/@/views/activity/activityType/DAILY_COMPETITION/index.vue"),
 	SPIN_WHEEL: () => import("../../views/activity/activityType/SPIN_WHEEL/index.vue"),
+	TASK: () => import("../../views/activity/activityType/TASK/index.vue"),
 };
 
 // 定义可用的模态框组件

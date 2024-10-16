@@ -35,7 +35,7 @@
 								class="common_input"
 								@input="confirmPasswordOnInput"
 								autocomplete="new-password"
-								:maxlength="6"
+								maxlength="6"
 							/>
 							<span class="eyes">
 								<svg-icon :name="showOldPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showOldPassword = !showOldPassword" />
@@ -51,7 +51,14 @@
 					<div>
 						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['原交易密码']`) }}</p>
 						<p class="common_password">
-							<input :type="showOldPassword ? 'text' : 'password'" v-model="payLoad.oldPassword" class="common_input" @input="oldPasswordOnInput" autocomplete="new-password" />
+							<input
+								:type="showOldPassword ? 'text' : 'password'"
+								v-model="payLoad.oldPassword"
+								class="common_input"
+								@input="oldPasswordOnInput"
+								autocomplete="new-password"
+								maxlength="6"
+							/>
 							<span class="eyes">
 								<svg-icon :name="showOldPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showOldPassword = !showOldPassword" />
 							</span>
@@ -62,7 +69,7 @@
 					<div>
 						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['新交易密码']`) }}</p>
 						<p class="common_password">
-							<input :type="showNewPassword ? 'text' : 'password'" v-model="payLoad.newPassword" class="common_input" @input="newPasswordOnInput" :maxlength="6" />
+							<input :type="showNewPassword ? 'text' : 'password'" v-model="payLoad.newPassword" class="common_input" @input="newPasswordOnInput" maxlength="6" />
 							<span class="eyes">
 								<svg-icon :name="showNewPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showNewPassword = !showNewPassword" />
 							</span>
@@ -73,7 +80,7 @@
 					<div>
 						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['确认交易密码']`) }}</p>
 						<p class="common_password">
-							<input :type="showConfirmPassword ? 'text' : 'password'" v-model="payLoad.confirmPassword" class="common_input" @input="confirmPasswordOnInput" :maxlength="6" />
+							<input :type="showConfirmPassword ? 'text' : 'password'" v-model="payLoad.confirmPassword" class="common_input" @input="confirmPasswordOnInput" maxlength="6" />
 							<span class="eyes">
 								<svg-icon :name="showConfirmPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showConfirmPassword = !showConfirmPassword" />
 							</span>

@@ -8,7 +8,7 @@
 		<div v-if="isOpen" class="dropdown-menu">
 			<div class="flex_space-between input">
 				<svg-icon name="search" size="14px" color="#fff" />
-				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`login['搜索货币名称或简称']`)" class="search-input common_input" />
+				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`login['搜索国家和地区']`)" class="search-input common_input" />
 				<svg-icon name="close" size="14px" @click="searchQuery = ''" color="#fff" />
 			</div>
 			<div class="line"></div>
@@ -27,7 +27,7 @@
 					</span>
 					<span>+{{ option.areaCode }}</span>
 				</li>
-				<li v-if="filteredOptions.length === 0" class="no-results fs_12">{{ $t(login["未搜索到相关区号"]) }}</li>
+				<li v-if="filteredOptions.length === 0" class="no-results fs_12">{{ $t(`login["未搜索到相关区号"]`) }}</li>
 			</ul>
 		</div>
 	</div>

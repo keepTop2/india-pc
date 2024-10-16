@@ -28,7 +28,7 @@ class activitySocketService {
 			case "development":
 				return (window as any)["PLATFROM_CONFIG"].developmentWsURL;
 			case "production":
-				return (window as any)["PLATFROM_CONFIG"].productionWsUrl;
+				return (window as any)["PLATFROM_CONFIG"].productionWsURL;
 			default:
 				return "";
 		}
