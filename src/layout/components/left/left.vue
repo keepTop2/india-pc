@@ -155,7 +155,7 @@ const confirmDialog = () => {
 };
 const showTask = () => {
 	if (useUserStore().getLogin) {
-		modalStore.openModal("SPIN_WHEEL");
+		modalStore.openModal("TASK");
 	} else {
 		modalStore.openModal("LoginModal");
 	}
