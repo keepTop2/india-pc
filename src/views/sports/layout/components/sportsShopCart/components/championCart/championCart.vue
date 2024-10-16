@@ -25,9 +25,9 @@
 						<div class="event-list" ref="container" @scroll="checkScroll">
 							<template v-for="(data, index) in ChampionShopCartStore.championBetData" :key="index">
 								<!-- 冠军赛事列表卡片 单关串关公用 -->
-								<ChampionCard v-if="data.type == '1'" :shopData="data" :hasClose="true" />
+								<ChampionCard v-if="data.isChampionData" :shopData="data" :hasClose="true" />
 								<!-- 盘口赛事列表卡片 -->
-								<EventCard v-if="data.type == '0'" :shopData="data.event" :hasClose="true" />
+								<EventCard v-if="!data.isChampionData" :shopData="data.event" :hasClose="true" />
 							</template>
 
 							<!-- 冠军单关表单 -->

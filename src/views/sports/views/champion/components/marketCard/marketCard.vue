@@ -94,11 +94,13 @@ const onSetSportsEventData = () => {
 		type: "1", // 添加冠军标识
 		leagueId: data.leagueId,
 		sportType: data.sportType,
+		isChampionData: true,
 		event: {
 			...item,
 			leagueId: data.leagueId,
 			leagueName: data.leagueName,
 			sportType: data.sportType,
+			isChampionData: true,
 		},
 	};
 

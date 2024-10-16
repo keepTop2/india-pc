@@ -142,7 +142,7 @@ const filterSelections = (data: any[]) => {
  * @param selection 选择项对象
  */
 const onSetSportsEventData = (market: any, selection: any) => {
-	commonShopCat.addEventToCart({ data: props.eventDetail, market, selection, type: route.meta.name === "champion" ? 2 : 1 });
+	commonShopCat.addEventToCart({ data: props.eventDetail, market, selection, type: route.meta.name === "champion" ? "1" : "0" });
 };
 
 /**

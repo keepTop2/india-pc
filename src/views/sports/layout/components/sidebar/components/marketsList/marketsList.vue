@@ -199,7 +199,7 @@ const isBright = (market: { marketId: any }, selection: { key: any }) => {
  * @param selection 选择项对象
  */
 const onSetSportsEventData = (market: any, selection: any) => {
-	commonShopCat.addEventToCart({ data: eventDetail.value, market, selection, type: route.meta.name === "champion" ? 2 : 1 });
+	commonShopCat.addEventToCart({ data: eventDetail.value, market, selection, type: route.meta.name === "champion" ? "1" : "0", isChampionData: false });
 };
 
 /**
