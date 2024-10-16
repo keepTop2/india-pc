@@ -204,8 +204,8 @@ const halftimeScore = (scores: number[]) => scores.slice(0, 2).reduce((acc, scor
 						}
 					}
 					.name {
-						max-width: 85px;
-						color: var(--Text_s);
+						flex: 1;
+						color: var(--Text1);
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 400;
