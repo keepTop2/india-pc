@@ -18,13 +18,13 @@ import showToast from "/@/hooks/useToast";
 import sportsApi from "/@/api/sports/sports";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import shopCartChampionPubSub from "/@/views/sports/hooks/shopCartChampionPubSub";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
 import { i18n } from "/@/i18n/index";
 import { getBetOrderId } from "/@/views/sports/utils/commonFn";
-import { userApi } from "/@/api/user";
+import { useUserStore } from "/@/stores/modules/user";
 const $: any = i18n.global;
 const sportsBetInfo = useSportsBetInfoStore();
 const ChampionShopCartStore = useSportsBetChampionStore();
@@ -33,7 +33,8 @@ let stake = computed(() => shopCartPubSub.betValueState.singleTicketBetValue);
 let championStake = computed(() => shopCartChampionPubSub.betValueState.singleTicketBetValue);
 
 const emit = defineEmits(["singleTicketSuccess"]);
-
+// 请求注单下注期间不可点击
+const unlickable = ref(false);
 // 赛事投注
 const onEventBet = () => {
 	console.log("触发赛事投注");
@@ -50,13 +51,14 @@ const onEventBet = () => {
 		return;
 	}
 	// 单关投注
-	placeBet();
+	!unlickable.value && placeBet();
 };
 
 /**
  * 单关下注
  */
 const placeBet = async () => {
+	unlickable.value = true;
 	//	请求最新注单号
 	await getBetOrderId();
 	// 参数拼接
@@ -78,11 +80,12 @@ const placeBet = async () => {
 		} else {
 			showToast(`sports['投注失败！']`);
 			// 刷新余额
-			await userApi.getIndexInfo();
+			useUserStore().initUserInfo();
 		}
 	} catch {
 		showToast(`sports['投注失败！']`);
 	}
+	unlickable.value = false;
 };
 
 // 冠军投注
