@@ -198,7 +198,7 @@ class Common {
 	 * @describe 获取今天开始时间 (YYYY-MM-DD HH:mm:ss)
 	 */
 	static parseTime(time: any) {
-		return moment(time).format("YYYY.MM.DD HH:mm:ss");
+		return dayjs(time).format("YYYY.MM.DD HH:mm:ss");
 	}
 	/**
 	 * @describe 获取时分秒 (HH:mm:ss)

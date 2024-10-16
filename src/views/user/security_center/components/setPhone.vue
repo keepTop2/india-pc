@@ -9,7 +9,7 @@
 			<div class="login_form">
 				<div v-if="isCreate">
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['手机号']`) }}</p>
+						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['新手机号']`) }}</p>
 						<p class="common_password">
 							<AreaCode @update:modelValue="areaCodeInput" :options="AreaCodeOptions" :class="userVerifyTypeVerifyError ? 'verifyError' : ''"></AreaCode>
 						</p>
