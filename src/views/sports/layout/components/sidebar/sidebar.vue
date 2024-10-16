@@ -120,9 +120,11 @@ const eventsInfo = computed(() => {
 	if (route.meta.name === "champion" && promotionsViewData.length) {
 		return promotionsViewData[0];
 	}
-	if (childrenViewData?.length && !isShowHotEvents.value) {
+	// 非冠军
+	if (route.meta.name !== "champion" && childrenViewData?.length) {
 		return childrenViewData[0]?.events[0];
 	}
+
 	if (promotionsViewData.length && isShowHotEvents.value) {
 		return promotionsViewData[0];
 	}
