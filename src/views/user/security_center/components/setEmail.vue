@@ -3,7 +3,7 @@
 	<div class="ChangePasswordWrapper">
 		<div class="ChangePassword_form">
 			<div class="login_text fs_20 mb_20">
-				<span v-if="isCreate"> {{ $t(`security_center['绑定邮箱']`) }}</span>
+				<span v-if="isCreate && !isEdit"> {{ $t(`security_center['绑定邮箱']`) }}</span>
 				<span v-else> {{ $t(`security_center['修改邮箱']`) }}</span>
 			</div>
 			<div class="login_form">
@@ -80,7 +80,7 @@ const payLoad = reactive({
 	type: 1,
 });
 const isCreate = ref(true);
-
+const isEdit = ref(false);
 // 校验完成登陆按钮可以点击
 const disabledBtn = ref(true);
 const verificationBtn = ref(true);
@@ -153,6 +153,7 @@ const onSubmit = async () => {
 			payLoad.verifyCode = "";
 			showToast(checkVerifyRes.message);
 			isCreate.value = true;
+			isEdit.value = true;
 			disabledBtn.value = true;
 		}
 	}
