@@ -78,7 +78,6 @@ const initRoute = () => {
 		const { sportType } = route.query;
 		const hasType = sportsData.value.some((item) => item.sportType === Number(sportType));
 		if (!hasType) {
-			alert(1);
 			const firstSportType = sportsData.value[0].sportType; // 获取第一个体育类型
 			const defaultPath = `${router.currentRoute.value.path}?sportType=${firstSportType}`; // 构建默认路径
 			router.push({ path: router.currentRoute.value.path, query: { ...route.query, sportType: firstSportType } });
