@@ -2,7 +2,7 @@
 	<div class="box_select" @click="onToggleAllStates">
 		<div class="select_left">
 			<div class="title">
-				<span>({{ teamData.length }})</span>
+				<span>{{ routeNameMap.get(route.name) }}({{ teamData.length }})</span>
 			</div>
 		</div>
 		<div class="select_right">
@@ -12,6 +12,15 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from "vue-router";
+const route = useRoute(); // 获取当前路由实例
+
+const routeNameMap = new Map([
+	["todayContestRollingBall", "滚球盘"],
+	["todayContestNotStarted", "未开赛"],
+	["morningTradingList", "早盘"],
+]);
+
 interface teamDataType {
 	/** 队伍数据 */
 	teamData: any;
