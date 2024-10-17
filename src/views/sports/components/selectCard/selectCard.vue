@@ -6,12 +6,13 @@
 			</div>
 		</div>
 		<div class="select_right">
-			<span class="icon"><svg-icon name="sports-arrow_big" size="20px"></svg-icon></span>
+			<span class="icon"><svg-icon :style="{ transform: `rotate(${isExpand ? 0 : 180}deg)` }" name="sports-arrow_big" size="20px"></svg-icon></span>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
 import { useRoute } from "vue-router";
 const route = useRoute(); // 获取当前路由实例
 
@@ -24,13 +25,23 @@ const routeNameMap = new Map([
 interface teamDataType {
 	/** 队伍数据 */
 	teamData: any;
+	isExpand: Boolean;
 }
 const props = withDefaults(defineProps<teamDataType>(), {
 	/** 队伍数据 */
 	teamData: () => {
 		return {};
 	},
+	// /右侧icon展开收起状态
+	isExpand: Boolean,
 });
+
+watch(
+	() => props.isExpand,
+	() => {
+		console.log(props.isExpand, "右侧icon展开收起状态");
+	}
+);
 
 const emit = defineEmits(["onToggleAllStates"]);
 
