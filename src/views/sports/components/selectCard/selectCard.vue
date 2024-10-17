@@ -2,26 +2,46 @@
 	<div class="box_select" @click="onToggleAllStates">
 		<div class="select_left">
 			<div class="title">
-				<span>({{ teamData.length }})</span>
+				<span>{{ routeNameMap.get(route.name) }}({{ teamData.length }})</span>
 			</div>
 		</div>
 		<div class="select_right">
-			<span class="icon"><svg-icon name="sports-arrow_big" size="20px"></svg-icon></span>
+			<span class="icon"><svg-icon :style="{ transform: `rotate(${isExpand ? 0 : 180}deg)` }" name="sports-arrow_big" size="20px"></svg-icon></span>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute(); // 获取当前路由实例
+
+const routeNameMap = new Map([
+	["todayContestRollingBall", "滚球盘"],
+	["todayContestNotStarted", "未开赛"],
+	["morningTradingList", "早盘"],
+]);
+
 interface teamDataType {
 	/** 队伍数据 */
 	teamData: any;
+	isExpand: Boolean;
 }
 const props = withDefaults(defineProps<teamDataType>(), {
 	/** 队伍数据 */
 	teamData: () => {
 		return {};
 	},
+	// /右侧icon展开收起状态
+	isExpand: Boolean,
 });
+
+watch(
+	() => props.isExpand,
+	() => {
+		console.log(props.isExpand, "右侧icon展开收起状态");
+	}
+);
 
 const emit = defineEmits(["onToggleAllStates"]);
 
