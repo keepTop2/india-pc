@@ -35,7 +35,9 @@ const onBet = () => {
 	}
 	// 循环金额 与 投注金额有无达到最低限额
 	const hasEmpty = sportsBetInfo.parlayTicketsInfo.combos.every((item: any) => !combos.value[item.comboType]);
-	const hasReachedMinBet = sportsBetInfo.parlayTicketsInfo.combos.every((item: any) => !combos.value[item.comboType] || parseFloat(combos.value[item.comboType]) >= item.minBet);
+	const hasReachedMinBet = sportsBetInfo.parlayTicketsInfo.combos.every(
+		(item: any) => !combos.value[item.comboType] || parseFloat(combos.value[item.comboType]) >= Number(item.minBet)
+	);
 	if (hasEmpty) {
 		showToast("请输入投注金额");
 	} else if (!hasReachedMinBet) {

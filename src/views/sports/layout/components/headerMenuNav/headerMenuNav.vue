@@ -62,7 +62,9 @@ const props = defineProps<{
 }>();
 
 // 获取球类tab数据
-const sportsData = computed(() => viewSportPubSubEventData.viewSportData.sports);
+const sportsData = computed(() => {
+	return viewSportPubSubEventData.viewSportData.sports;
+});
 
 const rightContainer = ref<HTMLElement | null>(null); // 右侧容器的引用
 const nvaItemContainer = ref<HTMLElement | null>(null); // 导航项容器的引用
@@ -73,9 +75,14 @@ const showRightArrow = ref(false); // 控制右箭头显示的状态
 const initRoute = () => {
 	if (sportsData.value.length > 0) {
 		// 确保有体育数据
-		const firstSportType = sportsData.value[0].sportType; // 获取第一个体育类型
-		const defaultPath = `${router.currentRoute.value.path}/${firstSportType}`; // 构建默认路径
-		router.push(defaultPath); // 跳转到默认路径
+		const { sportType } = route.query;
+		const hasType = sportsData.value.some((item) => item.sportType === Number(sportType));
+		if (!hasType) {
+			alert(1);
+			const firstSportType = sportsData.value[0].sportType; // 获取第一个体育类型
+			const defaultPath = `${router.currentRoute.value.path}?sportType=${firstSportType}`; // 构建默认路径
+			router.push({ path: router.currentRoute.value.path, query: { ...route.query, sportType: firstSportType } });
+		}
 	}
 };
 
@@ -138,7 +145,6 @@ const scrollRight = () => {
 
 // 组件挂载后初始化路由和事件监听
 onMounted(() => {
-	initRoute(); // 初始化路由
 	nextTick(() => {
 		handleScroll(); // 初始处理滚动状态
 		window.addEventListener("resize", handleScroll); // 窗口尺寸变化时重新处理滚动状态
@@ -147,6 +153,7 @@ onMounted(() => {
 
 // 观察体育数据的变化
 watch(sportsData, () => {
+	initRoute(); // 初始化路由
 	nextTick(() => {
 		handleScroll(); // 数据变化后处理滚动状态
 	});

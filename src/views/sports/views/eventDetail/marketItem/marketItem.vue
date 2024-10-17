@@ -54,7 +54,7 @@
 											</span>
 										</div>
 										<div v-else class="lock">
-											<svg-icon name="sports-lock" size="12" />
+											<svg-icon name="sports-lock" size="14" />
 										</div>
 									</div>
 								</li>
@@ -426,6 +426,7 @@ watch(
 				.lock {
 					display: flex;
 					justify-content: center;
+					align-items: center;
 				}
 			}
 

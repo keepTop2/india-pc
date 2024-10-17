@@ -33,7 +33,7 @@
 				</div>
 				<!-- 已投注卡片赔率显示 -->
 				<div v-else>
-					<span class="value">{{ props.shopData.betMarketInfo.decimalPrice }}</span>
+					<span class="value">@{{ props.shopData.betMarketInfo.decimalPrice }}</span>
 				</div>
 			</div>
 			<div class="bet_slip_type">
