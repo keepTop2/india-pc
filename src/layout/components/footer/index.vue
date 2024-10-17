@@ -104,6 +104,10 @@ const getlist = () => {
 	}
 	.partnersIcon {
 		height: 82px;
+
+		:deep(.slider-content) {
+			justify-content: space-around;
+		}
 		img {
 			height: 72px;
 			pointer-events: none;
