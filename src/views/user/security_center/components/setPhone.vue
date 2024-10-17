@@ -3,7 +3,7 @@
 	<div class="ChangePasswordWrapper">
 		<div class="ChangePassword_form">
 			<div class="login_text fs_20 mb_20">
-				<span v-if="isCreate"> {{ $t(`security_center['绑定手机号']`) }}</span>
+				<span v-if="isCreate && !isEdit"> {{ $t(`security_center['绑定手机号']`) }}</span>
 				<span v-else> {{ $t(`security_center['修改手机号']`) }}</span>
 			</div>
 			<div class="login_form">
@@ -85,6 +85,7 @@ const payLoad = reactive({
 	areaCode: options[0].areaCode,
 });
 const isCreate = ref(true);
+const isEdit = ref(false);
 const minLength = ref(8);
 const maxLength = ref(13);
 const AreaCodeOptions = ref([]);
@@ -193,6 +194,7 @@ const onSubmit = async () => {
 			await getAreaCodeDownBox();
 			showToast(checkVerifyRes.message);
 			disabledBtn.value = true;
+			isEdit.value = true;
 			isCreate.value = true;
 		}
 	}
