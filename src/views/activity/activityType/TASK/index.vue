@@ -11,14 +11,14 @@
 			<div class="activityContent">
 				<div class="activityContentHeader">
 					<div class="flex-center">
-						<img src="./image/activityContentHeaderLeft.svg" alt="" />
+						<!-- <img src="./image/activityContentHeaderLeft.svg" alt="" /> -->
 						<span>活动内容</span>
-						<img src="./image/activityContentHeaderRight.svg" alt="" />
+						<!-- <img src="./image/activityContentHeaderRight.svg" alt="" /> -->
 					</div>
 				</div>
 				<div class="activityContentCenter">
 					<div class="activityContentImg">
-						<img src="./image/activityContentImg.png" alt="" />
+						<!-- <img src="./image/activityContentImg.png" alt="" /> -->
 					</div>
 					<div class="contentCell">
 						<div class="cellLabel">活动对象</div>
@@ -43,9 +43,9 @@
 			<div class="activityContent">
 				<div class="activityContentHeader">
 					<div class="flex-center">
-						<img src="./image/activityContentHeaderLeft.svg" alt="" />
+						<!-- <img src="./image/activityContentHeaderLeft.svg" alt="" /> -->
 						<span>活动规则</span>
-						<img src="./image/activityContentHeaderRight.svg" alt="" />
+						<!-- <img src="./image/activityContentHeaderRight.svg" alt="" /> -->
 					</div>
 				</div>
 				<div class="activityContentCenter">
@@ -60,12 +60,12 @@
 			</div>
 		</div>
 	</div>
-	<CommonDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
+	<!-- <CommonDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
 		{{ dialogInfo.message }}
 	</CommonDialog>
 	<CommonDialog v-model="showNeedLogin" title="温馨提示" :confirm="confirmDialog" :nofooter="false">
 		<div>您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册</div>
-	</CommonDialog>
+	</CommonDialog> -->
 </template>
 
 <script setup lang="ts">
@@ -78,7 +78,7 @@ import { useModalStore } from "/@/stores/modules/modalStore";
 import { computed } from "vue";
 import Common from "/@/utils/common";
 import showToast from "/@/hooks/useToast";
-import CommonDialog from "../../components/activityDialog.vue";
+// import CommonDialog from "../../components/activityDialog.vue";
 const activityStore = useActivityStore();
 const router = useRouter();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
