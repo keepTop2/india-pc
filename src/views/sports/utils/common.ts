@@ -1,6 +1,7 @@
 // 体育静态文件
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import duration from "dayjs/plugin/duration";
 import utc from "dayjs/plugin/utc";
 import sportsMap from "./sportsMap/sportsMap";
 import { i18n } from "/@/i18n/index";
@@ -8,7 +9,7 @@ import { SportsRootObject } from "/@/views/sports/models/interface";
 import { convertUtcToUtc5AndFormatMD, convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import common from "/@/utils/common";
 const $: any = i18n.global;
-
+dayjs.extend(duration); // 启用 duration 插件
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
 dayjs.locale("zh-cn"); // 设置为中文环境
@@ -195,6 +196,21 @@ class SportsCommonFn {
 
 	// 动态匹配球类头部信息
 	public static getEventsTitle = (event: any) => {
+		console.log(event, "动态匹配球类头部信息");
+
+		const numMap = new Map([
+			[1, "一"],
+			[2, "二"],
+			[3, "三"],
+			[4, "四"],
+		]);
+		// 计算比赛剩余多少秒
+		const computerSeconds = (seconds: number): string => {
+			const timeDuration = dayjs.duration(seconds, "seconds");
+			const minutes = String(timeDuration.minutes()).padStart(2, "0"); // 获取分钟并补零
+			const secs = String(timeDuration.seconds()).padStart(2, "0"); // 获取秒并补零
+			return `${minutes}:${secs}`;
+		};
 		// console.log("event", event);
 		if (!event) return;
 		if (event.sportType === 1) {
@@ -223,13 +239,14 @@ class SportsCommonFn {
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
 		} else if (event.sportType === 2) {
 			const { gameInfo, eventStatus, globalShowTime } = this.safeAccessMultiple(event, [["gameInfo"], ["eventStatus"], ["globalShowTime"]]);
-			const { livePeriod, delayLive, isHt } = gameInfo;
+			const { livePeriod, delayLive, isHt, seconds } = gameInfo;
 			if (eventStatus == "closed") {
 				return $.t("sports['比赛已关闭']");
 			}
 			if (eventStatus == "postponed") {
 				return $.t("sports['比赛已推迟']");
 			}
+
 			if (this.isStartMatch(globalShowTime)) {
 				if (livePeriod == 0 && !delayLive && isHt) {
 					return $.t("sports['中场休息']");
@@ -237,20 +254,11 @@ class SportsCommonFn {
 				if (livePeriod == 0 && delayLive && !isHt) {
 					return $.t("sports['延迟开赛']");
 				}
-				if (livePeriod == 1 && !delayLive && !isHt) {
-					return $.t("sports['第一节']");
-				}
-				if (livePeriod == 2 && !delayLive && !isHt) {
-					return $.t("sports['第二节']");
-				}
-				if (livePeriod == 3 && !delayLive && !isHt) {
-					return $.t("sports['第三节']");
-				}
-				if (livePeriod == 4 && !delayLive && !isHt) {
-					return $.t("sports['第四节']");
-				}
 				if (livePeriod == 99 && !delayLive && !isHt) {
 					return $.t("sports['加时赛']");
+				}
+				if (!delayLive && !isHt && numMap.get(livePeriod)) {
+					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + computerSeconds(seconds);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -558,12 +566,14 @@ class SportsCommonFn {
 	 * @return {*}
 	 */
 	public static getResultDateRange = (date: string, dayEnd: number = 0, format = "YYYY-MM-DDTHH:mm:ss") => {
-		// 传入的日期为UTC-5时间
-		const easternTime = dayjs(date);
+		// 确保解析时按照 YYYY-MM-DD 格式
+		const easternTime = dayjs(date, "YYYY-MM-DD").utcOffset(-5);
+
 		// 计算0点（开始时间）
-		const startDate = easternTime.startOf("days").toISOString();
-		// 计算23:59:59（结束时间），注意endOf返回的是下一周期的开始，所以需要减去1毫秒
-		const endDate = easternTime.add(dayEnd, "days").subtract(1, "millisecond").toISOString();
+		const startDate = easternTime.startOf("day").toISOString();
+
+		// 计算结束时间：23:59:59，当天的结束
+		const endDate = easternTime.add(dayEnd, "days").endOf("day").toISOString();
 
 		return { startDate, endDate };
 	};

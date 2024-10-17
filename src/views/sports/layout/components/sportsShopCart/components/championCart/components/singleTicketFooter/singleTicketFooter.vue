@@ -18,12 +18,13 @@ import showToast from "/@/hooks/useToast";
 import sportsApi from "/@/api/sports/sports";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import shopCartChampionPubSub from "/@/views/sports/hooks/shopCartChampionPubSub";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
 import { i18n } from "/@/i18n/index";
 import { getBetOrderId } from "/@/views/sports/utils/commonFn";
+import { useUserStore } from "/@/stores/modules/user";
 const $: any = i18n.global;
 const sportsBetInfo = useSportsBetInfoStore();
 const ChampionShopCartStore = useSportsBetChampionStore();
@@ -32,7 +33,8 @@ let stake = computed(() => shopCartPubSub.betValueState.singleTicketBetValue);
 let championStake = computed(() => shopCartChampionPubSub.betValueState.singleTicketBetValue);
 
 const emit = defineEmits(["singleTicketSuccess"]);
-
+// 请求注单下注期间不可点击
+const unlickable = ref(false);
 // 赛事投注
 const onEventBet = () => {
 	console.log("触发赛事投注");
@@ -40,22 +42,23 @@ const onEventBet = () => {
 		showToast("请输入投注金额");
 		return;
 	}
-	if (stake.value < sportsBetInfo.singleTicketInfo.minBet) {
+	if (Number(stake.value) < Number(sportsBetInfo.singleTicketInfo.minBet)) {
 		showToast("投注金额未达到最低限额");
 		return;
 	}
-	if (stake.value > sportsBetInfo.balance) {
+	if (Number(stake.value) > Number(sportsBetInfo.balance)) {
 		showToast("余额不足，请先充值");
 		return;
 	}
 	// 单关投注
-	placeBet();
+	!unlickable.value && placeBet();
 };
 
 /**
  * 单关下注
  */
 const placeBet = async () => {
+	unlickable.value = true;
 	//	请求最新注单号
 	await getBetOrderId();
 	// 参数拼接
@@ -70,10 +73,19 @@ const placeBet = async () => {
 		oddsOption: 1,
 	};
 	const res = await sportsApi.placeBet(params).catch((err) => err);
-	if (res.data) {
-		const result = res.data;
-		emit("singleTicketSuccess", result);
+	try {
+		if (res.data) {
+			const result = res.data;
+			emit("singleTicketSuccess", result);
+		} else {
+			showToast(`sports['投注失败！']`);
+			// 刷新余额
+			useUserStore().initUserInfo();
+		}
+	} catch {
+		showToast(`sports['投注失败！']`);
 	}
+	unlickable.value = false;
 };
 
 // 冠军投注
@@ -82,11 +94,11 @@ const onChampionBet = () => {
 		showToast($.t(`sports['请输入投注金额']`));
 		return;
 	}
-	if (championStake.value < sportsBetInfo.championSingleTicketInfo.minBet) {
+	if (Number(championStake.value) < Number(sportsBetInfo.championSingleTicketInfo.minBet)) {
 		showToast($.t(`sports['投注金额未达到最低限额']`));
 		return;
 	}
-	if (championStake.value > sportsBetInfo.balance) {
+	if (Number(championStake.value) > Number(sportsBetInfo.balance)) {
 		showToast($.t(`sports['余额不足，请先充值']`));
 		return;
 	}
