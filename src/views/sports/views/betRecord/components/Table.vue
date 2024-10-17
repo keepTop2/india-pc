@@ -101,7 +101,7 @@
 				<!-- 最高可赢 -->
 				<el-table-column :label="$t(`sports.betRecord['最高可赢']`)" width="116" align="center" :resizable="false">
 					<template #default="{ row, column }">
-						<div class="maximum-win">{{ Common.formatFloat(row.cashoutPrice) }}</div>
+						<div class="maximum-win">{{ Common.formatFloat(row.price * row.stake) }}</div>
 					</template>
 				</el-table-column>
 
