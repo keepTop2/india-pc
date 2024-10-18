@@ -1,11 +1,11 @@
 <template>
-	<SelectCard :teamData="listData" @onToggleAllStates="onToggleAllStates" />
+	<SelectCard :teamData="listData" :expandedCount="expandedPanels.size" @onToggleAllStates="onToggleAllStates(listData)" />
 	<!-- 联赛数据统计卡片 -->
 	<div :style="computedHeight" class="box-content">
 		<DynamicScroller :items="listData" :min-item-size="34" class="scroller" key-field="leagueId" :prerender="10">
 			<template v-slot="{ item, index, active }">
 				<DynamicScrollerItem :item="item" :active="active" :data-index="index" :data-active="active">
-					<FootballCard :teamData="item" :dataIndex="index" :allStatus="allStatus" @oddsChange="handleOddsChange" />
+					<FootballCard :teamData="item" :dataIndex="index" :isExpanded="!expandedPanels.has(index)" @oddsChange="handleOddsChange" @toggleDisplay="toggleDisplay" />
 				</DynamicScrollerItem>
 			</template>
 		</DynamicScroller>
@@ -13,11 +13,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, computed } from "vue";
+import { ref, defineProps, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { FootballCard, SelectCard } from "./components";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
+import useExpandPanels from "/@/views/sports/hooks/useExpandPanels";
 
 const props = defineProps({
 	listData: {
@@ -46,13 +47,6 @@ const handleOddsChange = ({ marketId, selections }: { marketId: number; selectio
 	clearSportsOddsChange({ webToPushApi: WebToPushApi.rollingBall, marketId, selection: selections });
 };
 
-// 用来存储所有 FootballCard 组件的 refs
-const allStatus = ref(true);
-const onToggleAllStates = () => {
-	allStatus.value = !allStatus.value;
-	console.log("触发全部状态", allStatus.value);
-};
-
 // 计算高度，根据不同的路由动态设置高度
 const computedHeight = computed(() => {
 	// 默认高度
@@ -65,6 +59,14 @@ const computedHeight = computed(() => {
 		height: baseHeight,
 	};
 });
+
+/**
+ * @description 控制收起/展开面板
+ * onToggleAllStates 总控制器
+ * toggleDisplay 子面板控制器
+ * expandedPanels 所有收起状态的子面板索引
+ */
+const { expandedPanels, onToggleAllStates, toggleDisplay } = useExpandPanels();
 </script>
 
 <style lang="scss" scoped>

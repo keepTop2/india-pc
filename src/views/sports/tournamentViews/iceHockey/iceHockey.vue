@@ -1,5 +1,5 @@
 <template>
-	<SelectCard :teamData="listData" />
+	<SelectCard :teamData="listData" :expandedCount="expandedPanels.size" @onToggleAllStates="onToggleAllStates(listData)" />
 	<!-- 联赛数据统计卡片 -->
 	<div class="box-content">
 		<!--
@@ -27,7 +27,7 @@
 						- oddsChange：处理赔率变化时的事件。
 						- toggleDisplay：处理卡片的展开/收起事件。
 					-->
-				<RollingCard :teamData="item" :isExpand="isExpand" :dataIndex="index" @oddsChange="handleOddsChange" @toggleDisplay="handleToggleDisplay" />
+				<RollingCard :teamData="item" :dataIndex="index" :isExpanded="!expandedPanels.has(index)" @oddsChange="handleOddsChange" @toggleDisplay="toggleDisplay" />
 			</template>
 		</VirtualScrollVirtualList>
 	</div>
@@ -40,6 +40,7 @@ import { RollingCard, SelectCard, VirtualScrollVirtualList } from "./components/
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+import useExpandPanels from "/@/views/sports/hooks/useExpandPanels";
 
 // 引入状态管理和事件处理
 const sidebarStore = useSidebarStore();
@@ -78,12 +79,12 @@ const handleOddsChange = ({ marketId, selections }: { marketId: number; selectio
 };
 
 /**
- * @description 处理展开/收起卡片的事件
- * @param {number} [val] - 可选参数，指定要展开或收起的卡片索引
+ * @description 控制收起/展开面板
+ * onToggleAllStates 总控制器
+ * toggleDisplay 子面板控制器
+ * expandedPanels 所有收起状态的子面板索引
  */
-const handleToggleDisplay = (val?: number) => {
-	virtualScrollRef.value?.setlistDataEisExpand(val);
-};
+const { expandedPanels, onToggleAllStates, toggleDisplay } = useExpandPanels();
 </script>
 
 <style lang="scss" scoped>

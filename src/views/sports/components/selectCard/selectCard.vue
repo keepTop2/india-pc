@@ -6,14 +6,14 @@
 			</div>
 		</div>
 		<div class="select_right">
-			<span class="icon"><svg-icon :style="{ transform: `rotate(${isExpand ? 0 : 180}deg)` }" name="sports-arrow_big" size="20px"></svg-icon></span>
+			<span><svg-icon class="icon" :class="{ 'icon-expanded': expandedCount == teamData.length }" name="sports-arrow_big" size="20px"></svg-icon></span>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
 import { useRoute } from "vue-router";
+import { watch } from "vue";
 const route = useRoute(); // 获取当前路由实例
 
 const routeNameMap = new Map([
@@ -25,7 +25,7 @@ const routeNameMap = new Map([
 interface teamDataType {
 	/** 队伍数据 */
 	teamData: any;
-	isExpand: Boolean;
+	expandedCount: number;
 }
 const props = withDefaults(defineProps<teamDataType>(), {
 	/** 队伍数据 */
@@ -33,21 +33,21 @@ const props = withDefaults(defineProps<teamDataType>(), {
 		return {};
 	},
 	// /右侧icon展开收起状态
-	isExpand: Boolean,
+	expandedCount: 0,
 });
-
-watch(
-	() => props.isExpand,
-	() => {
-		console.log(props.isExpand, "右侧icon展开收起状态");
-	}
-);
 
 const emit = defineEmits(["onToggleAllStates"]);
 
 const onToggleAllStates = () => {
 	emit("onToggleAllStates");
 };
+
+watch(
+	() => props.expandedCount,
+	() => {
+		console.log(props.expandedCount, "props.expandedCount");
+	}
+);
 </script>
 
 <style lang="scss" scoped>
@@ -83,6 +83,11 @@ const onToggleAllStates = () => {
 
 		.icon {
 			color: var(--Icon_1);
+			transition: transform 0.3s ease;
+			display: inline-block;
+			&.icon-expanded {
+				transform: rotate(180deg);
+			}
 		}
 	}
 }

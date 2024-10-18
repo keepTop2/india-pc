@@ -1,16 +1,16 @@
 <template>
 	<div class="card-container">
 		<!-- 头部 -->
-		<div class="card-header" :class="{ toggle: !displayContent }" @click="toggleDisplay">
+		<div class="card-header" :class="{ toggle: !isExpanded }" @click="toggleDisplay">
 			<!-- 联赛信息 -->
 			<div class="league-info">
 				<!-- 联赛图标 -->
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="" />
 				<!-- 联赛名称，最大宽度根据展开状态动态调整 -->
-				<div class="league_name" :style="{ maxWidth: displayContent ? '284px' : '' }">{{ teamData.leagueName }}</div>
+				<div class="league_name" :style="{ maxWidth: isExpanded ? '284px' : '' }">{{ teamData.leagueName }}</div>
 			</div>
 			<!-- 盘口表头，只有在展开状态下显示 -->
-			<div class="market-name-info" v-if="displayContent">
+			<div class="market-name-info" v-if="isExpanded">
 				<div class="market-name-list">
 					<!-- 渲染盘口类型列表 -->
 					<div class="label" v-for="(betType, index) in SportsCommonFn.betTypeMap[3]" :key="betType">
@@ -20,14 +20,14 @@
 			</div>
 			<!-- 头部图标，根据展开状态旋转 -->
 			<div class="header-icon">
-				<span class="icon" :class="{ rotate: displayContent }">
+				<span class="icon" :class="{ 'icon-expanded': !isExpanded }">
 					<svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon>
 				</span>
 			</div>
 		</div>
 		<!-- 展开状态下显示事件项 -->
-		<template v-if="displayContent">
-			<EventItem v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
+		<template v-if="isExpanded">
+			<EventItem v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="isExpanded" :dataIndex="props.dataIndex" />
 		</template>
 	</div>
 </template>
@@ -42,10 +42,10 @@ interface teamDataType {
 	/** 队伍数据 */
 	teamData: any;
 	/** 是展开状态？ */
-	isExpand?: boolean;
+	isExpanded?: boolean;
 }
 const props = withDefaults(defineProps<teamDataType>(), {
-	isExpand: true,
+	isExpanded: true,
 	/** 数据索引 */
 	dataIndex: 0,
 	/** 队伍数据 */
@@ -56,33 +56,12 @@ const props = withDefaults(defineProps<teamDataType>(), {
 
 const emit = defineEmits(["toggleDisplay"]);
 
-const displayContent = ref(true);
-
-onMounted(() => {
-	displayContent.value = props.isExpand;
-});
-
-watch(
-	() => props.isExpand,
-	(newValue, oldValue) => {
-		displayContent.value = newValue;
-	},
-	{
-		immediate: true,
-	}
-);
-
 /**
  * @description: 展开折叠处理
  * @return {*}
  */
 const toggleDisplay = () => {
-	displayContent.value = !displayContent.value;
-	const params = {
-		index: props.dataIndex,
-		isExpand: displayContent.value,
-	};
-	emit("toggleDisplay", params);
+	emit("toggleDisplay", props.dataIndex);
 };
 </script>
 
@@ -150,6 +129,11 @@ const toggleDisplay = () => {
 			justify-content: center;
 			.icon {
 				transform: rotate(-90deg);
+				transition: transform 0.3s ease;
+
+				&.icon-expanded {
+					transform: rotate(90deg);
+				}
 			}
 		}
 	}
