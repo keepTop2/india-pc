@@ -70,7 +70,7 @@ const sportTabPushActions = {
 			sportPushApi: SportPushApi.GetSports_push,
 			webToPushApi: WebToPushApi.todayContest,
 			params: {
-				query: `$filter=sportType in (${SportsCommonFn.getRequestSportsType()}) and isLive eq false`,
+				query: `$filter=sportType in (${SportsCommonFn.getRequestSportsType()})`,
 				from: dayjs().startOf("day").toISOString(),
 				until: dayjs().endOf("day").toISOString(),
 			},

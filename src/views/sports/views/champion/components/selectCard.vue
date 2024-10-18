@@ -2,7 +2,7 @@
 	<div class="box_select">
 		<div class="select_left">
 			<div class="title">
-				<span>({{ teamData.length }})</span>
+				<span>{{ routeNameMap.get(route.name) }}({{ teamData.length }})</span>
 			</div>
 		</div>
 		<div class="select_right" @click="handleClick">
@@ -14,6 +14,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from "vue-router";
+const route = useRoute(); // 获取当前路由实例
+const routeNameMap = new Map([["championList", "冠军盘"]]);
+
 interface TeamDataType {
 	/** 队伍数据 */
 	teamData: any[];

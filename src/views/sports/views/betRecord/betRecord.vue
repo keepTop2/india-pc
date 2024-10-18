@@ -20,7 +20,7 @@
 		<div class="bottom" v-if="tableData.length > 0">
 			<div class="info">
 				<span>{{ $t(`sports.betRecord['总计单数']`) }} {{ total }}</span>
-				<!-- <span>{{ $t(`sports.betRecord['总投注额']`) }} 2000.00</span> -->
+				<span>{{ $t(`sports.betRecord['总投注额']`) }} {{ getStakeTotal }}</span>
 			</div>
 			<Pagination v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="total" @sizeChange="sizeChange" />
 		</div>
@@ -41,7 +41,7 @@ import { Pagination } from "/@/components/Pagination";
 import BetRecordApi from "/@/api/sports/betRecord";
 // 体育公用方法
 import SportsCommon from "/@/views/sports/utils/common";
-
+import Common from "/@/utils/common";
 const popularLeague = usePopularLeague();
 /*隐藏热门联赛*/
 popularLeague.hidePopularLeague();
@@ -130,6 +130,12 @@ const tableData = computed(() => {
 	return list.value?.slice(start, end) || [];
 });
 
+// 计算投注总额
+const getStakeTotal = computed(() => {
+	const total = list.value?.reduce((total, cur: { stake: number }) => total + Number(cur.stake), 0) || 0;
+	return Common.formatFloat(total);
+});
+
 /**
  * @description 修改每页展示条数
  * @param {number} pageSize - 每页展示条数
@@ -197,7 +203,7 @@ const sizeChange = (pageSize: number) => {
 		margin-top: 14px;
 		.info {
 			display: flex;
-			gap: 12px;
+			gap: 24px;
 			color: var(--Text1);
 			font-family: "PingFang SC";
 			font-size: 14px;

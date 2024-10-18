@@ -149,7 +149,7 @@ const linkDetail = () => {
 		eventId: props.event.eventId,
 		dataIndex: props.dataIndex,
 	};
-	gotoEventDetail(params, SportTypeEnum.AmericanSoccer);
+	gotoEventDetail(params, SportTypeEnum.IceHockey);
 };
 
 // 获取侧边栏图标

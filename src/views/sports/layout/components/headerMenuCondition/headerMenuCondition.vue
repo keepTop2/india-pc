@@ -191,7 +191,7 @@ const GetPromotions = async () => {
 	};
 	const res = await sportsApi.GetPromotions(params).catch((err) => err);
 	if (res.data) {
-		const list = res.data.events;
+		const list = res.data.events?.filter((item: any) => item.sportType === 1);
 		sportsBetEvent.setHotLeagueList(list);
 	}
 };
