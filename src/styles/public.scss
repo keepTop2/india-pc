@@ -23,6 +23,10 @@
 		justify-content: center;
 		gap: 20px;
 	}
+	.flex-alignCenter {
+		display: flex;
+		align-items: center;
+	}
 	.text_unline {
 		text-decoration: underline;
 	}

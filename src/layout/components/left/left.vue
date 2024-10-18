@@ -132,23 +132,10 @@ onMounted(() => {
 });
 
 const showSpin = () => {
-	if (useUserStore().getLogin) {
-		activityApi.getToSpinActivity().then((res: any) => {
-			if (res.code == Common.ResCode.SUCCESS) {
-				if (res.data.status == Common.ResCode.SUCCESS) {
-					activityApi.getSpindetail().then((res) => {
-						activityStore.setCurrentActivityData(res.data);
-						modalStore.openModal("SPIN_WHEEL");
-					});
-				} else {
-					dialogInfo.value = res.data;
-					showCommonDialog.value = true;
-				}
-			}
-		});
-	} else {
-		showNeedLogin.value = true;
-	}
+	activityApi.getSpindetail().then((res) => {
+		activityStore.setCurrentActivityData(res.data);
+		modalStore.openModal("SPIN_WHEEL");
+	});
 };
 const confirmDialog = () => {
 	showCommonDialog.value = false;
@@ -157,7 +144,7 @@ const showTask = () => {
 	if (useUserStore().getLogin) {
 		modalStore.openModal("TASK");
 	} else {
-		modalStore.openModal("LoginModal");
+		showNeedLogin.value = true;
 	}
 };
 const onSetTheme = (str: ThemeKey) => {

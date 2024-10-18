@@ -74,10 +74,10 @@ const collectGame = (game: gameInfo) => {
 		gameId: game.id,
 		type: !game.collect,
 	};
+	game.collect = !game.collect;
 	HomeApi.collection(params).then((res) => {
 		if (res.code === Common.ResCode.SUCCESS) {
-			showToast(game.collect ? "取消收藏成功" : "收藏成功");
-			game.collect = !game.collect;
+			showToast(!game.collect ? "取消收藏成功" : "收藏成功");
 		}
 	});
 };

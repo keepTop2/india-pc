@@ -18,7 +18,7 @@ export const HomeApi = {
 		});
 	},
 	// 收藏游戏
-	collection: (data = {}, headers = {}) => {
+	collection: (data = {}, headers = { showLoading: false }) => {
 		return useAxiosApi(`/app/game/api/collection`, {
 			method: "POST",
 			data,

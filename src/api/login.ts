@@ -65,4 +65,13 @@ export const loginApi = {
 			headers,
 		});
 	},
+	getAgreement: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/login/api/getAgreement`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: false,
+			},
+		});
+	},
 };

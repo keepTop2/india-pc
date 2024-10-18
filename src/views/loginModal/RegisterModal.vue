@@ -236,10 +236,7 @@ const handleSelect = (option: any) => {
 const toHelpCenter = () => {
 	UserStore.setRegisterModalInfo(payLoad);
 	router.push({
-		path: "/helpCenter",
-		query: {
-			type: "userAgreement",
-		},
+		path: "/userAgreement",
 	});
 	modalStore.closeModal();
 };

@@ -12,6 +12,7 @@ declare module 'vue' {
     Button: typeof import('./src/components/Button/Button.vue')['default']
     CalendarPicker: typeof import('./src/components/CalendarPicker.vue')['default']
     CententItem: typeof import('./src/components/virtualScrollVirtualList/cententItem/cententItem.vue')['default']
+    ClickTooltip: typeof import('./src/components/ClickTooltip.vue')['default']
     Collapse: typeof import('./src/components/Collapse/index.vue')['default']
     CollapseItem: typeof import('./src/components/Collapse/CollapseItem.vue')['default']
     CollapseTransition: typeof import('./src/components/Collapse/CollapseTransition.vue')['default']

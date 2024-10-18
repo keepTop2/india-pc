@@ -16,6 +16,7 @@
 						@start-spinning-callback="spinStart"
 						@end-spinning-callback="spinEnd"
 						@handleNoMoreBet="handleNoMoreBet"
+						@handleNeedLogin="handleNeedLogin"
 						:reward="reward"
 						:spinList="currentTab == '1' ? activityData?.bronze : currentTab == '2' ? activityData?.silver : activityData?.gold"
 						:balanceCount="activityData?.balanceCount"
@@ -53,7 +54,7 @@
 		<CommonDialog v-model="showRecord">
 			<div class="dialogCenter">
 				<div class="dialogHeader">抽奖记录</div>
-				<div class="dialogTable">
+				<div class="dialogTable" v-if="recordList.length > 0">
 					<LazyLoadList :loadMore="getRecordList" :finished="recordFinished" :loading="recordIsLoading">
 						<div class="dialogTableBody">
 							<div class="dialogTableHeader">
@@ -71,6 +72,7 @@
 						</div>
 					</LazyLoadList>
 				</div>
+				<div v-else class="nodata"><noneData></noneData></div>
 			</div>
 			<div class="closeRecord" @click="showRecord = false">
 				<img src="../../activityType/image/close.png" alt="" />
@@ -120,6 +122,10 @@
 				<img src="../../activityType/image/close.png" alt="" />
 			</div>
 		</CommonDialog>
+		<!-- 抽奖次数不足 -->
+		<activityDialog v-model="showNeedLogin" title="温馨提示" :nofooter="false">
+			<div>您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册</div>
+		</activityDialog>
 	</div>
 </template>
 
@@ -128,6 +134,7 @@ import { activityApi } from "/@/api/activity";
 import { useActivityStore } from "/@/stores/modules/activity";
 import { computed } from "vue";
 import Common from "/@/utils/common";
+import activityDialog from "../../components/activityDialog.vue";
 import { ref, onMounted } from "vue";
 import Spin from "./spin.vue";
 import { useModalStore } from "/@/stores/modules/modalStore";
@@ -139,6 +146,7 @@ const showRecord = ref(false);
 const showbetResult = ref(false);
 const showNoMoreBet = ref(false);
 const showLosserbetResult = ref(false);
+const showNeedLogin = ref(false);
 const recordFinished = ref(false);
 const recordIsLoading = ref(false);
 const SpinRef: any = ref(null);
@@ -204,6 +212,9 @@ const handleStartSpin = () => {
 const handleRecord = async () => {
 	await getRecordList();
 	showRecord.value = true;
+};
+const handleNeedLogin = () => {
+	showNeedLogin.value = true;
 };
 const getRecordList = () => {
 	activityApi.querySpinWheelOrderRecord().then((res) => {
@@ -355,6 +366,9 @@ onMounted(() => {
 		position: relative;
 		padding-top: 20px;
 		overflow: hidden;
+		.nodata {
+			margin-top: 150px;
+		}
 		.dialogHeader {
 			width: 330px;
 			height: 64px;
