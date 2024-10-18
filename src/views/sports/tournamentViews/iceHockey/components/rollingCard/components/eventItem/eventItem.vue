@@ -107,28 +107,6 @@ const isLive = computed(() => {
 	return [1, 2, 3, 4, 99].includes(props.event.gameInfo.livePeriod) && !props.event.gameInfo.delayLive && !props.event.gameInfo.isHt;
 });
 
-// 计算属性：工具图标
-const tools = computed(() => {
-	const baseTools = [
-		{
-			iconName: "sports-score_icon",
-			iconName_active: "sports-score_icon_active",
-			tooltipText: "比分板",
-			action: () => toggleEventScoreboard(props.event),
-		},
-	];
-
-	if (props.event.streamingOption != 0 && props.event.channelCode) {
-		baseTools.push({
-			iconName: "sports-live_icon",
-			iconName_active: "sports-live_icon_active",
-			tooltipText: "视频源",
-			action: () => toggleEventScoreboard(props.event, true),
-		});
-	}
-	return baseTools;
-});
-
 // 计算属性：关注状态
 const isAttention = computed(() => {
 	return SportAttentionStore.attentionEventIdList.includes(props.event.eventId);
@@ -170,9 +148,39 @@ const getIconName = (tool: any, events: any, index: number) => {
 	return index === activeIndex ? tool.iconName : tool.iconName_active;
 };
 
+/**
+ * @description  计算工具图标的显示状态
+ */
+const tools = computed(() => {
+	const baseTools = [];
+	// 判断 是否在未开赛页面
+	baseTools.push({
+		iconName: "sports-score_icon",
+		iconName_active: "sports-score_icon_active",
+		tooltipText: "比分板",
+		name: "scoreboard",
+		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
+		param: props.event, // 传递参数
+	});
+	// 判断是否有视频源
+	if (props.event.streamingOption != 0 && props.event.channelCode) {
+		baseTools.push({
+			iconName: "sports-live_icon",
+			iconName_active: "sports-live_icon_active",
+			tooltipText: "视频源",
+			name: "live",
+			action: (event: any) => toggleEventScoreboard(event, true),
+			param: props.event, // 传递参数
+		});
+	}
+	return baseTools;
+});
+
 // 点击对应工具
 const handleClick = (tool: any) => {
-	tool.action();
+	toggleEventScoreboard(props?.event);
+	tool.action(tool.param); // 执行对应工具的动作
+	SidebarStore.getSidebarStatus(tool.name);
 };
 
 // 赔率变更事件

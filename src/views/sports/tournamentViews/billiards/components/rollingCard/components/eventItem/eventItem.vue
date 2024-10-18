@@ -134,7 +134,6 @@ const formattedGameTime = computed(() => {
 	const seconds = props.event.gameInfo.seconds % 60;
 	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 });
-
 /**
  * @description  计算工具图标的显示状态
  */
@@ -145,6 +144,7 @@ const tools = computed(() => {
 		iconName: "sports-score_icon",
 		iconName_active: "sports-score_icon_active",
 		tooltipText: "比分板",
+		name: "scoreboard",
 		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
 		param: props.event, // 传递参数
 	});
@@ -154,6 +154,7 @@ const tools = computed(() => {
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
+			name: "live",
 			action: (event: any) => toggleEventScoreboard(event, true),
 			param: props.event, // 传递参数
 		});
@@ -163,7 +164,9 @@ const tools = computed(() => {
 
 // 点击对应工具
 const handleClick = (tool: any) => {
-	tool.action(tool.param);
+	toggleEventScoreboard(props?.event);
+	tool.action(tool.param); // 执行对应工具的动作
+	SidebarStore.getSidebarStatus(tool.name);
 };
 
 const isAttention = computed(() => {

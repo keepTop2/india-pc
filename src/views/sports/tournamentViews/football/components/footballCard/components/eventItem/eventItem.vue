@@ -87,7 +87,9 @@ const oddsChange = (obj: any) => {
 
 // 点击对应工具的处理逻辑
 const handleClick = (tool: any) => {
+	toggleEventScoreboard(props?.event);
 	tool.action(tool.param); // 执行对应工具的动作
+	SidebarStore.getSidebarStatus(tool.name);
 };
 
 // 计算工具图标的显示状态
@@ -97,6 +99,7 @@ const tools = computed(() => {
 			iconName: "sports-score_icon", // 默认图标名称
 			iconName_active: "sports-score_icon_active", // 激活状态的图标名称
 			tooltipText: "比分板", // 工具提示文本
+			name: "scoreboard",
 			action: (event: any) => toggleEventScoreboard(event), // 点击时执行的动作
 			param: props.event, // 传递的参数
 		},
@@ -108,7 +111,15 @@ const tools = computed(() => {
 			iconName: "sports-live_icon",
 			iconName_active: "sports-live_icon_active",
 			tooltipText: "视频源",
-			action: (event: any) => toggleEventScoreboard(event, true), // 点击时执行的动作
+			name: "live",
+			action: (event: any) =>
+				toggleEventScoreboard(
+					{
+						...event,
+						callback: () => {},
+					},
+					true
+				), // 点击时执行的动作
 			param: props.event, // 传递的参数
 		});
 	}

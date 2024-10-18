@@ -24,7 +24,9 @@
 							<div class="icon">
 								<img :src="eventsInfo?.teamInfo?.homeIconUrl" alt="" />
 							</div>
-							<div class="name">{{ eventsInfo?.teamInfo?.homeName }}</div>
+							<div class="name">
+								<span v-ok-tooltip>{{ eventsInfo?.teamInfo?.homeName }}</span>
+							</div>
 						</div>
 						<div class="value">
 							<template v-for="(score, index) in homeScores" :key="index">
@@ -51,7 +53,9 @@
 							<div class="icon">
 								<img :src="eventsInfo?.teamInfo?.awayIconUrl" alt="" />
 							</div>
-							<div class="name">{{ eventsInfo?.teamInfo?.awayName }}</div>
+							<div class="name">
+								<span v-ok-tooltip>{{ eventsInfo?.teamInfo?.awayName }}</span>
+							</div>
 						</div>
 						<div class="value">
 							<template v-for="(score, index) in awayScores" :key="index">
@@ -196,6 +200,7 @@ const compareSets = (scores: number[], opponentScores: number[], setIndex: numbe
 				width: 100%;
 				height: 50px;
 				.label {
+					overflow: hidden;
 					.icon {
 						width: 20px;
 						height: 20px;
@@ -207,7 +212,8 @@ const compareSets = (scores: number[], opponentScores: number[], setIndex: numbe
 							height: 100%;
 						}
 					}
-					.name {
+					.name,
+					:deep(.name) {
 						flex: 1;
 						color: var(--Text1);
 						font-family: "PingFang SC";
@@ -216,6 +222,7 @@ const compareSets = (scores: number[], opponentScores: number[], setIndex: numbe
 						white-space: nowrap; /* 强制文本在一行显示 */
 						overflow: hidden; /* 隐藏超出容器的文本 */
 						text-overflow: ellipsis; /* 使用省略号来表示被截断的文本 */
+						cursor: pointer;
 					}
 				}
 				.num {

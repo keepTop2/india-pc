@@ -7,7 +7,9 @@
 					<div class="scoreboard-info">
 						<div class="home-team-info">
 							<div class="left">
-								<div class="home-team-name">{{ eventsInfo?.teamInfo?.homeName }}</div>
+								<div class="home-team-name">
+									<span>{{ eventsInfo?.teamInfo?.homeName }}</span>
+								</div>
 							</div>
 							<div class="home-team-icon"><img :src="eventsInfo?.teamInfo?.homeIconUrl" alt="" /></div>
 						</div>
@@ -18,7 +20,9 @@
 						</div>
 						<div class="away-team-info">
 							<div class="away-team-icon"><img :src="eventsInfo?.teamInfo?.awayIconUrl" alt="" /></div>
-							<div class="away-team-name">{{ eventsInfo?.teamInfo?.awayName }}</div>
+							<div class="away-team-name">
+								<span>{{ eventsInfo?.teamInfo?.awayName }}</span>
+							</div>
 						</div>
 						<div class="events-status">{{ $t(`sports['比赛中']`) }}</div>
 					</div>
