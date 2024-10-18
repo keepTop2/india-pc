@@ -3,7 +3,7 @@
 		<AuthHintDialog />
 		<div class="btns">
 			<!-- 删除按钮 -->
-			<DeleteButton v-if="ChampionShopCartStore.championBetData.length > 1" />
+			<DeleteButton v-if="ChampionShopCartStore.championBetData.length > 1" @onClick="clearChampionShopCart" />
 			<!-- 冠军投注按钮 -->
 			<ChampionBetButton v-if="ChampionShopCartStore.championBetData.length >= 1 && ChampionShopCartStore.championBetData[0].type === '1'" @onClick="onChampionBet" />
 			<!-- 赛事投注按钮 -->
@@ -123,6 +123,13 @@ const placeOutrightBet = async () => {
 		const result = res.data;
 		emit("singleTicketSuccess", result);
 	}
+};
+
+/**
+ * @description 清空冠军购物车
+ */
+const clearChampionShopCart = () => {
+	ChampionShopCartStore.clearChampionShopCart();
 };
 </script>
 

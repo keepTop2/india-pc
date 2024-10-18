@@ -7,16 +7,7 @@
 			<span>{{ $t(`matchResult['体育']`) }}</span>
 			<Select :options="ballOptions" v-model="modelValue.ballType" />
 			<span>{{ $t(`matchResult['日期']`) }}</span>
-			<el-dropdown
-				ref="selectRef"
-				trigger="click"
-				:teleported="false"
-				placement="bottom-end"
-				:hide-on-click="false"
-				popper-class="popperClass"
-				@visible-change="visibleChange"
-				@command="onCommand"
-			>
+			<el-dropdown ref="selectRef" trigger="click" :teleported="false" placement="bottom-end" popper-class="popperClass" @visible-change="visibleChange" @command="onCommand">
 				<div class="el-dropdown-content">
 					<span>{{ startDate }} - {{ endDate }}</span>
 					<svg-icon class="searchIcon" name="arrow_down" size="14" />
@@ -305,7 +296,7 @@ const formatDate = (date: any) => {
 	}
 
 	.select-date {
-		width: 98px;
+		width: 110px;
 		height: 30px;
 	}
 
