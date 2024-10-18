@@ -86,6 +86,8 @@ const examineEventsStatus = computed(() => {
  */
 const opacityFn = () => {
 	const item = props.shopData.event;
+	console.log(item, "opacityFn");
+
 	// 判断赛事状态 与 盘口状态
 	if (item.oddsStatus !== "running" || ChampionShopCartStore.championBetData.length > 1) {
 		return 0.4;

@@ -11,14 +11,7 @@
 				<!-- 导航项容器，支持水平滚动 -->
 				<div class="nva-item-container" ref="nvaItemContainer" @scroll="handleScroll">
 					<!-- 遍历体育数据，动态生成导航项 -->
-					<div
-						v-for="(item, index) in sportsData"
-						v-show="item.count && item.count > 0"
-						:key="index"
-						class="nva-item"
-						:class="{ active: Number(sportType) == item.sportType }"
-						@click="toPath(item)"
-					>
+					<div v-for="(item, index) in sportsData" :key="index" class="nva-item" :class="{ active: Number(sportType) == item.sportType }" @click="toPath(item)">
 						<svg-icon class="icon" :name="`sports-sidebar-${item.icon}`" size="25px" alt="" />
 						<span class="value title">{{ item.sportName }}</span>
 						<div class="value count">{{ item.count }}</div>
@@ -63,7 +56,7 @@ const props = defineProps<{
 
 // 获取球类tab数据
 const sportsData = computed(() => {
-	return viewSportPubSubEventData.viewSportData.sports;
+	return viewSportPubSubEventData.viewSportData.sports.filter((item: any) => item.count > 0);
 });
 
 const rightContainer = ref<HTMLElement | null>(null); // 右侧容器的引用

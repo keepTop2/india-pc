@@ -15,7 +15,9 @@
 				<div class="row cell">
 					<div class="label">
 						<div class="icon"><img :src="eventsInfo?.teamInfo?.homeIconUrl" alt="" /></div>
-						<div class="name">{{ eventsInfo?.teamInfo?.homeName }}</div>
+						<div class="name">
+							<span v-ok-tooltip>{{ eventsInfo?.teamInfo?.homeName }}</span>
+						</div>
 					</div>
 					<div class="value">
 						<div class="num">{{ eventsInfo?.soccerInfo?.homeRedCard }}</div>
@@ -29,7 +31,9 @@
 				<div class="row cell">
 					<div class="label">
 						<div class="icon"><img :src="eventsInfo?.teamInfo?.awayIconUrl" alt="" /></div>
-						<div class="name">{{ eventsInfo?.teamInfo?.awayName }}</div>
+						<div class="name">
+							<span v-ok-tooltip>{{ eventsInfo?.teamInfo?.awayName }}</span>
+						</div>
 					</div>
 					<div class="value">
 						<div class="num">{{ eventsInfo?.soccerInfo?.awayRedCard }}</div>
@@ -90,6 +94,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
 const { getEventsTitle } = SportsCommonFn;
@@ -99,6 +104,14 @@ const props = withDefaults(
 		eventsInfo: SportsRootObject;
 	}>(),
 	{}
+);
+
+watch(
+	() => props.eventsInfo,
+	(value) => {
+		console.log(value, "侧边栏数据更新了");
+	},
+	{ deep: true }
 );
 </script>
 
@@ -142,6 +155,7 @@ const props = withDefaults(
 				width: 100%;
 				height: 50px;
 				.label {
+					overflow: hidden;
 					.icon {
 						width: 20px;
 						height: 20px;
@@ -153,11 +167,17 @@ const props = withDefaults(
 							height: 100%;
 						}
 					}
-					.name {
-						color: var(--Text_s);
+					.name,
+					:deep(.name) {
+						flex: 1;
+						color: var(--Text1);
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 400;
+						white-space: nowrap; /* 强制文本在一行显示 */
+						overflow: hidden; /* 隐藏超出容器的文本 */
+						text-overflow: ellipsis; /* 使用省略号来表示被截断的文本 */
+						cursor: pointer;
 					}
 				}
 				.num {

@@ -535,6 +535,9 @@ const handleChangeTV = () => {
 			.events-container {
 				width: 100%;
 				height: 100%;
+				.scoreboard-container .small .scoreboard-center .cell .label {
+					overflow: hidden;
+				}
 			}
 
 			.events-live {

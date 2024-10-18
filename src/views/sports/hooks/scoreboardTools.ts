@@ -42,7 +42,8 @@ export function useToolsHooks() {
 				switchEventVideoSource(eventInfo);
 			} else {
 				console.log("???");
-
+				// 清除直播地址信息
+				SidebarStore.clearLiveUrl();
 				SidebarStore.getSidebarStatus("scoreboard");
 			}
 		}
@@ -75,12 +76,12 @@ export function useToolsHooks() {
 			if (res.status == 200) {
 				// 设置直播数据
 				SidebarStore.setLiveUrl(res.data);
-				eventInfo.callback(false);
+				eventInfo?.callback(false);
 			} else {
-				eventInfo.callback(new Error("直播视频请求失败！"));
+				eventInfo?.callback(new Error("直播视频请求失败！"));
 			}
 		} catch (error) {
-			eventInfo.callback(new Error("直播视频请求失败！"));
+			eventInfo?.callback(new Error("直播视频请求失败！"));
 		}
 		// }
 	};
