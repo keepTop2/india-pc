@@ -25,7 +25,7 @@
 					<!-- 塞节时间 -->
 					<div class="date">
 						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
-						<span v-if="isGameOngoing">{{ formattedGameTime }}</span>
+						<!-- <span v-if="isGameOngoing">{{ formattedGameTime }}</span> -->
 					</div>
 					<div class="info-list">
 						<!-- 收藏 -->
