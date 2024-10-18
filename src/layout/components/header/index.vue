@@ -97,9 +97,9 @@ const goToPath = (route: any) => {
 	} else if (route.name === "vip") {
 		modalStore.openModal("vip");
 	} else {
-		isOpenMenu.value = false;
 		router.push({ name: route.name });
 	}
+	isOpenMenu.value = false;
 };
 const logOut = () => {
 	UserStore.logOut();

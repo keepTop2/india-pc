@@ -35,7 +35,18 @@ const routes = [
 				meta: {
 					title: "user",
 				},
-				children: [...userRoutes],
+				children: [
+					...userRoutes,
+					{
+						path: "vipBenefits",
+						name: "vipBenefits",
+						component: () => import("/@/views/user/vip/vipBenefits/index.vue"),
+						meta: {
+							title: "vipBenefits",
+							showFooter: true,
+						},
+					},
+				],
 			},
 			{
 				path: "/activity",
@@ -83,6 +94,14 @@ const routes = [
 				meta: {
 					title: "helpCenter",
 					idx: 1,
+				},
+			},
+			{
+				path: "/userAgreement",
+				name: "userAgreement",
+				component: () => import("/@/views/userAgreement/index.vue"),
+				meta: {
+					title: "userAgreement",
 				},
 			},
 			{
