@@ -2,7 +2,8 @@
 	<div v-if="modelValue" class="dialog-backdrop" :style="{ zIndex: currentZIndex }">
 		<div class="dialog fade-in">
 			<div class="dialog-header">
-				<img src="./image/header.png" alt="" />
+				<img src="./image/taskHeader.png" alt="" v-if="type === 'task'" />
+				<img src="./image/header.png" alt="" v-else />
 				<div class="Text3 fs_16">{{ title }}</div>
 			</div>
 			<div class="dialog-content fs_14">
@@ -19,7 +20,7 @@
 				<button class="common_btn" @click="goToLogin">去登陆</button>
 			</div>
 		</div>
-		<div class="closeDialog" @click="close">
+		<div class="closeDialog" @click="close" v-if="closeIcon">
 			<img src="../activityType/image/close.png" alt="" />
 		</div>
 	</div>
@@ -37,7 +38,15 @@ const props = defineProps({
 		type: String,
 		default: "",
 	},
+	type: {
+		type: String,
+		default: "",
+	},
 	nofooter: {
+		type: Boolean,
+		default: true,
+	},
+	closeIcon: {
 		type: Boolean,
 		default: true,
 	},
@@ -93,7 +102,8 @@ const goToLogin = () => {
 			background-size: 100% 100%;
 			font-weight: 500;
 			img {
-				height: 124px;
+				width: 146px;
+				height: 116px;
 				margin-top: -46px;
 			}
 		}
