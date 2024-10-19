@@ -26,7 +26,7 @@
 					<div class="date">
 						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
 						<!-- 未开始的比赛才显示格式化时间 -->
-						<span v-if="!SportsCommonFn.isStartMatch(event.globalShowTime)">{{ formattedGameTime }}</span>
+						<!-- <span v-if="!SportsCommonFn.isStartMatch(event.globalShowTime)">{{ formattedGameTime }}</span> -->
 					</div>
 					<div class="info-list">
 						<!-- 收藏按钮，点击切换收藏状态 -->

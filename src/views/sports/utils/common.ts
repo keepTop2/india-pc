@@ -196,8 +196,6 @@ class SportsCommonFn {
 
 	// 动态匹配球类头部信息
 	public static getEventsTitle = (event: any) => {
-		console.log(event, "动态匹配球类头部信息");
-
 		const numMap = new Map([
 			[1, "一"],
 			[2, "二"],
