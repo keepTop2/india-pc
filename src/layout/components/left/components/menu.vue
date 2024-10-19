@@ -67,7 +67,7 @@ const setOpenMenu = () => {
 	// 活动高亮
 	if (route.name === "activity") return (openMenuIndex.value = "activity");
 	// 体育高亮
-	if (route.fullPath.indexOf("/sports") !== -1) return (openMenuIndex.value = routerObj.value.findIndex((item: any) => item.modelCode == "PE"));
+	if (route.fullPath.indexOf("/sports") !== -1) return (openMenuIndex.value = routerObj.value.findIndex((item: any) => item.modelCode == "SBA"));
 	// 其他二级菜单
 	openMenuIndex.value = routerObj.value.findIndex((item: any) => item.gameOneClassId == route.query.gameOneId);
 	if (openMenuIndex.value !== -1) {
@@ -103,7 +103,7 @@ const selectMenu = (item: any, index: number) => {
 		openMenuIndex.value = index;
 		router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: 0 } });
 	} else {
-		if (item.modelCode == "PE") {
+		if (item.modelCode == "SBA") {
 			openMenuIndex.value = index;
 			router.push("/sports");
 		} else if (item.modelCode == "LT") {
