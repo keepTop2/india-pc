@@ -115,7 +115,7 @@ const refresh = reactive({
 // 获取到的数据
 const eventsInfo = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
-	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData;
+	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData || [];
 
 	if (route.meta.name === "champion" && promotionsViewData.length) {
 		return promotionsViewData[0];
@@ -228,11 +228,10 @@ const computedTools = computed(() => {
 						 */
 						callback: (status: string | Error) => {
 							if (typeof status === "boolean") {
-								tvState.isSuccess = status;
+								tvState.isSuccess = true;
 							} else {
 								tvState.isSuccess = false;
 							}
-							tvState.videoLoading = false;
 						},
 					},
 					true
