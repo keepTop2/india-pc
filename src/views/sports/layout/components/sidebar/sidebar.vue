@@ -49,7 +49,7 @@
 			<!-- 直播 -->
 			<div class="live-box" v-ok-loading="tvState.videoLoading" v-show="eventsInfo && SidebarStore.sidebarStatus === 'live' && tvState.isOpen">
 				<div ref="videoContainer" class="video-js"></div>
-				<svg-icon class="request-failed-svg" v-if="!tvState.isSuccess" name="sports-request_failed"></svg-icon>
+				<svg-icon class="request-failed-svg" v-if="!Object.keys(getLiveUrl).length" name="sports-request_failed"></svg-icon>
 				<!-- 真人赛事比赛 -->
 				<div v-show="iframeLoaded" class="live">
 					<iframe
@@ -260,8 +260,8 @@ const getIconName = (tool: any, index: number) => {
 };
 
 // 当iframe加载完成时，设置iframeLoaded为true
-const onIframeLoad = () => {
-	console.log("onIframeLoad", "加载完成");
+const onIframeLoad = (a, b) => {
+	console.log(a, b, "加载完成");
 	if (videoSrc.value) {
 		iframeLoaded.value = true;
 	}
