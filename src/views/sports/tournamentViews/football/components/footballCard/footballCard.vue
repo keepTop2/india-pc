@@ -5,11 +5,11 @@
 			<!-- 联赛信息 -->
 			<div class="league-info">
 				<img class="league_icon" :src="teamData.leagueIconUrl" alt="League Icon" />
-				<div class="league_name" :style="displayContent ? 'max-width:284px' : ''">{{ teamData.leagueName }}</div>
+				<div class="league_name" :style="isExpanded ? 'max-width:284px' : ''">{{ teamData.leagueName }}</div>
 			</div>
 			<!-- 盘口表头 -->
-			<template v-if="allStatus">
-				<div class="market-name-info" v-if="displayContent">
+			<template v-if="isExpanded">
+				<div class="market-name-info">
 					<div class="market-name-list">
 						<!-- 遍历盘口类型 -->
 						<div class="label" v-for="betType in SportsCommonFn.betTypeMap[1]" :key="betType">{{ betType }}</div>
@@ -19,14 +19,12 @@
 
 			<!-- 展开/收起图标 -->
 			<div class="header-icon">
-				<span class="icon" :class="{ rotate: !displayContent }"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
+				<span class="icon" :class="{ 'icon-expanded': !isExpanded }"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
 			</div>
 		</div>
 		<!-- 显示事件项 -->
-		<template v-if="allStatus">
-			<template v-if="displayContent">
-				<EventItem v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="displayContent" :dataIndex="props.dataIndex" />
-			</template>
+		<template v-if="isExpanded">
+			<EventItem v-for="(event, index) in teamData.events" :key="index" :event="event" :displayContent="isExpanded" :dataIndex="props.dataIndex" />
 		</template>
 	</div>
 </template>
@@ -46,18 +44,15 @@ interface teamDataType {
 	dataIndex: number;
 	/** 队伍数据 */
 	teamData: any;
-	allStatus: boolean;
+	isExpanded: boolean;
 }
 
 // 定义组件属性，使用默认值
 const props = withDefaults(defineProps<teamDataType>(), {
 	dataIndex: 0,
 	teamData: () => ({}),
-	allStatus: true,
+	isExpanded: true,
 });
-
-// 控制内容显示状态
-const displayContent = ref(true);
 
 // 触发自定义事件
 const emit = defineEmits(["toggleDisplay"]);
@@ -66,7 +61,7 @@ const emit = defineEmits(["toggleDisplay"]);
  * @description: 切换展开/收起状态
  */
 const toggleDisplay = () => {
-	displayContent.value = !displayContent.value; // 切换显示状态
+	emit("toggleDisplay", props.dataIndex);
 };
 
 // 计算队伍所有事件的 ID
@@ -162,9 +157,11 @@ defineExpose({
 			justify-content: center;
 			.icon {
 				transform: rotate(-90deg);
-			}
-			.rotate {
-				transform: rotate(90deg);
+				transition: transform 0.3s ease;
+
+				&.icon-expanded {
+					transform: rotate(90deg);
+				}
 			}
 		}
 	}

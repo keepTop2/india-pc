@@ -100,7 +100,7 @@ async function getBetDetails() {
 	// 使用 then 和 catch 处理异步请求
 	BetRecordApi.GetBetDetails(requestParams).then((res) => {
 		if (res.data) {
-			list.value = res.data; // 注单记录
+			list.value = res.data?.sort((a, b) => dayjs(b.transTime).valueOf() - dayjs(a.transTime).valueOf()); // 注单记录
 			total.value = list.value.length; // 注单条数
 			params.pageNumber = 1; // 重置页码
 		}

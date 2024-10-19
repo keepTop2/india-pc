@@ -1,15 +1,6 @@
 <template>
 	<div class="select-date">
-		<el-dropdown
-			ref="selectRef"
-			trigger="click"
-			:teleported="false"
-			:placement="'bottom-end'"
-			:hide-on-click="false"
-			:popper-class="'popperClass'"
-			@visible-change="visibleChange"
-			@command="onCommand"
-		>
+		<el-dropdown ref="selectRef" trigger="click" :teleported="false" :placement="'bottom-end'" :popper-class="'popperClass'" @visible-change="visibleChange" @command="onCommand">
 			<div class="el-dropdown-content">
 				<span class="content"><slot name="prefix"></slot>{{ selectDateLabel }}</span>
 				<svg-icon class="icon" name="arrow_down" size="12" />

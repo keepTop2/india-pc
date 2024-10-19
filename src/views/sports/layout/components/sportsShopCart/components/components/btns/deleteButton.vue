@@ -17,6 +17,7 @@ const emit = defineEmits<{
 // 关闭弹窗
 const onClickClear = () => {
 	sportsBetEvent.clearShopCart();
+	emit("onClick");
 };
 </script>
 

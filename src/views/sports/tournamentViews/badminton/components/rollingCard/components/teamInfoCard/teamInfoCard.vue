@@ -68,12 +68,14 @@ const linkDetail = () => {
 	display: flex;
 	align-items: center;
 	padding: 8px 10px 8px 24px;
+	overflow: hidden;
 	.league-team-info {
 		flex: 1;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
+		overflow: hidden;
 		.team {
 			display: flex;
 			align-items: center;
