@@ -94,7 +94,6 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
 const { getEventsTitle } = SportsCommonFn;
@@ -104,14 +103,6 @@ const props = withDefaults(
 		eventsInfo: SportsRootObject;
 	}>(),
 	{}
-);
-
-watch(
-	() => props.eventsInfo,
-	(value) => {
-		console.log(value, "侧边栏数据更新了");
-	},
-	{ deep: true }
 );
 </script>
 
