@@ -44,6 +44,12 @@
 					</div>
 					<!-- 总分 -->
 					<div class="total-score"></div>
+					<!-- 出局 -->
+					<div class="current-outs">
+						<span
+							>出局：<span class="theme">{{ event.baseballInfo.currentOuts }}</span></span
+						>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -310,7 +316,8 @@ const linkDetail = () => {
 						color: var(--Theme);
 					}
 				}
-				.total-score {
+				.total-score,
+				.current-outs {
 					display: flex;
 					align-items: center;
 					gap: 6px;

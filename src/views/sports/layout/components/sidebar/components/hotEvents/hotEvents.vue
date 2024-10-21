@@ -162,8 +162,6 @@ const championMarketsSelect = computed(() => ChampionShopCartStore.getEventInfo)
  * @returns 是否高亮
  */
 const isBright = (market: { marketId: any; eventId: string }, selection: { key: any }) => {
-	console.log(sportsBetEvent.getEventInfo, market, selection, "marketsSelect.value===");
-
 	if (route.meta.name !== "champion") {
 		return marketsSelect.value[market.eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
 	} else {

@@ -49,7 +49,7 @@
 			<!-- 直播 -->
 			<div class="live-box" v-ok-loading="tvState.videoLoading" v-show="eventsInfo && SidebarStore.sidebarStatus === 'live' && tvState.isOpen">
 				<div ref="videoContainer" class="video-js"></div>
-				<svg-icon class="request-failed-svg" v-if="!tvState.isSuccess" name="sports-request_failed"></svg-icon>
+				<svg-icon class="request-failed-svg" v-if="!Object.keys(getLiveUrl).length" name="sports-request_failed"></svg-icon>
 				<!-- 真人赛事比赛 -->
 				<div v-show="iframeLoaded" class="live">
 					<iframe
@@ -115,7 +115,7 @@ const refresh = reactive({
 // 获取到的数据
 const eventsInfo = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
-	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData;
+	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData || [];
 
 	if (route.meta.name === "champion" && promotionsViewData.length) {
 		return promotionsViewData[0];
@@ -228,11 +228,10 @@ const computedTools = computed(() => {
 						 */
 						callback: (status: string | Error) => {
 							if (typeof status === "boolean") {
-								tvState.isSuccess = status;
+								tvState.isSuccess = true;
 							} else {
 								tvState.isSuccess = false;
 							}
-							tvState.videoLoading = false;
 						},
 					},
 					true
@@ -261,8 +260,8 @@ const getIconName = (tool: any, index: number) => {
 };
 
 // 当iframe加载完成时，设置iframeLoaded为true
-const onIframeLoad = () => {
-	console.log("onIframeLoad", "加载完成");
+const onIframeLoad = (a, b) => {
+	console.log(a, b, "加载完成");
 	if (videoSrc.value) {
 		iframeLoaded.value = true;
 	}
