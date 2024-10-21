@@ -3,7 +3,7 @@
 		<div class="header pr_24" @click="handleClick" :class="isOpen ? 'isOpen' : ''">
 			<div>
 				<img :src="getRankTextIcon(panel?.vipRankCode)" alt="" />
-				<span>{{ title }}</span>
+				<span>{{ title }} {{ panel?.minVipGradeName }} - {{ panel?.maxVipGradeName }}</span>
 			</div>
 			<svg-icon :name="!isOpen ? 'arrow_down' : 'arrow_up'" size="20px" />
 		</div>
@@ -13,10 +13,10 @@
 				<div>所需经验</div>
 				<div>升级奖金</div>
 			</div>
-			<div v-for="item in panel.siteVIPGradeVOList" class="cell">
-				<div class="flex-center">
-					<img :src="getVipRankImg(panel?.vipRankCode)" alt="" class="mr_3" />
-					VIP {{ item?.vipGradeCode }}
+			<div v-for="item in panel?.siteVIPGradeVOList" class="cell">
+				<div class="flex-center fs_16">
+					<img :src="getVipRankImg(panel?.vipRankCode)" alt="" class="mr_5" />
+					{{ item?.vipGradeName }}
 				</div>
 				<div>
 					{{ item?.upgradeXp }}

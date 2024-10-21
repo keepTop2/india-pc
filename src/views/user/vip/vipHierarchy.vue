@@ -10,7 +10,7 @@
 			<CollapsePanel
 				v-for="(panel, index) in vipInfo.siteVIPSystemRankVOList?.filter((item:any) => item.vipRankCode !== 0)"
 				:key="index"
-				:title="panel.vipRankNameI18nCode + ' VIP ' + panel.minVipGrade + '-' + panel.maxVipGrade"
+				:title="panel.vipRankNameI18nCode"
 				:isOpen="activePanelIndex === index"
 				@toggle="setActivePanel(index)"
 				:panel="panel"

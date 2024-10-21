@@ -7,6 +7,7 @@
 					<img src="../image/lock.png" alt="" />
 				</div>
 			</div>
+
 			<div class="pr_10">
 				<div class="Text_s fs_12">
 					{{ item.label }}
@@ -17,14 +18,12 @@
 						</template>
 						<template v-slot:message>
 							<div>
-								7天体育赌注：<br />
-								-投注$500至$2499 = 5$ <br />
-								-投注$2500至＄4999 = 30＄ <br />
-								-投注$5000 至＄9999 =70＄<br />
-								-投注$10,000 或以上=150＄ <br />
-								-投注＄50,000或以上 =500＄<br />
-								-投注$250,000或以上=1,000＄<br />
-								-﻿﻿流水统计时间：周六00:00时～周五 23:59时（7天） ﻿﻿礼金发放时间：每周六"
+								<p>7天体育赌注：</p>
+								<p v-for="i in data.vipWeekSportVOS">
+									-投注{{ useUserStore().getUserInfo.platCurrencySymbol }} {{ i.weekSportMin }} 至 {{ useUserStore().getUserInfo.platCurrencySymbol }} {{ i.weekSportMax }} =
+									{{ i.weekSportBonus }} {{ useUserStore().getUserInfo.platCurrencySymbol }}
+								</p>
+								<p>-流水统计时间：周六00:00时～周五 23:59时（7天） ﻿﻿礼金发放时间：每周六"</p>
 							</div>
 						</template>
 					</ClickTooltip>
@@ -42,7 +41,7 @@
 					</span>
 					<span class="Text1 fs_12" v-else
 						>{{ item.text }}
-						<span class="color_f1" v-if="item.value">{{ data[item.value] }} {{ useUserStore().getUserInfo.platCurrencySymbol }}</span>
+						<span class="color_f1" v-if="item.value">{{ data[item.value] }} {{ useUserStore().getUserInfo.platCurrencyName }}</span>
 					</span>
 				</div>
 			</div>
@@ -69,7 +68,7 @@ const $: any = i18n.global;
 const awardList: any = [
 	{
 		label: $.t(`vip['升级奖励']`),
-		text: $.t(`vip['总奖金']`),
+		text: $.t(`vip['总奖金:']`),
 		icon: awardicon1,
 		flag: "upgradeFlag",
 		value: "upgrade",
