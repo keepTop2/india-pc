@@ -127,6 +127,7 @@ const linkDetail = () => {
 		eventId: props.event.eventId,
 		dataIndex: props.dataIndex,
 	};
+
 	gotoEventDetail(params, SportTypeEnum.IceHockey);
 };
 
