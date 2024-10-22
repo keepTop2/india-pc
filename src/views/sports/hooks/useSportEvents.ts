@@ -63,7 +63,11 @@ export function useSportEvents() {
 		(newPath) => {
 			// console.log(newPath, "==========newPath");
 			if (routeMap[newPath as keyof typeof routeMap]) {
+				// 判断是否是早盘进入的详情页
 				tabActive.value = routeMap[newPath as keyof typeof routeMap] || "";
+			} else {
+				// 早盘选择体育类型，进入详情页后刷新页面，routeMap无法获取
+				tabActive.value = route?.query?.pageName as string;
 			}
 		},
 		{ immediate: true }
@@ -151,6 +155,8 @@ export function useSportEvents() {
 			token: SportsInfoStore.getSportsToken,
 			language: SportsCommonFn.getSportLanguage(),
 		};
+		console.log(sportTabPushActions, tabActive.value, "处理体育推送");
+
 		const action =
 			sportTabPushActions[tabActive.value as keyof typeof sportTabPushActions]?.openSport ||
 			sportTabPushActions[tabKey as keyof typeof sportTabPushActions]?.openSport ||

@@ -213,7 +213,8 @@ class SportsCommonFn {
 		if (!event) return;
 		if (event.sportType === 1) {
 			const { gameInfo, eventStatus, globalShowTime } = this.safeAccessMultiple(event, [["gameInfo"], ["eventStatus"], ["globalShowTime"]]);
-			const { livePeriod, delayLive, isHt } = gameInfo;
+			const { livePeriod, delayLive, isHt, seconds } = gameInfo;
+
 			if (eventStatus == "closed") {
 				return $.t("sports['比赛已关闭']");
 			}
@@ -228,10 +229,10 @@ class SportsCommonFn {
 					return $.t("sports['延迟开赛']");
 				}
 				if (livePeriod == 1 && !delayLive && !isHt) {
-					return $.t("sports['上半场']");
+					return $.t("sports['上半场']") + " " + computerSeconds(seconds);
 				}
 				if (livePeriod == 2 && !delayLive && !isHt) {
-					return $.t("sports['下半场']");
+					return $.t("sports['下半场']") + " " + computerSeconds(seconds);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -256,13 +257,13 @@ class SportsCommonFn {
 					return $.t("sports['加时赛']");
 				}
 				if (!delayLive && !isHt && numMap.get(livePeriod)) {
-					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + computerSeconds(seconds);
+					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + " " + computerSeconds(seconds);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
 		} else if (event.sportType === 3) {
 			const { gameInfo, eventStatus, globalShowTime } = this.safeAccessMultiple(event, [["gameInfo"], ["eventStatus"], ["globalShowTime"]]);
-			const { livePeriod, delayLive, isHt } = gameInfo;
+			const { livePeriod, delayLive, isHt, seconds } = gameInfo;
 			if (eventStatus == "closed") {
 				return $.t("sports['比赛已关闭']");
 			}
@@ -273,17 +274,8 @@ class SportsCommonFn {
 				if (livePeriod == 0 && !delayLive && isHt) {
 					return $.t("sports['中场休息']");
 				}
-				if (livePeriod == 1 && !delayLive && !isHt) {
-					return $.t("sports['第一节']");
-				}
-				if (livePeriod == 2 && !delayLive && !isHt) {
-					return $.t("sports['第二节']");
-				}
-				if (livePeriod == 3 && !delayLive && !isHt) {
-					return $.t("sports['第三节']");
-				}
-				if (livePeriod == 4 && !delayLive && !isHt) {
-					return $.t("sports['第四节']");
+				if (!delayLive && !isHt && numMap.get(livePeriod)) {
+					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + computerSeconds(seconds);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);

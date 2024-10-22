@@ -87,6 +87,7 @@ const setupWatchers = () => {
 		(newValue, oldValue) => {
 			if (newValue != null && newValue > 0 && !oldValue) {
 				const eventInfo = viewSportPubSubEventData.sidebarData?.promotionsViewData?.[0];
+
 				SidebarStore.setEventsInfo(eventInfo);
 				getSidebarEventSSEPush();
 				getSidebarMarketSSEPush();

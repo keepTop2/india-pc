@@ -87,7 +87,9 @@
 				<!-- 结果 -->
 				<el-table-column :label="$t(`sports.betRecord['结果']`)" width="116" align="center" :resizable="false">
 					<template #default="{ row, column }">
-						<div class="bet-amount">{{ Common.formatFloat(row.stake) }}</div>
+						<div class="bet-result" :class="[isSettlement ? (row.settlementPrice > 0 ? 'color_sussess' : row.settlementPrice == 0 ? 'color_f1' : 'Theme_text') : 'Text_s']">
+							{{ isSettlement ? Common.formatFloat(row.settlementPrice) : "-" }}
+						</div>
 					</template>
 				</el-table-column>
 
@@ -128,6 +130,7 @@ import { SportStatusEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 const props = withDefaults(
 	defineProps<{
 		data: [];
+		isSettlement: false;
 	}>(),
 	{}
 );
@@ -314,6 +317,11 @@ function formatDateTime(dateTimeStr: Date | string): string {
 		font-size: 12px;
 		font-weight: 400;
 	}
+	.bet-result {
+		font-family: "PingFang SC";
+		font-size: 12px;
+		font-weight: 400;
+	}
 	.maximum-win {
 		color: var(--Text_s);
 		font-family: "PingFang SC";
@@ -321,7 +329,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 		font-weight: 400;
 	}
 	.bet-status {
-		color: var(--Text1);
+		// color: var(--Text1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
