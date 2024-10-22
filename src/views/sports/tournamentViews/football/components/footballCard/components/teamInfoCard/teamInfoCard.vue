@@ -35,9 +35,9 @@
 			<!-- 塞节时间 -->
 			<div class="date">
 				<span>{{ SportsCommonFn.getEventsTitle(teamData) }}</span>
-				<span v-if="(teamData.gameInfo.livePeriod == 2 || teamData.gameInfo.livePeriod == 1) && !teamData.gameInfo.delayLive && !teamData.gameInfo.isHt">{{
+				<!-- <span v-if="(teamData.gameInfo.livePeriod == 2 || teamData.gameInfo.livePeriod == 1) && !teamData.gameInfo.delayLive && !teamData.gameInfo.isHt">{{
 					formattedGameTime
-				}}</span>
+				}}</span> -->
 			</div>
 			<!-- 其他信息 -->
 			<div class="info-list">
