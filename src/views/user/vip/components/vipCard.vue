@@ -3,10 +3,10 @@
 		<div class="vipLevelBg">
 			<div class="currentLevelText">当前等级</div>
 			<div>
-				<img src="../image/level0.png" alt="" class="vipLevelIcon" />
+				<img v-lazy-load="getViplevelImg(vipInfo.vipRank)" alt="" class="vipLevelIcon" />
 			</div>
 			<div class="experience">
-				<div class="fs_20 mb_5">VIP0</div>
+				<div class="fs_20 mb_5">{{ vipInfo.vipGradeName }}</div>
 				<div class="flex-alignCenter">
 					<span>升级所需经验:</span> <span>{{ vipInfo.currentVipExp }}/{{ vipInfo.upgradeVipExp }}</span>
 					<ClickTooltip class="ml_5 curp" message="">
@@ -20,8 +20,8 @@
 
 			<div class="progress">
 				<div class="levelIcon">
-					<img src="../image/rank0.png" alt="" />
-					<span class="levelvalue">LV{{ vipInfo.vipGradeCode }}</span>
+					<img v-lazy-load="getVipRankImg(vipInfo.vipRank)" alt="" />
+					<span class="levelvalue">{{ vipInfo.vipGradeName }}</span>
 				</div>
 				<div class="progressBg">
 					<div
@@ -39,26 +39,9 @@
 					</div>
 				</div>
 				<div class="levelIcon">
-					<img src="../image/rank0.png" alt="" />
-					<span class="levelvalue">LV{{ vipInfo.vipGradeUp }}</span>
+					<img v-lazy-load="getVipRankImg(vipInfo.nextVipRank)" alt="" />
+					<span class="levelvalue">{{ vipInfo.vipGradeUpName }}</span>
 				</div>
-			</div>
-		</div>
-		<div class="kefu">
-			<div class="kefuTagBg">专属客服</div>
-			<div class="tooltip">
-				<ClickTooltip class="curp" message="">
-					<template v-slot:icon>
-						<img src="../image/tooltip.png" alt="" class="tooltipImg" />
-					</template>
-					<template v-slot:message> 体育/电竞场馆投注1 $ = 2积分，其他场馆投注 1$=1积分，所有投注 均按当前汇率兑换为美元结算 </template>
-				</ClickTooltip>
-			</div>
-			<div class="kefuText">
-				<div class="kefuIcon">
-					<img src="../image/kefuIcon.png" alt="" />
-				</div>
-				<div class="fs_10 Text1">通过VIP升级获得专属定制化服务 超过换行超过换行超过换行超过</div>
 			</div>
 		</div>
 	</div>
@@ -66,7 +49,22 @@
 
 <script setup>
 import ClickTooltip from "/@/components/ClickTooltip.vue";
-
+import level1 from "../image/level1.png";
+import level2 from "../image/level2.png";
+import level3 from "../image/level3.png";
+import level4 from "../image/level4.png";
+import level5 from "../image/level5.png";
+import rank1 from "../image/rank1.png";
+import rank2 from "../image/rank2.png";
+import rank3 from "../image/rank3.png";
+import rank4 from "../image/rank4.png";
+import rank5 from "../image/rank5.png";
+const getViplevelImg = (vipRankCode) => {
+	return vipRankCode == 1 ? level1 : vipRankCode == 2 ? level2 : vipRankCode == 3 ? level3 : vipRankCode == 4 ? level4 : vipRankCode == 5 ? level4 : level5;
+};
+const getVipRankImg = (vipRankCode) => {
+	return vipRankCode == 1 ? rank1 : vipRankCode == 2 ? rank2 : vipRankCode == 3 ? rank3 : vipRankCode == 4 ? rank4 : vipRankCode == 5 ? rank4 : rank5;
+};
 const props = defineProps({
 	vipInfo: {},
 });

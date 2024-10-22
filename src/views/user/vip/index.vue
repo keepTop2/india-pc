@@ -28,7 +28,7 @@
 			</div>
 			<div class="vipLevelText">
 				<img :src="getRankTextIcon(vipRankList[currentVipIndex]?.vipRankCode)" alt="" />
-				{{ vipRankList[currentVipIndex]?.vipRankNameI18nCode }} {{ vipRankList[currentVipIndex]?.minVipGrade }}-{{ vipRankList[currentVipIndex]?.maxVipGrade }}
+				{{ vipRankList[currentVipIndex]?.vipRankNameI18nCode }} {{ vipRankList[currentVipIndex]?.minVipGradeName }}-{{ vipRankList[currentVipIndex]?.maxVipGradeName }}
 			</div>
 			<awardCardList :data="vipRankList[currentVipIndex]" :vipRankCode="vipRankList[currentVipIndex]?.vipRankCode"></awardCardList>
 			<div class="card1 mt_30">

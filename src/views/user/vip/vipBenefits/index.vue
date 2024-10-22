@@ -24,22 +24,28 @@
 		</div>
 		<div class="Text_s mb_16 mt_20">VIP奖励明细</div>
 		<div class="table">
-			<div class="row" v-for="(item, index) in vipRankList">
-				<div v-if="index == 0" class="cell">&nbsp;</div>
-				<div v-for="(awarditem, awardIndex) in awardList" v-if="index == 0" class="cell">
+			<div class="row">
+				<div class="cell">&nbsp;</div>
+				<div v-for="(awarditem, awardIndex) in awardList" class="cell">
 					<div class="Text_s">
 						{{ awarditem.label }}
 					</div>
 				</div>
-				<template v-else>
-					<div class="cell Text_s"><img :src="getVipRankImg(item.vipRankCode)" alt="" class="levelIcon" />{{ item.vipRankNameI18nCode }}</div>
-					<div v-for="awarditem in awardList" class="cell">
-						<div v-if="item[awarditem.flag]">
-							<img :src="getVipStarImg(item.vipRankCode)" alt="" />
-						</div>
-						<div v-else class="Text1">-</div>
+			</div>
+			<div class="row" v-for="(item, index) in vipRankList">
+				<!-- <div v-if="index == 0" class="cell">&nbsp;</div>
+				<div v-for="(awarditem, awardIndex) in awardList" v-if="index == 0" class="cell">
+					<div class="Text_s">
+						{{ awarditem.label }}
 					</div>
-				</template>
+				</div> -->
+				<div class="cell Text_s"><img :src="getVipRankImg(item.vipRankCode)" alt="" class="levelIcon" />{{ item.vipRankNameI18nCode }}</div>
+				<div v-for="awarditem in awardList" class="cell">
+					<div v-if="item[awarditem.flag]">
+						<img :src="getVipStarImg(item.vipRankCode)" alt="" />
+					</div>
+					<div v-else class="Text1">-</div>
+				</div>
 			</div>
 		</div>
 	</div>
