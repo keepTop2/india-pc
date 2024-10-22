@@ -1,7 +1,7 @@
 <template>
-	<div>123</div>
+	<div></div>
 </template>
 
 <script setup lang="ts"></script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

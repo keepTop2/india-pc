@@ -11,28 +11,6 @@ const userRoutes = [
 		},
 	},
 	{
-		path: "deposit",
-		name: "deposit",
-		layout: true,
-		component: () => import("/@/views/user/deposit/index.vue"),
-		meta: {
-			title: "充值",
-			idx: 1,
-			icon: "deposit",
-		},
-	},
-	{
-		path: "withdraw",
-		name: "withdraw",
-		layout: true,
-		component: () => import("/@/views/user/withdraw/index.vue"),
-		meta: {
-			title: "提现",
-			idx: 1,
-			icon: "withdraw",
-		},
-	},
-	{
 		path: "vip",
 		name: "vip",
 		layout: true,
@@ -41,28 +19,6 @@ const userRoutes = [
 			title: "VIP俱乐部",
 			idx: 1,
 			icon: "vip",
-		},
-	},
-	{
-		path: "transaction_history",
-		name: "transaction_history",
-		layout: true,
-		component: () => import("/@/views/user/transaction_history/index.vue"),
-		meta: {
-			title: "交易记录",
-			idx: 1,
-			icon: "transaction_history",
-		},
-	},
-	{
-		path: "bet_records",
-		name: "bet_records",
-		layout: true,
-		component: () => import("/@/views/user/bet_records/index.vue"),
-		meta: {
-			title: "投注记录",
-			idx: 1,
-			icon: "bet_records",
 		},
 	},
 	{

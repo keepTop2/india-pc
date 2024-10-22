@@ -9,6 +9,8 @@ import layout from "../layout/layout.vue";
 import userRoutes from "/@/router/modules/userMenu";
 import activityRoutes from "/@/router/modules/activity";
 import sportsRoutes from "/@/router/modules/sports/sports";
+
+import walletLayout from "/@/router/modules/wallet";
 // 登录注册弹窗
 const routes = [
 	//首页模块路由
@@ -113,8 +115,11 @@ const routes = [
 					idx: 1,
 				},
 			},
+			//钱包路由
+			walletLayout,
 		],
 	},
+
 	...errorPage,
 	{
 		path: "/:pathMatch(.*)",
