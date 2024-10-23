@@ -31,6 +31,15 @@ const walletLayout = {
 			},
 		},
 		{
+			path: "/accountChangeDetails",
+			name: "accountChangeDetails",
+			component: () => import("/@/views/wallet/accountChangeDetails/accountChangeDetails.vue"),
+			meta: {
+				title: "详情",
+				secondaryPage: true,
+			},
+		},
+		{
 			path: "/currencyConverter",
 			name: "currencyConverter",
 			component: () => import("/@/views/wallet/currencyConverter/currencyConverter.vue"),
