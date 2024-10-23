@@ -1,0 +1,78 @@
+<template>
+	<div class="wrapper">
+		<div>
+			<img src="./image/404.png" alt="" />
+		</div>
+		<div class="content">
+			<p>(图片)logo+平台名称</p>
+			<h1 class="fs_46px">页面不存在</h1>
+			<p class="fw_700 Text2_1 mb_50">您要访问的页面无效或者缺失，您所尝试的页面现在无法打开！如有疑问，请联系在线客服</p>
+			<div class="flex_space-between">
+				<button class="cancel" @click="router.back()">返回</button>
+				<button class="refresh" @click="refresh">刷新</button>
+			</div>
+			<button class="common_btn">联系客服</button>
+		</div>
+	</div>
+</template>
+
+<script setup lang="ts">
+import router from "/@/router";
+
+const refresh = () => {
+	window.location.reload();
+};
+</script>
+
+<style lang="scss">
+.wrapper {
+	height: 100vh;
+	width: 100vw;
+	background-color: var(--Bg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	> div {
+		width: 450px;
+		img {
+			width: 450px;
+			height: 450px;
+		}
+	}
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-content: center;
+		justify-content: center;
+		gap: 10px;
+		padding: 0 30px;
+		.flex_space-between {
+			gap: 20px;
+			button {
+				cursor: pointer;
+				height: 56px;
+				width: 168px;
+				background-color: transparent;
+				border-radius: 6px;
+			}
+			.cancel {
+				border: 2px solid var(--Text_s);
+
+				font-size: 20px;
+				color: var(--Text_s);
+			}
+			.refresh {
+				font-size: 20px;
+				color: var(--Theme);
+				border: none;
+				background: var(--Bg3);
+			}
+		}
+		.common_btn {
+			margin-top: 20px;
+			height: 56px;
+		}
+	}
+}
+</style>
