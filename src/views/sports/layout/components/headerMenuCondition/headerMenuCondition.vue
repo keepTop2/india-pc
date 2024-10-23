@@ -39,7 +39,7 @@
 import { computed, defineAsyncComponent, ref, onBeforeMount, onMounted } from "vue";
 import { debounce } from "lodash-es";
 import { wButton, wSwitch } from "./components";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter, useRoute, onBeforeRouteLeave } from "vue-router";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
@@ -49,6 +49,7 @@ import { useMatchEvents } from "/@/views/sports/hooks/eventMatch";
 import sportsApi from "/@/api/sports/sports"; // 保留引用
 import searchBar from "./components/searchBar/searchBar.vue";
 import pubsub from "/@/pubSub/pubSub";
+import usePageScrollTop from "/@/views/sports/hooks/usePageScrollTop";
 
 const sportsBetEvent = useSportsBetEventStore();
 const SportAttentionStore = useSportAttentionStore();
@@ -134,9 +135,12 @@ const onType = (item: any) => {
 			eventStatusData.value[key as "off" | "on"].active = false;
 		});
 	}
-
+	// 获取滚动元素节点scrollTop
+	const { saveScrollTop } = usePageScrollTop();
 	// 跳转到所选分类对应的路径
-	router.push(item.path);
+	router.push({ path: item.path }).then(() => {
+		saveScrollTop(route);
+	});
 };
 
 // 切换今日赛事下的滚球/未开赛

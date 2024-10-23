@@ -25,7 +25,7 @@
 				</div>
 			</div>
 			<i class="line"></i>
-			<!-- 左侧菜单项 -->
+			<!-- 右侧菜单项 -->
 			<div class="left">
 				<div v-for="(item, index) in Menu" :key="index" class="nva-item" :class="{ active: item.name === route.name }">
 					<router-link :to="{ name: item.name }">
@@ -44,6 +44,7 @@ import { useRouter, useRoute } from "vue-router"; // 引入路由相关的API
 import MajorCategoriesMenu from "/@/router/modules/sports/sportsRouterLeft"; // 导入左侧菜单数据
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData"; // 导入体育数据
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData"; // 引入状态管理
+import usePageScrollTop from "/@/views/sports/hooks/usePageScrollTop";
 
 const router = useRouter(); // 获取路由实例
 const route = useRoute(); // 获取当前路由实例
@@ -66,13 +67,13 @@ const showRightArrow = ref(false); // 控制右箭头显示的状态
 
 // 初始化路由的逻辑
 const initRoute = () => {
+	// 确保有体育数据
+	const { sportType } = route.query;
+	if (!sportType) return;
 	if (sportsData.value.length > 0) {
-		// 确保有体育数据
-		const { sportType } = route.query;
 		const hasType = sportsData.value.some((item) => item.sportType === Number(sportType));
 		if (!hasType) {
 			const firstSportType = sportsData.value[0].sportType; // 获取第一个体育类型
-			const defaultPath = `${router.currentRoute.value.path}?sportType=${firstSportType}`; // 构建默认路径
 			router.push({ path: router.currentRoute.value.path, query: { ...route.query, sportType: firstSportType } });
 		}
 	}
@@ -102,10 +103,16 @@ const toPath = (item: any) => {
 	} else {
 		if (route.query.sportType == item.sportType) return; // 如果当前运动类型相同，不做跳转
 		const currentPath = router.currentRoute.value.path; // 获取当前路径
-		router.push({
-			path: currentPath,
-			query: { sportType: item.sportType }, // 更新查询参数
-		});
+		// 获取滚动元素节点scrollTop
+		const { saveScrollTop } = usePageScrollTop();
+		router
+			.push({
+				path: currentPath,
+				query: { sportType: item.sportType }, // 更新查询参数
+			})
+			.then(() => {
+				saveScrollTop(route);
+			});
 	}
 };
 

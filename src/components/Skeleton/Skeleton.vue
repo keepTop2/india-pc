@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref, computed } from "vue";
+import { onBeforeMount, ref, computed, onMounted } from "vue";
 import pubsub from "/@/pubSub/pubSub";
 
 interface SkeletonItem {
@@ -46,7 +46,13 @@ const pubsubLoading = ref(true);
 
 onBeforeMount(() => {
 	pubsub.subscribe("SkeletonLoading", (data) => {
-		pubsubLoading.value = data;
+		if (data) {
+			pubsubLoading.value = data;
+		} else {
+			setTimeout(() => {
+				pubsubLoading.value = data;
+			}, 1000);
+		}
 	});
 });
 
