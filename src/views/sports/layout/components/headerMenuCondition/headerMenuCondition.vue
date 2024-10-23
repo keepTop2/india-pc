@@ -39,7 +39,7 @@
 import { computed, defineAsyncComponent, ref, onBeforeMount, onMounted } from "vue";
 import { debounce } from "lodash-es";
 import { wButton, wSwitch } from "./components";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter, useRoute, onBeforeRouteLeave } from "vue-router";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueSearch";
 import { useSportMorningTradingStore } from "/@/stores/modules/sports/sportMorningTrading";
@@ -49,6 +49,7 @@ import { useMatchEvents } from "/@/views/sports/hooks/eventMatch";
 import sportsApi from "/@/api/sports/sports"; // 保留引用
 import searchBar from "./components/searchBar/searchBar.vue";
 import pubsub from "/@/pubSub/pubSub";
+import SportsCommonFn from "/@/views/sports/utils/common";
 
 const sportsBetEvent = useSportsBetEventStore();
 const SportAttentionStore = useSportAttentionStore();
@@ -134,9 +135,10 @@ const onType = (item: any) => {
 			eventStatusData.value[key as "off" | "on"].active = false;
 		});
 	}
-
+	// 记录滚动元素节点scrollTop
+	SportsCommonFn.saveScrollTop(route);
 	// 跳转到所选分类对应的路径
-	router.push(item.path);
+	router.push({ path: item.path }).then(() => {});
 };
 
 // 切换今日赛事下的滚球/未开赛
@@ -151,7 +153,9 @@ const onEventStatusData = (e: "off" | "on") => {
 	});
 	// 将传入的 e 对应的对象 active 设置为 true，激活用户选择的状态
 	eventStatusData.value[e].active = true;
-	// 跳转到激活状态对应的路径，并保留查询参数 sportType
+
+	// 记录滚动元素节点scrollTop
+	SportsCommonFn.saveScrollTop(route);
 	router.push({
 		path: eventStatusData.value[e].path,
 		query: { sportType: sportType },
