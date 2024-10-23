@@ -7,7 +7,7 @@
 						<img src="/@/assets/common/coin.png" alt="" style="height: 16px" class="mr_4" />
 						<span>{{ Common.thousands(UserStore.getUserInfo.totalBalance) }}</span>
 					</div>
-					<div class="recharge" @click="router.push('/user/deposit')">{{ $t(`common['充值']`) }}</div>
+					<div class="recharge" @click="router.push('/recharge')">{{ $t(`common['充值']`) }}</div>
 				</div>
 				<div class="flex-center message" @click="openMessageCenter" v-hover-svg>
 					<svg-icon name="message" size="32px" />
@@ -97,9 +97,9 @@ const goToPath = (route: any) => {
 	} else if (route.name === "vip") {
 		modalStore.openModal("vip");
 	} else {
-		isOpenMenu.value = false;
 		router.push({ name: route.name });
 	}
+	isOpenMenu.value = false;
 };
 const logOut = () => {
 	UserStore.logOut();

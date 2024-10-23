@@ -106,7 +106,7 @@ const getlist = () => {
 		height: 82px;
 
 		:deep(.slider-content) {
-			justify-content: space-around;
+			justify-content: space-between;
 		}
 		img {
 			height: 72px;

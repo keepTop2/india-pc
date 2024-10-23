@@ -53,14 +53,15 @@ const props = withDefaults(
 	padding: 0px 10px;
 	border: 0;
 	border-radius: 4px;
-	background: var(--icon);
+	// background: var(--icon);
 	color: var(--Text_a);
 	text-align: center;
 	font-family: "PingFang SC";
 	font-size: 14px;
 	font-weight: 500;
 	box-sizing: border-box;
-	cursor: default;
+	cursor: no-drop;
+	opacity: 0.3;
 }
 
 .button:disabled:active {

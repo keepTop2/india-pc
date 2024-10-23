@@ -149,6 +149,7 @@ export const useUserStore = defineStore("User", {
 		async initUserInfo() {
 			const websocketService: any = activitySocketService.getInstance();
 			const sportsBetInfo = useSportsBetInfoStore();
+			this.setBasionInfo();
 			const res = await userApi.getIndexInfo().catch((err) => err);
 			const { code, data, message } = res;
 			if (code === Common.ResCode.SUCCESS) {
@@ -162,6 +163,14 @@ export const useUserStore = defineStore("User", {
 				});
 			} else {
 				showToast(message, 1500);
+			}
+		},
+		async setBasionInfo() {
+			const res = await userApi.getCurrentBasicInfo().catch((err) => err);
+			const { code, data, message } = res;
+			if (code === Common.ResCode.SUCCESS) {
+				const userInfo = { ...this.getUserInfo, ...data };
+				this.setUserInfo(userInfo);
 			}
 		},
 	},

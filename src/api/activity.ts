@@ -131,4 +131,24 @@ export const activityApi = {
 			},
 		});
 	},
+	// 任务详情
+	getTaskDetail: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/task/api/detail`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: true,
+			},
+		});
+	},
+	// 领取任务奖励
+	receiveTask: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/task/api/receive`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: true,
+			},
+		});
+	},
 };

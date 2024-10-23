@@ -9,6 +9,13 @@ export const userApi = {
 			headers,
 		});
 	},
+	getCurrentBasicInfo: (data = {}, headers = { showLoading: false }) => {
+		return useAxiosApi(`/app/common/getCurrentBasicInfo`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 	//安全中心基本信息
 	getUserGlobalSetInfo: (data = {}, headers = {}) => {
 		return useAxiosApi(`/app/user-info/global/getUserGlobalSetInfo`, {

@@ -11,6 +11,7 @@ const message_center: Record<string, () => Promise<any>> = {
 };
 const vip: Record<string, () => Promise<any>> = {
 	vip: () => import("/@/views/user/vip/index.vue"),
+	vipHierarchy: () => import("/@/views/user/vip/vipHierarchy.vue"),
 };
 const security_center: Record<string, () => Promise<any>> = {
 	ChangePassword: () => import("/@/views/user/security_center/components/ChangePassword.vue"),

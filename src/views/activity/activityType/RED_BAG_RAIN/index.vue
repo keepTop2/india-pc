@@ -92,7 +92,6 @@
 		<!-- 结算弹窗 -->
 		<RED_BAG_RAIN_Dialog v-model="showDialog" title="温馨提示" :confirm="confirmDialog" class="redBagRainResult">
 			<div class="Text3">{{ dialogInfo.message }}</div>
-			{{ dialogInfo.status }}
 			<template v-slot:footer v-if="[30045, 30053].includes(dialogInfo.status)"> 去绑定 </template>
 		</RED_BAG_RAIN_Dialog>
 	</div>

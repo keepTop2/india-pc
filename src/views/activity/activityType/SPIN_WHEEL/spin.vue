@@ -33,6 +33,7 @@ import spinBorder from "./img/spin-img-border.png";
 import { activityApi } from "/@/api/activity";
 import showToast from "/@/hooks/useToast";
 import Common from "/@/utils/common";
+import { useUserStore } from "/@/stores/modules/user";
 
 const lightActive = ref(false);
 const spinning = ref(false);
@@ -61,7 +62,7 @@ const props = withDefaults(defineProps<Spin>(), {
 });
 
 // startSpinningCallback 开始旋转的回掉函数
-const emit = defineEmits(["startSpinningCallback", "endSpinningCallback", "handleNoMoreBet"]);
+const emit = defineEmits(["startSpinningCallback", "endSpinningCallback", "handleNoMoreBet", "handleNeedLogin"]);
 
 // 监听props中的reward变化，以触发停止旋转
 
@@ -102,6 +103,9 @@ const clearSpin = () => {
 
 // 处理开始旋转的逻辑
 const handleStartSpin = () => {
+	if (!useUserStore().getLogin) {
+		return emit("handleNeedLogin");
+	}
 	if (props.balanceCount < 1) {
 		return emit("handleNoMoreBet");
 	}
