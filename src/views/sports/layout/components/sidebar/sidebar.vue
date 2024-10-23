@@ -406,7 +406,7 @@ const handleChangeTV = () => {
 	}
 
 	.eventVideo {
-		width: 390px;
+		width: 370px;
 		height: 208px;
 	}
 	.live-box {
@@ -422,10 +422,10 @@ const handleChangeTV = () => {
 	}
 	:deep(.video-js) {
 		height: 208px;
-		width: 390px;
+		width: 100%;
 
 		.vjs-tech {
-			width: 390px;
+			width: 100%;
 		}
 	}
 
