@@ -166,7 +166,7 @@ export function useSportEvents() {
 	 */
 	const sendWorkerCommand = (action: any, params = {}, additionalParams = {}) => {
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportEventSource;
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerCommandType.sportEventSource;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, action, params, additionalParams);
 		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 	};
