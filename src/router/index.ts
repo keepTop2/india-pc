@@ -134,12 +134,12 @@ const router: Router = createRouter({
 		// 如果有保存的滚动位置（比如返回前进浏览器时）
 		if (savedPosition) {
 			return savedPosition;
-		} else if (to.meta.scrollTop !== undefined) {
-			// 在体育模块导航栏headerMenuNav组件中记录了scrollTop
+		} else if (from.meta.scrollTop !== undefined) {
+			// 在体育模块导航栏headerMenuNav、headerMenuCondition组件中记录了scrollTop
 			const scrollDom = document.querySelector(".mainArea");
-
 			if (scrollDom) {
-				scrollDom.scrollTop = to.meta.scrollTop as number;
+				scrollDom.scrollTop = from.meta.scrollTop as number;
+				delete from.meta.scrollTop;
 			}
 		} else {
 			// 记录自定义的滚动行为，跳转到指定位置

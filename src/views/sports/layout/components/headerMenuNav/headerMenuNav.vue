@@ -27,11 +27,9 @@
 			<i class="line"></i>
 			<!-- 右侧菜单项 -->
 			<div class="left">
-				<div v-for="(item, index) in Menu" :key="index" class="nva-item" :class="{ active: item.name === route.name }">
-					<router-link :to="{ name: item.name }">
-						<svg-icon class="icon" :name="`sports-${item.icon}`" size="25px" alt="" />
-						<span class="value">{{ item.meta.title }}</span>
-					</router-link>
+				<div v-for="(item, index) in Menu" @click="handleRightMenuClick(item.name)" :key="index" class="nva-item" :class="{ active: item.name === route.name }">
+					<svg-icon class="icon" :name="`sports-${item.icon}`" size="25px" alt="" />
+					<span class="value">{{ item.meta.title }}</span>
 				</div>
 			</div>
 		</div>
@@ -44,7 +42,7 @@ import { useRouter, useRoute } from "vue-router"; // 引入路由相关的API
 import MajorCategoriesMenu from "/@/router/modules/sports/sportsRouterLeft"; // 导入左侧菜单数据
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData"; // 导入体育数据
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData"; // 引入状态管理
-import usePageScrollTop from "/@/views/sports/hooks/usePageScrollTop";
+import SportsCommonFn from "/@/views/sports/utils/common";
 
 const router = useRouter(); // 获取路由实例
 const route = useRoute(); // 获取当前路由实例
@@ -88,6 +86,8 @@ const tabData = ref([
 
 // 路由跳转函数
 const toPath = (item: any) => {
+	// 记录滚动元素节点scrollTop
+	SportsCommonFn.saveScrollTop(route);
 	if (route.meta.type !== "list") {
 		// 检查路由类型
 		// 根据当前激活的标签获取路径
@@ -103,16 +103,11 @@ const toPath = (item: any) => {
 	} else {
 		if (route.query.sportType == item.sportType) return; // 如果当前运动类型相同，不做跳转
 		const currentPath = router.currentRoute.value.path; // 获取当前路径
-		// 获取滚动元素节点scrollTop
-		const { saveScrollTop } = usePageScrollTop();
-		router
-			.push({
-				path: currentPath,
-				query: { sportType: item.sportType }, // 更新查询参数
-			})
-			.then(() => {
-				saveScrollTop(route);
-			});
+
+		router.push({
+			path: currentPath,
+			query: { sportType: item.sportType }, // 更新查询参数
+		});
 	}
 };
 
@@ -140,6 +135,12 @@ const scrollRight = () => {
 		// 确保导航项容器存在
 		nvaItemContainer.value.scrollLeft += 100; // 向右滚动100像素
 	}
+};
+
+const handleRightMenuClick = (name: string) => {
+	SportsCommonFn.saveScrollTop(route);
+
+	router.push({ name });
 };
 
 // 组件挂载后初始化路由和事件监听

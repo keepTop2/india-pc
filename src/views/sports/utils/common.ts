@@ -8,6 +8,7 @@ import { i18n } from "/@/i18n/index";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import { convertUtcToUtc5AndFormatMD, convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import common from "/@/utils/common";
+import { RouteLocationNormalized } from "vue-router";
 const $: any = i18n.global;
 dayjs.extend(duration); // 启用 duration 插件
 dayjs.extend(relativeTime);
@@ -691,6 +692,15 @@ class SportsCommonFn {
 				}
 			}
 		};
+	}
+
+	/**
+	 * .mainArea节点
+	 * 体育模块点击导航栏时，记录当前页面scrollTop到route.mate.scrollTop中，优化用户体验
+	 */
+	public static saveScrollTop(route: RouteLocationNormalized) {
+		const scrollDom = document.querySelector(".mainArea") as HTMLElement;
+		route.meta.scrollTop = scrollDom.scrollTop;
 	}
 }
 
