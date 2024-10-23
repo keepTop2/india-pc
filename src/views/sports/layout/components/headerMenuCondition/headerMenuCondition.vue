@@ -49,7 +49,7 @@ import { useMatchEvents } from "/@/views/sports/hooks/eventMatch";
 import sportsApi from "/@/api/sports/sports"; // 保留引用
 import searchBar from "./components/searchBar/searchBar.vue";
 import pubsub from "/@/pubSub/pubSub";
-import usePageScrollTop from "/@/views/sports/hooks/usePageScrollTop";
+import SportsCommonFn from "/@/views/sports/utils/common";
 
 const sportsBetEvent = useSportsBetEventStore();
 const SportAttentionStore = useSportAttentionStore();
@@ -135,12 +135,10 @@ const onType = (item: any) => {
 			eventStatusData.value[key as "off" | "on"].active = false;
 		});
 	}
-	// 获取滚动元素节点scrollTop
-	const { saveScrollTop } = usePageScrollTop();
+	// 记录滚动元素节点scrollTop
+	SportsCommonFn.saveScrollTop(route);
 	// 跳转到所选分类对应的路径
-	router.push({ path: item.path }).then(() => {
-		saveScrollTop(route);
-	});
+	router.push({ path: item.path }).then(() => {});
 };
 
 // 切换今日赛事下的滚球/未开赛
@@ -155,7 +153,9 @@ const onEventStatusData = (e: "off" | "on") => {
 	});
 	// 将传入的 e 对应的对象 active 设置为 true，激活用户选择的状态
 	eventStatusData.value[e].active = true;
-	// 跳转到激活状态对应的路径，并保留查询参数 sportType
+
+	// 记录滚动元素节点scrollTop
+	SportsCommonFn.saveScrollTop(route);
 	router.push({
 		path: eventStatusData.value[e].path,
 		query: { sportType: sportType },
