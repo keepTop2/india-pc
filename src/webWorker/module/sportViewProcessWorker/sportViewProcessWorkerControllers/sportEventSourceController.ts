@@ -4,22 +4,18 @@ import qs from "qs";
 import { WebResponse } from "/@/models/commonInterface";
 import ResCode from "/@/utils/resCode";
 import SportEventSourceService from "/@/webWorker/module/sportViewProcessWorker/services/sportEventSourceService";
+import { WorkerControllerI } from "/@/interface/workerControllerI";
+import { WorkerTransfer } from "/@/models/webWorkerModel";
+
 /**
  * @description 体育SSE 控制器 (工具类)
  */
-class SportEventSourceController {
-	// 单例实例变量
-	private static instance: SportEventSourceController;
-	// 私有构造函数，确保单例模式
-	private constructor() {}
-	// 获取单例实例的静态方法
-	public static getInstance(): SportEventSourceController {
-		if (!SportEventSourceController.instance) {
-			// 如果实例不存在，则创建
-			SportEventSourceController.instance = new SportEventSourceController();
+class SportEventSourceController implements WorkerControllerI {
+	public handleRequest(workerTransferData: WorkerTransfer<any, any>) {
+		if (workerTransferData.apiName) {
+			//映射对应api处理方法
+			(this[workerTransferData.apiName as keyof SportEventSourceController] as Function)(workerTransferData);
 		}
-		// 返回单例实例
-		return SportEventSourceController.instance;
 	}
 
 	/**
@@ -290,8 +286,8 @@ class SportEventSourceController {
 		});
 	}
 }
-/**
- * @description 体育SSE连接实例 (单例)
- */
-const sportEventSourceController = SportEventSourceController.getInstance();
-export default sportEventSourceController;
+// /**
+//  * @description 体育SSE连接实例 (单例)
+//  */
+// const sportEventSourceController = SportEventSourceController.getInstance();
+export default SportEventSourceController;

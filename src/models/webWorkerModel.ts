@@ -6,7 +6,7 @@ import { WorkerName } from "/@/enum/workerTransferEnum";
 /**
  * @description 主线程与子通信模型
  */
-export interface WorkerTransfer<Data, ApiName> {
+export interface WorkerTransfer<Data = any, ApiName = any> {
 	/**
 	 * @description 线程名称
 	 */
