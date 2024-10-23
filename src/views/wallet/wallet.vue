@@ -1,12 +1,14 @@
 <template>
 	<div class="wallet_container">
 		<div class="Menu_Bar">
-			<div class="menu" :class="{ menu_active: item.path === route.path }" v-for="item in walletLayout.children" @click="toPath(item)">
-				<div class="icon">
-					<SvgIcon :name="`wallet-${item.meta.icon}`" v-hover-svg />
+			<template v-for="item in walletLayout.children">
+				<div v-if="!item.meta.secondaryPage" class="menu" :class="{ menu_active: item.path === route.path }" @click="toPath(item)">
+					<div class="icon">
+						<SvgIcon :name="`wallet-${item.meta.icon}`" v-hover-svg />
+					</div>
+					<div class="name">{{ item.meta.title }}</div>
 				</div>
-				<div class="name">{{ item.meta.title }}</div>
-			</div>
+			</template>
 		</div>
 		<div class="main">
 			<router-view />

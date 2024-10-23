@@ -98,6 +98,7 @@ import Card from "../components/card.vue";
 import { walletApi } from "/@/api/wallet";
 import common from "/@/utils/common";
 import { useUserStore } from "/@/stores/modules/user";
+import router from "/@/router";
 const UserStore = useUserStore();
 
 interface rechargeWayDataRootObject {
@@ -134,7 +135,7 @@ interface rechargeConfigRootObject {
 const rechargeWayData = ref({} as rechargeWayDataRootObject); // 当前选择的支付方式
 const rechargeWayList = ref([] as rechargeWayDataRootObject[]); // 支付方式列表
 const quickAmountList = ref([]); // 快捷金额选项
-const amountItemActive = ref(null) as unknown as null | number;
+const amountItemActive = ref<null | number>(null);
 const rechargeConfig = ref({
 	rechargeMinAmount: 0,
 	rechargeMaxAmount: 0,
@@ -188,18 +189,22 @@ const onRecharge = async () => {
 	const params = {
 		depositWayId: rechargeConfig.value.rechargeWayId,
 		amount: requestParams.amount,
+	} as {
+		depositName?: string;
+		depositWayId: string;
+		amount: number;
 	};
 	if (rechargeWayData.value.rechargeTypeCode === "bank_card") {
 		params.depositName = requestParams.depositName;
 	}
 	const res = await walletApi.userRecharge(params).catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
-		// router.push({
-		// 	path: "/wallet/rechargeDetails",
-		// 	query: {
-		// 		orderNo: res.data.orderNo,
-		// 	},
-		// });
+		router.push({
+			path: "/accountChangeDetails",
+			query: {
+				orderNo: res.data.orderNo,
+			},
+		});
 		window.open(res.data.thirdPayUrl, "_blank");
 		clearRequestParams();
 	}
