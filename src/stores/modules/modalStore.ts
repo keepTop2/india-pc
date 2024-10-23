@@ -6,6 +6,9 @@ interface ModalComponent {
 	component: any; // Vue 组件类型
 	props?: Record<string, any>; // 允许传递任意属性
 }
+const walletCenter: Record<string, () => Promise<any>> = {
+	// walletCenter: () => import("/@/views/messageCenter/index.vue"),
+};
 const message_center: Record<string, () => Promise<any>> = {
 	messageCenter: () => import("/@/views/messageCenter/index.vue"),
 };
@@ -45,6 +48,7 @@ const modalComponents: Record<string, () => Promise<any>> = {
 	...security_center,
 	...message_center,
 	...vip,
+	...walletCenter, // 钱包弹窗
 };
 
 // 创建 Pinia store
