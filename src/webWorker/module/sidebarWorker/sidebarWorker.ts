@@ -1,5 +1,5 @@
 import { WorkerTransfer } from "/@/models/webWorkerModel";
-import { SportViewProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
+import { SportViewProcessWorkerApi } from "../../../enum/webworkerEnum/workerTransferEnum";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import sidebarEventControllers from "/@/webWorker/module/sidebarWorker/sidebarWorkerControllers/sidebarEventControllers";
 /**
@@ -16,11 +16,8 @@ export default (function () {
 
 		// console.error("第四步 体育线程收到了数据 到对应controller", jsonData);
 		//收到体育sportEventSource 指令
-		if (jsonData.apiName == SportViewProcessWorkerCommandType.sidebarEventSource) {
-			const data: WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerCommandType> = jsonData as WorkerTransfer<
-				OpenSportEventSourceParams,
-				SportViewProcessWorkerCommandType
-			>;
+		if (jsonData.apiName == SportViewProcessWorkerApi.sidebarEventSource) {
+			const data: WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi>;
 			const params: OpenSportEventSourceParams = {
 				...data.data,
 			};

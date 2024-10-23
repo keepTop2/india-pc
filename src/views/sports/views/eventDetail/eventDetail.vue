@@ -37,7 +37,7 @@ import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useUserStore } from "/@/stores/modules/user";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
-import { SportViewProcessWorkerCommandType, WorkerName } from "/@/enum/workerTransferEnum";
+import { SportViewProcessWorkerApi, WorkerName } from "../../../../enum/webworkerEnum/workerTransferEnum";
 import { sportsEventDetailPush } from "/@/views/sports/utils/sportsMap/sportsSSERequestMap";
 import workerManage from "/@/webWorker/workerManage";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";

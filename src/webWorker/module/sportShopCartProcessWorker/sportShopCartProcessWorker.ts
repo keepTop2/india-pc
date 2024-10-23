@@ -1,5 +1,5 @@
 import { WorkerTransfer } from "/@/models/webWorkerModel";
-import { SportShopCartProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
+import { SportShopCartProcessWorkerApi } from "../../../enum/webworkerEnum/workerTransferEnum";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import SportEventSourceController from "/@/webWorker/module/sportShopCartProcessWorker/sportShopCartProcessWorkerControllers/sportsShopCartSSEController";
 /**
@@ -14,11 +14,8 @@ export default (function () {
 		const jsonData: WorkerTransfer<Data, ApiName> = JSON.parse(strData);
 		console.log("第四步 体育线程收到了数据 到对应controller", jsonData);
 		//收到体育sportEventSource 指令
-		if (jsonData.apiName == SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges) {
-			const data: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerCommandType> = jsonData as WorkerTransfer<
-				OpenSportEventSourceParams,
-				SportShopCartProcessWorkerCommandType
-			>;
+		if (jsonData.apiName == SportShopCartProcessWorkerApi.sportsShopCartViewChanges) {
+			const data: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi>;
 			const params: OpenSportEventSourceParams = {
 				...data.data,
 			};
@@ -26,11 +23,8 @@ export default (function () {
 		}
 
 		//收到冠军购物车 championShopCartViewChanges 指令
-		if (jsonData.apiName == SportShopCartProcessWorkerCommandType.championShopCartViewChanges) {
-			const data: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerCommandType> = jsonData as WorkerTransfer<
-				OpenSportEventSourceParams,
-				SportShopCartProcessWorkerCommandType
-			>;
+		if (jsonData.apiName == SportShopCartProcessWorkerApi.championShopCartViewChanges) {
+			const data: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi>;
 			const params: OpenSportEventSourceParams = {
 				...data.data,
 			};

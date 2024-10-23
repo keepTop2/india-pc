@@ -1,9 +1,9 @@
 import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
 
-import { WorkerControllerI } from "/@/interface/workerControllerI";
+import { WorkerControllerI } from "/@/interface/WorkerControllerI";
 
 import SportEventSourceController from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorkerControllers/sportEventSourceController";
-
+import SportOddsChangeController from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorkerControllers/sportOddsChangeController";
 /**
  * @description 控制器配置类型定义
  */
@@ -16,6 +16,7 @@ type WebworkerControllerM = {
  */
 const webworkerControllerM: WebworkerControllerM = {
 	[WebWorkerControllerE.SportEventSourceController]: SportEventSourceController,
+	[WebWorkerControllerE.SportOddsChangeController]: SportOddsChangeController,
 };
 
 export default webworkerControllerM;

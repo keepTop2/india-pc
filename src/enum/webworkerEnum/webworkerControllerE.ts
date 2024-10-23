@@ -11,10 +11,10 @@ export enum WebWorkerControllerE {
 	 */
 	SportEventSourceController = "SportEventSourceController",
 
-	// /**
-	//  * @description 体育赔率变更控制器
-	//  */
-	// SportOddsChangeController = "SportOddsChangeController",
+	/**
+	 * @description 体育赔率变更控制器
+	 */
+	SportOddsChangeController = "SportOddsChangeController",
 
 	// /**
 	//  * ---------------------------------------

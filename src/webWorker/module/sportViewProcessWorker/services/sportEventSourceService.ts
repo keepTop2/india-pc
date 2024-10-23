@@ -11,7 +11,7 @@ import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourc
 
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 
-import { SportViewProcessWorkerCommandType, WorkerCommonCommadnType, WorkerName } from "/@/enum/workerTransferEnum";
+import { SportViewProcessWorkerApi, WorkerCommonCommanApi, WorkerName } from "../../../../enum/webworkerEnum/workerTransferEnum";
 import { WebResponse } from "/@/models/commonInterface";
 import senDataMain from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorker";
 import viewSportDataU from "/@/webWorker/module/utils/viewSportDataU";
@@ -61,9 +61,9 @@ export default (function () {
 				// senDataMain(processData, jsonData);
 			}
 			//数据返回拼装
-			const workerToViewData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = {
+			const workerToViewData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerApi> = {
 				workerName: WorkerName.sportViewProcessWorker,
-				apiName: SportViewProcessWorkerCommandType.sportEventSource,
+				apiName: SportViewProcessWorkerApi.sportEventSource,
 				data: {
 					webToPushApi: data.webToPushApi,
 					sportPushApi: data.sportPushApi,
@@ -97,9 +97,9 @@ export default (function () {
 		 */
 		public cancelLoading(data: WebResponse) {
 			//数据返回拼装
-			const workerToViewData: WorkerTransfer<WebResponse, WorkerCommonCommadnType> = {
+			const workerToViewData: WorkerTransfer<WebResponse, WorkerCommonCommanApi> = {
 				workerName: WorkerName.sportViewProcessWorker,
-				apiName: WorkerCommonCommadnType.stopLoading,
+				apiName: WorkerCommonCommanApi.stopLoading,
 				data: data,
 			};
 			senDataMain(workerToViewData);

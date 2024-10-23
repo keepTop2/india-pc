@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { i18n } from "/@/i18n/index";
 import workerManage from "/@/webWorker/workerManage";
-import { SportShopCartProcessWorkerCommandType, WorkerName } from "/@/enum/workerTransferEnum";
+import { SportShopCartProcessWorkerApi, WorkerName } from "../../../enum/webworkerEnum/workerTransferEnum";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
@@ -197,9 +197,9 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 					query: `$filter=eventId in (${this.getEventIdCollection()})`,
 				},
 			};
-			const viewsToWorkData: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerCommandType> = {
+			const viewsToWorkData: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
-				apiName: SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges,
+				apiName: SportShopCartProcessWorkerApi.sportsShopCartViewChanges,
 				data: params,
 			};
 			//发送SSE指令到线程管理器
@@ -239,9 +239,9 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 					query: `$filter=leagueId in (${requestStr})`,
 				},
 			};
-			const viewsToWorkData: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerCommandType> = {
+			const viewsToWorkData: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
-				apiName: SportShopCartProcessWorkerCommandType.championShopCartViewChanges,
+				apiName: SportShopCartProcessWorkerApi.championShopCartViewChanges,
 				data: params,
 			};
 			//发送SSE指令到线程管理器
