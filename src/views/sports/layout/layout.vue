@@ -16,7 +16,9 @@
 				</div>
 				<div class="back-container">
 					<!-- 主体路由页面显示区域 -->
-					<router-view v-cloak />
+					<transition name="fade">
+						<router-view v-cloak />
+					</transition>
 					<!-- 搜索触发的遮罩 -->
 					<div class="overlay" v-if="isShowMask"></div>
 				</div>
