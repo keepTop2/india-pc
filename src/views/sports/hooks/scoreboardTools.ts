@@ -33,7 +33,7 @@ export function useToolsHooks() {
 			const { sportType, eventId } = eventInfo;
 			//判断是否在同一场比赛，切换比分跟直播
 			if (sportType === (eViewData.sportType || pViewData.sportType) && eventId === (eViewData.eventId || pViewData.eventId)) {
-				isVideo && switchEventVideoSource(eventInfo);
+				isVideo ? switchEventVideoSource(eventInfo) : SidebarStore.clearLiveUrl();
 				return;
 			}
 		}
