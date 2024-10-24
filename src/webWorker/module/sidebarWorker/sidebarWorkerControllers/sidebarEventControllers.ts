@@ -25,7 +25,7 @@ class SidebarEventControllers implements WorkerControllerI {
 	/**
 	 * @description 体育视图处理线程 eventSource 接口
 	 */
-	public sportEventSource(workerTransferData: WorkerTransfer<any, any>) {
+	public sidebarEventSource(workerTransferData: WorkerTransfer<any, any>) {
 		const sseUTil: SSEUtil = new SSEUtil();
 		SidebarEventService.getInstance();
 		sseUTil.openSportEventSource(workerTransferData.data);
