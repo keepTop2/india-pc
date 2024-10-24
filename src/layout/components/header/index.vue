@@ -39,6 +39,8 @@
 			<div class="lang">
 				<img v-lazy-load="LangIcon" alt="" @click="openLangCurrenyConfig" />
 			</div>
+
+      <messageCenter v-model="messageCenterVisible"/>
 		</div>
 	</header>
 </template>
@@ -52,6 +54,8 @@ import { onClickOutside } from "@vueuse/core";
 import userRoutes from "/@/router/modules/userMenu";
 import router from "/@/router";
 import { useModalStore } from "/@/stores/modules/modalStore";
+import messageCenter from "/@/views/messageCenter/index.vue"
+
 const modalStore = useModalStore();
 
 const MenuStore = useMenuStore();
@@ -79,8 +83,11 @@ onClickOutside(userMenu, () => {
 	isOpenMenu.value = false;
 });
 
+// 消息中心
+const messageCenterVisible = ref(false);
 const openMessageCenter = () => {
-	modalStore.openModal("messageCenter");
+	messageCenterVisible.value = true;
+	// modalStore.openModal("messageCenter");
 };
 const openLoginModal = () => {
 	modalStore.openModal("LoginModal");
@@ -122,20 +129,24 @@ const logOut = () => {
 	z-index: 100;
 	padding-left: 260px;
 	transition: all 0.2s ease;
+
 	&.collapse {
 		padding-left: 64px;
 	}
+
 	> div {
 		flex: 1;
 		display: flex;
 		justify-content: end;
 		align-items: center;
+
 		.balance_box {
 			background: var(--Bg2);
 			height: 44px;
 			padding: 3px;
 			gap: 0;
 			border-radius: 4px;
+
 			.recharge {
 				border-radius: 4px;
 				width: 78px;
@@ -145,14 +156,17 @@ const logOut = () => {
 				background: linear-gradient(180deg, rgba(255, 40, 75, 0.1) 0%, rgba(255, 40, 75, 0.8) 100%);
 				color: var(--Text_a);
 			}
+
 			.balance {
 				margin: 0 18px 0 12px;
 				display: flex;
 				align-items: center;
 			}
 		}
+
 		.message {
 			position: relative;
+
 			.notice {
 				position: absolute;
 				top: 0;
@@ -163,6 +177,7 @@ const logOut = () => {
 				border-radius: 50%;
 			}
 		}
+
 		.user {
 			position: relative;
 
@@ -178,6 +193,7 @@ const logOut = () => {
 				border-radius: 4px;
 				z-index: 150;
 				box-shadow: 0px 4px 12px 0px rgba(14, 16, 19, 0.25);
+
 				> div {
 					display: flex;
 					align-items: center;
@@ -187,36 +203,45 @@ const logOut = () => {
 					font-size: 14px;
 					line-height: 14px;
 				}
+
 				.login_out {
 					border-top: 1px solid var(--Line_2);
 					height: 58px;
 				}
+
 				> div:hover {
 					background: var(--Bg2);
 					color: var(--Text_s);
 				}
 			}
+
 			.userMenu::-webkit-scrollbar {
 				display: none;
 			}
 		}
+
 		> div {
 			margin: 8px;
 			cursor: pointer;
 		}
+
 		.btn {
 			padding: 11px 40px;
 			border-radius: 4px;
 		}
+
 		.loginBtn {
 			background: var(--butter);
 		}
+
 		.registerBtn {
 			color: var(--Text_a);
 			background: linear-gradient(180deg, rgba(255, 40, 75, 0.1) 0%, rgba(255, 40, 75, 0.8) 100%);
 		}
+
 		.lang {
 			position: relative;
+
 			img {
 				width: 27px;
 				height: 27px;
@@ -227,6 +252,7 @@ const logOut = () => {
 		}
 	}
 }
+
 .lang::after {
 	content: "";
 	position: absolute;
