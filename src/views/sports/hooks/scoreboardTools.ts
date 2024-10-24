@@ -4,6 +4,7 @@ import SportsApi from "/@/api/sports/sports";
 import Common from "/@/utils/common";
 // import { SportViewProcessWorkerApi, WorkerName } from "../../../enum/webworkerEnum/workerTransferEnum";
 import { SportViewProcessWorkerApi, WorkerName } from "/@/enum/webworkerEnum/workerTransferEnum";
+import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
 import pubSub from "/@/pubSub/pubSub";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import SportsCommonFn from "/@/views/sports/utils/common";

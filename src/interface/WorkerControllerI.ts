@@ -7,5 +7,5 @@ export interface WorkerControllerI {
 	 * @description 请求处理映射
 	 * @param data
 	 */
-	handleRequest<Data, ApiName>(data: WorkerTransfer<Data, ApiName>): void;
+	handleRequest<Data, ApiName>(workerTransferData: WorkerTransfer<Data, ApiName>): void;
 }
