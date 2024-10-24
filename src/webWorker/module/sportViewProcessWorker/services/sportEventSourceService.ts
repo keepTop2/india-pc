@@ -22,8 +22,20 @@ import pubsub from "/@/pubSub/pubSub";
  * @description 体育SSE service业务处理类
  */
 class SportEventSourceService {
-	public constructor() {
-		pubsub.subscribe(pubsub.PubSubEvents.SportEvents.sseDataProcess.eventName, this.eventSourceOnMessageProcess.bind(this));
+	// 单例实例变量
+	private static instance: SportEventSourceService;
+	// 私有构造函数，确保单例模式
+	private constructor() {}
+	// 获取单例实例的静态方法
+	public static getInstance(): SportEventSourceService {
+		if (!SportEventSourceService.instance) {
+			// 如果实例不存在，则创建
+			SportEventSourceService.instance = new SportEventSourceService();
+			//订阅数据处理
+			pubsub.subscribe(pubsub.PubSubEvents.SportEvents.sseDataProcess.eventName, SportEventSourceService.instance.eventSourceOnMessageProcess.bind(this));
+		}
+		// 返回单例实例
+		return SportEventSourceService.instance;
 	}
 
 	/**

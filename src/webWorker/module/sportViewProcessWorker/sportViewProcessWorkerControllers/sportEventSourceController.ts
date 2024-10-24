@@ -30,7 +30,7 @@ class SportEventSourceController implements WorkerControllerI {
 	 */
 	public sportEventSource(workerTransferData: WorkerTransfer<any, any>) {
 		const sseUTil: SSEUtil = new SSEUtil();
-		new SportEventSourceService();
+		SportEventSourceService.getInstance();
 		sseUTil.openSportEventSource(workerTransferData.data);
 	}
 

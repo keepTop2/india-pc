@@ -6,7 +6,7 @@ import ResCode from "/@/utils/resCode";
 import sidebarEventService from "/@/webWorker/module/sidebarWorker/services/sidebarEventService";
 
 //分割
-import SportEventSourceService from "/@/webWorker/module/sportViewProcessWorker/services/sportEventSourceService";
+import SidebarEventService from "/@/webWorker/module/sidebarWorker/services/sidebarEventService";
 import { WorkerControllerI } from "/@/interface/WorkerControllerI";
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 import SSEUtil from "/@/utils/webworkerUtils/SSEUtil";
@@ -27,7 +27,7 @@ class SidebarEventControllers implements WorkerControllerI {
 	 */
 	public sportEventSource(workerTransferData: WorkerTransfer<any, any>) {
 		const sseUTil: SSEUtil = new SSEUtil();
-		new SportEventSourceService();
+		SidebarEventService.getInstance();
 		sseUTil.openSportEventSource(workerTransferData.data);
 	}
 	// 单例实例变量
