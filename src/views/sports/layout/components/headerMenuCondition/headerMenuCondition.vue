@@ -50,6 +50,7 @@ import sportsApi from "/@/api/sports/sports"; // 保留引用
 import searchBar from "./components/searchBar/searchBar.vue";
 import pubsub from "/@/pubSub/pubSub";
 import SportsCommonFn from "/@/views/sports/utils/common";
+import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 
 const sportsBetEvent = useSportsBetEventStore();
 const SportAttentionStore = useSportAttentionStore();
@@ -59,6 +60,7 @@ const SportLeagueSearchStore = useSportLeagueSearchStore();
 const popularLeague = usePopularLeague();
 const SportMorningTradingStore = useSportMorningTradingStore();
 const { searchMatches } = useMatchEvents();
+const ShopCatControlStore = useShopCatControlStore();
 
 // 控制是否显示搜索框
 const isSearch = ref(false);
@@ -135,6 +137,8 @@ const onType = (item: any) => {
 			eventStatusData.value[key as "off" | "on"].active = false;
 		});
 	}
+	// 关闭弹窗购物车
+	ShopCatControlStore.setShopCatShow(false);
 	// 记录滚动元素节点scrollTop
 	SportsCommonFn.saveScrollTop(route);
 	// 跳转到所选分类对应的路径

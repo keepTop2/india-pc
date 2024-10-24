@@ -139,6 +139,7 @@ onMounted(() => {
 		width: 0; /* 隐藏垂直滚动条 */
 		height: 0; /* 隐藏水平滚动条 */
 	}
+
 	// scrollbar-width: none;
 	.date_item {
 		padding: 9px 12px;
@@ -151,6 +152,7 @@ onMounted(() => {
 		justify-content: center;
 		border: 1px solid var(--Line_2);
 		color: var(--Text1);
+		cursor: pointer;
 
 		&.active {
 			border-color: var(--Theme);
