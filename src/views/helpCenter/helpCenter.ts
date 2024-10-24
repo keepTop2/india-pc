@@ -1,4 +1,4 @@
-// 登陆注册
+// 登录注册
 import registerLogin from "./components/registerLogin.vue";
 //保护未成年人
 import protectMinors from "./components/protectMinors.vue";

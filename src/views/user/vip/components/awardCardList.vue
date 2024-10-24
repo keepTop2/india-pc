@@ -20,8 +20,9 @@
 							<div>
 								<p>7天体育赌注：</p>
 								<p v-for="i in data.vipWeekSportVOS">
-									-投注{{ useUserStore().getUserInfo.platCurrencySymbol }} {{ i.weekSportMin }} 至 {{ useUserStore().getUserInfo.platCurrencySymbol }} {{ i.weekSportMax }} =
-									{{ i.weekSportBonus }} {{ useUserStore().getUserInfo.platCurrencySymbol }}
+									-投注{{ useUserStore().getUserInfo.platCurrencySymbol }} {{ i.weekSportMin }} 至
+									{{ i.weekSportMax > 0 ? `${useUserStore().getUserInfo.platCurrencySymbol} ${i.weekSportMax}` : "以上" }} = {{ i.weekSportBonus }}
+									{{ useUserStore().getUserInfo.platCurrencySymbol }}
 								</p>
 								<p>-流水统计时间：周六00:00时～周五 23:59时（7天） ﻿﻿礼金发放时间：每周六"</p>
 							</div>

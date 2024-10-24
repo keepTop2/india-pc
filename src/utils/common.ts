@@ -21,7 +21,7 @@ class Common {
 		TOKEN_MISSION: 10006,
 		//令牌错误
 		TOKEN_INVALID: 10007,
-		//登陆过期
+		//登录过期
 		LOGIN_EXPIRE: 10008,
 		//授权失败
 		Authorization_Failed: 10014,

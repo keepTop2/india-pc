@@ -18,7 +18,7 @@ enum ResCode {
 	TOKEN_INVALID = 10007,
 
 	/**
-	 * @description 登陆过期
+	 * @description 登录过期
 	 */
 	LOGIN_EXPIRE = 10008,
 

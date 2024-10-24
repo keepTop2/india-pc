@@ -8,12 +8,15 @@
 			<div class="experience">
 				<div class="fs_20 mb_5">{{ vipInfo.vipGradeName }}</div>
 				<div class="flex-alignCenter">
-					<span>升级所需经验:</span> <span>{{ vipInfo.currentVipExp }}/{{ vipInfo.upgradeVipExp }}</span>
+					<span>升级所需经验:</span> <span>{{ vipInfo.currentExp }}/{{ vipInfo.currentVipExp }}</span>
 					<ClickTooltip class="ml_5 curp" message="">
 						<template v-slot:icon>
 							<img src="../image/tooltip.png" alt="" class="tooltipImg" />
 						</template>
-						<template v-slot:message> 体育/电竞场馆投注1 $ = 2积分，其他场馆投注 1$=1积分，所有投注 均按当前汇率兑换为美元结算 </template>
+						<template v-slot:message>
+							体育/电竞场馆投注1 {{ useUserStore().getUserInfo.currencySymbol }} = {{ vipInfo.sportExe }}积分，其他场馆投注 1{{ useUserStore().getUserInfo.currencySymbol }} =
+							1积分，所有投注 均按当前汇率兑换为美元结算
+						</template>
 					</ClickTooltip>
 				</div>
 			</div>
@@ -27,15 +30,15 @@
 					<div
 						class="value"
 						:style="{
-							width: (vipInfo.currentVipExp / vipInfo.upgradeVipExp) * 100 + '%',
-							background: vipInfo.currentVipExp / vipInfo.upgradeVipExp == 0 ? 'rgba(0,0,0,0)' : 'var(--Theme)',
+							width: (vipInfo.currentExp / vipInfo.currentVipExp) * 100 + '%',
+							background: vipInfo.currentExp / vipInfo.currentVipExp == 0 ? 'rgba(0,0,0,0)' : 'var(--Theme)',
 						}"
 					>
 						<div class="progressValue">
-							<div>{{ ((vipInfo.currentVipExp / vipInfo.upgradeVipExp) * 100 || 0).toFixed(2) }}%</div>
+							<div>{{ ((vipInfo.currentExp / vipInfo.currentVipExp) * 100 || 0).toFixed(2) }}%</div>
 							<img src="../image/jiantou.png" alt="" />
 						</div>
-						<img src="../image/progressIcon.png" alt="" v-if="vipInfo.currentVipExp / vipInfo.upgradeVipExp > 0" />
+						<img src="../image/progressIcon.png" alt="" v-if="vipInfo.currentExp / vipInfo.currentVipExp > 0" />
 					</div>
 				</div>
 				<div class="levelIcon">
@@ -59,6 +62,7 @@ import rank2 from "../image/rank2.png";
 import rank3 from "../image/rank3.png";
 import rank4 from "../image/rank4.png";
 import rank5 from "../image/rank5.png";
+import { useUserStore } from "/@/stores/modules/user";
 const getViplevelImg = (vipRankCode) => {
 	return vipRankCode == 1 ? level1 : vipRankCode == 2 ? level2 : vipRankCode == 3 ? level3 : vipRankCode == 4 ? level4 : vipRankCode == 5 ? level4 : level5;
 };

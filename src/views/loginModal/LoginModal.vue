@@ -7,7 +7,7 @@
 		<div class="login_right_form">
 			<!-- 登录标题 -->
 			<div class="login_text fs_16 mb_20">
-				<span>{{ $t(`login['登陆']`) }}</span>
+				<span>{{ $t(`login['登录']`) }}</span>
 			</div>
 
 			<!-- 登录表单 -->
@@ -64,7 +64,7 @@
 				<!-- 登录按钮 -->
 				<div class="mt_40 mb_12">
 					<button class="common_btn fs_12" type="button" @click="onLogin" :disabled="disabledBtn || !isOnloadScript">
-						{{ $t(`login['登陆']`) }}
+						{{ $t(`login['登录']`) }}
 					</button>
 				</div>
 
