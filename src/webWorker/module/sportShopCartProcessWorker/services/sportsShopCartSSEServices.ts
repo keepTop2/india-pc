@@ -10,6 +10,7 @@ import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourc
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 
 import { SportShopCartProcessWorkerApi, WorkerName } from "../../../../enum/webworkerEnum/workerTransferEnum";
+import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
 // import { WebResponse } from "/@/models/commonInterface";
 import senDataMain from "/@/webWorker/module/sportShopCartProcessWorker/sportShopCartProcessWorker";
 
@@ -26,6 +27,7 @@ export default (function () {
 			//数据返回拼装
 			const workerToViewData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerApi> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
+				controllerName: WebWorkerControllerE.SportsShopCartSSEController,
 				apiName: data.cartType === undefined ? SportShopCartProcessWorkerApi.sportsShopCartViewChanges : SportShopCartProcessWorkerApi.championShopCartViewChanges,
 				data: {
 					cartType: data.cartType,

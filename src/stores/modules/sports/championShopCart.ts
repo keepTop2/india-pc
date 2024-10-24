@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { i18n } from "/@/i18n/index";
 import workerManage from "/@/webWorker/workerManage";
 import { SportShopCartProcessWorkerApi, WorkerName } from "../../../enum/webworkerEnum/workerTransferEnum";
+import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
@@ -199,6 +200,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 			};
 			const viewsToWorkData: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
+				controllerName: WebWorkerControllerE.SportsShopCartSSEController,
 				apiName: SportShopCartProcessWorkerApi.sportsShopCartViewChanges,
 				data: params,
 			};
@@ -242,6 +244,7 @@ export const useSportsBetChampionStore = defineStore("sportsBetChampion", {
 			const viewsToWorkData: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
 				apiName: SportShopCartProcessWorkerApi.championShopCartViewChanges,
+				controllerName: WebWorkerControllerE.SportsShopCartSSEController,
 				data: params,
 			};
 			//发送SSE指令到线程管理器
