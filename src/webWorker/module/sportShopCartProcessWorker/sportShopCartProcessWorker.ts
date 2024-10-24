@@ -16,28 +16,28 @@ export default (function () {
 		const Controller = WebWorkerControllerFactory.createController(jsonData.controllerName);
 		Controller.handleRequest(jsonData);
 
-		console.log("第四步 体育线程收到了数据 到对应controller", jsonData);
-		//收到体育sportEventSource 指令
-		if (jsonData.apiName == SportShopCartProcessWorkerApi.sportsShopCartViewChanges) {
-			const data: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi>;
-			const params: OpenSportEventSourceParams = {
-				...data.data,
-			};
-			SportEventSourceController.startSEE(params);
-		}
+		// console.log("第四步 体育线程收到了数据 到对应controller", jsonData);
+		// //收到体育sportEventSource 指令
+		// if (jsonData.apiName == SportShopCartProcessWorkerApi.sportsShopCartViewChanges) {
+		// 	const data: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi>;
+		// 	const params: OpenSportEventSourceParams = {
+		// 		...data.data,
+		// 	};
+		// 	SportEventSourceController.startSEE(params);
+		// }
 
-		//收到冠军购物车 championShopCartViewChanges 指令
-		if (jsonData.apiName == SportShopCartProcessWorkerApi.championShopCartViewChanges) {
-			const data: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi>;
-			const params: OpenSportEventSourceParams = {
-				...data.data,
-			};
-			if (jsonData.data.cartType == "0") {
-				SportEventSourceController.startSEE(params);
-			} else if (jsonData.data.cartType == "1") {
-				SportEventSourceController.startOutrightSEE(params);
-			}
-		}
+		// //收到冠军购物车 championShopCartViewChanges 指令
+		// if (jsonData.apiName == SportShopCartProcessWorkerApi.championShopCartViewChanges) {
+		// 	const data: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi>;
+		// 	const params: OpenSportEventSourceParams = {
+		// 		...data.data,
+		// 	};
+		// 	if (jsonData.data.cartType == "0") {
+		// 		SportEventSourceController.startSEE(params);
+		// 	} else if (jsonData.data.cartType == "1") {
+		// 		SportEventSourceController.startOutrightSEE(params);
+		// 	}
+		// }
 	};
 
 	/**
