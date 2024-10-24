@@ -115,6 +115,7 @@ export function useToolsHooks() {
 			language: SportsCommonFn.getSportLanguage(),
 		};
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sidebarWorker;
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.controllerName = WebWorkerControllerE.SidebarEventControllers;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerApi.sidebarEventSource;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportsEventDetailPush.openEvents((eventId as number) || id), params);
 		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
@@ -132,6 +133,7 @@ export function useToolsHooks() {
 			language: SportsCommonFn.getSportLanguage(),
 		};
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sidebarWorker;
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.controllerName = WebWorkerControllerE.SidebarEventControllers;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerApi.sidebarEventSource;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportsEventDetailPush.openMarkets((eventId as number) || id), params);
 		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
@@ -154,6 +156,7 @@ export function useToolsHooks() {
 				language: SportsCommonFn.getSportLanguage(),
 			};
 			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sidebarWorker;
+			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.controllerName = WebWorkerControllerE.SidebarEventControllers;
 			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerApi.sidebarEventSource;
 			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, promotionsEventsSSEPush.openEvents(eventIds as string), params);
 			pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);

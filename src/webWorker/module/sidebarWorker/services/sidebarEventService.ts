@@ -12,6 +12,7 @@ import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourc
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 
 import { SportViewProcessWorkerApi, WorkerCommonCommanApi, WorkerName } from "../../../../enum/webworkerEnum/workerTransferEnum";
+import {WebWorkerControllerE} from '/@/enum/webworkerEnum/webworkerControllerE'
 import { WebResponse } from "/@/models/commonInterface";
 import senDataMain from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorker";
 import viewSportDataU from "/@/webWorker/module/utils/viewSportDataU";
@@ -67,6 +68,7 @@ export default (function () {
 			//数据返回拼装
 			const workerToViewData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerApi> = {
 				workerName: WorkerName.sidebarWorker,
+				controllerName:WebWorkerControllerE.SidebarEventControllers
 				apiName: SportViewProcessWorkerApi.sidebarEventSource,
 				data: {
 					webToPushApi: data.webToPushApi,

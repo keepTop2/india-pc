@@ -19,17 +19,19 @@ class SportsShopCartSSEController implements WorkerControllerI {
 	/**
 	 * @description sse 实例
 	 */
-	public static sourceInstance: EventSource | null = null;
+	public sourceInstance: EventSource | null = null;
 
-	public static timer: null | NodeJS.Timeout = null;
+	public timer: null | NodeJS.Timeout = null;
 
 	/**
 	 * @description 业务处理
 	 */
-	private static sportEventSourceService = new SportsShopCartSSEServices();
+	public sportEventSourceService = new SportsShopCartSSEServices();
 
 	// 体育购物车推送开启
-	public static startSEE = ({ cartType, sportPushApi, webToPushApi, params = {}, version = "V1", apiUrl, language, token }: OpenSportEventSourceParams) => {
+	public sportsShopCartViewChanges = (workerTransferData: WorkerTransfer<any, any>) => {
+		const { cartType, sportPushApi, webToPushApi, params = {}, version = "V1", apiUrl, language, token } = workerTransferData.data;
+
 		//返回数据
 		const resPonsedata: WebResponse = {};
 		//连接必传的参数
@@ -65,13 +67,18 @@ class SportsShopCartSSEController implements WorkerControllerI {
 				this.timer = null;
 			}
 			this.timer = setTimeout(() => {
-				this.startSEE({ sportPushApi, webToPushApi, params, version, apiUrl, language, token });
+				this.sportsShopCartViewChanges(workerTransferData);
 			}, 5000);
 		};
 	};
 
 	// 冠军推送开启
-	public static startOutrightSEE = ({ cartType, sportPushApi, webToPushApi, params = {}, version = "V1", apiUrl, language, token }: OpenSportEventSourceParams) => {
+	public startOutrightSEE = (workerTransferData: WorkerTransfer<any, any>) => {
+		if (workerTransferData.data.cartType == "0") {
+			this.sportsShopCartViewChanges(workerTransferData);
+			return;
+		}
+		const { cartType, sportPushApi, webToPushApi, params = {}, version = "V1", apiUrl, language, token } = workerTransferData.data;
 		//返回数据
 		const resPonsedata: WebResponse = {};
 		//连接必传的参数
@@ -104,7 +111,7 @@ class SportsShopCartSSEController implements WorkerControllerI {
 				this.timer = null;
 			}
 			this.timer = setTimeout(() => {
-				this.startSEE({ sportPushApi, webToPushApi, params, version, apiUrl, language, token });
+				this.sportsShopCartViewChanges(workerTransferData);
 			}, 5000);
 		};
 	};

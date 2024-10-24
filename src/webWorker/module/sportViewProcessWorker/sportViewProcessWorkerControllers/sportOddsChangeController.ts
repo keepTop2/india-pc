@@ -19,7 +19,7 @@ class SportOddsChangeController implements WorkerControllerI {
 	/**
 	 * @description 清理赔率状态
 	 */
-	public clearOddsChange(data: OddsChangeParam) {
+	public sportOddsChange(data: OddsChangeParam) {
 		/**
 		 * @description 处理冠军清理状态逻辑
 		 */

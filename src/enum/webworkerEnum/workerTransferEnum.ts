@@ -47,7 +47,7 @@ export enum WorkerCommonCommanApi {
  */
 export enum SportViewProcessWorkerApi {
 	/**
-	 * @description 体育视图处理线程 eventSource 指令
+	 * @description 体育视图处理线程 eventSource 接口
 	 */
 	sportEventSource = "sportEventSource",
 

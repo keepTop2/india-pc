@@ -15,6 +15,7 @@ import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { sportTabPushActions, sportsEventDetailPush } from "/@/views/sports/utils/sportsMap/sportsSSERequestMap";
 import { WorkerName, SportViewProcessWorkerApi } from "../../../enum/webworkerEnum/workerTransferEnum";
+import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
 import pubSub from "/@/pubSub/pubSub";
 import moment from "moment";
 import { betTypes } from "/@/views/sports/utils/sportsMap/sportsBetType";
@@ -172,6 +173,7 @@ export function useSportEvents() {
 	 */
 	const sendWorkerCommand = (action: any, params = {}, additionalParams = {}) => {
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.controllerName = WebWorkerControllerE.SportEventSourceController;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerApi.sportEventSource;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, action, params, additionalParams);
 		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);

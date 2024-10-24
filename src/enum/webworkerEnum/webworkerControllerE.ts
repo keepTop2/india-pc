@@ -16,28 +16,28 @@ export enum WebWorkerControllerE {
 	 */
 	SportOddsChangeController = "SportOddsChangeController",
 
-	// /**
-	//  * ---------------------------------------
-	//  */
+	/**
+	 * ---------------------------------------
+	 */
 
-	// /**
-	//  * sportShopCartProcessWorker 体育购物车线程 控制器
-	//  */
+	/**
+	 * sportShopCartProcessWorker 体育购物车线程 控制器
+	 */
 
-	// /**
-	//  * @description 体育购物车 冠军 控制器
-	//  */
-	// SportsShopCartSSEController = "SportsShopCartSSEController",
+	/**
+	 * @description 体育购物车 冠军 控制器
+	 */
+	SportsShopCartSSEController = "SportsShopCartSSEController",
 
-	// /**
-	//  * ---------------------------------------
-	//  */
+	/**
+	 * ---------------------------------------
+	 */
 
-	// /**
-	//  *sidebarWorker
-	//  */
-	// SidebarEventControllers = "SidebarEventControllers",
-	// /**
-	//  * ---------------------------------------
-	//  */
+	/**
+	 *sidebarWorker
+	 */
+	SidebarEventControllers = "SidebarEventControllers",
+	/**
+	 * ---------------------------------------
+	 */
 }

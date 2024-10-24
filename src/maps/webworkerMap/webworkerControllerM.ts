@@ -4,6 +4,8 @@ import { WorkerControllerI } from "/@/interface/WorkerControllerI";
 
 import SportEventSourceController from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorkerControllers/sportEventSourceController";
 import SportOddsChangeController from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorkerControllers/sportOddsChangeController";
+import SportsShopCartSSEController from "/@/webWorker/module/sportShopCartProcessWorker/sportShopCartProcessWorkerControllers/sportsShopCartSSEController";
+import SidebarEventControllers from "/@/webWorker/module/sidebarWorker/sidebarWorkerControllers/sidebarEventControllers";
 /**
  * @description 控制器配置类型定义
  */
@@ -17,6 +19,8 @@ type WebworkerControllerM = {
 const webworkerControllerM: WebworkerControllerM = {
 	[WebWorkerControllerE.SportEventSourceController]: SportEventSourceController,
 	[WebWorkerControllerE.SportOddsChangeController]: SportOddsChangeController,
+	[WebWorkerControllerE.SportsShopCartSSEController]: SportsShopCartSSEController,
+	[WebWorkerControllerE.SidebarEventControllers]: SidebarEventControllers,
 };
 
 export default webworkerControllerM;

@@ -26,6 +26,7 @@ import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 import { OddsChangeParam, SportViewModels, WorkerToviewSport, WorkerToViewSportsShopCart } from "/@/views/sports/models/sportViewModels";
 import { SportViewProcessWorkerApi, WorkerName, WorkerCommonCommanApi, SportShopCartProcessWorkerApi } from "../../../enum/webworkerEnum/workerTransferEnum";
+import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import { useLoading } from "/@/directive/loading/hooks";
 import viewSportPubSubEventData from "./viewSportPubSubEventData";
@@ -146,6 +147,7 @@ export default function useSportPubSubEvents() {
 	const clearSportsOddsChange = (data: OddsChangeParam) => {
 		//线程名称 体育视图处理线程
 		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
+		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.controllerName = WebWorkerControllerE.SportOddsChangeController;
 		//线程指令 更新赔率sportOddsChange 指令
 		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerApi.sportOddsChange;
 		//清空参数

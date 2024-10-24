@@ -24,10 +24,7 @@ export default (function () {
 		// // console.error("第四步 体育线程收到了数据 到对应controller", jsonData);
 		// //收到体育sportEventSource 指令
 		// if (jsonData.apiName == SportViewProcessWorkerApi.sportEventSource) {
-		// 	const data: WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi> = jsonData as WorkerTransfer<
-		// 		OpenSportEventSourceParams,
-		// 		SportViewProcessWorkerApi
-		// 	>;
+		// 	const data: WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi>;
 		// 	const params: OpenSportEventSourceParams = {
 		// 		...data.data,
 		// 	};
@@ -36,10 +33,7 @@ export default (function () {
 		// //收到体育赔率变更指令
 		// else if (jsonData.apiName == SportViewProcessWorkerApi.sportOddsChange) {
 		// 	// console.log("收到体育赔率变更指令");
-		// 	const data: WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi> = jsonData as WorkerTransfer<
-		// 		OpenSportEventSourceParams,
-		// 		SportViewProcessWorkerApi
-		// 	>;
+		// 	const data: WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi>;
 		// 	const params: OpenSportEventSourceParams = {
 		// 		...data.data,
 		// 	};

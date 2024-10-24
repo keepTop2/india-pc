@@ -3,6 +3,7 @@ import { SportEventSourceInstanceModel, OpenSportEventSourceParams, SportEventSo
 import qs from "qs";
 import { WebResponse } from "/@/models/commonInterface";
 import ResCode from "/@/utils/resCode";
+import pubSub from "/@/pubSub/pubSub";
 /**
  * @description SSE协议处理工具类
  */
@@ -211,6 +212,7 @@ class SSEUtil {
 				payload: JSON.parse(event.data).payload,
 			};
 			// console.warn("第五步 controller到对应service");
+			pubSub.publish(pubSub.PubSubEvents.SportEvents.sseDataProcess.eventName, data);
 			// this.sportEventSourceService.eventSourceOnMessageProcess(data);
 		};
 	}
