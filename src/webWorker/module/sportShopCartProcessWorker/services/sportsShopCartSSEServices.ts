@@ -26,8 +26,7 @@ export default (function () {
 			//数据返回拼装
 			const workerToViewData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
-				commandType:
-					data.cartType === undefined ? SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges : SportShopCartProcessWorkerCommandType.championShopCartViewChanges,
+				apiName: data.cartType === undefined ? SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges : SportShopCartProcessWorkerCommandType.championShopCartViewChanges,
 				data: {
 					cartType: data.cartType,
 					webToPushApi: data.webToPushApi,
@@ -45,7 +44,7 @@ export default (function () {
 			// console.log("第六步 对应service处理对应业务");
 			const workerToViewData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
-				commandType: SportShopCartProcessWorkerCommandType.championShopCartViewChanges,
+				apiName: SportShopCartProcessWorkerCommandType.championShopCartViewChanges,
 				data: {
 					cartType: data.cartType,
 					webToPushApi: data.webToPushApi,

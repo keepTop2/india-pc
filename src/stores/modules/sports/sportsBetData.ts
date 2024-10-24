@@ -265,7 +265,7 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 			};
 			const viewsToWorkData: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerCommandType> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
-				commandType: SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges,
+				apiName: SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges,
 				data: params,
 			};
 			//发送SSE指令到线程管理器

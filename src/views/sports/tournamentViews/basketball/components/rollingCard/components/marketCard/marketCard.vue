@@ -1,67 +1,65 @@
 <template>
 	<div class="market-content">
-		<!-- 判断是否有卡片数据 -->
-		<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
-			<!-- 独赢类型 -->
-			<template v-if="cardType == 'capot'">
-				<div class="label">{{ cardData?.keyName }}</div>
-				<!-- 市场状态正常时显示赔率 -->
-				<template v-if="market.marketStatus === 'running'">
-					<div class="value">
-						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					</div>
-					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+		<BetSelector :value="cardData?.oddsPrice?.decimalPrice" :isRun="market.marketStatus === 'running'">
+			<!-- 判断是否有卡片数据 -->
+			<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
+				<!-- 独赢类型 -->
+				<template v-if="cardType == 'capot'">
+					<div class="label">{{ cardData?.keyName }}</div>
+					<!-- 市场状态正常时显示赔率 -->
+					<template v-if="market.marketStatus === 'running'">
+						<div class="value">
+							<span>{{ cardData?.oddsPrice?.decimalPrice }}</span>
+						</div>
+					</template>
+					<!-- 市场状态锁定时显示锁图标 -->
+					<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 				</template>
-				<!-- 市场状态锁定时显示锁图标 -->
-				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
-			</template>
 
-			<!-- 让球类型 -->
-			<template v-else-if="cardType == 'handicap'">
-				<div class="label">
-					<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
-				</div>
-				<!-- 市场状态正常时显示赔率 -->
-				<template v-if="market.marketStatus === 'running'">
-					<div class="value">
-						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
+				<!-- 让球类型 -->
+				<template v-else-if="cardType == 'handicap'">
+					<div class="label">
+						<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
 					</div>
-					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					<!-- 市场状态正常时显示赔率 -->
+					<template v-if="market.marketStatus === 'running'">
+						<div class="value">
+							<span>{{ cardData?.oddsPrice?.decimalPrice }}</span>
+						</div>
+					</template>
+					<!-- 市场状态锁定时显示锁图标 -->
+					<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 				</template>
-				<!-- 市场状态锁定时显示锁图标 -->
-				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
-			</template>
 
-			<!-- 大小类型 -->
-			<template v-else-if="cardType == 'magnitude'">
-				<div class="label">
-					<span>{{ cardData.keyName }}</span>
-					<span>{{ cardData?.point }}</span>
-				</div>
-				<!-- 市场状态正常时显示赔率 -->
-				<template v-if="market.marketStatus === 'running'">
-					<div class="value">
-						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
+				<!-- 大小类型 -->
+				<template v-else-if="cardType == 'magnitude'">
+					<div class="label">
+						<span>{{ cardData.keyName }}</span>
+						<span>{{ cardData?.point }}</span>
 					</div>
-					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					<!-- 市场状态正常时显示赔率 -->
+					<template v-if="market.marketStatus === 'running'">
+						<div class="value">
+							<span>{{ cardData?.oddsPrice?.decimalPrice }}</span>
+						</div>
+					</template>
+					<!-- 市场状态锁定时显示锁图标 -->
+					<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 				</template>
-				<!-- 市场状态锁定时显示锁图标 -->
-				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
-			</template>
-		</div>
-		<!-- 当没有卡片数据时显示 -->
-		<div v-else class="market-item">
-			<div class="noData">-</div>
-		</div>
+			</div>
+			<!-- 当没有卡片数据时显示 -->
+			<div v-else class="market-item">
+				<div class="noData">-</div>
+			</div>
+		</BetSelector>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
-import { RiseOrFall } from "/@/components/Sport/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
-
+import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
 const emit = defineEmits(["oddsChange"]);
 
 // 定义传入属性的类型

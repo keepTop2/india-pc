@@ -9,6 +9,8 @@ import layout from "../layout/layout.vue";
 import userRoutes from "/@/router/modules/userMenu";
 import activityRoutes from "/@/router/modules/activity";
 import sportsRoutes from "/@/router/modules/sports/sports";
+
+import walletLayout from "/@/router/modules/wallet";
 // 登录注册弹窗
 const routes = [
 	//首页模块路由
@@ -113,8 +115,11 @@ const routes = [
 					idx: 1,
 				},
 			},
+			//钱包路由
+			walletLayout,
 		],
 	},
+
 	...errorPage,
 	{
 		path: "/:pathMatch(.*)",
@@ -125,6 +130,22 @@ const routes = [
 const router: Router = createRouter({
 	history: createWebHashHistory(),
 	routes: routes as any,
+	scrollBehavior(to, from, savedPosition) {
+		// 如果有保存的滚动位置（比如返回前进浏览器时）
+		if (savedPosition) {
+			return savedPosition;
+		} else if (from.meta.scrollTop !== undefined) {
+			// 在体育模块导航栏headerMenuNav、headerMenuCondition组件中记录了scrollTop
+			const scrollDom = document.querySelector(".mainArea");
+			if (scrollDom) {
+				scrollDom.scrollTop = from.meta.scrollTop as number;
+				delete from.meta.scrollTop;
+			}
+		} else {
+			// 记录自定义的滚动行为，跳转到指定位置
+			return { top: 0 };
+		}
+	},
 });
 router.beforeEach(async (to, from) => {
 	document.querySelector(".mainArea")?.scrollTo({ top: 0 });

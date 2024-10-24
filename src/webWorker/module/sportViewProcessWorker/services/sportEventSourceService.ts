@@ -63,7 +63,7 @@ export default (function () {
 			//数据返回拼装
 			const workerToViewData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = {
 				workerName: WorkerName.sportViewProcessWorker,
-				commandType: SportViewProcessWorkerCommandType.sportEventSource,
+				apiName: SportViewProcessWorkerCommandType.sportEventSource,
 				data: {
 					webToPushApi: data.webToPushApi,
 					sportPushApi: data.sportPushApi,
@@ -99,7 +99,7 @@ export default (function () {
 			//数据返回拼装
 			const workerToViewData: WorkerTransfer<WebResponse, WorkerCommonCommadnType> = {
 				workerName: WorkerName.sportViewProcessWorker,
-				commandType: WorkerCommonCommadnType.stopLoading,
+				apiName: WorkerCommonCommadnType.stopLoading,
 				data: data,
 			};
 			senDataMain(workerToViewData);

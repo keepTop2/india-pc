@@ -33,7 +33,7 @@ export function useToolsHooks() {
 			const { sportType, eventId } = eventInfo;
 			//判断是否在同一场比赛，切换比分跟直播
 			if (sportType === (eViewData.sportType || pViewData.sportType) && eventId === (eViewData.eventId || pViewData.eventId)) {
-				isVideo && switchEventVideoSource(eventInfo);
+				isVideo ? switchEventVideoSource(eventInfo) : SidebarStore.clearLiveUrl();
 				return;
 			}
 		}
@@ -113,7 +113,7 @@ export function useToolsHooks() {
 			language: SportsCommonFn.getSportLanguage(),
 		};
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sidebarWorker;
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sidebarEventSource;
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerCommandType.sidebarEventSource;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportsEventDetailPush.openEvents((eventId as number) || id), params);
 		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 	};
@@ -130,7 +130,7 @@ export function useToolsHooks() {
 			language: SportsCommonFn.getSportLanguage(),
 		};
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sidebarWorker;
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sidebarEventSource;
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerCommandType.sidebarEventSource;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportsEventDetailPush.openMarkets((eventId as number) || id), params);
 		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 	};
@@ -152,7 +152,7 @@ export function useToolsHooks() {
 				language: SportsCommonFn.getSportLanguage(),
 			};
 			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sidebarWorker;
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sidebarEventSource;
+			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerCommandType.sidebarEventSource;
 			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, promotionsEventsSSEPush.openEvents(eventIds as string), params);
 			pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 		}

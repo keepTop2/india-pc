@@ -8,6 +8,7 @@ import { i18n } from "/@/i18n/index";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import { convertUtcToUtc5AndFormatMD, convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import common from "/@/utils/common";
+import { RouteLocationNormalized } from "vue-router";
 const $: any = i18n.global;
 dayjs.extend(duration); // 启用 duration 插件
 dayjs.extend(relativeTime);
@@ -213,7 +214,8 @@ class SportsCommonFn {
 		if (!event) return;
 		if (event.sportType === 1) {
 			const { gameInfo, eventStatus, globalShowTime } = this.safeAccessMultiple(event, [["gameInfo"], ["eventStatus"], ["globalShowTime"]]);
-			const { livePeriod, delayLive, isHt } = gameInfo;
+			const { livePeriod, delayLive, isHt, seconds } = gameInfo;
+
 			if (eventStatus == "closed") {
 				return $.t("sports['比赛已关闭']");
 			}
@@ -228,10 +230,10 @@ class SportsCommonFn {
 					return $.t("sports['延迟开赛']");
 				}
 				if (livePeriod == 1 && !delayLive && !isHt) {
-					return $.t("sports['上半场']");
+					return $.t("sports['上半场']") + " " + computerSeconds(seconds);
 				}
 				if (livePeriod == 2 && !delayLive && !isHt) {
-					return $.t("sports['下半场']");
+					return $.t("sports['下半场']") + " " + computerSeconds(seconds);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -256,13 +258,13 @@ class SportsCommonFn {
 					return $.t("sports['加时赛']");
 				}
 				if (!delayLive && !isHt && numMap.get(livePeriod)) {
-					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + computerSeconds(seconds);
+					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + " " + computerSeconds(seconds);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
 		} else if (event.sportType === 3) {
 			const { gameInfo, eventStatus, globalShowTime } = this.safeAccessMultiple(event, [["gameInfo"], ["eventStatus"], ["globalShowTime"]]);
-			const { livePeriod, delayLive, isHt } = gameInfo;
+			const { livePeriod, delayLive, isHt, seconds } = gameInfo;
 			if (eventStatus == "closed") {
 				return $.t("sports['比赛已关闭']");
 			}
@@ -273,17 +275,8 @@ class SportsCommonFn {
 				if (livePeriod == 0 && !delayLive && isHt) {
 					return $.t("sports['中场休息']");
 				}
-				if (livePeriod == 1 && !delayLive && !isHt) {
-					return $.t("sports['第一节']");
-				}
-				if (livePeriod == 2 && !delayLive && !isHt) {
-					return $.t("sports['第二节']");
-				}
-				if (livePeriod == 3 && !delayLive && !isHt) {
-					return $.t("sports['第三节']");
-				}
-				if (livePeriod == 4 && !delayLive && !isHt) {
-					return $.t("sports['第四节']");
+				if (!delayLive && !isHt && numMap.get(livePeriod)) {
+					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + computerSeconds(seconds);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -699,6 +692,15 @@ class SportsCommonFn {
 				}
 			}
 		};
+	}
+
+	/**
+	 * .mainArea节点
+	 * 体育模块点击导航栏时，记录当前页面scrollTop到route.mate.scrollTop中，优化用户体验
+	 */
+	public static saveScrollTop(route: RouteLocationNormalized) {
+		const scrollDom = document.querySelector(".mainArea") as HTMLElement;
+		route.meta.scrollTop = scrollDom.scrollTop;
 	}
 }
 

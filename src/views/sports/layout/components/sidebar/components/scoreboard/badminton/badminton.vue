@@ -29,7 +29,7 @@
 							</div>
 						</div>
 						<div class="value">
-							<template v-for="(score, index) in homeScores.slice(0, gameSession + 1)" :key="index">
+							<template v-for="(score, index) in homeScores.slice(0, gameSession)" :key="index">
 								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
 									<span v-if="isPeriodActive(index + 1)">
 										{{ score }}
@@ -58,7 +58,7 @@
 							</div>
 						</div>
 						<div class="value">
-							<template v-for="(score, index) in awayScores.slice(0, gameSession + 1)" :key="index">
+							<template v-for="(score, index) in awayScores.slice(0, gameSession)" :key="index">
 								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
 									<span v-if="isPeriodActive(index + 1)">
 										{{ score }}
