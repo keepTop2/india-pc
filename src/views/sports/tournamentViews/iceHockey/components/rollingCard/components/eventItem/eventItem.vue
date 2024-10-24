@@ -127,25 +127,19 @@ const linkDetail = () => {
 		eventId: props.event.eventId,
 		dataIndex: props.dataIndex,
 	};
+
 	gotoEventDetail(params, SportTypeEnum.IceHockey);
 };
 
 // 获取侧边栏图标
 const getIconName = (tool: any, events: any, index: number) => {
-	const { eventId } = SidebarStore.getEventsInfo;
-	const isEventActive = events.eventId === eventId;
-	if (!isEventActive) return tool.iconName;
-
-	let activeIndex = -1;
-	switch (SidebarStore.sidebarStatus) {
-		case "scoreboard":
-			activeIndex = 0;
-			break;
-		case "live":
-			activeIndex = 1;
-			break;
+	const { eventId } = SidebarStore.getEventsInfo; // 获取当前事件 ID
+	const isEventActive = events.eventId === eventId; // 判断事件是否活跃
+	if (!isEventActive) {
+		return tool.iconName; // 非活跃状态返回默认图标
 	}
-	return index === activeIndex ? tool.iconName : tool.iconName_active;
+	const activeIndex = SidebarStore.sidebarStatus === "scoreboard" ? 0 : 1; // 根据侧边栏状态确定活跃索引
+	return index === activeIndex ? tool.iconName_active : tool.iconName; // 返回相应的图标名称
 };
 
 /**

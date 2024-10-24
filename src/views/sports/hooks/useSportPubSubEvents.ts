@@ -147,7 +147,7 @@ export default function useSportPubSubEvents() {
 		//线程名称 体育视图处理线程
 		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
 		//线程指令 更新赔率sportOddsChange 指令
-		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sportOddsChange;
+		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerCommandType.sportOddsChange;
 		//清空参数
 		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OddsChangeParam;
 		//参数赋值
@@ -164,7 +164,7 @@ export default function useSportPubSubEvents() {
 		if (event.workerName == WorkerName.sportViewProcessWorker) {
 			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;
 			//体育视图处理线程 eventSource 指令
-			if (processData.commandType == SportViewProcessWorkerCommandType.sportEventSource) {
+			if (processData.apiName == SportViewProcessWorkerCommandType.sportEventSource) {
 				// 派发到 viewSportPubSubEventData 数据中心
 				// console.log(processData.data.webToPushApi, processData.data.state.viewSportData);
 				viewSportPubSubEventData.setSportData(processData.data.state.viewSportData);
@@ -178,18 +178,18 @@ export default function useSportPubSubEvents() {
 				}
 			}
 			// 体育视图处理线程 赔率变更 指令
-			else if (processData.commandType == SportViewProcessWorkerCommandType.sportOddsChange) {
+			else if (processData.apiName == SportViewProcessWorkerCommandType.sportOddsChange) {
 				console.log("赔率处理");
 			}
 			//体育视图处理线程 取消loading 指令
-			else if (processData.commandType == WorkerCommonCommadnType.stopLoading) {
+			else if (processData.apiName == WorkerCommonCommadnType.stopLoading) {
 				// stopLoading();
 			}
 		}
 		// 侧边栏推回的数据
 		else if (event.workerName == WorkerName.sidebarWorker) {
 			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;
-			if (processData.commandType == SportViewProcessWorkerCommandType.sidebarEventSource) {
+			if (processData.apiName == SportViewProcessWorkerCommandType.sidebarEventSource) {
 				console.log("收到侧边数据执行了", processData.data.state);
 				viewSportPubSubEventData.setSidebarData(processData.data.state.viewSportData);
 			}
@@ -202,7 +202,7 @@ export default function useSportPubSubEvents() {
 				SportShopCartProcessWorkerCommandType
 			>;
 			console.log("processData", processData);
-			if (processData.commandType == SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges) {
+			if (processData.apiName == SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges) {
 				if (!ShopCatControlStore.getShopCatShow) return; // 弹窗关闭停止对应任务
 
 				if (sportsBetEvent.sportsBetEventData.length == 1) {
@@ -218,7 +218,7 @@ export default function useSportPubSubEvents() {
 				}
 			}
 			// 先屏蔽冠军购物车推送的判断
-			if (processData.commandType == SportShopCartProcessWorkerCommandType.championShopCartViewChanges) {
+			if (processData.apiName == SportShopCartProcessWorkerCommandType.championShopCartViewChanges) {
 				if (!ShopCatControlStore.getShopCatShow) return; // 弹窗关闭停止对应任务
 
 				if (processData.data.cartType === "0") {

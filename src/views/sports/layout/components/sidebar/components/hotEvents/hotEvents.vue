@@ -23,23 +23,22 @@
 							<div class="team-name">{{ item.teamInfo?.homeName }}</div>
 						</div>
 						<div class="right">
-							<div
-								class="market-item"
-								:class="{ isBright: isBright(item.markets[3], item.markets[3].selections[0]) }"
-								@click="onSetSportsEventData(item, item.markets[3], item.markets[3].selections[0])"
-								v-if="item.markets && item.markets[3]"
-							>
-								<div class="label">
-									<span>{{ item.markets[3].selections[0]?.keyName }}</span>
-									<span>{{ item.markets[3].selections[0]?.point }}</span>
-								</div>
-								<div class="value">
-									<span :class="oddsClass(item)">{{ item.markets[3].selections[0]?.oddsPrice?.decimalPrice }}</span>
-									<div class="arrow-icon">
-										<RiseOrFall :status="oddsChange(item)" @animationEnd="item.oddsChange = ''" />
+							<BetSelector :value="item.markets[3].selections[0]?.oddsPrice?.decimalPrice">
+								<div
+									class="market-item"
+									:class="{ isBright: isBright(item.markets[3], item.markets[3].selections[0]) }"
+									@click="onSetSportsEventData(item, item.markets[3], item.markets[3].selections[0])"
+									v-if="item.markets && item.markets[3]"
+								>
+									<div class="label">
+										<span>{{ item.markets[3].selections[0]?.keyName }}</span>
+										<span>{{ item.markets[3].selections[0]?.point }}</span>
+									</div>
+									<div class="value">
+										<span>{{ item.markets[3].selections[0]?.oddsPrice?.decimalPrice }}</span>
 									</div>
 								</div>
-							</div>
+							</BetSelector>
 						</div>
 					</div>
 					<div class="event-team-info">
@@ -48,23 +47,22 @@
 							<div class="team-name">{{ item.teamInfo?.awayName }}</div>
 						</div>
 						<div class="right">
-							<div
-								class="market-item"
-								:class="{ isBright: isBright(item.markets[3], item.markets[3].selections[1]) }"
-								@click="onSetSportsEventData(item, item.markets[3], item.markets[3].selections[1])"
-								v-if="item.markets && item.markets[3]"
-							>
-								<div class="label">
-									<span>{{ item.markets[3].selections[1]?.keyName }}</span>
-									<span>{{ item.markets[3].selections[1]?.point }}</span>
-								</div>
-								<div class="value">
-									<span :class="oddsClass(item)">{{ item.markets[3].selections[1]?.oddsPrice?.decimalPrice }}</span>
-									<div class="arrow-icon">
-										<RiseOrFall :status="oddsChange(item)" @animationEnd="item.oddsChange = ''" />
+							<BetSelector :value="item.markets[3].selections[1]?.oddsPrice?.decimalPrice">
+								<div
+									class="market-item"
+									:class="{ isBright: isBright(item.markets[3], item.markets[3].selections[1]) }"
+									@click="onSetSportsEventData(item, item.markets[3], item.markets[3].selections[1])"
+									v-if="item.markets && item.markets[3]"
+								>
+									<div class="label">
+										<span>{{ item.markets[3].selections[1]?.keyName }}</span>
+										<span>{{ item.markets[3].selections[1]?.point }}</span>
+									</div>
+									<div class="value">
+										<span :class="oddsClass(item)">{{ item.markets[3].selections[1]?.oddsPrice?.decimalPrice }}</span>
 									</div>
 								</div>
-							</div>
+							</BetSelector>
 						</div>
 					</div>
 				</div>
@@ -75,7 +73,6 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { RiseOrFall } from "/@/components/Sport/index";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import SportsApi from "/@/api/sports/sports";
@@ -85,6 +82,7 @@ import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShop
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useCommonShopCat } from "/@/stores/modules/sports/commonShopCat";
 import { useRoute } from "vue-router";
+import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
 
 const commonShopCat = useCommonShopCat();
 const sportsBetEvent = useSportsBetEventStore();
@@ -162,8 +160,6 @@ const championMarketsSelect = computed(() => ChampionShopCartStore.getEventInfo)
  * @returns 是否高亮
  */
 const isBright = (market: { marketId: any; eventId: string }, selection: { key: any }) => {
-	console.log(sportsBetEvent.getEventInfo, market, selection, "marketsSelect.value===");
-
 	if (route.meta.name !== "champion") {
 		return marketsSelect.value[market.eventId as string]?.listKye == `${market.marketId}-${selection.key}`;
 	} else {

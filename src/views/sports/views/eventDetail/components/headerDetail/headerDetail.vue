@@ -198,6 +198,15 @@ const handleGoBack = () => {
 			color: var(--Warn);
 		}
 	}
+
+	:deep(.scoreboard-container) {
+		.header,
+		.row {
+			.value {
+				min-width: 300px !important;
+			}
+		}
+	}
 }
 
 .top {
