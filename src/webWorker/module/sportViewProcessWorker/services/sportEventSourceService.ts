@@ -110,17 +110,17 @@ class SportEventSourceService {
 		senDataMain(workerToViewData);
 	}
 
-	/**
-	 * @description 取消loading
-	 */
-	public cancelLoading(data: WebResponse) {
-		//数据返回拼装
-		const workerToViewData: WorkerTransfer<WebResponse, WorkerCommonCommanApi> = {
-			workerName: WorkerName.sportViewProcessWorker,
-			apiName: WorkerCommonCommanApi.stopLoading,
-			data: data,
-		};
-		senDataMain(workerToViewData);
-	}
+	// /**
+	//  * @description 取消loading
+	//  */
+	// public cancelLoading(data: WebResponse) {
+	// 	//数据返回拼装
+	// 	const workerToViewData: WorkerTransfer<WebResponse, WorkerCommonCommanApi> = {
+	// 		workerName: WorkerName.sportViewProcessWorker,
+	// 		apiName: WorkerCommonCommanApi.stopLoading,
+	// 		data: data,
+	// 	};
+	// 	senDataMain(workerToViewData);
+	// }
 }
 export default SportEventSourceService;

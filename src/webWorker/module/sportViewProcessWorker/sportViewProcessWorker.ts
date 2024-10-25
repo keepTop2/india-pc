@@ -1,8 +1,5 @@
 import { WorkerTransfer } from "/@/models/webWorkerModel";
-// import { SportViewProcessWorkerApi } from "../../../enum/webworkerEnum/workerTransferEnum";
-// import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
-// import sportEventSourceController from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorkerControllers/sportEventSourceController";
-// import sportOddsChangeController from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorkerControllers/sportOddsChangeController";
+
 //分割
 import WebWorkerControllerFactory from "/@/utils/webworkerUtils/WebWorkerControllerFactory";
 
@@ -15,30 +12,9 @@ export default (function () {
 	 */
 	onmessage = <Data, ApiName>(event: any) => {
 		const strData: string = new TextDecoder().decode(event.data);
-
 		const jsonData: WorkerTransfer<Data, ApiName> = JSON.parse(strData);
-
 		const Controller = WebWorkerControllerFactory.createController(jsonData.controllerName);
 		Controller.handleRequest(jsonData);
-
-		// // console.error("第四步 体育线程收到了数据 到对应controller", jsonData);
-		// //收到体育sportEventSource 指令
-		// if (jsonData.apiName == SportViewProcessWorkerApi.sportEventSource) {
-		// 	const data: WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi>;
-		// 	const params: OpenSportEventSourceParams = {
-		// 		...data.data,
-		// 	};
-		// 	sportEventSourceController.openSportEventSource(params);
-		// }
-		// //收到体育赔率变更指令
-		// else if (jsonData.apiName == SportViewProcessWorkerApi.sportOddsChange) {
-		// 	// console.log("收到体育赔率变更指令");
-		// 	const data: WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi> = jsonData as WorkerTransfer<OpenSportEventSourceParams, SportViewProcessWorkerApi>;
-		// 	const params: OpenSportEventSourceParams = {
-		// 		...data.data,
-		// 	};
-		// 	sportOddsChangeController.clearOddsChange(params);
-		// }
 	};
 
 	/**
