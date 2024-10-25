@@ -25,7 +25,8 @@ import { WebToPushApi, SportPushApi } from "/@/views/sports/enum/sportEnum/sport
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 import { OddsChangeParam, SportViewModels, WorkerToviewSport, WorkerToViewSportsShopCart } from "/@/views/sports/models/sportViewModels";
-import { SportViewProcessWorkerCommandType, WorkerName, WorkerCommonCommadnType, SportShopCartProcessWorkerCommandType } from "/@/enum/workerTransferEnum";
+import { SportViewProcessWorkerApi, WorkerName, WorkerCommonCommanApi, SportShopCartProcessWorkerApi } from "../../../enum/webworkerEnum/workerTransferEnum";
+import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import { useLoading } from "/@/directive/loading/hooks";
 import viewSportPubSubEventData from "./viewSportPubSubEventData";
@@ -146,8 +147,9 @@ export default function useSportPubSubEvents() {
 	const clearSportsOddsChange = (data: OddsChangeParam) => {
 		//线程名称 体育视图处理线程
 		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sportViewProcessWorker;
+		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.controllerName = WebWorkerControllerE.SportOddsChangeController;
 		//线程指令 更新赔率sportOddsChange 指令
-		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerCommandType.sportOddsChange;
+		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerApi.sportOddsChange;
 		//清空参数
 		pubsub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = {} as OddsChangeParam;
 		//参数赋值
@@ -162,9 +164,9 @@ export default function useSportPubSubEvents() {
 		console.log("第九步 视图收到线程管理器发送的数据", event);
 		//体育视图处理线程
 		if (event.workerName == WorkerName.sportViewProcessWorker) {
-			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;
+			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerApi> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerApi>;
 			//体育视图处理线程 eventSource 指令
-			if (processData.apiName == SportViewProcessWorkerCommandType.sportEventSource) {
+			if (processData.apiName == SportViewProcessWorkerApi.sportEventSource) {
 				// 派发到 viewSportPubSubEventData 数据中心
 				// console.log(processData.data.webToPushApi, processData.data.state.viewSportData);
 				viewSportPubSubEventData.setSportData(processData.data.state.viewSportData);
@@ -178,18 +180,18 @@ export default function useSportPubSubEvents() {
 				}
 			}
 			// 体育视图处理线程 赔率变更 指令
-			else if (processData.apiName == SportViewProcessWorkerCommandType.sportOddsChange) {
+			else if (processData.apiName == SportViewProcessWorkerApi.sportOddsChange) {
 				console.log("赔率处理");
 			}
 			//体育视图处理线程 取消loading 指令
-			else if (processData.apiName == WorkerCommonCommadnType.stopLoading) {
+			else if (processData.apiName == WorkerCommonCommanApi.stopLoading) {
 				// stopLoading();
 			}
 		}
 		// 侧边栏推回的数据
 		else if (event.workerName == WorkerName.sidebarWorker) {
-			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerCommandType>;
-			if (processData.apiName == SportViewProcessWorkerCommandType.sidebarEventSource) {
+			const processData: WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerApi> = event as WorkerTransfer<WorkerToviewSport, SportViewProcessWorkerApi>;
+			if (processData.apiName == SportViewProcessWorkerApi.sidebarEventSource) {
 				console.log("收到侧边数据执行了", processData.data.state);
 				viewSportPubSubEventData.setSidebarData(processData.data.state.viewSportData);
 			}
@@ -197,12 +199,12 @@ export default function useSportPubSubEvents() {
 
 		//体育购物车线程
 		else if (event.workerName == WorkerName.sportShopCartProcessWorker) {
-			const processData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = event as WorkerTransfer<
+			const processData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerApi> = event as WorkerTransfer<
 				WorkerToViewSportsShopCart<any>,
-				SportShopCartProcessWorkerCommandType
+				SportShopCartProcessWorkerApi
 			>;
 			console.log("processData", processData);
-			if (processData.apiName == SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges) {
+			if (processData.apiName == SportShopCartProcessWorkerApi.sportsShopCartViewChanges) {
 				if (!ShopCatControlStore.getShopCatShow) return; // 弹窗关闭停止对应任务
 
 				if (sportsBetEvent.sportsBetEventData.length == 1) {
@@ -218,7 +220,7 @@ export default function useSportPubSubEvents() {
 				}
 			}
 			// 先屏蔽冠军购物车推送的判断
-			if (processData.apiName == SportShopCartProcessWorkerCommandType.championShopCartViewChanges) {
+			if (processData.apiName == SportShopCartProcessWorkerApi.championShopCartViewChanges) {
 				if (!ShopCatControlStore.getShopCatShow) return; // 弹窗关闭停止对应任务
 
 				if (processData.data.cartType === "0") {

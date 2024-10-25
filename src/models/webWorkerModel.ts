@@ -2,18 +2,25 @@
  * @description 线程模型
  */
 
-import { WorkerName } from "/@/enum/workerTransferEnum";
+import { WorkerName } from "/@/enum/webworkerEnum/workerTransferEnum";
+import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
+
 /**
  * @description 主线程与子通信模型
  */
-export interface WorkerTransfer<Data, ApiName> {
+export interface WorkerTransfer<Data = any, ApiName = any> {
 	/**
 	 * @description 线程名称
 	 */
 	workerName: WorkerName;
 
 	/**
-	 * @description 指令名称
+	 * @description 控制器名称
+	 */
+	controllerName: WebWorkerControllerE;
+
+	/**
+	 * @description 接口名称
 	 */
 	apiName: ApiName;
 

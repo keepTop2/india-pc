@@ -33,6 +33,11 @@ const SportEvemts = {
 	 * @description 视频/动画视频全屏或关闭
 	 */
 	onFullScreenOrExit: { eventName: "onFullscreenOrExit", params: {} as { isFullScreen: boolean } },
+
+	/**
+	 * @description sse数据推送处理
+	 */
+	sseDataProcess: { eventName: "onExpandAngCollapse", params: {} },
 };
 
 export default SportEvemts;

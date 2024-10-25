@@ -1,5 +1,5 @@
 import { WorkerMap } from "/@/webWorker/workerMap";
-import { WorkerName } from "/@/enum/workerTransferEnum";
+import { WorkerName } from "../enum/webworkerEnum/workerTransferEnum";
 import { WebResponse } from "/@/models/commonInterface";
 import { WorkerTransfer, WorkerItem } from "/@/models/webWorkerModel";
 import pubsub from "/@/pubSub/pubSub";

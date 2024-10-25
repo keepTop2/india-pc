@@ -1,4 +1,4 @@
-import { WorkerName } from "/@/enum/workerTransferEnum";
+import { WorkerName } from "../enum/webworkerEnum/workerTransferEnum";
 import { WorkerItem } from "/@/models/webWorkerModel";
 // 体育视图处理线程
 import sportViewProcessWorker from "/@/webWorker/module/sportViewProcessWorker/sportViewProcessWorker?worker&url";
