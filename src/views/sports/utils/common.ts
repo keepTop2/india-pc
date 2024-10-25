@@ -258,7 +258,7 @@ class SportsCommonFn {
 					return $.t("sports['加时赛']");
 				}
 				if (!delayLive && !isHt && numMap.get(livePeriod)) {
-					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + " " + computerSeconds(seconds);
+					return $.t(`sports['第${numMap.get(livePeriod)}节']`);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
