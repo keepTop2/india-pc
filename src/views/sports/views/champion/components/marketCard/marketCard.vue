@@ -1,25 +1,26 @@
 <template>
 	<div class="card-container">
-		<div class="content-container" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
-			<div class="text-container">
-				<div class="label">{{ cardData.teamName }}</div>
-				<div class="value" :class="changeClass(cardData)">{{ cardData?.price }}</div>
+		<BetSelector :value="cardData?.price">
+			<div class="content-container" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
+				<div class="text-container">
+					<div class="label">{{ cardData.teamName }}</div>
+					<div class="value">{{ cardData?.price }}</div>
+				</div>
 			</div>
-			<RiseOrFall v-if="cardData?.oddsChange" :status="cardData?.oddsChange == 'oddsUp' ? 1 : 2" @animationEnd="animationEnd" />
-		</div>
-		<template v-else>
-			<i class="noData"></i>
-		</template>
+			<template v-else>
+				<i class="noData"></i>
+			</template>
+		</BetSelector>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import { RiseOrFall } from "/@/components/Sport/index";
 import sportsApi from "/@/api/sports/sports";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
+import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
 import pubsub from "/@/pubSub/pubSub";
 
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";

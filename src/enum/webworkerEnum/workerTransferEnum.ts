@@ -28,13 +28,14 @@ export enum WorkerName {
 }
 
 /**
- * @description 线程公用指令
+ * @description 线程公用接口
  */
-export enum WorkerCommonCommadnType {
+export enum WorkerCommonCommanApi {
 	/**
 	 * @description 开始loading
 	 */
 	startLoading = "startLoading",
+
 	/**
 	 * @description 取消loading
 	 */
@@ -44,9 +45,9 @@ export enum WorkerCommonCommadnType {
 /**
  * @description 体育视图处理线程 指令名称 枚举类
  */
-export enum SportViewProcessWorkerCommandType {
+export enum SportViewProcessWorkerApi {
 	/**
-	 * @description 体育视图处理线程 eventSource 指令
+	 * @description 体育视图处理线程 eventSource 接口
 	 */
 	sportEventSource = "sportEventSource",
 
@@ -64,11 +65,12 @@ export enum SportViewProcessWorkerCommandType {
 /**
  * @description 体育购物车处理线程 指令名称 枚举类
  */
-export enum SportShopCartProcessWorkerCommandType {
+export enum SportShopCartProcessWorkerApi {
 	/**
 	 * @description 购物车视图 eventSource 指令
 	 */
 	sportsShopCartViewChanges = "sportsShopCartViewChanges",
+
 	/**
 	 * @description 冠军购物车视图 eventSource 指令
 	 */

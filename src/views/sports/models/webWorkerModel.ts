@@ -2,7 +2,7 @@
  * @description 线程模型
  */
 
-import { WorkerName } from "/@/enum/workerTransferEnum";
+import { WorkerName } from "../../../enum/webworkerEnum/workerTransferEnum";
 /**
  * @description 主线程与子通信模型
  */
