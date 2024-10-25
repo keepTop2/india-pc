@@ -14,20 +14,26 @@
 							{{ item.name }}
 						</div>
 					</div>
-					<div class="messageList">
+					<div v-if="messageList.length" class="messageList">
 						<Message v-for="item in messageList" :item="item" />
 					</div>
+          <NoData v-else/>
 				</div>
-				<BottomHandle />
+				<div class="bottom-handle">
+					<el-button color="#FF284B" class="read" plain :disabled="!hasUnread">一键已读</el-button>
+					<el-button color="#FF284B" class="delete" :disabled="!hasDelete">全部删除</el-button>
+				</div>
 			</div>
 		</el-drawer>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import Message from "./components/Message.vue";
-import BottomHandle from "/@/views/messageCenter/components/BottomHandle.vue";
+import { MessageApi } from "/@/api/message";
+import { ElMessage } from "element-plus";
+import NoData from "/@/views/messageCenter/components/NoData.vue";
 
 const messageCenterVisible = defineModel();
 const tabs = [
@@ -37,14 +43,33 @@ const tabs = [
 const activeTab = ref(1);
 
 // 消息列表
-const messageList = reactive([
-	{
-		dateTime: "2024-9-6 12:12:12",
-		content:
-			"这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，这里是最大字符长度，",
-		coverUrl: "",
-	},
-]);
+interface MessageList {
+	targetId: string;
+	noticeType: 1 | 2;
+	noticeTitleI18nCode: string; //通知标题
+	messageContentI18nCode: string; //通知消息内容
+	targetType: 1 | 2 | 3 | 4 | 5; //1=全部会员、2=特定会员、3=终端 4=全部代理，5特定代理
+	readState: 0 | 1; //阅读状态: 0=未读、1=已读
+	createdTime: string; //创建时间
+}
+
+const messageList = ref<MessageList[]>([]);
+const getMessageList = async () => {
+	const res = await MessageApi.messageList();
+	if (res.code !== 10000) return ElMessage.warning(res.message);
+	messageList.value = res.data.userNoticeList;
+};
+getMessageList();
+
+// 底部操作
+// 是否还有未读的信息
+const hasUnread = computed(() => {
+	return messageList.value.some((item) => item.readState === 0);
+});
+// 是否还有可删除的信息
+const hasDelete = computed(() => {
+	return messageList.value.length > 0;
+});
 </script>
 
 <style lang="scss" scoped>
@@ -119,6 +144,38 @@ const messageList = reactive([
 				.messageList {
 					overflow: auto;
 				}
+			}
+		}
+
+		.bottom-handle {
+			height: 70px;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			padding: 16px 30px 0 30px;
+			border-radius: 24px 24px 0px 0px;
+			gap: 16px;
+			box-shadow: 0px 0px 15px 0px #0e101366;
+			background-color: #24262b;
+
+			.el-button {
+				margin: 0;
+        font-size: 12px;
+			}
+
+			.read {
+				--el-button-bg-color: transparent !important;
+				--el-button-disabled-bg-color: transparent !important;
+				--el-button-disabled-text-color: var(--Theme) !important;
+				border: 1px solid var(--light-ok-Bg-5-, #ff284b);
+			}
+
+			.delete {
+				--el-button-disabled-bg-color: var(--Theme) !important;
+				--el-button-disabled-border-color: var(--Theme) !important;
+			}
+
+			.is-disabled {
+				opacity: 0.5;
 			}
 		}
 	}
