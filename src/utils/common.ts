@@ -388,24 +388,51 @@ class Common {
 	}
 
 	/**
-	 * @description 若超出10位数，千位用K表示
+	 * @description 若超出指定位数，千位用K表示，默认超出10位数，最小支持5位
 	 */
-	static formatAmount(number: number) {
+	static formatAmount(number: number, digits: number = 10): string {
+		// 限制最小位数为 5
+		const minDigits = 5;
+		const thresholdDigits = Math.max(digits, minDigits);
+		const threshold = Math.pow(10, thresholdDigits - 1);
+
 		const absNumber = Math.abs(number);
-		const threshold = 10000000;
-		let formattedNumber = "" as number | string;
+		let formattedNumber: string;
+
 		if (absNumber >= threshold) {
 			const quotient = Math.floor(this.div(absNumber, 1000));
 			formattedNumber = `${quotient}K`;
 		} else {
 			formattedNumber = this.formatFloat(Number(absNumber));
 		}
+
 		// 处理负数情况
 		if (number < 0) {
 			formattedNumber = "-" + formattedNumber;
 		}
+
 		return formattedNumber;
 	}
+
+	/**
+	 * @description 若超出10位数，千位用K表示
+	 */
+	// static formatAmount(number: number) {
+	// 	const absNumber = Math.abs(number);
+	// 	const threshold = 10000000;
+	// 	let formattedNumber = "" as number | string;
+	// 	if (absNumber >= threshold) {
+	// 		const quotient = Math.floor(this.div(absNumber, 1000));
+	// 		formattedNumber = `${quotient}K`;
+	// 	} else {
+	// 		formattedNumber = this.formatFloat(Number(absNumber));
+	// 	}
+	// 	// 处理负数情况
+	// 	if (number < 0) {
+	// 		formattedNumber = "-" + formattedNumber;
+	// 	}
+	// 	return formattedNumber;
+	// }
 
 	// 获取 config 配置请求 api
 	static getUrl() {
