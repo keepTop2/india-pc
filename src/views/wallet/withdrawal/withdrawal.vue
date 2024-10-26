@@ -81,6 +81,7 @@
 				<div class="footer_form mt_16">
 					<div class="cell">
 						<input
+							class="bold_input"
 							v-model="state.amount"
 							type="text"
 							:placeholder="`${withdrawWayConfig.withdrawMinAmount ?? 0} ${UserStore.userInfo.mainCurrency} ~ ${withdrawWayConfig.withdrawMaxAmount ?? 0} ${
