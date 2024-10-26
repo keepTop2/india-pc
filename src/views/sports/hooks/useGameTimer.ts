@@ -1,10 +1,9 @@
 import { reactive, ref, watch, onBeforeUnmount, toRefs, toRef } from "vue";
 import { GameInfo } from "/@/views/sports/models/interface";
 import Common from "/@/views/sports/utils/common";
+import SportsCommonFn from "/@/views/sports/utils/common";
 
-export default (event: { gameInfo: GameInfo; eventStatus: string; globalShowTime: string }) => {
-	console.log(event, "篮球倒计时定时器");
-
+export default (event: { gameInfo: GameInfo; eventStatus: string; globalShowTime: string; leagueId: number; eventId: number }) => {
 	const timer = ref<null | number>(null);
 
 	const state = reactive({
@@ -43,16 +42,23 @@ export default (event: { gameInfo: GameInfo; eventStatus: string; globalShowTime
 
 	// 响应式更新比赛时间
 	watch(
-		gameInfo.seconds,
+		() => event.gameInfo.seconds,
 		(newValue, oldValue) => {
-			if (gameInfo.isBreak.value || gameInfo.isHt.value || gameInfo.livePeriod.value === 0 || newValue === oldValue) return;
+			console.log(newValue, oldValue, "newValue, oldValue==值的变化了");
+			state.gameTime = Common.formatSeconds(newValue);
+			return;
+			console.log(newValue, oldValue, "newValue, oldValue==值的变化了");
+			if (event.gameInfo.isBreak || event.gameInfo.isHt || event.gameInfo.livePeriod === 0 || newValue === oldValue) return;
 
 			state.seconds = newValue;
 			state.gameTime = Common.formatSeconds(state.seconds);
 
 			if (gameInfo.clockDirection.value === "dec" && state.seconds === 0) {
 				state.gameTime = "";
-				if (timer.value !== null) clearInterval(timer.value);
+				if (timer.value !== null) {
+					clearInterval(timer.value);
+					timer.value = null;
+				}
 			} else {
 				startTimer();
 			}
@@ -64,22 +70,42 @@ export default (event: { gameInfo: GameInfo; eventStatus: string; globalShowTime
 	watch(
 		[gameInfo.isBreak, gameInfo.isHt],
 		([isBreak, isHt]) => {
-			if (isBreak || isHt) clearInterval(timer.value as number);
+			if (isBreak || isHt) {
+				clearInterval(timer.value as number);
+				timer.value = null;
+			}
 		},
 		{ immediate: true }
 	);
 
 	// 监听当前比赛节数，若节数为 0，清空时间显示
 	watch(
-		gameInfo.livePeriod,
-		(livePeriod) => {
-			if (livePeriod === 0) {
-				clearInterval(timer.value as number);
+		[() => gameInfo.livePeriod, () => event.globalShowTime],
+		([livePeriod, globalShowTime]) => {
+			if (!livePeriod || !SportsCommonFn.isStartMatch(globalShowTime)) {
+				if (timer.value !== null) {
+					clearInterval(timer.value);
+					timer.value = null; // 避免重复清除
+				}
 				state.gameTime = "";
 			}
 		},
 		{ immediate: true }
 	);
+
+	/**
+	 * leagueId 联赛id eventId 赛事id
+	 * 防止虚拟列表数据替换，导致数值的异常变化。
+	 */
+	// watch([event.leagueId, event.eventId], ([newLeagueId, newEventId], [oldLeagueId, oldEventId]) => {
+	// 	nextTick(() => {
+	// 		if (newLeagueId !== oldLeagueId || newEventId !== oldEventId) {
+	// 			clearInterval(timer.value as number);
+	// 			timer.value = null;
+	// 			state.gameTime = "";
+	// 		}
+	// 	});
+	// });
 
 	// 清除计时器，防止内存泄漏
 	onBeforeUnmount(() => clearInterval(timer.value as number));

@@ -2,7 +2,7 @@
 	<div class="box_select" @click="onToggleAllStates">
 		<div class="select_left">
 			<div class="title">
-				<span>{{ routeNameMap.get(route.name) }}({{ teamData.length }})</span>
+				<span>{{ teamName || routeNameMap.get(route.name as string) }}({{ teamData.length }})</span>
 			</div>
 		</div>
 		<div class="select_right">
@@ -26,6 +26,7 @@ interface teamDataType {
 	/** 队伍数据 */
 	teamData: any;
 	expandedCount: number;
+	teamName?: string;
 }
 const props = withDefaults(defineProps<teamDataType>(), {
 	/** 队伍数据 */
