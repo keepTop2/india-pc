@@ -1,6 +1,6 @@
 <template>
 	<div class="market-content">
-		<BetSelector :value="cardData?.oddsPrice?.decimalPrice" :isRun="market.marketStatus === 'running'">
+		<BetSelector :value="cardData?.oddsPrice?.decimalPrice" :id="market?.marketId + cardData?.key" :isRun="market.marketStatus === 'running'">
 			<!-- 判断是否有卡片数据 -->
 			<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
 				<!-- 独赢 -->
@@ -85,8 +85,8 @@ interface CapotCardType {
 		oddsPrice?: {
 			decimalPrice: number;
 		};
-		key?: string;
-	} | null;
+		key: string;
+	};
 	/** 体育信息（每一行） */
 	sportInfo: {
 		eventId: number;
@@ -224,18 +224,6 @@ const isBright = (): boolean => {
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
-		}
-
-		&:hover {
-			background-color: rgba(255, 255, 255, 0.05);
-		}
-	}
-
-	.isBright {
-		background: var(--Bg5) !important;
-
-		.label {
-			color: var(--Text_a);
 		}
 	}
 }
