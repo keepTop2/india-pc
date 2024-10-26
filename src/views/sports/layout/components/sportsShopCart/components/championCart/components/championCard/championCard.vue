@@ -19,7 +19,7 @@
 			</div>
 			<div class="bet_slip_type">
 				<div>
-					<span v-if="shopData.event.isLive" class="mr_6 Bg5">[滚球]</span>
+					<span v-if="shopData.event.isLive" class="mr_6 color-f2">[滚球]</span>
 					<span>[优胜冠军]</span>
 					<span>[欧洲盘]</span>
 				</div>
@@ -184,8 +184,8 @@ const changeClass = (item: any) => {
 		.bet_slip_type {
 			display: flex;
 			justify-content: space-between;
-			.Bg5 {
-				color: var(--Bg5);
+			.color-f2 {
+				color: var(--F2);
 			}
 			.tip {
 				display: block;

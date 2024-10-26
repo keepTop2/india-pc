@@ -5,7 +5,7 @@
 	<div :style="computedHeight" class="box-content">
 		<DynamicScroller :items="listData" :min-item-size="34" class="scroller" key-field="leagueId" :prerender="10">
 			<template v-slot="{ item, index, active }">
-				<DynamicScrollerItem :item="item" :active="active" :data-index="index" :data-active="active">
+				<DynamicScrollerItem :item="item" :key="item.leagueId" :active="active" :data-index="index" :data-active="active">
 					<component
 						:is="cardComponent"
 						:teamData="item"
@@ -46,12 +46,16 @@ const sportsMap: Record<number, ReturnType<typeof defineAsyncComponent>> = {
 
 const route = useRoute(); // 获取当前路由实例
 
-defineProps({
+const props = defineProps({
 	listData: {
 		type: Array,
 		default: () => [], // 默认值
 	},
 });
+
+setTimeout(() => {
+	console.log(props.listData, "props.listData-");
+}, 2000);
 
 // 根据路由的 sportType 查询对应的组件
 const cardComponent = computed(() => {
@@ -101,6 +105,27 @@ const { expandedPanels, onToggleAllStates, toggleDisplay } = useExpandPanels();
 
 	.scroller {
 		height: 100%;
+	}
+	:deep(.market-item) {
+		&:hover {
+			background-color: rgba(255, 40, 75, 0.15);
+		}
+	}
+	:deep(.isBright) {
+		background-color: var(--Bg3) !important;
+		&::after {
+			content: "";
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			border: 1px solid var(--Bg5) !important;
+			border-radius: 4px;
+			left: 0;
+			top: 0;
+		}
+		.label {
+			color: var(--Text_a);
+		}
 	}
 }
 

@@ -120,13 +120,6 @@ watch(
 );
 
 /**
- * @description 动画结束删除oddsChange字段状态
- */
-const animationEnd = (marketId, cardData) => {
-	oddsChange.value = 3;
-};
-
-/**
  * @description 处理盘口高亮状态，拼接 marketid 与 selection key 作为唯一标识，存储值pinia中
  */
 const onSetSportsEventData = () => {
@@ -193,9 +186,6 @@ const isBright = () => {
 			font-size: 12px;
 			font-weight: 400;
 		}
-		&:hover {
-			background-color: rgba(255, 255, 255, 0.05);
-		}
 
 		.lock {
 			width: 16px;
@@ -210,13 +200,6 @@ const isBright = () => {
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
-		}
-	}
-
-	.isBright {
-		background: var(--Bg5) !important;
-		.label {
-			color: var(--Text_a);
 		}
 	}
 }

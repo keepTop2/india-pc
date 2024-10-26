@@ -4,7 +4,7 @@
 			v-for="(item, index) in market?.selections"
 			:key="index"
 			:cardType="cardType"
-			:cardData="item"
+			:cardData="item || {}"
 			:sportInfo="sportInfo"
 			:market="market"
 			:betType="betType"

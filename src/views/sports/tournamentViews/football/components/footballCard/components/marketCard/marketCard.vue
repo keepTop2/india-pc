@@ -225,18 +225,6 @@ const isBright = (): boolean => {
 			font-size: 14px;
 			font-weight: 400;
 		}
-
-		&:hover {
-			background-color: rgba(255, 255, 255, 0.05);
-		}
-	}
-
-	.isBright {
-		background: var(--Bg5) !important;
-
-		.label {
-			color: var(--Text_a);
-		}
 	}
 }
 </style>
