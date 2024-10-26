@@ -38,6 +38,20 @@
 		}
 	}
 
+	.bold_input {
+		color: var(--Text_s);
+		font-family: "DIN Alternate";
+		font-size: 18px;
+		font-weight: 700;
+		&::placeholder {
+			color: var(--Text2_2);
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+		}
+	}
+
 	.icon {
 		width: 16px;
 		height: 16px;
