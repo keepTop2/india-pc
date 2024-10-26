@@ -21,7 +21,6 @@ const props = withDefaults(
 
 <style scoped lang="scss">
 .button {
-	width: 100%;
 	height: 44px;
 	display: flex;
 	align-items: center;
@@ -45,7 +44,6 @@ const props = withDefaults(
 }
 
 .button:disabled {
-	width: 100%;
 	height: 44px;
 	display: flex;
 	align-items: center;

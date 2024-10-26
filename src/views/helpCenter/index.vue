@@ -1,48 +1,147 @@
 <template>
-	<div class="max-width">
-		<div class="title mt_15 mb_15 ml_18">
-			<svg-icon name="logo" width="132px" height="16px" />
-			<span class="fs_14 Text1 ml_20"> 竞猜规则 </span>
+	<div class="max-width pl_10 pr_10">
+		<div class="title mt_15 mb_15">
+			<span class="fs_20 Text_s"> 帮助中心 </span>
 		</div>
-		<Tabs :tabs="tabs" :activeTab="activeTab" @update:activeTab="updateActiveTab" class="Text1">
-			<Tab :name="item.name" :activeTab="activeTab" v-for="(item, index) in tabs" :key="index">
-				<component :is="item.component" />
-			</Tab>
-		</Tabs>
+		<div class="wrapper">
+			<div class="tabs">
+				<CollapsePanel
+					v-for="(item, index) in classList"
+					:key="index"
+					:subindex="subindex"
+					:isOpen="activeIndex === index"
+					@toggle="setActivePanel(index)"
+					:panel="item"
+					@selectClass="selectClass"
+				></CollapsePanel>
+			</div>
+			<div class="content" v-ok-loading="contentLoading">
+				<div class="tabs2">
+					<div v-for="(item, index) in subClassList" :class="activeTab == index ? 'active' : ''" class="curp" @click="setActiveTab(index)">{{ item.name }}</div>
+				</div>
+				<div class="content">
+					{{ subClassList[activeTab]?.value }}
+				</div>
+				<div class="line"></div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import helpCenter from "./helpCenter";
 import { i18n } from "/@/i18n/index";
 import { useRoute } from "vue-router";
-type helpCenterKey = keyof typeof helpCenter;
-type helpCenterComponent = (typeof helpCenter)[helpCenterKey];
-const $: any = i18n.global;
-let tabs = Object.keys(helpCenter).map((key) => {
-	return {
-		name: $.t(`helpCenter['${key}']['${key}']`),
-		label: $.t(`helpCenter['${key}']['${key}']`),
-		component: helpCenter[key as helpCenterKey] as helpCenterComponent,
-	};
-});
-const activeTab = ref(tabs[0].name);
-const updateActiveTab = (tabName: string) => {
-	activeTab.value = tabName;
-};
+import { helpCenterApi } from "/@/api/helpCenter";
+import CollapsePanel from "./CollapsePanel.vue";
+const classList: any = ref([]);
+const subClassList: any = ref([]);
+const activeIndex: any = ref(0);
+const subindex: any = ref(0);
+const activeTab = ref(0);
+const contentLoading = ref(false);
 onMounted(() => {
-	const { query } = useRoute();
-	if (query.type) {
-		updateActiveTab($.t(`helpCenter['${query.type}']['${query.type}']`));
-	}
+	getClassOne();
 });
+const setActivePanel = (index: number) => {
+	if (activeIndex.value === index) {
+		return;
+	} else {
+		activeIndex.value = index;
+		subindex.value = 0;
+		getContent();
+	}
+};
+const setActiveTab = (index: number) => {
+	activeTab.value = index;
+};
+const selectClass = (index: number) => {
+	subindex.value = index;
+	getContent();
+};
+const getClassOne = () => {
+	helpCenterApi.showTutorialPreLayer().then((res) => {
+		classList.value = res.data;
+		classList.value.push(
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data,
+			...res.data
+		);
+		getContent();
+	});
+};
+const getContent = () => {
+	contentLoading.value = true;
+	helpCenterApi
+		.showTutorialTurnLayer({
+			categoryId: classList.value[activeIndex.value].id,
+			classId: classList.value[activeIndex.value].subset[subindex.value].id,
+			categoryName: classList.value[activeIndex.value].name,
+			className: classList.value[activeIndex.value].subset[subindex.value].name,
+		})
+		.then((res) => {
+			subClassList.value = res.data;
+		})
+		.finally(() => {
+			contentLoading.value = false;
+		});
+};
 </script>
 
-<style scoped>
-@import url("./helpCenter.scss");
+<style scoped lang="scss">
 .title {
 	color: var(--Text_s);
 	font-size: 20px;
+}
+.wrapper {
+	display: flex;
+	gap: 18px;
+	height: calc(100vh - 140px);
+	overflow: hidden;
+}
+.tabs {
+	padding: 12px;
+	width: 240px;
+	min-height: calc(100vh - 200px);
+	background: var(--Bg1);
+	border-radius: 12px;
+	overflow: hidden;
+	overflow-y: auto;
+}
+.tabs2 {
+	display: flex;
+	font-size: 24px;
+	color: var(--Text1);
+	gap: 24px;
+	.active {
+		font-size: 24px;
+		color: var(--Text_s);
+		border-bottom: 2px solid var(--Theme);
+	}
+}
+.line {
+	height: 1px;
+	background: var(--Line_1);
+	box-shadow: 0px 1px 0px 0px #343d48;
+}
+.content {
+	padding: 20px;
+	width: 100%;
+	border-radius: 12px;
+	min-height: calc(100vh - 210px);
+	background: var(--Bg1);
 }
 </style>
