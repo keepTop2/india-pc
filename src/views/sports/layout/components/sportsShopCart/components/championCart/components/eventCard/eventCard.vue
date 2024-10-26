@@ -20,16 +20,10 @@
 				</div>
 				<!-- 未投注赛事卡片赔率显示 -->
 				<div v-if="hasClose" style="position: relative">
-					<span class="value" v-if="props.shopData.eventStatus !== 'running' || props.shopData.betMarketInfo?.marketStatus !== 'running'">@ - </span>
-					<span class="value" v-else :class="changeClass(props.shopData.betMarketInfo)">@{{ shopCartPubSub.decimalPrice(props.shopData) }}</span>
-					<div class="change-icon">
-						<RiseOrFall
-							v-if="props.shopData.betMarketInfo.oddsChange"
-							:time="3000"
-							:status="props.shopData.betMarketInfo?.oddsChange == 'oddsUp' ? 1 : 2"
-							@animationEnd="animationEnd(props.shopData.betMarketInfo)"
-						/>
-					</div>
+					<BetSelector :value="shopCartPubSub.decimalPrice(props.shopData)" isShopCar>
+						<span class="value" v-if="props.shopData.eventStatus !== 'running' || props.shopData.betMarketInfo?.marketStatus !== 'running'">@ - </span>
+						<span class="value" v-else :class="changeClass(props.shopData.betMarketInfo)">@{{ shopCartPubSub.decimalPrice(props.shopData) }}</span>
+					</BetSelector>
 				</div>
 				<!-- 已投注卡片赔率显示 -->
 				<div v-else>
@@ -62,9 +56,9 @@
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import SportsCommon from "/@/views/sports/utils/common";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { RiseOrFall } from "/@/components/Sport/index";
 import { i18n } from "/@/i18n/index";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
+import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
 
 const $: any = i18n.global;
 const sportsBetEvent = useSportsBetEventStore();

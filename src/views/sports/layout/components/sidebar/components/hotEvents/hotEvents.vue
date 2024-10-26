@@ -23,7 +23,7 @@
 							<div class="team-name">{{ item.teamInfo?.homeName }}</div>
 						</div>
 						<div class="right">
-							<BetSelector :value="item.markets[3].selections[0]?.oddsPrice?.decimalPrice">
+							<BetSelector :value="item.markets[3]?.selections[0]?.oddsPrice?.decimalPrice">
 								<div
 									class="market-item"
 									:class="{ isBright: isBright(item.markets[3], item.markets[3].selections[0]) }"
@@ -47,7 +47,7 @@
 							<div class="team-name">{{ item.teamInfo?.awayName }}</div>
 						</div>
 						<div class="right">
-							<BetSelector :value="item.markets[3].selections[1]?.oddsPrice?.decimalPrice">
+							<BetSelector :value="item.markets[3]?.selections[1]?.oddsPrice?.decimalPrice">
 								<div
 									class="market-item"
 									:class="{ isBright: isBright(item.markets[3], item.markets[3].selections[1]) }"

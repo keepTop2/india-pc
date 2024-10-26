@@ -7,7 +7,7 @@
 	--button: #2d2e32;
 	--icon: #9fa5ac;
 	--Bg: #1d1f23;
-	--Bg1: #24262b;
+	--Bg1: rgb(36, 38, 43);
 	--Bg2: #1a1c20;
 	--Bg3: #2e3035;
 	--Bg4: #212328;
@@ -32,4 +32,6 @@
 	--scoreboard_bg: rgba(26, 28, 32, 0.7);
 	--light-ok-Butter: #2d2e32;
 	--light-ok-Text-1: #98a7b5;
+	/* 购物车收起时header背景色 */
+	--shopcar_header_bg: rgba(36, 38, 43, 0.5);
 }

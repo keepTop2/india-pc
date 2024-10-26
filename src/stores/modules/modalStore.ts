@@ -7,7 +7,7 @@ interface ModalComponent {
 	props?: Record<string, any>; // 允许传递任意属性
 }
 const walletCenter: Record<string, () => Promise<any>> = {
-	// walletCenter: () => import("/@/views/messageCenter/index.vue"),
+	hintDialog: () => import("/@/views/wallet/components/hintDialog.vue"),
 };
 const message_center: Record<string, () => Promise<any>> = {
 	messageCenter: () => import("/@/views/messageCenter/index.vue"),

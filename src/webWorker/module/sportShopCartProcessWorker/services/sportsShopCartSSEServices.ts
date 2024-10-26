@@ -9,7 +9,8 @@ import { SportEventSourceResponse } from "/@/views/sports/models/sportEventSourc
 
 import { WorkerTransfer } from "/@/models/webWorkerModel";
 
-import { SportShopCartProcessWorkerCommandType, WorkerName } from "/@/enum/workerTransferEnum";
+import { SportShopCartProcessWorkerApi, WorkerName } from "../../../../enum/webworkerEnum/workerTransferEnum";
+import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
 // import { WebResponse } from "/@/models/commonInterface";
 import senDataMain from "/@/webWorker/module/sportShopCartProcessWorker/sportShopCartProcessWorker";
 
@@ -24,9 +25,10 @@ export default (function () {
 		public startSEEProcess(data: SportEventSourceResponse) {
 			console.log("第六步 对应service处理对应业务", data);
 			//数据返回拼装
-			const workerToViewData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = {
+			const workerToViewData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerApi> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
-				apiName: data.cartType === undefined ? SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges : SportShopCartProcessWorkerCommandType.championShopCartViewChanges,
+				controllerName: WebWorkerControllerE.SportsShopCartSSEController,
+				apiName: data.cartType === undefined ? SportShopCartProcessWorkerApi.sportsShopCartViewChanges : SportShopCartProcessWorkerApi.championShopCartViewChanges,
 				data: {
 					cartType: data.cartType,
 					webToPushApi: data.webToPushApi,
@@ -42,9 +44,9 @@ export default (function () {
 		 */
 		public startOutrightSEEProcess(data: SportEventSourceResponse) {
 			// console.log("第六步 对应service处理对应业务");
-			const workerToViewData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerCommandType> = {
+			const workerToViewData: WorkerTransfer<WorkerToViewSportsShopCart<any>, SportShopCartProcessWorkerApi> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
-				apiName: SportShopCartProcessWorkerCommandType.championShopCartViewChanges,
+				apiName: SportShopCartProcessWorkerApi.championShopCartViewChanges,
 				data: {
 					cartType: data.cartType,
 					webToPushApi: data.webToPushApi,

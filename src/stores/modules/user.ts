@@ -130,6 +130,7 @@ export const useUserStore = defineStore("User", {
 		async userInit() {
 			if (this.getUserInfo.token) {
 				this.initUserInfo();
+				this.uplateUserGlobalSetInfo();
 			}
 			await this.setCommonBusiness();
 			this.setLangs(this.getLang);
@@ -179,6 +180,11 @@ export const useUserStore = defineStore("User", {
 			key: "loginInfo",
 			storage: localStorage,
 			paths: ["loginInfo", "token"],
+		},
+		{
+			key: "userGlobalSetInfo",
+			storage: localStorage,
+			paths: [...["userGlobalSetInfo"]],
 		},
 	],
 });

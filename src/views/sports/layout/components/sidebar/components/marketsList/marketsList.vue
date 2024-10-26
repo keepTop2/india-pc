@@ -51,7 +51,7 @@
 											}}</span>
 										</span>
 										<template v-if="market.marketStatus === 'running'">
-											<div class="price">
+											<div class="price value">
 												<span>{{ selection.oddsPrice.decimalPrice }}</span>
 											</div>
 										</template>

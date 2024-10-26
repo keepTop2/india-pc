@@ -18,7 +18,9 @@
 							<div class="away-team-icon"><img :src="eventsInfo?.teamInfo?.awayIconUrl" alt="" /></div>
 							<div class="away-team-name">{{ eventsInfo?.teamInfo?.awayName }}</div>
 						</div>
-						<div class="events-status">{{ $t(`sports['比赛中']`) }}</div>
+						<div class="events-status">
+							<span>{{ getEventsTitle(eventsInfo) }} {{ gameTime }}</span>
+						</div>
 					</div>
 				</template>
 			</div>
@@ -29,7 +31,8 @@
 <script setup lang="ts">
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
-import { useRouter, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 const { getEventsTitle } = SportsCommonFn;
 const route = useRoute();
 
@@ -42,6 +45,9 @@ const props = withDefaults(
 		size: "small",
 	}
 );
+
+//比赛时间
+const { gameTime } = useGameTimer(props.eventsInfo);
 </script>
 
 <style scoped lang="scss">

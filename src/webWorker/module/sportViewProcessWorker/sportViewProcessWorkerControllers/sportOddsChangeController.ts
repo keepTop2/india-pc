@@ -1,14 +1,25 @@
 import { OddsChangeParam } from "/@/views/sports/models/sportViewModels";
 import viewSportDataU from "/@/webWorker/module/utils/viewSportDataU";
 
+//分割
+import { WorkerControllerI } from "/@/interface/WorkerControllerI";
+import { WorkerTransfer } from "/@/models/webWorkerModel";
+
 /**
  * @description 体育赔率变更控制器
  */
-class SportOddsChangeController {
+class SportOddsChangeController implements WorkerControllerI {
+	handleRequest<Data, ApiName>(workerTransferData: WorkerTransfer<Data, ApiName>): void {
+		if (workerTransferData.apiName) {
+			//映射对应api处理方法
+			(this[workerTransferData.apiName as keyof SportOddsChangeController] as Function)(workerTransferData);
+		}
+	}
+
 	/**
 	 * @description 清理赔率状态
 	 */
-	public clearOddsChange(data: OddsChangeParam) {
+	public sportOddsChange(data: OddsChangeParam) {
 		/**
 		 * @description 处理冠军清理状态逻辑
 		 */
@@ -39,5 +50,7 @@ class SportOddsChangeController {
 		}
 	}
 }
-const sportOddsChangeController = new SportOddsChangeController();
-export default sportOddsChangeController;
+// const sportOddsChangeController = new SportOddsChangeController();
+// export default sportOddsChangeController;
+
+export default SportOddsChangeController;
