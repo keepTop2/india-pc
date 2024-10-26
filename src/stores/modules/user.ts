@@ -136,7 +136,7 @@ export const useUserStore = defineStore("User", {
 			this.setLangs(this.getLang);
 			this.initUserMenu();
 		},
-		// 退出登陆
+		// 退出登录
 		logOut(): void {
 			loginApi
 				.logout()

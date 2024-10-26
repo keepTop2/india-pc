@@ -13,7 +13,7 @@ export enum modalEnum {
 	 */
 	LangCurrenyConfig = "LangCurrenyConfig",
 	/**
-	 * @description 登陆弹窗
+	 * @description 登录弹窗
 	 */
 	LoginModal = "LoginModal",
 	/**

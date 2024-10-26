@@ -48,6 +48,22 @@ const routes = [
 							showFooter: true,
 						},
 					},
+					{
+						path: "/user/feedback/feedbackList",
+						name: "feedbackList",
+						component: () => import("/@/views/user/feedback/feedbackList.vue"),
+						meta: {
+							title: "feedbackList",
+						},
+					},
+					{
+						path: "/user/feedback/feedbackDetails",
+						name: "feedbackDetails",
+						component: () => import("/@/views/user/feedback/feedbackDetails.vue"),
+						meta: {
+							title: "feedbackDetails",
+						},
+					},
 				],
 			},
 			{

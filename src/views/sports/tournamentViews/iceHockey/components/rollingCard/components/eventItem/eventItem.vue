@@ -24,7 +24,7 @@
 					<!-- 塞节时间 -->
 					<div class="date">
 						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
-						<span v-if="isLive">{{ formattedGameTime }}</span>
+						<span v-if="isLive">{{ formattedGameTime }} {{ gameTime }}</span>
 					</div>
 					<div class="info-list">
 						<!-- 收藏 -->
@@ -63,6 +63,7 @@ import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useLink } from "/@/views/sports/hooks/useLink";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import SportsCommonFn from "/@/views/sports/utils/common";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 
 const SidebarStore = useSidebarStore();
 const SportAttentionStore = useSportAttentionStore();
@@ -181,6 +182,9 @@ const handleClick = (tool: any) => {
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
 };
+
+//比赛时间
+const { gameTime } = useGameTimer(props.event);
 </script>
 
 <style scoped lang="scss">

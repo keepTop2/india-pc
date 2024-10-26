@@ -34,7 +34,7 @@
 		<div class="other-info">
 			<!-- 塞节时间 -->
 			<div class="date">
-				<span>{{ SportsCommonFn.getEventsTitle(teamData) }}</span>
+				<span>{{ SportsCommonFn.getEventsTitle(teamData) }} {{ gameTime }}</span>
 				<!-- <span v-if="(teamData.gameInfo.livePeriod == 2 || teamData.gameInfo.livePeriod == 1) && !teamData.gameInfo.delayLive && !teamData.gameInfo.isHt">{{
 					formattedGameTime
 				}}</span> -->
@@ -65,6 +65,7 @@ import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
 
 const SportAttentionStore = useSportAttentionStore();
@@ -131,6 +132,9 @@ const attentionEvent = async (isActive: boolean) => {
 	}
 	PubSub.publish(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, {});
 };
+
+//比赛时间
+const { gameTime } = useGameTimer(props.teamData);
 </script>
 
 <style scoped lang="scss">

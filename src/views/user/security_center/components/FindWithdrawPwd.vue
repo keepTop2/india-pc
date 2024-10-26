@@ -139,7 +139,7 @@ const VerifyError = reactive({
 const hcaptcha: any = ref(null);
 
 const AreaCodeOptions: any = ref([]);
-// 登陆表单
+// 登录表单
 const payLoad = reactive({
 	userAccount: "",
 	areaCode: "",
@@ -159,7 +159,7 @@ const passWordregex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@_$]{8,16}$/;
 //显示校验提示
 const userAccountVerifyError = ref(false);
 const userVerifyTypeVerifyError = ref(false);
-// 校验完成登陆按钮可以点击
+// 校验完成登录按钮可以点击
 const disabledBtn = ref(true);
 const verificationBtn = ref(false);
 // 显示密码
@@ -289,7 +289,7 @@ const onSubmit = async (token: string) => {
 		modalStore.closeModal();
 		localStorage.setItem("userInfo", JSON.stringify(data));
 		UserStore.setUserInfo(data);
-		showToast("登陆成功");
+		showToast("登录成功");
 	} else {
 		payLoad.userAccount = "";
 		showToast(message);

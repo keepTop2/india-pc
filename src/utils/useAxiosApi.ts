@@ -65,7 +65,7 @@ instance.interceptors.request.use(
 		}
 		const UserStore = useUserStore();
 		const modalStore = useModalStore();
-		// 需要登陆的处理
+		// 需要登录的处理
 		if (config["headers"]["needLogin"] == "true" && !UserStore.getUserInfo.token) {
 			hideLoading();
 			modalStore.openModal("LoginModal");
@@ -99,7 +99,7 @@ instance.interceptors.response.use(
 		const res = response.data;
 		// 如果自定义代码不是 200，则判断为错误。
 		switch (res.code) {
-			// 登陆过期
+			// 登录过期
 			case ResCode.LOGIN_EXPIRE:
 				const userStore = useUserStore();
 				userStore.logOut();
@@ -125,7 +125,7 @@ instance.interceptors.response.use(
 		if (error.config.headers.showLoading !== false) {
 			hideLoading();
 		}
-		ElMessage.error(error.message);
+		// ElMessage.error(error.message);
 		return Promise.reject(error);
 	}
 );

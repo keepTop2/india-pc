@@ -3,7 +3,7 @@
 		<div class="scoreboard" :class="'small'">
 			<div class="scoreboard-center">
 				<div class="header cell">
-					<div class="label">{{ getEventsTitle(eventsInfo) }}</div>
+					<div class="label">{{ getEventsTitle(eventsInfo) }} {{ gameTime }}</div>
 					<div class="value">
 						<div class="icon"><svg-icon name="sports-sidebar-football-red_Card" size="20px"></svg-icon></div>
 						<div class="icon"><svg-icon name="sports-sidebar-football-yellow_card" size="20px"></svg-icon></div>
@@ -63,7 +63,7 @@
 			</div>
 			<div class="event-info">
 				<div class="date">
-					<span class="red">{{ getEventsTitle(eventsInfo) }}</span>
+					<span class="red">{{ getEventsTitle(eventsInfo) }} {{ gameTime }}</span>
 					<!-- <span class="red">89:26</span> -->
 				</div>
 				<div class="score">
@@ -96,6 +96,7 @@
 <script setup lang="ts">
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 const { getEventsTitle } = SportsCommonFn;
 
 const props = withDefaults(
@@ -104,6 +105,9 @@ const props = withDefaults(
 	}>(),
 	{}
 );
+
+//比赛时间倒计时
+const { gameTime } = useGameTimer(props.eventsInfo);
 </script>
 
 <style scoped lang="scss">

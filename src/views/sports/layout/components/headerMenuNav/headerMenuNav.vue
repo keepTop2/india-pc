@@ -67,7 +67,7 @@ const showRightArrow = ref(false); // 控制右箭头显示的状态
 const initRoute = () => {
 	// 确保有体育数据
 	const { sportType } = route.query;
-	if (!sportType) return;
+	if (!sportType || route.name === "eventDetail") return;
 	if (sportsData.value.length > 0) {
 		const hasType = sportsData.value.some((item) => item.sportType === Number(sportType));
 		if (!hasType) {

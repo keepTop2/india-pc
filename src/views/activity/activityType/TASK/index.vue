@@ -87,7 +87,7 @@
 							<div>
 								<div class="fs_14 Text_s fw_500">{{ item.taskNameI18nCode }}</div>
 								<!-- <div class="fs_18 color_TB htmlDesc" v-html="item.taskDescI18nCode"></div> -->
-								<div class="fs_12 Text_s ellipsis pr_5" v-html="item.taskDescI18nCode"></div>
+								<div class="fs_12 Text_s ellipsis pr_5" v-html="item.taskDescriptionI18nCode"></div>
 								<div class="fs_12 Text_s bottom">
 									<span
 										>奖励：<span class="color_f1"> {{ item.currencyName }} {{ item.rewardAmount }}</span></span
@@ -136,6 +136,8 @@ const { countdown, startCountdown, stopCountdown } = useCountdown();
 // import CommonDialog from "../../components/activityDialog.vue";
 import mainImage from "./image/image.png";
 import { useCountdown } from "/@/hooks/countdown";
+import { useUserStore } from "/@/stores/modules/user";
+const modalStore = useModalStore();
 const tasktype = ref([
 	{
 		label: "每日任务",
@@ -176,7 +178,7 @@ const calculatePercentage = (part: any, whole: any) => {
 };
 const openDialog = (item: any) => {
 	showRule.value = true;
-	rule.value = item.taskDescriptionI18nCode;
+	rule.value = item.taskDescI18nCode;
 };
 const getTaskDetail = () => {
 	activityApi.getTaskDetail().then((res) => {
@@ -206,8 +208,14 @@ const changeTab = (value: number) => {
 
 const HandleBtn = (item: any) => {
 	if (item.taskStatus == 0) {
-		useModalStore().closeModal();
-		router.push("/");
+		if (item.subTaskType === "phone" && !useUserStore().getUserInfo.phone) {
+			modalStore.openModal("setPhone");
+		} else if (item.subTaskType === "email" && !useUserStore().getUserInfo.email) {
+			modalStore.openModal("setEmail");
+		} else {
+			useModalStore().closeModal();
+			router.push("/");
+		}
 	} else if (item.taskStatus == 1) {
 		activityApi
 			.receiveTask({
@@ -281,6 +289,7 @@ const confirmDialog = () => {
 	border-radius: 14px;
 	background: var(--Bg4);
 	padding: 16px;
+	min-height: 300px;
 	.card {
 		margin-bottom: 10px;
 		height: 88px;

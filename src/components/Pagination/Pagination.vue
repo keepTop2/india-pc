@@ -26,7 +26,7 @@ const props = defineProps<{
 	total: number;
 }>();
 
-const emit = defineEmits(["update:currentPage", "prevClick", "nextClick", "sizeChange"]);
+const emit = defineEmits(["update:currentPage", "prevClick", "nextClick", "sizeChange", "pageChange"]);
 
 const currentPage = computed({
 	get: () => props.currentPage,
@@ -40,6 +40,8 @@ const totalPages = computed(() => Math.ceil(props.total / props.pageSize));
 
 const handleCurrentChange = (page: number) => {
 	currentPage.value = page;
+
+	emit("pageChange");
 };
 
 const handleSizeChange = (pageSize: number) => {

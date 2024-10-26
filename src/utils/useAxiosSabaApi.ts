@@ -42,7 +42,7 @@ instance.interceptors.request.use(
 		const UserStore = useUserStore();
 		const sportsInfoStore = useSportsInfoStore();
 		const modalStore = useModalStore();
-		// 需要登陆的处理
+		// 需要登录的处理
 		if (config["headers"]["needLogin"] == "true" && !UserStore.getUserInfo.token) {
 			modalStore.openModal("LoginModal");
 			return Promise.reject();

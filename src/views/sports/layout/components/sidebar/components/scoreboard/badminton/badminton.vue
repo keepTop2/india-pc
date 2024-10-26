@@ -4,7 +4,7 @@
 			<div class="scoreboard-center">
 				<template v-if="Object.keys(eventsInfo).length !== 0">
 					<div class="header cell">
-						<div class="label">{{ getEventsTitle(eventsInfo) }}</div>
+						<div class="label">{{ getEventsTitle(eventsInfo) }} {{ gameTime }}</div>
 						<div class="value">
 							<!-- 渲染前两节得分 -->
 							<template v-for="(period, index) in gameSession" :key="index">
@@ -85,6 +85,7 @@
 import { computed } from "vue";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 import { i18n } from "/@/i18n/index";
 const { getEventsTitle } = SportsCommonFn;
 const $: any = i18n.global;
@@ -111,7 +112,8 @@ const isPeriodActive = (period: number) => gameSession.value >= period;
 const homeScores = computed(() => props.eventsInfo?.badmintonInfo?.homeGameScore || []);
 // 计算客队得分
 const awayScores = computed(() => props.eventsInfo?.badmintonInfo?.awayGameScore || []);
-
+//比赛时间
+const { gameTime } = useGameTimer(props.eventsInfo);
 // 计算局
 /*const calculateSetScore = (scores: number[], opponentScores: number[]) => {
 	if (currentSet.value === 1) {
