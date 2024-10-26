@@ -19,10 +19,15 @@
 				<div class="tabs2">
 					<div v-for="(item, index) in subClassList" :class="activeTab == index ? 'active' : ''" class="curp" @click="setActiveTab(index)">{{ item.name }}</div>
 				</div>
-				<div class="content">
-					{{ subClassList[activeTab]?.value }}
-				</div>
 				<div class="line"></div>
+				<div class="mt_16 valueBox">
+					<div class="card mb_32" v-for="item in subClassList[activeTab]?.subset">
+						<div class="title">{{ item.name }}</div>
+						<div class="value Text1">
+							<p v-for="item in 100">123123</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -62,24 +67,7 @@ const selectClass = (index: number) => {
 const getClassOne = () => {
 	helpCenterApi.showTutorialPreLayer().then((res) => {
 		classList.value = res.data;
-		classList.value.push(
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data,
-			...res.data
-		);
+
 		getContent();
 	});
 };
@@ -143,5 +131,9 @@ const getContent = () => {
 	border-radius: 12px;
 	min-height: calc(100vh - 210px);
 	background: var(--Bg1);
+	.valueBox {
+		overflow-y: auto;
+		height: calc(100vh - 210px);
+	}
 }
 </style>

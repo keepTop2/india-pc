@@ -125,7 +125,7 @@ instance.interceptors.response.use(
 		if (error.config.headers.showLoading !== false) {
 			hideLoading();
 		}
-		ElMessage.error(error.message);
+		// ElMessage.error(error.message);
 		return Promise.reject(error);
 	}
 );

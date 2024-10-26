@@ -15,7 +15,7 @@
 			<div class="center">
 				<div class="flex_space-between detailsTitle">
 					<div class="flex_space-between Text_s">
-						<img v-lazy-load="imgObj['type' + FeedbackDetail[0]?.type]" alt="" /> <span>{{ FeedbackDetail[0]?.typeText }}</span>
+						<img v-if="FeedbackDetail" v-lazy-load="imgObj['type' + FeedbackDetail[0]?.type]" alt="" /> <span>{{ FeedbackDetail[0]?.typeText }}</span>
 					</div>
 					<div class="flex_space-between">
 						<span class="Theme_text mr_20 curp" style="border-bottom: 1px solid" @click="handleShowForm">再次反馈</span>
@@ -162,7 +162,7 @@ const getFeedbackDetail = () => {
 			id: router.currentRoute.value.query.id,
 		})
 		.then((res) => {
-			FeedbackDetail.value = res.data;
+			FeedbackDetail.value = res.data || [];
 		});
 };
 const onSubmit = () => {
@@ -213,14 +213,14 @@ const onSubmit = () => {
 		background-size: 100% 100%;
 	}
 	.scrollBox {
-		height: calc(100vh - 100px);
+		height: calc(100vh - 180px);
 		overflow: auto;
 	}
 	.center {
 		border-radius: 0 0 12px 12px;
 		background: var(--Bg1);
 		padding: 0 20px 20px;
-		min-height: calc(100vh - 100px);
+
 		img.icon {
 			border-radius: 50%;
 		}
