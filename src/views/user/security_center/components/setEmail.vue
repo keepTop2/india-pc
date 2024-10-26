@@ -73,7 +73,7 @@ const modalStore = useModalStore();
 const userStore = useUserStore();
 const VerificationCodeRef = ref(null);
 
-// 登陆表单
+// 登录表单
 const payLoad = reactive({
 	email: "",
 	verifyCode: "",
@@ -81,7 +81,7 @@ const payLoad = reactive({
 });
 const isCreate = ref(true);
 const isEdit = ref(false);
-// 校验完成登陆按钮可以点击
+// 校验完成登录按钮可以点击
 const disabledBtn = ref(true);
 const verificationBtn = ref(true);
 const userVerifyTypeVerifyError = ref(false);

@@ -67,7 +67,6 @@ import { computed, onMounted, reactive, ref } from "vue";
 import Common from "/@/utils/common";
 import showToast from "/@/hooks/useToast";
 import { userApi } from "/@/api/user";
-import options from "/@/assets/ts/areaCode";
 import { useUserStore } from "/@/stores/modules/user";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import { CommonApi } from "/@/api/common";
@@ -75,14 +74,13 @@ import { CommonApi } from "/@/api/common";
 const modalStore = useModalStore();
 const userStore = useUserStore();
 const VerificationCodeRef = ref(null);
-// 验证码
-const userPhoneRegex = /^\d{8,11}$/;
-// 登陆表单
+
+// 登录表单
 const payLoad = reactive({
 	phone: "",
 	verifyCode: "",
 	type: 2,
-	areaCode: options[0].areaCode,
+	areaCode: "",
 });
 const isCreate = ref(true);
 const isEdit = ref(false);
@@ -102,7 +100,7 @@ const getAreaCodeDownBox = async () => {
 	}
 };
 
-// 校验完成登陆按钮可以点击
+// 校验完成登录按钮可以点击
 const disabledBtn = ref(true);
 const verificationBtn = ref(true);
 const userVerifyTypeVerifyError = ref(false);

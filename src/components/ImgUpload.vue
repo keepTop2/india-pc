@@ -1,16 +1,15 @@
 <template>
 	<div class="upload-container">
-		<p class="mt_30 mb_20 Text_s">上传图片</p>
-		<input type="file" id="fileInput" @change="handleFileChange" class="hidden-input" />
+		<input type="file" id="fileInput" @change="handleFileChange" class="hidden-input" accept=".jpg, .jpeg, .png, image/jpeg, image/png" />
 		<div class="preview-container">
 			<div v-for="(file, index) in files" :key="index" class="preview-item">
-				<img :src="file.preview" alt="Preview" class="preview-image" />
+				<img :src="file.url" alt="Preview" class="preview-image" />
 				<div class="deleteBtn" @click="deleteImg(index)">
 					<img src="../assets/common/upload_delete_icon.svg" alt="" />
 				</div>
 			</div>
 			<label for="fileInput" class="custom-upload-button" v-if="files?.length < max">
-				<svg-icon name="upload" size="56px" v-hover-svg></svg-icon>
+				<img src="/@/assets/common/upload_img.png" alt="" />
 			</label>
 		</div>
 	</div>
@@ -18,10 +17,14 @@
 
 <script lang="ts" setup>
 import { defineComponent, ref } from "vue";
+import { uploadApi } from "../api/upload";
 const props = defineProps({
-	max: Number,
+	max: {
+		type: Number,
+		required: true,
+	},
 	files: {
-		type: Array as () => Array<{ name: string; preview: string }>,
+		type: Array as any,
 		required: true,
 	},
 	onUpload: {
@@ -36,26 +39,19 @@ const emit = defineEmits(["update:files"]);
 const handleFileChange = (event: Event) => {
 	const target = event.target as HTMLInputElement;
 	if (target.files) {
-		props.onUpload(target.files[0]);
-		const newFiles = Array.from(target.files).map((file) => {
-			const reader = new FileReader();
-			const preview = new Promise<string>((resolve) => {
-				reader.onload = (e) => resolve(e.target?.result as string);
-			});
-			reader.readAsDataURL(file);
-			return preview.then((previewUrl) => ({
-				name: file.name,
-				preview: previewUrl,
-			}));
-		});
-		Promise.all(newFiles).then((fileObjects) => {
-			emit("update:files", [...props.files, ...fileObjects]);
-		});
+		uploadImg(target.files[0]);
 	}
 };
-
+const uploadImg = async (file: any) => {
+	const formData = new FormData();
+	formData.append("file", file);
+	uploadApi.upload(formData).then((res) => {
+		emit("update:files", [...props.files, res.data]);
+	});
+};
 const deleteImg = (index: number) => {
-	emit("update:files", props.files.splice(index, 1));
+	props.files.splice(index, 1);
+	emit("update:files", props.files);
 };
 </script>
 
@@ -66,18 +62,17 @@ const deleteImg = (index: number) => {
 
 .custom-upload-button {
 	display: inline-block;
-	width: 152px;
-	height: 152px;
-	background: var(--Bg3);
+	width: 64px;
+	height: 64px;
 	border-radius: 8px;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
+	border: 1px dashed var(--Line_2);
 	img {
-		width: 56px;
-		height: 56px;
+		width: 34px;
+		height: 34px;
 	}
 }
 
@@ -88,15 +83,19 @@ const deleteImg = (index: number) => {
 
 .preview-item {
 	text-align: center;
-	width: 152px;
-	height: 152px;
+	width: 64px;
+	height: 64px;
 	position: relative;
 	margin-right: 20px;
 	.deleteBtn {
 		position: absolute;
-		top: -5px;
-		right: -5px;
+		top: -8px;
+		right: -8px;
 		cursor: pointer;
+		img {
+			width: 18px;
+			height: 18px;
+		}
 	}
 }
 

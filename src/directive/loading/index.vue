@@ -19,7 +19,7 @@ import {} from "vue";
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: rgba(0, 0, 0, 0.5);
+	background: rgba(0, 0, 0, 0.3);
 	position: absolute;
 	top: 0;
 	left: 0;

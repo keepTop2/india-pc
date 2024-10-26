@@ -21,10 +21,9 @@
 								<span><svg-icon :name="'user-' + route.meta.icon" size="18px"></svg-icon></span>
 								<span>{{ $t(`common['${route.meta.title}']`) }}</span>
 							</div>
-
 							<div class="mt_6px mb_6px login_out" @click="logOut" v-hover-svg>
 								<span><svg-icon name="user-logout" size="18px"></svg-icon></span>
-								<span> {{ $t(`common['退出登陆']`) }}</span>
+								<span> {{ $t(`common['退出登录']`) }}</span>
 							</div>
 						</div>
 					</div>
@@ -32,7 +31,7 @@
 			</div>
 
 			<div class="flex-center" v-else>
-				<div class="loginBtn btn" @click="openLoginModal">{{ $t(`common['登陆']`) }}</div>
+				<div class="loginBtn btn" @click="openLoginModal">{{ $t(`common['登录']`) }}</div>
 				<div class="registerBtn btn" @click="openRegisterModal">{{ $t(`common['注册']`) }}</div>
 			</div>
 

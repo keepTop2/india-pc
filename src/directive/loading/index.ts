@@ -20,7 +20,6 @@ export const okLoading: Directive = {
 const appendEl = (el) => {
 	// 给父元素加个定位，让loading元素定位
 	el.style.position = "relative";
-	el.style.overflow = "hidden";
 	el?.appendChild(el.instance.$el);
 };
 // 移除元素

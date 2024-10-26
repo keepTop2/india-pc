@@ -17,7 +17,7 @@
 			</div>
 			<div class="dialog-footer2" v-else>
 				<button class="common_btn" @click="goToRegister">去注册</button>
-				<button class="common_btn" @click="goToLogin">去登陆</button>
+				<button class="common_btn" @click="goToLogin">去登录</button>
 			</div>
 		</div>
 		<div class="closeDialog" @click="close" v-if="closeIcon">

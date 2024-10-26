@@ -58,11 +58,9 @@ const userRoutes = [
 	{
 		path: "feedback",
 		name: "feedback",
-		layout: true,
 		component: () => import("/@/views/user/feedback/index.vue"),
 		meta: {
 			title: "意见反馈",
-			idx: 1,
 			icon: "feedback",
 		},
 	},

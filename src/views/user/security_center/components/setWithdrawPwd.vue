@@ -110,7 +110,7 @@ import { useModalStore } from "/@/stores/modules/modalStore";
 import CommonRegex from "/@/utils/CommonRegex";
 const modalStore = useModalStore();
 const userStore = useUserStore();
-// 登陆表单
+// 登录表单
 const payLoad = reactive({
 	password: "",
 	confirmPassword: "",
@@ -123,7 +123,7 @@ const showPassword = ref(false);
 const showOldPassword = ref(false);
 const showNewPassword = ref(false);
 const showConfirmPassword = ref(false);
-// 校验完成登陆按钮可以点击
+// 校验完成登录按钮可以点击
 const disabledBtn = ref(true);
 const verificationBtn = ref(true);
 const passwordVerifyTypeVerifyError = ref(false);

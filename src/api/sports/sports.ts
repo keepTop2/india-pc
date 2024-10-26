@@ -15,7 +15,7 @@ class SportsApi {
 	};
 
 	/**
-	 * @description 沙巴体育匿名登陆
+	 * @description 沙巴体育匿名登录
 	 */
 	static sbaAnonLogin = (data = {}) => {
 		return useAxiosApi(`/app/anon/api/sbaAnonLogin`, {

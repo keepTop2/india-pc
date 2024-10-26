@@ -83,7 +83,7 @@ export const userApi = {
 			headers,
 		});
 	},
-	//校验登陆密码
+	//校验登录密码
 	reFindWithdrawPwd: (data = {}, headers = {}) => {
 		return useAxiosApi(`/app/user-info/global/reFindWithdrawPwd`, {
 			method: "POST",
