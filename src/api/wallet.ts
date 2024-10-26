@@ -1,6 +1,15 @@
 import useAxiosApi from "/@/utils/useAxiosApi";
 
 export const walletApi = {
+	// 获取会员金额信息
+	getUserBalance: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/user-info/api/getUserBalance`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
 	// 用户充值方式列表
 	rechargeWayList: (data = {}, headers = {}) => {
 		return useAxiosApi(`/app/userRecharge/api/rechargeWayList`, {
