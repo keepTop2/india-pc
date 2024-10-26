@@ -24,7 +24,7 @@
 				<div class="other-info">
 					<!-- 塞节时间 -->
 					<div class="date">
-						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
+						<span>{{ SportsCommonFn.getEventsTitle(event) }} {{ gameTime }}</span>
 						<!-- <span v-if="isGameOngoing">{{ formattedGameTime }}</span> -->
 					</div>
 					<div class="info-list">
@@ -70,6 +70,7 @@ import { useLink } from "/@/views/sports/hooks/useLink";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
@@ -187,6 +188,9 @@ const linkDetail = () => {
 	toggleEventScoreboard(props.event);
 	gotoEventDetail(params, SportTypeEnum.Basketball);
 };
+
+//比赛时间倒计时
+const { gameTime } = useGameTimer(props.event);
 </script>
 
 <style scoped lang="scss">

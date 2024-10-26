@@ -230,10 +230,10 @@ class SportsCommonFn {
 					return $.t("sports['延迟开赛']");
 				}
 				if (livePeriod == 1 && !delayLive && !isHt) {
-					return $.t("sports['上半场']") + " " + computerSeconds(seconds);
+					return $.t("sports['上半场']");
 				}
 				if (livePeriod == 2 && !delayLive && !isHt) {
-					return $.t("sports['下半场']") + " " + computerSeconds(seconds);
+					return $.t("sports['下半场']");
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -258,7 +258,7 @@ class SportsCommonFn {
 					return $.t("sports['加时赛']");
 				}
 				if (!delayLive && !isHt && numMap.get(livePeriod)) {
-					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + " " + computerSeconds(seconds);
+					return $.t(`sports['第${numMap.get(livePeriod)}节']`);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -701,6 +701,20 @@ class SportsCommonFn {
 	public static saveScrollTop(route: RouteLocationNormalized) {
 		const scrollDom = document.querySelector(".mainArea") as HTMLElement;
 		route.meta.scrollTop = scrollDom.scrollTop;
+	}
+
+	/**
+	 * @description 将秒转换成分:秒
+	 * @param seconds 秒数
+	 * @returns 转换后的格式00:00
+	 */
+	public static formatSeconds(seconds: number): string {
+		if (typeof seconds !== "number" || seconds <= 0) return "";
+
+		const timeDuration = dayjs.duration(seconds, "seconds");
+		const minutes = String(timeDuration.minutes()).padStart(2, "0"); // 获取分钟并补零
+		const secs = String(timeDuration.seconds()).padStart(2, "0"); // 获取秒并补零
+		return `${minutes}:${secs}`;
 	}
 }
 

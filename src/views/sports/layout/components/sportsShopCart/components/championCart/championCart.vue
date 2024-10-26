@@ -1,5 +1,5 @@
 <template>
-	<div class="shopCart" v-if="!isOrdered">
+	<div class="shopCart" :class="[ShopCatControlStore.getShopCatShow && ChampionShopCartStore.championBetData.length ? 'shop-cart-show' : 'shop-cart-hide']" v-if="!isOrdered">
 		<!-- 头部信息 -->
 		<div class="header-container" @click="changeShopCart">
 			<div class="left">
@@ -268,7 +268,9 @@ const onOrderConfirm = () => {
 	box-shadow: 0px -3px 30px 0px rgba(14, 16, 19, 0.4);
 	border-radius: 4px;
 	box-sizing: border-box;
-
+	&.shop-cart-hide {
+		background-color: var(--shopcar_header_bg);
+	}
 	.header-container {
 		height: 52px;
 		display: flex;
