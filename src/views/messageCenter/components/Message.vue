@@ -1,8 +1,8 @@
 <template>
 	<div class="message">
-		<div class="time">{{ item.dateTime }}</div>
-		<div class="content" :class="!isUnfold && 'hidden-text'">{{ item.content }}</div>
-		<img v-if="item.coverUrl" :src="item.coverUrl" alt="" />
+		<div class="time">{{ item.createdTime }}</div>
+		<div class="title" :class="!isUnfold && 'hidden-title'" v-html="item.noticeTitleI18nCode"></div>
+		<div class="content" :class="!isUnfold && 'hidden-content'" v-html="item.messageContentI18nCode"></div>
 		<div class="handle">
 			<svg-icon name="delete2" size="18px"></svg-icon>
 			<div class="unfold" @click="isUnfold = !isUnfold">
@@ -41,13 +41,21 @@ const isUnfold = ref(false);
 	.content {
 	}
 
-	.hidden-text {
+	.hidden-content {
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 3; /* 限制为四行 */
+		-webkit-line-clamp: 3;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+
+  .hidden-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
 	.handle {
 		width: 100%;
@@ -68,7 +76,7 @@ const isUnfold = ref(false);
 
 			.icon {
 				transition: 0.2s;
-        fill: var(--Bg5);
+				fill: var(--Bg5);
 			}
 
 			.fold {
