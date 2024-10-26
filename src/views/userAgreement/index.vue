@@ -1,7 +1,7 @@
 <template>
-	<div class="max-width">
+	<div class="max-width pl_10 pr_10">
 		<div class="title mt_15 mb_15">
-			<span class="fs_14 Text1"> 用户协议 </span>
+			<span class="fs_20 Texts"> 用户协议 </span>
 		</div>
 		<div class="content" v-ok-loading="loading">
 			<div v-html="Agreement?.agreement"></div>
@@ -28,7 +28,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-@import url("../helpCenter/helpCenter.scss");
 .title {
 	color: var(--Text_s);
 	font-size: 20px;
