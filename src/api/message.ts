@@ -9,4 +9,27 @@ export const MessageApi = {
       headers,
     });
   },
+	// 信息列表
+	messageList: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/client/user/notice/getUserNoticeList`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	// 一键已读
+		return useAxiosApi(`/app/client/user/notice/setDelStateAll`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	// 一键删除
+	setReadAll: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/client/user/notice/setReadStateAll`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };
