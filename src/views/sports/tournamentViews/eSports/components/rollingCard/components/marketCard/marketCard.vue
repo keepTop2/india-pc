@@ -1,6 +1,6 @@
 <template>
 	<div class="market-content">
-		<BetSelector :value="cardData?.oddsPrice?.decimalPrice" :isRun="market.marketStatus === 'running'">
+		<BetSelector :value="cardData?.oddsPrice?.decimalPrice" :id="market.marketId + cardData?.key" :isRun="market.marketStatus === 'running'">
 			<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
 				<!-- 独赢 -->
 				<template v-if="cardType == `capot`">
