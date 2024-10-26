@@ -46,6 +46,7 @@ class Common {
 
 	// 电话号码转换*
 	static maskString(str: string) {
+		if (!str) return;
 		const length = str.length;
 		// 对于长度大于等于8的情况
 		if (length >= 8) {
