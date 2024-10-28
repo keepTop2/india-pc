@@ -55,10 +55,12 @@
 						:placeholder="`${rechargeConfig.rechargeMinAmount ?? 0} - ${rechargeConfig.rechargeMaxAmount ?? 0}`"
 						@input="amountItemActive = null"
 					/>
-					<div class="label">CNY</div>
+					<div class="label">{{ UserStore.userInfo.mainCurrency }}</div>
 				</div>
 
-				<Button style="max-width: 450px" class="mt_40" :type="buttonType" @click="onRecharge">{{ $t('wallet["立即存款"]') }}</Button>
+				<div class="w_450">
+					<Button class="mt_40" :type="buttonType" @click="onRecharge">{{ $t('wallet["立即存款"]') }}</Button>
+				</div>
 			</div>
 		</Card>
 		<!-- 虚拟币 -->
@@ -232,6 +234,9 @@ getRechargeWayList();
 	font-weight: 500;
 }
 
+.w_450 {
+	max-width: 450px;
+}
 .container {
 	padding: 20px;
 	.title {

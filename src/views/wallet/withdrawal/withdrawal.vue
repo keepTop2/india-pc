@@ -342,8 +342,6 @@ const getUserBalance = async () => {
 // 交易密码输入完成
 const onTransactionPasswordEntered = () => {
 	passWordShow.value = false;
-	console.log("state.withdrawPassWord.", state.withdrawPassWord);
-
 	if (state.withdrawPassWord.length === 6) {
 		const params = {
 			amount: state.amount,
@@ -378,7 +376,17 @@ const getWithdrawApply = async (params) => {
 };
 
 // 选择支付方式时的处理
-const onRechargeWay = (item) => {
+const onRechargeWay = (item: {
+	withdrawTypeCode: string;
+	id: string;
+	withdrawWay: string;
+	wayIcon: string;
+	wayFee: number;
+	quickAmount: string;
+	recommendFlag: number;
+	networkType: string;
+	currencyCode: string;
+}) => {
 	withdrawWayData.value = item;
 	clearParams();
 	getWithdrawConfig(); // 获取通道配置
