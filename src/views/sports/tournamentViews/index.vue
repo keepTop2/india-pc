@@ -108,7 +108,7 @@ const { expandedPanels, onToggleAllStates, toggleDisplay } = useExpandPanels();
 	}
 	:deep(.market-item) {
 		&:hover {
-			background-color: rgba(255, 40, 75, 0.15);
+			background-color: var(--betselector-hover-bg);
 		}
 	}
 	:deep(.isBright) {
@@ -125,6 +125,13 @@ const { expandedPanels, onToggleAllStates, toggleDisplay } = useExpandPanels();
 		}
 		.label {
 			color: var(--Text_a);
+		}
+	}
+	:deep(.league-info) {
+		.team-name {
+			white-space: nowrap; /* 防止文本换行 */
+			overflow: hidden; /* 超出部分隐藏 */
+			text-overflow: ellipsis; /* 超出部分显示省略号 */
 		}
 	}
 }

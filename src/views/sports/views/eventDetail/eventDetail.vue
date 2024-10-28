@@ -23,30 +23,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watchEffect } from "vue";
+import { computed, reactive, ref, watchEffect } from "vue";
 import { isEmpty } from "lodash-es";
-import { LocationQueryValue, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import { SpinnerWrap } from "/@/components/Spinner";
-import pubSub from "/@/pubSub/pubSub";
 import HeaderDetail from "./components/headerDetail/headerDetail.vue";
 import MarketItem from "./marketItem/marketItem.vue";
-import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-import SportsCommonFn from "/@/views/sports/utils/common";
-import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
-import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { useUserStore } from "/@/stores/modules/user";
-import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
-import { SportViewProcessWorkerApi, WorkerName } from "../../../../enum/webworkerEnum/workerTransferEnum";
-import { sportsEventDetailPush } from "/@/views/sports/utils/sportsMap/sportsSSERequestMap";
-import workerManage from "/@/webWorker/workerManage";
-import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
-
-const UserStore = useUserStore();
-const sportsInfoStore = useSportsInfoStore();
-
-const { initSportPubsub, unSubSport, clearState, sportsLogin } = useSportPubSubEvents();
-const route = useRoute();
 
 const loading = ref(false);
 const expandAndCollapse = ref(false);

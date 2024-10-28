@@ -47,7 +47,7 @@
 					<!-- 出局 -->
 					<div class="current-outs">
 						<span
-							>出局：<span class="theme">{{ event.baseballInfo.currentOuts }}</span></span
+							>出局：<span class="theme">{{ event.baseballInfo?.currentOuts }}</span></span
 						>
 					</div>
 				</div>
@@ -65,29 +65,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
+import { computed } from "vue";
 import TeamInfoCard from "../teamInfoCard/teamInfoCard.vue";
 import MarketColumn from "../marketColumn/marketColumn.vue";
-import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
-const SportAttentionStore = useSportAttentionStore();
 import SportsApi from "/@/api/sports/sports";
-import { useRouter, useRoute } from "vue-router";
-import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import SportsCommonFn from "/@/views/sports/utils/common";
-import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import { useLink } from "/@/views/sports/hooks/useLink";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 const SidebarStore = useSidebarStore();
 const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
-const SportHotStore = useSportHotStore();
-const router = useRouter();
-const route = useRoute();
 const { gotoEventDetail } = useLink();
-
+const SportAttentionStore = useSportAttentionStore();
 interface teamDataType {
 	/** 数据索引 */
 	dataIndex: number;
