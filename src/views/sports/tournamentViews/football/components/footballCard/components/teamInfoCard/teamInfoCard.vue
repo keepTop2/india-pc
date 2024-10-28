@@ -39,9 +39,6 @@
 			<!-- 塞节时间 -->
 			<div class="date">
 				<span>{{ SportsCommonFn.getEventsTitle(teamData) }} {{ gameTime }}</span>
-				<!-- <span v-if="(teamData.gameInfo.livePeriod == 2 || teamData.gameInfo.livePeriod == 1) && !teamData.gameInfo.delayLive && !teamData.gameInfo.isHt">{{
-					formattedGameTime
-				}}</span> -->
 			</div>
 			<!-- 其他信息 -->
 			<div class="info-list">
@@ -94,13 +91,6 @@ const props = withDefaults(defineProps<teamDataType>(), {
 	teamData: () => {
 		return {};
 	},
-});
-
-// 定义计算属性 格式化比赛开始时间
-const formattedGameTime = computed(() => {
-	const minutes = Math.floor(props.teamData.gameInfo.seconds / 60);
-	const seconds = props.teamData.gameInfo.seconds % 60;
-	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 });
 
 /**
