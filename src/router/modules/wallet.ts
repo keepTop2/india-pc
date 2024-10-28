@@ -8,6 +8,7 @@ import { walletApi } from "/@/api/wallet";
 import common from "/@/utils/common";
 import { nextTick } from "process";
 import { toRefs, watchEffect } from "vue";
+import { useHaveToken } from "/@/hooks/useHaveToken";
 const $: any = i18n.global;
 
 //首页
@@ -26,6 +27,14 @@ const walletLayout = {
 				icon: "recharge",
 				active_icon: "recharge_active",
 			},
+			beforeEnter: (to: any, from: any, next: (bool?: boolean | undefined) => void) => {
+				const haveToken = useHaveToken();
+				if (!haveToken()) {
+					next(false); // 取消导航
+				} else {
+					next(); // 继续导航
+				}
+			},
 		},
 		{
 			path: "/withdrawal",
@@ -36,19 +45,20 @@ const walletLayout = {
 				icon: "withdrawal",
 				active_icon: "withdrawal_active",
 			},
-			beforeEnter: async (to, from, next) => {
-				const UserStore = useUserStore();
-				const modalStore = useModalStore();
-				// 获取用户状态信息
-				const { isSetPwd, phone } = toRefs(UserStore.getUserGlobalSetInfo);
-				// console.log("isSetPwd", isSetPwd); // 输出真实值
-				// console.log("phone", phone); // 输出真实值
-				// 判断用户状态
-				if ((isSetPwd && isSetPwd.value) || (phone && phone.value)) {
-					next(); // 继续进入页面
+			beforeEnter: async (to: any, from: any, next: (bool?: boolean | undefined) => void) => {
+				const haveToken = useHaveToken();
+				if (!haveToken()) {
+					next(false); // 取消导航
 				} else {
-					modalStore.openModal("hintDialog");
-					next(false); // 阻止进入页面
+					const UserStore = useUserStore();
+					const modalStore = useModalStore();
+					const { isSetPwd, phone } = toRefs(UserStore.getUserGlobalSetInfo);
+					if ((isSetPwd && isSetPwd.value) || (phone && phone.value)) {
+						next();
+					} else {
+						modalStore.openModal("hintDialog");
+						next(false);
+					}
 				}
 			},
 		},
