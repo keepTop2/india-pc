@@ -6,7 +6,9 @@
 			<div class="team">
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.homeIconUrl" /></div>
 				<div class="team-name">
-					<div class="name">{{ teamData.teamInfo.homeName }}</div>
+					<div class="name">
+						<span v-ok-tooltip>{{ teamData.teamInfo.homeName }}</span>
+					</div>
 				</div>
 				<!-- 红牌黄牌数量 -->
 				<div class="foul-info" v-if="teamData.soccerInfo?.homeRedCard > 0 || teamData.soccerInfo?.homeYellowCard > 0">
@@ -20,7 +22,9 @@
 			<div class="team">
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.awayIconUrl" /></div>
 				<div class="team-name">
-					<div class="name">{{ teamData.teamInfo.awayName }}</div>
+					<div class="name">
+						<span v-ok-tooltip>{{ teamData.teamInfo.awayName }}</span>
+					</div>
 				</div>
 				<!-- 红牌黄牌数量 -->
 				<div class="foul-info" v-if="teamData.soccerInfo?.awayRedCard > 0 || teamData.soccerInfo?.awayYellowCard > 0">
