@@ -3,7 +3,7 @@ import { GameInfo } from "/@/views/sports/models/interface";
 import Common from "/@/views/sports/utils/common";
 import SportsCommonFn from "/@/views/sports/utils/common";
 
-export default (event: { gameInfo: GameInfo; eventStatus: string; globalShowTime: string; leagueId: number; eventId: number }) => {
+export default (event: { value: { gameInfo: GameInfo; eventStatus: string; globalShowTime: string; leagueId: number; eventId: number } }) => {
 	const timer = ref<null | number>(null);
 
 	const state = reactive({
@@ -14,11 +14,11 @@ export default (event: { gameInfo: GameInfo; eventStatus: string; globalShowTime
 
 	// 将 gameInfo 各属性设置为响应式
 	const gameInfo = {
-		seconds: toRef(event.gameInfo, "seconds"),
-		clockDirection: toRef(event.gameInfo, "clockDirection"),
-		isBreak: toRef(event.gameInfo, "isBreak"),
-		isHt: toRef(event.gameInfo, "isHt"),
-		livePeriod: toRef(event.gameInfo, "livePeriod"),
+		seconds: toRef(event.value.gameInfo, "seconds"),
+		clockDirection: toRef(event.value.gameInfo, "clockDirection"),
+		isBreak: toRef(event.value.gameInfo, "isBreak"),
+		isHt: toRef(event.value.gameInfo, "isHt"),
+		livePeriod: toRef(event.value.gameInfo, "livePeriod"),
 	};
 
 	// 通用定时器管理函数，根据计时方向（增/减）控制计时器
@@ -42,13 +42,11 @@ export default (event: { gameInfo: GameInfo; eventStatus: string; globalShowTime
 
 	// 响应式更新比赛时间
 	watch(
-		() => event.gameInfo.seconds,
+		() => event.value.gameInfo.seconds,
 		(newValue, oldValue) => {
-			console.log(newValue, oldValue, "newValue, oldValue==值的变化了");
 			state.gameTime = Common.formatSeconds(newValue);
 			return;
-			console.log(newValue, oldValue, "newValue, oldValue==值的变化了");
-			if (event.gameInfo.isBreak || event.gameInfo.isHt || event.gameInfo.livePeriod === 0 || newValue === oldValue) return;
+			if (event.value.gameInfo.isBreak || event.value.gameInfo.isHt || event.value.gameInfo.livePeriod === 0 || newValue === oldValue) return;
 
 			state.seconds = newValue;
 			state.gameTime = Common.formatSeconds(state.seconds);
@@ -80,7 +78,7 @@ export default (event: { gameInfo: GameInfo; eventStatus: string; globalShowTime
 
 	// 监听当前比赛节数，若节数为 0，清空时间显示
 	watch(
-		[() => gameInfo.livePeriod, () => event.globalShowTime],
+		[() => gameInfo.livePeriod, () => event.value.globalShowTime],
 		([livePeriod, globalShowTime]) => {
 			if (!livePeriod || !SportsCommonFn.isStartMatch(globalShowTime)) {
 				if (timer.value !== null) {
@@ -97,7 +95,7 @@ export default (event: { gameInfo: GameInfo; eventStatus: string; globalShowTime
 	 * leagueId 联赛id eventId 赛事id
 	 * 防止虚拟列表数据替换，导致数值的异常变化。
 	 */
-	// watch([event.leagueId, event.eventId], ([newLeagueId, newEventId], [oldLeagueId, oldEventId]) => {
+	// watch([event.value.leagueId, event.value.eventId], ([newLeagueId, newEventId], [oldLeagueId, oldEventId]) => {
 	// 	nextTick(() => {
 	// 		if (newLeagueId !== oldLeagueId || newEventId !== oldEventId) {
 	// 			clearInterval(timer.value as number);

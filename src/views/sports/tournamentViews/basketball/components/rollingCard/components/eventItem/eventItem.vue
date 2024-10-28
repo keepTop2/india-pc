@@ -25,7 +25,6 @@
 					<!-- 塞节时间 -->
 					<div class="date">
 						<span>{{ SportsCommonFn.getEventsTitle(event) }} {{ gameTime }}</span>
-						<!-- <span v-if="isGameOngoing">{{ formattedGameTime }}</span> -->
 					</div>
 					<div class="info-list">
 						<!-- 收藏 -->
@@ -41,9 +40,7 @@
 				</div>
 				<!-- 节数比分 -->
 				<div class="score-list" v-if="event.basketballInfo?.latestLivePeriod > 0">
-					<div class="item" :class="{ theme: event.basketballInfo?.latestLivePeriod === item }" v-for="(item, index) in event.basketballInfo?.latestLivePeriod" :key="item">
-						{{ event.basketballInfo.homeGameScore[index] }}-{{ event.basketballInfo.awayGameScore[index] }}
-					</div>
+					<div class="item" :class="{ theme: getPeriod.length === index + 1 }" v-for="(item, index) in getPeriod" :key="item">{{ item[0] }}-{{ item[1] }}</div>
 				</div>
 			</div>
 		</div>
@@ -92,6 +89,19 @@ const props = withDefaults(defineProps<TeamDataType>(), {
 
 const emit = defineEmits(["oddsChange"]);
 
+// 比赛节数
+const getPeriod = computed(() => {
+	const { homeGameScore, awayGameScore, homeOverTimeScore, awayOverTimeScore, latestLivePeriod } = props.event.basketballInfo;
+	// 加时赛
+	if (latestLivePeriod > 4) {
+		const periods = homeGameScore.map((score: number, index: number) => [score, awayGameScore[index]]);
+		periods.push([homeOverTimeScore, awayOverTimeScore]);
+		return periods;
+	} else {
+		return homeGameScore.slice(0, latestLivePeriod).map((score: number, index: number) => [score, awayGameScore[index]]);
+	}
+});
+
 // 盘口类型配置
 const betTypes = [
 	{ id: 1, cardType: "capot", type: 20, selectionsLength: 2 },
@@ -99,16 +109,6 @@ const betTypes = [
 	{ id: 3, cardType: "magnitude", type: 3, selectionsLength: 2 },
 	{ id: 4, cardType: "magnitude", type: [401, 402], selectionsLength: 2 },
 ];
-
-// 计算属性: 格式化比赛开始时间
-const formattedGameTime = computed(() => {
-	const minutes = Math.floor(props.event.gameInfo.seconds / 60);
-	const seconds = props.event.gameInfo.seconds % 60;
-	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-});
-
-// 计算属性: 判断比赛是否正在进行
-const isGameOngoing = computed(() => [1, 2, 3, 4, 99].includes(props.event.gameInfo.livePeriod) && !props.event.gameInfo.delayLive && !props.event.gameInfo.isHt);
 
 // 获取侧边栏图标
 const getIconName = (tool: any, events: any, index: number) => {
@@ -188,8 +188,9 @@ const linkDetail = () => {
 	gotoEventDetail(params, SportTypeEnum.Basketball);
 };
 
-//比赛时间倒计时
-const { gameTime } = useGameTimer(props.event);
+//比赛时间
+const gameState = computed(() => props.event);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">

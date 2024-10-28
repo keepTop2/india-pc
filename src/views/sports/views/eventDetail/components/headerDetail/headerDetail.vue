@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from "vue";
+import { computed, defineAsyncComponent, ref, toRefs } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import SportsApi from "/@/api/sports/sports";
 import SportsCommonFn from "/@/views/sports/utils/common";

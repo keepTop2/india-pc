@@ -214,7 +214,8 @@ const linkDetail = () => {
 };
 
 //比赛时间
-const { gameTime } = useGameTimer(props.event);
+const gameState = computed(() => props.event);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">

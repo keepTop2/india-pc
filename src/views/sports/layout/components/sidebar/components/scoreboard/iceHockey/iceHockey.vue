@@ -33,6 +33,7 @@ import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useRoute } from "vue-router";
 import useGameTimer from "/@/views/sports/hooks/useGameTimer";
+import { computed } from "vue";
 const { getEventsTitle } = SportsCommonFn;
 const route = useRoute();
 
@@ -47,7 +48,8 @@ const props = withDefaults(
 );
 
 //比赛时间
-const { gameTime } = useGameTimer(props.eventsInfo);
+const gameState = computed(() => props.eventsInfo);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">
