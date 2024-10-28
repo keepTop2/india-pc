@@ -41,9 +41,6 @@ const tabs = [
 	{ name: "活动", type: 1 },
 ];
 const activeTab = ref(2);
-watch(activeTab, (val) => {
-	getMessageList(val);
-});
 
 // 消息列表
 interface MessageList {
@@ -79,10 +76,10 @@ const hasDelete = computed(() => {
 
 // 一键已读
 const handleReadAll = async () => {
-  const res = await MessageApi.setReadAll({ noticeType: activeTab.value });
-  if (res.code !== 10000) return ElMessage.warning(res.message);
-  await getMessageList(activeTab.value);
-  ElMessage.success("操作成功");
+	const res = await MessageApi.setReadAll({ noticeType: activeTab.value });
+	if (res.code !== 10000) return ElMessage.warning(res.message);
+	await getMessageList(activeTab.value);
+	ElMessage.success("操作成功");
 };
 // 一键删除
 const handleDeleteAll = async () => {
@@ -91,6 +88,14 @@ const handleDeleteAll = async () => {
 	await getMessageList(activeTab.value);
 	ElMessage.success("删除成功");
 };
+
+watch(
+	activeTab,
+	(val) => {
+		getMessageList(val);
+	},
+	{ immediate: true }
+);
 </script>
 
 <style lang="scss" scoped>
