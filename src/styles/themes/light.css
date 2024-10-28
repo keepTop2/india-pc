@@ -21,4 +21,6 @@
 	--F2: #01aff6;
 	--Warn: #ff0000;
 	--Favorites: #ff284b;
+	/* 体育投注赔率hover背景色 */
+	--betselector-hover-bg: rgba(255, 40, 75, 0.15);
 }

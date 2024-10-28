@@ -99,11 +99,6 @@ onMounted(() => {
 // 赔率变化状态：1 表示上升，2 表示下降，3 表示无变化
 // oddsChange 的类型定义为字面量联合类型
 const oddsChange = ref<1 | 2 | 3>(3);
-const changeClass: { [key in 1 | 2 | 3]: string } = {
-	1: "oddsUp",
-	2: "oddsDown",
-	3: "none",
-};
 
 // 监听赔率变化，更新状态
 watch(
@@ -114,13 +109,6 @@ watch(
 		}
 	}
 );
-
-/**
- * @description 动画结束后重置赔率变化状态为 3（无变化）
- */
-const animationEnd = (marketId, cardData) => {
-	oddsChange.value = 3;
-};
 
 /**
  * @description 处理盘口高亮状态，根据 marketId 和 selection key 生成唯一标识并存储在 Pinia 中

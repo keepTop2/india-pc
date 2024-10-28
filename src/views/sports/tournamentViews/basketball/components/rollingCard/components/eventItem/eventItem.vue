@@ -97,8 +97,7 @@ const betTypes = [
 	{ id: 1, cardType: "capot", type: 20, selectionsLength: 2 },
 	{ id: 2, cardType: "handicap", type: 1, selectionsLength: 2 },
 	{ id: 3, cardType: "magnitude", type: 3, selectionsLength: 2 },
-	{ id: 4, cardType: "magnitude", type: 401, selectionsLength: 2 },
-	{ id: 5, cardType: "magnitude", type: 402, selectionsLength: 2 },
+	{ id: 4, cardType: "magnitude", type: [401, 402], selectionsLength: 2 },
 ];
 
 // 计算属性: 格式化比赛开始时间
