@@ -89,9 +89,6 @@ import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 const SidebarStore = useSidebarStore();
 const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
-const SportHotStore = useSportHotStore();
-const router = useRouter();
-const route = useRoute();
 const { gotoEventDetail } = useLink();
 
 interface teamDataType {

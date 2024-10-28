@@ -23,8 +23,7 @@
 				<div class="other-info">
 					<!-- 塞节时间 -->
 					<div class="date">
-						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
-						<span v-if="isLive">{{ formattedGameTime }} {{ gameTime }}</span>
+						<span>{{ SportsCommonFn.getEventsTitle(event) }} {{ gameTime }}</span>
 					</div>
 					<div class="info-list">
 						<!-- 收藏 -->

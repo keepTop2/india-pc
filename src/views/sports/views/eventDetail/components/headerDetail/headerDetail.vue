@@ -250,6 +250,10 @@ const handleGoBack = () => {
 		}
 		.scoreboard-info {
 			height: 130px !important;
+			.home-team-name,
+			.away-team-name {
+				max-width: 100% !important;
+			}
 		}
 	}
 
