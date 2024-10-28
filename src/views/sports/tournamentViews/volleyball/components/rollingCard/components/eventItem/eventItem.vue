@@ -44,7 +44,7 @@
 					</div>
 					<!-- 总分 -->
 					<div class="total-score">
-						<span>5局3胜</span>
+						<span>{{ event.gameSession }}局{{ Math.ceil(event.gameSession / 2) }}胜</span>
 						<template v-if="event.volleyballInfo">
 							<span>|</span>
 							<span class="theme"
