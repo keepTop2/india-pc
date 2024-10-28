@@ -10,18 +10,18 @@
 			<div class="content">
 				<div class="wrapper">
 					<div class="tabs">
-						<div v-for="item in tabs" @click="activeTab = item.id" :class="activeTab === item.id && 'active'">
+						<div v-for="item in tabs" @click="activeTab = item.type" :class="activeTab === item.type && 'active'">
 							{{ item.name }}
 						</div>
 					</div>
 					<div v-if="messageList.length" class="messageList">
 						<Message v-for="item in messageList" :item="item" />
 					</div>
-          <NoData v-else/>
+					<NoData v-else />
 				</div>
 				<div class="bottom-handle">
-					<el-button color="#FF284B" class="read" plain :disabled="!hasUnread">一键已读</el-button>
-					<el-button color="#FF284B" class="delete" :disabled="!hasDelete">全部删除</el-button>
+					<el-button color="#FF284B" class="read" plain :disabled="!hasUnread" @click="handleReadAll">一键已读 </el-button>
+					<el-button color="#FF284B" class="delete" :disabled="!hasDelete" @click="handleDeleteAll">全部删除</el-button>
 				</div>
 			</div>
 		</el-drawer>
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import Message from "./components/Message.vue";
 import { MessageApi } from "/@/api/message";
 import { ElMessage } from "element-plus";
@@ -37,10 +37,13 @@ import NoData from "/@/views/messageCenter/components/NoData.vue";
 
 const messageCenterVisible = defineModel();
 const tabs = [
-	{ name: "通知", id: 1 },
-	{ name: "活动", id: 2 },
+	{ name: "通知", type: 2 },
+	{ name: "活动", type: 1 },
 ];
-const activeTab = ref(1);
+const activeTab = ref(2);
+watch(activeTab, (val) => {
+	getMessageList(val);
+});
 
 // 消息列表
 interface MessageList {
@@ -54,12 +57,15 @@ interface MessageList {
 }
 
 const messageList = ref<MessageList[]>([]);
-const getMessageList = async () => {
-	const res = await MessageApi.messageList();
-	if (res.code !== 10000) return ElMessage.warning(res.message);
-	messageList.value = res.data.userNoticeList;
+const params = {
+	pageNumber: 1,
+	pageSize: 10,
 };
-getMessageList();
+const getMessageList = async (type: number) => {
+	const res = await MessageApi.messageList({ noticeType: type, ...params });
+	if (res.code !== 10000) return ElMessage.warning(res.message);
+	messageList.value = res.data.records;
+};
 
 // 底部操作
 // 是否还有未读的信息
@@ -70,6 +76,21 @@ const hasUnread = computed(() => {
 const hasDelete = computed(() => {
 	return messageList.value.length > 0;
 });
+
+// 一键已读
+const handleReadAll = async () => {
+  const res = await MessageApi.setReadAll({ noticeType: activeTab.value });
+  if (res.code !== 10000) return ElMessage.warning(res.message);
+  await getMessageList(activeTab.value);
+  ElMessage.success("操作成功");
+};
+// 一键删除
+const handleDeleteAll = async () => {
+	const res = await MessageApi.setDelStateAll({ noticeType: activeTab.value });
+	if (res.code !== 10000) return ElMessage.warning(res.message);
+	await getMessageList(activeTab.value);
+	ElMessage.success("删除成功");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -159,7 +180,7 @@ const hasDelete = computed(() => {
 
 			.el-button {
 				margin: 0;
-        font-size: 12px;
+				font-size: 12px;
 			}
 
 			.read {

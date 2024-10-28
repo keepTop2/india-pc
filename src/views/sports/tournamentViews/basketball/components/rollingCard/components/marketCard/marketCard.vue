@@ -1,6 +1,6 @@
 <template>
 	<div class="market-content">
-		<BetSelector :value="cardData?.oddsPrice?.decimalPrice" :isRun="market.marketStatus === 'running'">
+		<BetSelector :value="cardData?.oddsPrice?.decimalPrice" :id="market.marketId + cardData?.key" :isRun="market.marketStatus === 'running'">
 			<!-- 判断是否有卡片数据 -->
 			<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
 				<!-- 独赢类型 -->
@@ -60,6 +60,7 @@ import { onMounted, ref, watch } from "vue";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
+import { id } from "element-plus/es/locale";
 const emit = defineEmits(["oddsChange"]);
 
 // 定义传入属性的类型
@@ -188,9 +189,6 @@ const isBright = () => {
 			font-size: 12px;
 			font-weight: 400;
 		}
-		&:hover {
-			background-color: rgba(255, 255, 255, 0.05);
-		}
 
 		.lock {
 			width: 16px;
@@ -205,13 +203,6 @@ const isBright = () => {
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
-		}
-	}
-
-	.isBright {
-		background: var(--Bg5) !important;
-		.label {
-			color: var(--Text_a);
 		}
 	}
 }

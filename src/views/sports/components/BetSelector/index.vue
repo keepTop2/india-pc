@@ -1,56 +1,50 @@
 <template>
-	<div class="bet-selector" :class="[badgeClass]">
+	<div class="bet-selector" :class="badgeClass">
 		<!-- 内容 -->
 		<slot></slot>
-		<!-- 角标 购物车-->
-		<svg-icon v-if="isShopCar" class="badge-shop-car" :class="[badgeClass]" :name="'direction'" size="18px" />
+		<!-- 角标 购物车 -->
+		<svg-icon v-if="isShopCar" class="badge-shop-car" :class="badgeClass" :name="'direction'" size="18px" />
 		<!-- 角标 -->
-		<span v-else class="badge" :class="[badgeClass]" />
+		<span v-else class="badge" :class="badgeClass" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { watch, ref, Ref, onBeforeUnmount } from "vue";
-
+import { watch, ref, onBeforeUnmount } from "vue";
 const props = defineProps({
-	// 监控的值
-	value: {
-		type: Number,
-	},
-	// 非滚盘恢复nromal状态
-	isRun: {
-		type: Boolean,
-		default: true,
-	},
-	isShopCar: {
-		type: Boolean,
-	},
+	value: Number,
+	isRun: { type: Boolean, default: true },
+	isShopCar: Boolean,
+	id: { type: String, required: false },
 });
 
 const badgeClass = ref<"up" | "down" | "normal">("normal");
+const timer = ref<number | null>(null);
 
-const timer: Ref<number | null> = ref(null);
-
-watch(
-	() => props.value,
-	(newVal, oldValue) => {
-		console.log(newVal, oldValue, "oldValue===");
-
-		if (newVal && oldValue && props.isRun) {
-			// 比较新值跟旧值，如果三秒钟未更新，及恢复normal状态
-			badgeClass.value = oldValue > newVal ? "down" : oldValue < newVal ? "up" : "normal";
-			clearTimeout(timer.value as number);
-			timer.value = window.setTimeout(() => {
-				badgeClass.value = "normal";
-			}, 2000);
-		} else {
-			clearTimeout(timer.value as number);
-			badgeClass.value = "normal";
-		}
+// 计算类名的逻辑优化
+const updateBadgeClass = (newVal: number | undefined, oldVal: number | undefined, oldId: string | undefined, newId: string | undefined) => {
+	if (!props.isRun || newVal === undefined || oldVal === undefined || newId !== oldId) {
+		clearBadge();
+		return;
 	}
-);
+	badgeClass.value = oldVal > newVal ? "down" : oldVal < newVal ? "up" : "normal";
+	clearTimer();
+	timer.value = window.setTimeout(clearBadge, 2000);
+};
 
-onBeforeUnmount(() => clearTimeout(timer.value as number));
+// 清除状态的辅助方法
+const clearBadge = () => (badgeClass.value = "normal");
+const clearTimer = () => {
+	if (timer.value !== null) clearTimeout(timer.value);
+};
+
+/**
+ * 监控 `value` 的变化
+ * 由于虚拟列表会替换组件数据，故组件从外部接收唯一id，防止快速滚动虚拟列表数据替换导致的错误上升下降信号
+ */
+watch([() => props.value, () => props.id], ([newVal, newId], [oldVal, oldId]) => updateBadgeClass(newVal, oldVal, newId, oldId));
+
+onBeforeUnmount(() => clearTimer());
 </script>
 
 <style scoped lang="scss">
