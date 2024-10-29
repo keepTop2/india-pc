@@ -125,7 +125,10 @@ import { walletApi } from "/@/api/wallet";
 import common from "/@/utils/common";
 import { useUserStore } from "/@/stores/modules/user";
 import router from "/@/router";
+import showToast from "/@/hooks/useToast";
+import { i18n } from "/@/i18n/index";
 const UserStore = useUserStore();
+const $: any = i18n.global;
 
 interface rechargeWayDataRootObject {
 	rechargeTypeCode: string;
@@ -187,6 +190,10 @@ const buttonType = computed(() => {
 const getRechargeWayList = async () => {
 	const res = await walletApi.rechargeWayList().catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
+		if (!res.data || res.data.length == 0) {
+			showToast($.t('wallet["无可用通道"]'));
+			return;
+		}
 		rechargeWayList.value = res.data; // 存储支付方式列表
 		rechargeWayData.value = res.data[0]; // 默认选择第一个支付方式
 		getRechargeConfig();
