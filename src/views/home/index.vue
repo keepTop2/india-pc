@@ -3,8 +3,8 @@
 		<bannerSkeleton v-if="isLoading" />
 		<banner v-else></banner>
 
-		<!--公告-->
-		<Announcement />
+		<!--跑马灯-->
+		<HorseRaceLamp />
 
 		<div class="max-width">
 			<!-- 热门推荐 -->
@@ -18,11 +18,14 @@
 			</div>
 			<redbagRainCountdown v-model="showCountdown" :redBagInfo="redBagInfo" />
 		</div>
+
+		<!--公告-->
+		<Announcement />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import banner from "./components/banner.vue";
 import bannerSkeleton from "./components/bannerSkeleton.vue";
 import hotGame from "./components/hotGame.vue";
@@ -32,7 +35,8 @@ import lobbyGameCard from "./components/lobbyGameCard.vue";
 import { HomeApi } from "/@/api/home";
 import pubsub from "/@/pubSub/pubSub";
 import activitySocketService from "/@/utils/activitySocketService";
-import Announcement from "/@/views/home/components/Announcement.vue";
+import HorseRaceLamp from "/@/views/home/components/horseRaceLamp.vue";
+import Announcement from "/@/components/Announcement/Announcement.vue";
 
 const websocketService: any = activitySocketService.getInstance();
 const showCountdown = ref(false);
