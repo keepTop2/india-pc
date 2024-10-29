@@ -8,14 +8,14 @@
 				<div class="amount_list">
 					<div class="amount_info">
 						<div class="label">{{ $t(`wallet['中心钱包']`) }}</div>
-						<div class="value">{{ 500 }}</div>
+						<div class="value">{{ common.formatAmount(UserStore.userInfo.totalBalance, 8) }}</div>
 						<div class="icon">
 							<img :src="balance_icon" alt="" />
 						</div>
 					</div>
 					<div class="amount_info">
-						<div class="label">{{ $t(`wallet['中心钱包']`) }}</div>
-						<div class="value">{{ 500 }}</div>
+						<div class="label">{{ $t(`wallet['冻结金额']`) }}</div>
+						<div class="value">{{ common.formatFloat(state.freezeAmount) }}</div>
 						<div class="icon">
 							<img :src="freeze_balance_icon" alt="" />
 						</div>
@@ -45,13 +45,7 @@
 				<div class="title mt_20">{{ $t(`wallet['收款信息']`) }}</div>
 				<div class="form_container">
 					<!-- 动态表单 -->
-					<component
-						class="mb_16"
-						ref="childRef"
-						:is="componentsMapsName[withdrawWayData?.withdrawTypeCode]"
-						:withdrawWayData="withdrawWayData"
-						:withdrawWayConfig="withdrawWayConfig"
-					/>
+					<component ref="childRef" :is="componentsMapsName[withdrawWayData?.withdrawTypeCode]" :withdrawWayData="withdrawWayData" :withdrawWayConfig="withdrawWayConfig" />
 					<div class="tips">
 						<svg-icon class="icon" name="wallet-help" />
 						<p>
@@ -62,22 +56,24 @@
 				</div>
 
 				<!-- 手机号提款验证 -->
-				<template v-if="!UserStore.getUserGlobalSetInfo.isSetPwd && UserStore.getUserGlobalSetInfo.phone">
-					<div class="title mt_20">{{ $t(`wallet['手机号验证']`) }}</div>
-					<div class="form_container">
-						<div class="form">
-							<div class="cell disabled_cell">
-								<div class="disabled_label">{{ $t(`wallet['手机号']`) }}</div>
-								<div class="disabled_value">{{ UserStore.getUserGlobalSetInfo.areaCode }}&nbsp;&nbsp;{{ common.maskString(UserStore.getUserGlobalSetInfo?.phone) }}</div>
-								<div class="disabled_btn">
-									<CaptchaButton ref="captchaButton" :disabled="captchaDisabled" @onCaptcha="onCaptcha" />
+				<template v-if="withdrawWayData.withdrawTypeCode !== 'crypto_currency'">
+					<template v-if="!UserStore.getUserGlobalSetInfo.isSetPwd && UserStore.getUserGlobalSetInfo.phone">
+						<div class="title mt_20">{{ $t(`wallet['手机号验证']`) }}</div>
+						<div class="form_container">
+							<div class="form">
+								<div class="cell disabled_cell">
+									<div class="disabled_label">{{ $t(`wallet['手机号']`) }}</div>
+									<div class="disabled_value">{{ UserStore.getUserGlobalSetInfo.areaCode }}&nbsp;&nbsp;{{ common.maskString(UserStore.getUserGlobalSetInfo?.phone) }}</div>
+									<div class="disabled_btn">
+										<CaptchaButton ref="captchaButton" :disabled="captchaDisabled" @onCaptcha="onCaptcha" />
+									</div>
+								</div>
+								<div class="cell">
+									<input v-model="state.smsCode" type="text" :placeholder="$t(`wallet['请输入验证码']`)" />
 								</div>
 							</div>
-							<div class="cell">
-								<input type="text" :placeholder="$t(`wallet['请输入验证码']`)" />
-							</div>
 						</div>
-					</div>
+					</template>
 				</template>
 
 				<!-- 提款金额 -->
@@ -85,6 +81,7 @@
 				<div class="footer_form mt_16">
 					<div class="cell">
 						<input
+							class="bold_input"
 							v-model="state.amount"
 							type="text"
 							:placeholder="`${withdrawWayConfig.withdrawMinAmount ?? 0} ${UserStore.userInfo.mainCurrency} ~ ${withdrawWayConfig.withdrawMaxAmount ?? 0} ${
@@ -116,7 +113,7 @@
 						<!-- 虚拟币预计到账计算 -->
 						<div v-if="withdrawWayData.withdrawTypeCode === 'crypto_currency'" class="amount_info">
 							<div class="item">
-								<span class="value">≈{{ common.formatFloat(estimatedAmount * exchangeRate) }}</span>
+								<span class="value">≈{{ common.formatFloat(Number(state.amount) - Math.trunc((Number(state.amount) * withdrawWayConfig.feeRate) / 100)) }}</span>
 								<span class="value">&nbsp;{{ UserStore.userInfo.mainCurrency }}</span>
 							</div>
 							<div class="item">
@@ -144,6 +141,7 @@
 			</div>
 		</Card>
 	</div>
+	<!-- 交易密码弹窗 -->
 	<PassWordDialog v-model:modelValue="passWordShow" v-model:password="state.withdrawPassWord" @confirm="onTransactionPasswordEntered"></PassWordDialog>
 </template>
 
@@ -157,9 +155,11 @@ import BankCard from "./components/BankCard/BankCard.vue";
 import EWallet from "./components/EWallet/EWallet.vue";
 import VirtualCurrency from "./components/VirtualCurrency/VirtualCurrency.vue";
 import { walletApi } from "/@/api/wallet";
+import { loginApi } from "/@/api/login";
 import common from "/@/utils/common";
 import { useUserStore } from "/@/stores/modules/user";
 import { i18n } from "/@/i18n/index";
+import showToast from "/@/hooks/useToast";
 const UserStore = useUserStore();
 const $: any = i18n.global;
 
@@ -194,6 +194,7 @@ const state = reactive({
 	freezeAmount: "",
 	withdrawPassWord: "" as string,
 	amount: "" as string | number,
+	smsCode: "" as string | number,
 } as any);
 
 const feeAmount = ref(0); // 手续费
@@ -201,6 +202,10 @@ const estimatedAmount = ref(0); // 预计到账金额
 const exchangeRate = ref(0); // 预计到账金额
 
 const passWordShow = ref(false);
+
+const captchaButton = ref<{
+	startCountdown: () => void;
+} | null>(null);
 
 const errorMessage = computed(() => {
 	const amount = parseFloat(state.amount as string);
@@ -262,6 +267,7 @@ const buttonType = computed(() => {
 		if (!UserStore.getUserGlobalSetInfo.isSetPwd && UserStore.getUserGlobalSetInfo.phone) {
 			smsCode = childRef.value?.formParams?.smsCode || "";
 			requiredFields.push("smsCode");
+			dynamicFields.smsCode = state.smsCode;
 		}
 	};
 
@@ -287,8 +293,8 @@ const buttonType = computed(() => {
 		default:
 			break;
 	}
-	// console.log("requiredFields", requiredFields);
-	// console.log("dynamicFields", dynamicFields);
+	console.log("requiredFields", requiredFields);
+	console.log("dynamicFields", dynamicFields);
 	// 检查所有属性是否有值
 	const allFieldsHaveValue = requiredFields.every((key) => dynamicFields[key] !== undefined && dynamicFields[key] !== "");
 	// console.log("errorMessage.value", errorMessage.value);
@@ -317,25 +323,25 @@ const calculateFeeAndEstimatedAmount = () => {
 		feeAmount.value = 0; // 免费提款条件下手续费为0
 	} else {
 		// 计算手续费
-		feeAmount.value = isCrypto ? (amount * feeRate) / 100 / exchangeRate.value : (amount * feeRate) / 100;
+		feeAmount.value = isCrypto ? Math.trunc(Math.trunc((amount * feeRate) / 100) / exchangeRate.value) : (amount * feeRate) / 100;
 	}
 	// 预计到账金额计算
-	estimatedAmount.value = isCrypto ? amount / exchangeRate.value - feeAmount.value : amount - feeAmount.value;
+	estimatedAmount.value = isCrypto
+		? Number(common.formatFloat(Number(state.amount) - Math.trunc((Number(state.amount) * feeRate) / 100))) / exchangeRate.value
+		: amount - feeAmount.value;
 };
 
 // 获取冻结金额
-/*const getUserBalance = async () => {
-	const res = await myApi.getUserBalance().catch((err) => err);
+const getUserBalance = async () => {
+	const res = await walletApi.getUserBalance().catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
 		state.freezeAmount = res.data.freezeAmount;
 	}
-};*/
+};
 
 // 交易密码输入完成
 const onTransactionPasswordEntered = () => {
 	passWordShow.value = false;
-	console.log("state.withdrawPassWord.", state.withdrawPassWord);
-
 	if (state.withdrawPassWord.length === 6) {
 		const params = {
 			amount: state.amount,
@@ -370,7 +376,17 @@ const getWithdrawApply = async (params) => {
 };
 
 // 选择支付方式时的处理
-const onRechargeWay = (item) => {
+const onRechargeWay = (item: {
+	withdrawTypeCode: string;
+	id: string;
+	withdrawWay: string;
+	wayIcon: string;
+	wayFee: number;
+	quickAmount: string;
+	recommendFlag: number;
+	networkType: string;
+	currencyCode: string;
+}) => {
 	withdrawWayData.value = item;
 	clearParams();
 	getWithdrawConfig(); // 获取通道配置
@@ -392,6 +408,7 @@ const getRechargeWayList = async () => {
 
 // 获取通道配置
 const getWithdrawConfig = async () => {
+	withdrawWayConfig.value = {};
 	const params = {
 		withdrawWayId: withdrawWayData.value.id,
 	};
@@ -411,27 +428,20 @@ const getWithdrawExchange = async () => {
 
 // 发送验证码
 const onCaptcha = async () => {
-	console.log("点击发送验证码");
-	// let params = { userAccount: props.data.userAccount } as any;
-	// let res;
-	// if (state.type === "phone") {
-	// 	params = { ...params, phone: state.phone, areaCode: state.areaCode };
-	// 	res = await forgetPasswordApi.sendSms(params);
-	// } else if (state.type === "email") {
-	// 	params = { ...params, email: state.email };
-	// 	res = await forgetPasswordApi.sendMail(params);
-	// }
-	// if (res.code === common.ResCode.SUCCESS) {
-	// 	captchaButton.value?.startCountdown();
-	// } else {
-	// 	showToast(res.message);
-	// }
+	// console.log("点击发送验证码");
+	const params = { userAccount: UserStore.getUserInfo.userAccount, phone: UserStore.getUserGlobalSetInfo.phone, areaCode: UserStore.getUserGlobalSetInfo.areaCode };
+	const res = await loginApi.sendSms(params);
+	if (res.code === common.ResCode.SUCCESS) {
+		captchaButton.value?.startCountdown();
+	} else {
+		showToast(res.message);
+	}
 };
 
 // 初始化数据
 getRechargeWayList();
 getWithdrawExchange();
-// getUserBalance();
+getUserBalance();
 
 // 清空表单参数
 const clearParams = () => {
@@ -558,6 +568,8 @@ const clearParams = () => {
 		}
 	}
 	.form_container {
+		display: grid;
+		gap: 16px;
 		margin-top: 16px;
 		padding: 20px;
 		border-radius: 12px;

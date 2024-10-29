@@ -1,15 +1,31 @@
 <template>
-	<div class="marketColumn" v-if="market?.selections">
-		<MarketCard
-			v-for="(item, index) in market?.selections"
-			:key="index"
-			:cardType="cardType"
-			:cardData="item"
-			:sportInfo="sportInfo"
-			:market="market"
-			:betType="betType"
-			@oddsChange="oddsChange"
-		/>
+	<div v-if="market?.selections">
+		<template v-if="typeof betType === 'number'">
+			<div class="marketColumn">
+				<MarketCard
+					v-for="(item, index) in marketsMatchData(sportInfo.markets, betType, selectionsLength)?.selections"
+					:key="index"
+					:cardType="cardType"
+					:cardData="item"
+					:sportInfo="sportInfo"
+					:market="market"
+					:betType="betType"
+					@oddsChange="oddsChange"
+				/>
+			</div>
+		</template>
+		<div style="flex-direction: row" class="marketColumn market-row" v-else v-for="(type, index) in betType" :key="type" :style="{ marginTop: index === 1 ? '4px' : '' }">
+			<MarketCard
+				v-for="(item, index) in marketsMatchData(sportInfo.markets, type, selectionsLength)?.selections"
+				:key="index"
+				:cardType="cardType"
+				:cardData="item"
+				:sportInfo="sportInfo"
+				:market="marketsMatchData(sportInfo.markets, type, selectionsLength)"
+				:betType="type"
+				@oddsChange="oddsChange"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -17,6 +33,7 @@
 import { onMounted, ref, watchEffect } from "vue";
 import MarketCard from "../marketCard/marketCard.vue";
 import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
+import { template } from "lodash-es";
 
 const emit = defineEmits(["oddsChange"]);
 
@@ -26,7 +43,7 @@ interface CapotCardType {
 	/** 体育信息（每一行）*/
 	sportInfo: any;
 	/** 投注类型 */
-	betType: number;
+	betType: number | number[];
 	/** 对应selections的长度（用于设置空数据量）  */
 	selectionsLength: number;
 }
@@ -65,5 +82,8 @@ const oddsChange = (obj: any) => {
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
+	&.market-row {
+		width: 236px !important;
+	}
 }
 </style>

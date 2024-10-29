@@ -61,6 +61,7 @@ function onPasswordInput() {
 
 // 关闭按钮处理函数
 function handleClose() {
+	emit("update:password", (password.value = ""));
 	emit("update:modelValue", false);
 }
 

@@ -276,7 +276,7 @@ class SportsCommonFn {
 					return $.t("sports['中场休息']");
 				}
 				if (!delayLive && !isHt && numMap.get(livePeriod)) {
-					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + computerSeconds(seconds);
+					return $.t(`sports['第${numMap.get(livePeriod)}节']`);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -558,7 +558,7 @@ class SportsCommonFn {
 	 */
 	public static getResultDateRange = (date: string, dayEnd: number = 0, format = "YYYY-MM-DDTHH:mm:ss") => {
 		// 确保解析时按照 YYYY-MM-DD 格式
-		const easternTime = dayjs(date, "YYYY-MM-DD").utcOffset(-5);
+		const easternTime = dayjs(date, "YYYY-MM-DD").utcOffset(this.getUtc());
 
 		// 计算0点（开始时间）
 		const startDate = easternTime.startOf("day").toISOString();
@@ -591,9 +591,9 @@ class SportsCommonFn {
 		return {
 			startDate: dayjs()
 				.subtract(index - 1, "days")
-				.utcOffset(-5)
+				.utcOffset(this.getUtc())
 				.startOf("days"),
-			endDate: dayjs().utcOffset(-5).endOf("days"),
+			endDate: dayjs().utcOffset(this.getUtc()).endOf("days"),
 		};
 	};
 
@@ -715,6 +715,14 @@ class SportsCommonFn {
 		const minutes = String(timeDuration.minutes()).padStart(2, "0"); // 获取分钟并补零
 		const secs = String(timeDuration.seconds()).padStart(2, "0"); // 获取秒并补零
 		return `${minutes}:${secs}`;
+	}
+
+	/**
+	 * @description 获取站点utc
+	 */
+	public static getUtc() {
+		const { timezone = "" } = JSON.parse(localStorage.getItem("userInfo") as string) || {};
+		return timezone.replace("UTC", "");
 	}
 }
 

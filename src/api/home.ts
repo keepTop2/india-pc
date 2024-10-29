@@ -25,4 +25,20 @@ export const HomeApi = {
 			headers,
 		});
 	},
+	// 跑马灯消息
+	horseRaceLampList: (data = {}, headers = { showLoading: false }) => {
+		return useAxiosApi(`/app/client/user/notice/getUserNoticeHeadList`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	// 公告
+	noticeList: (data = {}, headers = { showLoading: false }) => {
+		return useAxiosApi(`/app/client/user/notice/getForceUserNoticeHeadList`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };

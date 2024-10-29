@@ -73,7 +73,7 @@ class SportsShopCartSSEController implements WorkerControllerI {
 	};
 
 	// 冠军推送开启
-	public startOutrightSEE = (workerTransferData: WorkerTransfer<any, any>) => {
+	public championShopCartViewChanges = (workerTransferData: WorkerTransfer<any, any>) => {
 		if (workerTransferData.data.cartType == "0") {
 			this.sportsShopCartViewChanges(workerTransferData);
 			return;
