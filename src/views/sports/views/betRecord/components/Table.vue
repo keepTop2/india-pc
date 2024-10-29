@@ -87,7 +87,7 @@
 				<!-- 结果 -->
 				<el-table-column :label="$t(`sports.betRecord['结果']`)" width="116" align="center" :resizable="false">
 					<template #default="{ row, column }">
-						<div class="bet-result" :class="[isSettlement ? (row.settlementPrice > 0 ? 'color_sussess' : row.settlementPrice == 0 ? 'color_f1' : 'Theme_text') : 'Text_s']">
+						<div class="bet-result" :class="[isSettlement ? (row.settlementPrice > 0 ? 'color_sussess' : row.settlementPrice == 0 ? 'color_f1' : 'color_Theme') : 'Text_s']">
 							{{ isSettlement ? Common.formatFloat(row.settlementPrice) : "-" }}
 						</div>
 					</template>

@@ -3,7 +3,7 @@
 		<div class="left">
 			<div class="title mb_14 fs_24 Text_s pl_20 fw_500">意见反馈</div>
 			<div class="fade-in center">
-				<div class="cell Text_s"><span class="Theme_text">*</span>问题类型</div>
+				<div class="cell Text_s"><span class="color_Theme">*</span>问题类型</div>
 				<div class="cell">
 					<Dropdown :options="typeList" v-model="state.type"></Dropdown>
 				</div>
@@ -11,7 +11,7 @@
 					<div class="Text_s mb_16">相关订单</div>
 					<input type="text " class="common_input" placeholder="请输入相关订单号" />
 				</div>
-				<div class="cell Text_s mb_16"><span class="Theme_text">*</span>问题描述 <span class="fs_12 Text2">内容介于10~500字</span></div>
+				<div class="cell Text_s mb_16"><span class="color_Theme">*</span>问题描述 <span class="fs_12 Text2">内容介于10~500字</span></div>
 				<div>
 					<textarea
 						v-model="state.content"
@@ -20,7 +20,7 @@
 						maxlength="500"
 					></textarea>
 				</div>
-				<div class="cell Text_s mb_16 mt_20"><span class="Theme_text">*</span>问题截图 <span class="fs_12 Text2">最大不超过5 M，最多3张， 支持格式：jpg.png.jpeg</span></div>
+				<div class="cell Text_s mb_16 mt_20"><span class="color_Theme">*</span>问题截图 <span class="fs_12 Text2">最大不超过5 M，最多3张， 支持格式：jpg.png.jpeg</span></div>
 				<div>
 					<ImgUpload :files="files" :max="3" @update:files="updateFiles" />
 				</div>

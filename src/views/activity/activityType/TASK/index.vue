@@ -34,7 +34,7 @@
 										>奖励：<span class="color_f1"> {{ item.currencyName }} {{ item.rewardAmount }}</span></span
 									>
 									<span
-										><span class="Theme_text">{{ item.achieveAmount || 0 }}</span
+										><span class="color_Theme">{{ item.achieveAmount || 0 }}</span
 										>/{{ item.minBetAmount }}</span
 									>
 								</div>
@@ -62,7 +62,7 @@
 										>奖励：<span class="color_f1"> {{ item.currencyName }} {{ item.rewardAmount }}</span></span
 									>
 									<span
-										><span class="Theme_text">{{ item.achieveAmount || 0 }}</span
+										><span class="color_Theme">{{ item.achieveAmount || 0 }}</span
 										>/{{ item.minBetAmount }}</span
 									>
 								</div>
@@ -77,7 +77,7 @@
 					</div>
 					<div v-if="currentTab == 2">
 						<div class="daojishiBg fs_14 mt_0 mb_14">
-							<span class="Text_s">剩余时间：</span><span class="Theme_text">{{ Common.convertMilliseconds(countdown * 1000) }}</span>
+							<span class="Text_s">剩余时间：</span><span class="color_Theme">{{ Common.convertMilliseconds(countdown * 1000) }}</span>
 						</div>
 						<div v-for="item in taskData?.noviceTask" class="card" :class="item.subTaskType">
 							<div>

@@ -43,48 +43,39 @@
 				<div class="left_scroll_conatiner2">
 					<menuSkeleton v-if="isLoading" :collapse="collapse" />
 					<Menu v-else />
-				</div>
-				<!-- 左侧底步功能区 -->
-				<div class="sidebar_bttom">
-					<!-- 推荐码 -->
-					<div class="referralcode_conatiner">
-						<div class="referralcode_row1 br_4">
-							<input class="referralcode_input1 fz_14 br_4" type="text" :placeholder="$t(`layout['layout1']['请输入推荐/促销码']`)" />
-							<div class="referralcode_btn1 fz_14 br_4">{{ $t(`layout['layout1']['提交']`) }}</div>
+					<!-- 左侧底步功能区 -->
+					<div class="sidebar_bttom">
+						<!-- 帮助中心 -->
+						<div class="helpcenter_container" @click="router.push('/helpCenter')">
+							<svg-icon name="help_icon" size="17px" />
+							<span class="left_text1">
+								{{ $t(`layout['layout1']['帮助中心']`) }}
+							</span>
 						</div>
-						<div class="referralcode_row2 fz_12 mt_4">{{ $t(`layout['layout1']['注:注册后24小时内有效']`) }}</div>
-					</div>
+						<!-- 白天黑夜  打开侧边栏状态-->
+						<div class="dayOrNight mt_12 mb_10" v-if="!collapse">
+							<!-- 白天 -->
+							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('light')">
+								<svg-icon name="light_icon" size="17px" class="mr_8" />
+								<span class="left_text1" :class="{ activeColor: ThemesStore.themeName == 'light' }"> {{ $t(`layout['layout1']['白天']`) }}</span>
+							</div>
+							<!-- 黑夜 -->
+							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('dark')">
+								<svg-icon name="dark_icon" size="17px" class="mr_8" />
+								<span class="left_text1" :class="{ activeColor: ThemesStore.themeName == 'dark' }"> {{ $t(`layout['layout1']['黑夜']`) }}</span>
+							</div>
+						</div>
 
-					<!-- 帮助中心 -->
-					<div class="helpcenter_container" @click="router.push('/helpCenter')">
-						<svg-icon name="help_icon" size="17px" />
-						<span class="left_text1">
-							{{ $t(`layout['layout1']['帮助中心']`) }}
-						</span>
-					</div>
-					<!-- 白天黑夜  打开侧边栏状态-->
-					<div class="dayOrNight mt_12 mb_10" v-if="!collapse">
-						<!-- 白天 -->
-						<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('light')">
-							<svg-icon name="light_icon" size="17px" class="mr_8" />
-							<span class="left_text1" :class="{ activeColor: ThemesStore.themeName == 'light' }"> {{ $t(`layout['layout1']['白天']`) }}</span>
-						</div>
-						<!-- 黑夜 -->
-						<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('dark')">
-							<svg-icon name="dark_icon" size="17px" class="mr_8" />
-							<span class="left_text1" :class="{ activeColor: ThemesStore.themeName == 'dark' }"> {{ $t(`layout['layout1']['黑夜']`) }}</span>
-						</div>
-					</div>
-
-					<!-- 白天黑夜  关闭侧边栏状态-->
-					<div class="dayOrNight mt_12 mb_10" v-else>
-						<!-- 白天 -->
-						<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('light')" v-if="ThemesStore.themeName == 'dark'">
-							<svg-icon name="light_icon" size="17px" />
-						</div>
-						<!-- 白天 -->
-						<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('dark')" v-else>
-							<svg-icon name="dark_icon" size="17px" />
+						<!-- 白天黑夜  关闭侧边栏状态-->
+						<div class="dayOrNight mt_12 mb_10" v-else>
+							<!-- 白天 -->
+							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('light')" v-if="ThemesStore.themeName == 'dark'">
+								<svg-icon name="light_icon" size="17px" />
+							</div>
+							<!-- 白天 -->
+							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('dark')" v-else>
+								<svg-icon name="dark_icon" size="17px" />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -270,9 +261,6 @@ const changeCollpase = () => {
 	}
 
 	.sidebar_bttom {
-		position: absolute;
-		bottom: 0;
-		width: calc(100% - 16px);
 		background: var(--Bg1);
 		color: var(--Text1);
 
