@@ -23,7 +23,7 @@
 					<template #option="{ option }">
 						<div class="custom-option">
 							<div class="icon">
-								<img :src="option.icon" alt="" />
+								<img :src="option.iconFileUrl" alt="" />
 							</div>
 							<span class="label"> {{ option.bankName }}</span>
 						</div>
@@ -181,6 +181,8 @@ const clearParams = () => {
 defineExpose({
 	formParams,
 	isPhoneValid,
+	inputFields,
+	getAreaCodeDownBox,
 	clearParams,
 });
 </script>
@@ -216,7 +218,16 @@ defineExpose({
 		flex: 1;
 	}
 
-	&:hover {
+	// &:hover {
+	// 	.label,
+	// 	.value {
+	// 		color: var(--Text_s);
+	// 	}
+	// }
+}
+
+:deep(.dropdown-item:hover) {
+	.custom-option {
 		.label,
 		.value {
 			color: var(--Text_s);

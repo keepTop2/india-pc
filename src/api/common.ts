@@ -19,6 +19,15 @@ export const CommonApi = {
 		});
 	},
 
+	// 邮箱验证码请求
+	getSiteCustomerChannel: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/common/getSiteCustomerChannel`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
 	/**
 	 *@description 获取通用配置
 	 */
