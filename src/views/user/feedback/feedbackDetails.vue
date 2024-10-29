@@ -18,7 +18,7 @@
 						<img v-if="FeedbackDetail" v-lazy-load="imgObj['type' + FeedbackDetail[0]?.type]" alt="" /> <span>{{ FeedbackDetail[0]?.typeText }}</span>
 					</div>
 					<div class="flex_space-between">
-						<span class="Theme_text mr_20 curp" style="border-bottom: 1px solid" @click="handleShowForm">再次反馈</span>
+						<span class="color_Theme mr_20 curp" style="border-bottom: 1px solid" @click="handleShowForm">再次反馈</span>
 						<svg-icon name="delete_theme" size="24px" class="curp" @click="deleteOrder"></svg-icon>
 					</div>
 				</div>
@@ -61,7 +61,7 @@
 				</div>
 
 				<div class="mt_20" v-if="showForm">
-					<div class="cell Text_s mb_16"><span class="Theme_text">*</span>问题描述 <span class="fs_12 Text2">内容介于10~500字</span></div>
+					<div class="cell Text_s mb_16"><span class="color_Theme">*</span>问题描述 <span class="fs_12 Text2">内容介于10~500字</span></div>
 					<div>
 						<textarea
 							v-model="state.content"
@@ -70,7 +70,7 @@
 							maxlength="500"
 						></textarea>
 					</div>
-					<div class="cell Text_s mb_16 mt_20"><span class="Theme_text">*</span>问题截图 <span class="fs_12 Text2">最大不超过5 M，最多3张， 支持格式：jpg.png.jpeg</span></div>
+					<div class="cell Text_s mb_16 mt_20"><span class="color_Theme">*</span>问题截图 <span class="fs_12 Text2">最大不超过5 M，最多3张， 支持格式：jpg.png.jpeg</span></div>
 					<div>
 						<ImgUpload :files="state.files" :max="3" @update:files="updateFiles" />
 					</div>

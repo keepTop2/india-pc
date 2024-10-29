@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Announcement: typeof import('./src/components/Announcement/Announcement.vue')['default']
     AreaCode: typeof import('./src/components/AreaCode/index.vue')['default']
     BackToTop: typeof import('./src/components/BackToTop.vue')['default']
     Button: typeof import('./src/components/Button/Button.vue')['default']
@@ -19,6 +20,7 @@ declare module 'vue' {
     CollapseTransition: typeof import('./src/components/Collapse/CollapseTransition.vue')['default']
     CommonDialog: typeof import('./src/components/CommonDialog/index.vue')['default']
     copy: typeof import('./src/components/Sport/RiseOrFall copy.vue')['default']
+    DatePicker: typeof import('./src/components/DatePicker.vue')['default']
     DateSelector: typeof import('./src/components/DateSelector/DateSelector.vue')['default']
     Dialog: typeof import('./src/components/Dialog/Dialog.vue')['default']
     Dropdown: typeof import('./src/components/Dropdown.vue')['default']
@@ -27,6 +29,9 @@ declare module 'vue' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
+    ElDropdown: typeof import('element-plus/es')['ElDropdown']
+    ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
+    ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElPagination: typeof import('element-plus/es')['ElPagination']
