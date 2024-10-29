@@ -29,6 +29,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useRoute } from "vue-router";
@@ -47,7 +48,8 @@ const props = withDefaults(
 );
 
 //比赛时间
-const { gameTime } = useGameTimer(props.eventsInfo);
+const gameState = computed(() => props.eventsInfo);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">
