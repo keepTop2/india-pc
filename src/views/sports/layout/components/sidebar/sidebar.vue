@@ -44,20 +44,7 @@
 			</div>
 			<!-- 直播 -->
 			<div class="live-box" v-ok-loading="tvState.videoLoading" v-show="eventsInfo && SidebarStore.sidebarStatus === 'live' && toolState.isOpen">
-				<div ref="videoContainer" class="video-js"></div>
-				<svg-icon class="request-failed-svg" v-if="!Object.keys(getLiveUrl).length" name="sports-request_failed"></svg-icon>
-				<!-- 真人赛事比赛 -->
-				<div v-show="iframeLoaded" class="live">
-					<iframe
-						class="eventVideo"
-						@load="onIframeLoad"
-						:src="videoSrc"
-						frameborder="0"
-						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-						allowfullscreen
-					>
-					</iframe>
-				</div>
+				<VideoSource class="video-js" :source="SidebarStore.getLiveUrl" />
 			</div>
 		</div>
 
@@ -84,6 +71,7 @@ import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEvent
 import { useUserStore } from "/@/stores/modules/user";
 import videojs from "video.js";
 import useHeaderTools from "/@/views/sports/components/HeaderTools";
+import useVideo from "/@/views/sports/components/VideoSource";
 import "video.js/dist/video-js.css";
 const { getSidebarEventSSEPush } = useToolsHooks();
 const route = useRoute();
@@ -180,77 +168,6 @@ const ballInfo: Record<number, { iconName: string; componentName: any }> = {
 	},
 };
 
-onUnmounted(() => {
-	if (myPlayer.value) {
-		myPlayer.value.dispose();
-	}
-});
-
-// 当iframe加载完成时，设置iframeLoaded为true
-const onIframeLoad = () => {
-	if (videoSrc.value) {
-		iframeLoaded.value = true;
-	}
-};
-
-const getLiveUrl = computed(() => {
-	return SidebarStore.getLiveUrl;
-});
-
-watch(getLiveUrl, (newVal) => {
-	if (Object.keys(newVal).length) {
-		getStreaming(newVal);
-	} else {
-		iframeLoaded.value = false;
-		videoSrc.value = "";
-		if (myPlayer.value) {
-			myPlayer.value.dispose();
-			myPlayer.value = null;
-		}
-	}
-});
-
-const getStreaming = async (newVal: { [x: string]: any }) => {
-	const lang = UserStore.getLang;
-	const { streamingUrlH5, streamingUrlCN, streamingUrlNonCN } = newVal;
-
-	if (videoSrc.value) {
-		videoSrc.value = "";
-		iframeLoaded.value = false;
-	}
-
-	if (streamingUrlH5) {
-		videoSrc.value = streamingUrlH5;
-	} else {
-		const streamingUrl = lang === "zh-CN" ? streamingUrlCN : streamingUrlNonCN;
-
-		// 清除旧的视频播放器
-		if (myPlayer.value) {
-			myPlayer.value.dispose();
-		}
-
-		// 创建新的video元素
-		const videoElement = document.createElement("video");
-		videoElement.className = "video-js";
-		videoContainer.value.innerHTML = "";
-		videoContainer.value.appendChild(videoElement);
-
-		// 初始化新的视频播放器
-		myPlayer.value = videojs(videoElement, {
-			controls: false,
-			autoplay: true,
-			preload: "auto",
-			sources: [
-				{
-					src: streamingUrl,
-					type: "application/x-mpegURL",
-				},
-			],
-		});
-	}
-	SidebarStore.getSidebarStatus("live");
-};
-
 /**
  * @description: 刷新数据
  */
@@ -275,6 +192,8 @@ const tvState = reactive({
 
 // 工具栏按钮
 const { Tv, Live, Scoreboard, Refresh, toolState } = useHeaderTools(eventsInfo);
+
+const { VideoSource } = useVideo();
 </script>
 
 <style scoped lang="scss">
@@ -307,7 +226,7 @@ const { Tv, Live, Scoreboard, Refresh, toolState } = useHeaderTools(eventsInfo);
 	}
 	.live-box {
 		position: relative;
-		.request-failed-svg {
+		:deep(.request-failed-svg) {
 			position: absolute;
 			left: 50%;
 			top: 50%;

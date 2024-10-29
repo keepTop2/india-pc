@@ -1,8 +1,7 @@
-import { reactive, defineComponent, computed, DefineComponent, ReturnType } from "vue";
+import { reactive, defineComponent, computed } from "vue";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { Refresh as RefreshIcon } from "@element-plus/icons-vue";
-import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useRoute } from "vue-router";
 import { ElIcon } from "element-plus";
 import { debounce } from "lodash-es";
