@@ -1,5 +1,5 @@
 <template>
-	<div class="mt_40 pr_10 pl_10">
+	<div class="pr_10 pl_10">
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">

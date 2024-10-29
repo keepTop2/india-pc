@@ -3,6 +3,9 @@
 		<bannerSkeleton v-if="isLoading" />
 		<banner v-else></banner>
 
+		<!--公告-->
+		<Announcement />
+
 		<div class="max-width">
 			<!-- 热门推荐 -->
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
@@ -29,6 +32,8 @@ import lobbyGameCard from "./components/lobbyGameCard.vue";
 import { HomeApi } from "/@/api/home";
 import pubsub from "/@/pubSub/pubSub";
 import activitySocketService from "/@/utils/activitySocketService";
+import Announcement from "/@/views/home/components/Announcement.vue";
+
 const websocketService: any = activitySocketService.getInstance();
 const showCountdown = ref(false);
 const isLoading = ref(true);
