@@ -1,5 +1,5 @@
 <template>
-	<Dialog v-for="item in noticeList" :item="item"/>
+	<Dialog v-for="item in noticeList" :item="item" />
 </template>
 
 <script setup lang="ts">
@@ -15,8 +15,7 @@ interface Notice {
 const noticeList = ref<Notice[]>([]);
 const getNoticeList = async () => {
 	const res = await HomeApi.noticeList();
-	noticeList.value = res.data.userNoticeList;
-	console.log("公告消息", res.data.userNoticeList);
+	noticeList.value = res.data;
 };
 getNoticeList();
 </script>
