@@ -241,7 +241,6 @@ onMounted(() => {
 
 // 收到订单推送订阅
 const rechargeSuccessFail = (data: depositOrderDetailRootObject) => {
-	console.log("收到订单通知--data", data);
 	Object.assign(depositOrderDetail.value, data);
 	if (depositOrderDetail.value.customerStatus !== "0") {
 		clearInterval(startCountdown);
@@ -363,11 +362,11 @@ function formatTime(seconds: number): string {
 // 获取状态名称
 const getStatusLabel = () => {
 	if (depositOrderDetail.value.customerStatus == "0") {
-		return "处理中";
+		return $.t('wallet["处理中"]');
 	} else if (depositOrderDetail.value.customerStatus == "1") {
-		return "成功";
+		return $.t('wallet["成功"]');
 	} else if (depositOrderDetail.value.customerStatus == "2") {
-		return "失败";
+		return $.t('wallet["失败"]');
 	}
 };
 
