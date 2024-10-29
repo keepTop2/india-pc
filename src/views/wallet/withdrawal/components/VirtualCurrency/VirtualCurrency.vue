@@ -67,6 +67,7 @@ const clearParams = () => {
 // 暴露变量和方法
 defineExpose({
 	formParams,
+	inputFields,
 	clearParams,
 });
 </script>

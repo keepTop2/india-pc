@@ -16,22 +16,23 @@
 						<span>&nbsp;</span>
 						<span class="label">{{ UserStore.userInfo.mainCurrency }}</span>
 					</div>
-					<div class="date">
-						<span>{{ formattedTime }}</span>
-					</div>
-					<p class="tips">
-						<span>{{ $t(`wallet['请在规定的时间内完成支付，如已完成支付']`) }}</span>
-						<span>&nbsp;</span>
-						<!-- <span v-if="depositOrderDetail.voucherFlag == 0" class="a" @click="openProofModal">{{ $t(`wallet['提供转账凭证']`) }}</span> -->
-						<span class="a" @click="openProofModal">{{ $t(`wallet['提供转账凭证']`) }}</span>
-					</p>
+					<template v-if="depositOrderDetail.customerStatus == '0'">
+						<div class="date">
+							<span>{{ formattedTime }}</span>
+						</div>
+						<p class="tips">
+							<span>{{ $t(`wallet['请在规定的时间内完成支付，如已完成支付']`) }}</span>
+							<span>&nbsp;</span>
+							<span v-if="depositOrderDetail.voucherFlag == 0" class="a" @click="openProofModal">{{ $t(`wallet['提供转账凭证']`) }}</span>
+						</p>
+					</template>
 				</div>
 
 				<div class="form_info">
 					<div class="content">
 						<div class="cell">
 							<div class="label">{{ $t(`wallet['状态']`) }}</div>
-							<div class="value" :class="getClass">{{ depositOrderDetail.customerStatusText }}</div>
+							<div class="value" :class="getClass">{{ getStatusLabel() }}</div>
 						</div>
 						<div class="cell">
 							<div class="label">{{ $t(`wallet['存款金额']`) }}</div>
@@ -61,7 +62,10 @@
 						</div>
 						<div class="cell">
 							<div class="label">{{ $t(`wallet['订单号']`) }}</div>
-							<div class="value">{{ depositOrderDetail.orderNo }}</div>
+							<div class="value">
+								<span> {{ depositOrderDetail.orderNo }}</span>
+								<svg-icon class="copy_icon curp ml_12" name="copy" size="16px" v-hover-svg @click="common.copy(depositOrderDetail.orderNo)" />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -82,7 +86,7 @@
 							<div class="content">
 								<img :src="success" alt="" />
 							</div>
-							<div class="line"></div>
+							<div class="line" :class="{ line_success: depositOrderDetail.customerStatus != 0 }"></div>
 						</div>
 						<div class="label">{{ $t(`wallet['第三方商户处理中']`) }}</div>
 						<div class="value">{{ $t(`wallet['更新于']`) }}{{ common.getYMDHms(depositOrderDetail.updatedTime, "YYYY/MM/DD HH:mm:ss") }}</div>
@@ -90,7 +94,9 @@
 					<div class="step">
 						<div class="icon">
 							<div class="content">
-								<span>3</span>
+								<span v-if="depositOrderDetail.customerStatus == '0'">3</span>
+								<img v-if="depositOrderDetail.customerStatus == '1'" :src="success" alt="" />
+								<img v-if="depositOrderDetail.customerStatus == '2'" :src="error_icon" alt="" />
 							</div>
 						</div>
 						<div class="label">{{ $t(`wallet['交易完成/失败']`) }}</div>
@@ -98,17 +104,22 @@
 				</div>
 
 				<div class="upload_img_list" v-if="depositOrderDetail.voucherFlag === 1">
-					<img v-for="(item, index) in depositOrderDetail.cashFlowFileList" :src="item" alt="" class="item_img" />
+					<img v-for="(item, index) in depositOrderDetail.cashFlowFileList" v-lazy-load="item" alt="" class="item_img" />
 				</div>
 
 				<div class="btns">
-					<template v-if="depositOrderDetail.voucherFlag === 0">
-						<div class="cancel" @click="onCancelDepositOrder">{{ $t(`wallet['取消充值']`) }}</div>
-						<div class="confirm" @click="router.push('/recharge')">{{ $t(`wallet['继续充值']`) }}</div>
+					<template v-if="depositOrderDetail.customerStatus == '0'">
+						<template v-if="depositOrderDetail.voucherFlag === 0">
+							<div class="cancel" @click="onCancelDepositOrder">{{ $t(`wallet['取消充值']`) }}</div>
+							<div class="confirm" @click="router.replace('/recharge')">{{ $t(`wallet['继续充值']`) }}</div>
+						</template>
+						<template v-else-if="depositOrderDetail.voucherFlag === 1">
+							<div class="cancel" @click="common.getSiteCustomerChannel">{{ $t(`wallet['联系客服']`) }}</div>
+							<div v-if="depositOrderDetail.urgeOrder === 0" class="confirm" @click="onUrgeOrder">{{ $t(`wallet['我要催单']`) }}</div>
+						</template>
 					</template>
-					<template v-else-if="depositOrderDetail.voucherFlag === 1">
-						<div class="cancel">{{ $t(`wallet['联系客服']`) }}</div>
-						<div v-if="depositOrderDetail.urgeOrder === 0" class="confirm" @click="onUrgeOrder">{{ $t(`wallet['我要催单']`) }}</div>
+					<template v-else>
+						<div class="cancel" @click="common.getSiteCustomerChannel">{{ $t(`wallet['联系客服']`) }}</div>
 					</template>
 				</div>
 			</div>
@@ -134,7 +145,7 @@
 					<div class="form">
 						<div class="cell">
 							<div class="label">{{ $t(`wallet['状态']`) }}</div>
-							<div class="value" :class="getClass">{{ depositOrderDetail.customerStatusText }}</div>
+							<div class="value" :class="getClass">{{ getStatusLabel() }}</div>
 						</div>
 						<div class="cell">
 							<div class="label">{{ $t(`wallet['金额']`) }}</div>
@@ -148,7 +159,7 @@
 					<div class="cell_input">
 						<div class="label">
 							<span>{{ $t(`wallet['留言']`) }}</span>
-							<span class="s">{{ $t(`wallet['(最多0-500个字符)']`) }}</span>
+							<span class="s">{{ $t(`wallet['(最多个字符)']`, { value: cashFlowRemark.length }) }}</span>
 						</div>
 						<textarea v-model="cashFlowRemark" :placeholder="$t(`wallet['请输入']`)" :maxlength="500" />
 					</div>
@@ -176,11 +187,12 @@ import { useRoute, useRouter } from "vue-router";
 import Card from "../components/card.vue";
 import amount_icon from "/@/assets/zh-CN/wallet/amount_icon.png";
 import success from "/@/assets/zh-CN/wallet/success.png";
+import error_icon from "/@/assets/zh-CN/wallet/error.png";
 import speed_up_success from "/@/assets/zh-CN/wallet/speed_up_success.png";
 import { walletApi } from "/@/api/wallet";
 import { uploadApi } from "/@/api/upload";
 import common from "/@/utils/common";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useUserStore } from "/@/stores/modules/user";
 import { i18n } from "/@/i18n/index";
 import Upload from "./components/ImgUpload.vue";
@@ -227,6 +239,16 @@ onMounted(() => {
 	pubsub.subscribe("/wallet/rechargeSuccessFail", rechargeSuccessFail);
 });
 
+// 收到订单推送订阅
+const rechargeSuccessFail = (data: depositOrderDetailRootObject) => {
+	console.log("收到订单通知--data", data);
+	Object.assign(depositOrderDetail.value, data);
+	if (depositOrderDetail.value.customerStatus !== "0") {
+		clearInterval(startCountdown);
+	}
+};
+
+// 获取卡片标题
 const getTitle = computed(() => {
 	switch (depositOrderDetail.value.depositWithdrawTypeCode) {
 		case "bank_card":
@@ -237,11 +259,6 @@ const getTitle = computed(() => {
 			return ""; // 可以根据需求设定默认值
 	}
 });
-
-// 收到订单推送订阅
-const rechargeSuccessFail = (data: depositOrderDetailRootObject) => {
-	Object.assign(depositOrderDetail.value, data);
-};
 
 // 点击上传凭证
 const openProofModal = () => {
@@ -343,6 +360,17 @@ function formatTime(seconds: number): string {
 	return `${hrs.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 }
 
+// 获取状态名称
+const getStatusLabel = () => {
+	if (depositOrderDetail.value.customerStatus == "0") {
+		return "处理中";
+	} else if (depositOrderDetail.value.customerStatus == "1") {
+		return "成功";
+	} else if (depositOrderDetail.value.customerStatus == "2") {
+		return "失败";
+	}
+};
+
 // 根据状态返回对应的类名
 const getClass = computed(() => {
 	switch (depositOrderDetail.value.customerStatus) {
@@ -363,6 +391,11 @@ const clearParams = () => {
 	cashFlowFileList.value = [];
 	cashFlowRemark.value = "";
 };
+
+// 清除倒计时
+onUnmounted(() => {
+	clearInterval(startCountdown);
+});
 </script>
 
 <style scoped lang="scss">
@@ -488,6 +521,8 @@ const clearParams = () => {
 					font-weight: 400;
 				}
 				.value {
+					display: flex;
+					align-items: center;
 					color: var(--Text_s);
 					font-family: "PingFang SC";
 					font-size: 14px;

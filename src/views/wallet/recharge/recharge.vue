@@ -90,6 +90,30 @@
 				</div>
 			</Card>
 		</template>
+
+		<!-- 虚拟币提醒弹窗 -->
+		<CommonDialog v-model="isModalVisible">
+			<div class="remind_container">
+				<div class="remind_header">{{ $t(`wallet['温馨提示']`) }}</div>
+				<div class="remind_main">
+					<i18n-t class="text" keypath="wallet['请使用']" :tag="'p'">
+						<template v-slot:value>
+							<span class="text_2"> {{ $t(`wallet['波场链']`) }} </span>
+						</template>
+						<template v-slot:currency>
+							<span class="text_2">({{ rechargeWayData.networkType }})</span>
+						</template>
+					</i18n-t>
+					<div class="tips">
+						<svg-icon class="pointer" :name="checkbox ? 'check_icon_on' : 'check_icon'" size="14px" @click="checkbox = !checkbox" :style="{ color: 'var(--Theme)' }" />
+						<span>{{ $t(`wallet['24小时内不再提示']`) }}</span>
+					</div>
+				</div>
+				<div class="remind_footer">
+					<div class="remind_btn" @click="onNotRemind">{{ $t(`wallet['我已知晓']`) }}</div>
+				</div>
+			</div>
+		</CommonDialog>
 	</div>
 </template>
 
@@ -137,6 +161,8 @@ interface rechargeConfigRootObject {
 const rechargeWayData = ref({} as rechargeWayDataRootObject); // 当前选择的支付方式
 const rechargeWayList = ref([] as rechargeWayDataRootObject[]); // 支付方式列表
 const quickAmountList = ref([]); // 快捷金额选项
+const isModalVisible = ref(false);
+const checkbox = ref(false);
 const amountItemActive = ref<null | number>(null);
 const rechargeConfig = ref({
 	rechargeMinAmount: 0,
@@ -174,6 +200,10 @@ const getRechargeConfig = async () => {
 	};
 	const res = await walletApi.getRechargeConfig(params).catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
+		if (rechargeWayData.value.rechargeTypeCode === "crypto_currency" && res.data.isRemind === 1) {
+			checkbox.value = false;
+			isModalVisible.value = true;
+		}
 		rechargeConfig.value = res.data;
 		quickAmountList.value = res.data.quickAmount.split(",").map(Number);
 	}
@@ -181,6 +211,9 @@ const getRechargeConfig = async () => {
 
 // 选择支付方式时的处理
 const onRechargeWay = (item: rechargeWayDataRootObject) => {
+	if (item.rechargeTypeCode == rechargeWayData.value.rechargeTypeCode && item.networkType == rechargeWayData.value.networkType) {
+		return;
+	}
 	clearRequestParams();
 	rechargeWayData.value = item;
 	getRechargeConfig();
@@ -209,6 +242,19 @@ const onRecharge = async () => {
 		});
 		window.open(res.data.thirdPayUrl, "_blank");
 		clearRequestParams();
+	}
+};
+
+// 不再提醒
+const onNotRemind = async () => {
+	if (checkbox.value) {
+		const res = await walletApi.notRemind().catch((err) => err);
+		if (res.code === common.ResCode.SUCCESS) {
+			checkbox.value = false;
+			isModalVisible.value = false;
+		}
+	} else {
+		isModalVisible.value = false;
 	}
 };
 
@@ -409,6 +455,71 @@ getRechargeWayList();
 			font-weight: 400;
 			line-height: 30px; /* 214.286% */
 		}
+	}
+}
+
+.remind_container {
+	width: 380px;
+	height: 100%;
+	border-radius: 12px;
+	background-color: var(--Bg1);
+	.remind_header {
+		width: 100%;
+		height: 68px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--Text_s);
+		font-family: "PingFang SC";
+		font-size: 20px;
+		font-weight: 500;
+	}
+	.remind_main {
+		padding: 8px 20px;
+		text-align: center;
+		.text {
+			color: var(--Text1);
+			font-family: "PingFang SC";
+			font-size: 16px;
+			font-weight: 400;
+		}
+		.text_2 {
+			color: var(--F2);
+		}
+		.tips {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			margin-top: 8px;
+			span {
+				color: var(--Text2_1);
+				font-family: "PingFang SC";
+				font-size: 14px;
+				font-weight: 400;
+			}
+		}
+	}
+
+	.remind_footer {
+		padding: 12px 0px 40px;
+	}
+
+	.remind_btn {
+		width: 166px;
+		height: 48px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto;
+		padding: 12px;
+		border-radius: 4px;
+		background: var(--Theme);
+		color: var(--Text_a);
+		font-family: "PingFang SC";
+		font-size: 16px;
+		font-weight: 500;
+		cursor: pointer;
 	}
 }
 </style>

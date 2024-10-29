@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
 
 .search_input {
 	width: 100%;
-	height: 100%;
+	height: 40px;
 	display: flex;
 	align-items: center;
 	gap: 10px;
