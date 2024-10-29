@@ -28,7 +28,7 @@
 				<div class="flex_space-between">
 					<div class="bonus">
 						<div>转盘奖金总计</div>
-						<div class="fs_14 Theme_text">{{ activityData?.totalAmount }}</div>
+						<div class="fs_14 color_Theme">{{ activityData?.totalAmount }}</div>
 					</div>
 					<div class="record" @click="handleRecord">我的抽奖记录 <svg-icon name="arrow_right" size="16px"></svg-icon></div>
 				</div>
@@ -98,7 +98,7 @@
 		<CommonDialog v-model="showLosserbetResult">
 			<div class="losserbetResult pt_240">
 				<div class="Text_s fs_20 tishi">没有中奖</div>
-				<div class="mt_80 mb_80 Theme_text fs_20">谢谢惠顾</div>
+				<div class="mt_80 mb_80 color_Theme fs_20">谢谢惠顾</div>
 				<div class="againBtn">
 					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
 					<button class="common_btn active" @click="handleStartSpin">再抽一次：1</button>
@@ -514,6 +514,11 @@ onMounted(() => {
 		// 	background: url("../image/btn_bg.png") no-repeat;
 		// 	background-size: 100% 100%;
 		// }
+	}
+}
+.ruleDetails {
+	img {
+		max-width: 100%;
 	}
 }
 </style>

@@ -92,7 +92,7 @@
 					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">{{ $t(`security_center['确定']`) }}</button>
 					<div class="findOldPwd">
 						{{ $t(`security_center['忘记了旧交易密码？']`) }}
-						<span class="Theme_text curp" @click="goToFindWithdrawPwd">{{ $t(`security_center['找回交易密码']`) }}</span>
+						<span class="color_Theme curp" @click="goToFindWithdrawPwd">{{ $t(`security_center['找回交易密码']`) }}</span>
 					</div>
 				</div>
 			</div>

@@ -3,7 +3,7 @@
 		<div class="content">
 			<slot name="icon"></slot>
 		</div>
-		<div v-if="show" class="tooltip" :style="{ maxWidth: maxWidth || '400px', width: 'auto' }">
+		<div v-if="show" class="tooltip" :style="{ maxWidth: maxWidth || '400px', width: 'auto' }" :class="right ? 'right' : ''">
 			<div>
 				<slot name="message"></slot>
 			</div>
@@ -20,6 +20,7 @@ import { onClickOutside } from "@vueuse/core";
 const props = defineProps<{
 	message: string; // 提示文字内容
 	maxWidth?: string; // 最大宽度，可选
+	right?: boolean;
 }>();
 
 // 控制提示框的显示和隐藏
@@ -37,7 +38,7 @@ const toggleTooltip = () => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .tooltip-container {
 	position: relative;
 	display: inline-block; /* 确保容器根据内容自适应 */
@@ -59,11 +60,12 @@ const toggleTooltip = () => {
 	padding: 8px;
 	border-radius: 4px;
 	z-index: 1000;
-	font-size: 10px;
+	font-size: 12px;
 	margin-top: 5px;
-	min-width: 270px;
+	min-width: 170px;
 	word-break: break-all;
 	word-wrap: break-word;
+	text-align: center;
 }
 .tooltip-arrow {
 	position: absolute;
@@ -75,5 +77,15 @@ const toggleTooltip = () => {
 	border-left: 6px solid transparent;
 	border-right: 6px solid transparent;
 	border-bottom: 6px solid rgba(0, 0, 0, 0.8); /* 箭头的颜色与提示框背景色相同 */
+}
+.right.tooltip {
+	left: 0;
+	right: 20px;
+	transform: translateX(-94%);
+	.tooltip-arrow {
+		right: 10px;
+		left: 100%;
+		transform: translateX(-110%);
+	}
 }
 </style>
