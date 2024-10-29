@@ -1,16 +1,36 @@
-import { reactive, defineComponent, computed } from "vue";
+import { reactive, defineComponent, computed, DefineComponent, ReturnType } from "vue";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { Refresh as RefreshIcon } from "@element-plus/icons-vue";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import { useRoute } from "vue-router";
 import { ElIcon } from "element-plus";
 import { debounce } from "lodash-es";
 import SvgIcon from "/@/components/svgIcon/index.vue";
 
+// 定义自定义 Hook 返回的按钮类型
+interface HeaderTools {
+	/** 控制展示比分板和直播 */
+	Tv: ReturnType<typeof defineComponent>;
+	/** 直播按钮 */
+	Live: ReturnType<typeof defineComponent>;
+	/** 比分板按钮 */
+	Scoreboard: ReturnType<typeof defineComponent>;
+	/** 刷新按钮 */
+	Refresh: ReturnType<typeof defineComponent>;
+	toolState: {
+		isOpen: Boolean;
+		[x: string]: any;
+	};
+}
+
 const style = { cursor: "pointer" };
 
-export default (eventsInfo: any) => {
-	const { toggleEventScoreboard } = useToolsHooks();
+export default (eventsInfo: any): HeaderTools => {
+	const route = useRoute();
+	const { toggleEventScoreboard, sliderData } = useToolsHooks();
 	const SidebarStore = useSidebarStore();
+
 	const state = reactive({
 		isOpen: true,
 		videoLoading: false,
@@ -23,9 +43,10 @@ export default (eventsInfo: any) => {
 	const Scoreboard = defineComponent({
 		name: "Scoreboard",
 		setup() {
-			const isEventActive = computed(() => SidebarStore.getEventsInfo.eventId === eventsInfo.value?.eventId);
+			const isEventActive = computed(() => sliderData.value?.eventId === eventsInfo.value?.eventId);
 
 			const handleClick = () => {
+				console.log(SidebarStore.getEventsInfo, eventsInfo.value, "比分板按钮");
 				toggleEventScoreboard(eventsInfo.value);
 				state.isOpen = true;
 				SidebarStore.getSidebarStatus("scoreboard");
@@ -46,7 +67,7 @@ export default (eventsInfo: any) => {
 	const Live = defineComponent({
 		name: "Live",
 		setup() {
-			const isEventActive = computed(() => SidebarStore.getEventsInfo.eventId === eventsInfo.value?.eventId);
+			const isEventActive = computed(() => sliderData.value?.eventId === eventsInfo.value?.eventId);
 
 			const handleClick = () => {
 				toggleEventScoreboard(

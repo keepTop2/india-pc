@@ -11,7 +11,10 @@
 					<span>{{ show ? "显示" : "隐藏" }}</span>
 					<svg-icon :name="show ? 'eyes' : 'eyes_on'" size="16px"></svg-icon>
 				</div>
+				<Scoreboard />
+				<Live />
 				<svg-icon class="saveFollow" :name="isAttention ? 'sports-already_collected' : 'sports-collection'" @click="attentionEvent(true)" size="20" />
+				<Refresh />
 				<!-- <svg-icon name="sports-shuaxin" :class="{ cycling: loading }" size="20" @click="$emit('refresh')" /> -->
 			</div>
 		</div>
@@ -45,6 +48,7 @@ import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import PubSub from "/@/pubSub/pubSub";
+import useHeaderTools from "/@/views/sports/components/HeaderTools";
 // import SportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 
@@ -166,6 +170,10 @@ const handleGoBack = () => {
 	router.back();
 	SportHotStore.updateToHotEvent();
 };
+
+// 工具栏按钮
+const gameState = computed(() => props.sportInfo);
+const { Live, Scoreboard, Refresh } = useHeaderTools(gameState);
 </script>
 
 <style lang="scss" scoped>
@@ -200,10 +208,23 @@ const handleGoBack = () => {
 	}
 
 	:deep(.scoreboard-container) {
-		.header,
-		.row {
-			.value {
-				min-width: 300px !important;
+		height: 276px !important;
+		.scoreboard {
+			padding: 0 75px;
+		}
+
+		.scoreboard-center {
+			height: 166px;
+			width: 100% !important;
+			.row {
+				height: 65px !important;
+			}
+			.header,
+			.row {
+				padding: 0 24px !important;
+				.value {
+					min-width: 300px !important;
+				}
 			}
 		}
 	}
@@ -240,13 +261,15 @@ const handleGoBack = () => {
 	// transition: all 0.3s linear;
 	// overflow: hidden;
 	// z-index: 1;
+	width: 100%;
 	:deep(.scoreboard-container) {
-		height: 208px;
+		height: 276px !important;
 		& > div:nth-child(2) {
 			display: none;
 		}
 		.scoreboard-center {
-			width: 892px !important;
+			width: 100%;
+			// width: 892px !important;
 		}
 		.scoreboard-info {
 			height: 130px !important;
@@ -258,11 +281,11 @@ const handleGoBack = () => {
 	}
 
 	> .main {
-		width: 892px;
+		// width: 892px;
 	}
 
 	&.showContent {
-		height: 208px;
+		height: 276px;
 	}
 
 	&.hideContent {

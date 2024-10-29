@@ -13,10 +13,17 @@ import workerManage from "/@/webWorker/workerManage";
 import { useUserStore } from "/@/stores/modules/user";
 import { useHaveToken } from "/@/hooks/useHaveToken";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import { useRoute } from "vue-router";
+
+const isNonEmptyArray = <T>(arr: T[]): arr is [T, ...T[]] => {
+	return arr.length > 0;
+};
+
 export function useToolsHooks() {
 	const SidebarStore = useSidebarStore();
 	const SportsInfoStore = useSportsInfoStore();
 	const UserStore = useUserStore();
+	const route = useRoute();
 	// 切换计分板功能
 	const toggleEventScoreboard = (eventInfo: any, isVideo: boolean = false) => {
 		// 如果是切换视频，先判断登录状态
@@ -39,9 +46,9 @@ export function useToolsHooks() {
 				return;
 			}
 		}
-
 		// 清空状态
 		SidebarStore.clearEventsInfo();
+
 		if (eventInfo) {
 			if (workerManage.getWorkerList().length) {
 				// 关闭侧边栏events线程
@@ -58,7 +65,6 @@ export function useToolsHooks() {
 			if (isVideo) {
 				switchEventVideoSource(eventInfo);
 			} else {
-				console.log("???");
 				// 清除直播地址信息
 				SidebarStore.clearLiveUrl();
 				SidebarStore.getSidebarStatus("scoreboard");
@@ -171,6 +177,25 @@ export function useToolsHooks() {
 		// 实现刷新数据的逻辑
 	};
 
+	// 侧边数据
+	const sliderData = computed(() => {
+		const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
+		const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData || [];
+
+		if (route.meta.name === "champion" && isNonEmptyArray(promotionsViewData)) {
+			return promotionsViewData[0];
+		}
+		// 非冠军
+		if (route.meta.name !== "champion" && childrenViewData?.length) {
+			return childrenViewData[0]?.events[0];
+		}
+
+		if (isNonEmptyArray(promotionsViewData) && route.meta.name === "detail") {
+			return promotionsViewData[0];
+		}
+		return null;
+	});
+
 	return {
 		toggleEventScoreboard,
 		switchEventVideoSource,
@@ -179,5 +204,6 @@ export function useToolsHooks() {
 		getPromotions,
 		toggleVideoFullscreen,
 		refreshData,
+		sliderData,
 	};
 }
