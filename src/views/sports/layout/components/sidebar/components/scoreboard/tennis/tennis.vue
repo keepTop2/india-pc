@@ -42,7 +42,7 @@
 							</div>
 							<!-- 总分 -->
 							<div class="num F2">
-								<span>{{ eventsInfo?.tennisInfo?.homePointScore }}</span>
+								<span>{{ homeScores.reduce((accumulator, currentValue) => accumulator + currentValue, 0) }}</span>
 							</div>
 						</div>
 					</div>
@@ -71,7 +71,7 @@
 							</div>
 							<!-- 总分 -->
 							<div class="num F2">
-								<span>{{ eventsInfo?.tennisInfo?.awayPointScore }}</span>
+								<span>{{ awayScores.reduce((accumulator, currentValue) => accumulator + currentValue, 0) }}</span>
 							</div>
 						</div>
 					</div>
@@ -110,9 +110,11 @@ const isCurrentPeriod = (period: number) => currentSet.value === period;
 const isPeriodActive = (period: number) => gameSession.value >= period;
 
 // 计算主队得分
-const homeScores = computed(() => props.eventsInfo?.tennisInfo?.homeGameScore || []);
+const homeScores = computed(() => (props.eventsInfo?.tennisInfo?.homeGameScore as unknown as number[]) || []);
 // 计算客队得分
-const awayScores = computed(() => props.eventsInfo?.tennisInfo?.awayGameScore || []);
+const awayScores = computed(() => (props.eventsInfo?.tennisInfo?.awayGameScore as unknown as number[]) || []);
+
+console.log(props.eventsInfo?.tennisInfo, "计算客队得分");
 
 // 计算赛盘
 const calculateSetScore = (scores: number[], opponentScores: number[]) => {

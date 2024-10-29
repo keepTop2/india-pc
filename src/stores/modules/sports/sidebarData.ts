@@ -5,7 +5,7 @@ export const useSidebarStore = defineStore("sidebarData", {
 	state: () => {
 		return {
 			// 侧边栏状态
-			sidebarStatus: 'scoreboard' as "scoreboard" | "live" | "liveAnimation" | null, // 计分板 直播 动画直播
+			sidebarStatus: "scoreboard" as "scoreboard" | "live" | "liveAnimation" | null, // 计分板 直播 动画直播
 			// 侧边栏的赛事数据
 			eventsInfo: {} as SportsRootObject,
 			// 侧边栏直播赛事地址信息
@@ -28,6 +28,7 @@ export const useSidebarStore = defineStore("sidebarData", {
 
 		// 设置赛事信息
 		setEventsInfo(eventInfo: any) {
+			console.log("设置赛事信息clearEventsInfo");
 			// console.log("Store eventInfo ", eventInfo);
 			if (!isEmpty(eventInfo) && this.eventsInfo?.eventId !== eventInfo?.eventId) {
 				this.eventsInfo = eventInfo;
@@ -47,6 +48,8 @@ export const useSidebarStore = defineStore("sidebarData", {
 		// 清除暂存的侧边数据信息
 		// 每次切换球类时使用先清除数据
 		clearEventsInfo() {
+			console.log("清空clearEventsInfo");
+
 			this.eventsInfo = {} as SportsRootObject;
 		},
 	},

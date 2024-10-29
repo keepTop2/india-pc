@@ -42,38 +42,28 @@
 
 		<!-- 其他信息 -->
 		<div class="league-option">
-			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool)">
-				<span class="icon"><svg-icon :name="getIconName(tool, event, index)" width="23px" height="16px"></svg-icon></span>
-				<!-- <span class="tooltip-text">{{ tool.tooltipText }}</span> -->
-			</div>
+			<!-- 工具图标 -->
+			<Scoreboard />
+			<Live />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
+import { computed } from "vue";
 import TeamInfoCard from "../teamInfoCard/teamInfoCard.vue";
 import MarketColumn from "../marketColumn/marketColumn.vue";
-import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
-const SportAttentionStore = useSportAttentionStore();
 import SportsApi from "/@/api/sports/sports";
-import { useRouter, useRoute } from "vue-router";
-import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import SportsCommonFn from "/@/views/sports/utils/common";
-import common from "/@/utils/common";
-import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import { useLink } from "/@/views/sports/hooks/useLink";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
-import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
-const SidebarStore = useSidebarStore();
-const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
-const SportHotStore = useSportHotStore();
-const router = useRouter();
-const route = useRoute();
+import useHeaderTools from "/@/views/sports/components/HeaderTools";
+const { toggleEventScoreboard } = useToolsHooks();
 const { gotoEventDetail } = useLink();
+const SportAttentionStore = useSportAttentionStore();
 
 interface teamDataType {
 	/** 数据索引 */
@@ -101,77 +91,12 @@ const markets = [
 	{ cardType: "magnitude", betType: 3, selectionsLength: 2 }, // 全场大小
 ];
 
-// 获取侧边栏图标
-const getIconName = (tool: any, events: any, index: number) => {
-	const { eventId } = SidebarStore.getEventsInfo;
-	const isEventActive = events.eventId === eventId;
-	if (!isEventActive) {
-		return tool.iconName;
-	}
-	let activeIndex = -1;
-	switch (SidebarStore.sidebarStatus) {
-		case "scoreboard":
-			activeIndex = 0;
-			break;
-		case "live":
-			activeIndex = 1;
-			break;
-		// 你可以根据其他可能的状态扩展此逻辑
-	}
-	return index === activeIndex ? tool.iconName_active : tool.iconName;
-};
-
 /**
  * @description 动画结束删除oddsChange字段状态
  */
-const oddsChange = (obj: any) => {
-	emit("oddsChange", obj);
-};
+const oddsChange = (obj: any) => emit("oddsChange", obj);
 
-// 定义计算属性 格式化比赛开始时间
-const formattedGameTime = computed(() => {
-	const minutes = Math.floor(props.event.gameInfo.seconds / 60);
-	const seconds = props.event.gameInfo.seconds % 60;
-	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-});
-/**
- * @description  计算工具图标的显示状态
- */
-const tools = computed(() => {
-	const baseTools = [];
-	// 判断 是否在未开赛页面
-	baseTools.push({
-		iconName: "sports-score_icon",
-		iconName_active: "sports-score_icon_active",
-		tooltipText: "比分板",
-		name: "scoreboard",
-		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
-		param: props.event, // 传递参数
-	});
-	// 判断是否有视频源
-	if (props.event.streamingOption != 0 && props.event.channelCode) {
-		baseTools.push({
-			iconName: "sports-live_icon",
-			iconName_active: "sports-live_icon_active",
-			tooltipText: "视频源",
-			name: "live",
-			action: (event: any) => toggleEventScoreboard(event, true),
-			param: props.event, // 传递参数
-		});
-	}
-	return baseTools;
-});
-
-// 点击对应工具
-const handleClick = (tool: any) => {
-	toggleEventScoreboard(props?.event);
-	tool.action(tool.param); // 执行对应工具的动作
-	SidebarStore.getSidebarStatus(tool.name);
-};
-
-const isAttention = computed(() => {
-	return SportAttentionStore.attentionEventIdList.includes(props.event.eventId);
-});
+const isAttention = computed(() => SportAttentionStore.attentionEventIdList.includes(props.event.eventId));
 
 // 点击关注按钮
 const attentionEvent = async (isActive: boolean) => {
@@ -202,6 +127,10 @@ const linkDetail = () => {
 
 	gotoEventDetail(params, SportTypeEnum.Billiards);
 };
+
+// 工具栏按钮
+const gameState = computed(() => props.event);
+const { Live, Scoreboard } = useHeaderTools(gameState);
 </script>
 
 <style scoped lang="scss">

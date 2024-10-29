@@ -60,7 +60,6 @@ import { onMounted, ref, watch } from "vue";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
-import { id } from "element-plus/es/locale";
 const emit = defineEmits(["oddsChange"]);
 
 // 定义传入属性的类型
