@@ -22,7 +22,9 @@
 							{{ item.content }}
 						</div>
 					</div>
-					<div>img</div>
+					<div class="images" v-if="item.picUrls">
+						<img v-for="img in item.picUrls.split(',')" :src="img" />
+					</div>
 					<div>
 						<span class="Text1 fs_14"> {{ dayjs(item.createdTime).format("YYYY-MM-DD HH:mm:ss") }}</span>
 					</div>
@@ -143,6 +145,17 @@ const sizeChange = (pageSize: number) => {
 		overflow: hidden;
 		flex-wrap: wrap;
 		word-break: break-all;
+		.images {
+			margin-right: 35px;
+			img {
+				width: 46px;
+				height: 46px;
+				object-fit: cover;
+				border-radius: 8px;
+				border: 1px solid var(--Line_2);
+				margin-right: 8px;
+			}
+		}
 		.content {
 			display: -webkit-box; /* 使用 Flexbox */
 			-webkit-box-orient: vertical; /* 纵向排列 */

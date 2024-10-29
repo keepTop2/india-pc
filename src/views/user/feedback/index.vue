@@ -4,7 +4,7 @@
 			<div class="title mb_14 fs_24 Text_s pl_20 fw_500">意见反馈</div>
 			<div class="fade-in center">
 				<div class="cell Text_s"><span class="color_Theme">*</span>问题类型</div>
-				<div class="cell">
+				<div class="cell mt_14 mb_20">
 					<Dropdown :options="typeList" v-model="state.type"></Dropdown>
 				</div>
 				<div class="cell mb_20" v-if="state.type == '1'">
@@ -12,13 +12,14 @@
 					<input type="text " class="common_input" placeholder="请输入相关订单号" />
 				</div>
 				<div class="cell Text_s mb_16"><span class="color_Theme">*</span>问题描述 <span class="fs_12 Text2">内容介于10~500字</span></div>
-				<div>
+				<div class="textareaBox">
 					<textarea
 						v-model="state.content"
 						class="textarea fs_14"
-						placeholder="请详细描述您的问题或建议，我们会在最快速度给您及时的反馈，我们非常重视您的反馈！"
+						placeholder="请详细描述您的问题或建议，我们会以最快速度给您及时的反馈，我们非常重视您的反馈！"
 						maxlength="500"
 					></textarea>
+					<div class="textLength">100/500</div>
 				</div>
 				<div class="cell Text_s mb_16 mt_20"><span class="color_Theme">*</span>问题截图 <span class="fs_12 Text2">最大不超过5 M，最多3张， 支持格式：jpg.png.jpeg</span></div>
 				<div>
@@ -191,7 +192,8 @@ const getfeedbackList = () => {
 }
 .textarea {
 	width: 100%;
-	min-height: 172px;
+	min-height: 242px;
+	height: auto;
 	background: var(--Bg1);
 	border-radius: 8px;
 	border: none;
@@ -200,6 +202,16 @@ const getfeedbackList = () => {
 	padding: 14px;
 	color: var(--Text_s);
 	border: 1px solid var(--Bg3);
+}
+.textareaBox {
+	position: relative;
+}
+.textLength {
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+	font-size: 12px;
+	color: var(--Text2);
 }
 .common_btn {
 	width: 384px;

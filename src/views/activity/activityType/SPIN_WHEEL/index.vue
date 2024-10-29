@@ -516,4 +516,9 @@ onMounted(() => {
 		// }
 	}
 }
+.ruleDetails {
+	img {
+		max-width: 100%;
+	}
+}
 </style>

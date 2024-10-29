@@ -90,7 +90,7 @@ function selectOption(option: any) {
 }
 
 .dropdown-item {
-	padding: 0;
+	padding: 8px 0;
 	cursor: pointer;
 	color: var(--Text1);
 }

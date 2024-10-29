@@ -218,7 +218,6 @@ const changeCollpase = () => {
 		cursor: pointer;
 		overflow-y: auto;
 		transition: all 0.2s ease;
-		height: calc(100vh - 264px);
 		.left_scroll_conatiner1 {
 			padding: 8px;
 			margin: 8px auto;
