@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Announcement: typeof import('./src/components/Announcement/Announcement.vue')['default']
     AreaCode: typeof import('./src/components/AreaCode/index.vue')['default']
     BackToTop: typeof import('./src/components/BackToTop.vue')['default']
     Button: typeof import('./src/components/Button/Button.vue')['default']
@@ -28,12 +29,6 @@ declare module 'vue' {
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElIcon: typeof import('element-plus/es')['ElIcon']
-    ElInput: typeof import('element-plus/es')['ElInput']
-    ElPagination: typeof import('element-plus/es')['ElPagination']
-    ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
-    ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
-    ElTable: typeof import('element-plus/es')['ElTable']
-    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     Form: typeof import('./src/components/Form/index.vue')['default']
     FromInput: typeof import('./src/components/Input/fromInput.vue')['default']
     H5Video: typeof import('./src/components/wVideo/h5Video.vue')['default']
