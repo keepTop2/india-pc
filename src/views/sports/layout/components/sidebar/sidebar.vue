@@ -5,18 +5,14 @@
 			<!-- 头部 -->
 			<div class="header">
 				<div class="left">
-					<div class="icon" @click="handleChangeTV"><svg-icon :name="`sports-tv_icon${tvState.isOpen ? '_on' : ''}`" width="23px" height="16px"></svg-icon></div>
+					<Tv />
 				</div>
 				<div class="center">
-					<div class="icon" v-for="(tool, index) in computedTools" :key="tool.iconName" @click="handleClick(tool)">
-						<svg-icon :name="getIconName(tool, index)" width="23px" height="16px"></svg-icon>
-					</div>
+					<Scoreboard />
+					<Live />
 				</div>
 				<div class="right">
-					<div class="icon2" @click="handleRefresh">
-						<el-icon size="18px" class="Text1" :style="{ transform: `rotate(${refresh.rotation}deg)`, transition: 'transform 1s ease' }"><Refresh /></el-icon>
-					</div>
-					<!-- <div class="icon2"><svg-icon name="sports-shuaxin" size="16px"></svg-icon></div> -->
+					<Refresh @onChange="handleRefresh" />
 				</div>
 			</div>
 
@@ -35,7 +31,7 @@
 			</div>
 
 			<!-- 计分板组件 -->
-			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard' && tvState.isOpen" class="events-container">
+			<div v-if="eventsInfo && SidebarStore.sidebarStatus === 'scoreboard' && toolState.isOpen" class="events-container">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
 				<component
@@ -47,7 +43,7 @@
 				<NotStarted v-else :eventsInfo="eventsInfo" />
 			</div>
 			<!-- 直播 -->
-			<div class="live-box" v-ok-loading="tvState.videoLoading" v-show="eventsInfo && SidebarStore.sidebarStatus === 'live' && tvState.isOpen">
+			<div class="live-box" v-ok-loading="tvState.videoLoading" v-show="eventsInfo && SidebarStore.sidebarStatus === 'live' && toolState.isOpen">
 				<div ref="videoContainer" class="video-js"></div>
 				<svg-icon class="request-failed-svg" v-if="!Object.keys(getLiveUrl).length" name="sports-request_failed"></svg-icon>
 				<!-- 真人赛事比赛 -->
@@ -78,26 +74,19 @@
 	</div>
 </template>
 
-<script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, reactive, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
+<script setup lang="tsx">
+import { computed, defineAsyncComponent, onUnmounted, reactive, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
-import { useLink } from "../../../hooks/useLink";
-import { SportTypeEnum } from "../../../enum/sportEnum/sportEnum";
 import { useUserStore } from "/@/stores/modules/user";
-import SportsApi from "/@/api/sports/sports";
 import videojs from "video.js";
-import { Refresh } from "@element-plus/icons-vue";
+import useHeaderTools from "/@/views/sports/components/HeaderTools";
 import "video.js/dist/video-js.css";
-import { debounce } from "lodash-es";
-
-const { toggleEventScoreboard, switchEventVideoSource, getSidebarEventSSEPush } = useToolsHooks();
+const { getSidebarEventSSEPush } = useToolsHooks();
 const route = useRoute();
-const { gotoEventDetail } = useLink();
 const UserStore = useUserStore();
 const videoSrc = ref("");
 const myPlayer = ref();
@@ -197,71 +186,8 @@ onUnmounted(() => {
 	}
 });
 
-/**
- * 工具tool
- */
-const computedTools = computed(() => {
-	const baseTools = [];
-	// 判断 是否在未开赛页面
-	baseTools.push({
-		iconName: "sports-score_icon",
-		iconName_active: "sports-score_icon_active",
-		tooltipText: "比分板",
-		name: "scoreboard",
-		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
-		param: eventsInfo.value, // 传递参数
-	});
-	// 判断是否有视频源
-	if (eventsInfo.value && eventsInfo.value.streamingOption != 0 && eventsInfo.value.channelCode) {
-		baseTools.push({
-			iconName: "sports-live_icon",
-			iconName_active: "sports-live_icon_active",
-			tooltipText: "视频源",
-			name: "live",
-			action: (event: any) =>
-				toggleEventScoreboard(
-					{
-						...event,
-						/**
-						 * @description 请求视频直播回调函数
-						 * @param status boolean值表示打开或关闭; error表示网络请求失败
-						 */
-						callback: (status: string | Error) => {
-							if (typeof status === "boolean") {
-								tvState.isSuccess = true;
-							} else {
-								tvState.isSuccess = false;
-							}
-						},
-					},
-					true
-				),
-			param: eventsInfo.value, // 传递参数
-		});
-	}
-	return baseTools;
-});
-
-// 获取侧边栏图标
-const getIconName = (tool: any, index: number) => {
-	console.log(SidebarStore, tool, "SidebarStore");
-
-	const { iconName_active, iconName, name } = tool;
-	const { sidebarStatus } = SidebarStore;
-	// 根据tv状态判断
-	if (tvState.isOpen) {
-		/**
-		 * scoreboard:比分板
-		 * live:直播
-		 */
-		return sidebarStatus === name ? iconName_active : iconName;
-	}
-	return iconName;
-};
-
 // 当iframe加载完成时，设置iframeLoaded为true
-const onIframeLoad = (a, b) => {
-	console.log(a, b, "加载完成");
+const onIframeLoad = () => {
 	if (videoSrc.value) {
 		iframeLoaded.value = true;
 	}
@@ -325,45 +251,18 @@ const getStreaming = async (newVal: { [x: string]: any }) => {
 	SidebarStore.getSidebarStatus("live");
 };
 
-// 点击对应工具
-const handleClick = (tool: any) => {
-	tool.action(tool.param);
-	SidebarStore.getSidebarStatus(tool.name);
-	// 激活tv状态
-	tvState.isOpen = true;
-};
-
-/**
- * @description: 跳转到比赛详细
- */
-const showDetail = () => {
-	// const params = {
-	// 	leagueId: eventsInfo.value?.leagueId,
-	// 	eventId: eventsInfo.value?.eventId,
-	// 	dataIndex: eventsInfo.value?.dataIndex,
-	// };
-	// toggleEventScoreboard(eventsInfo.value);
-	// gotoEventDetail(params, route.query.sportType as string);
-};
-
 /**
  * @description: 刷新数据
  */
-const handleRefresh = debounce(
-	() => {
-		// 切换旋转状态
-		refresh.rotation += 180;
-		//打开盘口数据loading状态
-		refresh.loading = true;
-		// 获取盘口数据
-		getSidebarEventSSEPush();
-		setTimeout(() => {
-			refresh.loading = false;
-		}, 1000);
-	},
-	1000,
-	{ leading: true }
-);
+const handleRefresh = () => {
+	//打开盘口数据loading状态
+	refresh.loading = true;
+	// 获取盘口数据
+	getSidebarEventSSEPush();
+	setTimeout(() => {
+		refresh.loading = false;
+	}, 1000);
+};
 
 const tvState = reactive({
 	//当前状态是否打开
@@ -373,12 +272,9 @@ const tvState = reactive({
 	// 视频是否播放成功
 	isSuccess: false,
 });
-/**
- * @description: 切换TV
- */
-const handleChangeTV = () => {
-	tvState.isOpen = !tvState.isOpen;
-};
+
+// 工具栏按钮
+const { Tv, Live, Scoreboard, Refresh, toolState } = useHeaderTools(eventsInfo);
 </script>
 
 <style scoped lang="scss">

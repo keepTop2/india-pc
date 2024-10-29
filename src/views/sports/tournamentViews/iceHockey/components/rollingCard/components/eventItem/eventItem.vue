@@ -42,9 +42,9 @@
 
 		<!-- 其他信息 -->
 		<div class="league-option">
-			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool)">
-				<span class="icon"><svg-icon :name="getIconName(tool, event, index)" width="23px" height="16px"></svg-icon></span>
-			</div>
+			<!-- 工具图标 -->
+			<Scoreboard />
+			<Live />
 		</div>
 	</div>
 </template>
@@ -56,20 +56,13 @@ import MarketColumn from "../marketColumn/marketColumn.vue";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import PubSub from "/@/pubSub/pubSub";
 import SportsApi from "/@/api/sports/sports";
-import { useRouter, useRoute } from "vue-router";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
-import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useLink } from "/@/views/sports/hooks/useLink";
-import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import useGameTimer from "/@/views/sports/hooks/useGameTimer";
-
-const SidebarStore = useSidebarStore();
+import useHeaderTools from "/@/views/sports/components/HeaderTools";
 const SportAttentionStore = useSportAttentionStore();
-const { toggleEventScoreboard } = useToolsHooks();
 const { gotoEventDetail } = useLink();
-const router = useRouter();
-const route = useRoute();
 
 interface teamDataType {
 	/** 数据索引 */
@@ -95,18 +88,6 @@ const markets = [
 	{ cardType: "magnitude", betType: 2, selectionsLength: 2 },
 ];
 
-// 计算属性：格式化比赛开始时间
-const formattedGameTime = computed(() => {
-	const minutes = Math.floor(props.event.gameInfo.seconds / 60);
-	const seconds = props.event.gameInfo.seconds % 60;
-	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-});
-
-// 计算属性：判断是否为直播状态
-const isLive = computed(() => {
-	return [1, 2, 3, 4, 99].includes(props.event.gameInfo.livePeriod) && !props.event.gameInfo.delayLive && !props.event.gameInfo.isHt;
-});
-
 // 计算属性：关注状态
 const isAttention = computed(() => {
 	return SportAttentionStore.attentionEventIdList.includes(props.event.eventId);
@@ -131,52 +112,6 @@ const linkDetail = () => {
 	gotoEventDetail(params, SportTypeEnum.IceHockey);
 };
 
-// 获取侧边栏图标
-const getIconName = (tool: any, events: any, index: number) => {
-	const { eventId } = SidebarStore.getEventsInfo; // 获取当前事件 ID
-	const isEventActive = events.eventId === eventId; // 判断事件是否活跃
-	if (!isEventActive) {
-		return tool.iconName; // 非活跃状态返回默认图标
-	}
-	const activeIndex = SidebarStore.sidebarStatus === "scoreboard" ? 0 : 1; // 根据侧边栏状态确定活跃索引
-	return index === activeIndex ? tool.iconName_active : tool.iconName; // 返回相应的图标名称
-};
-
-/**
- * @description  计算工具图标的显示状态
- */
-const tools = computed(() => {
-	const baseTools = [];
-	// 判断 是否在未开赛页面
-	baseTools.push({
-		iconName: "sports-score_icon",
-		iconName_active: "sports-score_icon_active",
-		tooltipText: "比分板",
-		name: "scoreboard",
-		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
-		param: props.event, // 传递参数
-	});
-	// 判断是否有视频源
-	if (props.event.streamingOption != 0 && props.event.channelCode) {
-		baseTools.push({
-			iconName: "sports-live_icon",
-			iconName_active: "sports-live_icon_active",
-			tooltipText: "视频源",
-			name: "live",
-			action: (event: any) => toggleEventScoreboard(event, true),
-			param: props.event, // 传递参数
-		});
-	}
-	return baseTools;
-});
-
-// 点击对应工具
-const handleClick = (tool: any) => {
-	toggleEventScoreboard(props?.event);
-	tool.action(tool.param); // 执行对应工具的动作
-	SidebarStore.getSidebarStatus(tool.name);
-};
-
 // 赔率变更事件
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
@@ -185,6 +120,8 @@ const oddsChange = (obj: any) => {
 //比赛时间
 const gameState = computed(() => props.event);
 const { gameTime } = useGameTimer(gameState);
+// 工具栏按钮
+const { Live, Scoreboard } = useHeaderTools(gameState);
 </script>
 
 <style scoped lang="scss">

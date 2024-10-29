@@ -54,7 +54,7 @@ export default (event: { value: { gameInfo: GameInfo; eventStatus: string; globa
 			if (gameInfo.clockDirection.value === "dec" && state.seconds === 0) {
 				state.gameTime = "";
 				if (timer.value !== null) {
-					clearInterval(timer.value);
+					clearInterval(timer.value as number);
 					timer.value = null;
 				}
 			} else {

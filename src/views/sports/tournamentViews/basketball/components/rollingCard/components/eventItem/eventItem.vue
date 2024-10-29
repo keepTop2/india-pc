@@ -47,9 +47,9 @@
 
 		<!-- 其他信息 -->
 		<div class="league-option">
-			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool)">
-				<span class="icon"><svg-icon :name="getIconName(tool, event, index)" width="23px" height="16px" /></span>
-			</div>
+			<!-- 工具图标 -->
+			<Scoreboard />
+			<Live />
 		</div>
 	</div>
 </template>
@@ -68,6 +68,7 @@ import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import useGameTimer from "/@/views/sports/hooks/useGameTimer";
+import useHeaderTools from "/@/views/sports/components/HeaderTools";
 
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
@@ -110,55 +111,9 @@ const betTypes = [
 	{ id: 4, cardType: "magnitude", type: [401, 402], selectionsLength: 2 },
 ];
 
-// 获取侧边栏图标
-const getIconName = (tool: any, events: any, index: number) => {
-	const { eventId } = SidebarStore.getEventsInfo; // 获取当前事件 ID
-	const isEventActive = events.eventId === eventId; // 判断事件是否活跃
-	if (!isEventActive) {
-		return tool.iconName; // 非活跃状态返回默认图标
-	}
-	const activeIndex = SidebarStore.sidebarStatus === "scoreboard" ? 0 : 1; // 根据侧边栏状态确定活跃索引
-	return index === activeIndex ? tool.iconName_active : tool.iconName; // 返回相应的图标名称
-};
-
 // 处理赔率变化
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
-};
-
-/**
- * @description  计算工具图标的显示状态
- */
-const tools = computed(() => {
-	const baseTools = [];
-	// 判断 是否在未开赛页面
-	baseTools.push({
-		iconName: "sports-score_icon",
-		iconName_active: "sports-score_icon_active",
-		tooltipText: "比分板",
-		name: "scoreboard",
-		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
-		param: props.event, // 传递参数
-	});
-	// 判断是否有视频源
-	if (props.event.streamingOption != 0 && props.event.channelCode) {
-		baseTools.push({
-			iconName: "sports-live_icon",
-			iconName_active: "sports-live_icon_active",
-			tooltipText: "视频源",
-			name: "live",
-			action: (event: any) => toggleEventScoreboard(event, true),
-			param: props.event, // 传递参数
-		});
-	}
-	return baseTools;
-});
-
-// 点击对应工具
-const handleClick = (tool: any) => {
-	toggleEventScoreboard(props?.event);
-	tool.action(tool.param); // 执行对应工具的动作
-	SidebarStore.getSidebarStatus(tool.name);
 };
 
 // 判断是否关注
@@ -191,6 +146,9 @@ const linkDetail = () => {
 //比赛时间
 const gameState = computed(() => props.event);
 const { gameTime } = useGameTimer(gameState);
+
+// 工具栏按钮
+const { Live, Scoreboard } = useHeaderTools(gameState);
 </script>
 
 <style scoped lang="scss">
