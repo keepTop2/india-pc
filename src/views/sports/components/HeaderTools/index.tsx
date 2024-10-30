@@ -3,8 +3,15 @@ import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { Refresh as RefreshIcon } from "@element-plus/icons-vue";
 import { useRoute } from "vue-router";
-import { ElIcon } from "element-plus";
-import { debounce } from "lodash-es";
+import { ElIcon, ElMessage } from "element-plus";
+import { debounce, size } from "lodash-es";
+import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
+import SportsApi from "/@/api/sports/sports";
+import PubSub from "/@/pubSub/pubSub";
+import { AxiosResponse } from "axios";
+import { i18n } from "/@/i18n/index";
+import showToast from "/@/hooks/useToast";
+const $: any = i18n.global;
 import SvgIcon from "/@/components/svgIcon/index.vue";
 
 // 定义自定义 Hook 返回的按钮类型
@@ -17,6 +24,8 @@ interface HeaderTools {
 	Scoreboard: ReturnType<typeof defineComponent>;
 	/** 刷新按钮 */
 	Refresh: ReturnType<typeof defineComponent>;
+	/** 收藏按钮 */
+	Collection: ReturnType<typeof defineComponent>;
 	toolState: {
 		isOpen: Boolean;
 		[x: string]: any;
@@ -138,11 +147,47 @@ export default (eventsInfo: any): HeaderTools => {
 		},
 	});
 
+	// 收藏按钮
+	const Collection = defineComponent({
+		setup() {
+			const SportAttentionStore = useSportAttentionStore();
+			// 判断是否收藏
+			const isAttention = computed(() => SportAttentionStore.attentionEventIdList.includes(eventsInfo.eventId));
+
+			// 处理收藏或取消收藏操作
+			const handleCollection = async (action: () => Promise<AxiosResponse<any, any>>, successMessage: string, errorMessage: string) => {
+				try {
+					await action();
+					showToast(successMessage);
+					// ElMessage({ type: "success", message: successMessage });
+					// 关注触发事件
+					PubSub.publish(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, {});
+				} catch (error) {
+					console.error(error);
+					showToast(errorMessage);
+					// ElMessage({ type: "error", message: errorMessage });
+				}
+			};
+
+			// 点击事件
+			const handleClick = () => {
+				if (isAttention.value) {
+					handleCollection(() => SportsApi.unFollow({ thirdId: [eventsInfo.eventId] }), "取消收藏成功！", "取消收藏失败！");
+				} else {
+					handleCollection(() => SportsApi.saveFollow({ thirdId: eventsInfo.eventId, type: 2 }), "收藏成功！", "收藏失败！");
+				}
+			};
+
+			return () => <SvgIcon style={{ cursor: "pointer" }} onClick={handleClick} name={isAttention.value ? "sports-already_collected" : "sports-collection"} size={16} />;
+		},
+	});
+
 	return {
 		Tv,
 		Live,
 		Scoreboard,
 		Refresh,
+		Collection,
 		toolState: state,
 	};
 };

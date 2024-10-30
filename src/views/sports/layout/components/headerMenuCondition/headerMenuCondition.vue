@@ -32,7 +32,8 @@
 	</div>
 
 	<!-- 搜索框组件 -->
-	<searchBar v-else @cancel="handleSearch(false)" />
+	<Search />
+	<!-- <searchBar v-else @cancel="handleSearch(false)" /> -->
 </template>
 
 <script setup lang="ts">
@@ -51,6 +52,7 @@ import searchBar from "./components/searchBar/searchBar.vue";
 import pubsub from "/@/pubSub/pubSub";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
+import useSearch from "/@/views/sports/components/Search";
 
 const sportsBetEvent = useSportsBetEventStore();
 const SportAttentionStore = useSportAttentionStore();
@@ -101,7 +103,8 @@ onBeforeMount(() => {
 
 // 处理搜索框的显示/隐藏
 const handleSearch = (data: boolean) => {
-	isSearch.value = data;
+	// isSearch.value = data;
+	openSearch();
 };
 
 // 判断是否是今日赛事路由
@@ -203,6 +206,9 @@ const GetPromotions = async () => {
 		sportsBetEvent.setHotLeagueList(list);
 	}
 };
+
+// 搜索弹窗
+const { Search, openSearch, closeSearch } = useSearch();
 </script>
 
 <style scoped lang="scss">
