@@ -60,7 +60,9 @@ const isFieldVisible = (code: keyof formParamsRootObject) => {
 // 清空表单参数
 const clearParams = () => {
 	Object.keys(formParams).forEach((key) => {
-		formParams[key] = "";
+		if (!["networkType"].includes(key)) {
+			formParams[key] = "";
+		}
 	});
 };
 

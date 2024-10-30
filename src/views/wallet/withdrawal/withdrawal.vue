@@ -123,7 +123,7 @@
 						</div>
 					</template>
 
-					<Button class="mt_40" :type="buttonType" @click="onWithdrawApply">{{ $t('wallet["立即存款"]') }}</Button>
+					<Button class="mt_40" :type="buttonType" @click="onWithdrawApply">{{ $t('wallet["立即提款"]') }}</Button>
 
 					<i18n-t class="tips mt_10" keypath="wallet['提示']" :tag="'p'">
 						<template v-slot:value>
@@ -317,8 +317,8 @@ const buttonType = computed(() => {
 		default:
 			break;
 	}
-	// console.log("requiredFields", requiredFields);
-	// console.log("dynamicFields", dynamicFields);
+	console.log("requiredFields", requiredFields);
+	console.log("dynamicFields", dynamicFields);
 	// 检查所有属性是否有值
 	const allFieldsHaveValue = requiredFields.every((key) => dynamicFields[key] !== undefined && dynamicFields[key] !== "");
 	// 按钮状态判断
@@ -429,6 +429,10 @@ const onRechargeWay = (item: {
 const getRechargeWayList = async () => {
 	const res = await walletApi.withdrawWayList().catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
+		if (!res.data || res.data.length == 0) {
+			showToast($.t('wallet["暂无取款通道"]'));
+			return;
+		}
 		withdrawWayList.value = res.data; // 存储支付方式列表
 		withdrawWayData.value = res.data[0]; // 默认选择第一个支付方式
 		getWithdrawConfig(); // 获取通道配置
