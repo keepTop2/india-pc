@@ -23,7 +23,7 @@
 						</div>
 					</div>
 					<div class="images" v-if="item.picUrls">
-						<img v-for="img in item.picUrls.split(',')" :src="img" />
+						<img v-for="(img, index) in item.picUrls.split(',')" :src="img" @click.stop="showImagePreview(item.picUrls?.split(','), index)" />
 					</div>
 					<div>
 						<span class="Text1 fs_14"> {{ dayjs(item.createdTime).format("YYYY-MM-DD HH:mm:ss") }}</span>
@@ -36,6 +36,7 @@
 			</div>
 		</div>
 	</div>
+	<ImagePreview v-if="isPreviewOpen" :images="previewList" :isOpen="isPreviewOpen" :initialIndex="previewIndex" @close="isPreviewOpen = false" />
 </template>
 
 <script setup lang="ts">
@@ -48,6 +49,9 @@ import type2 from "./image/type2.png";
 import type3 from "./image/type3.png";
 import type4 from "./image/type4.png";
 import type5 from "./image/type5.png";
+const isPreviewOpen = ref(false);
+const previewList = ref([]);
+const previewIndex = ref(0);
 const imgObj: any = {
 	type1,
 	type2,
@@ -60,6 +64,11 @@ const FeedbackList: any = ref([]);
 onMounted(() => {
 	getfeedbackList();
 });
+const showImagePreview = (list: [], index: number) => {
+	previewList.value = list;
+	previewIndex.value = index;
+	isPreviewOpen.value = true;
+};
 const params = reactive({
 	pageNumber: 1,
 	pageSize: 10,

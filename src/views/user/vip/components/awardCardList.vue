@@ -11,7 +11,6 @@
 			<div class="pr_10">
 				<div class="Text_s fs_12">
 					{{ item.label }}
-
 					<ClickTooltip v-if="item.flag == 'weekSportFlag'" class="ml_5 curp">
 						<template v-slot:icon>
 							<img src="../image/tooltip.png" alt="" class="tooltipImg" />
@@ -34,6 +33,9 @@
 						<span
 							v-html="$t(`vip['会员根据每周投注额度获得周流水的礼金奖励']`, { value1: `<span class='color_f1'>*${data.weekAmountProp1}%*${data.weekAmountProp2}%</span>` })"
 						></span>
+					</span>
+					<span class="Text1 fs_12" v-if="item.flag == 'luckFlag'">
+						<span v-html="$t(`vip['从VIP8开始，达到活动要求即可获得每日抽取幸运大奖得机会']`, { value: data.luckMinVipGradeName })"></span>
 					</span>
 					<span class="Text1 fs_12" v-else-if="item.flag == 'monthAmountFlag'">
 						<span

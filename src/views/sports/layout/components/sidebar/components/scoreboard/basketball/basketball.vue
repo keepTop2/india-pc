@@ -107,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, watch, toRefs } from "vue";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { i18n } from "/@/i18n/index";
@@ -145,7 +145,8 @@ const totalScore = (scores: number[]) => scores.reduce((acc, score) => acc + sco
 const halftimeScore = (scores: number[]) => scores.slice(0, 2).reduce((acc, score) => acc + score, 0);
 
 //比赛时间倒计时
-const { gameTime } = useGameTimer(props.eventsInfo);
+const gameState = computed(() => props.eventsInfo);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">

@@ -42,7 +42,7 @@
 							</div>
 							<!-- 总分 -->
 							<div class="num F2">
-								<span>{{ eventsInfo?.badmintonInfo?.homeCurrentPoint }}</span>
+								<span>{{ homeScores.reduce((accumulator, currentValue) => accumulator + currentValue, 0) }}</span>
 							</div>
 						</div>
 					</div>
@@ -71,7 +71,7 @@
 							</div>
 							<!-- 总分 -->
 							<div class="num F2">
-								<span>{{ eventsInfo?.badmintonInfo?.awayCurrentPoint }}</span>
+								<span>{{ awayScores.reduce((accumulator, currentValue) => accumulator + currentValue, 0) }}</span>
 							</div>
 						</div>
 					</div>
@@ -113,7 +113,8 @@ const homeScores = computed(() => props.eventsInfo?.badmintonInfo?.homeGameScore
 // 计算客队得分
 const awayScores = computed(() => props.eventsInfo?.badmintonInfo?.awayGameScore || []);
 //比赛时间
-const { gameTime } = useGameTimer(props.eventsInfo);
+const gameState = computed(() => props.eventsInfo);
+const { gameTime } = useGameTimer(gameState);
 // 计算局
 /*const calculateSetScore = (scores: number[], opponentScores: number[]) => {
 	if (currentSet.value === 1) {
