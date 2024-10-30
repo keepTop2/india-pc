@@ -83,7 +83,7 @@
 					<div class="title">{{ $t(`wallet['温馨提示']`) }}</div>
 					<div class="tips">
 						<p class="tip">{{ $t(`wallet['1']`) }}{{ UserStore.getUserInfo.userAccount }}</p>
-						<p class="tip">{{ $t(`wallet['2']`) }}</p>
+						<p class="tip">{{ $t(`wallet['2']`, { value: rechargeWayData?.networkType }) }}</p>
 						<p class="tip">{{ $t(`wallet['3']`, { value: rechargeConfig.exchangeRate, currency: rechargeConfig.currencyCode }) }}</p>
 						<p class="tip">{{ $t(`wallet['4']`) }}</p>
 					</div>
@@ -255,7 +255,10 @@ const onRecharge = async () => {
 // 不再提醒
 const onNotRemind = async () => {
 	if (checkbox.value) {
-		const res = await walletApi.notRemind().catch((err) => err);
+		const params = {
+			netWorkType: rechargeWayData.value.networkType,
+		};
+		const res = await walletApi.notRemind(params).catch((err) => err);
 		if (res.code === common.ResCode.SUCCESS) {
 			checkbox.value = false;
 			isModalVisible.value = false;
