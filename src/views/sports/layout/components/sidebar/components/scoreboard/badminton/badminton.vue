@@ -42,7 +42,7 @@
 							</div>
 							<!-- 总分 -->
 							<div class="num F2">
-								<span>{{ eventsInfo?.badmintonInfo?.homeCurrentPoint }}</span>
+								<span>{{ homeScores.reduce((accumulator, currentValue) => accumulator + currentValue, 0) }}</span>
 							</div>
 						</div>
 					</div>
@@ -71,7 +71,7 @@
 							</div>
 							<!-- 总分 -->
 							<div class="num F2">
-								<span>{{ eventsInfo?.badmintonInfo?.awayCurrentPoint }}</span>
+								<span>{{ awayScores.reduce((accumulator, currentValue) => accumulator + currentValue, 0) }}</span>
 							</div>
 						</div>
 					</div>
