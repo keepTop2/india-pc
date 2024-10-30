@@ -97,7 +97,7 @@ const cradList = ref([
 ]);
 const awardList: any = [
 	{
-		label: $.t(`vip['升级奖励']`),
+		label: $.t(`vip['升级奖金']`),
 		flag: "upgradeFlag",
 		value: "upgrade",
 	},
