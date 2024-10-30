@@ -3,7 +3,7 @@
 		<div class="activityWrapper pb_20">
 			<div class="activityHeader">
 				{{ activityData.activityNameI18nCode || "每日竞赛" }}
-				<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../../components/image/close_icon.png" alt="" /></span>
+				<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="../../components/image/close_icon.png" alt="" /></span>
 			</div>
 			<div class="activityMain">
 				<div class="tabs">
