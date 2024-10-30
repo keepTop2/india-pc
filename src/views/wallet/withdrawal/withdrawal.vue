@@ -89,7 +89,7 @@
 							} `"
 						/>
 						<div class="all">
-							<span @click="state.amount = UserStore.userInfo.totalBalance">{{ $t(`wallet['全部金额']`) }}</span>
+							<span @click="state.amount = Math.trunc(Number(state.totalBalance))">{{ $t(`wallet['全部金额']`) }}</span>
 						</div>
 					</div>
 					<div v-if="errorMessage" class="error_text mt_9">{{ errorMessage }}</div>
@@ -112,7 +112,7 @@
 						<!-- 虚拟币预计到账计算 -->
 						<div v-if="withdrawWayData.withdrawTypeCode === 'crypto_currency'" class="amount_info">
 							<div class="item">
-								<span class="value">≈{{ approximateAmount }}</span>
+								<span class="value">≈{{ common.formatFloat(approximateAmount) }}</span>
 								<span class="value">&nbsp;{{ UserStore.userInfo.mainCurrency }}</span>
 							</div>
 							<div class="item">
@@ -123,7 +123,7 @@
 						</div>
 					</template>
 
-					<Button class="mt_40" :type="buttonType" @click="onWithdrawApply">{{ $t('wallet["立即存款"]') }}</Button>
+					<Button class="mt_40" :type="buttonType" @click="onWithdrawApply">{{ $t('wallet["立即提款"]') }}</Button>
 
 					<i18n-t class="tips mt_10" keypath="wallet['提示']" :tag="'p'">
 						<template v-slot:value>
@@ -217,21 +217,11 @@ const errorMessage = computed(() => {
 	if (amount > totalBalance || !totalBalance || totalBalance === 0) {
 		return $.t(`wallet["余额不足"]`);
 	} else if (amount < withdrawWayConfig.value.withdrawMinAmount) {
-		return `${$.t('wallet["单次最低提款"]')}: ${withdrawWayConfig.value.withdrawMinAmount} ${UserStore.userInfo.mainCurrency}`;
+		return `${$.t('wallet["单次最低提款"]')}: ${UserStore.userInfo.currencySymbol} ${withdrawWayConfig.value.withdrawMinAmount}`;
 	} else if (amount > withdrawWayConfig.value.withdrawMaxAmount) {
-		return `${$.t('wallet["单次最高提款"]')}: ${withdrawWayConfig.value.withdrawMaxAmount} ${UserStore.userInfo.mainCurrency}`;
+		return `${$.t('wallet["单次最高提款"]')}: ${UserStore.userInfo.currencySymbol} ${withdrawWayConfig.value.withdrawMaxAmount}`;
 	}
 	// return "";
-});
-
-// 虚拟币约等于到账额度
-const approximateAmount = computed(() => {
-	const amount = Number(state.amount);
-	const { singleDayRemindMaxWithdrawAmount: maxWithdrawAmount, singleDayRemindWithdrawCount: remainingWithdrawCount, feeRate } = withdrawWayConfig.value;
-	if (isNaN(amount) || (remainingWithdrawCount > 0 && amount <= maxWithdrawAmount)) {
-		return amount;
-	}
-	return common.formatFloat(amount - Math.trunc((amount * feeRate) / 100));
 });
 
 // 计算手续费
@@ -246,26 +236,24 @@ const feeAmount = computed(() => {
 	if (meetsFreeCondition) {
 		return 0;
 	}
-	const calculatedFee = Math.trunc((amount * feeRate) / 100);
-	return isCrypto ? Math.trunc(calculatedFee / exchangeRate.value) : calculatedFee;
+	const calculatedFee = common.div(common.mul(amount, feeRate), 100);
+	return isCrypto ? Math.trunc(common.div(calculatedFee, exchangeRate.value)) : calculatedFee;
 });
 
 // 计算预计到账金额
 const estimatedAmount = computed(() => {
 	const amount = Number(state.amount);
 	const isCrypto = withdrawWayData.value.withdrawTypeCode === "crypto_currency";
-	const { singleDayRemindMaxWithdrawAmount: maxWithdrawAmount, singleDayRemindWithdrawCount: remainingWithdrawCount, feeRate } = withdrawWayConfig.value;
-	// console.log("isNaN(amount)", isNaN(amount));
-	// console.log("amount", amount);
-	// console.log("isCrypto", isCrypto);
-	// console.log("exchangeRate.value", exchangeRate.value);
-	const meetsFreeCondition = remainingWithdrawCount > 0 && amount <= maxWithdrawAmount;
-	if (meetsFreeCondition) {
-		return isCrypto ? amount / exchangeRate.value : amount;
+	if (!isCrypto) {
+		return common.sub(amount, feeAmount.value);
+	} else {
+		return common.sub(common.div(amount, exchangeRate.value), feeAmount.value);
 	}
-	const calculatedFee = Math.trunc((amount * feeRate) / 100);
-	const netAmount = amount - calculatedFee;
-	return isCrypto ? netAmount / exchangeRate.value : netAmount;
+});
+
+// 虚拟币约等于到账额度
+const approximateAmount = computed(() => {
+	return common.mul(estimatedAmount.value, exchangeRate.value);
 });
 
 // 获取冻结金额
@@ -317,8 +305,8 @@ const buttonType = computed(() => {
 		default:
 			break;
 	}
-	// console.log("requiredFields", requiredFields);
-	// console.log("dynamicFields", dynamicFields);
+	console.log("requiredFields", requiredFields);
+	console.log("dynamicFields", dynamicFields);
 	// 检查所有属性是否有值
 	const allFieldsHaveValue = requiredFields.every((key) => dynamicFields[key] !== undefined && dynamicFields[key] !== "");
 	// 按钮状态判断
@@ -419,6 +407,7 @@ const onRechargeWay = (item: {
 	withdrawWayData.value = item;
 	clearParams();
 	getWithdrawConfig(); // 获取通道配置
+	getUserBalance(); // 获取金额
 
 	if (item.withdrawTypeCode == "crypto_currency") {
 		getWithdrawExchange();
@@ -429,6 +418,10 @@ const onRechargeWay = (item: {
 const getRechargeWayList = async () => {
 	const res = await walletApi.withdrawWayList().catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
+		if (!res.data || res.data.length == 0) {
+			showToast($.t('wallet["暂无取款通道"]'));
+			return;
+		}
 		withdrawWayList.value = res.data; // 存储支付方式列表
 		withdrawWayData.value = res.data[0]; // 默认选择第一个支付方式
 		getWithdrawConfig(); // 获取通道配置
@@ -475,7 +468,9 @@ getUserBalance();
 // 清空表单参数
 const clearParams = () => {
 	Object.keys(state).forEach((key) => {
-		state[key] = ""; // 将每个属性设置为空字符串
+		if (!["totalBalance", "freezeAmount"].includes(key)) {
+			state[key] = ""; // 将每个属性设置为空字符串
+		}
 	});
 	feeAmount.value = 0;
 	estimatedAmount.value = 0;
