@@ -289,4 +289,9 @@ const initCountown = () => {
 		}
 	}
 }
+.ruleDetails {
+	:deep(img) {
+		max-width: 100%;
+	}
+}
 </style>

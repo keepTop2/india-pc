@@ -63,6 +63,7 @@
 		font-family: "PingFang SC";
 		font-size: 14px;
 		font-weight: 400;
+		padding-left: 18px;
 		cursor: pointer;
 		&::after {
 			position: absolute;
@@ -72,7 +73,6 @@
 			transform: translateY(-50%);
 			width: 1px;
 			height: 28px;
-			margin-right: 18px;
 			background: var(--Bg1);
 		}
 	}

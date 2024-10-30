@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, watch } from "vue";
 
 const props = defineProps({
 	withdrawWayData: {
@@ -29,6 +29,13 @@ interface formParamsRootObject {
 	networkType: string;
 	addressNo: string;
 }
+
+watch(
+	() => props.withdrawWayData.networkType,
+	(newValue) => {
+		formParams.networkType = newValue;
+	}
+);
 
 const formParams = reactive(<formParamsRootObject>{
 	networkType: props.withdrawWayData.networkType, // 网络协议
@@ -53,13 +60,16 @@ const isFieldVisible = (code: keyof formParamsRootObject) => {
 // 清空表单参数
 const clearParams = () => {
 	Object.keys(formParams).forEach((key) => {
-		formParams[key] = "";
+		if (!["networkType"].includes(key)) {
+			formParams[key] = "";
+		}
 	});
 };
 
 // 暴露变量和方法
 defineExpose({
 	formParams,
+	inputFields,
 	clearParams,
 });
 </script>

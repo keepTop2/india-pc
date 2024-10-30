@@ -7,18 +7,20 @@
 			</div>
 			<div class="experience">
 				<div class="fs_20 mb_5">{{ vipInfo.vipGradeName }}</div>
-				<div class="flex-alignCenter">
+				<div class="flex-alignCenter" v-if="vipInfo.vipGradeUp !== vipInfo.vipGradeCode">
 					<span>升级所需经验:</span> <span>{{ vipInfo.currentExp }}/{{ vipInfo.currentVipExp }}</span>
-					<ClickTooltip class="ml_5 curp" message="">
+					<ClickTooltip class="ml_5 curp" message="" width="270">
 						<template v-slot:icon>
 							<img src="../image/tooltip.png" alt="" class="tooltipImg" />
 						</template>
 						<template v-slot:message>
-							体育/电竞场馆投注1 {{ useUserStore().getUserInfo.currencySymbol }} = {{ vipInfo.sportExe }}积分，其他场馆投注 1{{ useUserStore().getUserInfo.currencySymbol }} =
-							1积分，所有投注 均按当前汇率兑换为美元结算
+							体育/电竞场馆投注 1 {{ useUserStore().getUserInfo.platCurrencySymbol }} = {{ vipInfo.sportExe }} 积分，其他场馆投注 1
+							{{ useUserStore().getUserInfo.platCurrencySymbol }}
+							= 1 积分，所有投注 均按当前汇率兑换为{{ useUserStore().getUserInfo.platCurrencySymbol }}结算
 						</template>
 					</ClickTooltip>
 				</div>
+				<div v-else>您已到达最高等级</div>
 			</div>
 
 			<div class="progress">
@@ -34,7 +36,7 @@
 							background: vipInfo.currentExp / vipInfo.currentVipExp == 0 ? 'rgba(0,0,0,0)' : 'var(--Theme)',
 						}"
 					>
-						<div class="progressValue">
+						<div class="progressValue" v-if="(vipInfo.currentExp / vipInfo.currentVipExp) * 100 < 100">
 							<div>{{ ((vipInfo.currentExp / vipInfo.currentVipExp) * 100 || 0).toFixed(2) }}%</div>
 							<img src="../image/jiantou.png" alt="" />
 						</div>
@@ -82,7 +84,7 @@ const props = defineProps({
 	gap: 16px;
 	.vipLevelBg {
 		padding-top: 20px;
-		width: 540px;
+		width: 486px;
 		height: 260px;
 		position: relative;
 		background: url("../image/vipLevelBg.png") no-repeat;
@@ -96,10 +98,10 @@ const props = defineProps({
 		}
 		.vipLevelIcon {
 			position: absolute;
-			right: 0;
+			right: 30px;
 			top: 0px;
-			width: 158px;
-			height: 152px;
+			width: 131px;
+			height: 124px;
 		}
 		.experience {
 			height: 100px;
@@ -115,6 +117,7 @@ const props = defineProps({
 			display: flex;
 			padding: 0 42px;
 			gap: 10px;
+
 			.levelIcon {
 				position: relative;
 				img {
@@ -147,6 +150,7 @@ const props = defineProps({
 					height: 11px;
 					padding-left: 20px;
 					border-radius: 15.36px;
+					max-width: 100%;
 					background: var(--Theme);
 					> img {
 						position: absolute;

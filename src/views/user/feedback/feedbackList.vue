@@ -22,7 +22,9 @@
 							{{ item.content }}
 						</div>
 					</div>
-					<div>img</div>
+					<div class="images" v-if="item.picUrls">
+						<img v-for="(img, index) in item.picUrls.split(',')" :src="img" @click.stop="showImagePreview(item.picUrls?.split(','), index)" />
+					</div>
 					<div>
 						<span class="Text1 fs_14"> {{ dayjs(item.createdTime).format("YYYY-MM-DD HH:mm:ss") }}</span>
 					</div>
@@ -34,6 +36,7 @@
 			</div>
 		</div>
 	</div>
+	<ImagePreview v-if="isPreviewOpen" :images="previewList" :isOpen="isPreviewOpen" :initialIndex="previewIndex" @close="isPreviewOpen = false" />
 </template>
 
 <script setup lang="ts">
@@ -46,6 +49,9 @@ import type2 from "./image/type2.png";
 import type3 from "./image/type3.png";
 import type4 from "./image/type4.png";
 import type5 from "./image/type5.png";
+const isPreviewOpen = ref(false);
+const previewList = ref([]);
+const previewIndex = ref(0);
 const imgObj: any = {
 	type1,
 	type2,
@@ -58,6 +64,11 @@ const FeedbackList: any = ref([]);
 onMounted(() => {
 	getfeedbackList();
 });
+const showImagePreview = (list: [], index: number) => {
+	previewList.value = list;
+	previewIndex.value = index;
+	isPreviewOpen.value = true;
+};
 const params = reactive({
 	pageNumber: 1,
 	pageSize: 10,
@@ -143,6 +154,17 @@ const sizeChange = (pageSize: number) => {
 		overflow: hidden;
 		flex-wrap: wrap;
 		word-break: break-all;
+		.images {
+			margin-right: 35px;
+			img {
+				width: 46px;
+				height: 46px;
+				object-fit: cover;
+				border-radius: 8px;
+				border: 1px solid var(--Line_2);
+				margin-right: 8px;
+			}
+		}
 		.content {
 			display: -webkit-box; /* 使用 Flexbox */
 			-webkit-box-orient: vertical; /* 纵向排列 */

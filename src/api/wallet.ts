@@ -87,6 +87,17 @@ export const walletApi = {
 		});
 	},
 
+	// 不再提醒
+	notRemind: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/userRecharge/api/notRemind`, {
+			method: "POST",
+			data,
+			headers: {
+				showLoading: true,
+			},
+		});
+	},
+
 	/**
 	 * @description 提款接口 ⬇️
 	 */

@@ -78,7 +78,7 @@
 				padding: 15px 23px;
 				font-size: 14px;
 				color: var(--Text2);
-				.Theme_text {
+				.color_Theme {
 					font-size: 14px;
 					font-weight: 700;
 				}
@@ -146,6 +146,11 @@
 				}
 				.ruleDetails {
 					font-size: 12px;
+				}
+				.ruleDetails {
+					:deep(img) {
+						max-width: 100%;
+					}
 				}
 			}
 			.activityContentFooter {
