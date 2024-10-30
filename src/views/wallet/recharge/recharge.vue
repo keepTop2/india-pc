@@ -247,9 +247,23 @@ const onRecharge = async () => {
 				orderNo: res.data.orderNo,
 			},
 		});
-		window.open(res.data.thirdPayUrl, "_blank");
+		if (res.data.thirdIsUrl == 1) {
+			window.open(res.data.thirdPayUrl, "_blank");
+		} else if (res.data.thirdIsUrl == 0) {
+			openHtmlInNewWindow(res.data.thirdPayUrl);
+		}
 		clearRequestParams();
 	}
+};
+
+const openHtmlInNewWindow = (content: string) => {
+	// 创建Blob对象
+	const blob = new Blob([content], { type: "text/html" });
+	const url = URL.createObjectURL(blob);
+	// 在新窗口中打开
+	window.open(url);
+	// 释放URL对象
+	URL.revokeObjectURL(url);
 };
 
 // 不再提醒
