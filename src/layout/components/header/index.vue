@@ -71,7 +71,7 @@ const isLogin = computed(() => {
 	return UserStore.getLogin;
 });
 const LangIcon = computed(() => {
-	return UserStore.getLangList.find((item: any) => item.code == UserStore.getLang)?.icon;
+	return UserStore.getLangList.find((item: any) => item.code == UserStore.getLang)?.iconFileUrl;
 });
 
 const openUserMenu = () => {

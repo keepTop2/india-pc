@@ -45,7 +45,9 @@ export const activityApi = {
 		return useAxiosApi(`/app/activity/spin/api/toActivity`, {
 			method: "POST",
 			data,
-			headers,
+			headers: {
+				hideToast: true,
+			},
 		});
 	},
 	// 获取转盘结果
@@ -53,7 +55,9 @@ export const activityApi = {
 		return useAxiosApi(`/app/activity/spin/api/prizeResult`, {
 			method: "POST",
 			data,
-			headers,
+			headers: {
+				hideToast: true,
+			},
 		});
 	},
 	// 获取转盘记录

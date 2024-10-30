@@ -147,6 +147,11 @@
 				.ruleDetails {
 					font-size: 12px;
 				}
+				.ruleDetails {
+					:deep(img) {
+						max-width: 100%;
+					}
+				}
 			}
 			.activityContentFooter {
 				height: 66px;

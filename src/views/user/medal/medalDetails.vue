@@ -43,7 +43,7 @@ const emit = defineEmits(["update:modelValue"]);
 .wrapper3 {
 	width: 480px;
 	height: 720px;
-	overflow-y: hidden;
+	overflow-y: auto;
 	border-radius: 12px;
 	background: url("./image/wrapper3.png") no-repeat;
 	background-size: 100% auto;

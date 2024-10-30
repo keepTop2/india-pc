@@ -22,7 +22,7 @@ declare module 'vue' {
     copy: typeof import('./src/components/Sport/RiseOrFall copy.vue')['default']
     DatePicker: typeof import('./src/components/DatePicker.vue')['default']
     DateSelector: typeof import('./src/components/DateSelector/DateSelector.vue')['default']
-    Dialog: typeof import('./src/components/Dialog/Dialog.vue')['default']
+    Dialog: typeof import('./src/components/Announcement/Dialog.vue')['default']
     Dropdown: typeof import('./src/components/Dropdown.vue')['default']
     DropDown: typeof import('./src/components/DropDown/DropDown.vue')['default']
     DropdownSelect: typeof import('./src/components/DropdownSelect/index.vue')['default']

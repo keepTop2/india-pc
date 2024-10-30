@@ -13,16 +13,14 @@
 						</div>
 					</div>
 					<Spin
-						@start-spinning-callback="spinStart"
 						@end-spinning-callback="spinEnd"
-						@handleNoMoreBet="handleNoMoreBet"
-						@handleNeedLogin="handleNeedLogin"
+						@startVerification="startVerification"
 						:reward="reward"
 						:spinList="currentTab == '1' ? activityData?.bronze : currentTab == '2' ? activityData?.silver : activityData?.gold"
 						:balanceCount="activityData?.balanceCount"
 						ref="SpinRef"
 					/>
-					<div class="vipLevel color_TB fw_600" :class="'vip' + currentTab">{{ activityData?.vipRankConfig?.[currentTab - 1]?.maxVipGradeName }}级或以上</div>
+					<div class="vipLevel color_TB fw_600" :class="'vip' + currentTab">{{ activityData?.vipRankConfig?.[currentTab - 1]?.minVipGradeName }}级或以上</div>
 				</div>
 				<div class="p_20 remaining_times_bg">剩余抽奖次数： {{ activityData?.balanceCount || 0 }}</div>
 				<div class="flex_space-between">
@@ -81,12 +79,12 @@
 		<!-- 中奖了 -->
 		<CommonDialog v-model="showbetResult">
 			<div class="betResult">
-				<img src="./images/result_img.png" alt="" />
+				<img :src="reward.prizePictureUrl" alt="" />
 				<div class="Text_s fs_20 fw_600">恭喜您获得</div>
-				<div class="amunt mt_40 mb_33">$9.03121</div>
+				<div class="amunt mt_40 mb_33">{{ reward.prizeAmount }} {{ useUserStore().getUserInfo.platCurrencySymbol }}</div>
 				<div class="againBtn">
 					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
-					<button class="common_btn active" @click="handleStartSpin">再抽一次：1</button>
+					<button class="common_btn active" @click="palyAgain">再抽一次：1</button>
 				</div>
 			</div>
 			<div class="closeRecord" @click="showbetResult = false">
@@ -122,9 +120,14 @@
 				<img src="../../activityType/image/close.png" alt="" />
 			</div>
 		</CommonDialog>
-		<!-- 抽奖次数不足 -->
+
+		<!-- 验证不通过 -->
+		<activityDialog v-model="showVerificationDialog" title="温馨提示">
+			<div v-html="VerificationInfo.message"></div>
+		</activityDialog>
+		<!-- 需要登录 -->
 		<activityDialog v-model="showNeedLogin" title="温馨提示" :nofooter="false">
-			<div>您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册</div>
+			<div>您的账号暂未登录无法参与活动，如已有账号请登录，如还未有账号请前往注册</div>
 		</activityDialog>
 	</div>
 </template>
@@ -140,6 +143,7 @@ import Spin from "./spin.vue";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import "../../components/common.scss";
 import router from "/@/router";
+import { useUserStore } from "/@/stores/modules/user";
 const activityStore = useActivityStore();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
 const showRecord = ref(false);
@@ -151,10 +155,12 @@ const recordFinished = ref(false);
 const recordIsLoading = ref(false);
 const SpinRef: any = ref(null);
 const recordList: any = ref([]);
+const showVerificationDialog = ref(false);
+const VerificationInfo: any = ref({});
 // 奖项列表
 const spinList = ref();
 // 获得的奖励
-const reward = ref();
+const reward = ref({});
 // 当前选中的标签
 const currentTab: any = ref("1");
 // 标签列表
@@ -177,45 +183,71 @@ onMounted(() => {
 	// showbetResult.value = true;
 });
 
-/**
- * @description 选择标签
- * @param {string} tabKey - 选中的标签值
- */
 const selectTab = (tabKey: string) => {
 	if (SpinRef.value?.spinning) return;
 	currentTab.value = tabKey;
 };
 
-/**
- * @description 抽奖开始
- */
+const startVerification = () => {
+	if (!useUserStore().getLogin) {
+		showNeedLogin.value = true;
+	} else {
+		activityApi.getToSpinActivity().then((res) => {
+			if (res.data.status === Common.ResCode.SUCCESS) {
+				SpinRef.value?.handleStartSpin();
+				spinStart();
+			} else {
+				VerificationInfo.value = res.data;
+				showVerificationDialog.value = true;
+			}
+		});
+	}
+	// showVerificationDialog.value = true;
+};
+const delay = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+};
 const spinStart = () => {
-	activityApi.getSpinprizeResult().then((res) => {
-		reward.value = res.data;
-		SpinRef.value?.endSpinning();
-	});
+	const startTime = Date.now();
+	activityApi
+		.getSpinprizeResult({
+			id: activityData.value.id,
+			vipRankCode: currentTab.value,
+		})
+		.then(async (res) => {
+			if (res.code === Common.ResCode.SUCCESS) {
+				// 最少旋转3秒
+				reward.value = res.data;
+				const elapsedTime = Date.now() - startTime;
+				const remainingTime = 3000 - elapsedTime;
+				if (remainingTime > 0) {
+					await delay(remainingTime);
+				}
+
+				SpinRef.value?.endSpinning();
+			} else if (res.code === 80019) {
+				VerificationInfo.value = res;
+				showNoMoreBet.value = true;
+				SpinRef.value?.endSpinning();
+			}
+		});
 };
 
-/**
- * @description 处理转盘停止后的逻辑
- */
 const spinEnd = () => {
-	// 处理转盘停止后的逻辑
-	showLosserbetResult.value = true;
+	showbetResult.value = true;
 };
-const handleStartSpin = () => {
-	// if (activityData.value?.balanceCount < 1) return;
+const palyAgain = () => {
 	showbetResult.value = false;
 	showLosserbetResult.value = false;
 	SpinRef.value?.handleStartSpin();
+	spinStart();
 };
+
 const handleRecord = async () => {
 	await getRecordList();
 	showRecord.value = true;
 };
-const handleNeedLogin = () => {
-	showNeedLogin.value = true;
-};
+
 const getRecordList = () => {
 	activityApi.querySpinWheelOrderRecord().then((res) => {
 		if (res.code === 10000) {
@@ -223,17 +255,12 @@ const getRecordList = () => {
 		}
 	});
 };
-const handleNoMoreBet = () => {
-	showNoMoreBet.value = true;
-};
+
 const goToDeposit = () => {
 	showNoMoreBet.value = false;
 	useModalStore().closeModal();
-	router.push("/user/deposit");
+	router.push("/recharge");
 };
-onMounted(() => {
-	getRecordList();
-});
 </script>
 <style scoped lang="scss">
 .activityWrapper {
@@ -517,7 +544,7 @@ onMounted(() => {
 	}
 }
 .ruleDetails {
-	img {
+	:deep(img) {
 		max-width: 100%;
 	}
 }
