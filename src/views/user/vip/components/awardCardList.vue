@@ -129,7 +129,7 @@ const awardList: any = [
 	gap: 24px;
 	padding: 0 24px;
 	.awardCard {
-		width: 354px;
+		width: 100%;
 		height: 78px;
 		background: url("../image/awardCardBg.png") no-repeat;
 		background-size: 100% 100%;

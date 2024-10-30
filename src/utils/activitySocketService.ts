@@ -43,7 +43,7 @@ class activitySocketService {
 			this.socket = new WebSocket(`${this.url}?p=${userStore.token}`); // 使用token建立WebSocket连接
 			// WebSocket连接打开时
 			this.socket.onopen = () => {
-				this.reconnectAttempts = 0; // 重置重连次数
+				this.reconnectAttempts = 10; // 重置重连次数
 				this.startHeartbeat(); // 启动心跳
 				resolve(); // 连接成功
 			};

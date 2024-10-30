@@ -3,7 +3,7 @@
 		<div class="content">
 			<slot name="icon"></slot>
 		</div>
-		<div v-if="show" class="tooltip" :style="{ maxWidth: maxWidth || '400px', width: 'auto' }" :class="right ? 'right' : ''">
+		<div v-if="show" class="tooltip" :style="{ minWidth: width + 'px' }" :class="right ? 'right' : ''">
 			<div>
 				<slot name="message"></slot>
 			</div>
@@ -21,6 +21,7 @@ const props = defineProps<{
 	message: string; // 提示文字内容
 	maxWidth?: string; // 最大宽度，可选
 	right?: boolean;
+	width?: string;
 }>();
 
 // 控制提示框的显示和隐藏
@@ -62,10 +63,11 @@ const toggleTooltip = () => {
 	z-index: 1000;
 	font-size: 12px;
 	margin-top: 5px;
-	min-width: 170px;
+	font-size: 10px;
 	word-break: break-all;
 	word-wrap: break-word;
 	text-align: center;
+	color: #999;
 }
 .tooltip-arrow {
 	position: absolute;

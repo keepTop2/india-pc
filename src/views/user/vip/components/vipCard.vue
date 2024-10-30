@@ -9,13 +9,14 @@
 				<div class="fs_20 mb_5">{{ vipInfo.vipGradeName }}</div>
 				<div class="flex-alignCenter" v-if="vipInfo.vipGradeUp !== vipInfo.vipGradeCode">
 					<span>升级所需经验:</span> <span>{{ vipInfo.currentExp }}/{{ vipInfo.currentVipExp }}</span>
-					<ClickTooltip class="ml_5 curp" message="">
+					<ClickTooltip class="ml_5 curp" message="" width="270">
 						<template v-slot:icon>
 							<img src="../image/tooltip.png" alt="" class="tooltipImg" />
 						</template>
 						<template v-slot:message>
-							体育/电竞场馆投注 1{{ useUserStore().getUserInfo.currencySymbol }} = {{ vipInfo.sportExe }}积分，其他场馆投注 1{{ useUserStore().getUserInfo.currencySymbol }} =
-							1积分，所有投注 均按当前汇率兑换为美元结算
+							体育/电竞场馆投注 1 {{ useUserStore().getUserInfo.platCurrencySymbol }} = {{ vipInfo.sportExe }} 积分，其他场馆投注 1
+							{{ useUserStore().getUserInfo.platCurrencySymbol }}
+							= 1 积分，所有投注 均按当前汇率兑换为{{ useUserStore().getUserInfo.platCurrencySymbol }}结算
 						</template>
 					</ClickTooltip>
 				</div>
@@ -83,7 +84,7 @@ const props = defineProps({
 	gap: 16px;
 	.vipLevelBg {
 		padding-top: 20px;
-		width: 540px;
+		width: 486px;
 		height: 260px;
 		position: relative;
 		background: url("../image/vipLevelBg.png") no-repeat;
@@ -97,10 +98,10 @@ const props = defineProps({
 		}
 		.vipLevelIcon {
 			position: absolute;
-			right: 0;
+			right: 30px;
 			top: 0px;
-			width: 158px;
-			height: 152px;
+			width: 131px;
+			height: 124px;
 		}
 		.experience {
 			height: 100px;
