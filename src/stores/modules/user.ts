@@ -158,6 +158,7 @@ export const useUserStore = defineStore("User", {
 				localStorage.setItem("userInfo", JSON.stringify(userInfo));
 				// 同步体育余额信息
 				sportsBetInfo.balance = data.totalBalance;
+
 				websocketService.connect().then(() => {
 					pubsub.publish("websocketReady");
 				});
