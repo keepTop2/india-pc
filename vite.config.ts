@@ -12,6 +12,7 @@ import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import { visualizer } from "rollup-plugin-visualizer";
+import vueJsx from "@vitejs/plugin-vue-jsx";
 // import { createSvgIconsPlugin } from "./plugins/svg-icons-plugin";
 
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
@@ -50,6 +51,7 @@ const viteConfig = defineConfig(({ command, mode }: ConfigEnv) => {
 		base: "./",
 		plugins: [
 			vue(),
+			vueJsx(),
 			vueSetupExtend(),
 			viteCompression({
 				verbose: true, // 默认即可

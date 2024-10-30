@@ -97,6 +97,7 @@
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import useGameTimer from "/@/views/sports/hooks/useGameTimer";
+import { computed } from "vue";
 const { getEventsTitle } = SportsCommonFn;
 
 const props = withDefaults(
@@ -106,8 +107,9 @@ const props = withDefaults(
 	{}
 );
 
-//比赛时间倒计时
-const { gameTime } = useGameTimer(props.eventsInfo);
+//比赛时间
+const gameState = computed(() => props.eventsInfo);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">

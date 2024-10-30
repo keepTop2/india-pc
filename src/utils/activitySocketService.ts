@@ -77,7 +77,7 @@ class activitySocketService {
 			// WebSocket连接关闭时
 			this.socket.onclose = () => {
 				pubsub.publish("/activity/redBagRain/end");
-				console.log("WebSocket连接已关闭"); // 打印连接关闭日志
+				// console.log("WebSocket连接已关闭"); // 打印连接关闭日志
 				this.stopHeartbeat(); // 停止心跳
 				if (!this.isManuallyClosed) {
 					this.handleReconnect(); // 处理重连
@@ -115,7 +115,7 @@ class activitySocketService {
 		if (this.reconnectAttempts < this.maxReconnectAttempts) {
 			this.reconnectAttempts++; // 增加重连次数
 			const timeout = Math.min(1000 * this.reconnectAttempts, 5000); // 重连延迟
-			console.log(`尝试重新连接... (${this.reconnectAttempts})`); // 打印重连日志
+			// console.log(`尝试重新连接... (${this.reconnectAttempts})`); // 打印重连日志
 			setTimeout(() => this.connect().catch(() => {}), timeout); // 延迟重连
 		} else {
 			console.error("达到最大重连尝试次数，停止重连。"); // 打印停止重连日志

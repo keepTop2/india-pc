@@ -41,7 +41,7 @@ const getAnnouncementList = async () => {
 	// 		messageContentI18nCode: "HappyGames 2.0 正式上线啦！",
 	// 	},
 	// ];
-	messageList.value = res.data.userNoticeList || [];
+	messageList.value = res.data || [];
 	if (messageList.value.length > 0) {
 		currentMessage.value = messageList.value[0]; // 初始化第一条公告
 		await startMarquee(); // 启动滚动效果
