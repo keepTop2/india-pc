@@ -110,10 +110,12 @@ instance.interceptors.response.use(
 			if (res.type == "image/png") {
 				return res;
 			}
-			handleRequestError({
-				name: "mainApp",
-				res,
-			});
+			if (!response.config.headers.hideToast) {
+				handleRequestError({
+					name: "mainApp",
+					res,
+				});
+			}
 			return res;
 		} else {
 			return res;

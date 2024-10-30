@@ -2,10 +2,13 @@
 	<div>
 		<div class="title flex_space-between Text_s">
 			<span>勋章</span>
-			<svg-icon name="arrow_right" size="12px" @click="emit('update:modelValue', true)"></svg-icon>
+			<span class="flex_space-between">
+				<span class="canLightNum" v-if="canLightNum > 0">{{ canLightNum }}</span>
+				<svg-icon name="arrow_right" size="12px" @click="emit('update:modelValue', true)"></svg-icon>
+			</span>
 		</div>
 		<div class="medalList">
-			<div v-for="item in medalList" class="item">
+			<div v-for="item in medalList" class="item" @click="handleClick(item)">
 				<li v-if="item.lockStatus == 0"></li>
 				<div class="bg" v-if="item.lockStatus == 0"></div>
 				<img :src="item.lockStatus == 1 ? item.activatedPicUrl : item.inactivatedPicUrl" alt="" :class="item.lockStatus === 0 ? 'animation' : ''" />
@@ -16,11 +19,21 @@
 
 <script setup lang="ts">
 import router from "/@/router";
-
+import { MedalApi } from "/@/api/medal";
 const props = defineProps({
 	medalList: [] as any,
+	canLightNum: Number,
 });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["updateList", "update:modelValue"]);
+const handleClick = (item: any) => {
+	if (item.lockStatus === 0) {
+		MedalApi.lightUpMedal({
+			medalCode: item.medalCode,
+		}).then((res) => {
+			emit("updateList");
+		});
+	}
+};
 </script>
 
 <style scoped lang="scss">
@@ -42,6 +55,17 @@ const emit = defineEmits(["update:modelValue"]);
 	border-radius: 0 10px 10px 0;
 	width: 3px;
 	height: 16px;
+}
+.canLightNum {
+	background-color: var(--Theme);
+	font-size: 10px;
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	line-height: 15px;
+	text-align: center;
+	border-radius: 50%;
+	margin-top: 1px;
 }
 .medalList {
 	display: flex;

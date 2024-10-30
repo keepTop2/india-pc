@@ -30,6 +30,16 @@ export const CommonApi = {
 		});
 	},
 	/**
+	 *@description 获取通用配置
+	 */
+	getLangDownBox: (data = {}, headers = { showLoading: false }) => {
+		return useAxiosApi(`/app/common/getLangDownBox`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	/**
 	 *@description 获取国家区号
 	 */
 	getAreaCodeDownBox: (data = {}, headers = {}) => {

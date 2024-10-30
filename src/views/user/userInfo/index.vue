@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<VipCard :vipInfo="vipInfo" class="mt_12"></VipCard>
-			<medalCard :medalList="medalList" class="mt_12" v-model="showMedal"></medalCard>
+			<medalCard :canLightNum="canLightNum" :medalList="medalList" class="mt_12" v-model="showMedal" @updateList="updateList"></medalCard>
 			<walletCard class="mt_12 mb_82"></walletCard>
 		</div>
 		<medalPage :medalList="medalList" v-model="showMedal" v-if="showMedal == 1" @setCurrentMedal="setCurrentMedal" />
@@ -33,7 +33,7 @@ import medalCard from "./compoents/medalCard.vue";
 import walletCard from "./compoents/walletCard.vue";
 import medalPage from "../medal/index.vue";
 import medalDetailsPage from "../medal/medalDetails.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { vipApi } from "/@/api/vip";
 import { MedalApi } from "/@/api/medal";
 import { useModalStore } from "/@/stores/modules/modalStore";
@@ -42,16 +42,26 @@ const vipInfo: any = ref({});
 const medalList = ref([]);
 const loading = ref(false);
 const showMedal = ref(0);
+const canLightNum = ref(0);
 const currentMedal = ref({});
 const setCurrentMedal = (item) => {
-	console.log(item);
-
 	currentMedal.value = item;
 };
 onMounted(() => {
 	getUserVipInfo();
 	gettopNList();
 });
+watch(
+	() => showMedal.value,
+	() => {
+		if (showMedal.value == 0) {
+			gettopNList();
+		}
+	}
+);
+const updateList = () => {
+	gettopNList();
+};
 const getUserVipInfo = () => {
 	loading.value = true;
 	vipApi
@@ -65,7 +75,7 @@ const getUserVipInfo = () => {
 };
 const gettopNList = () => {
 	MedalApi.topNList().then((res) => {
-		console.log(res);
+		canLightNum.value = res.data.canLightNum;
 		medalList.value = res.data.userCenterMedalDetailRespVoList;
 	});
 };

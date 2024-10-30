@@ -14,7 +14,7 @@
 					</div>
 				</div>
 				<div class="progress mb_14">
-					<div class="value" :style="{ width: (findInterval() + 1) * 20 + '%' }"></div>
+					<div class="value" :style="{ width: (findInterval() - 1) * 20 + '%' }"></div>
 				</div>
 				<div class="medalRewardList">
 					<div v-for="(item, index) in medalRewardRespVOS" class="pl_16">
@@ -27,13 +27,13 @@
 							<template v-slot:icon>
 								<svg-icon name="mark " size="20px"></svg-icon>
 							</template>
-							<template v-slot:message> 宝箱奖励流水倍数{{ medalRewardRespVOS[findInterval()].typingMultiple }}为倍 </template>
+							<template v-slot:message> 宝箱奖励流水倍数{{ medalRewardRespVOS[findInterval() - 1].typingMultiple }}为倍 </template>
 						</ClickTooltip>
 					</div>
 				</div>
 			</div>
 			<div class="title flex_space-between Text_s">
-				<span>已解锁 <span class="fs_14 Text1">(提示：点击勋章图标查看勋章奖励和详情)</span></span>
+				<span>已解锁 <span class="fs_14 Text1" v-if="hasUnlockList.length > 0">(您还未获得任何勋章，积极玩游戏获得更多勋章)</span></span>
 			</div>
 			<medalCard :medalList="hasUnlockList" class="mt_12" @gotoDetails="gotoDetails"></medalCard>
 			<div class="line"></div>
