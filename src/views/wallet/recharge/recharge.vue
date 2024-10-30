@@ -191,7 +191,7 @@ const getRechargeWayList = async () => {
 	const res = await walletApi.rechargeWayList().catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
 		if (!res.data || res.data.length == 0) {
-			showToast($.t('wallet["无可用通道"]'));
+			showToast($.t('wallet["暂无充值通道"]'));
 			return;
 		}
 		rechargeWayList.value = res.data; // 存储支付方式列表
