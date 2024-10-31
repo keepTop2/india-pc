@@ -3,7 +3,7 @@
 		<div class="activityCenter">
 			<div class="activityHeader">
 				{{ activityData?.activityNameI18nCode || "幸运转盘" }}
-				<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../../components/image/close_icon.png" alt="" /></span>
+				<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="../../components/image/close_icon.png" alt="" /></span>
 			</div>
 			<div class="activityMain">
 				<div class="spinContainer">
