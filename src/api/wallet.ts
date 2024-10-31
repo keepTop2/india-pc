@@ -22,12 +22,12 @@ export const walletApi = {
 	},
 
 	// 获取充值配置信息
-	getRechargeConfig: (data = {}, headers = {}) => {
+	getRechargeConfig: (data = {}, headers = { showLoading: true }) => {
 		return useAxiosApi(`/app/userRecharge/api/getRechargeConfig`, {
 			method: "POST",
 			data,
 			headers: {
-				showLoading: true,
+				showLoading: headers.showLoading ?? true, // 优先使用传入参数
 			},
 		});
 	},

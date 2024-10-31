@@ -8,7 +8,7 @@
 			<div class="activityMain">
 				<div class="spinContainer">
 					<div class="tabs">
-						<div v-for="(item, index) in tabs" :key="index" :class="currentTab === item.value ? 'tab tab' + item.value + '_active' : 'tab'" @click="selectTab(item.value)">
+						<div v-for="(item, index) in tabs" :key="index" :class="currentTab == item.value ? 'tab tab' + item.value + '_active' : 'tab'" @click="selectTab(item.value)">
 							{{ item.name }}
 						</div>
 					</div>
@@ -65,7 +65,7 @@
 								<span>{{ item.rewardRankText }}</span>
 								<span>{{ item.prizeName }}</span>
 								<span>{{ item.activityAmount }}</span>
-								<span>{{ item.receiveTime }}</span>
+								<span>{{ dayjs(item.receiveTime).format("YYYY-MM-DD HH:mm:ss") }}</span>
 							</div>
 						</div>
 					</LazyLoadList>
@@ -144,6 +144,7 @@ import { useModalStore } from "/@/stores/modules/modalStore";
 import "../../components/common.scss";
 import router from "/@/router";
 import { useUserStore } from "/@/stores/modules/user";
+import dayjs from "dayjs";
 const activityStore = useActivityStore();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
 const showRecord = ref(false);
@@ -162,7 +163,7 @@ const spinList = ref();
 // 获得的奖励
 const reward = ref({});
 // 当前选中的标签
-const currentTab: any = ref("1");
+const currentTab: any = ref(activityData.value.vipRankCode >= 3 ? 3 : activityData.value.vipRankCode ? activityData.value.vipRankCode : 1);
 // 标签列表
 const tabs = ref([
 	{
@@ -207,6 +208,7 @@ const startVerification = () => {
 const delay = (ms) => {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 };
+
 const spinStart = () => {
 	const startTime = Date.now();
 	activityApi
@@ -235,6 +237,9 @@ const spinStart = () => {
 
 const spinEnd = () => {
 	showbetResult.value = true;
+	activityApi.getSpindetail().then((res) => {
+		activityStore.setCurrentActivityData(res.data);
+	});
 };
 const palyAgain = () => {
 	showbetResult.value = false;
@@ -244,8 +249,12 @@ const palyAgain = () => {
 };
 
 const handleRecord = async () => {
-	await getRecordList();
-	showRecord.value = true;
+	if (!useUserStore().getLogin) {
+		showNeedLogin.value = true;
+	} else {
+		await getRecordList();
+		showRecord.value = true;
+	}
 };
 
 const getRecordList = () => {
