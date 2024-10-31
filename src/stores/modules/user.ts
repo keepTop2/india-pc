@@ -85,12 +85,11 @@ export const useUserStore = defineStore("User", {
 		},
 
 		// 设置货币语言下拉
-		async setCommonBusiness() {
-			const res: any = await CommonApi.getCommonBusinessDownBox().catch((err: any) => err);
+		async setLangDownBox() {
+			const res: any = await CommonApi.getLangDownBox().catch((err: any) => err);
 			const { code, data } = res;
 			if (code == Common.ResCode.SUCCESS) {
-				this.LangList = data.languageEnums;
-				this.currencyList = data.currencyEnums;
+				this.LangList = data;
 			}
 		},
 		// 设置用户信息
@@ -132,7 +131,7 @@ export const useUserStore = defineStore("User", {
 				this.initUserInfo();
 				this.uplateUserGlobalSetInfo();
 			}
-			await this.setCommonBusiness();
+			await this.setLangDownBox();
 			this.setLangs(this.getLang);
 			this.initUserMenu();
 		},
@@ -159,6 +158,7 @@ export const useUserStore = defineStore("User", {
 				localStorage.setItem("userInfo", JSON.stringify(userInfo));
 				// 同步体育余额信息
 				sportsBetInfo.balance = data.totalBalance;
+
 				websocketService.connect().then(() => {
 					pubsub.publish("websocketReady");
 				});

@@ -1,11 +1,6 @@
 <template>
-	<div class="canvas-container" v-if="isVisible">
-		<div class="getReadyCountdown fade-in" v-if="setp == 0">
-			<img src="./image/getReadyCountdown3.png" alt="" v-if="getReadyCountdown == 3" />
-			<img src="./image/getReadyCountdown2.png" alt="" v-if="getReadyCountdown == 2" />
-			<img src="./image/getReadyCountdown1.png" alt="" v-if="getReadyCountdown == 1" @click="startRedbagRain" class="animate" />
-		</div>
-		<div class="redbag-rain-wrapper" v-show="setp == 1 || setp == 2">
+	<div class="canvas-container">
+		<div class="redbag-rain-wrapper">
 			<div class="redbag-rain-canvas">
 				<div v-if="setp == 1" class="redayGo">
 					<img :src="readyGo" alt="" />
@@ -53,7 +48,7 @@ const activityStore = useActivityStore();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
 const isVisible = ref(true);
 const isPaused = ref(false);
-const setp: any = ref(null);
+const setp: any = ref(1);
 const showRedBagRainResult = ref(false);
 const getReadyCountdown = ref(3);
 const dialogTitle = ref("温馨提示");
@@ -142,10 +137,25 @@ class RedBagImpl implements RedBag {
 // 红包数组
 const redBags: RedBag[] = [];
 
+const initReadyTime = () => {
+	setp.value = 1;
+	const timer = setTimeout(() => {
+		setp.value = 2;
+		animate(); // 启动动画
+		redBagInterval = setInterval(() => {
+			if (!isPaused.value) {
+				addNewRedBag();
+			}
+		}, 150);
+		startCountdown(activityData.value.dropTime);
+		clearTimeout(timer);
+	}, 3000);
+};
+
 watch(
 	() => countdown.value,
 	() => {
-		if (countdown.value === 3) {
+		if (countdown.value === 2) {
 			if (redBagInterval) {
 				clearInterval(redBagInterval);
 			}
@@ -168,7 +178,6 @@ const animate = () => {
 				redBags.splice(index, 1);
 			}
 		});
-
 		requestAnimationFrame(animate);
 	}
 };
@@ -178,30 +187,23 @@ const drawCountdown = () => {
 	if (ctx && canvas.value) {
 		const countdownText = "倒计时: ";
 		const countdownValue = countdown.value.toString();
-
 		// 设置倒计时文本的样式和大小
 		ctx.font = "20px Arial"; // 较小的字体
 		const textWidth1 = ctx.measureText(countdownText).width; // 计算 "倒计时:" 的宽度
-
 		// 设置倒计时值的样式和大小
 		ctx.font = "32px Arial"; // 较大的字体
 		const textWidth2 = ctx.measureText(countdownValue).width; // 计算倒计时值的宽度
-
 		// 总文本宽度
 		const totalTextWidth = textWidth1 + textWidth2;
-
 		// 计算文本在画布的中心位置
 		const centerX = (canvas.value.width - totalTextWidth) / 2;
 		const centerY = 95;
-
 		// 清空画布
 		ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
-
 		// 绘制 "倒计时:" 文本
 		ctx.font = "20px Arial"; // 较小的字体
 		ctx.fillStyle = "white"; // 设置字体颜色
 		ctx.fillText(countdownText, centerX, centerY);
-
 		// 绘制倒计时值
 		ctx.font = "32px Arial"; // 较大的字体
 		ctx.fillText(countdownValue, centerX + textWidth1, centerY);
@@ -216,9 +218,7 @@ const handleMouseMove = (event: MouseEvent) => {
 	const rect = canvas.value!.getBoundingClientRect();
 	const mouseX = event.clientX - rect.left;
 	const mouseY = event.clientY - rect.top;
-
 	let hoveredRedBag: RedBag | null = null;
-
 	// 倒序遍历，查找最上面的红包
 	for (let i = redBags.length - 1; i >= 0; i--) {
 		const redBag = redBags[i];
@@ -227,7 +227,6 @@ const handleMouseMove = (event: MouseEvent) => {
 			break; // 找到后停止遍历
 		}
 	}
-
 	// 更新红包状态
 	redBags.forEach((redBag) => {
 		redBag.isHovered = false; // 重置所有红包的悬停状态
@@ -267,32 +266,6 @@ const addNewRedBag = () => {
 	const speed = Math.random() * 3 + 1; // 随机生成速度
 	const newRedBag = new RedBagImpl(x, -height, width, height, speed, img, openedImg);
 	redBags.push(newRedBag); // 添加红包到数组
-};
-
-const initReadyTime = () => {
-	setp.value = 0;
-	const timer = setInterval(() => {
-		if (getReadyCountdown.value == 1) {
-			clearInterval(timer);
-		} else {
-			getReadyCountdown.value = getReadyCountdown.value - 1;
-		}
-	}, 1000);
-};
-
-const startRedbagRain = () => {
-	setp.value = 1;
-	const timer = setTimeout(() => {
-		setp.value = 2;
-		animate(); // 启动动画
-		redBagInterval = setInterval(() => {
-			if (!isPaused.value) {
-				addNewRedBag();
-			}
-		}, 150);
-		startCountdown(activityData.value.dropTime);
-		clearTimeout(timer);
-	}, 3000);
 };
 
 const initRedbagRain = () => {

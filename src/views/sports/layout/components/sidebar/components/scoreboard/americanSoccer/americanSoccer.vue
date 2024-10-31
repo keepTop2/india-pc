@@ -103,7 +103,8 @@ const homeScores = computed(() => props.eventsInfo?.footballInfo?.homeGameScore 
 // 计算客队得分
 const awayScores = computed(() => props.eventsInfo?.footballInfo?.awayGameScore || []);
 //比赛时间
-const { gameTime } = useGameTimer(props.eventsInfo);
+const gameState = computed(() => props.eventsInfo);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">

@@ -2,7 +2,7 @@
 	<div class="activityWrapper">
 		<div class="activityHeader">
 			{{ activityData.activityNameI18nCode || "首存活动" }}
-			<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../components/image/close_icon.png" alt="" /></span>
+			<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="../components/image/close_icon.png" alt="" /></span>
 		</div>
 		<div class="activityMain">
 			<div class="activityImg">
@@ -23,7 +23,7 @@
 						</div>
 					</div>
 					<div class="bonus_card_footer">
-						可得彩金: <span class="Theme_text">{{ activityData.activityAmount || 0 }}{{ activityData.activityAmountCurrencyCode }}</span>
+						可得彩金: <span class="color_Theme">{{ activityData.activityAmount || 0 }}{{ activityData.activityAmountCurrencyCode }}</span>
 					</div>
 					<!-- <div>
 						<button class="common_btn" @click="getActivityReward">立即申请</button>

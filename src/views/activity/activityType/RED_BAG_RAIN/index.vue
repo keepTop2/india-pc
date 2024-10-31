@@ -2,7 +2,7 @@
 	<div class="activityWrapper">
 		<div class="activityHeader">
 			{{ activityData.activityNameI18nCode || "红包雨" }}
-			<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../../components/image/close_icon.png" alt="" /></span>
+			<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="../../components/image/close_icon.png" alt="" /></span>
 		</div>
 
 		<div class="activityMain">
@@ -287,6 +287,11 @@ const initCountown = () => {
 			font-size: 20px;
 			font-weight: 600;
 		}
+	}
+}
+.ruleDetails {
+	:deep(img) {
+		max-width: 100%;
 	}
 }
 </style>

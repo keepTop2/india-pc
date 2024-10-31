@@ -46,7 +46,6 @@ const state = reactive({
 const eventDetail = computed(() => {
 	// const childrenViewData = viewSportPubSubEventData.viewSportData.childrenViewData;
 	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
-
 	// console.log(childrenViewData, "childrenViewData");
 	if (childrenViewData) {
 		return childrenViewData[0]?.events?.[0];
@@ -87,6 +86,8 @@ const markets = computed(() => {
 		}
 		return a.betType - b.betType;
 	});
+	console.log(marketData, "marketData--");
+
 	return marketData;
 });
 

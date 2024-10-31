@@ -30,7 +30,7 @@
 				<!-- 第二步 -->
 				<div v-else-if="currentStep === 1">
 					<p class="Text_s mb_8 mt_8 fs_14">{{ verifyType == "email" ? $t(`login['邮箱验证']`) : $t(`login['手机号验证']`) }}</p>
-					<p class="Theme_text fs_12 text_unline curp">
+					<p class="color_Theme fs_12 text_unline curp">
 						<span @click="changeVerifyType">{{ $t(`login['其他方式']`) }}</span>
 					</p>
 					<div>
@@ -73,7 +73,7 @@
 						</p>
 					</div>
 					<p class="fs_10 Text1 mt_16 fw_200">
-						{{ $t(`login['有效时间']`) }}<span class="Theme_text">{{ $t(`login['联系客服']`) }}</span>
+						{{ $t(`login['有效时间']`) }}<span class="color_Theme">{{ $t(`login['联系客服']`) }}</span>
 					</p>
 				</div>
 				<!-- 第三步 -->
@@ -122,7 +122,7 @@
 				</div>
 				<div class="mt_40 mb_12">
 					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onNextStep(currentStep)">{{ currentStep === 2 ? "确定" : $t(`login['下一步']`) }}</button>
-					<div class="flex-center mt_12 Theme_text fs_12 curp" v-if="currentStep === 0">联系客服</div>
+					<div class="flex-center mt_12 color_Theme fs_12 curp" v-if="currentStep === 0">联系客服</div>
 				</div>
 			</div>
 		</div>

@@ -34,7 +34,7 @@
 							/>
 						</p>
 						<p class="fs_14 Text1 mt_16 fw_200">
-							{{ $t(`security_center['有效时间']`) }}<span class="Theme_text">{{ $t(`security_center['联系客服']`) }}</span>
+							{{ $t(`security_center['有效时间']`) }}<span class="color_Theme">{{ $t(`security_center['联系客服']`) }}</span>
 						</p>
 					</div>
 				</div>

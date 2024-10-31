@@ -128,7 +128,8 @@ const attentionEvent = async (isActive: boolean) => {
 };
 
 //比赛时间
-const { gameTime } = useGameTimer(props.teamData);
+const gameState = computed(() => props.teamData);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">
