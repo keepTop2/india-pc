@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
 	<div class="transform-container">
 		<div class="wrapper">
@@ -8,15 +6,15 @@
 					<div>From</div>
 					<div>
 						<svg-icon name="wallet" size="20px" />
-						<span>100.BCD</span>
+						<span>{{ transformInfo.platAvailableAmount }}.{{ transformInfo.platCurrency }}</span>
 					</div>
 				</div>
 				<div class="type">
 					<svg-icon name="BCD" size="36px" />
-					<span>BCD</span>
+					<span>{{ transformInfo.platCurrency }}</span>
 				</div>
 				<div class="number">
-					<div>900</div>
+					<el-input v-model.number="formValue" type="number"></el-input>
 					<div>MAX</div>
 				</div>
 				<div class="line"></div>
@@ -27,26 +25,64 @@
 			<!--			</div>-->
 			<div class="to card-style">
 				<div class="balance">
-					<div>From</div>
+					<div>To</div>
 					<div>
 						<svg-icon name="wallet" size="20px" />
-						<span>100.BCD</span>
+						<span>{{ transformInfo.userAvailableAmount }}.{{ transformInfo.userCurrencyCode }}</span>
 					</div>
 				</div>
 				<div class="type">
 					<svg-icon name="USD" size="36px" />
-					<span>BCD</span>
+					<span>{{ transformInfo.userCurrencyCode }}</span>
 				</div>
 				<div class="number">
-					<div>900</div>
+					<el-input v-model="toValue" readonly></el-input>
 					<div>MAX</div>
 				</div>
 				<div class="line"></div>
-				<div class="rate">Exchange Rate：1.2</div>
+				<div class="rate">Exchange Rate：{{ transformInfo.transferRate }}</div>
 			</div>
 		</div>
+		<el-button class="transform-button" @click="handleTransform">一键转换</el-button>
 	</div>
 </template>
+
+<script setup lang="ts">
+import { walletApi } from "/@/api/wallet";
+import { ElMessage } from "element-plus";
+import { computed, ref } from "vue";
+
+const formValue = ref("");
+const toValue = computed(() => {
+	const transferRate = transformInfo.value?.transferRate ?? 0;
+	return (transferRate * Number(formValue.value)).toFixed(2);
+});
+
+// 转换信息
+interface TransformInfo {
+	userAccount: string; //会员ID
+	platAvailableAmount: number; //平台币可用金额
+	platCurrency: string; //平台币币种
+	transferRate: number; //转换汇率
+	userAvailableAmount: number; //用户可用金额
+	userCurrencyCode: string; //用户主货币
+}
+
+const transformInfo = ref<Partial<TransformInfo>>({});
+// 转换
+const handleTransform = async () => {
+	const res = await walletApi.transferAmount({ transferAmount: formValue.value });
+	if (res.code !== 10000) return ElMessage.error(res.message);
+	await getUserPlatformBalance();
+};
+
+const getUserPlatformBalance = async () => {
+	const res = await walletApi.getUserPlatformBalance();
+	if (res.code !== 10000) return ElMessage.error(res.message);
+	transformInfo.value = res.data;
+};
+getUserPlatformBalance();
+</script>
 
 <style scoped lang="scss">
 .transform-container {
@@ -114,14 +150,21 @@
 			align-items: center;
 			justify-content: space-between;
 
-			& > div:first-child {
-				color: var(--light-ok-text-s, #ffffff);
-				font-family: DIN Alternate;
-				font-size: 30px;
-				font-weight: 700;
+			.el-input {
+				:deep(.el-input__wrapper) {
+					background-color: transparent;
+					box-shadow: none;
+
+					input {
+						color: var(--light-ok-text-s, #ffffff);
+						font-family: DIN Alternate;
+						font-size: 30px;
+						font-weight: 700;
+					}
+				}
 			}
 
-			& > div:last-child {
+			& > div {
 				font-family: PingFang SC;
 				font-size: 18px;
 				font-weight: 400;
@@ -167,5 +210,17 @@
 		background-size: 100% 100%;
 		margin-top: 10px;
 	}
+}
+.transform-button {
+	margin-top: 40px;
+	width: 100%;
+	height: 48px;
+	padding: 16px 0px 16px 0px;
+	border: none;
+	gap: 10px;
+	border-radius: 4px;
+	background: var(--light-ok-Theme--, #ff284b);
+	color: var(--light-ok-text-a, #ffffff);
+	font-size: 16px;
 }
 </style>
