@@ -1,5 +1,6 @@
 <template>
-	<div class="base-body">
+	<div style="height: 24px; width: 100%"></div>
+	<div class="base-body sports-body">
 		<!-- banner控制器 -->
 		<BannerController />
 		<!-- 体育 主体内容区域  -->
@@ -157,9 +158,8 @@ const { Banner, BannerController } = userBanner();
 <style lang="scss" scoped>
 .base-body {
 	width: 1308px;
-	height: calc(100vh - 64px);
+	height: calc(100vh - 88px);
 	margin: 0 auto;
-	margin-top: 24px;
 	:deep(.banner-controller) {
 		position: fixed;
 		top: 60px;
@@ -221,4 +221,11 @@ const { Banner, BannerController } = userBanner();
 		display: none;
 	}
 }
+
+// @media (min-width: 1440px) and (max-width: 1920px) {
+// 	/* 在屏幕宽度在1440px到1920px之间时生效的样式 */
+// 	.base-body {
+// 		width: 1176px;
+// 	}
+// }
 </style>
