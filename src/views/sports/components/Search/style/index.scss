@@ -1,0 +1,82 @@
+.el-overlay-dialog {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	.sport-search-dialog {
+		width: 1308px;
+		// 上下间距48px
+		height: calc(100vh - 96px);
+		padding: 32px;
+		border-radius: calc(var(--border-radius) * 2);
+		background-color: var(--Bg);
+		// 自定义头部
+		.search-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			.el-dialog__title {
+				color: var(--Text_a) !important;
+				font-weight: 400;
+				font-size: 32px;
+			}
+			.close {
+				padding: 6px;
+				background-color: var(--Bg2);
+				border-radius: var(--border-radius);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
+			}
+		}
+		// 搜索框
+		.search-input {
+			margin-top: 24px;
+			margin-bottom: 12px;
+			.el-input__wrapper {
+				width: 100%;
+				border-radius: var(--border-radius);
+				background-color: var(--Bg2);
+				padding: 16px;
+				height: 54px;
+				box-shadow: 0 0 0 1px var(--Line_2, var(--Line_2)) inset;
+				.el-input__inner::placeholder {
+					font-size: var(--title2-text-size);
+				}
+				.el-input__inner {
+					color: var(--Text_a);
+					font-size: var(--title2-text-size);
+				}
+			}
+			.el-icon {
+				width: 20px;
+			}
+		}
+		.search-body {
+			overflow: hidden;
+		}
+		// 主体内容
+		.content {
+			// 上下间距：96px dialog的padding-top + bottom：32px * 2 头部：45px 搜索内容+margin：90px
+			height: calc(100vh - 96px - 32px * 2 - 45px - 90px);
+			overflow-y: auto;
+			.scroll {
+				overflow-y: auto;
+			}
+			.search-content {
+				&:has(.event-card-item) {
+					margin-top: 20px;
+				}
+				.empty {
+					text-align: center;
+					p {
+						font-size: 14px;
+					}
+				}
+			}
+			.loading-mask {
+				background-color: initial;
+			}
+		}
+	}
+}

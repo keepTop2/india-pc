@@ -1,0 +1,133 @@
+.sport-search-dialog {
+	.event-card-list {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 16px;
+	}
+	.event-card-item {
+		width: 404px;
+		// height: 172px;
+		border-radius: 12px;
+		overflow: hidden;
+		.header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 8px 12px;
+			background: var(--Bg6-, linear-gradient(180deg, #2e3036 0%, #2c2e34 100%));
+			box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.1) inset;
+
+			.left {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				column-gap: 12px;
+				.league_icon {
+					width: 20px;
+					height: 20px;
+				}
+				.title {
+					color: var(--Text_a);
+					font-size: var(--title2-text-size);
+				}
+			}
+		}
+		.body {
+			padding: 16px 12px;
+			display: flex;
+			align-items: flex-start;
+			gap: 4px;
+			align-self: stretch;
+			flex-direction: column;
+			background-color: var(--Bg1);
+			.team {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				width: 100%;
+				height: 32px;
+				.left {
+					display: flex;
+					align-items: center;
+					column-gap: 8px;
+					.icon {
+						width: 22px;
+						height: 22px;
+					}
+					.name {
+						font-size: 14px;
+						color: var(--Text_a);
+					}
+				}
+				.right {
+					display: flex;
+					align-items: center;
+					.score {
+						color: var(--Text1);
+						font-size: 20px;
+						font-family: "DIN Alternate";
+						margin: 0 3px 0 10px;
+					}
+					.foul-info {
+						display: flex;
+						column-gap: 6px;
+						align-items: center;
+						> span {
+							min-width: 14px;
+							height: 18px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							padding: 2px;
+							border-radius: 2px;
+							color: var(--Text_a, #fff);
+							font-family: "PingFang SC";
+							font-size: 14px;
+							font-weight: 400;
+							line-height: 14px;
+							&.red {
+								background: var(--Theme);
+							}
+							&.yellow {
+								background: var(--F1);
+							}
+						}
+					}
+				}
+			}
+		}
+		.line {
+			background-color: var(--lineBg);
+			height: 1px;
+		}
+		.footer {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 12px;
+			height: 42px;
+			background-color: var(--Bg1);
+			.left {
+				> span {
+					font-size: 12px;
+					margin-right: 5px;
+				}
+				.time {
+					color: var(--Theme);
+				}
+				.date {
+					color: var(--Text1);
+				}
+				.count {
+					color: var(--F1);
+				}
+			}
+			.right {
+				.pointer {
+					cursor: pointer;
+				}
+			}
+		}
+	}
+}
