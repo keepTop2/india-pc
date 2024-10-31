@@ -31,7 +31,7 @@ export default () => {
 
 			// 红牌或黄牌
 			const RedOrYellowCard = ({ name, className }: { name: string; className: string }) => {
-				const number = data?.soccerInfo[name];
+				const number = data?.soccerInfo?.[name];
 				if (number) {
 					return <span className={className}>{number}</span>;
 				}
@@ -44,7 +44,9 @@ export default () => {
 					<>
 						<div className="left">
 							<img className="icon" src={data?.teamInfo[`${name}IconUrl`]} alt="" />
-							<span className="name">{data?.teamInfo[`${name}Name`]}</span>
+							<span className="name">
+								<span v-ok-tooltip>{data?.teamInfo[`${name}Name`]}</span>
+							</span>
 						</div>
 						<div className="right">
 							{/* 红牌黄牌数量 */}
@@ -101,7 +103,9 @@ export default () => {
 							{/* 联赛图标 */}
 							<img className="league_icon" src={data?.leagueIconUrl} alt="" />
 							{/* 联赛名称 */}
-							<span className="title">{data?.leagueName}</span>
+							<span className="title">
+								<span v-ok-tooltip>{data?.leagueName}</span>
+							</span>
 						</div>
 						<div className="right">
 							{/* 收藏 */}
