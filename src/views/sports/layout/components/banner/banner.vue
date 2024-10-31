@@ -31,8 +31,6 @@ const onSwiper = (swiper: any) => {
 .banner {
 	width: 100%;
 	height: 240px;
-	padding-top: 16px;
-	padding-bottom: 10px;
 	box-sizing: border-box;
 }
 .swiper {

@@ -92,6 +92,14 @@ export const useUserStore = defineStore("User", {
 				this.LangList = data;
 			}
 		},
+		// 设置货币语言下拉
+		async setCurrencyList() {
+			const res: any = await CommonApi.getCurrencyList().catch((err: any) => err);
+			const { code, data } = res;
+			if (code == Common.ResCode.SUCCESS) {
+				this.currencyList = data;
+			}
+		},
 		// 设置用户信息
 		setUserGlobalSetInfo(info: Object) {
 			this.userGlobalSetInfo = info;
@@ -133,6 +141,7 @@ export const useUserStore = defineStore("User", {
 			}
 			await this.setLangDownBox();
 			this.setLangs(this.getLang);
+			this.setCurrencyList();
 			this.initUserMenu();
 		},
 		// 退出登录

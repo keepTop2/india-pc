@@ -49,6 +49,16 @@ export const CommonApi = {
 		});
 	},
 	/**
+	 *@description 获取通用配置
+	 */
+	getCurrencyList: (data = {}, headers = { showLoading: false }) => {
+		return useAxiosApi(`/app/common/getCurrencyList`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	/**
 	 *@description 获取国家区号
 	 */
 	getAreaCodeDownBox: (data = {}, headers = {}) => {
