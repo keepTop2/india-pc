@@ -21,52 +21,49 @@
 			</div>
 		</Card>
 
-		<Card class="mt_14" v-if="rechargeWayData.rechargeTypeCode === 'bank_card' || rechargeWayData.rechargeTypeCode === 'electronic_wallet'">
+		<Card class="mt_14" v-okLoading="loadingShow">
 			<div class="container">
-				<!-- 银行卡 -->
-				<template v-if="rechargeWayData.rechargeTypeCode === 'bank_card'">
-					<div class="title">{{ $t(`wallet['存款人姓名']`) }}</div>
-					<div class="cell mt_16 mb_20">
-						<input v-model="requestParams.depositName" type="text" :placeholder="$t(`wallet['请输入存款人姓名']`)" />
+				<!-- 银行卡 / 电子钱包 -->
+				<template v-if="rechargeWayData.rechargeTypeCode === 'bank_card' || rechargeWayData.rechargeTypeCode === 'electronic_wallet'">
+					<!-- 银行卡 -->
+					<template v-if="rechargeWayData.rechargeTypeCode === 'bank_card'">
+						<div class="title">{{ $t(`wallet['存款人姓名']`) }}</div>
+						<div class="cell mt_16 mb_20">
+							<input v-model="requestParams.depositName" type="text" :placeholder="$t(`wallet['请输入存款人姓名']`)" />
+						</div>
+					</template>
+					<!-- 银行卡 电子钱包 -->
+					<div class="title">{{ $t(`wallet['存款金额']`) }}</div>
+					<div class="amount_list mt_16">
+						<div
+							class="amount_item"
+							:class="{ amount_item_active: amountItemActive === index }"
+							v-for="(item, index) in quickAmountList"
+							@click="
+								{
+									requestParams.amount = item;
+									amountItemActive = index;
+								}
+							"
+						>
+							{{ item }}
+						</div>
+					</div>
+					<div class="cell mt_16">
+						<input
+							v-model="requestParams.amount"
+							type="text"
+							:placeholder="`${rechargeConfig.rechargeMinAmount ?? 0} - ${rechargeConfig.rechargeMaxAmount ?? 0}`"
+							@input="amountItemActive = null"
+						/>
+						<div class="label">{{ UserStore.userInfo.mainCurrency }}</div>
+					</div>
+					<div class="w_450">
+						<Button class="mt_40" :type="buttonType" @click="onRecharge">{{ $t('wallet["立即存款"]') }}</Button>
 					</div>
 				</template>
-
-				<!-- 银行卡 电子钱包 -->
-				<div class="title">{{ $t(`wallet['存款金额']`) }}</div>
-				<div class="amount_list mt_16">
-					<div
-						class="amount_item"
-						:class="{ amount_item_active: amountItemActive === index }"
-						v-for="(item, index) in quickAmountList"
-						@click="
-							{
-								requestParams.amount = item;
-								amountItemActive = index;
-							}
-						"
-					>
-						{{ item }}
-					</div>
-				</div>
-				<div class="cell mt_16">
-					<input
-						v-model="requestParams.amount"
-						type="text"
-						:placeholder="`${rechargeConfig.rechargeMinAmount ?? 0} - ${rechargeConfig.rechargeMaxAmount ?? 0}`"
-						@input="amountItemActive = null"
-					/>
-					<div class="label">{{ UserStore.userInfo.mainCurrency }}</div>
-				</div>
-
-				<div class="w_450">
-					<Button class="mt_40" :type="buttonType" @click="onRecharge">{{ $t('wallet["立即存款"]') }}</Button>
-				</div>
-			</div>
-		</Card>
-		<!-- 虚拟币 -->
-		<template v-if="rechargeWayData.rechargeTypeCode === 'crypto_currency'">
-			<Card class="mt_14">
-				<div class="container">
+				<!-- 虚拟币 -->
+				<template v-if="rechargeWayData.rechargeTypeCode === 'crypto_currency'">
 					<div class="title">{{ $t(`wallet['存款信息']`) }}</div>
 					<p class="hint">{{ $t(`wallet['扫描下方存款码或复制存款地址进行转账']`) }}</p>
 					<div class="qrcode">
@@ -76,8 +73,11 @@
 						<div class="value">{{ rechargeConfig.address }}</div>
 						<svg-icon class="copy_icon curp" name="copy" size="16px" v-hover-svg @click="common.copy(rechargeConfig.address)" />
 					</div>
-				</div>
-			</Card>
+				</template>
+			</div>
+		</Card>
+		<!-- 虚拟币 -->
+		<template v-if="rechargeWayData.rechargeTypeCode === 'crypto_currency'">
 			<Card class="mt_14">
 				<div class="container">
 					<div class="title">{{ $t(`wallet['温馨提示']`) }}</div>
@@ -172,6 +172,8 @@ const rechargeConfig = ref({
 	rechargeMaxAmount: 0,
 } as rechargeConfigRootObject); // 通道配置信息;
 
+const loadingShow = ref(false);
+
 const requestParams = reactive({
 	depositName: "",
 	amount: "",
@@ -191,7 +193,7 @@ const getRechargeWayList = async () => {
 	const res = await walletApi.rechargeWayList().catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
 		if (!res.data || res.data.length == 0) {
-			showToast($.t('wallet["暂无充值通道"]'));
+			showToast($.t('wallet["暂无充值方式"]'));
 			return;
 		}
 		rechargeWayList.value = res.data; // 存储支付方式列表
@@ -201,29 +203,36 @@ const getRechargeWayList = async () => {
 };
 
 // 获取快捷金额
-const getRechargeConfig = async () => {
+const getRechargeConfig = async (headers = {}) => {
+	loadingShow.value = true;
+	rechargeConfig.value = {} as rechargeConfigRootObject;
 	const params = {
 		rechargeWayId: rechargeWayData.value.id,
 	};
-	const res = await walletApi.getRechargeConfig(params).catch((err) => err);
-	if (res.code === common.ResCode.SUCCESS) {
-		if (rechargeWayData.value.rechargeTypeCode === "crypto_currency" && res.data.isRemind === 1) {
-			checkbox.value = false;
-			isModalVisible.value = true;
-		}
-		rechargeConfig.value = res.data;
-		quickAmountList.value = res.data.quickAmount.split(",").map(Number);
+	const res = await walletApi.getRechargeConfig(params, headers).catch((err) => err);
+	loadingShow.value = false;
+	if (res.code !== common.ResCode.SUCCESS) return;
+	if (rechargeWayData.value.rechargeTypeCode == "crypto_currency" && res.data.isRemind == 1) {
+		checkbox.value = false;
+		isModalVisible.value = true;
 	}
+	rechargeConfig.value = res.data;
+	quickAmountList.value = res.data.quickAmount.split(",").map(Number);
 };
 
 // 选择支付方式时的处理
 const onRechargeWay = (item: rechargeWayDataRootObject) => {
-	if (item.rechargeTypeCode == rechargeWayData.value.rechargeTypeCode && item.networkType == rechargeWayData.value.networkType) {
-		return;
-	}
+	// 在当前方式直接退出
+	if (item.rechargeTypeCode == rechargeWayData.value.rechargeTypeCode && item.networkType == rechargeWayData.value.networkType) return;
+	// 清空之前方式信息
+	rechargeWayData.value = {} as rechargeWayDataRootObject;
+	// 清空表单参数
 	clearRequestParams();
+	// 获取当前方式信息
 	rechargeWayData.value = item;
-	getRechargeConfig();
+	// 请求当前方式信息
+	getRechargeConfig({ showLoading: false });
+	// getRechargeConfig();
 };
 
 // 点击充值
