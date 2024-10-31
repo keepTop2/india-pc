@@ -15,7 +15,7 @@
 						</div>
 					</div>
 					<div v-if="messageList.length" class="messageList">
-						<Message v-for="item in messageList" :item="item" />
+						<Message v-for="(item, index) in messageList" :item="item" :index="index" @deleteSuccess="deleteSuccess" />
 					</div>
 					<NoData v-else />
 				</div>
@@ -87,6 +87,10 @@ const handleDeleteAll = async () => {
 	if (res.code !== 10000) return ElMessage.warning(res.message);
 	await getMessageList(activeTab.value);
 	ElMessage.success("删除成功");
+};
+// 删除成功回调
+const deleteSuccess = (index: number) => {
+	messageList.value.splice(index, 1);
 };
 
 watch(
@@ -169,6 +173,9 @@ watch(
 
 				.messageList {
 					overflow: auto;
+					& > div {
+						margin-bottom: 12px;
+					}
 				}
 			}
 		}
