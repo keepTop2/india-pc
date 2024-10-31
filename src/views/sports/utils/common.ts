@@ -667,7 +667,7 @@ class SportsCommonFn {
 	}
 
 	/**
-	 * @description 防抖函数
+	 * @description 节流
 	 */
 	public static throttle<T extends (...args: any[]) => void, U>(func: T, delay: number): (this: U, ...args: Parameters<T>) => void {
 		let lastTime = 0;
@@ -690,6 +690,31 @@ class SportsCommonFn {
 						timer = null; // 重置定时器
 					}, delay - (now - lastTime));
 				}
+			}
+		};
+	}
+
+	public static debounce<T extends (...args: any[]) => any>(func: T, delay: number, immediate: boolean = false): (...args: Parameters<T>) => void {
+		let timeoutId: ReturnType<typeof setTimeout> | null;
+
+		return function (...args: Parameters<T>): void {
+			const later = () => {
+				timeoutId = null;
+				if (!immediate) {
+					func(...args);
+				}
+			};
+
+			const callNow = immediate && !timeoutId;
+
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+
+			timeoutId = setTimeout(later, delay);
+
+			if (callNow) {
+				func(...args);
 			}
 		};
 	}

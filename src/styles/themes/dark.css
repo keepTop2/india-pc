@@ -36,4 +36,6 @@
 	--shopcar_header_bg: rgba(36, 38, 43, 0.5);
 	/* 体育投注赔率hover背景色 */
 	--betselector-hover-bg: rgba(255, 40, 75, 0.15);
+	/* 体育搜索 */
+	--lineBg: #343d48;
 }
