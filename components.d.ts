@@ -29,7 +29,6 @@ declare module 'vue' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     Form: typeof import('./src/components/Form/index.vue')['default']
     FromInput: typeof import('./src/components/Input/fromInput.vue')['default']
     H5Video: typeof import('./src/components/wVideo/h5Video.vue')['default']

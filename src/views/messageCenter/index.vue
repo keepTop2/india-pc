@@ -34,6 +34,7 @@ import Message from "./components/Message.vue";
 import { MessageApi } from "/@/api/message";
 import { ElMessage } from "element-plus";
 import NoData from "/@/views/messageCenter/components/NoData.vue";
+import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息状态
 
 const messageCenterVisible = defineModel();
 const tabs = [
@@ -41,6 +42,8 @@ const tabs = [
 	{ name: "活动", type: 1 },
 ];
 const activeTab = ref(2);
+
+const userStore = useUserStore();
 
 // 消息列表
 interface MessageList {
@@ -96,7 +99,9 @@ const deleteSuccess = (index: number) => {
 watch(
 	activeTab,
 	(val) => {
-		getMessageList(val);
+		if (userStore.getUserInfo.token) {
+			getMessageList(val);
+		}
 	},
 	{ immediate: true }
 );
