@@ -45,7 +45,9 @@
 				<div class="title mt_20">{{ $t(`wallet['收款信息']`) }}</div>
 				<div class="form_container">
 					<!-- 动态表单 -->
-					<component ref="childRef" :is="componentsMapsName[withdrawWayData?.withdrawTypeCode]" :withdrawWayData="withdrawWayData" :withdrawWayConfig="withdrawWayConfig" />
+					<div class="form_main" v-okLoading="loadingShow">
+						<component ref="childRef" :is="componentsMapsName[withdrawWayData?.withdrawTypeCode]" :withdrawWayData="withdrawWayData" :withdrawWayConfig="withdrawWayConfig" />
+					</div>
 					<div class="tips">
 						<svg-icon class="icon" name="wallet-help" />
 						<p>
@@ -201,6 +203,8 @@ const exchangeRate = ref(0); // 预计到账金额
 
 const passWordShow = ref(false);
 
+const loadingShow = ref(true);
+
 const captchaButton = ref<{
 	startCountdown: () => void;
 } | null>(null);
@@ -305,8 +309,8 @@ const buttonType = computed(() => {
 		default:
 			break;
 	}
-	console.log("requiredFields", requiredFields);
-	console.log("dynamicFields", dynamicFields);
+	// console.log("requiredFields", requiredFields);
+	// console.log("dynamicFields", dynamicFields);
 	// 检查所有属性是否有值
 	const allFieldsHaveValue = requiredFields.every((key) => dynamicFields[key] !== undefined && dynamicFields[key] !== "");
 	// 按钮状态判断
@@ -419,7 +423,7 @@ const getRechargeWayList = async () => {
 	const res = await walletApi.withdrawWayList().catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
 		if (!res.data || res.data.length == 0) {
-			showToast($.t('wallet["暂无取款通道"]'));
+			showToast($.t('wallet["暂无取款方式"]'));
 			return;
 		}
 		withdrawWayList.value = res.data; // 存储支付方式列表
@@ -430,11 +434,13 @@ const getRechargeWayList = async () => {
 
 // 获取通道配置
 const getWithdrawConfig = async () => {
+	loadingShow.value = true;
 	withdrawWayConfig.value = {};
 	const params = {
 		withdrawWayId: withdrawWayData.value.id,
 	};
 	const res = await walletApi.getWithdrawConfig(params).catch((err) => err);
+	loadingShow.value = false;
 	if (res.code === common.ResCode.SUCCESS) {
 		withdrawWayConfig.value = res.data;
 	}
@@ -592,16 +598,21 @@ const clearParams = () => {
 		}
 	}
 	.form_container {
-		display: grid;
-		gap: 16px;
 		margin-top: 16px;
 		padding: 20px;
 		border-radius: 12px;
 		border: 1px solid var(--Line_2);
 
+		.form_main {
+			width: 100%;
+			min-height: 40px;
+			background-color: var(--Bg1);
+		}
+
 		.tips {
 			display: flex;
 			gap: 8px;
+			margin-top: 16px;
 			.icon {
 				width: 17px;
 				height: 17px;
