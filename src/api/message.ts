@@ -33,4 +33,12 @@ export const MessageApi = {
 			headers,
 		});
 	},
+	// 删除或读消息
+	setReadOrDel: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/client/user/notice/setReadState`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };

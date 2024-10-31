@@ -241,6 +241,7 @@ onMounted(() => {
 
 // 收到订单推送订阅
 const rechargeSuccessFail = (data: depositOrderDetailRootObject) => {
+	if (depositOrderDetail.value.orderNo !== data.orderNo) return; // 订单号不同则就退出
 	Object.assign(depositOrderDetail.value, data);
 	if (depositOrderDetail.value.customerStatus !== "0") {
 		clearInterval(startCountdown);

@@ -1,0 +1,13 @@
+.hot-recommend {
+	margin-top: 20px;
+	.hot-title {
+		display: flex;
+		align-items: center;
+		column-gap: 12px;
+		margin-bottom: 20px;
+		.name {
+			font-size: var(--title-text-size);
+			color: var(--Text_a);
+		}
+	}
+}
