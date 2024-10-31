@@ -24,8 +24,8 @@
 			</div>
 		</Card>
 
-		<Card>
-			<div class="container mt_20">
+		<Card class="mt_20">
+			<div class="container">
 				<!-- 提款方式 -->
 				<div class="title">{{ $t(`wallet['提款方式']`) }}</div>
 				<div class="list">
