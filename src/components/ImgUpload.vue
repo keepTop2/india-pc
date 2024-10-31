@@ -9,7 +9,7 @@
 				</div>
 			</div>
 			<label for="fileInput" class="custom-upload-button" v-if="files?.length < max">
-				<img src="/@/assets/common/upload_img.png" alt="" />
+				<img src="../assets/common/upload_img.png" alt="" />
 			</label>
 		</div>
 	</div>
@@ -18,6 +18,7 @@
 <script lang="ts" setup>
 import { defineComponent, ref } from "vue";
 import { uploadApi } from "../api/upload";
+import showToast from "../hooks/useToast";
 const props = defineProps({
 	max: {
 		type: Number,
@@ -38,7 +39,11 @@ const emit = defineEmits(["update:files"]);
 
 const handleFileChange = (event: Event) => {
 	const target = event.target as HTMLInputElement;
+
 	if (target.files) {
+		if (target.files[0].size > 1024 * 5) {
+			return showToast("最大不超过5 M");
+		}
 		uploadImg(target.files[0]);
 	}
 };

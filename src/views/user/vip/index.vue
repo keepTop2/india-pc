@@ -19,14 +19,14 @@
 				<img src="./image/titleRight.png" alt="" />
 			</div>
 			<div class="vipRank">
-				<slide>
+				<div>
 					<div v-for="(item, index) in vipRankList" :key="index">
 						<div @click="changeVip(item, index)" :class="index == currentVipIndex ? 'active' : ''" class="vipRankItem curp">
 							<img :src="getVipRankImg(item.vipRankCode)" alt="" />
 						</div>
 						<div class="vipRankItemLabel">{{ item.vipRankNameI18nCode }}</div>
 					</div>
-				</slide>
+				</div>
 			</div>
 			<div class="vipLevelText">
 				<img :src="getRankTextIcon(vipRankList[currentVipIndex]?.vipRankCode)" alt="" />
@@ -174,10 +174,16 @@ onMounted(() => {
 			justify-content: space-between;
 			display: flex;
 			margin-top: 24px;
+			> div {
+				display: flex;
+				overflow-x: auto;
+				padding-bottom: 10px;
+			}
+
 			.vipRankItem {
 				width: 64px;
 				height: 64px;
-				margin: 0 50px;
+				margin: 0 30px;
 				border-radius: 12px;
 				background: linear-gradient(90deg, #353a3e 0%, #2c2d2e 100%);
 				display: flex;
@@ -195,7 +201,7 @@ onMounted(() => {
 			.vipRankItemLabel {
 				text-align: center;
 				margin-top: 10px;
-				margin: 0 50px;
+				margin: 0 30px;
 				color: var(--Text1);
 				font-size: 14px;
 			}
