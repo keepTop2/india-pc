@@ -37,7 +37,7 @@
 						}"
 					>
 						<div class="progressValue" v-if="(vipInfo.currentExp / vipInfo.currentVipExp) * 100 < 100">
-							<div>{{ ((vipInfo.currentExp / vipInfo.currentVipExp) * 100 || 0).toFixed(2) }}%</div>
+							<div>{{ truncateToTwoDecimals((vipInfo.currentExp / vipInfo.currentVipExp) * 100 || 0) }}%</div>
 							<img src="../image/jiantou.png" alt="" />
 						</div>
 						<img src="../image/progressIcon.png" alt="" v-if="vipInfo.currentExp / vipInfo.currentVipExp > 0" />
@@ -74,6 +74,13 @@ const getVipRankImg = (vipRankCode) => {
 const props = defineProps({
 	vipInfo: {},
 });
+const truncateToTwoDecimals = (num) => {
+	const [integerPart, decimalPart] = String(num).split(".");
+	// 如果没有小数部分，直接返回整数部分
+	if (!decimalPart) return integerPart + ".00";
+	// 截取小数点后两位
+	return integerPart + "." + decimalPart.slice(0, 2);
+};
 </script>
 
 <style lang="scss" scoped>

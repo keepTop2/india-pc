@@ -11,19 +11,20 @@
 			<div class="pr_10">
 				<div class="Text_s fs_12">
 					{{ item.label }}
-					<ClickTooltip v-if="item.flag == 'weekSportFlag'" class="ml_5 curp">
+					<ClickTooltip v-if="item.flag == 'weekSportFlag'" class="ml_5 curp" width="230">
 						<template v-slot:icon>
 							<img src="../image/tooltip.png" alt="" class="tooltipImg" />
 						</template>
 						<template v-slot:message>
-							<div>
-								<p>7天体育赌注：</p>
+							<div style="text-align: left" class="Text1">
+								<p>·7天体育赌注：</p>
 								<p v-for="i in data.vipWeekSportVOS">
-									-投注{{ useUserStore().getUserInfo.platCurrencySymbol }} {{ i.weekSportMin }} 至
-									{{ i.weekSportMax > 0 ? `${useUserStore().getUserInfo.platCurrencySymbol} ${i.weekSportMax}` : "以上" }} = {{ i.weekSportBonus }}
+									&nbsp;&nbsp;-投注{{ useUserStore().getUserInfo.platCurrencySymbol }} {{ i.weekSportMin }}
+									{{ i.weekSportMax > 0 ? `至${useUserStore().getUserInfo.platCurrencySymbol} ${i.weekSportMax}` : "或以上" }} = {{ i.weekSportBonus }}
 									{{ useUserStore().getUserInfo.platCurrencySymbol }}
 								</p>
-								<p>-流水统计时间：周六00:00时～周五 23:59时（7天） ﻿﻿礼金发放时间：每周六"</p>
+								<p>-流水统计时间：周六00:00时～周五 23:59时（7天）</p>
+								<p>·礼金发放时间：每周六</p>
 							</div>
 						</template>
 					</ClickTooltip>

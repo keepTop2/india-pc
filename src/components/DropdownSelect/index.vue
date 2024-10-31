@@ -14,13 +14,13 @@
 			<ul class="options-list">
 				<li
 					v-for="option in filteredOptions"
-					:key="option.code"
+					:key="option.currencyCode"
 					@click="selectOption(option)"
 					class="option-item fs_10"
-					:class="option.code == selectedOption?.code ? 'active' : ''"
+					:class="option.currencyCode == selectedOption?.currencyCode ? 'active' : ''"
 				>
-					<span> {{ option.value }}</span>
-					<span> {{ option.code }}</span>
+					<span> {{ option.currencyCode }}</span>
+					<span> {{ option.currencyNameI18 }}</span>
 				</li>
 				<li v-if="filteredOptions.length === 0" class="no-results">暂不支持此货币</li>
 			</ul>
@@ -32,8 +32,8 @@ import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 
 // 定义选项的接口
 interface Option {
-	code: string; // 选项的代码
-	label: string; // 选项的标签
+	currencyCode: string; // 选项的代码
+	currencyNameI18: string; // 选项的标签
 	value: string; // 选项的值
 }
 
@@ -84,14 +84,14 @@ const selectOption = (option: Option) => {
 const filteredOptions = computed(() => {
 	return props.options.filter(
 		(option) =>
-			option.code.toLowerCase().includes(searchQuery.value?.toLowerCase()) || // 根据 code 过滤
-			option.value.toLowerCase().includes(searchQuery.value?.toLowerCase()) // 根据 value 过滤
+			option.currencyCode.toLowerCase().includes(searchQuery.value?.toLowerCase()) || // 根据 code 过滤
+			option.currencyNameI18.toLowerCase().includes(searchQuery.value?.toLowerCase()) // 根据 value 过滤
 	);
 });
 
 // 计算选中选项的标签
 const selectedOptionLabel = computed(() => {
-	return props.model ? props.model : selectedOption.value ? selectedOption.value.code : ""; // 返回绑定的模型值或选中项的代码
+	return props.model ? props.model : selectedOption.value ? selectedOption.value.currencyCode : ""; // 返回绑定的模型值或选中项的代码
 });
 
 // 添加和移除全局点击事件监听器

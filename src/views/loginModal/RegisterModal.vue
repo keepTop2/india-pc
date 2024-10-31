@@ -218,7 +218,7 @@ const onLogin = async () => {
 const options = UserStore.getCurrencyList;
 
 const handleSelect = (option: any) => {
-	payLoad.mainCurrency = option.code;
+	payLoad.mainCurrency = option.currencyCode;
 	verifyBtn();
 };
 
