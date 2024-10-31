@@ -1,0 +1,18 @@
+.banner-controller {
+	cursor: pointer;
+	z-index: 999;
+	.icon {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: var(--Text_a);
+		transition: rotate 0.3;
+		&-0 {
+			transform: translate(-50%, -50%) rotate(-90deg);
+		}
+		&-180 {
+			transform: translate(-50%, -50%) rotate(90deg);
+		}
+	}
+}
