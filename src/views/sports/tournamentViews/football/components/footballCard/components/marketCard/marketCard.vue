@@ -5,7 +5,7 @@
 			<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
 				<!-- 独赢 -->
 				<template v-if="cardType === 'capot'">
-					<div class="label">{{ cardData?.keyName }}</div>
+					<div class="label">{{ cardData?.keyName?.slice(0, 1) }}</div>
 					<!-- 状态正常 -->
 					<template v-if="market.marketStatus === 'running'">
 						<div class="value">
@@ -203,7 +203,7 @@ const isBright = (): boolean => {
 		}
 
 		.value {
-			max-width: 40%;
+			// max-width: 40%;
 			position: relative;
 			color: var(--Text_a);
 			font-family: "PingFang SC";
