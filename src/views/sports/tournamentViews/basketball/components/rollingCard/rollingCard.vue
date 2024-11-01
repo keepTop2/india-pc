@@ -1,5 +1,5 @@
 <template>
-	<div class="card-container">
+	<div class="card-container basketball-bet">
 		<!-- 头部 -->
 		<div class="card-header" :class="{ toggle: !isExpanded }" @click="toggleDisplay">
 			<!-- 联赛信息 -->

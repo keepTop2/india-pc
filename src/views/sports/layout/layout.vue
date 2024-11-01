@@ -156,6 +156,7 @@ const { Banner, BannerController } = userBanner();
 </script>
 
 <style lang="scss" scoped>
+// @import "./media/media-1440.scss";
 .base-body {
 	width: 1308px;
 	height: calc(100vh - 88px);
@@ -221,11 +222,4 @@ const { Banner, BannerController } = userBanner();
 		display: none;
 	}
 }
-
-// @media (min-width: 1440px) and (max-width: 1920px) {
-// 	/* 在屏幕宽度在1440px到1920px之间时生效的样式 */
-// 	.base-body {
-// 		width: 1176px;
-// 	}
-// }
 </style>
