@@ -24,8 +24,8 @@
 			</div>
 		</Card>
 
-		<Card>
-			<div class="container mt_20">
+		<Card class="mt_20">
+			<div class="container">
 				<!-- 提款方式 -->
 				<div class="title">{{ $t(`wallet['提款方式']`) }}</div>
 				<div class="list">
@@ -257,7 +257,8 @@ const estimatedAmount = computed(() => {
 
 // 虚拟币约等于到账额度
 const approximateAmount = computed(() => {
-	return common.mul(estimatedAmount.value, exchangeRate.value);
+	const amount = Number(state.amount);
+	return common.sub(amount, common.mul(feeAmount.value, exchangeRate.value));
 });
 
 // 获取冻结金额

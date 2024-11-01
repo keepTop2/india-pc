@@ -137,7 +137,6 @@ export const useUserStore = defineStore("User", {
 		async userInit() {
 			if (this.getUserInfo.token) {
 				this.initUserInfo();
-				this.uplateUserGlobalSetInfo();
 			}
 			await this.setLangDownBox();
 			this.setLangs(this.getLang);
@@ -151,6 +150,7 @@ export const useUserStore = defineStore("User", {
 				.then(() => {})
 				.finally(() => {
 					localStorage.removeItem("userInfo");
+					localStorage.removeItem("userGlobalSetInfo");
 					window.location.replace("/");
 				});
 		},
@@ -159,6 +159,7 @@ export const useUserStore = defineStore("User", {
 			const websocketService: any = activitySocketService.getInstance();
 			const sportsBetInfo = useSportsBetInfoStore();
 			this.setBasionInfo();
+			this.uplateUserGlobalSetInfo();
 			const res = await userApi.getIndexInfo().catch((err) => err);
 			const { code, data, message } = res;
 			if (code === Common.ResCode.SUCCESS) {
