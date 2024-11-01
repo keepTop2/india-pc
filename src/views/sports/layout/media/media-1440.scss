@@ -1,0 +1,70 @@
+@media (min-width: 1440px) and (max-width: 1920px) {
+	/* 在屏幕宽度在1440px到1920px之间时生效的样式 */
+	.base-body {
+		width: 1176px !important;
+		:deep(.banner) {
+			.swiper-slide {
+				width: calc((100% - 30px) / 3);
+				img {
+					width: 100%;
+				}
+			}
+		}
+		:deep(.main-container) {
+			// 联赛玩法标题
+			.market-name-list .label {
+				font-size: 12px !important;
+			}
+			// 足球
+			.football-bet {
+				.league-markets {
+					min-width: auto;
+				}
+
+				.market-name-list,
+				.league-markets {
+					// 全场独赢
+					> div:nth-child(1) {
+						width: 54px !important;
+					}
+					// 全场让球
+					> div:nth-child(2) {
+						width: 76px !important;
+					}
+					// 全场大小
+					> div:nth-child(3) {
+						width: 92px !important;
+					}
+					// 半场独赢
+					> div:nth-child(4) {
+						width: 54px !important;
+					}
+					// 半场让球
+					> div:nth-child(5) {
+						width: 76px !important;
+					}
+					// 半场大小
+					> div:nth-child(6) {
+						width: 92px !important;
+					}
+				}
+			}
+			// 篮球
+			.basketball-bet {
+				.market-name-list,
+				.league-markets {
+					// 全场独赢 // 让分 // 总分
+					> div:nth-child(-n + 3) {
+						width: 90px !important;
+						.marketColumn {
+							width: 100% !important;
+						}
+					}
+					> div:nth-child(4) {
+						width: 212px !important;
+					}
+				}
+			}
+		}
+	}
+}

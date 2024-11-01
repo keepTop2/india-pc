@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Card :header="true">
+		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
 				<div class="header">{{ $t(`wallet['提款']`) }}</div>
 			</template>
@@ -24,8 +24,8 @@
 			</div>
 		</Card>
 
-		<Card>
-			<div class="container mt_20">
+		<Card class="mt_20">
+			<div class="container">
 				<!-- 提款方式 -->
 				<div class="title">{{ $t(`wallet['提款方式']`) }}</div>
 				<div class="list">
@@ -183,6 +183,15 @@ interface withdrawWayDataRootObject {
 	currencyCode: string;
 }
 
+const props = withDefaults(
+	defineProps<{
+		dialogType?: boolean;
+	}>(),
+	{
+		dialogType: false, // 设置默认值为 false
+	}
+);
+
 const withdrawWayData = ref({} as withdrawWayDataRootObject); // 当前选择的支付方式
 const withdrawWayList = ref([] as withdrawWayDataRootObject[]); // 支付方式列表
 const withdrawWayConfig = ref({
@@ -203,7 +212,7 @@ const exchangeRate = ref(0); // 预计到账金额
 
 const passWordShow = ref(false);
 
-const loadingShow = ref(true);
+const loadingShow = ref(false);
 
 const captchaButton = ref<{
 	startCountdown: () => void;
@@ -257,7 +266,8 @@ const estimatedAmount = computed(() => {
 
 // 虚拟币约等于到账额度
 const approximateAmount = computed(() => {
-	return common.mul(estimatedAmount.value, exchangeRate.value);
+	const amount = Number(state.amount);
+	return common.sub(amount, common.mul(feeAmount.value, exchangeRate.value));
 });
 
 // 获取冻结金额
@@ -486,6 +496,10 @@ const clearParams = () => {
 
 <style scoped lang="scss">
 @import url("./components/formScss.scss");
+
+.half_round_corner {
+	border-radius: 0px 0px 12px 12px;
+}
 
 .header {
 	padding-bottom: 6px;

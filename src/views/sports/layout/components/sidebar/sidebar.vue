@@ -205,7 +205,7 @@ const { VideoSource } = useVideo();
 
 .sidebar {
 	width: 100%;
-	height: calc(100vh - 70px);
+	height: calc(100vh - 94px);
 	display: flex;
 	flex-direction: column;
 	border-radius: 8px;
@@ -358,6 +358,15 @@ const { VideoSource } = useVideo();
 				width: 100%;
 				height: 100%;
 			}
+		}
+	}
+	:deep(.event-list) {
+		&::-webkit-scrollbar-thumb {
+			background-color: var(--Bg3);
+			border-radius: 6px;
+		}
+		&::-webkit-scrollbar {
+			width: 6px;
 		}
 	}
 }

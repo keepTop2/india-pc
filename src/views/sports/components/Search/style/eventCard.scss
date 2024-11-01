@@ -20,9 +20,9 @@
 
 			.left {
 				display: flex;
-				justify-content: space-between;
 				align-items: center;
 				column-gap: 12px;
+				width: calc(100% - 26px);
 				.league_icon {
 					width: 20px;
 					height: 20px;
@@ -30,6 +30,9 @@
 				.title {
 					color: var(--Text_a);
 					font-size: var(--title2-text-size);
+					white-space: nowrap; /* 不换行 */
+					overflow: hidden; /* 超出内容隐藏 */
+					text-overflow: ellipsis;
 				}
 			}
 		}
@@ -51,6 +54,7 @@
 					display: flex;
 					align-items: center;
 					column-gap: 8px;
+					width: calc(100% - 60px);
 					.icon {
 						width: 22px;
 						height: 22px;
@@ -58,6 +62,9 @@
 					.name {
 						font-size: 14px;
 						color: var(--Text_a);
+						white-space: nowrap; /* 不换行 */
+						overflow: hidden; /* 超出内容隐藏 */
+						text-overflow: ellipsis;
 					}
 				}
 				.right {

@@ -1,8 +1,10 @@
 <template>
-	<div class="base-body">
+	<div style="height: 24px; width: 100%"></div>
+	<div class="base-body sports-body">
+		<!-- banner控制器 -->
+		<BannerController />
 		<!-- 体育 主体内容区域  -->
 		<Banner />
-
 		<div class="main-container">
 			<!-- 左侧 体育游戏列表 -->
 			<div class="left-container">
@@ -47,8 +49,9 @@ import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import pubSub from "/@/pubSub/pubSub";
 import SportsApi from "/@/api/sports/sports";
-import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar, Banner } from "./components";
+import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar } from "./components";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
+import userBanner from "./components/banner";
 
 const SportAttentionStore = useSportAttentionStore();
 // 路由实例
@@ -148,13 +151,22 @@ const unSport = () => {
 	// 发布清除热门联赛列表的事件，通知其他组件进行相关处理
 	pubSub.publish("clearHotLeagueList", "on");
 };
+
+const { Banner, BannerController } = userBanner();
 </script>
 
 <style lang="scss" scoped>
+// @import "./media/media-1440.scss";
 .base-body {
 	width: 1308px;
-	height: calc(100vh - 64px);
+	height: calc(100vh - 88px);
 	margin: 0 auto;
+	:deep(.banner-controller) {
+		position: fixed;
+		top: 60px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
 	// overflow-x: auto;
 }
 
@@ -165,7 +177,6 @@ const unSport = () => {
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
-	padding-top: 6px;
 	.left-container {
 		// width: 930px;
 		flex: 1;

@@ -88,7 +88,7 @@ const getName = (item: any) => {
 	} else if ((item.betMarketInfo.betType == 5 || item.betMarketInfo.betType == 15) && item.betMarketInfo.key == "2") {
 		return item.teamInfo.awayName;
 	} else if ((item.betMarketInfo.betType == 5 || item.betMarketInfo.betType == 15) && item.betMarketInfo.key == "x") {
-		return $.t(`sports['平局']`);
+		return $.t(`sports['和局']`);
 	} else if ((item.betMarketInfo.betType == 1303 || item.betMarketInfo.betType == 704) && item.betMarketInfo.key == "h") {
 		return item.teamInfo.homeName;
 	} else if ((item.betMarketInfo.betType == 1303 || item.betMarketInfo.betType == 704) && item.betMarketInfo.key == "a") {

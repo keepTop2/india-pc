@@ -133,6 +133,15 @@ const { expandedPanels, onToggleAllStates, toggleDisplay } = useExpandPanels();
 			overflow: hidden; /* 超出部分隐藏 */
 			text-overflow: ellipsis; /* 超出部分显示省略号 */
 		}
+
+		.team-icon .icon {
+			vertical-align: revert;
+		}
+	}
+	:deep(.vue-recycle-scroller) {
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 }
 

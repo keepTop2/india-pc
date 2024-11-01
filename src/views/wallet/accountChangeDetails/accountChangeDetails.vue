@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Card :header="true">
+		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
 				<div class="header">
 					<span class="label">{{ $t(`wallet['存款']`) }}</span>
@@ -108,10 +108,11 @@
 				</div>
 
 				<div class="btns">
+					<!-- <div class="cancel" @click="onCancelDepositOrder">{{ $t(`wallet['取消充值']`) }}</div> -->
 					<template v-if="depositOrderDetail.customerStatus == '0'">
 						<template v-if="depositOrderDetail.voucherFlag === 0">
 							<div class="cancel" @click="onCancelDepositOrder">{{ $t(`wallet['取消充值']`) }}</div>
-							<div class="confirm" @click="router.replace('/recharge')">{{ $t(`wallet['继续充值']`) }}</div>
+							<div class="confirm" @click="onContinueRecharge">{{ $t(`wallet['继续充值']`) }}</div>
 						</template>
 						<template v-else-if="depositOrderDetail.voucherFlag === 1">
 							<div class="cancel" @click="common.getSiteCustomerChannel">{{ $t(`wallet['联系客服']`) }}</div>
@@ -197,6 +198,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import { i18n } from "/@/i18n/index";
 import Upload from "./components/ImgUpload.vue";
 import pubsub from "/@/pubSub/pubSub";
+import { nextTick } from "process";
 
 const $: any = i18n.global;
 const route = useRoute();
@@ -226,6 +228,21 @@ interface depositOrderDetailRootObject {
 	thirdPayUrl?: any;
 	urgeOrder: number;
 }
+
+const props = withDefaults(
+	defineProps<{
+		dialogType?: boolean;
+	}>(),
+	{
+		dialogType: false, // 设置默认值为 false
+	}
+);
+
+const emit = defineEmits<{
+	(e: "CancelDepositOrder"): void;
+	(e: "ContinueRecharge"): void;
+}>();
+
 const depositOrderDetail = ref({} as depositOrderDetailRootObject); // 订单接口详情
 const formattedTime = ref<string>(""); // 格式化倒计时为时分秒格式的响应式变量
 const isUrgeModalVisible = ref(false); // 订单加速弹窗
@@ -235,7 +252,9 @@ const cashFlowFileList = ref([] as any); // 服务器上传文件
 const cashFlowRemark = ref(""); // 留言
 
 onMounted(() => {
-	getDepositOrderDetail();
+	nextTick(() => {
+		getDepositOrderDetail();
+	});
 	pubsub.subscribe("/wallet/rechargeSuccessFail", rechargeSuccessFail);
 });
 
@@ -267,6 +286,7 @@ const openProofModal = () => {
 
 // 获取订单详情
 const getDepositOrderDetail = async () => {
+	console.log("有触发吗？", route.query);
 	const params = {
 		orderNo: route.query.orderNo,
 	};
@@ -313,6 +333,7 @@ const onUrgeOrder = async () => {
 
 // 撤销充值订单
 const onCancelDepositOrder = async () => {
+	console.log("route.query.orderNo", route.query.orderNo);
 	const params = {
 		orderNo: route.query.orderNo,
 		channelType: depositOrderDetail.value.depositWithdrawChannelType,
@@ -320,7 +341,21 @@ const onCancelDepositOrder = async () => {
 	};
 	const res = await walletApi.cancelDepositOrder(params).catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
-		router.push("/recharge");
+		clearInterval(startCountdown);
+		if (!props.dialogType) {
+			router.push("/recharge");
+		} else {
+			emit("CancelDepositOrder");
+		}
+	}
+};
+
+// 继续充值
+const onContinueRecharge = () => {
+	if (!props.dialogType) {
+		router.replace("/recharge");
+	} else {
+		emit("ContinueRecharge");
 	}
 };
 
@@ -399,6 +434,10 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
+.half_round_corner {
+	border-radius: 0px 0px 12px 12px;
+}
+
 .header {
 	display: flex;
 	align-items: center;

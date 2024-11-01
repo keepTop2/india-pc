@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Card :header="true">
+		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
 				<div class="header">{{ $t(`wallet['存款']`) }}</div>
 			</template>
@@ -124,11 +124,13 @@ import Card from "../components/card.vue";
 import { walletApi } from "/@/api/wallet";
 import common from "/@/utils/common";
 import { useUserStore } from "/@/stores/modules/user";
-import router from "/@/router";
+import { useRoute, useRouter } from "vue-router";
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
 const UserStore = useUserStore();
 const $: any = i18n.global;
+const route = useRoute();
+const router = useRouter();
 
 interface rechargeWayDataRootObject {
 	rechargeTypeCode: string;
@@ -159,6 +161,19 @@ interface rechargeConfigRootObject {
 	rechargeWay: string;
 	isRemind: number;
 }
+
+const props = withDefaults(
+	defineProps<{
+		dialogType?: boolean;
+	}>(),
+	{
+		dialogType: false, // 设置默认值为 false
+	}
+);
+
+const emit = defineEmits<{
+	(e: "RechargeSuccess", orderNo: string): void;
+}>();
 
 // 定义响应式变量
 const rechargeWayData = ref({} as rechargeWayDataRootObject); // 当前选择的支付方式
@@ -250,12 +265,17 @@ const onRecharge = async () => {
 	}
 	const res = await walletApi.userRecharge(params).catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
-		router.push({
-			path: "/accountChangeDetails",
-			query: {
-				orderNo: res.data.orderNo,
-			},
-		});
+		if (!props.dialogType) {
+			router.replace({
+				path: "/accountChangeDetails",
+				query: {
+					orderNo: res.data.orderNo,
+				},
+			});
+		} else {
+			emit("RechargeSuccess", res.data.orderNo);
+		}
+
 		if (res.data.thirdIsUrl == 1) {
 			window.open(res.data.thirdPayUrl, "_blank");
 		} else if (res.data.thirdIsUrl == 0) {
@@ -303,6 +323,10 @@ getRechargeWayList();
 </script>
 
 <style scoped lang="scss">
+.half_round_corner {
+	border-radius: 0px 0px 12px 12px;
+}
+
 .header {
 	padding-bottom: 6px;
 	border-bottom: 1px solid var(--Line_1);

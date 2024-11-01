@@ -5,7 +5,7 @@
 			<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
 				<!-- 独赢类型 -->
 				<template v-if="cardType == 'capot'">
-					<div class="label">{{ cardData?.keyName }}</div>
+					<div class="label">{{ cardData?.key === "h" ? "主" : "客" }}</div>
 					<!-- 市场状态正常时显示赔率 -->
 					<template v-if="market.marketStatus === 'running'">
 						<div class="value">
