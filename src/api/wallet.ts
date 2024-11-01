@@ -142,4 +142,22 @@ export const walletApi = {
 			headers,
 		});
 	},
+
+	// 获取余额
+	getUserPlatformBalance: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/userPlatformCoin/api/getUserPlatformBalance`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
+	// 平台币转换
+	transferAmount: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/userPlatformCoin/api/transfer`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };
