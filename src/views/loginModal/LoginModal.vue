@@ -44,7 +44,7 @@
 				</div>
 
 				<!-- 记住密码和忘记密码 -->
-				<div class="flex_space-between fs_14 mt_10">
+				<div class="flex_space-between fs_12 mt_10">
 					<div class="Text1 curp flex-center" style="gap: 6px">
 						<svg-icon
 							:name="rememberPassword ? 'check_icon_on' : 'check_icon'"
@@ -73,7 +73,7 @@
 						</span>
 					</div>
 					<div>
-						<span class="Wran_text fs_12">{{ $t(`login['联系客服']`) }}</span>
+						<span class="color_F2 fs_14">{{ $t(`login['联系客服']`) }}</span>
 					</div>
 				</div>
 			</div>

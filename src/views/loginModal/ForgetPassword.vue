@@ -1,18 +1,15 @@
 <!-- src/components/RegisterForm.vue -->
 <template>
 	<div class="loginWrapper">
-		<div class="login_left_img">
-			<img src="/@/assets/common/login_left.png" alt="" />
-		</div>
 		<div class="login_right_form">
-			<div class="login_text fs_16 mb_20">
-				<span> {{ $t(`login['忘记密码']`) }}</span>
+			<div class="login_text fs_24 mb_27">
+				<span> {{ currentStep !== 2 ? $t(`login['忘记密码']`) : $t(`login['设置新密码']`) }}</span>
 			</div>
 
 			<div class="login_form">
 				<!-- 第一步 -->
 				<div v-if="currentStep === 0">
-					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
+					<p class="Text_s mb_8 mt_8 fs_12"><span class="color_F1">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
 						<input
 							type="text"
@@ -24,17 +21,13 @@
 							maxlength="11"
 						/>
 					</p>
-					<p v-show="userAccountVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`login['账号规则']`) }}</p>
+					<p v-show="userAccountVerifyError" class="color_F1 fs_12 mt_2">{{ $t(`login['账号规则']`) }}</p>
 				</div>
 
 				<!-- 第二步 -->
 				<div v-else-if="currentStep === 1">
-					<p class="Text_s mb_8 mt_8 fs_14">{{ verifyType == "email" ? $t(`login['邮箱验证']`) : $t(`login['手机号验证']`) }}</p>
-					<p class="color_Theme fs_12 text_unline curp">
-						<span @click="changeVerifyType">{{ $t(`login['其他方式']`) }}</span>
-					</p>
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
+						<p class="Text_s mb_8 mt_8 fs_14"><span class="color_F1">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
 						<p>
 							<input
 								type="text"
@@ -47,12 +40,12 @@
 							/>
 							<AreaCode v-else @update:modelValue="areaCodeInput" :options="AreaCodeOptions" :type="verifyType" :class="userVerifyTypeVerifyError ? 'verifyError' : ''"></AreaCode>
 						</p>
-						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">
+						<p v-show="userVerifyTypeVerifyError" class="color_F1 fs_12 mt_2">
 							{{ verifyType == "email" ? $t(`login['电子邮箱不正确']`) : $t(`security_center['请输入8-12位数字']`, { min: minLength, max: maxLength }) }}
 						</p>
 					</div>
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['验证码']`) }}</p>
+						<p class="Text_s mb_8 mt_8 fs_14"><span class="color_F1">*</span>{{ $t(`login['验证码']`) }}</p>
 						<p>
 							<VerificationCode
 								@VerificationCodeInput="VerificationCodeInput"
@@ -72,16 +65,15 @@
 							/>
 						</p>
 					</div>
-					<p class="fs_10 Text1 mt_16 fw_200">
-						{{ $t(`login['有效时间']`) }}<span class="color_Theme">{{ $t(`login['联系客服']`) }}</span>
+					<p class="fs_12 Text1 mt_16 fw_200">
+						{{ $t(`login['有效时间']`) }}<span class="color_F2">{{ $t(`login['联系客服']`) }}</span>
 					</p>
 				</div>
 				<!-- 第三步 -->
 				<div v-else-if="currentStep === 2">
-					<p class="Text_s mb_8 mt_8 fs_14">{{ $t(`login['新密码']`) }}</p>
 					<!-- 密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['密码']`) }}</p>
+						<p class="Text_s mb_8 mt_8 fs_12"><span class="color_F1">*</span>{{ $t(`login['密码']`) }}</p>
 						<p class="common_password">
 							<input
 								:type="showPassword ? 'password' : 'text'"
@@ -97,11 +89,11 @@
 								<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showPassword = !showPassword" />
 							</span>
 						</p>
-						<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
+						<p v-show="VerifyError.passWord" class="color_F1 fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
 					</div>
 					<!-- 确认密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
+						<p class="Text_s mb_8 mt_8 fs_12"><span class="color_F1">*</span>{{ $t(`login['确认密码']`) }}</p>
 						<p class="common_password">
 							<input
 								:type="showConfimPassword ? 'password' : 'text'"
@@ -117,12 +109,13 @@
 								<svg-icon :name="showConfimPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showConfimPassword = !showConfimPassword" />
 							</span>
 						</p>
-						<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
+						<p v-show="VerifyError.confirmPassword" class="color_F1 fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
 					</div>
 				</div>
-				<div class="mt_40 mb_12">
-					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onNextStep(currentStep)">{{ currentStep === 2 ? "确定" : $t(`login['下一步']`) }}</button>
-					<div class="flex-center mt_12 color_Theme fs_12 curp" v-if="currentStep === 0">联系客服</div>
+				<div class="mt_40 mb_12 text-center">
+					<Button :disabled="disabledBtn" @click="onNextStep(currentStep)" class="mb_6">{{ currentStep === 2 ? "确定" : $t(`login['下一步']`) }}</Button>
+					<div class="flex-center mt_12 color_F2 fs_12 curp" v-if="currentStep === 0">联系客服</div>
+					<span @click="changeVerifyType" v-if="currentStep === 1" class="color_Theme fs_12">{{ $t(`login['其他验证方式']`) }}</span>
 				</div>
 			</div>
 		</div>
@@ -381,21 +374,15 @@ const onSubmit = async (token: string) => {
 
 <style lang="scss" scoped>
 .loginWrapper {
-	width: 680px;
-	height: 542px;
-	display: flex;
+	width: 436px;
+	height: 472px;
 	border-radius: 12px;
 	background: var(--Bg);
-	> div {
-		width: 50%;
-	}
-	.login_left_img {
-		img {
-			height: 100%;
-			width: 100%;
-			border-radius: 12px;
-		}
-	}
+	background-image: url("./image/headerBg.png"), url("./image/bottomBg.png");
+	background-repeat: no-repeat no-repeat;
+	background-size: 100% auto, 320px;
+	background-position: top, bottom left;
+
 	.login_right_form {
 		padding: 25px 32px;
 		.common_password {
@@ -411,20 +398,7 @@ const onSubmit = async (token: string) => {
 		.login_text {
 			color: var(--Text_s);
 			font-weight: 500;
-			span {
-				position: relative;
-			}
-			span::after {
-				content: "";
-				position: absolute;
-				bottom: -2px;
-				left: 50%;
-				transform: translateX(-50%);
-				right: 0;
-				width: 18px;
-				height: 2px;
-				background-color: var(--Theme);
-			}
+			text-align: center;
 		}
 	}
 }
