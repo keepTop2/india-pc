@@ -112,7 +112,7 @@ const gotoDetails = (item: any) => {
 const findInterval = () => {
 	const intervals = medalRewardRespVOS.value.map((item: any) => item.unlockMedalNum);
 
-	const num = medalRewardRespVOS.value.findLastIndex((item: any) => item.condNum !== null);
+	const num = hasUnlockList.value.length;
 
 	if (num < 0) {
 		return 0;
@@ -121,16 +121,16 @@ const findInterval = () => {
 	let index = 0;
 	for (let i = 0; i < intervals.length - 1; i++) {
 		if (intervals[i] <= num && num <= intervals[i + 1]) {
-			index = i;
+			index = i + 1;
 		}
 	}
 
-	return index + 1;
+	return index;
 };
 const openMedalReward = (item: any) => {
 	if (item.openStatus === 0) {
 		MedalApi.openMedalReward({ rewardNo: item.rewardNo }).then(async (res) => {
-			showToast(`恭喜你解锁${res.data.unlockMedalNum}个宝箱，奖励${res.data.rewardAmount}${useUserStore().getUserInfo.platCurrencySymbol}已发送到您的账号`);
+			showToast(`恭喜你获得${res.data.unlockMedalNum}个勋章，解锁宝箱，奖励${res.data.rewardAmount} ${useUserStore().getUserInfo.platCurrencySymbol}已发送到您的账号`);
 			await getUserMedalInfo();
 			findInterval();
 		});

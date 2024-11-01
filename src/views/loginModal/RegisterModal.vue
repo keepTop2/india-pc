@@ -1,17 +1,15 @@
 <!-- src/components/RegisterForm.vue -->
 <template>
 	<div class="loginWrapper">
-		<div class="login_left_img">
-			<img src="/@/assets/common/login_left.png" alt="" />
-		</div>
+
 		<div class="login_right_form">
-			<div class="login_text fs_16 mb_20">
+			<div class="login_text fs_24 mb_27">
 				<span>{{ $t(`login['注册']`) }}</span>
 			</div>
 			<div class="login_form">
 				<!-- 账号 -->
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
+					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
 						<input
 							type="text"
@@ -27,7 +25,7 @@
 				</div>
 				<!-- 密码 -->
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
+					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
 					<p class="common_password">
 						<input
 							:type="showPassword ? 'text' : 'password'"
@@ -46,7 +44,7 @@
 				</div>
 				<!-- 确认密码 -->
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
+					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
 					<p class="common_password">
 						<input
 							:type="showConfirmPassword ? 'text' : 'password'"
@@ -64,20 +62,20 @@
 				</div>
 
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['主货币']`) }}</p>
-					<p style="height: 34px">
+					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['主货币']`) }}</p>
+					<p style="height: 46px">
 						<DropdownSelect :options="options" :placeholder="$t(`login['选择货币']`)" @update:modelValue="handleSelect" :model="payLoad.mainCurrency" />
 					</p>
 				</div>
 
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_12 flex_start">{{ $t(`login['输入推荐码']`) }} 
+					<p class="Text_s mb_8 mt_8 fs_14 flex_start">{{ $t(`login['输入推荐码']`) }} 
 						<svg-icon name="arrow_down_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
 						<svg-icon name="arrow_up_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
 					</p>
 					<p class="common_password" v-if="openinviteCode"><input type="text" v-model="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" /></p>
 				</div>
-				<div class="fs_10 userAgreement" :class="userAgreement ? 'Text_s' : 'Text1'" >
+				<div class="fs_12 userAgreement" :class="userAgreement ? 'Text_s' : 'Text1'" >
 					<svg-icon
 						class="curp"
 						:name="userAgreement ? 'check_icon_on' : 'check_icon'"
@@ -89,7 +87,7 @@
 						>{{ $t(`login['我同意']`) }} <span class="Wran_text curp" @click="toHelpCenter"> {{ $t(`login['用户协议']`) }}</span> {{ $t(`login['并确认我已年满18岁']`) }}</span
 					>
 				</div>
-				<div class="fs_10 userAgreement" :class="advertise ? 'Text_s' : 'Text1'">
+				<div class="fs_12 userAgreement" :class="advertise ? 'Text_s' : 'Text1'">
 					<svg-icon
 						class="curp"
 						:name="advertise ? 'check_icon_on' : 'check_icon'"
@@ -101,7 +99,7 @@
 					<span>{{ $t(`login['我同意接收']`) }}[<span class="Wran_text">oksport</span>]{{ $t(`login['的营销促销信息']`) }}</span>
 				</div>
 				<div class="mt_16 mb_16">
-					<button class="common_btn" :disabled="disabledBtn || !isOnloadScript" type="button" @click="onLogin">{{ $t(`login['注册']`) }}</button>
+					<Button :disabled="disabledBtn || !isOnloadScript"  @click="onLogin">{{ $t(`login['注册']`) }}</Button>
 				</div>
 				<div class="flex-center fs_12">
 					<div class="Text1">
@@ -247,14 +245,14 @@ const toLogin = () => {
 
 <style lang="scss" scoped>
 .loginWrapper {
-	width: 680px;
-	height: 542px;
-	display: flex;
+	width: 436px;
+	height: 663px;
 	border-radius: 12px;
 	background: var(--Bg);
-	> div {
-		width: 50%;
-	}
+	background-image: url("./image/headerBg.png"), url("./image/bottomBg.png");
+	background-repeat: no-repeat no-repeat;
+	background-size: 100% auto, 320px;
+	background-position: top, bottom left;
 	.login_left_img {
 		img {
 			height: 100%;
@@ -279,20 +277,7 @@ const toLogin = () => {
 		.login_text {
 			color: var(--Text_s);
 			font-weight: 500;
-			span {
-				position: relative;
-			}
-			span::after {
-				content: "";
-				position: absolute;
-				bottom: -2px;
-				left: 50%;
-				transform: translateX(-50%);
-				right: 0;
-				width: 18px;
-				height: 2px;
-				background-color: var(--Theme);
-			}
+			text-align: center;
 		}
 		.userAgreement {
 			display: flex;

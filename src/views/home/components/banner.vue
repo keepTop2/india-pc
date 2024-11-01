@@ -1,13 +1,13 @@
 <template>
 	<div class="banner">
-		<img src="./image/image.webp" alt="" style="width: 100%" />
-		<div class="swiper-box">
+		<img src="./image/image.webp" alt="" style="width: 100%" v-if="!useUserStore().getLogin" />
+	<div class="swiper-box" v-else" >
 			<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
 				<SwiperSlide v-for="(item, index) in announcementList" :key="index">
 					<img :src="item" alt="" />
 				</SwiperSlide>
 			</Swiper>
-		</div>
+		</div> 
 	</div>
 </template>
 
@@ -22,6 +22,7 @@ import banner1 from "./image/banner1.png";
 import banner2 from "./image/banner2.png";
 import banner3 from "./image/banner3.png";
 import { ref } from "vue";
+import { useUserStore } from "/@/stores/modules/user";
 const swiperRef: any = ref(null);
 const modules = ref([Autoplay, Pagination, Navigation]);
 const announcementList = [banner1, banner2, banner3, banner1, banner2, banner3];
@@ -54,6 +55,8 @@ const goToPrevSlide = () => {
 		position: relative;
 		max-width: 1350px;
 		margin: 0 auto;
+		margin-top: 20px;
+		padding: 0 10px;
 	}
 	.swiper {
 		max-width: 1350px;

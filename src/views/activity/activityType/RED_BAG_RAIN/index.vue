@@ -1,25 +1,25 @@
 <template>
 	<div class="activityWrapper">
 		<div class="activityHeader">
-			{{ activityData.activityNameI18nCode || "红包雨" }}
+			{{ activityData?.activityNameI18nCode || "红包雨" }}
 			<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="../../components/image/close_icon.png" alt="" /></span>
 		</div>
 
 		<div class="activityMain">
 			<div class="activityImg">
-				<img v-lazy-load="activityData.headPicturePcI18nCode" alt="" />
+				<img v-lazy-load="activityData?.headPicturePcI18nCode" alt="" />
 			</div>
 			<div class="activityContent">
 				<div class="bonus_card">
 					<div class="bonus_card_title">红包雨</div>
 					<div class="mt_20 mb_20">
-						{{ activityData.clientStatus == 1 ? "距离本场红包雨结束" : "距离下一场红包雨还有" }}
+						{{ activityData?.clientStatus == 1 ? "距离本场红包雨结束" : "距离下一场红包雨还有" }}
 					</div>
 					<div class="countdown mb_20">
 						<span>{{ Common.convertMilliseconds(countdown * 1000) }}</span>
 					</div>
 					<div class="apply_btn">
-						<div class="curp" :class="activityData.clientStatus == 1 ? 'active' : ''" @click="getActivityReward">抢</div>
+						<div class="curp" :class="activityData?.clientStatus == 1 ? 'active' : ''" @click="getActivityReward">抢</div>
 					</div>
 				</div>
 			</div>
@@ -34,7 +34,7 @@
 				</div>
 				<div class="activityContentCenter">
 					<slide class="sessions">
-						<div v-for="(item, index) in activityData.sessionInfoList" class="session" :key="index">
+						<div v-for="(item, index) in activityData?.sessionInfoList" class="session" :key="index">
 							<div>{{ Common.parseHm(item.startTime) }}</div>
 							<div class="sideBox">
 								<img :src="sessionCricle" alt="" v-if="item.status == 0" />
@@ -82,7 +82,7 @@
 				</div>
 				<div class="activityContentCenter ruleCenter">
 					<div class="ruleDetails">
-						<div v-html="activityData.ruleDesc"></div>
+						<div v-html="activityData?.ruleDesc"></div>
 					</div>
 				</div>
 				<div class="activityContentFooter" />
@@ -143,7 +143,7 @@ watch(
 	}
 );
 const getActivityReward = async () => {
-	if (activityData.value.clientStatus !== 1) return;
+	if (activityData.value?.clientStatus !== 1) return;
 	await activityApi.redBagParticipate({ redbagSessionId: activityData.value.redbagSessionId }).then((res) => {
 		if (res.code === 10000) {
 			if (res.data.status === 10000) {
