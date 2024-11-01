@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, type Component } from "vue";
+import { ref, watch, computed, type Component, toRefs } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import pubsub from "/@/pubSub/pubSub";
 
@@ -32,8 +32,15 @@ import Withdrawal from "/@/views/wallet/withdrawal/withdrawal.vue";
 import CurrencyConverter from "/@/views/wallet/currencyConverter/currencyConverter.vue";
 import AccountChangeDetails from "/@/views/wallet/accountChangeDetails/accountChangeDetails.vue";
 
+import { useUserStore } from "/@/stores/modules/user";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import showToast from "/@/hooks/useToast";
+import { i18n } from "/@/i18n/index";
+
 const route = useRoute();
 const router = useRouter();
+const $: any = i18n.global;
+
 const isModalVisible = ref(false);
 
 const componentMap: Record<string, Component> = {
@@ -70,9 +77,41 @@ pubsub.subscribe("openWalletDialog", () => {
 	setComponent("recharge");
 });
 
+// 订阅弹窗关闭事件
+pubsub.subscribe("closeWalletDialog", () => {
+	clearComponent();
+});
+
 // 更新当前组件及标签的路由参数
 function setComponent(walletDialogName: string) {
-	activeTab.value = walletDialogName; // 更新激活的标签
+	const UserStore = useUserStore();
+	const modalStore = useModalStore();
+	const { rechargeWithdrawLimit, withdrawLimit } = toRefs(UserStore.getUserInfo);
+	const { isSetPwd, phone } = toRefs(UserStore.getUserGlobalSetInfo);
+	// 处理 "recharge" 情况：如果账户锁定，提示用户
+	if (walletDialogName === "recharge") {
+		if (rechargeWithdrawLimit.value === 1) {
+			showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
+			return;
+		}
+	}
+	// 处理 "withdrawal" 情况
+	if (walletDialogName === "withdrawal") {
+		const isAccountLocked = rechargeWithdrawLimit.value === 1;
+		const isWithdrawalLocked = isAccountLocked || withdrawLimit.value === 1;
+		if (isWithdrawalLocked) {
+			showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
+			return;
+		}
+		// 检查是否绑定手机号或设置交易密码
+		const hasUserSetup = isSetPwd?.value || phone?.value;
+		if (!hasUserSetup) {
+			modalStore.openModal("hintDialog");
+			return;
+		}
+	}
+	// 更新激活的标签并更新路由参数
+	activeTab.value = walletDialogName;
 	router.replace({ query: { ...route.query, walletDialogName } });
 }
 
