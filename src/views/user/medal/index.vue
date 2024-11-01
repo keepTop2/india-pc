@@ -130,7 +130,7 @@ const findInterval = () => {
 const openMedalReward = (item: any) => {
 	if (item.openStatus === 0) {
 		MedalApi.openMedalReward({ rewardNo: item.rewardNo }).then(async (res) => {
-			showToast(`恭喜你解锁${res.data.unlockMedalNum}个宝箱，奖励${res.data.rewardAmount}${useUserStore().getUserInfo.platCurrencySymbol}已发送到您的账号`);
+			showToast(`恭喜你获得${res.data.unlockMedalNum}个勋章，解锁宝箱，奖励${res.data.rewardAmount} ${useUserStore().getUserInfo.platCurrencySymbol}已发送到您的账号`);
 			await getUserMedalInfo();
 			findInterval();
 		});

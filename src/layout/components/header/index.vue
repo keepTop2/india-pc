@@ -1,5 +1,8 @@
 <template>
 	<header class="header" :class="collapse ? 'collapse' : ''">
+		<div class="login_plan" @click="router.push('/')">
+			<svg-icon name="logo" width="132px" height="16px" v-if="collapse" />
+		</div>
 		<div class="max-width">
 			<div class="flex-center" v-if="isLogin">
 				<div class="balance_box flex-center">
@@ -137,12 +140,16 @@ const logOut = () => {
 	z-index: 100;
 	padding-left: 260px;
 	transition: all 0.2s ease;
-
+	.login_plan {
+		float: left;
+		height: 16px;
+		padding-left: 10px;
+	}
 	&.collapse {
 		padding-left: 64px;
 	}
 
-	> div {
+	> div:nth-child(2) {
 		flex: 1;
 		display: flex;
 		justify-content: end;

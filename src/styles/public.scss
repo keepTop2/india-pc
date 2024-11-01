@@ -53,6 +53,12 @@
 	.color_Theme {
 		color: var(--Theme);
 	}
+	.color_F2 {
+		color: var(--F2);
+	}
+	.color_F1 {
+		color: var(--F1);
+	}
 	.Text_s {
 		color: var(--Text_s);
 	}
@@ -88,7 +94,7 @@
 		border-radius: 4px;
 	}
 	.verifyError {
-		border: 1px solid var(--Theme);
+		border: 1px solid var(--F1);
 		border-radius: 4px;
 	}
 	.common_input::placeholder {
