@@ -98,11 +98,36 @@ watch(isModalVisible, (visible) => {
 	// overflow-y: auto;
 
 	.wallet_main {
+		position: relative;
 		height: calc(634px - 40px); // 减去 header 的高度（假设 header 高度为80px）
 		margin: 20px 20px 20px; // 上边距为20px，确保内容与 header 有间距
 		padding: 0; // 移除内边距
 		border-radius: 12px;
 		overflow-y: auto; // 允许纵向滚动
+		/* 自定义滚动条样式 */
+		::-webkit-scrollbar {
+			width: 8px; // 滚动条的宽度
+			background-color: transparent; // 滚动条背景色
+		}
+
+		::-webkit-scrollbar-thumb {
+			background-color: rgba(0, 0, 0, 0.5); // 滚动块的颜色
+			border-radius: 4px; // 滚动块的圆角
+		}
+
+		::-webkit-scrollbar-thumb:hover {
+			background-color: rgba(0, 0, 0, 0.8); // 滚动块悬停时的颜色
+		}
+
+		::-webkit-scrollbar-track {
+			background-color: rgba(255, 255, 255, 0.1); // 滚动条轨道的颜色
+			border-radius: 4px; // 滚动条轨道的圆角
+		}
+	}
+
+	.wallet_main {
+		scrollbar-width: thin; // 设置滚动条为细
+		scrollbar-color: rgba(0, 0, 0, 0.5) rgba(255, 255, 255, 0.1); // 滚动块颜色和轨道颜色
 	}
 
 	.wallet_container_header {
