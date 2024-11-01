@@ -6,7 +6,6 @@
 			</template>
 			<div class="container">
 				<Transform />
-				<el-button class="transform-button">一键转换</el-button>
 			</div>
 		</Card>
 	</div>
@@ -46,17 +45,5 @@ const props = withDefaults(
 
 .container {
 	padding: 20px;
-	.transform-button {
-		margin-top: 40px;
-		width: 100%;
-		height: 48px;
-		padding: 16px 0px 16px 0px;
-		border: none;
-		gap: 10px;
-		border-radius: 4px;
-		background: var(--light-ok-Theme--, #ff284b);
-		color: var(--light-ok-text-a, #ffffff);
-		font-size: 16px;
-	}
 }
 </style>

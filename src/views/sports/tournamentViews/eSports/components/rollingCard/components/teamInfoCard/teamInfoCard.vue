@@ -17,7 +17,7 @@
 				<div class="team-name">{{ teamData.teamInfo.awayName }}</div>
 				<!-- 得分 -->
 				<div class="score">
-					<span v-ok-tooltip>{{ teamData.teamInfo.liveAwayScore }}</span>
+					<span v-ok-tooltip>{{ teamData.gameInfo.liveAwayScore }}</span>
 				</div>
 			</div>
 		</div>
@@ -35,6 +35,8 @@ const props = withDefaults(defineProps<teamDataType>(), {
 		return {};
 	},
 });
+
+console.log(props.teamData, "teamData.teamInfo");
 </script>
 
 <style scoped lang="scss">

@@ -1,5 +1,5 @@
 <template>
-	<div class="card-container">
+	<div class="card-container football-bet">
 		<!-- 头部 -->
 		<div class="card-header" @click="toggleDisplay">
 			<!-- 联赛信息 -->
