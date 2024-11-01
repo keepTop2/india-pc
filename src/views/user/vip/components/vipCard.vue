@@ -1,13 +1,13 @@
 <template>
 	<div class="card">
-		<div class="vipLevelBg">
+		<div class="vipLevelBg" :class="vipInfo.vipGradeUp === vipInfo.vipGradeCode ? 'topLevelBg' : ''">
 			<div class="currentLevelText">当前等级</div>
 			<div>
 				<img v-lazy-load="getViplevelImg(vipInfo.vipRank)" alt="" class="vipLevelIcon" />
 			</div>
-			<div class="experience">
+			<div class="experience" v-if="vipInfo.vipGradeUp !== vipInfo.vipGradeCode">
 				<div class="fs_20 mb_5">{{ vipInfo.vipGradeName }}</div>
-				<div class="flex-alignCenter" v-if="vipInfo.vipGradeUp !== vipInfo.vipGradeCode">
+				<div class="flex-alignCenter">
 					<span>升级所需经验:</span> <span>{{ vipInfo.currentExp }}/{{ vipInfo.currentVipExp }}</span>
 					<ClickTooltip class="ml_5 curp" message="" width="270">
 						<template v-slot:icon>
@@ -20,10 +20,9 @@
 						</template>
 					</ClickTooltip>
 				</div>
-				<div v-else>您已到达最高等级</div>
 			</div>
 
-			<div class="progress">
+			<div class="progress" v-if="vipInfo.vipGradeUp !== vipInfo.vipGradeCode">
 				<div class="levelIcon">
 					<img v-lazy-load="getVipRankImg(vipInfo.vipRank)" alt="" />
 					<span class="levelvalue">{{ vipInfo.vipGradeName }}</span>
@@ -47,6 +46,10 @@
 					<img v-lazy-load="getVipRankImg(vipInfo.nextVipRank)" alt="" />
 					<span class="levelvalue">{{ vipInfo.vipGradeUpName }}</span>
 				</div>
+			</div>
+			<div v-else class="topLevel">
+				<div class="fs_20 mb_5">{{ vipInfo.vipGradeName }}</div>
+				<div class="fs_20 mb_5">恭喜！您已达到最高等级</div>
 			</div>
 		</div>
 	</div>
@@ -89,17 +92,19 @@ const truncateToTwoDecimals = (num) => {
 	justify-content: center;
 	align-items: flex-end;
 	gap: 16px;
+
 	.vipLevelBg {
-		padding-top: 20px;
+		padding-top: 16px;
 		width: 486px;
-		height: 260px;
+		height: 209px;
 		position: relative;
 		background: url("../image/vipLevelBg.png") no-repeat;
 		background-size: 100% 100%;
 		.currentLevelText {
+			width: 106px;
 			background: url("../image/levelText_bg.png") no-repeat;
-			background-size: auto 100%;
-			padding: 8px 21px;
+			background-size: 100% 100%;
+			padding: 5px 21px;
 			color: var(--Text_a);
 			font-weight: 500;
 		}
@@ -111,7 +116,7 @@ const truncateToTwoDecimals = (num) => {
 			height: 124px;
 		}
 		.experience {
-			height: 100px;
+			height: 70px;
 			padding-left: 38px;
 			margin-top: 22px;
 			color: var(--Text_a);
@@ -217,5 +222,21 @@ const truncateToTwoDecimals = (num) => {
 			padding: 0 20px;
 		}
 	}
+	.topLevelBg {
+		height: 159px;
+		padding-top: 18px;
+		background: url("../image/vipLevelBg2.png") no-repeat;
+		background-size: 100% 100%;
+	}
+}
+.topLevel {
+	background: linear-gradient(250deg, #fdfdfd 6.39%, #bebebe 35.7%, #fdfdfd 66.76%, #979797 93.89%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	margin-left: 22px;
+	margin-top: 25px;
+	font-weight: 500;
+	font-size: 20px;
 }
 </style>

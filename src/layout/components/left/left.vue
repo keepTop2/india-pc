@@ -9,7 +9,7 @@
 		<!-- 左侧头 -->
 		<div class="left_main_header">
 			<div class="left_imgs_collapse collapse_icon icon">
-				<SvgIcon name="collapse_icon" :class="collapse ? 'active' : ''" width="36px" height="36px" @click="changeCollpase" v-hover-svg />
+				<SvgIcon name="collapse_icon" :class="collapse ? 'active' : ''" width="24px" height="21px" @click="changeCollpase" />
 			</div>
 			<div class="login_plan" @click="router.push('/')">
 				<svg-icon name="logo" width="132px" height="16px" />
@@ -165,13 +165,13 @@ const changeCollpase = () => {
 .left_main {
 	box-shadow: 4px 0px 12px 0px rgba(14, 16, 19, 0.25);
 	position: relative;
-	width: 260px;
+	width: 224px;
 	transition: all 0.2s ease;
 	box-sizing: border-box;
 	z-index: 120;
 
 	.left_main_header {
-		width: 260px;
+		width: 224px;
 		height: 64px;
 		z-index: 10;
 		display: flex;
@@ -202,7 +202,7 @@ const changeCollpase = () => {
 		top: 64px;
 		left: 0;
 		right: 0;
-		width: 260px;
+		width: 224px;
 		background: var(--Line_1);
 		box-shadow: 0px 1px 0px 0px #343d48;
 
@@ -213,7 +213,7 @@ const changeCollpase = () => {
 		cursor: pointer;
 	}
 	.left_scroll {
-		width: 260px;
+		width: 224px;
 		box-sizing: border-box;
 		cursor: pointer;
 		overflow-y: auto;
