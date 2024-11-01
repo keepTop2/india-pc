@@ -23,7 +23,7 @@
 									{{ i.weekSportMax > 0 ? `至${useUserStore().getUserInfo.platCurrencySymbol} ${i.weekSportMax}` : "或以上" }} = {{ i.weekSportBonus }}
 									{{ useUserStore().getUserInfo.platCurrencySymbol }}
 								</p>
-								<p>-流水统计时间：周六00:00时～周五 23:59时（7天）</p>
+								<p>&nbsp;&nbsp;-流水统计时间：周六00:00时～周五 23:59时（7天）</p>
 								<p>·礼金发放时间：每周六</p>
 							</div>
 						</template>

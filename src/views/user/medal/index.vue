@@ -112,7 +112,7 @@ const gotoDetails = (item: any) => {
 const findInterval = () => {
 	const intervals = medalRewardRespVOS.value.map((item: any) => item.unlockMedalNum);
 
-	const num = medalRewardRespVOS.value.findLastIndex((item: any) => item.condNum !== null);
+	const num = hasUnlockList.value.length;
 
 	if (num < 0) {
 		return 0;
@@ -121,11 +121,11 @@ const findInterval = () => {
 	let index = 0;
 	for (let i = 0; i < intervals.length - 1; i++) {
 		if (intervals[i] <= num && num <= intervals[i + 1]) {
-			index = i;
+			index = i + 1;
 		}
 	}
 
-	return index + 1;
+	return index;
 };
 const openMedalReward = (item: any) => {
 	if (item.openStatus === 0) {

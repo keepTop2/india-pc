@@ -39,9 +39,9 @@ const emit = defineEmits(["update:files"]);
 
 const handleFileChange = (event: Event) => {
 	const target = event.target as HTMLInputElement;
-
 	if (target.files) {
-		if (target.files[0].size > 1024 * 5) {
+		console.log(target.files[0].size);
+		if (target.files[0].size > 1024 * 1024 * 5) {
 			return showToast("最大不超过5 M");
 		}
 		uploadImg(target.files[0]);
