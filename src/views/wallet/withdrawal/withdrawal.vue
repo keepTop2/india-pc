@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Card :header="true">
+		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
 				<div class="header">{{ $t(`wallet['提款']`) }}</div>
 			</template>
@@ -183,6 +183,15 @@ interface withdrawWayDataRootObject {
 	currencyCode: string;
 }
 
+const props = withDefaults(
+	defineProps<{
+		dialogType?: boolean;
+	}>(),
+	{
+		dialogType: false, // 设置默认值为 false
+	}
+);
+
 const withdrawWayData = ref({} as withdrawWayDataRootObject); // 当前选择的支付方式
 const withdrawWayList = ref([] as withdrawWayDataRootObject[]); // 支付方式列表
 const withdrawWayConfig = ref({
@@ -203,7 +212,7 @@ const exchangeRate = ref(0); // 预计到账金额
 
 const passWordShow = ref(false);
 
-const loadingShow = ref(true);
+const loadingShow = ref(false);
 
 const captchaButton = ref<{
 	startCountdown: () => void;
@@ -486,6 +495,10 @@ const clearParams = () => {
 
 <style scoped lang="scss">
 @import url("./components/formScss.scss");
+
+.half_round_corner {
+	border-radius: 0px 0px 12px 12px;
+}
 
 .header {
 	padding-bottom: 6px;
