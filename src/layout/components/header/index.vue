@@ -7,7 +7,7 @@
 						<img src="/@/assets/common/coin.png" alt="" style="height: 16px" class="mr_4" />
 						<span>{{ Common.thousands(UserStore.getUserInfo.totalBalance) }}</span>
 					</div>
-					<div class="recharge" @click="router.push('/recharge')">{{ $t(`common['充值']`) }}</div>
+					<div class="recharge" @click="openWalletDialog">{{ $t(`common['充值']`) }}</div>
 				</div>
 				<div class="flex-center message" @click="openMessageCenter" v-hover-svg>
 					<svg-icon name="message" size="32px" />
@@ -48,6 +48,7 @@
 import { computed, ref } from "vue";
 import { useMenuStore } from "/@/stores/modules/menu";
 import { useUserStore } from "/@/stores/modules/user";
+import pubsub from "/@/pubSub/pubSub";
 import Common from "/@/utils/common";
 import { onClickOutside } from "@vueuse/core";
 import userRoutes from "/@/router/modules/userMenu";
@@ -96,6 +97,10 @@ const openRegisterModal = () => {
 };
 const openLangCurrenyConfig = () => {
 	modalStore.openModal("LangCurrenyConfig");
+};
+
+const openWalletDialog = () => {
+	pubsub.publish("openWalletDialog");
 };
 const goToPath = (route: any) => {
 	if (route.name === "invite_friends") {

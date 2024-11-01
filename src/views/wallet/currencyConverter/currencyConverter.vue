@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Card :header="true">
+		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
 				<div class="header">{{ $t(`wallet['存款']`) }}</div>
 			</template>
@@ -14,9 +14,21 @@
 <script setup lang="ts">
 import Card from "/@/views/wallet/components/card.vue";
 import Transform from "/@/views/wallet/currencyConverter/components/Transform.vue";
+
+const props = withDefaults(
+	defineProps<{
+		dialogType?: boolean;
+	}>(),
+	{
+		dialogType: false, // 设置默认值为 false
+	}
+);
 </script>
 
 <style scoped lang="scss">
+.half_round_corner {
+	border-radius: 0px 0px 12px 12px;
+}
 .header {
 	padding-bottom: 6px;
 	border-bottom: 1px solid var(--Line_1);
