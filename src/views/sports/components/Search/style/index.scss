@@ -53,13 +53,24 @@
 			}
 		}
 		.search-body {
-			overflow: hidden;
+			// overflow: hidden;
 		}
 		// 主体内容
 		.content {
 			// 上下间距：96px dialog的padding-top + bottom：32px * 2 头部：45px 搜索内容+margin：90px
 			height: calc(100vh - 96px - 32px * 2 - 45px - 90px);
 			overflow-y: auto;
+			box-sizing: content-box;
+			padding-right: 6px;
+			width: calc(100% + 6px);
+			&::-webkit-scrollbar-thumb {
+				background-color: var(--Bg3);
+				border-radius: 6px;
+			}
+			&::-webkit-scrollbar {
+				width: 6px;
+			}
+
 			.scroll {
 				overflow-y: auto;
 			}
