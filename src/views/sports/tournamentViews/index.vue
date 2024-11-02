@@ -83,10 +83,10 @@ const handleOddsChange = ({ marketId, selections }: { marketId: number; selectio
 // 计算高度，根据不同的路由动态设置高度
 const computedHeight = computed(() => {
 	// 默认高度
-	let baseHeight = "calc(100vh - 227px)";
+	let baseHeight = "calc(100vh - 247px)";
 	// 如果当前路由是 /sports/morningTrading, 加上 48px
 	if (route.path === "/sports/morningTrading") {
-		baseHeight = `calc(100vh - 276px)`;
+		baseHeight = `calc(100vh - 296px)`;
 	}
 	return {
 		height: baseHeight,
