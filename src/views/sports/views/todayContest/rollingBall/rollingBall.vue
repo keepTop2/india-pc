@@ -6,7 +6,7 @@
 		</template>
 		<!-- 默认内容：动态加载选中的组件 -->
 		<template #default>
-			<SelectCard :listData="leagues" :matchedLeague="matchedLeague" />
+			<SelectCard :listData="leagues" />
 		</template>
 	</Skeleton>
 </template>

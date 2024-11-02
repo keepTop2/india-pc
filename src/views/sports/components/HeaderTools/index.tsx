@@ -54,7 +54,7 @@ export default (eventsInfo: any): HeaderTools => {
 			const isEventActive = computed(() => sliderData.value?.eventId === eventsInfo.value?.eventId);
 
 			const handleClick = () => {
-				console.log(SidebarStore.getEventsInfo, eventsInfo.value, "比分板按钮");
+				console.log(sliderData.value?.eventId, eventsInfo.value, "比分板按钮");
 				toggleEventScoreboard(eventsInfo.value);
 				state.isOpen = true;
 				SidebarStore.getSidebarStatus("scoreboard");
@@ -129,7 +129,7 @@ export default (eventsInfo: any): HeaderTools => {
 				{ leading: true }
 			);
 			return () => (
-				<ElIcon style={style} onClick={handleClick} size="18px" class="Text1" style={{ transform: `rotate(${refreshState.rotation}deg)`, transition: "transform 1s ease" }}>
+				<ElIcon onClick={handleClick} size="18px" class="Text1" style={{ transform: `rotate(${refreshState.rotation}deg)`, transition: "transform 1s ease", ...style }}>
 					<RefreshIcon />
 				</ElIcon>
 			);
@@ -149,7 +149,10 @@ export default (eventsInfo: any): HeaderTools => {
 
 	// 收藏按钮
 	const Collection = defineComponent({
-		setup() {
+		props: {
+			size: { type: String, default: "16px" },
+		},
+		setup(props) {
 			const SportAttentionStore = useSportAttentionStore();
 			// 判断是否收藏
 			const isAttention = computed(() => SportAttentionStore.attentionEventIdList.includes(eventsInfo.eventId));
@@ -178,7 +181,7 @@ export default (eventsInfo: any): HeaderTools => {
 				}
 			};
 
-			return () => <SvgIcon style={{ cursor: "pointer" }} onClick={handleClick} name={isAttention.value ? "sports-already_collected" : "sports-collection"} size={16} />;
+			return () => <SvgIcon size={props.size} style={{ cursor: "pointer" }} onClick={handleClick} name={isAttention.value ? "sports-already_collected" : "sports-collection"} />;
 		},
 	});
 

@@ -1,19 +1,22 @@
 <template>
-	<SelectCard :teamData="listData" :expandedCount="expandedPanels.size" @onToggleAllStates="onToggleAllStates(listData)" />
+	<div style="height: 34px; margin: 4px 0">
+		<SelectCard :teamData="listData" :expandedCount="expandedPanels.size" @onToggleAllStates="onToggleAllStates(listData)" />
+	</div>
 
 	<!-- 联赛数据统计卡片 -->
 	<div :style="computedHeight" class="box-content">
 		<DynamicScroller :items="listData" :min-item-size="34" class="scroller" key-field="leagueId" :prerender="10">
 			<template v-slot="{ item, index, active }">
 				<DynamicScrollerItem :item="item" :key="item.leagueId" :active="active" :data-index="index" :data-active="active">
-					<component
+					<!-- <component
 						:is="cardComponent"
 						:teamData="item"
 						:dataIndex="index"
 						:isExpanded="!expandedPanels.has(index)"
 						@oddsChange="handleOddsChange"
 						@toggleDisplay="toggleDisplay"
-					/>
+					/> -->
+					<MatchCard :data-index="index" :isExpanded="!expandedPanels.has(index)" :events="item" :sport-type="Number(route.query.sportType)" @toggleDisplay="toggleDisplay" />
 				</DynamicScrollerItem>
 			</template>
 		</DynamicScroller>
@@ -27,6 +30,7 @@ import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import useExpandPanels from "/@/views/sports/hooks/useExpandPanels";
 import { Selection } from "/@/views/sports/models/interface";
+import MatchCard from "/@/views/sports/components/MatchCard";
 // 展开收起总控
 const SelectCard = defineAsyncComponent(() => import("/@/views/sports/components/selectCard/selectCard.vue"));
 

@@ -17,7 +17,7 @@ export default () => {
 		setup() {
 			return () => (
 				<span onClick={handleClick} className="banner-controller">
-					<SvgIcon class={`icon icon-${state.show ? 0 : 180}`} name="arrow_right_on" width={12} height={8} />
+					<SvgIcon class={`icon icon-${state.show ? 0 : 180}`} name="arrow_right_on" width="12px" height="8px" />
 					<SvgIcon name="sports-show_banner" width={132} height={21} />
 				</span>
 			);

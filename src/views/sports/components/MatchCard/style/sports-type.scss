@@ -1,0 +1,63 @@
+.card-container {
+	// 足球
+	&.card-container-1 {
+		// 定义盘口列宽
+		$widths: (78px, 92px, 118px);
+		.market-name-list,
+		.league-markets {
+			@for $i from 1 through 3 {
+				> div:nth-child(#{$i}),
+				> div:nth-child(#{$i + 3}) {
+					width: nth($widths, $i);
+				}
+			}
+		}
+		.league-footer {
+			background-color: initial !important;
+		}
+		.card-content {
+			height: 120px;
+		}
+	}
+
+	// 篮球
+	&.card-container-2 {
+		.card-content {
+			height: 114px !important;
+		}
+		.market-name-list,
+		.league-markets {
+			> div {
+				width: 116px;
+			}
+		}
+		.market-name-list > div:last-child {
+			width: 236px;
+		}
+		.league-markets {
+			.market-item-group {
+				width: 236px;
+				.market-row {
+					display: flex;
+					flex-direction: row;
+					gap: 4px;
+				}
+			}
+		}
+		.score-list {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			gap: 20px;
+			&-item {
+				color: var(--Text1);
+				font-family: PingFang SC;
+				font-size: 12px;
+				font-weight: 400;
+			}
+			&-item.theme {
+				color: var(--Theme);
+			}
+		}
+	}
+}

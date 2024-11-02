@@ -19,7 +19,9 @@
 				<div class="back-container">
 					<!-- 主体路由页面显示区域 -->
 					<transition name="fade">
-						<router-view v-cloak />
+						<div>
+							<router-view v-cloak />
+						</div>
 					</transition>
 					<!-- 搜索触发的遮罩 -->
 					<div class="overlay" v-if="isShowMask"></div>
@@ -156,7 +158,7 @@ const { Banner, BannerController } = userBanner();
 </script>
 
 <style lang="scss" scoped>
-// @import "./media/media-1440.scss";
+@import "./media/media-1440.scss";
 .base-body {
 	width: 1308px;
 	height: calc(100vh - 88px);

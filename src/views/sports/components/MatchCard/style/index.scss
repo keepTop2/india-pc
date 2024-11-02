@@ -1,0 +1,320 @@
+.card-container {
+	overflow: hidden;
+	.card-header {
+		display: flex;
+		width: 100%;
+		height: 34px;
+		background: var(--Bg6);
+		box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25) inset;
+		border-radius: 8px 8px 0px 0px;
+		cursor: pointer;
+
+		.league-info {
+			min-width: 284px;
+			// max-width: 284px;
+			flex: 1;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			padding: 8px;
+			box-sizing: border-box;
+			.league_icon {
+				width: 20px;
+				height: 20px;
+			}
+			.league_name {
+				color: var(--Text_s);
+				font-family: "PingFang SC";
+				font-size: 16px;
+				font-weight: 300;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
+		.market-name-info {
+			width: 600px;
+			.market-name-list {
+				height: 100%;
+				display: flex;
+				gap: 4px;
+				padding-right: 4px;
+				.label {
+					width: 116px;
+					height: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					color: var(--Text1);
+					text-align: center;
+					font-family: "PingFang SC";
+					font-size: 14px;
+					font-weight: 400;
+				}
+				.large {
+					width: 236px;
+				}
+			}
+		}
+		.header-icon {
+			width: 46px;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.icon {
+				transform: rotate(-90deg);
+				transition: transform 0.3s ease;
+
+				&.icon-expanded {
+					transform: rotate(90deg);
+				}
+			}
+		}
+	}
+
+	.card-content {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		background-color: var(--Bg1);
+		border-bottom: 1px solid var(--Line_2);
+		height: 120px;
+		padding-top: 8px;
+		&:last-child {
+			border-bottom: none;
+		}
+		// 赛事球队信息
+		.content-left {
+			width: 284px;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			// 主体信息
+			.league-info {
+				padding: 0 8px;
+				display: grid;
+				row-gap: 4px;
+				.team {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					width: 100%;
+					height: 32px;
+					// 球队名
+					.left {
+						display: flex;
+						align-items: center;
+						column-gap: 6px;
+						width: calc(100% - 60px);
+						.icon {
+							width: 20px;
+							height: 20px;
+						}
+						.name {
+							font-size: 14px;
+							color: var(--Text_a);
+							white-space: nowrap; /* 不换行 */
+							overflow: hidden; /* 超出内容隐藏 */
+							text-overflow: ellipsis;
+							width: 100%;
+						}
+					}
+					// 红黄牌+得分
+					.right {
+						display: flex;
+						align-items: center;
+						// 得分
+						.score {
+							margin-left: 3px;
+							min-width: 32px;
+							height: 32px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							color: var(--Theme);
+							font-family: DIN Alternate;
+							font-size: 16px;
+							font-weight: 700;
+						}
+						// 红黄牌
+						.foul-info {
+							display: flex;
+							column-gap: 6px;
+							align-items: center;
+							> span {
+								min-width: 14px;
+								height: 18px;
+								display: flex;
+								align-items: center;
+								justify-content: center;
+								padding: 2px;
+								border-radius: 2px;
+								color: var(--Text_a, #fff);
+								font-family: "PingFang SC";
+								font-size: 14px;
+								font-weight: 400;
+								line-height: 14px;
+								&.red {
+									background: var(--Theme);
+								}
+								&.yellow {
+									background: var(--F1);
+								}
+							}
+						}
+					}
+				}
+			}
+			// 底部
+			.league-footer {
+				height: 30px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				background-color: var(--Bg3);
+				padding: 0 8px;
+				.left {
+					display: flex;
+					gap: 6px;
+					color: var(--Theme);
+					font-family: PingFang SC;
+					font-size: 12px;
+					font-weight: 400;
+				}
+				.right {
+					display: flex;
+					gap: 10px;
+					align-items: center;
+					.markets-qty {
+						min-width: 56px;
+						display: flex;
+						align-items: center;
+						justify-content: flex-end;
+						color: var(--Text1, #98a7b5);
+						font-family: PingFang SC;
+						font-size: 12px;
+						font-weight: 400;
+						padding-right: 6px;
+						cursor: pointer;
+						.arrow-icon {
+							width: 20px;
+							height: 20px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+						}
+					}
+				}
+			}
+		}
+
+		// 盘口信息
+		.markets-content {
+			height: 100%;
+			&:has(.score-list) {
+				.league-markets {
+					height: calc(100% - 30px);
+				}
+			}
+			.score-list {
+				height: 30px;
+				background-color: var(--Bg3);
+				// margin-top: 8px;
+			}
+			.league-markets {
+				width: 100%;
+				height: 100%;
+				flex: 1;
+				display: flex;
+				gap: 4px;
+				padding-right: 4px;
+				// padding: 8px 4px 8px 0;
+				overflow: hidden;
+				.market-column {
+					display: flex;
+					flex-direction: column;
+					gap: 4px;
+
+					.market-content {
+						width: 100%;
+						height: 32px;
+						cursor: pointer;
+						background-color: var(--Bg3) !important;
+						position: relative;
+						&.isBright::after {
+							content: "";
+							width: 100%;
+							height: 100%;
+							position: absolute;
+							border: 1px solid var(--Bg5) !important;
+							border-radius: 4px;
+							left: 0;
+							top: 0;
+						}
+						.label {
+							color: var(--Text_a);
+						}
+						.market-item {
+							position: relative;
+							width: 100%;
+							height: 100%;
+							display: flex;
+							align-items: center;
+							justify-content: space-between;
+							padding: 6px;
+							border-radius: 4px;
+							background: var(--Bg3);
+							box-sizing: border-box;
+							&:hover {
+								background-color: var(--betselector-hover-bg);
+							}
+							.label {
+								max-width: 60%;
+								color: var(--Text1);
+								font-family: PingFang SC;
+								font-size: 12px;
+								font-weight: 400;
+								white-space: nowrap;
+								overflow: hidden;
+								text-overflow: ellipsis;
+							}
+							.value {
+								position: relative;
+								color: var(--Text_a);
+								font-family: PingFang SC;
+								font-size: 12px;
+								font-weight: 400;
+							}
+							.noData {
+								color: var(--Text1);
+							}
+						}
+					}
+				}
+			}
+		}
+		// 工具栏
+		.league-option {
+			width: 46px;
+			height: calc(100% + 16px);
+			display: flex;
+			gap: 16px;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			border-left: 1px solid var(--Line_2);
+			overflow: hidden;
+			.tooltip-container {
+				cursor: pointer;
+				.icon {
+					width: 23px;
+					height: 16px;
+					display: flex;
+					align-items: center;
+				}
+			}
+		}
+	}
+}
