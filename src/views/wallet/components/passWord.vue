@@ -12,7 +12,7 @@
 				</div>
 				<div class="main">
 					<div class="cell">
-						<input v-model="password" @input="onPasswordInput" type="text" maxlength="6" />
+						<input v-model="password" @input="onPasswordInput" type="password" maxlength="6" />
 					</div>
 				</div>
 				<!-- 确认按钮 -->

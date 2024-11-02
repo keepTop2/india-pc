@@ -9,7 +9,7 @@
 
 		<div class="content">
 			<div class="card1">
-				<div>通过升级获得丰厚礼金和专属福利！加入我们精英俱乐部， 享受OKsport提供的最佳游戏体验。</div>
+				<div class="fs_14">通过升级获得丰厚礼金和专属福利！加入我们精英俱乐部， 享受OKsport提供的最佳游戏体验。</div>
 				<span class="goToVipRule curp" @click="useModalStore().openModal('vipHierarchy')">查看VIP等级制度</span>
 			</div>
 			<vipCard :vipInfo="vipInfo"></vipCard>
@@ -19,12 +19,14 @@
 				<img src="./image/titleRight.png" alt="" />
 			</div>
 			<div class="vipRank">
-				<div v-for="(item, index) in vipRankList" :key="index">
-					<div @click="changeVip(item, index)" :class="index == currentVipIndex ? 'active' : ''" class="vipRankItem curp">
-						<img :src="getVipRankImg(item.vipRankCode)" alt="" />
+				<slide>
+					<div v-for="(item, index) in vipRankList" :key="index">
+						<div @click="changeVip(item, index)" :class="index == currentVipIndex ? 'active' : ''" class="vipRankItem curp">
+							<img :src="getVipRankImg(item.vipRankCode)" alt="" />
+						</div>
+						<div class="vipRankItemLabel">{{ item.vipRankNameI18nCode }}</div>
 					</div>
-					<div class="vipRankItemLabel">{{ item.vipRankNameI18nCode }}</div>
-				</div>
+				</slide>
 			</div>
 			<div class="vipLevelText">
 				<img :src="getRankTextIcon(vipRankList[currentVipIndex]?.vipRankCode)" alt="" />
@@ -103,26 +105,28 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .vipWrapper {
-	width: 780px;
+	width: 534px;
 	max-height: 80vh;
 	background: url("./image/bg.png") no-repeat;
 	background-size: 100% 100%;
 	padding-bottom: 20px;
 	.Header {
 		position: relative;
-		margin-bottom: 22px;
+		margin-bottom: 5px;
 		.title {
-			padding-top: 30px;
+			padding-top: 20px;
 			padding-bottom: 20px;
 			width: 100%;
 			text-align: center;
 			color: var(--Text_s);
 			font-size: 20px;
+			background: url("./image/header_bg.png") center no-repeat;
+			background-size: 366px 34px;
 		}
 		.closeIcon {
 			position: absolute;
 			right: 22px;
-			top: 28px;
+			top: 18px;
 
 			img {
 				width: 30px;
@@ -131,7 +135,7 @@ onMounted(() => {
 		}
 	}
 	.card1 {
-		width: 548px;
+		width: 486px;
 		color: var(--Text1);
 		margin: 0 auto 30px;
 		text-align: center;
@@ -166,13 +170,14 @@ onMounted(() => {
 			}
 		}
 		.vipRank {
-			padding: 0 83px;
+			padding: 0 24px;
 			justify-content: space-between;
 			display: flex;
 			margin-top: 24px;
 			.vipRankItem {
 				width: 64px;
 				height: 64px;
+				margin: 0 50px;
 				border-radius: 12px;
 				background: linear-gradient(90deg, #353a3e 0%, #2c2d2e 100%);
 				display: flex;
@@ -190,6 +195,7 @@ onMounted(() => {
 			.vipRankItemLabel {
 				text-align: center;
 				margin-top: 10px;
+				margin: 0 50px;
 				color: var(--Text1);
 				font-size: 14px;
 			}

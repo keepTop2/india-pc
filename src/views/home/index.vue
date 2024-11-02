@@ -3,6 +3,9 @@
 		<bannerSkeleton v-if="isLoading" />
 		<banner v-else></banner>
 
+		<!--跑马灯-->
+		<HorseRaceLamp />
+
 		<div class="max-width">
 			<!-- 热门推荐 -->
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
@@ -13,13 +16,16 @@
 			<div v-else>
 				<lobbyGameCard v-for="(item, index) in lobbyGameList" :key="index" :gameList="item" :title="item.name" />
 			</div>
-			<redbagRainCountdown v-model="showCountdown" :redBagInfo="redBagInfo" />
+			<redbagRainCountdown v-model="showCountdown" />
 		</div>
+
+		<!--公告-->
+		<Announcement />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import banner from "./components/banner.vue";
 import bannerSkeleton from "./components/bannerSkeleton.vue";
 import hotGame from "./components/hotGame.vue";
@@ -29,6 +35,10 @@ import lobbyGameCard from "./components/lobbyGameCard.vue";
 import { HomeApi } from "/@/api/home";
 import pubsub from "/@/pubSub/pubSub";
 import activitySocketService from "/@/utils/activitySocketService";
+import HorseRaceLamp from "/@/views/home/components/horseRaceLamp.vue";
+import Announcement from "/@/components/Announcement/Announcement.vue";
+import { useActivityStore } from "/@/stores/modules/activity";
+const activityStore = useActivityStore();
 const websocketService: any = activitySocketService.getInstance();
 const showCountdown = ref(false);
 const isLoading = ref(true);
@@ -81,7 +91,7 @@ onMounted(async () => {
 
 	pubsub.subscribe("/activity/redBagRain", (data) => {
 		showCountdown.value = true;
-		redBagInfo.value = data;
+		activityStore.setCurrentActivityData({ ...data });
 	});
 });
 </script>

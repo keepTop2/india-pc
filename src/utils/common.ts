@@ -8,11 +8,12 @@ import dayjs from "dayjs";
 import useClipboard from "vue-clipboard3";
 import { i18n } from "../i18n";
 import { gameApi } from "../api/game";
+import { CommonApi } from "../api/common";
 import router from "../router";
 import qs from "qs";
 import showToast from "../hooks/useToast";
 // // 全局设置moment时区 (上海)
-moment.tz.setDefault("Pacific/Guadalcanal");
+// moment.tz.setDefault("Pacific/Guadalcanal");
 class Common {
 	static ResCode = {
 		//成功
@@ -573,6 +574,12 @@ class Common {
 				func(...args);
 			}, delay);
 		};
+	}
+
+	// 联系客服
+	static async getSiteCustomerChannel() {
+		const res = await CommonApi.getSiteCustomerChannel().catch((err) => err);
+		console.log("res", res);
 	}
 }
 

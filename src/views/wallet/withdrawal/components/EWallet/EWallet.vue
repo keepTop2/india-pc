@@ -132,6 +132,8 @@ const clearParams = () => {
 defineExpose({
 	formParams,
 	isPhoneValid,
+	inputFields,
+	getAreaCodeDownBox,
 	clearParams,
 });
 </script>

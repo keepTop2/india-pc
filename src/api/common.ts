@@ -19,11 +19,30 @@ export const CommonApi = {
 		});
 	},
 
+	// 邮箱验证码请求
+	getSiteCustomerChannel: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/common/getSiteCustomerChannel`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
 	/**
 	 *@description 获取通用配置
 	 */
 	getCommonBusinessDownBox: (data = {}, headers = { showLoading: false }) => {
 		return useAxiosApi(`/app/common/getCommonBusinessDownBox`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	/**
+	 *@description 获取通用配置
+	 */
+	getLangDownBox: (data = {}, headers = { showLoading: false }) => {
+		return useAxiosApi(`/app/common/getLangDownBox`, {
 			method: "POST",
 			data,
 			headers,

@@ -39,7 +39,7 @@
 				<img v-lazy-load="LangIcon" alt="" @click="openLangCurrenyConfig" />
 			</div>
 
-      <messageCenter v-model="messageCenterVisible"/>
+			<messageCenter v-model="messageCenterVisible" />
 		</div>
 	</header>
 </template>
@@ -53,7 +53,7 @@ import { onClickOutside } from "@vueuse/core";
 import userRoutes from "/@/router/modules/userMenu";
 import router from "/@/router";
 import { useModalStore } from "/@/stores/modules/modalStore";
-import messageCenter from "/@/views/messageCenter/index.vue"
+import messageCenter from "/@/views/messageCenter/index.vue";
 
 const modalStore = useModalStore();
 
@@ -71,7 +71,7 @@ const isLogin = computed(() => {
 	return UserStore.getLogin;
 });
 const LangIcon = computed(() => {
-	return UserStore.getLangList.find((item: any) => item.code == UserStore.getLang)?.icon;
+	return UserStore.getLangList.find((item: any) => item.code == UserStore.getLang)?.iconFileUrl;
 });
 
 const openUserMenu = () => {
@@ -102,6 +102,10 @@ const goToPath = (route: any) => {
 		modalStore.openModal("InviteFriends");
 	} else if (route.name === "vip") {
 		modalStore.openModal("vip");
+	} else if (route.name === "userInfo") {
+		modalStore.openModal("userInfo");
+	} else if (route.name === "medal") {
+		modalStore.openModal("medal");
 	} else {
 		router.push({ name: route.name });
 	}

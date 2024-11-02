@@ -18,7 +18,7 @@
 			<img :src="crypto_point" alt="" :class="{ reward: rewardAni }" />
 		</div>
 		<!-- 中间 -->
-		<div :class="['btn-img', { loading: spinning }]" @click.stop="handleStartSpin">
+		<div :class="['btn-img', { loading: spinning }]" @click.stop="startVerification">
 			<img class="btn-txt" :src="crypto_btn" alt="" />
 		</div>
 	</div>
@@ -45,40 +45,36 @@ const rewardAni = ref(false);
  * @description 转盘组件
  * @param {Array<Coin>} spinList 奖品列表
  * @param {Object} reward 选中的奖品
- * @param {Function} startSpinningCallback 开始旋转的回掉函数
  * @param {Function} endSpinningCallback 结束旋转的回掉函数
+ * @param {Function} startVerification 开始旋转的校验
  */
 
-interface Spin {
-	spinList: any; //奖品列表
-	reward: any; //选中的奖品
-	balanceCount: number;
-}
-
-const props = withDefaults(defineProps<Spin>(), {
-	spinList: () => [],
-	reward: () => ({} as any),
-	balanceCount: Number,
+const props = defineProps({
+	spinList: {
+		type: Array as any,
+	},
+	reward: {
+		type: Object as any,
+	},
 });
 
 // startSpinningCallback 开始旋转的回掉函数
-const emit = defineEmits(["startSpinningCallback", "endSpinningCallback", "handleNoMoreBet", "handleNeedLogin"]);
-
-// 监听props中的reward变化，以触发停止旋转
+const emit = defineEmits(["endSpinningCallback", "startVerification"]);
 
 const endSpinning = async () => {
 	spinOver.value = true;
 	const findIndex = props.spinList.findIndex((i: any) => i.id === props.reward?.id);
+	console.log(findIndex);
+
 	if (findIndex === -1) {
-		// 错误处理
 		clearSpin();
 		return;
 	}
-	spinRotate.value = `${(360 / 16) * (16 - findIndex) + 90}deg`;
-	await nextTick();
+	spinRotate.value = `${360 - (360 / 16) * findIndex}deg`;
 	rewardAni.value = true;
 	const timer = setTimeout(() => {
 		spinning.value = false;
+
 		emit("endSpinningCallback");
 		clearTimeout(timer);
 	}, 2500);
@@ -91,7 +87,7 @@ onMounted(async () => {
 // 计算每个奖品项的样式
 const getItemStyle = (index: number) => ({
 	opacity: "1",
-	transform: `rotate(${(360 / 16) * index}deg)`,
+	transform: `rotate(${(360 / 16) * index - 90}deg)`,
 });
 
 // 重置旋转动画状态
@@ -101,24 +97,14 @@ const clearSpin = () => {
 	rewardAni.value = false;
 };
 
+const startVerification = () => {
+	emit("startVerification");
+};
 // 处理开始旋转的逻辑
 const handleStartSpin = () => {
-	if (!useUserStore().getLogin) {
-		return emit("handleNeedLogin");
-	}
-	if (props.balanceCount < 1) {
-		return emit("handleNoMoreBet");
-	}
 	if (spinning.value) return;
 	clearSpin();
-	activityApi.getToSpinActivity().then((res) => {
-		if (res.code === Common.ResCode.SUCCESS) {
-			spinning.value = true;
-			emit("startSpinningCallback");
-		} else {
-			showToast(res.message);
-		}
-	});
+	spinning.value = true;
 };
 defineExpose({
 	handleStartSpin,

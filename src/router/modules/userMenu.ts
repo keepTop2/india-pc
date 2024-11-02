@@ -2,11 +2,8 @@ const userRoutes = [
 	{
 		path: "userInfo",
 		name: "userInfo",
-		layout: true,
-		component: () => import("/@/views/user/userInfo/index.vue"),
 		meta: {
 			title: "个人信息",
-			idx: 1,
 			icon: "user_info",
 		},
 	},
@@ -17,7 +14,6 @@ const userRoutes = [
 		component: () => import("../../views/user/vip/index.vue"),
 		meta: {
 			title: "VIP俱乐部",
-			idx: 1,
 			icon: "vip",
 		},
 	},
@@ -28,7 +24,6 @@ const userRoutes = [
 		component: () => import("/@/views/user/security_center/index.vue"),
 		meta: {
 			title: "安全中心",
-			idx: 1,
 			icon: "security_center",
 			showFooter: true,
 		},
@@ -40,7 +35,6 @@ const userRoutes = [
 		component: () => import("/@/views/user/invite_friends/index.vue"),
 		meta: {
 			title: "邀请好友",
-			idx: 1,
 			icon: "invite_friends",
 		},
 	},
@@ -51,7 +45,6 @@ const userRoutes = [
 		component: () => import("/@/views/user/league/index.vue"),
 		meta: {
 			title: "联盟计划",
-			idx: 1,
 			icon: "league",
 		},
 	},

@@ -1,5 +1,5 @@
 <template>
-	<div class="skeleton-container mt_40" aria-busy="true">
+	<div class="skeleton-container" aria-busy="true">
 		<!-- 骨架屏的标题部分 -->
 		<div class="skeleton-cardHeader">
 			<div class="skeleton-header-left"></div>

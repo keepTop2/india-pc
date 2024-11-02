@@ -10,7 +10,7 @@
 				<!-- 第一步 -->
 				<div v-if="currentStep === 0">
 					<p class="Text_s mb_8 mt_8">{{ verifyType == "email" ? $t(`security_center['邮箱验证']`) : $t(`security_center['手机号验证']`) }}</p>
-					<p class="Theme_text fs_12 text_unline curp">
+					<p class="color_Theme fs_12 text_unline curp">
 						<span @click="changeVerifyType" v-if="UserStore.getUserGlobalSetInfo.email && UserStore.getUserGlobalSetInfo.phone">{{ $t(`security_center['其他方式']`) }}</span>
 					</p>
 					<div>
@@ -92,7 +92,7 @@
 							/>
 						</p>
 						<p class="fs_14 Text1 mt_16 fw_200">
-							{{ $t(`security_center['未收到验证码？请重新发送或']`) }}<span class="Theme_text">{{ $t(`security_center['联系客服']`) }}</span>
+							{{ $t(`security_center['未收到验证码？请重新发送或']`) }}<span class="color_Theme">{{ $t(`security_center['联系客服']`) }}</span>
 						</p>
 					</div>
 				</div>

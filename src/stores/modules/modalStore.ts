@@ -12,10 +12,13 @@ const walletCenter: Record<string, () => Promise<any>> = {
 const message_center: Record<string, () => Promise<any>> = {
 	messageCenter: () => import("/@/views/messageCenter/index.vue"),
 };
-const vip: Record<string, () => Promise<any>> = {
+const user: Record<string, () => Promise<any>> = {
+	userInfo: () => import("/@/views/user/userInfo/index.vue"),
+	medal: () => import("/@/views/user/medal/index.vue"),
 	vip: () => import("/@/views/user/vip/index.vue"),
 	vipHierarchy: () => import("/@/views/user/vip/vipHierarchy.vue"),
 };
+
 const security_center: Record<string, () => Promise<any>> = {
 	ChangePassword: () => import("/@/views/user/security_center/components/ChangePassword.vue"),
 	setEmail: () => import("/@/views/user/security_center/components/setEmail.vue"),
@@ -47,8 +50,8 @@ const modalComponents: Record<string, () => Promise<any>> = {
 	...activityModal,
 	...security_center,
 	...message_center,
-	...vip,
 	...walletCenter, // 钱包弹窗
+	...user,
 };
 
 // 创建 Pinia store

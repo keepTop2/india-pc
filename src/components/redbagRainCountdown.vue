@@ -13,17 +13,25 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- 结算弹窗 -->
+	<RED_BAG_RAIN_Dialog v-model="showDialog" title="温馨提示" :confirm="confirmDialog" class="redBagRainResult">
+		<div class="Text3">{{ dialogInfo.message }}</div>
+		<template v-slot:footer v-if="[30045, 30053].includes(dialogInfo.status)"> 去绑定 </template>
+	</RED_BAG_RAIN_Dialog>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, onBeforeUnmount, watch } from "vue";
+import { onMounted, ref, onBeforeUnmount, watch, computed } from "vue";
 import pubsub from "../pubSub/pubSub";
-import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
 import { useCountdown } from "../hooks/countdown";
 import { activityApi } from "../api/activity";
 import { useActivityStore } from "../stores/modules/activity";
 import { useModalStore } from "/@/stores/modules/modalStore";
+import RED_BAG_RAIN_Dialog from "/@/views/activity/activityType/RED_BAG_RAIN/RED_BAG_RAIN_Dialog/index.vue";
 import Common from "../utils/common";
-
+import { redbagRainSingleton } from "../hooks/useRedbagRain";
+const showDialog = ref(false);
+const dialogInfo: any = ref({});
 const modalStore = useModalStore();
 const activityStore = useActivityStore();
 const { countdown, startCountdown, stopCountdown } = useCountdown();
@@ -33,43 +41,46 @@ const isDragging = ref(false);
 const offset = ref({ x: 0, y: 0 });
 const clickDisabled = ref(false);
 let startMousePosition = ref({ x: 0, y: 0 });
-
+const redBagInfo = computed(() => activityStore.getCurrentActivityData);
 const props = defineProps({
 	modelValue: Boolean,
-	redBagInfo: {} as any,
 });
 const emit = defineEmits(["update:modelValue"]);
 
-// 订阅红包雨消息
-// pubsub.subscribe(webSocketMsgTopicEnum.redBagRain, (data) => {
-// 	console.log("Received:", data);
-// });
-// 打开红包雨页面
+const confirmDialog = () => {
+	showDialog.value = false;
+};
+//点击闹钟
 const handleClickCountdown = async () => {
 	if (!clickDisabled.value) {
-		await activityApi.getRedBagInfo().then(async (res) => {
-			if (res.code == Common.ResCode.SUCCESS) {
-				await activityStore.setCurrentActivityData({ ...res.data });
-				modalStore.openModal("RED_BAG_RAIN");
+		await activityApi.redBagParticipate({ redbagSessionId: redBagInfo.value.redbagSessionId }).then((res) => {
+			if (res.code === 10000) {
+				if (res.data.status === 10000) {
+					redbagRainSingleton.showRedbagRain();
+				} else {
+					showDialog.value = true;
+					dialogInfo.value = res.data;
+				}
 			}
 		});
 	}
 };
-
 watch(
 	() => countdown.value,
 	() => {
 		if (countdown.value == 0) {
 			stopCountdown();
 		}
-	},
-	{ once: true }
+		if (countdown.value == 3) {
+			redbagRainSingleton.showCountdown();
+		}
+	}
 );
 watch(
-	() => props.redBagInfo,
+	() => redBagInfo.value,
 	() => {
-		if (props.redBagInfo?.advanceTime) {
-			startCountdown(props.redBagInfo.advanceTime);
+		if (redBagInfo?.value.advanceTime) {
+			startCountdown(redBagInfo?.value.advanceTime);
 		}
 	},
 	{ once: true }
@@ -138,7 +149,6 @@ onMounted(() => {
 		position.value.y = 500; // Y 轴限制仍在窗口内
 	}
 	window.addEventListener("resize", updatePosition); // 添加窗口变化监听
-
 	pubsub.subscribe("/activity/redBagRain/end", () => {
 		closeRedbagRainCountdown();
 	});

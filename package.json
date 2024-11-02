@@ -8,7 +8,8 @@
 		"build:prod": "vite build",
 		"build:preview": "vite build",
 		"preview": "vite preview",
-		"lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/"
+		"lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
+		"api": "node api.js"
 	},
 	"dependencies": {
 		"@element-plus/icons-vue": "^2.1.0",
