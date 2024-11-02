@@ -243,6 +243,7 @@
 						cursor: pointer;
 						background-color: var(--Bg3) !important;
 						position: relative;
+						border-radius: 4px;
 						&.isBright::after {
 							content: "";
 							width: 100%;
