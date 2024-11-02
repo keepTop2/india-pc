@@ -86,23 +86,23 @@ pubsub.subscribe("closeWalletDialog", () => {
 function setComponent(walletDialogName: string) {
 	const UserStore = useUserStore();
 	const modalStore = useModalStore();
-	const { rechargeWithdrawLimit, withdrawLimit } = toRefs(UserStore.getUserInfo);
+	// const { rechargeWithdrawLimit, withdrawLimit } = toRefs(UserStore.getUserInfo);
 	const { isSetPwd, phone } = toRefs(UserStore.getUserGlobalSetInfo);
 	// 处理 "recharge" 情况：如果账户锁定，提示用户
-	if (walletDialogName === "recharge") {
-		if (rechargeWithdrawLimit.value === 1) {
-			showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
-			return;
-		}
-	}
+	// if (walletDialogName === "recharge") {
+	// 	if (rechargeWithdrawLimit.value === 1) {
+	// 		showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
+	// 		return;
+	// 	}
+	// }
 	// 处理 "withdrawal" 情况
 	if (walletDialogName === "withdrawal") {
-		const isAccountLocked = rechargeWithdrawLimit.value === 1;
-		const isWithdrawalLocked = isAccountLocked || withdrawLimit.value === 1;
-		if (isWithdrawalLocked) {
-			showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
-			return;
-		}
+		// const isAccountLocked = rechargeWithdrawLimit.value === 1;
+		// const isWithdrawalLocked = isAccountLocked || withdrawLimit.value === 1;
+		// if (isWithdrawalLocked) {
+		// 	showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
+		// 	return;
+		// }
 		// 检查是否绑定手机号或设置交易密码
 		const hasUserSetup = isSetPwd?.value || phone?.value;
 		if (!hasUserSetup) {
