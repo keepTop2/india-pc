@@ -31,13 +31,13 @@ const walletLayout = {
 			beforeEnter: (to: any, from: any, next: (bool?: boolean | undefined) => void) => {
 				const haveToken = useHaveToken();
 				if (!haveToken()) return next(false); // 取消导航
-				const UserStore = useUserStore();
-				const { rechargeWithdrawLimit } = toRefs(UserStore.getUserInfo);
-				// 检查账户是否被锁定
-				if (rechargeWithdrawLimit.value === 1) {
-					showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
-					return next(false);
-				}
+				// const UserStore = useUserStore();
+				// const { rechargeWithdrawLimit } = toRefs(UserStore.getUserInfo);
+				// // 检查账户是否被锁定
+				// if (rechargeWithdrawLimit.value === 1) {
+				// 	showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
+				// 	return next(false);
+				// }
 				// 继续导航
 				next();
 			},
@@ -54,16 +54,17 @@ const walletLayout = {
 			beforeEnter: async (to: any, from: any, next: (bool?: boolean | undefined) => void) => {
 				const haveToken = useHaveToken();
 				if (!haveToken()) return next(false); // 取消导航
-				const UserStore = useUserStore();
 				const modalStore = useModalStore();
-				const { rechargeWithdrawLimit, withdrawLimit } = toRefs(UserStore.getUserInfo);
+				const UserStore = useUserStore();
+				// const { rechargeWithdrawLimit, withdrawLimit } = toRefs(UserStore.getUserInfo);
+				// // 检查账户是否被锁定
+				// const isAccountLocked = rechargeWithdrawLimit.value === 1 || withdrawLimit.value === 1;
+				// if (isAccountLocked) {
+				// 	showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
+				// 	return next(false);
+				// }
+
 				const { isSetPwd, phone } = toRefs(UserStore.getUserGlobalSetInfo);
-				// 检查账户是否被锁定
-				const isAccountLocked = rechargeWithdrawLimit.value === 1 || withdrawLimit.value === 1;
-				if (isAccountLocked) {
-					showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
-					return next(false);
-				}
 				// 检查用户是否已设置交易密码或绑定手机号
 				const hasUserSetup = isSetPwd?.value || phone?.value;
 				if (hasUserSetup) {
