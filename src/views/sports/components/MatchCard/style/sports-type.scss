@@ -8,7 +8,7 @@
 			@for $i from 1 through 3 {
 				> div:nth-child(#{$i}),
 				> div:nth-child(#{$i + 3}) {
-					width: nth($widths, $i);
+					width: nth($widths, $i) !important;
 				}
 			}
 		}
@@ -20,7 +20,6 @@
 		}
 	}
 
-	// 篮球
 	&.card-container-2 {
 		.card-content {
 			height: 114px !important;
@@ -57,6 +56,46 @@
 			}
 			&-item.theme {
 				color: var(--Theme);
+			}
+		}
+	}
+
+	&.card-container-4,
+	&.card-container-5,
+	&.card-container-6,
+	&.card-container-8,
+	&.card-container-9 {
+		.market-name-list,
+		.league-markets {
+			> div {
+				width: calc((100% - 12px) / 4) !important;
+			}
+		}
+		.score-list {
+			> div:first-child {
+				display: flex;
+				align-items: center;
+				column-gap: 20px;
+			}
+			&-item {
+				color: var(--Text1);
+				font-family: PingFang SC;
+				font-size: 12px;
+				font-weight: 400;
+			}
+			&-item.theme {
+				color: var(--Theme);
+			}
+		}
+	}
+	&.card-container-3,
+	&.card-container-6,
+	&.card-container-7,
+	&.card-container-43 {
+		.market-name-list,
+		.league-markets {
+			> div {
+				width: calc((100% - 8px) / 3) !important;
 			}
 		}
 	}

@@ -11,7 +11,6 @@
 
 		.league-info {
 			min-width: 284px;
-			// max-width: 284px;
 			flex: 1;
 			display: flex;
 			align-items: center;
@@ -39,6 +38,7 @@
 				display: flex;
 				gap: 4px;
 				padding-right: 4px;
+				width: 100%;
 				.label {
 					width: 116px;
 					height: 100%;
@@ -79,7 +79,7 @@
 		width: 100%;
 		background-color: var(--Bg1);
 		border-bottom: 1px solid var(--Line_2);
-		height: 120px;
+		height: 114px;
 		padding-top: 8px;
 		&:last-child {
 			border-bottom: none;
@@ -213,6 +213,8 @@
 		// 盘口信息
 		.markets-content {
 			height: 100%;
+			width: 100%;
+			flex: 1;
 			&:has(.score-list) {
 				.league-markets {
 					height: calc(100% - 30px);
@@ -221,7 +223,51 @@
 			.score-list {
 				height: 30px;
 				background-color: var(--Bg3);
+				&.total-score {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					width: 100%;
+					> :only-child {
+						& {
+							width: 100%;
+							justify-content: end;
+						}
+					}
+				}
+				.total,
+				.current-outs {
+					display: flex;
+					align-items: center;
+					gap: 6px;
+					padding-right: 10px;
+					> span {
+						color: var(--Text1);
+						font-family: PingFang SC;
+						font-size: 12px;
+						font-weight: 400;
+					}
+					.theme {
+						color: var(--Theme);
+					}
+				}
 				// margin-top: 8px;
+			}
+
+			.score-list {
+				width: 100%;
+				display: flex;
+				align-items: center;
+				gap: 20px;
+				&-item {
+					color: var(--Text1);
+					font-family: PingFang SC;
+					font-size: 12px;
+					font-weight: 400;
+				}
+				&-item.theme {
+					color: var(--Theme);
+				}
 			}
 			.league-markets {
 				width: 100%;

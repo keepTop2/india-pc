@@ -43,7 +43,7 @@ export const Team = ({ name, cardData, isStart }: { name: string; cardData: Card
 					<RedOrYellowCard className="red" name={`${name}RedCard`} cardData={cardData} />
 				</div>
 				{/* 得分 */}
-				<span className="score">{isStart ? cardData?.gameInfo[`live${capitalizeFirstLetter(name)}Score`] : "-"}</span>
+				<span className="score">{isStart ? cardData?.gameInfo[`live${capitalizeFirstLetter(name)}Score`] : ""}</span>
 			</div>
 		</>
 	);

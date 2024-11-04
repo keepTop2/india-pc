@@ -38,7 +38,7 @@ const Header = ({ events, isExpanded, sportType, handleToggle }: CardType & { ha
 			</div>
 
 			{/* 盘口表头，只有在展开状态下显示 */}
-			<div className="market-name-info" style={{ opacity: isExpanded ? 1 : 0 }}>
+			<div className="market-name-info" style={{ display: isExpanded ? "flex" : "none" }}>
 				{/* 渲染盘口类型列表 */}
 				<div className="market-name-list">
 					{SportsCommonFn.betTypeMap[sportType].map((betTypeName) => (
@@ -192,8 +192,6 @@ const MatchCard = defineComponent({
 	},
 	emits: ["toggleDisplay"],
 	setup(props, { emit }) {
-		const events = computed(() => props.events?.events[0]);
-		const { Live, Scoreboard } = useHeaderTools(events);
 		const ShopCatControlStore = useShopCatControlStore();
 		onMounted(() => {
 			// 设置购物车为联赛类型
@@ -209,25 +207,28 @@ const MatchCard = defineComponent({
 					{...props}
 				/>
 				{/* 主体 */}
-				{props.events?.events?.map((item: any) => (
-					<div style={{ display: props.isExpanded ? "flex" : "none" }} className="card-content">
-						{/* 队伍信息 */}
-						<League key={item.eventId} events={item} />
-						{/* 盘口信息 */}
-						<div className="markets-content">
-							<div className="league-markets">
-								<Markets cardData={item} sportType={props.sportType} />
+				{props.events?.events?.map((item: any) => {
+					const { Live, Scoreboard } = useHeaderTools({ value: item });
+					return (
+						<div key={item.eventId} style={{ display: props.isExpanded ? "flex" : "none" }} className="card-content">
+							{/* 队伍信息 */}
+							<League key={item.eventId} events={item} />
+							{/* 盘口信息 */}
+							<div className="markets-content">
+								<div className="league-markets">
+									<Markets cardData={item} sportType={props.sportType} />
+								</div>
+								{/* 底部赛事比分 */}
+								<FooterScore cardData={item} sportType={props.sportType} />
 							</div>
-							{/* 底部赛事比分 */}
-							<FooterScore cardData={item} sportType={props.sportType} />
+							{/* 比分板直播工具栏 */}
+							<div className="league-option">
+								<Scoreboard />
+								<Live />
+							</div>
 						</div>
-						{/* 比分板直播工具栏 */}
-						<div className="league-option">
-							<Scoreboard />
-							<Live />
-						</div>
-					</div>
-				))}
+					);
+				})}
 			</div>
 		);
 	},

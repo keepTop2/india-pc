@@ -5,7 +5,7 @@
 
 	<!-- 联赛数据统计卡片 -->
 	<div :style="computedHeight" class="box-content">
-		<DynamicScroller :items="listData" :min-item-size="34" class="scroller" key-field="leagueId" :prerender="10">
+		<DynamicScroller :items="listData" :min-item-size="154" class="scroller" key-field="leagueId">
 			<template v-slot="{ item, index, active }">
 				<DynamicScrollerItem :item="item" :key="item.leagueId" :active="active" :data-index="index" :data-active="active">
 					<!-- <component
@@ -57,15 +57,11 @@ const props = defineProps({
 	},
 });
 
-setTimeout(() => {
-	console.log(props.listData, "props.listData-");
-}, 2000);
-
 // 根据路由的 sportType 查询对应的组件
-const cardComponent = computed(() => {
-	const sportType = Number(route.query.sportType); // 获取当前 sportType
-	return sportsMap[sportType] || null; // 返回对应的组件，若无则返回 null
-});
+// const cardComponent = computed(() => {
+// 	const sportType = Number(route.query.sportType); // 获取当前 sportType
+// 	return sportsMap[sportType] || null; // 返回对应的组件，若无则返回 null
+// });
 
 // 引入赔率变化事件的相关逻辑
 const { clearSportsOddsChange } = useSportPubSubEvents();

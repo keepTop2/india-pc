@@ -29,7 +29,7 @@
 			</div>
 
 			<!-- 右边侧边栏，只有在特定条件下显示 -->
-			<div class="right-container" v-if="popularLeague.visible">
+			<div class="right-container" v-if="popularLeague.visible && !hideSlider">
 				<Sidebar v-if="SportsInfoStore.getSportsToken" />
 			</div>
 		</div>
@@ -82,8 +82,8 @@ watch(
 	(newValue, oldValue) => {
 		if (newValue !== oldValue) {
 			// sportsBetEvent.clearHotLeagueList();
-			openSportPush(route.query.sportType as string, tabActive.value);
 			pubSub.publish("SkeletonLoading", true);
+			openSportPush(route.query.sportType as string, tabActive.value);
 		}
 	}
 );
@@ -153,6 +153,26 @@ const unSport = () => {
 	// 发布清除热门联赛列表的事件，通知其他组件进行相关处理
 	pubSub.publish("clearHotLeagueList", "on");
 };
+
+const hideSlider = ref(false);
+const handleScreenWidthChange = (event) => {
+	if (event.matches) {
+		// 窄屏处理逻辑
+		hideSlider.value = true;
+	} else {
+		// 宽屏处理逻辑
+		hideSlider.value = false;
+	}
+};
+
+onBeforeMount(() => {
+	const mediaQuery = window.matchMedia("(max-width: 1439px)"); // 设置需要的宽度
+	// 添加监听器
+	mediaQuery.addListener(handleScreenWidthChange);
+
+	// 初次调用，检查当前宽度
+	handleScreenWidthChange(mediaQuery);
+});
 
 const { Banner, BannerController } = userBanner();
 </script>

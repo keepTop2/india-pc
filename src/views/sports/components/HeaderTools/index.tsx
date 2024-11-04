@@ -2,9 +2,8 @@ import { reactive, defineComponent, computed } from "vue";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { Refresh as RefreshIcon } from "@element-plus/icons-vue";
-import { useRoute } from "vue-router";
-import { ElIcon, ElMessage } from "element-plus";
-import { debounce, size } from "lodash-es";
+import { ElIcon } from "element-plus";
+import { debounce } from "lodash-es";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import SportsApi from "/@/api/sports/sports";
 import PubSub from "/@/pubSub/pubSub";
@@ -35,7 +34,6 @@ interface HeaderTools {
 const style = { cursor: "pointer" };
 
 export default (eventsInfo: any): HeaderTools => {
-	const route = useRoute();
 	const { toggleEventScoreboard, sliderData } = useToolsHooks();
 	const SidebarStore = useSidebarStore();
 
@@ -54,7 +52,6 @@ export default (eventsInfo: any): HeaderTools => {
 			const isEventActive = computed(() => sliderData.value?.eventId === eventsInfo.value?.eventId);
 
 			const handleClick = () => {
-				console.log(sliderData.value?.eventId, eventsInfo.value, "比分板按钮");
 				toggleEventScoreboard(eventsInfo.value);
 				state.isOpen = true;
 				SidebarStore.getSidebarStatus("scoreboard");

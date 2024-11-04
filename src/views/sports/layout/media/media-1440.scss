@@ -1,5 +1,5 @@
 @media (min-width: 1440px) and (max-width: 1919px) {
-	/* 在屏幕宽度在1440px到1920px之间时生效的样式 */
+	/* 在屏幕宽度在1440px到1919px之间时生效的样式 */
 	.base-body {
 		width: 1176px !important;
 		:deep(.banner) {
@@ -15,14 +15,10 @@
 			.market-name-list .label {
 				font-size: 12px !important;
 			}
-			.card-header {
-				.market-name-info {
-					width: auto;
-				}
-			}
-			.league-content .league,
-			.league-info {
-				min-width: auto !important;
+
+			.league-info,
+			.content-left {
+				min-width: 248px;
 				width: 248px;
 			}
 
@@ -32,50 +28,45 @@
 			}
 
 			// 足球
-			.football-bet {
+			.card-container-1 {
 				.market-name-list,
 				.league-markets {
-					// 全场独赢
-					> div:nth-child(1) {
-						width: 61px !important;
-					}
-					// 全场让球
-					> div:nth-child(2) {
-						width: 85px !important;
-					}
-					// 全场大小
-					> div:nth-child(3) {
-						width: 103px !important;
-					}
-					// 半场独赢
+					> div:first-child,
 					> div:nth-child(4) {
 						width: 61px !important;
 					}
-					// 半场让球
+					> div:nth-child(2) {
+						width: 85px !important;
+					}
+					> div:nth-child(3) {
+						width: 103px !important;
+					}
 					> div:nth-child(5) {
 						width: 78px !important;
 					}
-					// 半场大小
 					> div:nth-child(6) {
 						width: 92px !important;
 					}
 				}
 			}
 			// 篮球
-			.basketball-bet {
+			.card-container-2 {
 				.market-name-list,
 				.league-markets {
-					// 全场独赢 // 让分 // 总分
-					> div:nth-child(-n + 3) {
+					> div:first-child {
 						width: 90px !important;
-						.marketColumn {
-							width: 100% !important;
-						}
 					}
-					> div:nth-child(4) {
+					> div:nth-child(2),
+					> div:nth-child(3) {
+						width: 93px !important;
+					}
+					> div:last-child {
 						width: 212px !important;
-						.marketColumn {
-							width: 100% !important;
+						> .market-column {
+							width: 212px !important;
+							> .market-content {
+								width: 105px !important;
+							}
 						}
 					}
 				}

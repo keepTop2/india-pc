@@ -15,12 +15,25 @@ export const OddsPrice = ({ decimalPrice, marketStatus }: { decimalPrice: number
 };
 
 // 独赢
-export const Moneyline = ({ cardData, market }: { cardData: any; market: any }) => (
-	<div className="market-item">
-		<div class="label">{cardData?.keyName?.slice(0, 1)}</div>
-		<OddsPrice decimalPrice={cardData.oddsPrice.decimalPrice} marketStatus={market.marketStatus} />
-	</div>
-);
+export const Moneyline = ({ cardData, market }: { cardData: any; market: any }) => {
+	// 赛事 主 客 和 key 转换
+	const transKeyMap: { [key: string]: string } = {
+		"1": "主",
+		h: "主",
+		"2": "客",
+		a: "客",
+		x: "和",
+	};
+
+	const transKey = (key: string) => transKeyMap[key] || "";
+
+	return (
+		<div className="market-item">
+			<div className="label">{transKey(cardData?.key)}</div>
+			<OddsPrice decimalPrice={cardData?.oddsPrice?.decimalPrice} marketStatus={market.marketStatus} />
+		</div>
+	);
+};
 
 // 让球/让分
 export const PointSpread = ({ cardData, market }: { cardData: any; market: any }) => (

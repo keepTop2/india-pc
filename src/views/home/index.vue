@@ -10,6 +10,7 @@
 			<!-- 热门推荐 -->
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
 			<hotGame :hotGameList="hotGameList" v-else-if="hotGameList.length" />
+
 			<div v-if="isLoading">
 				<lobbyGameSkeleton v-for="(count, index) in [6, 3, 6, 1, 5]" :key="index" :skeletonCount="count" />
 			</div>
