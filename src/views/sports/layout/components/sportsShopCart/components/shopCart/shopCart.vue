@@ -319,7 +319,7 @@ const totalAnimationEnd = () => {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background: var(--Theme);
+				background: var(--F1);
 				font-size: 14px;
 				color: #fff;
 				border-radius: 50%;
@@ -434,6 +434,13 @@ const totalAnimationEnd = () => {
 		padding: 0px 15px;
 		max-height: 450px;
 		overflow-y: auto;
+		&::-webkit-scrollbar-thumb {
+			background-color: var(--Bg3);
+			border-radius: 6px;
+		}
+		&::-webkit-scrollbar {
+			width: 6px;
+		}
 	}
 	.footer-container {
 		padding: 0px 15px;

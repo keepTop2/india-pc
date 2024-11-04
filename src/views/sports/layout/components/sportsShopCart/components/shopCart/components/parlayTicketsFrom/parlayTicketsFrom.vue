@@ -76,36 +76,38 @@ const onInputEnter = (item: any) => {
 			}
 		}
 
-		.el-input {
+		:deep(.el-input) {
 			width: 214px;
 			height: 50px;
 			// padding: 19px 10px;
 			border-radius: 8px;
 			background: var(--Bg4);
 
-			:deep() {
-				.el-input__wrapper {
-					background: var(--Bg1);
-					box-shadow: none;
-					border: 1px solid var(--Line_2);
-					border-radius: 8px;
+			.el-input__wrapper {
+				background: var(--Bg1);
+				box-shadow: none;
+				border: 1px solid var(--Line_2);
+				border-radius: 8px;
 
-					.el-input__inner {
-						color: var(--Text1);
-						font-size: 16px;
-						font-weight: 400;
-					}
+				&:focus-within {
+					border-color: var(--Theme); /* 设置聚焦时的边框颜色 */
+				}
+				.el-input__inner {
+					color: var(--Text1);
+					font-size: 16px;
+					font-weight: 400;
+					caret-color: var(--Theme);
+				}
 
-					input {
-						&::placeholder {
-							color: var(--Text2);
-						}
+				input {
+					&::placeholder {
+						color: var(--Text2);
 					}
-					.el-input__suffix {
-						color: var(--Text1);
-						font-size: 16px;
-						font-weight: 400;
-					}
+				}
+				.el-input__suffix {
+					color: var(--Text1);
+					font-size: 16px;
+					font-weight: 400;
 				}
 			}
 		}

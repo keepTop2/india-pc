@@ -88,6 +88,16 @@
 			}
 		}
 	}
+
+	// 棒球比分间距
+	&.card-container-8 {
+		.score-list.total-score {
+			> div {
+				column-gap: 12px !important;
+			}
+		}
+	}
+
 	&.card-container-3,
 	&.card-container-6,
 	&.card-container-7,

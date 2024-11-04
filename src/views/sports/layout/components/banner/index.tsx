@@ -1,7 +1,8 @@
-import { defineComponent, reactive } from "vue";
+import { defineComponent, onBeforeMount, reactive, watch } from "vue";
 import BannerCom from "./banner.vue";
 import SvgIcon from "/@/components/svgIcon/index.vue";
 import Common from "/@/views/sports/utils/common";
+import { useRoute } from "vue-router";
 import "./style/bannerController.scss";
 export default () => {
 	const state = reactive({
@@ -30,6 +31,21 @@ export default () => {
 			return () => (state.show ? <BannerCom /> : <></>);
 		},
 	});
+
+	const route = useRoute();
+	watch(
+		() => route.name,
+		() => {
+			// 详情不展示banner;
+			const hasRoute = ["eventDetail"].includes(route.name as string);
+			state.show = !hasRoute;
+		},
+		{
+			immediate: true,
+		}
+	);
+
+	onBeforeMount(() => {});
 
 	return {
 		BannerController,

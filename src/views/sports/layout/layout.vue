@@ -179,6 +179,7 @@ const { Banner, BannerController } = userBanner();
 
 <style lang="scss" scoped>
 @import "./media/media-1440.scss";
+@import "./media/media-1024.scss";
 .base-body {
 	width: 1308px;
 	height: calc(100vh - 88px);
