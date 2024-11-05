@@ -13,7 +13,7 @@
 					:searchInput="false"
 					label="bankCard"
 					value="bankCard"
-					@change="onChangeBankInfo"
+					@change="onChangeLastInfo"
 				>
 					<template #toggle="{ toggleDropdown }">
 						<div class="cell pointer">
@@ -185,7 +185,7 @@ const getAreaCodeDownBox = () => {
 	});
 };
 
-const onChangeBankInfo = (e: any) => {
+const onChangeLastInfo = (e: any) => {
 	console.log("选择的银行信息", e);
 	Object.assign(formParams, e);
 };
