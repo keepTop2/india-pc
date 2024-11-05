@@ -1,5 +1,8 @@
 <template>
 	<header class="header" :class="collapse ? 'collapse' : ''">
+		<div class="login_plan" @click="router.push('/')">
+			<svg-icon name="logo" width="132px" height="16px" v-if="collapse" />
+		</div>
 		<div class="max-width">
 			<div class="flex-center" v-if="isLogin">
 				<div class="balance_box flex-center">
@@ -7,7 +10,7 @@
 						<img src="/@/assets/common/coin.png" alt="" style="height: 16px" class="mr_4" />
 						<span>{{ Common.thousands(UserStore.getUserInfo.totalBalance) }}</span>
 					</div>
-					<div class="recharge" @click="router.push('/recharge')">{{ $t(`common['充值']`) }}</div>
+					<div class="recharge" @click="openWalletDialog">{{ $t(`common['充值']`) }}</div>
 				</div>
 				<div class="flex-center message" @click="openMessageCenter" v-hover-svg>
 					<svg-icon name="message" size="32px" />
@@ -48,6 +51,7 @@
 import { computed, ref } from "vue";
 import { useMenuStore } from "/@/stores/modules/menu";
 import { useUserStore } from "/@/stores/modules/user";
+import pubsub from "/@/pubSub/pubSub";
 import Common from "/@/utils/common";
 import { onClickOutside } from "@vueuse/core";
 import userRoutes from "/@/router/modules/userMenu";
@@ -97,6 +101,10 @@ const openRegisterModal = () => {
 const openLangCurrenyConfig = () => {
 	modalStore.openModal("LangCurrenyConfig");
 };
+
+const openWalletDialog = () => {
+	pubsub.publish("openWalletDialog");
+};
 const goToPath = (route: any) => {
 	if (route.name === "invite_friends") {
 		modalStore.openModal("InviteFriends");
@@ -132,12 +140,16 @@ const logOut = () => {
 	z-index: 100;
 	padding-left: 260px;
 	transition: all 0.2s ease;
-
+	.login_plan {
+		float: left;
+		height: 16px;
+		padding-left: 10px;
+	}
 	&.collapse {
 		padding-left: 64px;
 	}
 
-	> div {
+	> div:nth-child(2) {
 		flex: 1;
 		display: flex;
 		justify-content: end;

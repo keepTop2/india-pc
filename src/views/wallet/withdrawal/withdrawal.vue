@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Card :header="true">
+		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
 				<div class="header">{{ $t(`wallet['提款']`) }}</div>
 			</template>
@@ -24,8 +24,8 @@
 			</div>
 		</Card>
 
-		<Card>
-			<div class="container mt_20">
+		<Card class="mt_20">
+			<div class="container">
 				<!-- 提款方式 -->
 				<div class="title">{{ $t(`wallet['提款方式']`) }}</div>
 				<div class="list">
@@ -45,7 +45,9 @@
 				<div class="title mt_20">{{ $t(`wallet['收款信息']`) }}</div>
 				<div class="form_container">
 					<!-- 动态表单 -->
-					<component ref="childRef" :is="componentsMapsName[withdrawWayData?.withdrawTypeCode]" :withdrawWayData="withdrawWayData" :withdrawWayConfig="withdrawWayConfig" />
+					<div class="form_main" v-okLoading="loadingShow">
+						<component ref="childRef" :is="componentsMapsName[withdrawWayData?.withdrawTypeCode]" :withdrawWayData="withdrawWayData" :withdrawWayConfig="withdrawWayConfig" />
+					</div>
 					<div class="tips">
 						<svg-icon class="icon" name="wallet-help" />
 						<p>
@@ -56,24 +58,22 @@
 				</div>
 
 				<!-- 手机号提款验证 -->
-				<template v-if="withdrawWayData.withdrawTypeCode !== 'crypto_currency'">
-					<template v-if="!UserStore.getUserGlobalSetInfo.isSetPwd && UserStore.getUserGlobalSetInfo.phone">
-						<div class="title mt_20">{{ $t(`wallet['手机号验证']`) }}</div>
-						<div class="form_container">
-							<div class="form">
-								<div class="cell disabled_cell">
-									<div class="disabled_label">{{ $t(`wallet['手机号']`) }}</div>
-									<div class="disabled_value">{{ UserStore.getUserGlobalSetInfo.areaCode }}&nbsp;&nbsp;{{ common.maskString(UserStore.getUserGlobalSetInfo?.phone) }}</div>
-									<div class="disabled_btn">
-										<CaptchaButton ref="captchaButton" @onCaptcha="onCaptcha" />
-									</div>
-								</div>
-								<div class="cell">
-									<input v-model="state.smsCode" type="text" :placeholder="$t(`wallet['请输入验证码']`)" />
+				<template v-if="!UserStore.getUserGlobalSetInfo.isSetPwd && UserStore.getUserGlobalSetInfo.phone">
+					<div class="title mt_20">{{ $t(`wallet['手机号验证']`) }}</div>
+					<div class="form_container">
+						<div class="form">
+							<div class="cell disabled_cell">
+								<div class="disabled_label">{{ $t(`wallet['手机号']`) }}</div>
+								<div class="disabled_value">{{ UserStore.getUserGlobalSetInfo.areaCode }}&nbsp;&nbsp;{{ common.maskString(UserStore.getUserGlobalSetInfo?.phone) }}</div>
+								<div class="disabled_btn">
+									<CaptchaButton ref="captchaButton" @onCaptcha="onCaptcha" />
 								</div>
 							</div>
+							<div class="cell">
+								<input v-model="state.smsCode" type="text" :placeholder="$t(`wallet['请输入验证码']`)" />
+							</div>
 						</div>
-					</template>
+					</div>
 				</template>
 
 				<!-- 提款金额 -->
@@ -157,10 +157,14 @@ import { walletApi } from "/@/api/wallet";
 import { loginApi } from "/@/api/login";
 import common from "/@/utils/common";
 import { useUserStore } from "/@/stores/modules/user";
+import { useRouter } from "vue-router";
 import { i18n } from "/@/i18n/index";
 import showToast from "/@/hooks/useToast";
+import { useTipsDialog } from "/@/hooks/useTipsDialog";
+import pubsub from "/@/pubSub/pubSub";
 const UserStore = useUserStore();
 const $: any = i18n.global;
+const router = useRouter();
 
 // 定义组件映射
 const componentsMapsName = {
@@ -180,6 +184,15 @@ interface withdrawWayDataRootObject {
 	networkType: string;
 	currencyCode: string;
 }
+
+const props = withDefaults(
+	defineProps<{
+		dialogType?: boolean;
+	}>(),
+	{
+		dialogType: false, // 设置默认值为 false
+	}
+);
 
 const withdrawWayData = ref({} as withdrawWayDataRootObject); // 当前选择的支付方式
 const withdrawWayList = ref([] as withdrawWayDataRootObject[]); // 支付方式列表
@@ -201,8 +214,11 @@ const exchangeRate = ref(0); // 预计到账金额
 
 const passWordShow = ref(false);
 
+const loadingShow = ref(false);
+
 const captchaButton = ref<{
 	startCountdown: () => void;
+	stopCountdown: () => void;
 } | null>(null);
 
 const errorMessage = computed(() => {
@@ -253,7 +269,8 @@ const estimatedAmount = computed(() => {
 
 // 虚拟币约等于到账额度
 const approximateAmount = computed(() => {
-	return common.mul(estimatedAmount.value, exchangeRate.value);
+	const amount = Number(state.amount);
+	return common.sub(amount, common.mul(feeAmount.value, exchangeRate.value));
 });
 
 // 获取冻结金额
@@ -275,14 +292,13 @@ const buttonType = computed(() => {
 
 	// 定义 requiredFields 和 dynamicFields
 	let requiredFields: string[] = [];
-	let dynamicFields = {};
-	let smsCode = "";
+	let dynamicFields = {} as any;
 
 	// 添加 SMS 代码的检查
 	const addSmsCodeCheck = () => {
 		if (!UserStore.getUserInfo.isSetPwd && UserStore.getUserInfo.phone) {
-			smsCode = childRef.value?.formParams?.smsCode || "";
 			requiredFields.push("smsCode");
+			dynamicFields.smsCode = childRef.value?.state?.smsCode || "";
 		}
 	};
 
@@ -301,12 +317,13 @@ const buttonType = computed(() => {
 		case "crypto_currency":
 			dynamicFields = buildDynamicFields();
 			requiredFields = Object.keys(dynamicFields);
+			addSmsCodeCheck();
 			break;
 		default:
 			break;
 	}
-	console.log("requiredFields", requiredFields);
-	console.log("dynamicFields", dynamicFields);
+	// console.log("requiredFields", requiredFields);
+	// console.log("dynamicFields", dynamicFields);
 	// 检查所有属性是否有值
 	const allFieldsHaveValue = requiredFields.every((key) => dynamicFields[key] !== undefined && dynamicFields[key] !== "");
 	// 按钮状态判断
@@ -368,10 +385,27 @@ const onTransactionPasswordEntered = () => {
 
 // 会员提款申请
 const onWithdrawApply = async () => {
+	if (withdrawWayConfig.value.remainingFlow > 0) {
+		useTipsDialog({
+			title: $.t(`wallet["温馨提示"]`),
+			text: $.t(`wallet["流水未完成"]`, { value: withdrawWayConfig.value.remainingFlow, currency: UserStore.userInfo.mainCurrency }),
+			confirmText: $.t(`wallet["去完成"]`),
+			onConfirm: () => {
+				if (props.dialogType) {
+					// 关闭钱包弹窗
+					pubsub.publish("closeWalletDialog");
+				}
+				router.push("/");
+			},
+			onClose: () => {},
+		});
+		return;
+	}
 	if (UserStore.getUserGlobalSetInfo.isSetPwd) {
 		passWordShow.value = true;
 	} else if (UserStore.getUserGlobalSetInfo.phone) {
 		const params = buildParams(); // 如果不需要 withdrawPassWord，可以传空字符串
+		params.smsCode = state.smsCode || "";
 		getWithdrawApply(params);
 	}
 };
@@ -404,6 +438,8 @@ const onRechargeWay = (item: {
 	networkType: string;
 	currencyCode: string;
 }) => {
+	if (item.withdrawTypeCode == withdrawWayData.value.withdrawTypeCode && item.networkType == withdrawWayData.value.networkType) return;
+	captchaButton.value?.stopCountdown();
 	withdrawWayData.value = item;
 	clearParams();
 	getWithdrawConfig(); // 获取通道配置
@@ -419,7 +455,7 @@ const getRechargeWayList = async () => {
 	const res = await walletApi.withdrawWayList().catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
 		if (!res.data || res.data.length == 0) {
-			showToast($.t('wallet["暂无取款通道"]'));
+			showToast($.t('wallet["暂无取款方式"]'));
 			return;
 		}
 		withdrawWayList.value = res.data; // 存储支付方式列表
@@ -430,11 +466,13 @@ const getRechargeWayList = async () => {
 
 // 获取通道配置
 const getWithdrawConfig = async () => {
+	loadingShow.value = true;
 	withdrawWayConfig.value = {};
 	const params = {
 		withdrawWayId: withdrawWayData.value.id,
 	};
 	const res = await walletApi.getWithdrawConfig(params).catch((err) => err);
+	loadingShow.value = false;
 	if (res.code === common.ResCode.SUCCESS) {
 		withdrawWayConfig.value = res.data;
 	}
@@ -480,6 +518,10 @@ const clearParams = () => {
 
 <style scoped lang="scss">
 @import url("./components/formScss.scss");
+
+.half_round_corner {
+	border-radius: 0px 0px 12px 12px;
+}
 
 .header {
 	padding-bottom: 6px;
@@ -592,16 +634,21 @@ const clearParams = () => {
 		}
 	}
 	.form_container {
-		display: grid;
-		gap: 16px;
 		margin-top: 16px;
 		padding: 20px;
 		border-radius: 12px;
 		border: 1px solid var(--Line_2);
 
+		.form_main {
+			width: 100%;
+			min-height: 40px;
+			background-color: var(--Bg1);
+		}
+
 		.tips {
 			display: flex;
 			gap: 8px;
+			margin-top: 16px;
 			.icon {
 				width: 17px;
 				height: 17px;

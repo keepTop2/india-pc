@@ -6,10 +6,10 @@ import { debounce } from "lodash-es";
 import { useLoading } from "/@/directive/loading/hooks";
 import { useUserStore } from "/@/stores/modules/user";
 import router from "/@/router";
-import { useRequestError } from "/@/hooks/requestError";
+// import { useRequestError } from "/@/hooks/requestError";
 import showToast from "../hooks/useToast";
 const { startLoading, stopLoading } = useLoading();
-const { handleRequestError } = useRequestError();
+// const { handleRequestError } = useRequestError();
 import { useModalStore } from "/@/stores/modules/modalStore";
 // 获取 config 配置请求 api
 function getUrl() {
@@ -110,12 +110,13 @@ instance.interceptors.response.use(
 			if (res.type == "image/png") {
 				return res;
 			}
-			if (!response.config.headers.hideToast) {
-				handleRequestError({
-					name: "mainApp",
-					res,
-				});
-			}
+			// if (!response.config.headers.hideToast) {
+			// 	handleRequestError({
+			// 		name: "mainApp",
+			// 		res,
+			// 	});
+			// }
+			if (!response.config.headers.hideToast) showToast(res.message);
 			return res;
 		} else {
 			return res;
@@ -127,6 +128,7 @@ instance.interceptors.response.use(
 		if (error.config.headers.showLoading !== false) {
 			hideLoading();
 		}
+		showToast(error.message);
 		// ElMessage.error(error.message);
 		return Promise.reject(error);
 	}

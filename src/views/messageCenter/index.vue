@@ -15,7 +15,7 @@
 						</div>
 					</div>
 					<div v-if="messageList.length" class="messageList">
-						<Message v-for="item in messageList" :item="item" />
+						<Message v-for="(item, index) in messageList" :item="item" :index="index" @deleteSuccess="deleteSuccess" />
 					</div>
 					<NoData v-else />
 				</div>
@@ -34,6 +34,7 @@ import Message from "./components/Message.vue";
 import { MessageApi } from "/@/api/message";
 import { ElMessage } from "element-plus";
 import NoData from "/@/views/messageCenter/components/NoData.vue";
+import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息状态
 
 const messageCenterVisible = defineModel();
 const tabs = [
@@ -41,6 +42,8 @@ const tabs = [
 	{ name: "活动", type: 1 },
 ];
 const activeTab = ref(2);
+
+const userStore = useUserStore();
 
 // 消息列表
 interface MessageList {
@@ -88,11 +91,17 @@ const handleDeleteAll = async () => {
 	await getMessageList(activeTab.value);
 	ElMessage.success("删除成功");
 };
+// 删除成功回调
+const deleteSuccess = (index: number) => {
+	messageList.value.splice(index, 1);
+};
 
 watch(
 	activeTab,
 	(val) => {
-		getMessageList(val);
+		if (userStore.getUserInfo.token) {
+			getMessageList(val);
+		}
 	},
 	{ immediate: true }
 );
@@ -169,6 +178,9 @@ watch(
 
 				.messageList {
 					overflow: auto;
+					& > div {
+						margin-bottom: 12px;
+					}
 				}
 			}
 		}

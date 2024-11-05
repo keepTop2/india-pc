@@ -147,6 +147,6 @@ export default defineComponent({
 
 /* 隐藏滚动条样式 */
 .slider-content::-webkit-scrollbar {
-	display: none; /* 隐藏滚动条 */
+	display: none;
 }
 </style>

@@ -49,9 +49,9 @@ const modalComponents: Record<string, () => Promise<any>> = {
 	InviteFriends: () => import("/@/views/user/invite_friends/InviteFriends.vue"),
 	...activityModal,
 	...security_center,
-	...message_center,
 	...walletCenter, // 钱包弹窗
 	...user,
+	...message_center,
 };
 
 // 创建 Pinia store

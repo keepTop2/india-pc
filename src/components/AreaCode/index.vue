@@ -160,7 +160,7 @@ onUnmounted(() => {
 	height: 100%;
 	border-radius: 4px;
 	background-color: var(--Bg1);
-	height: 34px;
+	height: 46px;
 	text-align: left;
 	cursor: pointer;
 	color: var(--Text_s);

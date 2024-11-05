@@ -22,12 +22,12 @@ export const walletApi = {
 	},
 
 	// 获取充值配置信息
-	getRechargeConfig: (data = {}, headers = {}) => {
+	getRechargeConfig: (data = {}, headers = { showLoading: true }) => {
 		return useAxiosApi(`/app/userRecharge/api/getRechargeConfig`, {
 			method: "POST",
 			data,
 			headers: {
-				showLoading: true,
+				showLoading: headers.showLoading ?? true, // 优先使用传入参数
 			},
 		});
 	},
@@ -137,6 +137,24 @@ export const walletApi = {
 	// 获取提款汇率
 	getWithdrawExchange: (data = {}, headers = { showLoading: true }) => {
 		return useAxiosApi(`/app/userWithdraw/api/getWithdrawExchange`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
+	// 获取余额
+	getUserPlatformBalance: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/userPlatformCoin/api/getUserPlatformBalance`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
+	// 平台币转换
+	transferAmount: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/userPlatformCoin/api/transfer`, {
 			method: "POST",
 			data,
 			headers,

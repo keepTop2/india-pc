@@ -4,8 +4,8 @@
 			<div class="dialog-header fs_20 Text_s">{{ title }}</div>
 			<div class="dialog-content Text1">{{ text }}</div>
 			<div class="dialog-footer">
-				<div class="cancel curp" @click="handleClose">取消</div>
-				<div class="confirm curp" @click="handleConfirm">确认</div>
+				<div class="cancel curp" @click="handleClose">{{ cancelText }}</div>
+				<div class="confirm curp" @click="handleConfirm">{{ confirmText }}</div>
 			</div>
 		</div>
 	</div>
@@ -22,6 +22,14 @@ const props = defineProps({
 	text: {
 		type: String,
 		require: true,
+	},
+	cancelText: {
+		type: String,
+		default: "取消",
+	},
+	confirmText: {
+		type: String,
+		default: "确认",
 	},
 	onClose: Function,
 	onConfirm: Function,
@@ -84,6 +92,7 @@ const handleConfirm = () => {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		white-space: pre-line;
 	}
 	.dialog-footer {
 		display: flex;

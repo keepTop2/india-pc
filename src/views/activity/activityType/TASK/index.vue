@@ -149,10 +149,10 @@ const tasktype = ref([
 	},
 ]);
 const taskStatus: any = {
-	0: "去完成",
-	1: "领取",
-	2: "已领取",
-	3: "已经过期",
+	3: "去完成",
+	0: "去领取",
+	1: "已领取",
+	2: "已过期",
 };
 const router = useRouter();
 const taskData: any = ref({});

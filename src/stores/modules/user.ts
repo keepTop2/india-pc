@@ -92,6 +92,14 @@ export const useUserStore = defineStore("User", {
 				this.LangList = data;
 			}
 		},
+		// 设置货币语言下拉
+		async setCurrencyList() {
+			const res: any = await CommonApi.getCurrencyList().catch((err: any) => err);
+			const { code, data } = res;
+			if (code == Common.ResCode.SUCCESS) {
+				this.currencyList = data;
+			}
+		},
 		// 设置用户信息
 		setUserGlobalSetInfo(info: Object) {
 			this.userGlobalSetInfo = info;
@@ -129,10 +137,10 @@ export const useUserStore = defineStore("User", {
 		async userInit() {
 			if (this.getUserInfo.token) {
 				this.initUserInfo();
-				this.uplateUserGlobalSetInfo();
 			}
 			await this.setLangDownBox();
 			this.setLangs(this.getLang);
+			this.setCurrencyList();
 			this.initUserMenu();
 		},
 		// 退出登录
@@ -142,6 +150,7 @@ export const useUserStore = defineStore("User", {
 				.then(() => {})
 				.finally(() => {
 					localStorage.removeItem("userInfo");
+					localStorage.removeItem("userGlobalSetInfo");
 					window.location.replace("/");
 				});
 		},
@@ -150,6 +159,7 @@ export const useUserStore = defineStore("User", {
 			const websocketService: any = activitySocketService.getInstance();
 			const sportsBetInfo = useSportsBetInfoStore();
 			this.setBasionInfo();
+			this.uplateUserGlobalSetInfo();
 			const res = await userApi.getIndexInfo().catch((err) => err);
 			const { code, data, message } = res;
 			if (code === Common.ResCode.SUCCESS) {

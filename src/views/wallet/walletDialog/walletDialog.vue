@@ -1,0 +1,222 @@
+<template>
+	<CommonDialog v-model="isModalVisible" @close="clearComponent">
+		<div class="wallet_container">
+			<div class="wallet_main">
+				<div class="wallet_container_header">
+					<svg-icon name="close" size="30px" class="close pointer" @click="isModalVisible = false" />
+					<div class="tabs">
+						<div class="tab" :class="{ tab_active: activeTab === 'recharge' }" @click="setComponent('recharge')">{{ $t(`wallet['存款']`) }}</div>
+						<div class="tab" :class="{ tab_active: activeTab === 'withdrawal' }" @click="setComponent('withdrawal')">{{ $t(`wallet['提款']`) }}</div>
+						<div class="tab" :class="{ tab_active: activeTab === 'currencyConverter' }" @click="setComponent('currencyConverter')">{{ $t(`wallet['转换']`) }}</div>
+					</div>
+				</div>
+				<component
+					:is="currentComponent"
+					:dialogType="true"
+					@RechargeSuccess="RechargeSuccess"
+					@CancelDepositOrder="CancelDepositOrder"
+					@ContinueRecharge="ContinueRecharge"
+				></component>
+			</div>
+		</div>
+	</CommonDialog>
+</template>
+
+<script setup lang="ts">
+import { ref, watch, computed, type Component, toRefs } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import pubsub from "/@/pubSub/pubSub";
+
+import Recharge from "/@/views/wallet/recharge/recharge.vue";
+import Withdrawal from "/@/views/wallet/withdrawal/withdrawal.vue";
+import CurrencyConverter from "/@/views/wallet/currencyConverter/currencyConverter.vue";
+import AccountChangeDetails from "/@/views/wallet/accountChangeDetails/accountChangeDetails.vue";
+
+import { useUserStore } from "/@/stores/modules/user";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import showToast from "/@/hooks/useToast";
+import { i18n } from "/@/i18n/index";
+
+const route = useRoute();
+const router = useRouter();
+const $: any = i18n.global;
+
+const isModalVisible = ref(false);
+
+const componentMap: Record<string, Component> = {
+	recharge: Recharge as Component,
+	withdrawal: Withdrawal as Component,
+	currencyConverter: CurrencyConverter as Component,
+	accountChangeDetails: AccountChangeDetails as Component,
+};
+// 当前激活的标签
+const activeTab = ref(route.query.walletDialogName || "recharge");
+
+// 当前组件
+const currentComponent = computed(() => componentMap[activeTab.value as string] || Recharge);
+
+// 订单充值成功回调
+const RechargeSuccess = (orderNo: string) => {
+	setComponent("accountChangeDetails");
+	router.replace({ query: { walletDialogName: "accountChangeDetails", orderNo } });
+};
+
+// 撤销订单成功回调
+const CancelDepositOrder = () => {
+	clearComponent();
+};
+
+// 继续充值回调
+const ContinueRecharge = () => {
+	setComponent("recharge");
+};
+
+// 订阅弹窗开启事件，并默认设置存款组件
+pubsub.subscribe("openWalletDialog", () => {
+	isModalVisible.value = true;
+	setComponent("recharge");
+});
+
+// 订阅弹窗关闭事件
+pubsub.subscribe("closeWalletDialog", () => {
+	clearComponent();
+});
+
+// 更新当前组件及标签的路由参数
+function setComponent(walletDialogName: string) {
+	const UserStore = useUserStore();
+	const modalStore = useModalStore();
+	// const { rechargeWithdrawLimit, withdrawLimit } = toRefs(UserStore.getUserInfo);
+	const { isSetPwd, phone } = toRefs(UserStore.getUserGlobalSetInfo);
+	// 处理 "recharge" 情况：如果账户锁定，提示用户
+	// if (walletDialogName === "recharge") {
+	// 	if (rechargeWithdrawLimit.value === 1) {
+	// 		showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
+	// 		return;
+	// 	}
+	// }
+	// 处理 "withdrawal" 情况
+	if (walletDialogName === "withdrawal") {
+		// const isAccountLocked = rechargeWithdrawLimit.value === 1;
+		// const isWithdrawalLocked = isAccountLocked || withdrawLimit.value === 1;
+		// if (isWithdrawalLocked) {
+		// 	showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
+		// 	return;
+		// }
+		// 检查是否绑定手机号或设置交易密码
+		const hasUserSetup = isSetPwd?.value || phone?.value;
+		if (!hasUserSetup) {
+			modalStore.openModal("hintDialog");
+			return;
+		}
+	}
+	// 更新激活的标签并更新路由参数
+	activeTab.value = walletDialogName;
+	router.replace({ query: { ...route.query, walletDialogName } });
+}
+
+// 清空路由参数，关闭弹窗
+const clearComponent = () => {
+	router.replace({ query: {} });
+	isModalVisible.value = false;
+};
+
+// 关闭时清空组件信息
+watch(isModalVisible, (visible) => {
+	if (!visible) clearComponent();
+});
+</script>
+
+<style scoped lang="scss">
+.wallet_container {
+	width: 980px;
+	height: 634px;
+	border-radius: 12px;
+	background: var(--Bg);
+	overflow: hidden;
+	// overflow-y: auto;
+
+	.wallet_main {
+		position: relative;
+		height: calc(634px - 40px); // 减去 header 的高度（假设 header 高度为80px）
+		margin: 20px 20px 20px; // 上边距为20px，确保内容与 header 有间距
+		padding: 0; // 移除内边距
+		border-radius: 12px;
+		overflow-y: auto; // 允许纵向滚动
+		/* 自定义滚动条样式 */
+		::-webkit-scrollbar {
+			width: 8px; // 滚动条的宽度
+			background-color: transparent; // 滚动条背景色
+		}
+
+		::-webkit-scrollbar-thumb {
+			background-color: rgba(0, 0, 0, 0.5); // 滚动块的颜色
+			border-radius: 4px; // 滚动块的圆角
+		}
+
+		::-webkit-scrollbar-thumb:hover {
+			background-color: rgba(0, 0, 0, 0.8); // 滚动块悬停时的颜色
+		}
+
+		::-webkit-scrollbar-track {
+			background-color: rgba(255, 255, 255, 0.1); // 滚动条轨道的颜色
+			border-radius: 4px; // 滚动条轨道的圆角
+		}
+	}
+
+	.wallet_main {
+		scrollbar-width: thin; // 设置滚动条为细
+		scrollbar-color: rgba(0, 0, 0, 0.5) rgba(255, 255, 255, 0.1); // 滚动块颜色和轨道颜色
+	}
+
+	.wallet_container_header {
+		position: sticky;
+		top: 0px;
+		z-index: 1;
+		padding: 20px 20px 0px 20px;
+		background-color: var(--Bg1);
+		border-top-left-radius: 12px;
+		border-top-right-radius: 12px;
+	}
+	.close {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+	}
+
+	.tabs {
+		width: 100%;
+		display: flex;
+		gap: 10px;
+		padding-right: 30px;
+		border-bottom: 1px solid var(--Line_1);
+		box-shadow: 0px 1px 0px 0px #343d48;
+
+		.tab {
+			min-width: 120px;
+			height: 40px;
+			padding: 2px;
+			text-align: center;
+			color: var(--Text1);
+			font-family: "PingFang SC";
+			font-size: 22px;
+			font-weight: 400;
+			cursor: pointer;
+		}
+
+		.tab_active {
+			position: relative;
+			color: var(--Text_s);
+			&::after {
+				position: absolute;
+				content: "";
+				bottom: 0px;
+				left: 0px;
+				width: 100%;
+				height: 2px;
+				background-color: var(--Theme);
+			}
+		}
+	}
+}
+</style>
