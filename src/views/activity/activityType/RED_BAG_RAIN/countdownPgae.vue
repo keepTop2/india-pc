@@ -9,32 +9,15 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, onBeforeUnmount, watch } from "vue";
-import redBagImg from "./image/redbag.png";
-import openRedBagImg from "./image/opened_redbag.png";
-import { useCountdown } from "/@/hooks/countdown";
-import activitySocketService from "/@/utils/activitySocketService";
+import { onMounted, ref } from "vue";
 import { useActivityStore } from "/@/stores/modules/activity";
-import { computed } from "vue";
 import { redbagRainSingleton } from "/@/hooks/useRedbagRain";
-import pubsub from "/@/pubSub/pubSub";
-import readyGo from "./image/readyGo.png";
-import RED_BAG_RAIN_Dialog from "./RED_BAG_RAIN_Dialog/index.vue";
 import { activityApi } from "/@/api/activity";
 import Common from "/@/utils/common";
-const activitySocket = activitySocketService.getInstance();
-const { countdown, startCountdown } = useCountdown();
-const canvas = ref<HTMLCanvasElement | null>(null);
+
 const activityStore = useActivityStore();
-const activityData: any = computed(() => activityStore.getCurrentActivityData);
-const isVisible = ref(true);
-const isPaused = ref(false);
 const setp: any = ref(null);
-const showRedBagRainResult = ref(false);
 const getReadyCountdown = ref(3);
-const dialogTitle = ref("温馨提示");
-const settlement: any = ref({});
-let ctx: CanvasRenderingContext2D | null = null;
 
 const initReadyTime = () => {
 	setp.value = 0;

@@ -53,6 +53,12 @@
 	.color_Theme {
 		color: var(--Theme);
 	}
+	.color_F2 {
+		color: var(--F2);
+	}
+	.color_F1 {
+		color: var(--F1);
+	}
 	.Text_s {
 		color: var(--Text_s);
 	}
@@ -79,15 +85,16 @@
 	}
 	.common_input {
 		width: 100%;
-		height: 34px;
+		height: 46px;
 		background: var(--Bg1);
 		border: none;
 		padding: 0 16px;
 		color: var(--Text_s);
 		outline: none;
+		border-radius: 4px;
 	}
 	.verifyError {
-		border: 1px solid var(--Theme);
+		border: 1px solid var(--F1);
 		border-radius: 4px;
 	}
 	.common_input::placeholder {
@@ -107,5 +114,17 @@
 		background: var(--butter);
 		color: var(--Text2);
 		cursor: not-allowed;
+	}
+}
+* {
+	::-webkit-scrollbar {
+		height: 6px;
+	}
+	::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+	::-webkit-scrollbar-thumb {
+		background: var(--Line_2);
+		border-radius: 5px;
 	}
 }

@@ -10,6 +10,9 @@
 			</div>
 		</div>
 		<Modal />
+
+		<!-- 钱包弹窗 -->
+		<WalletDialog />
 	</div>
 </template>
 
@@ -25,6 +28,7 @@ import { useRoute } from "vue-router";
 import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
 import activitySocketService from "../utils/activitySocketService";
 import pubsub from "../pubSub/pubSub";
+import WalletDialog from "/@/views/wallet/walletDialog/walletDialog.vue";
 const websocketService = activitySocketService.getInstance();
 const route = useRoute();
 const MenuStore = useMenuStore();

@@ -82,5 +82,6 @@ defineExpose({
 .iscountdown.send-button:disabled {
 	border: 1px solid var(--Theme);
 	color: var(--Theme);
+	opacity: 0.3;
 }
 </style>
