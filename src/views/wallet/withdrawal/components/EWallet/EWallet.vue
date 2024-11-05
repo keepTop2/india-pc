@@ -1,9 +1,34 @@
 <template>
 	<div class="form">
 		<template v-for="field in inputFields">
-			<div class="cell" v-if="!['userPhone'].includes(field.code) && isFieldVisible(field.code as keyof formParamsRootObject)">
+			<div class="cell" v-if="!['userAccount','userPhone'].includes(field.code) && isFieldVisible(field.code as keyof formParamsRootObject)">
 				<input v-model="formParams[field.model  as keyof formParamsRootObject]" :type="field.type" :placeholder="$t(`wallet['${field.placeholder}']`)" name="" id="" />
 			</div>
+
+			<!-- 用户账号 -->
+			<template v-if="field.code == 'userAccount' && isFieldVisible(field.code as keyof formParamsRootObject)">
+				<DropDown
+					:options="withdrawWayConfig.lastWithdrawInfoVO.userAccount && !formParams['userAccount'] ? [withdrawWayConfig.lastWithdrawInfoVO] : []"
+					v-model="formParams['userAccount']"
+					:searchInput="false"
+					label="userAccount"
+					value="userAccount"
+					@change="onChangeLastInfo"
+				>
+					<template #toggle="{ toggleDropdown }">
+						<div class="cell">
+							<input v-model="formParams['userAccount']" :type="field.type" :placeholder="$t(`wallet['${field.placeholder}']`)" @focus="toggleDropdown" />
+						</div>
+					</template>
+					<template #option="{ option }">
+						<div class="custom-option">
+							<svg-icon class="icon" name="wallet-last" />
+							<span class="label"> {{ option.userAccount }} </span>
+						</div>
+					</template>
+				</DropDown>
+			</template>
+
 			<!-- 手机号 -->
 			<template v-if="field.code == 'userPhone' && isFieldVisible(field.code as keyof formParamsRootObject)">
 				<DropDown :options="areaCodeList" v-model="formParams['areaCode']" v-model:searchValue="searchInput" label="countryName" value="areaCode" @change="onChangeAreaCode">
@@ -104,6 +129,10 @@ const isFieldVisible = (code: keyof formParamsRootObject) => {
 		Array.isArray(props.withdrawWayConfig.collectInfoVOS) &&
 		props.withdrawWayConfig.collectInfoVOS.some((item) => item.filedCode === code)
 	);
+};
+
+const onChangeLastInfo = (e: any) => {
+	Object.assign(formParams, e);
 };
 
 // 获取区号下拉框数据的函数

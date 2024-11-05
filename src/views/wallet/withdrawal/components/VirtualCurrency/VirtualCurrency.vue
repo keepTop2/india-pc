@@ -4,9 +4,32 @@
 			<div v-if="field.code === 'networkType' && isFieldVisible(field.code as keyof formParamsRootObject)" class="cell disabled_cell">
 				<div class="disabled_label">{{ withdrawWayData.networkType }}</div>
 			</div>
-			<div v-if="!['networkType'].includes(field.code) && isFieldVisible(field.code as keyof formParamsRootObject)" class="cell">
+			<!-- <div  class="cell">
 				<input v-model="formParams[field.model  as keyof formParamsRootObject]" :type="field.type" :placeholder="$t(`wallet['${field.placeholder}']`)" name="" id="" />
-			</div>
+			</div> -->
+			<!-- 网络地址 -->
+			<template v-if="!['networkType'].includes(field.code) && isFieldVisible(field.code as keyof formParamsRootObject)">
+				<DropDown
+					:options="withdrawWayConfig.lastWithdrawInfoVO.addressNo && !formParams['addressNo'] ? [withdrawWayConfig.lastWithdrawInfoVO] : []"
+					v-model="formParams['addressNo']"
+					:searchInput="false"
+					label="addressNo"
+					value="addressNo"
+					@change="onChangeLastInfo"
+				>
+					<template #toggle="{ toggleDropdown }">
+						<div class="cell">
+							<input v-model="formParams['addressNo']" :type="field.type" :placeholder="$t(`wallet['${field.placeholder}']`)" @focus="toggleDropdown" />
+						</div>
+					</template>
+					<template #option="{ option }">
+						<div class="custom-option">
+							<svg-icon class="icon" name="wallet-last" />
+							<span class="label"> {{ option.addressNo }} </span>
+						</div>
+					</template>
+				</DropDown>
+			</template>
 		</template>
 	</div>
 </template>
@@ -55,6 +78,10 @@ const isFieldVisible = (code: keyof formParamsRootObject) => {
 		Array.isArray(props.withdrawWayConfig.collectInfoVOS) &&
 		props.withdrawWayConfig.collectInfoVOS.some((item) => item.filedCode === code)
 	);
+};
+
+const onChangeLastInfo = (e: any) => {
+	Object.assign(formParams, e);
 };
 
 // 清空表单参数
