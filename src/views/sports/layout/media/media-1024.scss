@@ -1,0 +1,14 @@
+@media (min-width: 1024px) and (max-width: 1439px) {
+	/* 在屏幕宽度在1024px到440px之间时生效的样式 */
+	.base-body {
+		width: 932px !important;
+	}
+	:deep(.banner) {
+		.swiper-slide {
+			width: calc((100% - 30px) / 2);
+			img {
+				width: 100%;
+			}
+		}
+	}
+}

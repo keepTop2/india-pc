@@ -19,7 +19,7 @@ interface SportMorningTradingType {
 export const useSportMorningTradingStore = defineStore("SportMorningTrading", {
 	state(): SportMorningTradingType {
 		/** 处理早盘日期 */
-		const todayDate = dayjs(SportsCommon.todayDate()).add(1, "day").toISOString();
+		const todayDate = dayjs(SportsCommon.todayDate()).add(2, "day").toISOString();
 		/** 今日15天的开始结束 */
 		const { startDate, endDate } = SportsCommon.getResultDateRange(todayDate, 15);
 

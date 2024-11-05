@@ -11,6 +11,7 @@ import activityRoutes from "/@/router/modules/activity";
 import sportsRoutes from "/@/router/modules/sports/sports";
 
 import walletLayout from "/@/router/modules/wallet";
+import lotteryRoutes from "/@/router/modules/lottery";
 // 登录注册弹窗
 const routes = [
 	//首页模块路由
@@ -133,6 +134,8 @@ const routes = [
 			},
 			//钱包路由
 			walletLayout,
+			// 彩票
+			lotteryRoutes,
 		],
 	},
 

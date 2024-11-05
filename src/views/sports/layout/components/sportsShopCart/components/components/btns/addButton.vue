@@ -29,8 +29,12 @@ const onClickClose = () => {
 	justify-content: center;
 	gap: 2px;
 	border-radius: 4px;
-	background-color: var(--Bg5);
+	color: var(--Theme);
+	border: 1px solid var(--Theme);
 	overflow: hidden;
 	cursor: pointer;
+	svg {
+		color: var(--Theme);
+	}
 }
 </style>

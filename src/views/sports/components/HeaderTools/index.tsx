@@ -2,9 +2,8 @@ import { reactive, defineComponent, computed } from "vue";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { Refresh as RefreshIcon } from "@element-plus/icons-vue";
-import { useRoute } from "vue-router";
-import { ElIcon, ElMessage } from "element-plus";
-import { debounce, size } from "lodash-es";
+import { ElIcon } from "element-plus";
+import { debounce } from "lodash-es";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import SportsApi from "/@/api/sports/sports";
 import PubSub from "/@/pubSub/pubSub";
@@ -35,7 +34,6 @@ interface HeaderTools {
 const style = { cursor: "pointer" };
 
 export default (eventsInfo: any): HeaderTools => {
-	const route = useRoute();
 	const { toggleEventScoreboard, sliderData } = useToolsHooks();
 	const SidebarStore = useSidebarStore();
 
@@ -54,7 +52,6 @@ export default (eventsInfo: any): HeaderTools => {
 			const isEventActive = computed(() => sliderData.value?.eventId === eventsInfo.value?.eventId);
 
 			const handleClick = () => {
-				console.log(SidebarStore.getEventsInfo, eventsInfo.value, "比分板按钮");
 				toggleEventScoreboard(eventsInfo.value);
 				state.isOpen = true;
 				SidebarStore.getSidebarStatus("scoreboard");
@@ -129,7 +126,7 @@ export default (eventsInfo: any): HeaderTools => {
 				{ leading: true }
 			);
 			return () => (
-				<ElIcon style={style} onClick={handleClick} size="18px" class="Text1" style={{ transform: `rotate(${refreshState.rotation}deg)`, transition: "transform 1s ease" }}>
+				<ElIcon onClick={handleClick} size="18px" class="Text1" style={{ transform: `rotate(${refreshState.rotation}deg)`, transition: "transform 1s ease", ...style }}>
 					<RefreshIcon />
 				</ElIcon>
 			);
@@ -149,7 +146,10 @@ export default (eventsInfo: any): HeaderTools => {
 
 	// 收藏按钮
 	const Collection = defineComponent({
-		setup() {
+		props: {
+			size: { type: String, default: "16px" },
+		},
+		setup(props) {
 			const SportAttentionStore = useSportAttentionStore();
 			// 判断是否收藏
 			const isAttention = computed(() => SportAttentionStore.attentionEventIdList.includes(eventsInfo.eventId));
@@ -178,7 +178,7 @@ export default (eventsInfo: any): HeaderTools => {
 				}
 			};
 
-			return () => <SvgIcon style={{ cursor: "pointer" }} onClick={handleClick} name={isAttention.value ? "sports-already_collected" : "sports-collection"} size={16} />;
+			return () => <SvgIcon size={props.size} style={{ cursor: "pointer" }} onClick={handleClick} name={isAttention.value ? "sports-already_collected" : "sports-collection"} />;
 		},
 	});
 

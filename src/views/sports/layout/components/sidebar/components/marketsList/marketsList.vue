@@ -304,6 +304,9 @@ watch(
 		flex: 1;
 		overflow-y: auto;
 		margin-top: 8px;
+		&::-webkit-scrollbar {
+			display: none;
+		}
 		// 盘口子项
 		.selection_item {
 			margin-bottom: 4px;
