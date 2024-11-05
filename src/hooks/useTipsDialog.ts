@@ -4,6 +4,8 @@ import TipsDialog from "/@/components/TipsDialog.vue";
 interface DialogOptions {
 	title?: string;
 	text: string;
+	cancelText?: string;
+	confirmText?: string;
 	onConfirm?: () => void;
 	onClose?: () => void;
 }
@@ -19,6 +21,8 @@ export function useTipsDialog(options: DialogOptions) {
 	const vnode = createVNode(TipsDialog, {
 		title: options.title,
 		text: options.text,
+		cancelText: options.cancelText,
+		confirmText: options.confirmText,
 		onClose: () => {
 			options.onClose && options.onClose();
 			closeDialog();

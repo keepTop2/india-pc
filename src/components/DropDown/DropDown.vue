@@ -7,7 +7,7 @@
 		</slot>
 		<transition name="slide-fade">
 			<ul v-if="isOpen" class="dropdown-menu">
-				<div class="search_input">
+				<div v-if="searchInput" class="search_input">
 					<svg-icon class="search_icon" name="search" />
 					<input type="text" v-model="searchQuery" placeholder="请输入关键字" class="dropdown-search" />
 					<svg-icon v-show="searchQuery" class="search_clear" name="close" @click="searchQuery = ''" />
@@ -27,15 +27,20 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, defineEmits, watch, computed } from "vue";
 
-const props = defineProps<{
-	options: { [key: string]: string }[]; // 选项为任意键名的对象数组
-	defaultLabel?: string;
-	modelValue?: string;
-	searchValue?: string;
-	label?: string; // 显示值的键名
-	value?: string; // 绑定值的键名
-}>();
-
+const props = withDefaults(
+	defineProps<{
+		options: { [key: string]: string }[]; // 选项为任意键名的对象数组
+		defaultLabel?: string;
+		modelValue?: string;
+		searchInput?: boolean;
+		searchValue?: string;
+		label?: string; // 显示值的键名
+		value?: string; // 绑定值的键名
+	}>(),
+	{
+		searchInput: true,
+	}
+);
 const emit = defineEmits<{
 	(e: "update:modelValue", value: string): void;
 	(e: "update:searchValue", value: string): void;
@@ -105,6 +110,7 @@ onBeforeUnmount(() => {
 	border-radius: 8px;
 	background-color: var(--Bg3);
 	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
+	overflow: hidden;
 	z-index: 1000;
 }
 
@@ -144,7 +150,7 @@ input {
 	cursor: pointer;
 }
 .dropdown-list {
-	height: 190px;
+	max-height: 190px;
 	overflow-y: auto; /* 启用垂直滚动 */
 	scrollbar-width: none; /* 适用于 Firefox，隐藏滚动条 */
 	&::-webkit-scrollbar {
