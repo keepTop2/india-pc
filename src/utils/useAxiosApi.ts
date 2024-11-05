@@ -102,7 +102,7 @@ instance.interceptors.response.use(
 			// 登录过期
 			case ResCode.LOGIN_EXPIRE:
 				const userStore = useUserStore();
-				userStore.logOut();
+				// userStore.logOut();
 				break;
 		}
 
@@ -116,6 +116,7 @@ instance.interceptors.response.use(
 			// 		res,
 			// 	});
 			// }
+
 			if (!response.config.headers.hideToast) showToast(res.message);
 			return res;
 		} else {

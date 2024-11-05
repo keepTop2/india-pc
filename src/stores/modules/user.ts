@@ -145,6 +145,8 @@ export const useUserStore = defineStore("User", {
 		},
 		// 退出登录
 		logOut(): void {
+			console.log(3333333);
+
 			loginApi
 				.logout()
 				.then(() => {})
