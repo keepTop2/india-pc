@@ -1,19 +1,22 @@
 <template>
-	<SelectCard :teamData="listData" :expandedCount="expandedPanels.size" @onToggleAllStates="onToggleAllStates(listData)" />
+	<div style="height: 34px; margin: 4px 0">
+		<SelectCard :teamData="listData" :expandedCount="expandedPanels.size" @onToggleAllStates="onToggleAllStates(listData)" />
+	</div>
 
 	<!-- 联赛数据统计卡片 -->
 	<div :style="computedHeight" class="box-content">
-		<DynamicScroller :items="listData" :min-item-size="34" class="scroller" key-field="leagueId" :prerender="10">
+		<DynamicScroller :items="listData" :min-item-size="154" class="scroller" key-field="leagueId">
 			<template v-slot="{ item, index, active }">
 				<DynamicScrollerItem :item="item" :key="item.leagueId" :active="active" :data-index="index" :data-active="active">
-					<component
+					<!-- <component
 						:is="cardComponent"
 						:teamData="item"
 						:dataIndex="index"
 						:isExpanded="!expandedPanels.has(index)"
 						@oddsChange="handleOddsChange"
 						@toggleDisplay="toggleDisplay"
-					/>
+					/> -->
+					<MatchCard :data-index="index" :isExpanded="!expandedPanels.has(index)" :events="item" :sport-type="Number(route.query.sportType)" @toggleDisplay="toggleDisplay" />
 				</DynamicScrollerItem>
 			</template>
 		</DynamicScroller>
@@ -27,6 +30,7 @@ import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import useExpandPanels from "/@/views/sports/hooks/useExpandPanels";
 import { Selection } from "/@/views/sports/models/interface";
+import MatchCard from "/@/views/sports/components/MatchCard";
 // 展开收起总控
 const SelectCard = defineAsyncComponent(() => import("/@/views/sports/components/selectCard/selectCard.vue"));
 
@@ -53,15 +57,11 @@ const props = defineProps({
 	},
 });
 
-setTimeout(() => {
-	console.log(props.listData, "props.listData-");
-}, 2000);
-
 // 根据路由的 sportType 查询对应的组件
-const cardComponent = computed(() => {
-	const sportType = Number(route.query.sportType); // 获取当前 sportType
-	return sportsMap[sportType] || null; // 返回对应的组件，若无则返回 null
-});
+// const cardComponent = computed(() => {
+// 	const sportType = Number(route.query.sportType); // 获取当前 sportType
+// 	return sportsMap[sportType] || null; // 返回对应的组件，若无则返回 null
+// });
 
 // 引入赔率变化事件的相关逻辑
 const { clearSportsOddsChange } = useSportPubSubEvents();
@@ -79,10 +79,10 @@ const handleOddsChange = ({ marketId, selections }: { marketId: number; selectio
 // 计算高度，根据不同的路由动态设置高度
 const computedHeight = computed(() => {
 	// 默认高度
-	let baseHeight = "calc(100vh - 227px)";
+	let baseHeight = "calc(100vh - 247px)";
 	// 如果当前路由是 /sports/morningTrading, 加上 48px
 	if (route.path === "/sports/morningTrading") {
-		baseHeight = `calc(100vh - 276px)`;
+		baseHeight = `calc(100vh - 296px)`;
 	}
 	return {
 		height: baseHeight,

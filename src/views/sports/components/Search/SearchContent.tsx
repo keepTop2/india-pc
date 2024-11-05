@@ -5,7 +5,7 @@ import SportsApi from "/@/api/sports/sports";
 import SvgIcon from "/@/components/svgIcon/index.vue";
 import { SearchResultType } from "./interface/index";
 import { useRoute } from "vue-router";
-import useEventCard from "./EventCard";
+import EventCard from "./EventCard";
 
 interface SearchContentType {
 	SearchContent: ReturnType<typeof defineComponent>;
@@ -26,7 +26,6 @@ export default (): SearchContentType => {
 		loading: false,
 	});
 
-	const { EventCard } = useEventCard();
 	const route = useRoute();
 
 	const handleSearch = Common.debounce(async () => {

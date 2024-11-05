@@ -6,7 +6,7 @@
 		gap: 16px;
 	}
 	.event-card-item {
-		width: 404px;
+		width: calc((100% - 32px) / 3);
 		// height: 172px;
 		border-radius: 12px;
 		overflow: hidden;

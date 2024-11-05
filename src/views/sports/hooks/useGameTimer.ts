@@ -106,7 +106,7 @@ export default (event: { value: { gameInfo: GameInfo; eventStatus: string; globa
 	// });
 
 	// 清除计时器，防止内存泄漏
-	onBeforeUnmount(() => clearInterval(timer.value as number));
+	// onBeforeUnmount(() => clearInterval(timer.value as number));
 
 	return toRefs(state);
 };

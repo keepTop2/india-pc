@@ -19,7 +19,9 @@
 				<div class="back-container">
 					<!-- 主体路由页面显示区域 -->
 					<transition name="fade">
-						<router-view v-cloak />
+						<div>
+							<router-view v-cloak />
+						</div>
 					</transition>
 					<!-- 搜索触发的遮罩 -->
 					<div class="overlay" v-if="isShowMask"></div>
@@ -27,7 +29,7 @@
 			</div>
 
 			<!-- 右边侧边栏，只有在特定条件下显示 -->
-			<div class="right-container" v-if="popularLeague.visible">
+			<div class="right-container" v-if="popularLeague.visible && !hideSlider">
 				<Sidebar v-if="SportsInfoStore.getSportsToken" />
 			</div>
 		</div>
@@ -80,8 +82,8 @@ watch(
 	(newValue, oldValue) => {
 		if (newValue !== oldValue) {
 			// sportsBetEvent.clearHotLeagueList();
-			openSportPush(route.query.sportType as string, tabActive.value);
 			pubSub.publish("SkeletonLoading", true);
+			openSportPush(route.query.sportType as string, tabActive.value);
 		}
 	}
 );
@@ -152,11 +154,32 @@ const unSport = () => {
 	pubSub.publish("clearHotLeagueList", "on");
 };
 
+const hideSlider = ref(false);
+const handleScreenWidthChange = (event) => {
+	if (event.matches) {
+		// 窄屏处理逻辑
+		hideSlider.value = true;
+	} else {
+		// 宽屏处理逻辑
+		hideSlider.value = false;
+	}
+};
+
+onBeforeMount(() => {
+	const mediaQuery = window.matchMedia("(max-width: 1439px)"); // 设置需要的宽度
+	// 添加监听器
+	mediaQuery.addListener(handleScreenWidthChange);
+
+	// 初次调用，检查当前宽度
+	handleScreenWidthChange(mediaQuery);
+});
+
 const { Banner, BannerController } = userBanner();
 </script>
 
 <style lang="scss" scoped>
-// @import "./media/media-1440.scss";
+@import "./media/media-1440.scss";
+@import "./media/media-1024.scss";
 .base-body {
 	width: 1308px;
 	height: calc(100vh - 88px);
