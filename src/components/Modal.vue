@@ -14,18 +14,7 @@ import { computed, onMounted, watch } from "vue";
 import { useModalStore } from "/@/stores/modules/modalStore"; // 确保路径正确
 const modalStore = useModalStore(); // 使用 Pinia store
 const modals = computed(() => modalStore.modals);
-const hasCloseBtn = [
-	"LoginModal",
-	"RegisterModal",
-	"ForgetPassword",
-	"LangCurrenyConfig",
-	"InviteFriends",
-	"ChangePassword",
-	"setEmail",
-	"setPhone",
-	"setWithdrawPwd",
-	"FindWithdrawPwd",
-];
+const hasCloseBtn = ["LoginModal", "RegisterModal", "ForgetPassword", "setLang", "InviteFriends", "ChangePassword", "setEmail", "setPhone", "setWithdrawPwd", "FindWithdrawPwd"];
 const closeModal = () => {
 	modalStore.closeModal(); // 调用 store 中的 closeModal 方法
 };

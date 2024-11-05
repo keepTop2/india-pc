@@ -42,7 +42,6 @@ onUnmounted(() => {
 	right: 50%;
 	left: 50%;
 	transform: translateX(-50%);
-	max-width: 1350px;
 	margin: 0 auto;
 	color: #333;
 	text-align: right;

@@ -1,9 +1,9 @@
 <template>
 	<header class="header" :class="collapse ? 'collapse' : ''">
-		<div class="login_plan" @click="router.push('/')">
-			<svg-icon name="logo" width="132px" height="16px" v-if="collapse" />
-		</div>
-		<div class="max-width">
+		<div class="max-width center">
+			<div class="login_plan">
+				<svg-icon name="logo" width="132px" height="16px" v-if="collapse" class="curp" @click="router.push('/')" />
+			</div>
 			<div class="flex-center" v-if="isLogin">
 				<div class="balance_box flex-center">
 					<div class="balance">
@@ -20,9 +20,9 @@
 					<div>
 						<img v-lazy-load="LangIcon" alt="" @click="openUserMenu" />
 						<div class="userMenu" v-if="isOpenMenu" ref="userMenu">
-							<div v-for="(route, index) in userRoutes" :key="index" @click="goToPath(route)" v-hover-svg>
-								<span><svg-icon :name="'user-' + route.meta.icon" size="18px"></svg-icon></span>
-								<span>{{ $t(`common['${route.meta.title}']`) }}</span>
+							<div v-for="(item, index) in userMenus" :key="index" @click="goToPath(item)" v-hover-svg>
+								<span><svg-icon :name="'user-' + item.icon" size="18px"></svg-icon></span>
+								<span>{{ item.title }}</span>
 							</div>
 							<div class="mt_6px mb_6px login_out" @click="logOut" v-hover-svg>
 								<span><svg-icon name="user-logout" size="18px"></svg-icon></span>
@@ -36,10 +36,6 @@
 			<div class="flex-center" v-else>
 				<div class="loginBtn btn" @click="openLoginModal">{{ $t(`common['登录']`) }}</div>
 				<div class="registerBtn btn" @click="openRegisterModal">{{ $t(`common['注册']`) }}</div>
-			</div>
-
-			<div class="lang">
-				<img v-lazy-load="LangIcon" alt="" @click="openLangCurrenyConfig" />
 			</div>
 
 			<messageCenter v-model="messageCenterVisible" />
@@ -58,7 +54,73 @@ import userRoutes from "/@/router/modules/userMenu";
 import router from "/@/router";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import messageCenter from "/@/views/messageCenter/index.vue";
-
+const userMenus = [
+	{
+		title: "个人信息",
+		icon: "user_info",
+		type: "modal",
+		value: "userInfo",
+	},
+	{
+		title: "存款",
+		icon: "deposit",
+		type: "page",
+		value: "recharge",
+	},
+	{
+		title: "提款",
+		icon: "withdraw",
+		type: "page",
+		value: "withdrawal",
+	},
+	{
+		title: "平台币转换",
+		icon: "currencyConverter",
+		type: "page",
+		value: "currencyConverter",
+	},
+	{
+		title: "交易记录",
+		icon: "transaction_history",
+		type: "page",
+		value: "transactionRecords",
+	},
+	{
+		title: "投注记录",
+		icon: "bet_records",
+		type: "page",
+		value: "bettingRecords",
+	},
+	{
+		title: "安全中心",
+		icon: "security_center",
+		type: "page",
+		value: "security_center",
+	},
+	{
+		title: "VIP俱乐部",
+		icon: "vip",
+		type: "modal",
+		value: "vip",
+	},
+	{
+		title: "邀请好友",
+		icon: "invite_friends",
+		type: "modal",
+		value: "InviteFriends",
+	},
+	{
+		title: "联盟计划",
+		icon: "league",
+		type: "modal",
+	},
+	{
+		title: "意见反馈",
+		icon: "feedback",
+		type: "page",
+		value: "feedback",
+	},
+];
 const modalStore = useModalStore();
 
 const MenuStore = useMenuStore();
@@ -106,17 +168,22 @@ const openWalletDialog = () => {
 	pubsub.publish("openWalletDialog");
 };
 const goToPath = (route: any) => {
-	if (route.name === "invite_friends") {
-		modalStore.openModal("InviteFriends");
-	} else if (route.name === "vip") {
-		modalStore.openModal("vip");
-	} else if (route.name === "userInfo") {
-		modalStore.openModal("userInfo");
-	} else if (route.name === "medal") {
-		modalStore.openModal("medal");
+	if (route.type === "page") {
+		router.push({ name: route.value });
 	} else {
-		router.push({ name: route.name });
+		modalStore.openModal(route.value);
 	}
+	// if (route.name === "invite_friends") {
+	// 	modalStore.openModal("InviteFriends");
+	// } else if (route.name === "vip") {
+	// 	modalStore.openModal("vip");
+	// } else if (route.name === "userInfo") {
+	// 	modalStore.openModal("userInfo");
+	// } else if (route.name === "medal") {
+	// 	modalStore.openModal("medal");
+	// } else {
+	// 	router.push({ name: route.name });
+	// }
 	isOpenMenu.value = false;
 };
 const logOut = () => {
@@ -141,15 +208,19 @@ const logOut = () => {
 	padding-left: 260px;
 	transition: all 0.2s ease;
 	.login_plan {
-		float: left;
 		height: 16px;
 		padding-left: 10px;
+		z-index: 1100;
+		position: absolute;
+		left: 60px;
+		height: 64px;
+		line-height: 64px;
 	}
 	&.collapse {
 		padding-left: 64px;
 	}
 
-	> div:nth-child(2) {
+	> div.center {
 		flex: 1;
 		display: flex;
 		justify-content: end;

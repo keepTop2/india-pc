@@ -1,13 +1,13 @@
 <template>
 	<div class="banner">
 		<img src="./image/image.webp" alt="" style="width: 100%" v-if="!useUserStore().getLogin" />
-	<div class="swiper-box" v-else" >
+		<div class="swiper-box max-width" v-else>
 			<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
 				<SwiperSlide v-for="(item, index) in announcementList" :key="index">
 					<img :src="item" alt="" />
 				</SwiperSlide>
 			</Swiper>
-		</div> 
+		</div>
 	</div>
 </template>
 
@@ -31,16 +31,6 @@ const onSwiper = (swiper: any) => {
 		swiperRef.value = swiper;
 	}
 };
-const goToNextSlide = () => {
-	if (swiperRef.value) {
-		swiperRef.value?.slideNext();
-	}
-};
-const goToPrevSlide = () => {
-	if (swiperRef.value) {
-		swiperRef.value?.slidePrev();
-	}
-};
 </script>
 
 <style scoped lang="scss">
@@ -53,13 +43,13 @@ const goToPrevSlide = () => {
 	}
 	.swiper-box {
 		position: relative;
-		max-width: 1350px;
+
 		margin: 0 auto;
 		margin-top: 20px;
 		padding: 0 10px;
 	}
 	.swiper {
-		max-width: 1350px;
+		max-width: 1308px;
 		padding-bottom: 20px;
 		:deep(.swiper-pagination) {
 			bottom: -2px !important;
