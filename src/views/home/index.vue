@@ -78,6 +78,7 @@ onMounted(async () => {
 		clearTimeout(timer);
 		isLoading.value = false;
 	}, delay);
+
 	// 如果socket连接成功
 	if (websocketService.socket?.readyState) {
 		//直接发订阅

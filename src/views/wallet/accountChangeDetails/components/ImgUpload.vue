@@ -6,7 +6,7 @@
 			<div v-for="(file, index) in files" :key="index" class="preview-item">
 				<img :src="file.preview" alt="Preview" class="preview-image" />
 				<div class="deleteBtn" @click="deleteImg(index)">
-					<img src="../../../../assets/common/upload_delete_icon.png" alt="" />
+					<img :src="upload_delete_icon" alt="" />
 				</div>
 			</div>
 			<label for="fileInput" class="custom-upload-button" v-if="files?.length < max"> </label>
@@ -16,6 +16,7 @@
 
 <script lang="ts" setup>
 import { defineComponent, ref } from "vue";
+import upload_delete_icon from "../../../../assets/common/upload_delete_icon.png";
 const props = defineProps({
 	max: Number,
 	files: {

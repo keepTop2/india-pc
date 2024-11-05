@@ -33,6 +33,27 @@
 					</div>
 				</transition>
 			</div>
+			<div>
+				<div class="menu_item" :class="openMenuIndex == 'helpCenter' ? 'activeMenu' : ''" @click="router.push('/helpCenter')">
+					<span class="menu_icon"><svg-icon name="help_icon" size="17px"></svg-icon></span>
+					<span class="menu_name ellipsis">帮助中心</span>
+				</div>
+				<div class="menu_item" @click="router.push('/helpCenter')">
+					<span class="menu_icon"><svg-icon name="kefu" size="17px"></svg-icon></span>
+					<span class="menu_name ellipsis">线上客服</span>
+				</div>
+				<div class="menu_item" @click="router.push('/helpCenter')">
+					<span class="menu_icon"><svg-icon name="join_us" size="17px"></svg-icon></span>
+					<span class="menu_name ellipsis">加入我们</span>
+				</div>
+				<div class="menu_item" @click="useModalStore().openModal('setLang')">
+					<span class="menu_icon"><img :src="LangIcon" alt="" class="langIcon" /></span>
+					<span class="menu_name ellipsis">语言切换</span>
+					<span class="arrow">
+						<svg-icon name="arrow_right" height="8px" width="14px" />
+					</span>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -44,13 +65,19 @@ import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
 import { useMenuStore } from "/@/stores/modules/menu";
 const MenuStore = useMenuStore();
 import Common from "/@/utils/common";
+import { useUserStore } from "/@/stores/modules/user";
+import { useModalStore } from "/@/stores/modules/modalStore";
 const router = useRouter();
 const route = useRoute();
 const openMenuIndex: Ref<number | string | null> = ref(null);
 const openSubMenuIndex: any = ref(null);
+const UserStore = useUserStore();
 //菜单从缓存中拉取
 const routerObj: any = computed(() => {
 	return MenuStore.getMenu;
+});
+const LangIcon = computed(() => {
+	return UserStore.getLangList.find((item: any) => item.code == UserStore.getLang)?.iconFileUrl;
 });
 
 const collapse = computed(() => {
@@ -66,6 +93,7 @@ watch(
 const setOpenMenu = () => {
 	// 活动高亮
 	if (route.name === "activity") return (openMenuIndex.value = "activity");
+	if (route.name === "helpCenter") return (openMenuIndex.value = "helpCenter");
 	// 体育高亮
 	if (route.fullPath.indexOf("/sports") !== -1) return (openMenuIndex.value = routerObj.value.findIndex((item: any) => item.modelCode == "SBA"));
 	// 其他二级菜单
@@ -146,7 +174,7 @@ const leave = (el: Element) => {
 <style lang="scss" scoped>
 .menu_row {
 	.menu_item {
-		height: 46px;
+		height: 40px;
 		margin: 4px 0;
 		padding: 0 20px;
 		box-sizing: border-box;
@@ -156,13 +184,18 @@ const leave = (el: Element) => {
 		flex-wrap: wrap;
 		font-size: 14px;
 		border-radius: 4px;
-		background: var(--Bg2);
-		color: var(--Text1);
+		color: var(--Text_a);
+		background: var(--Bg3);
+		border-bottom: 2px solid rgba(#9fa5ac, $alpha: 0.1);
 		z-index: 10;
-		line-height: 46px;
+		line-height: 40px;
+		background-size: 100% 100%;
 		.menu_icon {
 			display: flex;
 			align-items: center;
+		}
+		.langIcon {
+			border-radius: 50%;
 		}
 		.menu_name {
 			flex: 4;
@@ -178,10 +211,19 @@ const leave = (el: Element) => {
 	}
 	.menu_item.activeMenu,
 	.menu_item:hover {
-		background: linear-gradient(0, rgba(255, 40, 75, 0.8) 0%, rgba(255, 40, 75, 0.1) 100%);
 		color: var(--Text_a);
+		background: linear-gradient(to top, rgba(255, 40, 75, 0.3), rgba(255, 40, 75, 0.05));
+		border-bottom: 2px solid var(--Theme);
 		.menu_name {
 			color: var(--Text_a);
+		}
+	}
+	.subItem.menu_item.activeMenu,
+	.subItem.menu_item:hover {
+		background: linear-gradient(to top, rgba(255, 40, 75, 0.2), rgba(255, 40, 75, 0.05));
+		border-bottom: 2px solid rgba(#ff284b, 0.5);
+		.menu_name {
+			color: var(--Text1);
 		}
 	}
 
@@ -202,7 +244,7 @@ const leave = (el: Element) => {
 			justify-content: center;
 		}
 		.menu_icon {
-			width: 46px;
+			width: 40px;
 			height: 100%;
 			text-align: center;
 			display: flex;
@@ -215,15 +257,34 @@ const leave = (el: Element) => {
 		}
 		.menu_item.activeMenu,
 		.menu_item:hover {
-			background: linear-gradient(0, rgba(255, 40, 75, 0.8) 0%, rgba(255, 40, 75, 0.1) 100%);
 			color: var(--Text_a);
+			background: linear-gradient(to top, rgba(255, 40, 75, 0.3), rgba(255, 40, 75, 0.05));
+			border-bottom: 2px solid var(--Theme);
 			.menu_name {
 				color: var(--Text_a);
+			}
+		}
+		.subItem.menu_item.activeMenu,
+		.subItem.menu_item:hover {
+			background: linear-gradient(to top, rgba(255, 40, 75, 0.2), rgba(255, 40, 75, 0.05));
+			border-bottom: 2px solid rgba(#ff284b, 0.5);
+			.menu_name {
+				color: var(--Text1);
 			}
 		}
 	}
 }
 .subMenu {
 	transition: max-height 0.2s ease;
+}
+.arrow {
+	width: 20px;
+	height: 20px;
+	background-color: var(--Line_2);
+	padding: 2px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
 }
 </style>

@@ -470,6 +470,10 @@ class Common {
 		const themesStore = useThemesStore();
 		return new URL(`../assets/lang/${i18n.global.locale.value}/${themesStore.themeName}/${path}`, import.meta.url).href;
 	}
+	static getlangThemeImgPath(path: string) {
+		const themesStore = useThemesStore();
+		return new URL(`../assets/${i18n.global.locale.value}/${themesStore.themeName}/${path}`, import.meta.url).href;
+	}
 
 	// 加载脚本
 	static loadScript(url: string): Promise<void> {

@@ -8,7 +8,7 @@
 
 <style scoped lang="scss">
 .skeleton-loader {
-	max-width: 1350px;
+	max-width: 1308px;
 	margin: 0 auto;
 	height: 513px; /* Adjust based on your image size */
 	background: var(--Bg3);

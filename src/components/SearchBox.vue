@@ -5,22 +5,6 @@
 			<svg-icon name="search" size="18px"></svg-icon>
 		</div>
 		<input type="text" v-model="searchQuery" :placeholder="placeholder" class="search-input" :class="inputFocus ? 'onFocus' : ''" @focus="inputFocus = true" />
-
-		<!-- 搜索结果 -->
-		<ul class="result-list" v-if="filteredResults.length > 0 && inputFocus" ref="resultList">
-			<li v-for="item in filteredResults" :key="item.id" @click="Common.goToGame(1)">{{ item.name }}</li>
-		</ul>
-
-		<!-- 历史记录 -->
-		<ul v-else-if="!searchQuery && inputFocus" class="result-list">
-			<li v-for="(item, index) in searchHistoryList" :key="item.id" v-hover-svg @click="Common.goToGame(1)">
-				<svg-icon name="history_icon" size="18px" class="mr_6" />
-				<span>{{ item.name }}</span>
-			</li>
-		</ul>
-		<ul v-else-if="searchQuery && inputFocus" class="noData result-list">
-			<li>没有找到匹配的结果</li>
-		</ul>
 	</div>
 </template>
 
@@ -75,9 +59,6 @@ onClickOutside(resultList, (event) => {
 		color: var(--Text_s);
 	}
 
-	.onFocus {
-		border: 1px solid var(--Theme);
-	}
 	.search_icon {
 		position: absolute;
 		left: 12px;

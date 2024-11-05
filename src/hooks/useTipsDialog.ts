@@ -1,6 +1,5 @@
-// hooks/useRedbagRain.ts
 import { createVNode, render, ref } from "vue";
-import TipsDialog from "/@/components/TipsDialog.vue"; // 你的红包雨组件路径
+import TipsDialog from "/@/components/TipsDialog.vue";
 
 interface DialogOptions {
 	title?: string;

@@ -11,7 +11,7 @@
 			<div class="left_imgs_collapse collapse_icon icon">
 				<SvgIcon name="collapse_icon" :class="collapse ? 'active' : ''" width="24px" height="21px" @click="changeCollpase" />
 			</div>
-			<div class="login_plan" @click="router.push('/')">
+			<div class="login_plan" @click="router.push('/')" v-if="!collapse">
 				<svg-icon name="logo" width="132px" height="16px" />
 			</div>
 		</div>
@@ -46,12 +46,12 @@
 					<!-- 左侧底步功能区 -->
 					<div class="sidebar_bttom">
 						<!-- 帮助中心 -->
-						<div class="helpcenter_container" @click="router.push('/helpCenter')">
+						<!-- <div class="helpcenter_container" @click="router.push('/helpCenter')">
 							<svg-icon name="help_icon" size="17px" />
 							<span class="left_text1">
 								{{ $t(`layout['layout1']['帮助中心']`) }}
 							</span>
-						</div>
+						</div> -->
 						<!-- 白天黑夜  打开侧边栏状态-->
 						<div class="dayOrNight mt_12 mb_10" v-if="!collapse">
 							<!-- 白天 -->
@@ -348,6 +348,7 @@ const changeCollpase = () => {
 	&.collapse {
 		width: 64px;
 		.left_main_header {
+			width: 64px;
 			.collapse_icon {
 				color: var(--Text_a);
 			}

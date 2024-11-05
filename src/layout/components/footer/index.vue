@@ -94,7 +94,7 @@ const getlist = () => {
 
 <style scoped lang="scss">
 .footer1 {
-	height: 544px;
+	height: 539px;
 	background: var(--Bg2) 0% 0% / 15px 15px repeat;
 	filter: drop-shadow(0px 1px 0px var(--Bg2));
 	color: var(--Text_s);
@@ -136,7 +136,7 @@ const getlist = () => {
 	}
 }
 .footer2 {
-	height: 237px;
+	height: 230px;
 	background: #21232a 0% 0% / 15px 15px repeat;
 	filter: drop-shadow(0px 1px 0px var(--Bg2));
 	color: var(--Text_s);
