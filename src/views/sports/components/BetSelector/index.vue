@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, onBeforeUnmount } from "vue";
+import { watch, ref, onUnmounted } from "vue";
 const props = defineProps({
 	value: Number,
 	isRun: { type: Boolean, default: true },
@@ -44,7 +44,7 @@ const clearTimer = () => {
  */
 watch([() => props.value, () => props.id], ([newVal, newId], [oldVal, oldId]) => updateBadgeClass(newVal, oldVal, newId, oldId));
 
-onBeforeUnmount(() => clearTimer());
+onUnmounted(() => clearTimer());
 </script>
 
 <style scoped lang="scss">

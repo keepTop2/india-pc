@@ -1,9 +1,9 @@
 import { defineComponent, onMounted, reactive } from "vue";
 import SportsApi from "/@/api/sports/sports";
-import useEventCard from "./EventCard";
+import EventCard from "./EventCard";
 import SvgIcon from "/@/components/svgIcon/index.vue";
 import "./style/hotRecommend.scss";
-
+import "./style/eventCard.scss";
 interface HotStateType {
 	list: Record<string, any>[];
 	loading: Boolean;
@@ -37,7 +37,6 @@ export default () => {
 	const HotRecommend = defineComponent({
 		setup() {
 			onMounted(() => GetPromotions());
-			const { EventCard } = useEventCard();
 			return () => (
 				<div className="hot-recommend">
 					<div className="hot-title">

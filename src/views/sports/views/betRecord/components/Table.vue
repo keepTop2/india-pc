@@ -87,7 +87,7 @@
 				<!-- 结果 -->
 				<el-table-column :label="$t(`sports.betRecord['结果']`)" width="116" align="center" :resizable="false">
 					<template #default="{ row, column }">
-						<div class="bet-result" :class="[isSettlement ? (row.settlementPrice > 0 ? 'color_sussess' : row.settlementPrice == 0 ? 'color_f1' : 'color_Theme') : 'Text_s']">
+						<div class="bet-result" :class="[isSettlement ? (row.settlementPrice > 0 ? 'color_Theme' : row.settlementPrice == 0 ? 'color_sussess' : 'text-f2') : 'Text_s']">
 							{{ isSettlement ? Common.formatFloat(row.settlementPrice) : "-" }}
 						</div>
 					</template>
@@ -142,23 +142,23 @@ const computedStatusLabel = computed(() => {
 	return {
 		[SportStatusEnum.HalfWon]: {
 			label: "半赢",
-			className: "text-success", // 字体颜色 var(--Success)
+			className: "text-theme", // 字体颜色 var(--Success)
 		},
 		[SportStatusEnum.HalfLose]: {
 			label: "半输",
-			className: "text-theme", // 字体颜色 var(--Theme)
+			className: "text-f2", // 字体颜色 var(--Theme)
 		},
 		[SportStatusEnum.Won]: {
 			label: "赢",
-			className: "text-success", // 字体颜色 var(--Success)
+			className: "text-theme", // 字体颜色 var(--Success)
 		},
 		[SportStatusEnum.Lose]: {
 			label: "输",
-			className: "text-theme", // 字体颜色 var(--Theme)
+			className: "text-f2", // 字体颜色 var(--Theme)
 		},
 		[SportStatusEnum.Void]: {
 			label: "作废",
-			className: "text-text1", // 字体颜色 var(--Text1)
+			className: "text-success", // 字体颜色 var(--Text1)
 		},
 		[SportStatusEnum.Running]: {
 			label: "进行中",
@@ -170,11 +170,11 @@ const computedStatusLabel = computed(() => {
 		},
 		[SportStatusEnum.Reject]: {
 			label: "已取消",
-			className: "text-text1", // 字体颜色 var(--Text1)
+			className: "text-success", // 字体颜色 var(--Text1)
 		},
 		[SportStatusEnum.Refund]: {
 			label: "已退款",
-			className: "text-text1", // 字体颜色 var(--Text1)
+			className: "text-success", // 字体颜色 var(--Text1)
 		},
 		[SportStatusEnum.Waiting]: {
 			label: "等待中",
@@ -216,6 +216,9 @@ function formatDateTime(dateTimeStr: Date | string): string {
 }
 .text-theme {
 	color: var(--Theme);
+}
+.text-f2 {
+	color: var(--F2);
 }
 .text-text1 {
 	color: var(--Text1);

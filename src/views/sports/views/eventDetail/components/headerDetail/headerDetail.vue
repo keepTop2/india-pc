@@ -11,10 +11,13 @@
 					<span>{{ show ? "显示" : "隐藏" }}</span>
 					<svg-icon :name="show ? 'eyes' : 'eyes_on'" size="16px"></svg-icon>
 				</div>
-				<!-- <Scoreboard />
-				<Live /> -->
+				<template v-if="hideLive">
+					<Scoreboard />
+					<Live />
+				</template>
+
 				<svg-icon class="saveFollow" :name="isAttention ? 'sports-already_collected' : 'sports-collection'" @click="attentionEvent(true)" size="20" />
-				<Refresh />
+				<!-- <Refresh @onChange="handleRefresh" /> -->
 				<!-- <svg-icon name="sports-shuaxin" :class="{ cycling: loading }" size="20" @click="$emit('refresh')" /> -->
 			</div>
 		</div>
@@ -32,16 +35,16 @@
 				<!-- 未开赛计分板显示 -->
 				<NotStarted v-else :eventsInfo="sportInfo" />
 
-				<!-- <template v-if="SidebarStore.sidebarStatus === 'live' && toolState.isOpen">
+				<template v-if="SidebarStore.sidebarStatus === 'live' && toolState.isOpen">
 					<VideoSource class="detail-video" :source="SidebarStore.getLiveUrl" />
-				</template> -->
+				</template>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref, toRefs } from "vue";
+import { computed, defineAsyncComponent, ref, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import SportsApi from "/@/api/sports/sports";
 import SportsCommonFn from "/@/views/sports/utils/common";
@@ -172,10 +175,33 @@ const handleGoBack = () => {
 };
 
 // 工具栏按钮
-// const gameState = computed(() => props.sportInfo);
-// const { Live, Scoreboard, Refresh, toolState } = useHeaderTools(gameState);
+const gameState = computed(() => props.sportInfo);
+const { Live, Scoreboard, Refresh, toolState } = useHeaderTools(gameState);
 
-// const { VideoSource } = useVideo();
+const hideLive = ref(false);
+const handleScreenWidthChange = (event) => {
+	if (event.matches) {
+		// 窄屏处理逻辑
+		hideLive.value = true;
+	} else {
+		// 宽屏处理逻辑
+		hideLive.value = false;
+	}
+};
+onBeforeMount(() => {
+	const mediaQuery = window.matchMedia("(max-width: 1439px)"); // 设置需要的宽度
+	// 添加监听器
+	mediaQuery.addListener(handleScreenWidthChange);
+
+	// 初次调用，检查当前宽度
+	handleScreenWidthChange(mediaQuery);
+});
+
+const handleRefresh = () => {
+	// emits("refresh");
+};
+
+const { VideoSource } = useVideo();
 </script>
 
 <style lang="scss" scoped>
@@ -310,6 +336,9 @@ const handleGoBack = () => {
 	}
 	:deep(.scoreboard-container) {
 		height: 276px !important;
+		.scoreboard {
+			height: 100% !important;
+		}
 		& > div:nth-child(2) {
 			display: none;
 		}

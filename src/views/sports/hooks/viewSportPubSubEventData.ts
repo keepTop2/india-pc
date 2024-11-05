@@ -78,7 +78,9 @@ export default (function () {
 
 			// 收到数据推送派发 使用Object.assign来确保响应式数据的正确更新
 			Object.assign(this.viewSportData, viewSportData);
-			pubSub.publish("SkeletonLoading", false);
+			setTimeout(() => {
+				pubSub.publish("SkeletonLoading", false);
+			}, 1000);
 		}
 
 		public setSidebarData(sidebarData: SportViewData): void {
