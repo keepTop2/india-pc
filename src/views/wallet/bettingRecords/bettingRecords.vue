@@ -69,7 +69,7 @@
 								</div>
 							</template>
 						</el-table-column>
-						<el-table-column v-else :label="item.label" :prop="item.props" />
+						<el-table-column v-else :label="item.label" :prop="item.props" align="center" />
 					</template>
 				</el-table>
 			</div>
@@ -153,7 +153,7 @@ const pageQuery = () => {
 		winOrLoseAmount.value = tableData.value.reduce((a: any, b: any) => {
 			return a + b.winLossAmount;
 		}, 0);
-    getTableType()
+		getTableType();
 	});
 };
 // 获取 查询目录
