@@ -19,7 +19,7 @@
 		<div class="p_24">
 			<div class="cell flex_space-between">
 				<span>奖励</span>
-				<span class="Text_s">{{ currentMedal.rewardAmount }}{{ useUserStore().getUserInfo.platCurrencySymbol }}</span>
+				<span class="Text_s">{{ useUserStore().getUserInfo.platCurrencySymbol }} {{ currentMedal.rewardAmount }}</span>
 			</div>
 			<div class="line"></div>
 			<div class="cell flex_space-between">

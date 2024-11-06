@@ -39,6 +39,8 @@
 import { HomeApi } from "/@/api/home";
 import showToast from "/@/hooks/useToast";
 import router from "/@/router";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import { useUserStore } from "/@/stores/modules/user";
 import Common from "/@/utils/common";
 import { useRoute } from "vue-router";
 interface gameInfo {
@@ -70,16 +72,20 @@ const props = defineProps({
 	},
 });
 const collectGame = (game: gameInfo) => {
-	const params = {
-		gameId: game.id,
-		type: !game.collect,
-	};
-	game.collect = !game.collect;
-	HomeApi.collection(params).then((res) => {
-		if (res.code === Common.ResCode.SUCCESS) {
-			showToast(!game.collect ? "取消收藏成功" : "收藏成功");
-		}
-	});
+	if (useUserStore().getLogin) {
+		const params = {
+			gameId: game.id,
+			type: !game.collect,
+		};
+		game.collect = !game.collect;
+		HomeApi.collection(params).then((res) => {
+			if (res.code === Common.ResCode.SUCCESS) {
+				showToast(!game.collect ? "取消收藏成功" : "收藏成功");
+			}
+		});
+	} else {
+		useModalStore().openModal("LoginModal");
+	}
 };
 const gotoVenue = (gameInfo: any) => {
 	if (route.query.gameOneId) {

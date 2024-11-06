@@ -19,7 +19,7 @@
 						placeholder="请详细描述您的问题或建议，我们会以最快速度给您及时的反馈，我们非常重视您的反馈！"
 						maxlength="500"
 					></textarea>
-					<div class="textLength">100/500</div>
+					<div class="textLength">{{ state.content.length }}/500</div>
 				</div>
 				<div class="cell Text_s mb_16 mt_20"><span class="color_Theme">*</span>问题截图 <span class="fs_12 Text2">最大不超过5 M，最多3张， 支持格式：jpg.png.jpeg</span></div>
 				<div>
@@ -205,6 +205,7 @@ const getfeedbackList = () => {
 }
 .textareaBox {
 	position: relative;
+	max-width: 700px;
 }
 .textLength {
 	position: absolute;
