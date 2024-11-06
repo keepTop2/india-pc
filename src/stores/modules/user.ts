@@ -14,6 +14,7 @@ import { loginApi } from "/@/api/login";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import activitySocketService from "/@/utils/activitySocketService";
 import pubsub from "/@/pubSub/pubSub";
+import { useCollectGamesStore } from "./collectGames";
 
 interface StoreUser {
 	lang: string;
@@ -160,8 +161,11 @@ export const useUserStore = defineStore("User", {
 		async initUserInfo() {
 			const websocketService: any = activitySocketService.getInstance();
 			const sportsBetInfo = useSportsBetInfoStore();
+			const collectGamesStore = useCollectGamesStore();
 			this.setBasionInfo();
 			this.uplateUserGlobalSetInfo();
+			// 设置收藏的游戏
+			collectGamesStore.setCollectGamesList();
 			const res = await userApi.getIndexInfo().catch((err) => err);
 			const { code, data, message } = res;
 			if (code === Common.ResCode.SUCCESS) {
