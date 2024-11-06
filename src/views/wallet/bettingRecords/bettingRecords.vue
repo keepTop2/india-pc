@@ -34,35 +34,39 @@
 						</span>
 						<span class="ml_20">
 							<span>输赢金额：</span>
-							<span class="loseOrWin_color">{{ pageData.platCurrencyTotal || 0 }} {{ pageData.platCurrencyCode }}</span></span>
+							<span class="loseOrWin_color">{{ pageData.platCurrencyTotal || 0 }} {{ pageData.platCurrencyCode }}</span>
+						</span>
 					</div>
 					<div class="flex-center">
 						<img src="./image/fudai.png" alt="" width="20px" />
 						您有4个待领取福利
 					</div>
 				</div>
-				<div class="table">
-					<div class="tr theader">
-						<div class="td" style="width: 25%">订单号</div>
-						<div class="td" style="width: 15%">类型</div>
-						<div class="td" style="width: 15%">名称</div>
-						<div class="td" style="width: 13%">奖励</div>
-						<div class="td" style="width: 20%">时间</div>
-						<div class="td" style="width: 12%">操作</div>
-					</div>
-					<div class="tbody">
-						<div class="tr" v-for="item in tableData">
-							<div class="td Text1" style="width: 25%">{{ item.orderNo }}</div>
-							<div class="td Text1" style="width: 15%">{{ item.detailType }}</div>
-							<div class="td Text1" style="width: 15%">{{ item.welfareCenterRewardTypeText }}</div>
-							<div class="td Text_s" style="width: 13%">{{ item.amount }}{{ item.currencyCode }}</div>
-							<div class="td Text1" style="width: 20%">{{ dayjs(item.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
-							<div class="td" style="width: 12%">
-								
-							</div>
-						</div>
-					</div>
-				</div>
+
+
+				<el-table class="table-style-expand" :data="tableData"  style="width: 100%" border>
+
+					<template  v-for="(item,index) in tableColumns"  :key="index" >
+						<el-table-column type="expand" :label="item.label" width="164px" :prop="item.props" v-if="item.type == 'select'">
+								<template #default="props">
+									<div class="dropDown_line">
+										<div class="firLine">
+										<div style="width:50%" class="fir_item">{{ props.row.eventInfo }}</div>
+										<div style="width:25%" class="fir_item">投注内容</div>
+										<div style="width:25%" class="fir_item">赔率</div>
+										<div style="width:50%;" class="fir_item">{{  props.row.teamInfo}}</div>
+										<div style="width:25%" class="fir_item">{{  props.row.betContent}}</div>
+										<div style="width:25%" class="fir_item">{{  props.row.odds}}</div>
+									</div>
+									<div class="winlogo">
+										<img :src="props.row.orderClassify == '1'?winlogo:loselogo" alt="">
+									</div>
+									</div>
+								</template>
+						</el-table-column>
+						<el-table-column v-else :label="item.label" :prop="item.props" />
+					</template>
+				</el-table>
 			</div>
 			<div class="flex-center Pagination" v-if="tableData.length">
 				<Pagination v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="pageData.totalSize" @sizeChange="sizeChange" @pageChange="pageQuery" />
@@ -72,31 +76,36 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref ,watch} from "vue";
 import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
 import showToast from "/@/hooks/useToast";
+import colmuns, { columnsType, columnType } from './bettingRecordsColumns';
+import loselogo from '/@/assets/zh-CN/wallet/loselogo.png';
+import winlogo from '/@/assets/zh-CN/wallet/winlogo.png';
 
 const showDatePicker = ref(false);
-
+const tableColumns = ref<columnType[]>([])
+const colmunsrow = ref<columnsType>(colmuns)
 const params = reactive({
 	betStartTime: new Date("2024-09-08 00:00:00").getTime(),
 	betEndTime: new Date("2024-12-08 00:00:00").getTime(),
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "-1",
-	welfareCenterRewardType: "-1",
+	welfareCenterRewardType: "1",
+	venueType:'1'
 });
 const today = dayjs();
 const range = reactive({
 	start: new Date(today.subtract(90, "day").format("YYYY/MM/DD")),
 	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
 });
-const minDate = today.subtract(90, "day").format("YYYY/MM/DD");
+const minDate = today.subtract(180, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
 
 const activityReceiveStatusOptions: any = ref([]);
-const welfareCenterRewardTypeOptions: any = ref([]);
+const welfareCenterRewardTypeOptions = ref<{text:string,value:string}[]>([]);
 const tableData: any = ref([]);
 const pageData = reactive({
 	totalSize: "",
@@ -121,7 +130,8 @@ const pageQuery = () => {
 	params.betStartTime = new Date(range.start).getTime();
 	params.betEndTime = new Date(range.end).getTime();
 	welfareCenterApi.tzPageQuery(params).then((res) => {
-		tableData.value = res.data.pages.records;
+		if(!res.data) return 
+		tableData.value =res.data.sabOrderList
 		pageData.totalSize = res.data.totalSize;
 		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
 		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
@@ -138,10 +148,6 @@ const getDownBox = () => {
 		welfareCenterRewardTypeOptions.value = res.data.venue_type.map((item:any) => {
 			return { text: item.value, value: item.code };
 		});
-		welfareCenterRewardTypeOptions.value.unshift({
-			text: "全部类型",
-			value: "-1",
-		});
 
 		activityReceiveStatusOptions.value = res.data.order_status_client.map((item:any) => {
 			return { text: item.value, value: item.code };
@@ -153,6 +159,16 @@ const getDownBox = () => {
 		
 	});
 };
+
+watch([()=> params.welfareCenterRewardType,()=>welfareCenterRewardTypeOptions.value], (val) => {
+	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == val[0])
+	
+	if (!selectCurrent || !selectCurrent.text) return 
+	console.log(val,selectCurrent,'selectCurrent')
+
+	tableColumns.value = colmunsrow.value[selectCurrent.text]
+	
+})
 
 const sizeChange = (pageSize: number) => {
 	params.pageNumber = 1;
@@ -171,7 +187,32 @@ const handleReceive = (item: any) => {
 	});
 };
 
-
+const headerStyle = ({ row, column, rowIndex, columnIndex }:any)=>{
+	if (rowIndex == 0) {
+		row[0].colSpan = 2;
+		row[3].rowSpan = 2;
+	}
+}
+const objectSpanMethod = ({
+  row,
+  column,
+  rowIndex,
+  columnIndex,
+}: any) => {
+  if (columnIndex === 0) {
+    if (rowIndex  === 0) {
+      return {
+        rowspan: 1,
+        colspan: 2,
+      }
+    } else {
+      return {
+        rowspan: 0,
+        colspan: 0,
+      }
+    }
+  }
+}
 const handleQuery = () => {
 	params.pageNumber = 1;
 	pageQuery();
@@ -283,5 +324,25 @@ const handleQuery = () => {
 	.Pagination {
 		margin-top: 12px;
 	}
+}
+.dropdown_row{
+	display: flex;
+	align-items: center;
+}
+.dropDown_line{
+	display: flex;
+	align-items: center;
+	.firLine{
+		width: 80%;
+		display: flex;
+		flex-wrap: wrap;
+		.fir_item{
+			padding: 6px 12px 8px;
+		}
+	}
+	.winlogo{
+		width:20%
+	}
+
 }
 </style>
