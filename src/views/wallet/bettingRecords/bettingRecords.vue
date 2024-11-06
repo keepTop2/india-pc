@@ -58,7 +58,7 @@
 							<div class="td Text1" style="width: 15%">{{ item.welfareCenterRewardTypeText }}</div>
 							<div class="td Text_s" style="width: 13%">{{ item.amount }}{{ item.currencyCode }}</div>
 							<div class="td Text1" style="width: 20%">{{ dayjs(item.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
-							<div class="td" style="width: 12%"></div>
+							<!-- <div class="td" style="width: 12%"></div> -->
 						</div>
 					</div>
 				</div>
