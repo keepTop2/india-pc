@@ -27,7 +27,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="content">
+		<div v-if="hasData" class="content">
 			<div>
 				<div class="flex_space-between Text_s fs_14 mb_12">
 					<div>
@@ -49,7 +49,6 @@
 						您有4个待领取福利
 					</div> -->
 				</div>
-
 				<el-table :class="[tableColumns[0] && tableColumns[0].type == 'select' ? 'table-style-expand' : 'table-style-common']" :data="tableData" style="width: 100%" border>
 					<template v-for="(item, index) in tableColumns" :key="index">
 						<el-table-column type="expand" :label="item.label" width="164px" :prop="item.props" v-if="item.type == 'select'">
@@ -71,23 +70,26 @@
 						</el-table-column>
 						<el-table-column v-else :label="item.label" :prop="item.props" align="center" />
 					</template>
+					<template #empty>{{ $t(`common['暂无数据']`) }}</template>
 				</el-table>
 			</div>
 			<div class="flex-center Pagination" v-if="tableData.length">
 				<Pagination v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="pageData.totalSize" @sizeChange="sizeChange" @pageChange="pageQuery" />
 			</div>
 		</div>
+		<NoData v-else info="暂无投注记录" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, watch } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
 import showToast from "/@/hooks/useToast";
 import colmuns, { columnsType, columnType } from "./bettingRecordsColumns";
 import loselogo from "/@/assets/zh-CN/wallet/loselogo.png";
 import winlogo from "/@/assets/zh-CN/wallet/winlogo.png";
+import NoData from "/@/views/messageCenter/components/NoData.vue";
 
 const showDatePicker = ref(false);
 const tableColumns = ref<columnType[]>([]);
@@ -123,6 +125,7 @@ const pageData = reactive({
 	mainCurrencyTotal: "",
 });
 const total = ref(0);
+const hasData = ref(false);
 const updateRange = (value: any) => {
 	range.start = value[0];
 	range.end = value[1];
@@ -139,6 +142,7 @@ const pageQuery = () => {
 	// params.orderClassifyList = +params.receiveStatus;
 	params.venueType = +params.venueType;
 	welfareCenterApi.tzPageQuery(params).then((res) => {
+		console.log(res, "res");
 		if (!res.data) return;
 		tableData.value = res.data.sabOrderList;
 		pageData.totalSize = res.data.totalSize || 999999;
@@ -155,6 +159,12 @@ const pageQuery = () => {
 		winOrLoseAmount.value = tableData.value.reduce((a: any, b: any) => {
 			return a + b.winLossAmount;
 		}, 0);
+
+		hasData.value =
+			res.data.sabOrderList?.length > 0 ||
+			res.data.eventOrderPage?.records?.length > 0 ||
+			res.data.basicOrderPage?.records?.length > 0 ||
+			res.data.tableOrderPage?.records?.length > 0;
 		getTableType();
 	});
 };
@@ -381,10 +391,15 @@ function getTableType() {
 
 	.winlogo {
 		width: 20%;
+		text-align: center;
 	}
 }
 
 :deep(.date-picker) {
 	z-index: 9999;
+}
+
+:deep(.nodata) {
+	height: 70vh;
 }
 </style>
