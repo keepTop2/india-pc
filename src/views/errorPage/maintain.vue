@@ -8,14 +8,14 @@
 			<h1 class="fs_46px">系统维护中</h1>
 			<p class="fw_700 Text2_1 mb_50">尊敬的用户，当前游戏正在维护中，维护时间： 2023-12-19 18:43:00～2023-12-19 19:00:00</p>
 
-			<button class="common_btn">联系客服</button>
+			<button class="common_btn" @click="Common.getSiteCustomerChannel">联系客服</button>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import router from "/@/router";
-
+import Common from "/@/utils/common";
 const refresh = () => {
 	window.location.reload();
 };

@@ -12,14 +12,14 @@
 				<button class="cancel" @click="router.back()">返回</button>
 				<button class="refresh" @click="refresh">刷新</button>
 			</div>
-			<button class="common_btn">联系客服</button>
+			<button class="common_btn" @click="Common.getSiteCustomerChannel">联系客服</button>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import router from "/@/router";
-
+import Common from "/@/utils/common";
 const refresh = () => {
 	window.location.reload();
 };
