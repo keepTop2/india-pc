@@ -1,5 +1,5 @@
 <template>
-	<form class="loginWrapper">
+	<div class="loginWrapper">
 		<div class="login_right_form">
 			<!-- 登录标题 -->
 			<div class="login_text fs_24 mb_27">
@@ -79,15 +79,15 @@
 			</div>
 		</div>
 		<!-- 验证码容器 -->
-		<article>
+		<p>
 			<p id="captcha-element" ref="captchaBtn" />
 			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript" v-if="HcaptchaMounted" />
-		</article>
-	</form>
+		</p>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { onBeforeMount, onMounted, reactive, ref } from "vue";
 import { loginApi } from "/@/api/login";
 import { userApi } from "/@/api/user";
 import Common from "/@/utils/common";
@@ -114,7 +114,6 @@ const rememberPassword = ref(false);
 // 验证提示
 const userAccountVerifyError = ref(false);
 const passWordVerifyError = ref(false);
-
 // 密码显示切换
 const showPassword = ref(true);
 
@@ -199,9 +198,6 @@ const forgetPassword = () => {
 // 注册处理
 const toRegister = () => {
 	modalStore.openModal("RegisterModal");
-};
-const getInstance = (instance: any) => {
-	hcaptcha.value = instance;
 };
 </script>
 <style lang="scss" scoped>

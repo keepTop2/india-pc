@@ -14,19 +14,18 @@ const props = defineProps({
 	},
 	modelValue: Boolean,
 });
-const isScriptLoaded = ref(false);
 
 const emit = defineEmits(["update:modelValue"]);
-onMounted(async () => {
-	AliyunCaptcha();
-});
 const captcha = ref(null);
+
+onMounted(async () => {
+	initAliyunCaptcha();
+});
+
 const getInstance = (instance: any) => {
 	captcha.value = instance;
 };
-const AliyunCaptcha = () => {
-	initAliyunCaptcha();
-};
+
 const initAliyunCaptcha = async () => {
 	await (window as any).initAliyunCaptcha({
 		SceneId: "qxye14r6d",
@@ -35,7 +34,7 @@ const initAliyunCaptcha = async () => {
 		element: "#hcaptchaContainer",
 		button: "#captcha-element",
 		captchaVerifyCallback: captchaVerifyCallback,
-		onBizResultCallback: props.onSubmit,
+		onBizResultCallback: onSubmit,
 		getInstance: getInstance,
 		slideStyle: {
 			width: 360,
@@ -67,6 +66,10 @@ const captchaVerifyCallback = (captchaVerifyParam: any) => {
 			return verifyResult;
 		}
 	});
+};
+
+const onSubmit = () => {
+	props.onSubmit();
 };
 defineExpose({
 	certifyId,

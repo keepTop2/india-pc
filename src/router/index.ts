@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, createWebHistory, onBeforeRouteLeave, Router } from "vue-router";
+import { createRouter, createWebHashHistory, Router } from "vue-router";
 //引入首页路由
 import frontPage from "./modules/frontPage";
 // 错误页
@@ -12,12 +12,8 @@ import sportsRoutes from "/@/router/modules/sports/sports";
 
 import walletLayout from "/@/router/modules/wallet";
 import lotteryRoutes from "/@/router/modules/lottery";
-// 登录注册弹窗
-const routes = [
-	//首页模块路由
-	frontPage,
-	// 错误页
 
+const routes = [
 	{
 		path: "/",
 		component: layout,

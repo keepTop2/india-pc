@@ -14,9 +14,9 @@
 							<img src="../image/tooltip.png" alt="" class="tooltipImg" />
 						</template>
 						<template v-slot:message>
-							体育/电竞场馆投注 1 {{ useUserStore().getUserInfo.platCurrencySymbol }} = {{ vipInfo.sportExe }} 积分，其他场馆投注 1
-							{{ useUserStore().getUserInfo.platCurrencySymbol }}
-							= 1 积分，所有投注 均按当前汇率兑换为{{ useUserStore().getUserInfo.platCurrencySymbol }}结算
+							体育/电竞场馆投注 1 {{ useUserStore().getUserInfo.platCurrencyName }} = {{ vipInfo.sportExe }} 积分，其他场馆投注 1
+							{{ useUserStore().getUserInfo.platCurrencyName }}
+							= 1 积分，所有投注 均按当前汇率兑换为{{ useUserStore().getUserInfo.platCurrencyName }}结算
 						</template>
 					</ClickTooltip>
 				</div>

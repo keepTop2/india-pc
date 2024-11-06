@@ -1,20 +1,16 @@
 <template>
-	<div class="mt_40 pr_10 pl_10" v-if="gameList?.gameInfoList?.length">
+	<div class="mt_40 pr_10 pl_10" v-if="gameList?.length">
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
 					<img v-lazy-load="gameList?.icon" alt="" />
-					<span class="Text_s fs_20">{{ title ? title : gameList?.name ? gameList?.name : "热门推荐" }}</span>
+					<span class="Text_s fs_20">{{ "喜欢的游戏" }}</span>
 				</span>
 			</div>
-			<div class="more Text1 fs_18 curp" @click="gotoVenue(gameList)" v-if="gameList?.gameInfoList?.length !== 1">更多</div>
 		</div>
 		<div class="lobbyGameList">
-			<div class="onlyOneGame" v-if="bigOneItem && gameList?.gameInfoList?.length == 1" @click="Common.goToGame(gameList?.gameInfoList[0])">
-				<img v-lazy-load="gameList?.gameInfoList[0].icon" alt="" />
-			</div>
-			<slide v-else>
-				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
+			<slide>
+				<div v-for="(item, index) in gameList" :key="index" class="lobbyGameItem">
 					<div class="cornerMark">
 						<svg-icon name="new_game_icon" v-if="item.cornerLabels == 1" size="60" />
 						<svg-icon name="hot_game_icon" v-else-if="item.cornerLabels == 2" size="60" />
@@ -27,7 +23,7 @@
 						<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>
 					</div>
 					<div class="collect" @click="collectGame(item)">
-						<svg-icon :name="collectGamesStore.getCollectGamesList.some((game:any) => game.id === item.id) ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
+						<svg-icon name="collect_on" size="19.5px"></svg-icon>
 					</div>
 				</div>
 			</slide>

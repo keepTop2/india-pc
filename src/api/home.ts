@@ -22,7 +22,9 @@ export const HomeApi = {
 		return useAxiosApi(`/app/game/api/collection`, {
 			method: "POST",
 			data,
-			headers,
+			headers: {
+				showLoading: true,
+			},
 		});
 	},
 	// 跑马灯消息

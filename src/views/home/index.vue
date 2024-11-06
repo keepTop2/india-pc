@@ -10,7 +10,8 @@
 			<!-- 热门推荐 -->
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
 			<hotGame :hotGameList="hotGameList" v-else-if="hotGameList.length" />
-
+			<!-- 收藏的游戏 -->
+			<collectGames :gameList="collectGamesStore.getCollectGamesList" title="喜欢的游戏" />
 			<div v-if="isLoading">
 				<lobbyGameSkeleton v-for="(count, index) in [6, 3, 6, 1, 5]" :key="index" :skeletonCount="count" />
 			</div>
@@ -33,19 +34,21 @@ import hotGame from "./components/hotGame.vue";
 import hotGameSkeleton from "./components/hotGameSkeleton.vue";
 import lobbyGameSkeleton from "./components/lobbyGameSkeleton.vue";
 import lobbyGameCard from "./components/lobbyGameCard.vue";
+import collectGames from "./components/collectGames.vue";
 import { HomeApi } from "/@/api/home";
 import pubsub from "/@/pubSub/pubSub";
 import activitySocketService from "/@/utils/activitySocketService";
 import HorseRaceLamp from "/@/views/home/components/horseRaceLamp.vue";
 import Announcement from "/@/components/Announcement/Announcement.vue";
 import { useActivityStore } from "/@/stores/modules/activity";
+import { useCollectGamesStore } from "/@/stores/modules/collectGames";
 const activityStore = useActivityStore();
+const collectGamesStore = useCollectGamesStore();
 const websocketService: any = activitySocketService.getInstance();
 const showCountdown = ref(false);
 const isLoading = ref(true);
 const lobbyGameList: any = ref([]);
 const hotGameList = ref([]);
-const redBagInfo = ref({});
 const queryGameInfoDetail = async () => {
 	const params = {
 		label: 1,
