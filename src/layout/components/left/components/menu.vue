@@ -134,8 +134,10 @@ const selectMenu = (item: any, index: number) => {
 		if (item.modelCode == "SBA") {
 			openMenuIndex.value = index;
 			router.push("/sports");
-		} else if (item.modelCode == "LT") {
-			Common.goToGame(item.gameInfo);
+		} else if (item.modelCode == "SIGN_VENUE") {
+			console.log(item);
+
+			Common.goToGame(item);
 		} else {
 			router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: 0 } });
 		}

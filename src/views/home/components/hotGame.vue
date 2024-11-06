@@ -1,5 +1,5 @@
 <template>
-	<div class="pr_10 pl_10">
+	<div class="pr_10 pl_10 mt_40" v-if="hotGameList?.length">
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
@@ -23,7 +23,7 @@
 					</div>
 				</div>
 				<div class="collect" @click="collectGame(item)">
-					<svg-icon :name="item.collect ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
+					<svg-icon :name="collectGamesStore.getCollectGamesList.some((game:any) => game.id === item.id) ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
 				</div>
 			</div>
 		</slide>
@@ -37,6 +37,7 @@ import { HomeApi } from "/@/api/home";
 import showToast from "/@/hooks/useToast";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
+import { useCollectGamesStore } from "/@/stores/modules/collectGames";
 interface gameInfo {
 	id: string;
 	name: string;
@@ -57,6 +58,8 @@ const props = defineProps({
 		type: Array<gameInfo>,
 	},
 });
+
+const collectGamesStore = useCollectGamesStore();
 const collectGame = (game: gameInfo) => {
 	if (useUserStore().getLogin) {
 		const params = {
@@ -68,6 +71,7 @@ const collectGame = (game: gameInfo) => {
 			if (res.code === Common.ResCode.SUCCESS) {
 				showToast(!game.collect ? "取消收藏成功" : "收藏成功");
 			}
+			collectGamesStore.setCollectGamesList();
 		});
 	} else {
 		useModalStore().openModal("LoginModal");
@@ -93,6 +97,7 @@ const collectGame = (game: gameInfo) => {
 		margin-right: 15px;
 		position: relative;
 		border-radius: 12px;
+		width: 25%;
 		.collect {
 			position: absolute;
 			top: 10px;
