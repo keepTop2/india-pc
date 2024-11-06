@@ -26,15 +26,15 @@
 					<div>
 						<span>
 							<span>共计: </span>
-							{{ pageData.waitReceiveTotal || 0 }}
+							{{tableData.length || 0 }} 笔投入
 						</span>
 						<span class="ml_20">
 							<span>投注金额：</span>
-							{{ pageData.mainCurrencyTotal || 0 }} {{ pageData.mainCurrency }}
+							{{ tzAmount || 0 }} {{ 'CNY'||pageData.mainCurrency }}
 						</span>
 						<span class="ml_20">
 							<span>输赢金额：</span>
-							<span class="loseOrWin_color">{{ pageData.platCurrencyTotal || 0 }} {{ pageData.platCurrencyCode }}</span>
+							<span class="loseOrWin_color">{{ winOrLoseAmount || 0 }} {{'CNY'|| pageData.platCurrencyCode }}</span>
 						</span>
 					</div>
 					<div class="flex-center">
@@ -44,7 +44,7 @@
 				</div>
 
 
-				<el-table class="table-style-expand" :data="tableData"  style="width: 100%" border>
+				<el-table  :class="[tableColumns[0] && tableColumns[0].type=='select'?'table-style-expand':'table-style-common']" :data="tableData"  style="width: 100%" border>
 
 					<template  v-for="(item,index) in tableColumns"  :key="index" >
 						<el-table-column type="expand" :label="item.label" width="164px" :prop="item.props" v-if="item.type == 'select'">
@@ -56,10 +56,10 @@
 										<div style="width:25%" class="fir_item">赔率</div>
 										<div style="width:50%;" class="fir_item">{{  props.row.teamInfo}}</div>
 										<div style="width:25%" class="fir_item">{{  props.row.betContent}}</div>
-										<div style="width:25%" class="fir_item">{{  props.row.odds}}</div>
+										<div style="width:25%" class="fir_item">@{{  props.row.odds}}</div>
 									</div>
 									<div class="winlogo">
-										<img :src="props.row.orderClassify == '1'?winlogo:loselogo" alt="">
+										<img :src="props.row.orderClassify == '1'||props.row.orderClassify == '0'?winlogo:loselogo" alt="">
 									</div>
 									</div>
 								</template>
@@ -88,7 +88,7 @@ const showDatePicker = ref(false);
 const tableColumns = ref<columnType[]>([])
 const colmunsrow = ref<columnsType>(colmuns)
 const params = reactive({
-	betStartTime: new Date("2024-09-08 00:00:00").getTime(),
+	betStartTime: new Date("2024-11-08 00:00:00").getTime(),
 	betEndTime: new Date("2024-12-08 00:00:00").getTime(),
 	pageNumber: 1,
 	pageSize: 10,
@@ -98,14 +98,16 @@ const params = reactive({
 });
 const today = dayjs();
 const range = reactive({
-	start: new Date(today.subtract(90, "day").format("YYYY/MM/DD")),
+	start: new Date(today.subtract(30, "day").format("YYYY/MM/DD")),
 	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
 });
 const minDate = today.subtract(180, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
 
 const activityReceiveStatusOptions: any = ref([]);
-const welfareCenterRewardTypeOptions = ref<{text:string,value:string}[]>([]);
+const welfareCenterRewardTypeOptions = ref<{ text: string, value: string }[]>([]);
+const tzAmount = ref(0)
+const winOrLoseAmount = ref(0)
 const tableData: any = ref([]);
 const pageData = reactive({
 	totalSize: "",
@@ -132,12 +134,20 @@ const pageQuery = () => {
 	welfareCenterApi.tzPageQuery(params).then((res) => {
 		if(!res.data) return 
 		tableData.value =res.data.sabOrderList
-		pageData.totalSize = res.data.totalSize;
+		pageData.totalSize = res.data.totalSize || 999999;
 		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
 		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
 		pageData.platCurrencyCode = res.data.platCurrencyCode;
 		pageData.mainCurrency = res.data.mainCurrency;
 		pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
+
+		tzAmount.value = tableData.value.reduce((a:any, b:any) => {
+			return a+b.betAmount
+		}, 0)
+
+		winOrLoseAmount.value = tableData.value.reduce((a:any, b:any) => {
+			return a+b.winLossAmount
+		},0)
 	});
 };
 // 获取 查询目录
@@ -169,6 +179,9 @@ watch([()=> params.welfareCenterRewardType,()=>welfareCenterRewardTypeOptions.va
 	tableColumns.value = colmunsrow.value[selectCurrent.text]
 	
 })
+
+
+
 
 const sizeChange = (pageSize: number) => {
 	params.pageNumber = 1;
@@ -273,7 +286,7 @@ const handleQuery = () => {
 	flex-direction: column;
 	justify-content: space-between;
 	.loseOrWin_color{
-		color: var(--light-ok-success--, #3BC116);
+		color: #01AFF6;
 	}
 	.table {
 		border: 1px solid var(--Line_2);
@@ -344,5 +357,8 @@ const handleQuery = () => {
 		width:20%
 	}
 
+}
+:deep(.date-picker){
+	z-index: 9999;
 }
 </style>
