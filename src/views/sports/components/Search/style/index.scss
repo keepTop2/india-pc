@@ -139,7 +139,6 @@
   --el-table-tr-bg-color: var(--Bg3) !important;
   --el-table-row-hover-bg-color: transparent !important;
   --el-table-expanded-cell-bg-color: var(--Bg4) !important;
-  position: relative;
   border-radius: 8px;
   //--el-table-border: 2px solid var(--el-table-border-color) !important;
   //border: 1px solid var(--el-table-border-color) !important;
@@ -166,10 +165,14 @@
     }
   }
 
+  .el-table__row {
+    position: relative;
+  }
+
   .el-table__expand-column {
     width: 0 !important;
     overflow: hidden;
-    position: static;
+    position: static !important;
 
     * {
       position: static !important;
@@ -183,12 +186,14 @@
 
     .el-table__expand-icon {
       position: absolute !important;
-      right: 10px;
-      transform: translateY(-50%) rotate(180deg);
+      top: 50%;
+      right: 2%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
     }
 
-    .el-table__expand-icon--expanded{
-      transform: rotate(-90deg) translateX(65%) !important;
+    .el-table__expand-icon--expanded {
+      transform: rotate(90deg) translateX(-70%) !important;
     }
 
   }
