@@ -8,7 +8,7 @@ import { gameApi } from "/@/api/game";
 export const useCollectGamesStore = defineStore("collectGames", {
 	state: () => {
 		return {
-			collectGamesList: {} as any,
+			collectGamesList: [] as any,
 		};
 	},
 	getters: {
