@@ -1,5 +1,5 @@
 <template>
-	<div class="announcement">
+	<div class="announcement max-width">
 		<div class="content">
 			<img src="./image/megaphone.png" alt="megaphone" />
 			<div class="text">
@@ -67,7 +67,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .announcement {
-	max-width: 1350px;
 	margin: 20px auto 0;
 
 	.content {

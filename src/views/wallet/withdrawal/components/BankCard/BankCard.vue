@@ -1,9 +1,33 @@
 <template>
 	<div class="form">
 		<template v-for="field in inputFields">
-			<div class="cell" v-if="!['bankName', 'userPhone'].includes(field.code) && isFieldVisible(field.code as keyof formParamsRootObject)">
+			<div class="cell" v-if="!['bankCard','bankName', 'userPhone'].includes(field.code) && isFieldVisible(field.code as keyof formParamsRootObject)">
 				<input v-model="formParams[field.model  as keyof formParamsRootObject]" :type="field.type" :placeholder="$t(`wallet['${field.placeholder}']`)" name="" id="" />
 			</div>
+
+			<!-- 银行卡号 -->
+			<template v-if="field.code == 'bankCard' && isFieldVisible(field.code as keyof formParamsRootObject)">
+				<DropDown
+					:options="withdrawWayConfig.lastWithdrawInfoVO.bankCard && !formParams['bankCard'] ? [withdrawWayConfig.lastWithdrawInfoVO] : []"
+					v-model="formParams['bankCode']"
+					:searchInput="false"
+					label="bankCard"
+					value="bankCard"
+					@change="onChangeLastInfo"
+				>
+					<template #toggle="{ toggleDropdown }">
+						<div class="cell pointer">
+							<input v-model="formParams['bankCard']" :type="field.type" :placeholder="$t(`wallet['${field.placeholder}']`)" @focus="toggleDropdown" />
+						</div>
+					</template>
+					<template #option="{ option }">
+						<div class="custom-option">
+							<svg-icon class="icon" name="wallet-last" />
+							<span class="label"> {{ option.bankCard }} </span>
+						</div>
+					</template>
+				</DropDown>
+			</template>
 			<!-- 银行名称 -->
 			<template v-if="field.code == 'bankName' && isFieldVisible(field.code as keyof formParamsRootObject)">
 				<DropDown
@@ -159,6 +183,11 @@ const getAreaCodeDownBox = () => {
 			formParams["areaCode"] = areaCodeInfo.value.areaCode;
 		}
 	});
+};
+
+const onChangeLastInfo = (e: any) => {
+	console.log("选择的银行信息", e);
+	Object.assign(formParams, e);
 };
 
 const onChangeBankName = (e: any) => {

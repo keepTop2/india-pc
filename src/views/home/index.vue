@@ -10,6 +10,7 @@
 			<!-- 热门推荐 -->
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
 			<hotGame :hotGameList="hotGameList" v-else-if="hotGameList.length" />
+
 			<div v-if="isLoading">
 				<lobbyGameSkeleton v-for="(count, index) in [6, 3, 6, 1, 5]" :key="index" :skeletonCount="count" />
 			</div>
@@ -78,6 +79,7 @@ onMounted(async () => {
 		clearTimeout(timer);
 		isLoading.value = false;
 	}, delay);
+
 	// 如果socket连接成功
 	if (websocketService.socket?.readyState) {
 		//直接发订阅

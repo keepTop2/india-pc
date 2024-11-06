@@ -51,7 +51,7 @@ const active = ref(0);
 
 // 定义日期范围变量，默认为当天时间
 const dateRange = ref({
-	start: dayjs().startOf("day").valueOf(),
+	start: dayjs().subtract(30, "day").valueOf(),
 	end: dayjs().endOf("day").valueOf(),
 });
 
@@ -88,15 +88,9 @@ watch(active, debouncedGetBetDetails);
  */
 async function getBetDetails() {
 	// 构造请求参数，根据 active 的值区分已结算和未结算
-	let requestParams = {};
-	if (active.value === 1) {
-		const { start, end } = dateRange.value;
-		requestParams = getRequestParams(start, end, true);
-	} else {
-		const { startDate, endDate } = SportsCommon.getQueryDateRange(30);
-		// 这里直接将 startDate 和 endDate 传递给 getRequestParams
-		requestParams = getRequestParams(startDate, endDate, false);
-	}
+	const { startDate, endDate } = SportsCommon.getQueryDateRange(30);
+	let requestParams = getRequestParams(startDate, endDate, active.value === 1);
+
 	// 使用 then 和 catch 处理异步请求
 	BetRecordApi.GetBetDetails(requestParams).then((res) => {
 		if (res.data) {
@@ -209,6 +203,16 @@ const sizeChange = (pageSize: number) => {
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
+		}
+	}
+
+	:deep(.el-table__body-wrapper) {
+		&::-webkit-scrollbar-thumb {
+			background-color: var(--Bg3);
+			border-radius: 6px;
+		}
+		&::-webkit-scrollbar {
+			width: 6px;
 		}
 	}
 }

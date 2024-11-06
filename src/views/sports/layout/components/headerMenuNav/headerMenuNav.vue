@@ -43,7 +43,7 @@ import MajorCategoriesMenu from "/@/router/modules/sports/sportsRouterLeft"; // 
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData"; // 导入体育数据
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData"; // 引入状态管理
 import SportsCommonFn from "/@/views/sports/utils/common";
-
+import pubSub from "/@/pubSub/pubSub";
 const router = useRouter(); // 获取路由实例
 const route = useRoute(); // 获取当前路由实例
 const Menu = ref(MajorCategoriesMenu); // 将左侧菜单数据存储为响应式引用
@@ -85,10 +85,11 @@ const tabData = ref([
 ]);
 
 // 路由跳转函数
-const toPath = (item: any) => {
+const toPath = SportsCommonFn.throttle((item: any) => {
 	// 记录滚动元素节点scrollTop
 	SportsCommonFn.saveScrollTop(route);
 	if (route.meta.type !== "list") {
+		pubSub.publish("SkeletonLoading", true);
 		// 检查路由类型
 		// 根据当前激活的标签获取路径
 		const path = tabData.value.find((tab) => tab.type === props.tabActive)?.path || "/sports/todayContest";
@@ -102,6 +103,7 @@ const toPath = (item: any) => {
 			});
 	} else {
 		if (route.query.sportType == item.sportType) return; // 如果当前运动类型相同，不做跳转
+		pubSub.publish("SkeletonLoading", true);
 		const currentPath = router.currentRoute.value.path; // 获取当前路径
 
 		router.push({
@@ -109,7 +111,7 @@ const toPath = (item: any) => {
 			query: { sportType: item.sportType }, // 更新查询参数
 		});
 	}
-};
+}, 1000);
 
 // 处理滚动事件
 const handleScroll = () => {

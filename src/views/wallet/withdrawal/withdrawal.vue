@@ -104,7 +104,7 @@
 							</div>
 							<div class="item">
 								<span class="label">{{ $t(`wallet['手续费']`) }}({{ withdrawWayConfig.feeRate }}%):</span>
-								<span class="label">&nbsp;{{ common.formatFloat(feeAmount) }}</span>
+								<span class="label">&nbsp;{{ Math.trunc(Number(feeAmount)) }}</span>
 								<span class="label" v-if="withdrawWayData.withdrawTypeCode !== 'crypto_currency'">&nbsp;{{ UserStore.userInfo.mainCurrency }}</span>
 								<span class="label" v-else>&nbsp;USDT</span>
 							</div>

@@ -73,7 +73,7 @@ onUnmounted(() => {
 	height: 100vh;
 
 	background: var(--Bg);
-	width: calc(100vw - 260px);
+	width: calc(100vw - 224px);
 
 	// margin-left: 260px;
 }
@@ -91,17 +91,8 @@ onUnmounted(() => {
 	overflow-y: auto;
 	height: calc(100vh - 64px);
 }
+
 .mainArea::-webkit-scrollbar {
-	display: none;
+	width: 6px;
 }
-// .mainArea::-webkit-scrollbar {
-// 	width: 6px;
-// }
-// .mainArea::-webkit-scrollbar-track {
-// 	background-color: transparent;
-// }
-// .mainArea::-webkit-scrollbar-thumb {
-// 	background: var(--icon);
-// 	border-radius: 5px;
-// }
 </style>

@@ -59,11 +59,14 @@ watch(
 				box-shadow: none;
 				border: 1px solid var(--Line_2);
 				border-radius: 8px;
-
+				&:focus-within {
+					border-color: var(--Theme); /* 设置聚焦时的边框颜色 */
+				}
 				.el-input__inner {
 					color: var(--Text1);
 					font-size: 16px;
 					font-weight: 400;
+					caret-color: var(--Theme);
 				}
 
 				input {

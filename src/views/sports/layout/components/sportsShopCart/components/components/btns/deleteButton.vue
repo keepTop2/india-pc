@@ -30,7 +30,7 @@ const onClickClear = () => {
 	justify-content: center;
 	gap: 2px;
 	border-radius: 4px;
-	background-color: var(--Bg5);
+	border: 1px solid var(--Theme);
 	overflow: hidden;
 	cursor: pointer;
 }

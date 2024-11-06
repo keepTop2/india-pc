@@ -44,10 +44,10 @@
 							<span class="loseOrWin_color">{{ winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span>
 						</span>
 					</div>
-					<div class="flex-center">
+					<!-- <div class="flex-center">
 						<img src="./image/fudai.png" alt="" width="20px" />
 						您有4个待领取福利
-					</div>
+					</div> -->
 				</div>
 
 				<el-table :class="[tableColumns[0] && tableColumns[0].type == 'select' ? 'table-style-expand' : 'table-style-common']" :data="tableData" style="width: 100%" border>
@@ -137,6 +137,8 @@ onMounted(() => {
 const pageQuery = () => {
 	params.betStartTime = new Date(range.start).getTime();
 	params.betEndTime = new Date(range.end).getTime();
+	// params.orderClassifyList = +params.receiveStatus;
+	params.venueType = +params.venueType;
 	welfareCenterApi.tzPageQuery(params).then((res) => {
 		if (!res.data) return;
 		tableData.value = res.data.sabOrderList;

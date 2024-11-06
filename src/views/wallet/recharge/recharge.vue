@@ -84,7 +84,7 @@
 					<div class="tips">
 						<p class="tip">{{ $t(`wallet['1']`) }}{{ UserStore.getUserInfo.userAccount }}</p>
 						<p class="tip">{{ $t(`wallet['2']`, { value: rechargeWayData?.networkType }) }}</p>
-						<p class="tip">{{ $t(`wallet['3']`, { value: rechargeConfig.exchangeRate, currency: rechargeConfig.currencyCode }) }}</p>
+						<p class="tip">{{ $t(`wallet['3']`, { value: `${rechargeConfig.exchangeRate ?? 0}${UserStore.userInfo.mainCurrency}`, currency: "USDT" }) }}</p>
 						<p class="tip">{{ $t(`wallet['4']`) }}</p>
 					</div>
 				</div>
