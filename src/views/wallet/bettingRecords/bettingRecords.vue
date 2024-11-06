@@ -45,19 +45,19 @@
 				<div class="table">
 					<div class="tr theader">
 						<div class="td" style="width: 25%">订单号</div>
-						<div class="td" style="width: 15%">类型</div>
-						<div class="td" style="width: 15%">名称</div>
-						<div class="td" style="width: 13%">奖励</div>
-						<div class="td" style="width: 20%">时间</div>
+						<div class="td" style="width: 20%">投注时间</div>
+						<div class="td" style="width: 15%">投注金额</div>
+						<div class="td" style="width: 13%">输赢金额</div>
+						<div class="td" style="width: 20%">注单状态</div>
 						<!-- <div class="td" style="width: 12%">操作</div> -->
 					</div>
 					<div class="tbody">
 						<div class="tr" v-for="(item, i) in tableData" :key="i">
 							<div class="td Text1" style="width: 25%">{{ item.orderId }}</div>
-							<div class="td Text1" style="width: 15%">{{ item.detailType }}</div>
-							<div class="td Text1" style="width: 15%">{{ item.welfareCenterRewardTypeText }}</div>
-							<div class="td Text_s" style="width: 13%">{{ item.amount }}{{ item.currencyCode }}</div>
-							<div class="td Text1" style="width: 20%">{{ dayjs(item.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
+							<div class="td Text1" style="width: 20%">{{ dayjs(item.betTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
+							<div class="td Text1" style="width: 15%">{{ item.betAmount }}</div>
+							<div class="td Text_s" style="width: 13%">{{ item.winLossAmount }}</div>
+							<div class="td Text1" style="width: 20%">{{ item.orderClassifyText }}</div>
 							<!-- <div class="td" style="width: 12%"></div> -->
 						</div>
 					</div>
