@@ -103,7 +103,7 @@ const params = reactive({
 });
 const today = dayjs();
 const range = reactive({
-	start: new Date(today.subtract(30, "day").format("YYYY/MM/DD")),
+	start: new Date(today.subtract(1, "day").format("YYYY/MM/DD")),
 	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
 });
 const minDate = today.subtract(180, "day").format("YYYY/MM/DD");
