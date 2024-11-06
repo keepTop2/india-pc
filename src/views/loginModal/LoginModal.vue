@@ -1,5 +1,5 @@
 <template>
-	<form class="loginWrapper">
+	<div class="loginWrapper">
 		<div class="login_right_form">
 			<!-- 登录标题 -->
 			<div class="login_text fs_24 mb_27">
@@ -83,7 +83,7 @@
 			<p id="captcha-element" ref="captchaBtn" />
 			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript" v-if="HcaptchaMounted" />
 		</p>
-	</form>
+	</div>
 </template>
 
 <script setup lang="ts">
