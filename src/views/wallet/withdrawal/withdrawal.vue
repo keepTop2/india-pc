@@ -228,7 +228,7 @@ const errorMessage = computed(() => {
 		return "";
 	}
 	// 获取账户余额
-	const totalBalance = UserStore.userInfo.totalBalance;
+	const totalBalance = state.totalBalance;
 	// 判断输入的金额
 	if (amount > totalBalance || !totalBalance || totalBalance === 0) {
 		return $.t(`wallet["余额不足"]`);

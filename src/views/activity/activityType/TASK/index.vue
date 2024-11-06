@@ -31,7 +31,7 @@
 								</div>
 								<div class="fs_12 Text_s bottom">
 									<span
-										>奖励：<span class="color_f1"> {{ item.currencyName }} {{ item.rewardAmount }}</span></span
+										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
 									<span
 										><span class="color_Theme">{{ item.achieveAmount || 0 }}</span
@@ -59,7 +59,7 @@
 								</div>
 								<div class="fs_12 Text_s bottom">
 									<span
-										>奖励：<span class="color_f1"> {{ item.currencyName }} {{ item.rewardAmount }}</span></span
+										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
 									<span
 										><span class="color_Theme">{{ item.achieveAmount || 0 }}</span
@@ -90,7 +90,7 @@
 								<div class="fs_12 Text_s ellipsis pr_5" v-html="item.taskDescriptionI18nCode"></div>
 								<div class="fs_12 Text_s bottom">
 									<span
-										>奖励：<span class="color_f1"> {{ item.currencyName }} {{ item.rewardAmount }}</span></span
+										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
 								</div>
 							</div>
@@ -207,31 +207,20 @@ const changeTab = (value: number) => {
 };
 
 const HandleBtn = (item: any) => {
+	if (item.subTaskType === "phone" && !useUserStore().getUserInfo.phone) {
+		return modalStore.openModal("setPhone");
+	} else if (item.subTaskType === "email" && !useUserStore().getUserInfo.email) {
+		return modalStore.openModal("setEmail");
+	}
 	if (item.taskStatus == 0) {
-		if (item.subTaskType === "phone" && !useUserStore().getUserInfo.phone) {
-			modalStore.openModal("setPhone");
-		} else if (item.subTaskType === "email" && !useUserStore().getUserInfo.email) {
-			modalStore.openModal("setEmail");
-		} else {
-			useModalStore().closeModal();
-			router.push("/");
-		}
-	} else if (item.taskStatus == 1) {
-		activityApi
-			.receiveTask({
-				id: item.id,
-				subTaskType: item.subTaskType,
-			})
-			.then((res: any) => {
-				if (res.code === 10000) {
-					showDialog.value = true;
-					dialogInfo.value = res.data;
-					dialogInfo.value.currencyName = item.currencyName;
-					getTaskDetail();
-				}
-			});
+		useModalStore().closeModal();
+		router.push("/welfareCenter");
+	} else if (item.taskStatus == 3) {
+		useModalStore().closeModal();
+		router.push("/");
 	}
 };
+
 const confirmDialog = () => {
 	showDialog.value = false;
 };
@@ -342,17 +331,20 @@ const confirmDialog = () => {
 		text-align: center;
 		font-size: 12px;
 		color: var(--Text_s);
-
+		cursor: pointer;
 		border-radius: 6px 6px 5px 5px;
 	}
 	.btnType0 {
-		background: linear-gradient(270deg, #ebb360 0%, #eb7933 100%);
+		background: linear-gradient(270deg, #fd6780 0%, #ff405e 100%);
 	}
 	.btnType1 {
-		background: linear-gradient(270deg, #fd6780 0%, #ff405e 100%);
+		background: linear-gradient(270deg, #afafb3 0%, #87878b 100%);
 	}
 	.btnType2 {
 		background: linear-gradient(270deg, #afafb3 0%, #87878b 100%);
+	}
+	.btnType3 {
+		background: linear-gradient(270deg, #ebb360 0%, #eb7933 100%);
 	}
 	.card.welcome {
 		background: url("./image/cardBg2.png") no-repeat;

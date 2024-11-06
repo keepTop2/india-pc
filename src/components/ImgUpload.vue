@@ -5,7 +5,7 @@
 			<div v-for="(file, index) in files" :key="index" class="preview-item">
 				<img :src="file.url" alt="Preview" class="preview-image" />
 				<div class="deleteBtn" @click="deleteImg(index)">
-					<img src="../assets/common/upload_delete_icon.svg" alt="" />
+					<img src="../assets/common/upload_delete_icon.png" alt="" />
 				</div>
 			</div>
 			<label for="fileInput" class="custom-upload-button" v-if="files?.length < max">

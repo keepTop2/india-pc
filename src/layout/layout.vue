@@ -10,7 +10,7 @@
 			</div>
 		</div>
 		<Modal />
-
+		<Kefu />
 		<!-- 钱包弹窗 -->
 		<WalletDialog />
 	</div>

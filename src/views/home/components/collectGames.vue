@@ -1,43 +1,32 @@
 <template>
-	<div class="mt_40 pr_10 pl_10" v-if="gameList?.gameInfoList?.length">
+	<div class="mt_40 pr_10 pl_10" v-if="gameList?.length">
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
 					<img v-lazy-load="gameList?.icon" alt="" />
-					<span class="Text_s fs_20">{{ title ? title : gameList?.name ? gameList?.name : "热门推荐" }}</span>
+					<span class="Text_s fs_20">{{ "喜欢的游戏" }}</span>
 				</span>
-			</div>
-			<div class="more Text1 fs_18 curp" v-if="gameList?.gameInfoList?.length !== 1">
-				<span @click="gotoVenue(gameList)">更多</span>
-				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'arrow_left' : 'arrow_left_on'" width="8" height="12" /></span>
-				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'arrow_right' : 'arrow_right_on'" width="8" height="12" /></span>
 			</div>
 		</div>
 		<div class="lobbyGameList">
-			<div class="onlyOneGame" v-if="bigOneItem && gameList?.gameInfoList?.length == 1" @click="Common.goToGame(gameList?.gameInfoList[0])">
-				<img v-lazy-load="gameList?.gameInfoList[0].icon" alt="" />
-			</div>
-
-			<div v-else>
-				<Swiper :slidesPerView="8" :spaceBetween="15" :modules="modules" class="swiper-container curp" @swiper="onSwiper">
-					<SwiperSlide v-for="(item, index) in [...gameList?.gameInfoList, ...gameList?.gameInfoList]" :key="index" class="lobbyGameItem">
-						<div class="cornerMark">
-							<svg-icon name="new_game_icon" v-if="item.cornerLabels == 1" size="60" />
-							<svg-icon name="hot_game_icon" v-else-if="item.cornerLabels == 2" size="60" />
-						</div>
-						<div class="imgBox">
-							<img v-lazy-load="item.icon" alt="" />
-						</div>
-						<div class="onHover">
-							<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>
-							<div>{{ item.name }}</div>
-						</div>
-						<div class="collect" @click="collectGame(item)">
-							<svg-icon :name="collectGamesStore.getCollectGamesList.some((game:any) => game.id === item.id) ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
-						</div>
-					</SwiperSlide>
-				</Swiper>
-			</div>
+			<slide>
+				<div v-for="(item, index) in gameList" :key="index" class="lobbyGameItem">
+					<div class="cornerMark">
+						<svg-icon name="new_game_icon" v-if="item.cornerLabels == 1" size="60" />
+						<svg-icon name="hot_game_icon" v-else-if="item.cornerLabels == 2" size="60" />
+					</div>
+					<div class="imgBox">
+						<img v-lazy-load="item.icon" alt="" />
+					</div>
+					<div class="gameInfo">{{ item.name }}</div>
+					<div class="onHover">
+						<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>
+					</div>
+					<div class="collect" @click="collectGame(item)">
+						<svg-icon name="collect_on" size="19.5px"></svg-icon>
+					</div>
+				</div>
+			</slide>
 		</div>
 	</div>
 </template>
@@ -49,13 +38,9 @@ import router from "/@/router";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
 import Common from "/@/utils/common";
-import { Swiper, SwiperSlide } from "swiper/vue";
 import { useRoute } from "vue-router";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
-import { ref } from "vue";
-import { Autoplay, Navigation } from "swiper/modules";
 const collectGamesStore = useCollectGamesStore();
-const modules = ref([Autoplay, Navigation]);
 interface gameInfo {
 	id: string;
 	name: string;
@@ -71,9 +56,6 @@ interface gameInfo {
 	maintenanceEndTime: string;
 	collect: boolean;
 }
-const isEnd = ref(false);
-const isBeginning = ref(true);
-const swiperRef: any = ref(null);
 const route = useRoute();
 const props = defineProps({
 	gameList: {
@@ -87,7 +69,6 @@ const props = defineProps({
 		default: true,
 	},
 });
-
 const collectGame = (game: gameInfo) => {
 	if (useUserStore().getLogin) {
 		const params = {
@@ -112,22 +93,6 @@ const gotoVenue = (gameInfo: any) => {
 		router.push({ path: "/game/venue", query: { gameOneId: gameInfo.gameOneId, gameTwoId: 0 } });
 	}
 };
-
-const onSwiper = (swiper: any) => {
-	swiperRef.value = swiper;
-};
-const goToNextSlide = () => {
-	if (isEnd.value) return;
-	isEnd.value = swiperRef.value.isEnd;
-	isBeginning.value = swiperRef.value.isBeginning;
-	swiperRef.value.slideNext();
-};
-const goToPrevSlide = () => {
-	if (isBeginning.value) return;
-	isEnd.value = swiperRef.value.isEnd;
-	isBeginning.value = swiperRef.value.isBeginning;
-	swiperRef.value.slidePrev();
-};
 </script>
 
 <style scoped lang="scss">
@@ -140,19 +105,11 @@ const goToPrevSlide = () => {
 		width: 24px;
 	}
 	margin-bottom: 12px;
-	.arrow {
-		background-color: var(--butter);
-		width: 28px;
-		height: 28px;
-		display: inline-block;
-		text-align: center;
-		margin: 0 4px;
-		line-height: 28px;
-		border-radius: 4px;
-	}
 }
 .lobbyGameList {
+	display: flex;
 	.lobbyGameItem {
+		margin-right: 15px;
 		padding-top: 4px;
 		position: relative;
 		.cornerMark {
@@ -161,7 +118,10 @@ const goToPrevSlide = () => {
 			left: -4px;
 			z-index: 30;
 		}
-
+		.imgBox {
+			height: 190px;
+			width: 190px;
+		}
 		.onHover {
 			display: none;
 		}
@@ -173,21 +133,23 @@ const goToPrevSlide = () => {
 			cursor: pointer;
 		}
 		img {
-			width: 100%;
-			height: 151px;
+			width: 190px;
+			height: 190px;
 			object-fit: cover;
-			border-radius: 8px;
+			border-top-left-radius: 12px;
+			border-top-right-radius: 12px;
 			pointer-events: none;
 		}
 		.gameInfo {
-			width: 100%;
-			height: 151px;
+			height: 52px;
+			width: 190px;
 			background: var(--Bg1);
 			font-size: 14px;
 			color: var(--Text1);
 			padding: 6px 12px;
 			line-height: 22px;
-			border-radius: 8px;
+			border-bottom-left-radius: 12px;
+			border-bottom-right-radius: 12px;
 			word-break: break-all;
 			display: -webkit-box; /* 必须使用 Webkit 特性布局 */
 			-webkit-line-clamp: 2; /* 限制行数为 2 行 */
@@ -205,14 +167,12 @@ const goToPrevSlide = () => {
 			top: 4px;
 			left: 0;
 			width: 100%;
-			height: 151px;
+			height: 190px;
 			background: rgba(0, 0, 0, 0.5);
-			border-radius: 8px;
+			border-top-left-radius: 12px;
+			border-top-right-radius: 12px;
 			display: block;
 			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
 			.playBtn {
 				border-radius: 4px;
 				width: 130px;
@@ -225,7 +185,9 @@ const goToPrevSlide = () => {
 			}
 		}
 	}
-
+	.lobbyGameItem:first-child {
+		margin-left: 4px;
+	}
 	.onlyOneGame {
 		flex: 1;
 		width: 100%;

@@ -19,12 +19,14 @@ export const CommonApi = {
 		});
 	},
 
-	// 邮箱验证码请求
+	// 客服
 	getSiteCustomerChannel: (data = {}, headers = {}) => {
 		return useAxiosApi(`/app/common/getSiteCustomerChannel`, {
 			method: "POST",
 			data,
-			headers,
+			headers: {
+				showLoading: true,
+			},
 		});
 	},
 

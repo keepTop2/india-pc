@@ -11,7 +11,7 @@
 			<div>
 				<div>等级</div>
 				<div>所需经验</div>
-				<div>升级奖金</div>
+				<div>升级奖金（{{ useUserStore().getUserInfo.platCurrencyName }}）</div>
 			</div>
 			<div v-for="item in panel?.siteVIPGradeVOList" class="cell">
 				<div class="flex-center fs_16">
@@ -21,7 +21,7 @@
 				<div>
 					{{ item?.upgradeXp }}
 				</div>
-				<div>{{ item?.upgradeBonus }} {{ useUserStore().getUserInfo.platCurrencySymbol }}</div>
+				<div>{{ item?.upgradeBonus }} {{ useUserStore().getUserInfo.platCurrencyName }}</div>
 			</div>
 		</div>
 	</div>

@@ -38,7 +38,7 @@
 					<span class="menu_icon"><svg-icon name="help_icon" size="17px"></svg-icon></span>
 					<span class="menu_name ellipsis">帮助中心</span>
 				</div>
-				<div class="menu_item" @click="router.push('/helpCenter')">
+				<div class="menu_item" @click="Common.getSiteCustomerChannel">
 					<span class="menu_icon"><svg-icon name="kefu" size="17px"></svg-icon></span>
 					<span class="menu_name ellipsis">线上客服</span>
 				</div>
@@ -67,6 +67,7 @@ const MenuStore = useMenuStore();
 import Common from "/@/utils/common";
 import { useUserStore } from "/@/stores/modules/user";
 import { useModalStore } from "/@/stores/modules/modalStore";
+import pubsub from "/@/pubSub/pubSub";
 const router = useRouter();
 const route = useRoute();
 const openMenuIndex: Ref<number | string | null> = ref(null);
@@ -134,8 +135,10 @@ const selectMenu = (item: any, index: number) => {
 		if (item.modelCode == "SBA") {
 			openMenuIndex.value = index;
 			router.push("/sports");
-		} else if (item.modelCode == "LT") {
-			Common.goToGame(item.gameInfo);
+		} else if (item.modelCode == "SIGN_VENUE") {
+			console.log(item);
+
+			Common.goToGame(item);
 		} else {
 			router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: 0 } });
 		}

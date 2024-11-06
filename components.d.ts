@@ -41,6 +41,7 @@ declare module 'vue' {
     Img: typeof import('./src/components/Img/index.vue')['default']
     ImgUpload: typeof import('./src/components/ImgUpload.vue')['default']
     IndexOrigin: typeof import('./src/components/svgIcon/index-origin.vue')['default']
+    Kefu: typeof import('./src/components/Kefu/index.vue')['default']
     LazyLoadList: typeof import('./src/components/LazyLoadList.vue')['default']
     M3u8Video: typeof import('./src/components/wVideo/m3u8Video.vue')['default']
     Mian: typeof import('./src/components/Notification/components/mian.vue')['default']
