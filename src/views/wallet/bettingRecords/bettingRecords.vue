@@ -12,11 +12,18 @@
 						</div>
 						<DatePicker :range="range" v-model="showDatePicker" :minDate="minDate" :maxDate="maxDate" @updateRange="updateRange" />
 					</div>
-					<div class="formItem"><Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.welfareCenterRewardType"></Dropdown></div>
-					<div class="formItem"><Dropdown :options="activityReceiveStatusOptions" v-model="params.receiveStatus"></Dropdown></div>
+					<div class="formItem">
+						<Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.welfareCenterRewardType"></Dropdown>
+					</div>
+					<div class="formItem">
+						<Dropdown :options="activityReceiveStatusOptions" v-model="params.receiveStatus"></Dropdown>
+					</div>
 				</div>
 				<div class="flex-center">
-					<div class="btn curp" @click="handleQuery"><svg-icon name="search_on" size="14px"></svg-icon> 查询</div>
+					<div class="btn curp" @click="handleQuery">
+						<svg-icon name="search_on" size="14px"></svg-icon>
+						查询
+					</div>
 				</div>
 			</div>
 		</div>
@@ -26,15 +33,15 @@
 					<div>
 						<span>
 							<span>共计: </span>
-							{{tableData.length || 0 }} 笔投入
+							{{ tableData.length || 0 }} 笔投入
 						</span>
 						<span class="ml_20">
 							<span>投注金额：</span>
-							{{ tzAmount || 0 }} {{ 'CNY'||pageData.mainCurrency }}
+							{{ tzAmount || 0 }} {{ "CNY" || pageData.mainCurrency }}
 						</span>
 						<span class="ml_20">
 							<span>输赢金额：</span>
-							<span class="loseOrWin_color">{{ winOrLoseAmount || 0 }} {{'CNY'|| pageData.platCurrencyCode }}</span>
+							<span class="loseOrWin_color">{{ winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span>
 						</span>
 					</div>
 					<div class="flex-center">
@@ -43,26 +50,24 @@
 					</div>
 				</div>
 
-
-				<el-table  :class="[tableColumns[0] && tableColumns[0].type=='select'?'table-style-expand':'table-style-common']" :data="tableData"  style="width: 100%" border>
-
-					<template  v-for="(item,index) in tableColumns"  :key="index" >
+				<el-table :class="[tableColumns[0] && tableColumns[0].type == 'select' ? 'table-style-expand' : 'table-style-common']" :data="tableData" style="width: 100%" border>
+					<template v-for="(item, index) in tableColumns" :key="index">
 						<el-table-column type="expand" :label="item.label" width="164px" :prop="item.props" v-if="item.type == 'select'">
-								<template #default="props">
-									<div class="dropDown_line">
-										<div class="firLine">
-										<div style="width:50%" class="fir_item">{{ props.row.eventInfo }}</div>
-										<div style="width:25%" class="fir_item">投注内容</div>
-										<div style="width:25%" class="fir_item">赔率</div>
-										<div style="width:50%;" class="fir_item">{{  props.row.teamInfo}}</div>
-										<div style="width:25%" class="fir_item">{{  props.row.betContent}}</div>
-										<div style="width:25%" class="fir_item">@{{  props.row.odds}}</div>
+							<template #default="props">
+								<div class="dropDown_line">
+									<div class="firLine">
+										<div style="width: 50%" class="fir_item">{{ props.row.eventInfo }}</div>
+										<div style="width: 25%" class="fir_item">投注内容</div>
+										<div style="width: 25%" class="fir_item">赔率</div>
+										<div style="width: 50%" class="fir_item">{{ props.row.teamInfo }}</div>
+										<div style="width: 25%" class="fir_item">{{ props.row.betContent }}</div>
+										<div style="width: 25%" class="fir_item">@{{ props.row.odds }}</div>
 									</div>
 									<div class="winlogo">
-										<img :src="props.row.orderClassify == '1'||props.row.orderClassify == '0'?winlogo:loselogo" alt="">
+										<img :src="props.row.orderClassify == '1' || props.row.orderClassify == '0' ? winlogo : loselogo" alt="" />
 									</div>
-									</div>
-								</template>
+								</div>
+							</template>
 						</el-table-column>
 						<el-table-column v-else :label="item.label" :prop="item.props" />
 					</template>
@@ -76,17 +81,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref ,watch} from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
 import showToast from "/@/hooks/useToast";
-import colmuns, { columnsType, columnType } from './bettingRecordsColumns';
-import loselogo from '/@/assets/zh-CN/wallet/loselogo.png';
-import winlogo from '/@/assets/zh-CN/wallet/winlogo.png';
+import colmuns, { columnsType, columnType } from "./bettingRecordsColumns";
+import loselogo from "/@/assets/zh-CN/wallet/loselogo.png";
+import winlogo from "/@/assets/zh-CN/wallet/winlogo.png";
 
 const showDatePicker = ref(false);
-const tableColumns = ref<columnType[]>([])
-const colmunsrow = ref<columnsType>(colmuns)
+const tableColumns = ref<columnType[]>([]);
+const colmunsrow = ref<columnsType>(colmuns);
 const params = reactive({
 	betStartTime: new Date("2024-11-08 00:00:00").getTime(),
 	betEndTime: new Date("2024-12-08 00:00:00").getTime(),
@@ -94,7 +99,7 @@ const params = reactive({
 	pageSize: 10,
 	receiveStatus: "-1",
 	welfareCenterRewardType: "1",
-	venueType:'1'
+	venueType: "1",
 });
 const today = dayjs();
 const range = reactive({
@@ -105,9 +110,9 @@ const minDate = today.subtract(180, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
 
 const activityReceiveStatusOptions: any = ref([]);
-const welfareCenterRewardTypeOptions = ref<{ text: string, value: string }[]>([]);
-const tzAmount = ref(0)
-const winOrLoseAmount = ref(0)
+const welfareCenterRewardTypeOptions = ref<{ text: string; value: string }[]>([]);
+const tzAmount = ref(0);
+const winOrLoseAmount = ref(0);
 const tableData: any = ref([]);
 const pageData = reactive({
 	totalSize: "",
@@ -118,7 +123,7 @@ const pageData = reactive({
 	mainCurrencyTotal: "",
 });
 const total = ref(0);
-const updateRange = (value:any) => {
+const updateRange = (value: any) => {
 	range.start = value[0];
 	range.end = value[1];
 };
@@ -132,8 +137,8 @@ const pageQuery = () => {
 	params.betStartTime = new Date(range.start).getTime();
 	params.betEndTime = new Date(range.end).getTime();
 	welfareCenterApi.tzPageQuery(params).then((res) => {
-		if(!res.data) return 
-		tableData.value =res.data.sabOrderList
+		if (!res.data) return;
+		tableData.value = res.data.sabOrderList;
 		pageData.totalSize = res.data.totalSize || 999999;
 		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
 		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
@@ -141,47 +146,41 @@ const pageQuery = () => {
 		pageData.mainCurrency = res.data.mainCurrency;
 		pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
 
-		tzAmount.value = tableData.value.reduce((a:any, b:any) => {
-			return a+b.betAmount
-		}, 0)
+		tzAmount.value = tableData.value.reduce((a: any, b: any) => {
+			return a + b.betAmount;
+		}, 0);
 
-		winOrLoseAmount.value = tableData.value.reduce((a:any, b:any) => {
-			return a+b.winLossAmount
-		},0)
+		winOrLoseAmount.value = tableData.value.reduce((a: any, b: any) => {
+			return a + b.winLossAmount;
+		}, 0);
+    getTableType()
 	});
 };
 // 获取 查询目录
 const getDownBox = () => {
-	const params = ["order_status_client","order_date_num","venue_type"]
+	const params = ["order_status_client", "order_date_num", "venue_type"];
 	welfareCenterApi.requestGetTypeList(params).then((res) => {
-
-		welfareCenterRewardTypeOptions.value = res.data.venue_type.map((item:any) => {
+		welfareCenterRewardTypeOptions.value = res.data.venue_type.map((item: any) => {
 			return { text: item.value, value: item.code };
 		});
 
-		activityReceiveStatusOptions.value = res.data.order_status_client.map((item:any) => {
+		activityReceiveStatusOptions.value = res.data.order_status_client.map((item: any) => {
 			return { text: item.value, value: item.code };
 		});
 		activityReceiveStatusOptions.value.unshift({
 			text: "全部状态",
 			value: "-1",
 		});
-		
 	});
 };
 
-watch([()=> params.welfareCenterRewardType,()=>welfareCenterRewardTypeOptions.value], (val) => {
-	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == val[0])
-	
-	if (!selectCurrent || !selectCurrent.text) return 
-	console.log(val,selectCurrent,'selectCurrent')
-
-	tableColumns.value = colmunsrow.value[selectCurrent.text]
-	
-})
-
-
-
+// watch([() => params.welfareCenterRewardType, () => welfareCenterRewardTypeOptions.value], (val) => {
+// 	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == val[0]);
+//
+// 	if (!selectCurrent || !selectCurrent.text) return;
+//
+// 	tableColumns.value = colmunsrow.value[selectCurrent.text];
+// });
 
 const sizeChange = (pageSize: number) => {
 	params.pageNumber = 1;
@@ -200,36 +199,37 @@ const handleReceive = (item: any) => {
 	});
 };
 
-const headerStyle = ({ row, column, rowIndex, columnIndex }:any)=>{
+const headerStyle = ({ row, column, rowIndex, columnIndex }: any) => {
 	if (rowIndex == 0) {
 		row[0].colSpan = 2;
 		row[3].rowSpan = 2;
 	}
-}
-const objectSpanMethod = ({
-  row,
-  column,
-  rowIndex,
-  columnIndex,
-}: any) => {
-  if (columnIndex === 0) {
-    if (rowIndex  === 0) {
-      return {
-        rowspan: 1,
-        colspan: 2,
-      }
-    } else {
-      return {
-        rowspan: 0,
-        colspan: 0,
-      }
-    }
-  }
-}
+};
+const objectSpanMethod = ({ row, column, rowIndex, columnIndex }: any) => {
+	if (columnIndex === 0) {
+		if (rowIndex === 0) {
+			return {
+				rowspan: 1,
+				colspan: 2,
+			};
+		} else {
+			return {
+				rowspan: 0,
+				colspan: 0,
+			};
+		}
+	}
+};
 const handleQuery = () => {
 	params.pageNumber = 1;
 	pageQuery();
 };
+
+function getTableType() {
+	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.welfareCenterRewardType[0]);
+	if (!selectCurrent || !selectCurrent.text) return;
+	tableColumns.value = colmunsrow.value[selectCurrent.text];
+}
 </script>
 
 <style scoped lang="scss">
@@ -237,9 +237,11 @@ const handleQuery = () => {
 	background: var(--Bg1);
 	border-radius: 12px;
 	padding: 20px;
+
 	.title {
 		position: relative;
 	}
+
 	.title::before {
 		content: "";
 		position: absolute;
@@ -251,11 +253,13 @@ const handleQuery = () => {
 		background: var(--Theme);
 		border-radius: 0 12px 12px 0;
 	}
+
 	.line {
 		height: 1px;
 		background: var(--Line_1);
 		box-shadow: 0px 1px 0px 0px #343d48;
 	}
+
 	.btn {
 		background: var(--Theme);
 		padding: 6px 20px;
@@ -265,6 +269,7 @@ const handleQuery = () => {
 		align-items: center;
 		gap: 4px;
 	}
+
 	.formItem {
 		height: 34px;
 		background: var(--Bg2);
@@ -272,10 +277,12 @@ const handleQuery = () => {
 		line-height: 34px;
 		min-width: 140px;
 	}
+
 	.time {
 		width: 268px;
 	}
 }
+
 .content {
 	min-height: calc(100vh - 260px);
 	margin-top: 20px;
@@ -285,13 +292,16 @@ const handleQuery = () => {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	.loseOrWin_color{
-		color: #01AFF6;
+
+	.loseOrWin_color {
+		color: #01aff6;
 	}
+
 	.table {
 		border: 1px solid var(--Line_2);
 		border-radius: 8px;
 	}
+
 	.tr {
 		display: flex;
 		justify-content: space-around;
@@ -299,34 +309,42 @@ const handleQuery = () => {
 		height: 50px;
 		line-height: 50px;
 		font-size: 14px;
+
 		.td {
 			text-align: center;
 			width: 100%;
 			border-right: 1px solid var(--Line_2);
 		}
+
 		.td:last-child {
 			border-right: none;
 		}
+
 		.btn {
 			border-radius: 4px;
 			padding: 6px 17px;
 			font-size: 12px;
 		}
+
 		.status0 {
 			background: var(--Theme);
 			color: var(--Text_a);
 		}
+
 		.status1 {
 			background: var(--Line_2);
 			color: var(--Success);
 		}
+
 		.status2 {
 			color: var(--Text2);
 		}
 	}
+
 	.tr:last-child {
 		border-bottom: none;
 	}
+
 	.theader {
 		height: 42px;
 		background: var(--Bg2);
@@ -334,31 +352,37 @@ const handleQuery = () => {
 		line-height: 42px;
 		color: var(--Text_s);
 	}
+
 	.Pagination {
 		margin-top: 12px;
 	}
 }
-.dropdown_row{
+
+.dropdown_row {
 	display: flex;
 	align-items: center;
 }
-.dropDown_line{
+
+.dropDown_line {
 	display: flex;
 	align-items: center;
-	.firLine{
+
+	.firLine {
 		width: 80%;
 		display: flex;
 		flex-wrap: wrap;
-		.fir_item{
+
+		.fir_item {
 			padding: 6px 12px 8px;
 		}
 	}
-	.winlogo{
-		width:20%
-	}
 
+	.winlogo {
+		width: 20%;
+	}
 }
-:deep(.date-picker){
+
+:deep(.date-picker) {
 	z-index: 9999;
 }
 </style>
