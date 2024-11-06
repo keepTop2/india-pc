@@ -12,7 +12,7 @@
 						</div>
 						<DatePicker :range="range" v-model="showDatePicker" :minDate="minDate" :maxDate="maxDate" @updateRange="updateRange" />
 					</div>
-					<div class="formItem"><Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.welfareCenterRewardType"></Dropdown></div>
+					<div class="formItem"><Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.venueType"></Dropdown></div>
 					<div class="formItem"><Dropdown :options="activityReceiveStatusOptions" v-model="params.receiveStatus"></Dropdown></div>
 				</div>
 				<div class="flex-center">
@@ -34,12 +34,13 @@
 						</span>
 						<span class="ml_20">
 							<span>输赢金额：</span>
-							<span class="loseOrWin_color">{{ pageData.platCurrencyTotal || 0 }} {{ pageData.platCurrencyCode }}</span></span>
+							<span class="loseOrWin_color">{{ pageData.platCurrencyTotal || 0 }} {{ pageData.platCurrencyCode }}</span></span
+						>
 					</div>
-					<div class="flex-center">
+					<!-- <div class="flex-center">
 						<img src="./image/fudai.png" alt="" width="20px" />
 						您有4个待领取福利
-					</div>
+					</div> -->
 				</div>
 				<div class="table">
 					<div class="tr theader">
@@ -48,18 +49,16 @@
 						<div class="td" style="width: 15%">名称</div>
 						<div class="td" style="width: 13%">奖励</div>
 						<div class="td" style="width: 20%">时间</div>
-						<div class="td" style="width: 12%">操作</div>
+						<!-- <div class="td" style="width: 12%">操作</div> -->
 					</div>
 					<div class="tbody">
-						<div class="tr" v-for="item in tableData">
-							<div class="td Text1" style="width: 25%">{{ item.orderNo }}</div>
+						<div class="tr" v-for="(item, i) in tableData" :key="i">
+							<div class="td Text1" style="width: 25%">{{ item.orderId }}</div>
 							<div class="td Text1" style="width: 15%">{{ item.detailType }}</div>
 							<div class="td Text1" style="width: 15%">{{ item.welfareCenterRewardTypeText }}</div>
 							<div class="td Text_s" style="width: 13%">{{ item.amount }}{{ item.currencyCode }}</div>
 							<div class="td Text1" style="width: 20%">{{ dayjs(item.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
-							<div class="td" style="width: 12%">
-								
-							</div>
+							<div class="td" style="width: 12%"></div>
 						</div>
 					</div>
 				</div>
@@ -85,14 +84,15 @@ const params = reactive({
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "-1",
-	welfareCenterRewardType: "-1",
+	venueType: "1",
+	// orderClassifyList: 0,
 });
 const today = dayjs();
 const range = reactive({
-	start: new Date(today.subtract(90, "day").format("YYYY/MM/DD")),
+	start: new Date(today.subtract(1, "day").format("YYYY/MM/DD")),
 	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
 });
-const minDate = today.subtract(90, "day").format("YYYY/MM/DD");
+const minDate = today.subtract(1, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
 
 const activityReceiveStatusOptions: any = ref([]);
@@ -107,7 +107,7 @@ const pageData = reactive({
 	mainCurrencyTotal: "",
 });
 const total = ref(0);
-const updateRange = (value:any) => {
+const updateRange = (value: any) => {
 	range.start = value[0];
 	range.end = value[1];
 };
@@ -120,8 +120,10 @@ onMounted(() => {
 const pageQuery = () => {
 	params.betStartTime = new Date(range.start).getTime();
 	params.betEndTime = new Date(range.end).getTime();
+	// params.orderClassifyList = +params.receiveStatus;
+	params.venueType = +params.venueType;
 	welfareCenterApi.tzPageQuery(params).then((res) => {
-		tableData.value = res.data.pages.records;
+		tableData.value = res.data.sabOrderList;
 		pageData.totalSize = res.data.totalSize;
 		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
 		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
@@ -132,25 +134,23 @@ const pageQuery = () => {
 };
 // 获取 查询目录
 const getDownBox = () => {
-	const params = ["order_status_client","order_date_num","venue_type"]
+	const params = ["order_status_client", "order_date_num", "venue_type"];
 	welfareCenterApi.requestGetTypeList(params).then((res) => {
-
-		welfareCenterRewardTypeOptions.value = res.data.venue_type.map((item:any) => {
+		welfareCenterRewardTypeOptions.value = res.data.venue_type.map((item: any) => {
 			return { text: item.value, value: item.code };
 		});
-		welfareCenterRewardTypeOptions.value.unshift({
-			text: "全部类型",
-			value: "-1",
-		});
+		// welfareCenterRewardTypeOptions.value.unshift({
+		// 	text: "全部类型",
+		// 	value: "-1",
+		// });
 
-		activityReceiveStatusOptions.value = res.data.order_status_client.map((item:any) => {
+		activityReceiveStatusOptions.value = res.data.order_status_client.map((item: any) => {
 			return { text: item.value, value: item.code };
 		});
 		activityReceiveStatusOptions.value.unshift({
 			text: "全部状态",
 			value: "-1",
 		});
-		
 	});
 };
 
@@ -170,7 +170,6 @@ const handleReceive = (item: any) => {
 		}
 	});
 };
-
 
 const handleQuery = () => {
 	params.pageNumber = 1;
@@ -231,8 +230,8 @@ const handleQuery = () => {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	.loseOrWin_color{
-		color: var(--light-ok-success--, #3BC116);
+	.loseOrWin_color {
+		color: var(--light-ok-success--, #3bc116);
 	}
 	.table {
 		border: 1px solid var(--Line_2);
