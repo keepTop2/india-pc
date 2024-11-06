@@ -12,6 +12,7 @@ import { CommonApi } from "../api/common";
 import router from "../router";
 import qs from "qs";
 import showToast from "../hooks/useToast";
+import pubsub from "../pubSub/pubSub";
 // // 全局设置moment时区 (上海)
 // moment.tz.setDefault("Pacific/Guadalcanal");
 class Common {
@@ -583,7 +584,9 @@ class Common {
 	// 联系客服
 	static async getSiteCustomerChannel() {
 		const res = await CommonApi.getSiteCustomerChannel().catch((err) => err);
-		console.log("res", res);
+		if (res.code == 10000) {
+			pubsub.publish("showCustomer", res.data.channelAddr);
+		}
 	}
 }
 

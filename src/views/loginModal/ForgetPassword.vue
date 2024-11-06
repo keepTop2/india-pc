@@ -66,7 +66,7 @@
 						</p>
 					</div>
 					<p class="fs_12 Text1 mt_16 fw_200">
-						{{ $t(`login['有效时间']`) }}<span class="color_F2">{{ $t(`login['联系客服']`) }}</span>
+						{{ $t(`login['有效时间']`) }}<span class="color_F2" @click="Common.getSiteCustomerChannel">{{ $t(`login['联系客服']`) }}</span>
 					</p>
 				</div>
 				<!-- 第三步 -->
@@ -114,7 +114,7 @@
 				</div>
 				<div class="mt_40 mb_12 text-center">
 					<Button :disabled="disabledBtn" @click="onNextStep(currentStep)" class="mb_6">{{ currentStep === 2 ? "确定" : $t(`login['下一步']`) }}</Button>
-					<div class="flex-center mt_12 color_F2 fs_12 curp" v-if="currentStep === 0">联系客服</div>
+					<div class="flex-center mt_12 color_F2 fs_12 curp" v-if="currentStep === 0" @click="Common.getSiteCustomerChannel">联系客服</div>
 					<span @click="changeVerifyType" v-if="currentStep === 1" class="color_Theme fs_12">{{ $t(`login['其他验证方式']`) }}</span>
 				</div>
 			</div>

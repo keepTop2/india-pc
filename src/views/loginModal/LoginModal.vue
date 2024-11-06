@@ -73,7 +73,7 @@
 						</span>
 					</div>
 					<div>
-						<span class="color_F2 fs_14">{{ $t(`login['联系客服']`) }}</span>
+						<span class="color_F2 fs_14" @click="Common.getSiteCustomerChannel">{{ $t(`login['联系客服']`) }}</span>
 					</div>
 				</div>
 			</div>
