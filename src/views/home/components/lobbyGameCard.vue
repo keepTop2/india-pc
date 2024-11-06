@@ -13,7 +13,7 @@
 			<div class="onlyOneGame" v-if="bigOneItem && gameList?.gameInfoList?.length == 1" @click="Common.goToGame(gameList?.gameInfoList[0])">
 				<img v-lazy-load="gameList?.gameInfoList[0].icon" alt="" />
 			</div>
-			<slide v-else>
+			<!-- <slide v-else>
 				<div v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
 					<div class="cornerMark">
 						<svg-icon name="new_game_icon" v-if="item.cornerLabels == 1" size="60" />
@@ -30,7 +30,28 @@
 						<svg-icon :name="collectGamesStore.getCollectGamesList.some((game:any) => game.id === item.id) ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
 					</div>
 				</div>
-			</slide>
+			</slide> -->
+			<div v-else>
+				<Swiper :slidesPerView="10" :spaceBetween="15" :modules="modules" class="swiper-container curp" @swiper="onSwiper">
+					<SwiperSlide v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
+						<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
+						<div class="gameInfo Texta">
+							<div class="fs_19">
+								<img v-lazy-load="item.icon" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
+							</div>
+							<div class="fs_13 mt_9">
+								{{ item.name }}
+							</div>
+							<div class="gotoGameBtn mt_9">
+								<button class="common_btn" @click="Common.goToGame(item)">进入游戏</button>
+							</div>
+						</div>
+						<div class="collect" @click="collectGame(item)">
+							<svg-icon :name="collectGamesStore.getCollectGamesList.some((game:any) => game.id === item.id) ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
+						</div>
+					</SwiperSlide>
+				</Swiper>
+			</div>
 		</div>
 	</div>
 </template>
@@ -42,9 +63,13 @@ import router from "/@/router";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
 import Common from "/@/utils/common";
+import { Swiper, SwiperSlide } from "swiper/vue";
 import { useRoute } from "vue-router";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
+import { ref } from "vue";
+import { Autoplay, Navigation } from "swiper/modules";
 const collectGamesStore = useCollectGamesStore();
+const modules = ref([Autoplay, Navigation]);
 interface gameInfo {
 	id: string;
 	name: string;
