@@ -71,6 +71,7 @@
 						</el-table-column>
 						<el-table-column v-else :label="item.label" :prop="item.props" align="center" />
 					</template>
+          <template #empty>{{ $t(`common['暂无数据']`) }}</template>
 				</el-table>
 			</div>
 			<div class="flex-center Pagination" v-if="tableData.length">
@@ -379,6 +380,7 @@ function getTableType() {
 
 	.winlogo {
 		width: 20%;
+    text-align: center;
 	}
 }
 
