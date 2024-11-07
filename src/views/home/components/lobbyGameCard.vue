@@ -3,7 +3,7 @@
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
-					<img v-lazy-load="gameList?.icon" alt="" />
+					<img v-lazy-load="gameList?.iconFileUrl" alt="" />
 					<span class="Text_s fs_20">{{ title ? title : gameList?.name ? gameList?.name : "热门推荐" }}</span>
 				</span>
 			</div>
@@ -15,7 +15,7 @@
 		</div>
 		<div class="lobbyGameList">
 			<div class="onlyOneGame" v-if="bigOneItem && gameList?.gameInfoList?.length == 1" @click="Common.goToGame(gameList?.gameInfoList[0])">
-				<img v-lazy-load="gameList?.gameInfoList[0].icon" alt="" />
+				<img v-lazy-load="gameList?.gameInfoList[0].iconFileUrl" alt="" />
 			</div>
 
 			<div v-else>
@@ -26,7 +26,7 @@
 							<svg-icon name="hot_game_icon" v-else-if="item.cornerLabels == 2" size="60" />
 						</div>
 						<div class="imgBox">
-							<img v-lazy-load="item.icon" alt="" />
+							<img v-lazy-load="item.iconFileUrl" alt="" />
 						</div>
 						<div class="onHover">
 							<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>

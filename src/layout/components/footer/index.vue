@@ -10,7 +10,7 @@
 				<p class="mb_19">合作商</p>
 				<div class="partnersIcon">
 					<slide>
-						<img :src="item.icon" alt="" v-for="(item, index) in partnerList" :key="index" />
+						<img :src="item.iconFileUrl" alt="" v-for="(item, index) in partnerList" :key="index" />
 					</slide>
 				</div>
 			</div>
@@ -18,7 +18,7 @@
 			<div class="footer1Item">
 				<p class="mb_19">支付方式</p>
 				<slide class="paymentMethodIcon">
-					<img :src="item.icon" alt="" v-for="(item, index) in vendorList" :key="index" />
+					<img :src="item.iconFileUrl" alt="" v-for="(item, index) in vendorList" :key="index" />
 				</slide>
 			</div>
 			<div class="line"></div>
@@ -75,8 +75,8 @@
 import { onMounted, ref } from "vue";
 import { CommonApi } from "/@/api/common";
 import Common from "/@/utils/common";
-const partnerList = ref([]);
-const vendorList = ref([]);
+const partnerList: any = ref([]);
+const vendorList: any = ref([]);
 
 onMounted(() => {
 	getlist();

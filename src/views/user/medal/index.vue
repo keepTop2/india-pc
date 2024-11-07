@@ -18,7 +18,7 @@
 						<div>{{ item.unlockMedalNum }}</div>
 					</div>
 				</div>
-				<div class="progress mb_14">
+				<div class="progress mb_14" v-if="findInterval()">
 					<div class="value" :style="{ width: findInterval() + '%' }"></div>
 				</div>
 				<div class="medalRewardList">
@@ -32,7 +32,11 @@
 							<template v-slot:icon>
 								<svg-icon name="mark " size="20px"></svg-icon>
 							</template>
-							<template v-slot:message> 宝箱奖励流水倍数{{ medalRewardRespVOS.find((item: any) => item.openStatus !== 1).typingMultiple }}为倍 </template>
+							<template v-slot:message>
+								宝箱奖励流水倍数{{
+									medalRewardRespVOS.find((item: any) => item.openStatus !== 1)?.typingMultiple || medalRewardRespVOS[medalRewardRespVOS.length - 1]?.typingMultiple
+								}}为倍
+							</template>
 						</ClickTooltip>
 					</div>
 				</div>
