@@ -103,6 +103,7 @@ instance.interceptors.response.use(
 			case ResCode.LOGIN_EXPIRE:
 				const userStore = useUserStore();
 				// userStore.logOut();
+				router.push("/");
 				break;
 		}
 

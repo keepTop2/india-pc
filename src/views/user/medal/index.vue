@@ -12,14 +12,15 @@
 						v-for="(item, index) in medalRewardRespVOS"
 						class="box"
 						@click="openMedalReward(item)"
-						:class="medalRewardRespVOS.filter((item: any) => item.openStatus !== 2).length > index ? 'active' : ''"
+						:class="medalRewardRespVOS.filter((item: any) => item.openStatus !== 2).length  > index ? 'active' : ''"
 					>
 						<img :src="imgObj['status' + item.openStatus + '_' + (index + 1)]" alt="" />
 						<div>{{ item.unlockMedalNum }}</div>
 					</div>
 				</div>
-				<div class="progress mb_14" v-if="findInterval()">
-					<div class="value" :style="{ width: findInterval() + '%' }"></div>
+
+				<div class="progress mb_14">
+					<div class="value" :style="{ width: (findInterval() > 0 ? findInterval() : 0) + '%' }"></div>
 				</div>
 				<div class="medalRewardList">
 					<div v-for="(item, index) in medalRewardRespVOS" class="pl_16">

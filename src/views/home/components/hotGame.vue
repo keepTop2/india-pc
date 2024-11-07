@@ -42,7 +42,7 @@ import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
 import { Autoplay, Navigation } from "swiper/modules";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 const modules = ref([Autoplay, Navigation]);
 const swiperRef: any = ref(null);
 interface gameInfo {
@@ -60,11 +60,13 @@ interface gameInfo {
 	maintenanceEndTime: string;
 	collect: boolean;
 }
+
 const props = defineProps({
 	hotGameList: {
 		type: Array<gameInfo>,
 	},
 });
+
 const onSwiper = (swiper: any) => {
 	if (swiperRef.value) {
 		swiperRef.value = swiper;
