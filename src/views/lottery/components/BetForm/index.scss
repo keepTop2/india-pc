@@ -1,0 +1,76 @@
+.lottery-bet-form {
+	padding: 12px;
+	width: 370px;
+	color: var(--Text2_1);
+	border-radius: 8px;
+	background-color: var(--Bg4);
+	&.actived {
+		.bet-form-btn .now-bet {
+			opacity: 1;
+		}
+	}
+	.bet-form-header {
+		color: var(--Text_a);
+		font-size: 16px;
+		position: relative;
+		padding-bottom: 12px;
+		&::after {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			width: calc(100% + 24px);
+			left: -12px;
+			height: 1px;
+			background: var(--light-ok-Line-1-, var(--Line_1));
+			box-shadow: 0px 1px 0px 0px var(--lineBg);
+		}
+	}
+	.bet-form-content {
+		margin-top: 12px;
+		color: var(--Text2_1);
+		.default-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			font-size: 14px;
+			height: 22px;
+			line-height: 22px;
+			&:last-child {
+				margin-top: 12px;
+			}
+		}
+		.input-item {
+			border-bottom: 1px solid var(--Line_2);
+			> span {
+				font-size: 14px;
+			}
+			.el-input__wrapper {
+				margin: 7px 0 10px 0;
+				background-color: var(--Bg1);
+				box-shadow: none;
+				border: 1px solid var(--Line_2);
+				border-radius: 4px;
+			}
+		}
+	}
+	.bet-form-btn {
+		margin-top: 24px;
+		height: 48px;
+		.now-bet {
+			text-align: center;
+			height: 100%;
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: var(--Theme);
+			font-size: 16px;
+			color: var(--Text_a);
+			border-radius: 4px;
+			cursor: pointer;
+			opacity: 0.3;
+			transition: opacity 0.15s ease;
+		}
+	}
+}
