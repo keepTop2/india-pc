@@ -41,7 +41,7 @@
 						</span>
 						<span class="ml_20">
 							<span>输赢金额：</span>
-							<span class="loseOrWin_color">{{ winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span>
+							<span :class="[ String( winOrLoseAmount).indexOf('-')>-1?'lose_color':'win_color']">{{String( winOrLoseAmount).indexOf('-')>-1? winOrLoseAmount:'+'+winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span>
 						</span>
 					</div>
 					<!-- <div class="flex-center">
@@ -63,11 +63,24 @@
 										<div style="width: 25%" class="fir_item">@{{ props.row.odds }}</div>
 									</div>
 									<div class="winlogo">
-										<img :src="props.row.orderClassify == '1' || props.row.orderClassify == '0' ? winlogo : loselogo" alt="" />
+										<img :src="props.row.orderClassify == '1' ? winlogo :props.row.orderClassify == '0'?helogo: loselogo" alt="" />
 									</div>
 								</div>
 							</template>
+						</el-table-column> 
+						<!-- 输赢金额 -->
+						<el-table-column v-else-if="item.label =='投注时间'" :label="item.label" :prop="item.props" align="center" >
+							<template #default="props">
+								<div >{{ dayjs(props.row.betTime).format("YYYY-MM-DD HH:mm:ss")}}</div>
+							</template>
 						</el-table-column>
+						<!-- 输赢金额 -->
+						<el-table-column v-else-if="item.label =='输赢金额'" :label="item.label" :prop="item.props" align="center" >
+							<template #default="props">
+								<div :style="{'color':String(props.row.winLossAmount).indexOf('-')> -1?'#FF8C00':'#FF284B'}">{{ String(props.row.winLossAmount).indexOf('-')> -1?props.row.winLossAmount:'+'+props.row.winLossAmount }} CNY</div>
+							</template>
+						</el-table-column>
+
 						<el-table-column v-else :label="item.label" :prop="item.props" align="center" />
 					</template>
 					<template #empty>{{ $t(`common['暂无数据']`) }}</template>
@@ -89,6 +102,7 @@ import showToast from "/@/hooks/useToast";
 import colmuns, { columnsType, columnType } from "./bettingRecordsColumns";
 import loselogo from "/@/assets/zh-CN/wallet/loselogo.png";
 import winlogo from "/@/assets/zh-CN/wallet/winlogo.png";
+import helogo from "/@/assets/zh-CN/wallet/he.png";
 import NoData from "/@/views/messageCenter/components/NoData.vue";
 
 const showDatePicker = ref(false);
@@ -305,10 +319,12 @@ function getTableType() {
 	flex-direction: column;
 	justify-content: space-between;
 
-	.loseOrWin_color {
+	.lose_color {
 		color: #01aff6;
 	}
-
+	.win_color{
+		color: var(--light-ok-Theme--, #FF284B);
+	}
 	.table {
 		border: 1px solid var(--Line_2);
 		border-radius: 8px;
