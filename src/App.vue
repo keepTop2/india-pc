@@ -3,16 +3,24 @@
 </template>
 
 <script setup lang="ts" name="app">
-// import Common from '/@/utils/common';
 import { useThemesStore } from "/@/stores/modules/themes";
-import { onBeforeMount } from "vue";
-import Common from "/@/utils/common";
-import { CommonApi } from "/@/api/common";
+import { computed, onBeforeMount, watch } from "vue";
 import { useUserStore } from "/@/stores/modules/user";
-
+import { useWindowSize } from "@vueuse/core";
+import { useLayoutStore } from "./stores/modules/layout";
+const { width } = useWindowSize();
 const UserStore = useUserStore();
 const ThemesStore = useThemesStore();
-
+const layoutStore = useLayoutStore();
+const lauoytType = computed(() => {
+	return width.value > 1440 ? 1 : width.value > 1024 ? 2 : 3;
+});
+watch(
+	() => lauoytType.value,
+	() => {
+		layoutStore.setLayoutType(lauoytType.value);
+	}
+);
 onBeforeMount(() => {
 	ThemesStore.initTheme();
 	UserStore.userInit();
