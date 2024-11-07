@@ -1,11 +1,18 @@
 <template>
 	<div class="nodata">
 		<img src="/src/assets/common/nodata.png" alt="" />
-		<div>哎呀！暂无消息记录！</div>
+		<div>{{ info }}</div>
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps({
+	info: {
+		type: String,
+		default: "哎呀！暂无消息记录！",
+	},
+});
+</script>
 
 <style scoped lang="scss">
 .nodata {
