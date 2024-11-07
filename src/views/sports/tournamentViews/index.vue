@@ -4,7 +4,7 @@
 	</div>
 
 	<!-- 联赛数据统计卡片 -->
-	<div :style="computedHeight" class="box-content">
+	<div v-if="listData.length" :style="computedHeight" class="box-content">
 		<DynamicScroller :items="listData" :min-item-size="154" class="scroller" key-field="leagueId">
 			<template v-slot="{ item, index, active }">
 				<DynamicScrollerItem :item="item" :key="item.leagueId" :active="active" :data-index="index" :data-active="active">
