@@ -1,10 +1,16 @@
 import { defineComponent } from "vue";
 import useTimer from "/@/views/lottery/components/Tools/Timer";
+import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息 store
+import Common from "/@/utils/common";
 import "./index.scss";
 
 // 主组件，使用 useTimer 获取计时器相关的状态和方法
 export default () => {
 	const { ClockTime, start, pause, reset } = useTimer({ seconds: 73000 });
+	// 获取用户信息 store
+	const {
+		getUserInfo: { mainCurrency },
+	} = useUserStore();
 
 	// 定义卡片头部组件
 	const Header = defineComponent({
@@ -27,21 +33,22 @@ export default () => {
 	// 定义卡片内容组件，可以根据需要传入 props 以便更灵活的显示不同内容
 	const Content = defineComponent({
 		props: {
-			iconUrl: { type: String, required: false },
-			typeName: { type: String, required: false },
-			title: { type: String, required: false },
+			icon: { type: String },
+			title: { type: String, required: true },
+			desc: { type: String, required: true },
 		},
 		setup(props) {
+			const { icon, desc, title } = props;
 			return () => (
 				<div class="card-content">
 					{/* 左侧内容区域 */}
 					<div class="left">
-						<img src={props.iconUrl || "https://ctopalistat3.zengchenglm.com/pc/images/db_DB5FC2cea4e2f859029cdbda33fffda6ea1f2.png"} alt="Content Image" />
+						<img src={icon} alt="Content Image" />
 					</div>
 					{/* 右侧类型名称和标题 */}
 					<div class="right">
-						<div class="type-name">{props.typeName || "PK0"}</div>
-						<div class="title">{props.title || "5分钟一期"}</div>
+						<div class="type-name">{title || "-"}</div>
+						<div class="title">{desc || "-"}</div>
 					</div>
 				</div>
 			);
@@ -50,14 +57,20 @@ export default () => {
 
 	// 定义卡片底部组件
 	const Footer = defineComponent({
-		setup() {
+		props: {
+			amount: { type: Number, required: true },
+		},
+		setup(props) {
+			const { amount } = props;
 			return () => (
 				<div class="card-footer">
 					<div class="left">
-						<span>最高奖</span>
+						<span>最近获奖</span>
 					</div>
 					<div class="right">
-						<span>6,500 CNY</span>
+						<span>
+							{Common.thousands(amount)} {mainCurrency}
+						</span>
 					</div>
 				</div>
 			);
