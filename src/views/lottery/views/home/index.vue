@@ -119,8 +119,8 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-// import useLotteryCard from "../../components/lotteryCard/index";
-import useLotteryCard from "/@/views/lottery/components/lotteryCard/index";
+// import useLotteryCard from "../../components/lotteryCard/Index";
+import useLotteryCard from "/@/views/lottery/components/lotteryCard/Index";
 import useLotteryHeader from "/@/views/lottery/components/LotteryHeader/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import useDice from "/@/views/lottery/components/Tools/Dice/Index";
