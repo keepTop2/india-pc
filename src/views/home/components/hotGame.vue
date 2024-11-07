@@ -11,7 +11,7 @@
 		<div class="hotGameList">
 			<Swiper :slidesPerView="4" :spaceBetween="15" :modules="modules" class="swiper-container curp" @swiper="onSwiper">
 				<SwiperSlide v-for="(item, index) in hotGameList" :key="index" class="hotGameItem">
-					<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
+					<img v-lazy-load="item.iconFileUrl ? item.iconFileUrl : ''" alt="" />
 					<div class="gameInfo Texta">
 						<div class="fs_19">
 							<img v-lazy-load="hotGameIcon" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>

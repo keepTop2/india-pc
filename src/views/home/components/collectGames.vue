@@ -3,7 +3,7 @@
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
-					<img v-lazy-load="gameList?.icon" alt="" />
+					<img v-lazy-load="gameList?.iconFileUrl" alt="" />
 					<span class="Text_s fs_20">{{ "喜欢的游戏" }}</span>
 				</span>
 			</div>
@@ -16,7 +16,7 @@
 						<svg-icon name="hot_game_icon" v-else-if="item.cornerLabels == 2" size="60" />
 					</div>
 					<div class="imgBox">
-						<img v-lazy-load="item.icon" alt="" />
+						<img v-lazy-load="item.iconFileUrl" alt="" />
 					</div>
 					<div class="gameInfo">{{ item.name }}</div>
 					<div class="onHover">

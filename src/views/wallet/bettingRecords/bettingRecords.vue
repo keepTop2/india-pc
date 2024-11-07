@@ -13,7 +13,7 @@
 						<DatePicker :range="range" v-model="showDatePicker" :minDate="minDate" :maxDate="maxDate" @updateRange="updateRange" />
 					</div>
 					<div class="formItem">
-						<Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.welfareCenterRewardType"></Dropdown>
+						<Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.venueType"></Dropdown>
 					</div>
 					<div class="formItem">
 						<Dropdown :options="activityReceiveStatusOptions" v-model="params.receiveStatus"></Dropdown>
@@ -27,7 +27,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="content">
+		<div v-if="hasData" class="content">
 			<div>
 				<div class="flex_space-between Text_s fs_14 mb_12">
 					<div>
@@ -41,7 +41,7 @@
 						</span>
 						<span class="ml_20">
 							<span>输赢金额：</span>
-							<span class="loseOrWin_color">{{ winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span>
+							<span :class="[ String( winOrLoseAmount).indexOf('-')>-1?'lose_color':'win_color']">{{String( winOrLoseAmount).indexOf('-')>-1? winOrLoseAmount:'+'+winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span>
 						</span>
 					</div>
 					<!-- <div class="flex-center">
@@ -49,7 +49,6 @@
 						您有4个待领取福利
 					</div> -->
 				</div>
-
 				<el-table :class="[tableColumns[0] && tableColumns[0].type == 'select' ? 'table-style-expand' : 'table-style-common']" :data="tableData" style="width: 100%" border>
 					<template v-for="(item, index) in tableColumns" :key="index">
 						<el-table-column type="expand" :label="item.label" width="164px" :prop="item.props" v-if="item.type == 'select'">
@@ -64,30 +63,47 @@
 										<div style="width: 25%" class="fir_item">@{{ props.row.odds }}</div>
 									</div>
 									<div class="winlogo">
-										<img :src="props.row.orderClassify == '1' || props.row.orderClassify == '0' ? winlogo : loselogo" alt="" />
+										<img :src="props.row.orderClassify == '1' ? winlogo :props.row.orderClassify == '0'?helogo: loselogo" alt="" />
 									</div>
 								</div>
 							</template>
+						</el-table-column> 
+						<!-- 输赢金额 -->
+						<el-table-column v-else-if="item.label =='投注时间'" :label="item.label" :prop="item.props" align="center" >
+							<template #default="props">
+								<div >{{ dayjs(props.row.betTime).format("YYYY-MM-DD HH:mm:ss")}}</div>
+							</template>
 						</el-table-column>
+						<!-- 输赢金额 -->
+						<el-table-column v-else-if="item.label =='输赢金额'" :label="item.label" :prop="item.props" align="center" >
+							<template #default="props">
+								<div :style="{'color':String(props.row.winLossAmount).indexOf('-')> -1?'#FF8C00':'#FF284B'}">{{ String(props.row.winLossAmount).indexOf('-')> -1?props.row.winLossAmount:'+'+props.row.winLossAmount }} CNY</div>
+							</template>
+						</el-table-column>
+
 						<el-table-column v-else :label="item.label" :prop="item.props" align="center" />
 					</template>
+					<template #empty>{{ $t(`common['暂无数据']`) }}</template>
 				</el-table>
 			</div>
 			<div class="flex-center Pagination" v-if="tableData.length">
 				<Pagination v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="pageData.totalSize" @sizeChange="sizeChange" @pageChange="pageQuery" />
 			</div>
 		</div>
+		<NoData v-else info="暂无投注记录" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, watch } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
 import showToast from "/@/hooks/useToast";
 import colmuns, { columnsType, columnType } from "./bettingRecordsColumns";
 import loselogo from "/@/assets/zh-CN/wallet/loselogo.png";
 import winlogo from "/@/assets/zh-CN/wallet/winlogo.png";
+import helogo from "/@/assets/zh-CN/wallet/he.png";
+import NoData from "/@/views/messageCenter/components/NoData.vue";
 
 const showDatePicker = ref(false);
 const tableColumns = ref<columnType[]>([]);
@@ -97,7 +113,7 @@ const params = reactive({
 	betEndTime: new Date("2024-12-08 00:00:00").getTime(),
 	pageNumber: 1,
 	pageSize: 10,
-	receiveStatus: "-1",
+	receiveStatus: "",
 	welfareCenterRewardType: "1",
 	venueType: "1",
 });
@@ -123,6 +139,7 @@ const pageData = reactive({
 	mainCurrencyTotal: "",
 });
 const total = ref(0);
+const hasData = ref(false);
 const updateRange = (value: any) => {
 	range.start = value[0];
 	range.end = value[1];
@@ -137,8 +154,8 @@ const pageQuery = () => {
 	params.betStartTime = new Date(range.start).getTime();
 	params.betEndTime = new Date(range.end).getTime();
 	// params.orderClassifyList = +params.receiveStatus;
-	params.venueType = +params.venueType;
-	welfareCenterApi.tzPageQuery(params).then((res) => {
+	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList: [+params.receiveStatus] }).then((res) => {
+		console.log(res, "res");
 		if (!res.data) return;
 		tableData.value = res.data.sabOrderList;
 		pageData.totalSize = res.data.totalSize || 999999;
@@ -155,6 +172,12 @@ const pageQuery = () => {
 		winOrLoseAmount.value = tableData.value.reduce((a: any, b: any) => {
 			return a + b.winLossAmount;
 		}, 0);
+
+		hasData.value =
+			res.data.sabOrderList?.length > 0 ||
+			res.data.eventOrderPage?.records?.length > 0 ||
+			res.data.basicOrderPage?.records?.length > 0 ||
+			res.data.tableOrderPage?.records?.length > 0;
 		getTableType();
 	});
 };
@@ -171,7 +194,7 @@ const getDownBox = () => {
 		});
 		activityReceiveStatusOptions.value.unshift({
 			text: "全部状态",
-			value: "-1",
+			value: "",
 		});
 	});
 };
@@ -295,10 +318,12 @@ function getTableType() {
 	flex-direction: column;
 	justify-content: space-between;
 
-	.loseOrWin_color {
+	.lose_color {
 		color: #01aff6;
 	}
-
+	.win_color{
+		color: var(--light-ok-Theme--, #FF284B);
+	}
 	.table {
 		border: 1px solid var(--Line_2);
 		border-radius: 8px;
@@ -381,10 +406,15 @@ function getTableType() {
 
 	.winlogo {
 		width: 20%;
+		text-align: center;
 	}
 }
 
 :deep(.date-picker) {
 	z-index: 9999;
+}
+
+:deep(.nodata) {
+	height: 70vh;
 }
 </style>
