@@ -4,9 +4,10 @@ import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import "./index.scss";
 
 // 定义主组件
-export default (props: any) => {
+export default (props: { data: any; immediate?: boolean }) => {
+	const { data, immediate = true } = props;
 	// 使用自定义的定时器 hook，获取时间相关的状态和方法
-	const { TimeGroup, start, pause, reset } = useTimer(props);
+	const { TimeGroup, start, pause, reset } = useTimer({ seconds: data.seconds, immediate });
 
 	// 使用自定义的 LotteryCard hook，获取组件内容和页脚
 	const { Content, Footer } = useLotteryCard();
@@ -20,12 +21,12 @@ export default (props: any) => {
 					<div class="left lottery-card">
 						<div class="lottery-card-box">
 							{/* 彩票卡片内容 */}
-							<Content />
+							<Content {...data} />
 							{/* 倒计时组件 */}
 							<TimeGroup />
 						</div>
 						{/* 彩票卡片的页脚 */}
-						<Footer />
+						<Footer amount={data.recentlyAwarded} />
 					</div>
 
 					{/* 右侧部分，展示彩票信息图片 */}

@@ -34,9 +34,6 @@ interface HeaderTools {
 const style = { cursor: "pointer" };
 
 export default (eventsInfo: any): HeaderTools => {
-	const { toggleEventScoreboard, sliderData } = useToolsHooks();
-	const SidebarStore = useSidebarStore();
-
 	const state = reactive({
 		isOpen: true,
 		videoLoading: false,
@@ -48,9 +45,12 @@ export default (eventsInfo: any): HeaderTools => {
 	// 比分板按钮
 	const Scoreboard = defineComponent({
 		name: "Scoreboard",
-		setup() {
-			const isEventActive = computed(() => sliderData.value?.eventId === eventsInfo.value?.eventId);
-
+		props: {
+			isCurrent: { type: Boolean, default: true },
+		},
+		setup(props) {
+			const { toggleEventScoreboard } = useToolsHooks();
+			const SidebarStore = useSidebarStore();
 			const handleClick = () => {
 				toggleEventScoreboard(eventsInfo.value);
 				state.isOpen = true;
@@ -60,7 +60,7 @@ export default (eventsInfo: any): HeaderTools => {
 				<SvgIcon
 					style={style}
 					onClick={handleClick}
-					name={isEventActive.value ? (SidebarStore.sidebarStatus === "scoreboard" ? "sports-score_icon_active" : "sports-score_icon") : "sports-score_icon"}
+					name={props.isCurrent ? (SidebarStore.sidebarStatus === "scoreboard" ? "sports-score_icon_active" : "sports-score_icon") : "sports-score_icon"}
 					width="23px"
 					height="16px"
 				/>
@@ -71,8 +71,10 @@ export default (eventsInfo: any): HeaderTools => {
 	// 直播按钮
 	const Live = defineComponent({
 		name: "Live",
-		setup() {
-			const isEventActive = computed(() => sliderData.value?.eventId === eventsInfo.value?.eventId);
+		props: { isCurrent: { type: Boolean, default: true } },
+		setup(props) {
+			const { toggleEventScoreboard } = useToolsHooks();
+			const SidebarStore = useSidebarStore();
 
 			const handleClick = () => {
 				toggleEventScoreboard(
@@ -92,7 +94,7 @@ export default (eventsInfo: any): HeaderTools => {
 					<SvgIcon
 						style={style}
 						onClick={handleClick}
-						name={isEventActive.value ? (SidebarStore.sidebarStatus === "live" ? "sports-live_icon_active" : "sports-live_icon") : "sports-live_icon"}
+						name={props.isCurrent ? (SidebarStore.sidebarStatus === "live" ? "sports-live_icon_active" : "sports-live_icon") : "sports-live_icon"}
 						width="23px"
 						height="16px"
 					/>

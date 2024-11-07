@@ -177,25 +177,6 @@ export function useToolsHooks() {
 		// 实现刷新数据的逻辑
 	};
 
-	// 侧边数据
-	const sliderData = computed(() => {
-		const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
-		const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData || [];
-
-		if (route.meta.name === "champion" && isNonEmptyArray(promotionsViewData)) {
-			return promotionsViewData[0];
-		}
-		// 非冠军
-		if (route.meta.name !== "champion" && childrenViewData?.length) {
-			return childrenViewData[0]?.events[0];
-		}
-
-		if (isNonEmptyArray(promotionsViewData) && route.meta.name === "detail") {
-			return promotionsViewData[0];
-		}
-		return null;
-	});
-
 	return {
 		toggleEventScoreboard,
 		switchEventVideoSource,
@@ -204,6 +185,5 @@ export function useToolsHooks() {
 		getPromotions,
 		toggleVideoFullscreen,
 		refreshData,
-		sliderData,
 	};
 }
