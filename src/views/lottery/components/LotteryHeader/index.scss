@@ -2,12 +2,16 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	.lottery-card {
+		height: 164px;
+	}
 	.left {
 		.lottery-card-box {
 			display: flex;
 			align-items: center;
 			column-gap: 48px;
 			.card-content {
+				padding-left: 0;
 				.left {
 					width: 80px;
 					height: 80px;
@@ -24,7 +28,7 @@
 		}
 		.card-footer {
 			height: 44px;
-			margin: 16px 0 0 12px;
+			margin: 16px 0 0 0;
 		}
 	}
 	.right {
