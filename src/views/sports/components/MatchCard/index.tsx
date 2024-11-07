@@ -205,7 +205,7 @@ const MatchCard = defineComponent({
 						emit("toggleDisplay", props.dataIndex);
 					}}
 					{...props}
-				>
+				/>
 				{/* 主体 */}
 				{props.events?.events?.map((item: any) => {
 					const { Live, Scoreboard } = useHeaderTools({ value: item });
