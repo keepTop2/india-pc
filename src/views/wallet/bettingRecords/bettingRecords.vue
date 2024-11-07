@@ -13,7 +13,7 @@
 						<DatePicker :range="range" v-model="showDatePicker" :minDate="minDate" :maxDate="maxDate" @updateRange="updateRange" />
 					</div>
 					<div class="formItem">
-						<Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.welfareCenterRewardType"></Dropdown>
+						<Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.venueType"></Dropdown>
 					</div>
 					<div class="formItem">
 						<Dropdown :options="activityReceiveStatusOptions" v-model="params.receiveStatus"></Dropdown>
@@ -140,8 +140,7 @@ const pageQuery = () => {
 	params.betStartTime = new Date(range.start).getTime();
 	params.betEndTime = new Date(range.end).getTime();
 	// params.orderClassifyList = +params.receiveStatus;
-	params.venueType = +params.venueType;
-	welfareCenterApi.tzPageQuery(params).then((res) => {
+	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType }).then((res) => {
 		console.log(res, "res");
 		if (!res.data) return;
 		tableData.value = res.data.sabOrderList;
