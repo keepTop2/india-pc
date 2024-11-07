@@ -24,8 +24,7 @@
 				<div class="other-info">
 					<!-- 塞节时间 -->
 					<div class="date">
-						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
-						<!-- <span v-if="isGameOngoing">{{ formattedGameTime }}</span> -->
+						<span>{{ SportsCommonFn.getEventsTitle(event) }} {{ gameTime }}</span>
 					</div>
 					<div class="info-list">
 						<!-- 收藏 -->
@@ -41,18 +40,16 @@
 				</div>
 				<!-- 节数比分 -->
 				<div class="score-list" v-if="event.basketballInfo?.latestLivePeriod > 0">
-					<div class="item" :class="{ theme: event.basketballInfo?.latestLivePeriod === item }" v-for="(item, index) in event.basketballInfo?.latestLivePeriod" :key="item">
-						{{ event.basketballInfo.homeGameScore[index] }}-{{ event.basketballInfo.awayGameScore[index] }}
-					</div>
+					<div class="item" :class="{ theme: getPeriod.length === index + 1 }" v-for="(item, index) in getPeriod" :key="item">{{ item[0] }}-{{ item[1] }}</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- 其他信息 -->
 		<div class="league-option">
-			<div v-for="(tool, index) in tools" :key="index" class="tooltip-container" @click="handleClick(tool)">
-				<span class="icon"><svg-icon :name="getIconName(tool, event, index)" width="23px" height="16px" /></span>
-			</div>
+			<!-- 工具图标 -->
+			<Scoreboard />
+			<Live />
 		</div>
 	</div>
 </template>
@@ -70,6 +67,8 @@ import { useLink } from "/@/views/sports/hooks/useLink";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
+import useHeaderTools from "/@/views/sports/components/HeaderTools";
 
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
@@ -91,83 +90,30 @@ const props = withDefaults(defineProps<TeamDataType>(), {
 
 const emit = defineEmits(["oddsChange"]);
 
+// 比赛节数
+const getPeriod = computed(() => {
+	const { homeGameScore, awayGameScore, homeOverTimeScore, awayOverTimeScore, latestLivePeriod } = props.event.basketballInfo;
+	// 加时赛
+	if (latestLivePeriod > 4) {
+		const periods = homeGameScore.map((score: number, index: number) => [score, awayGameScore[index]]);
+		periods.push([homeOverTimeScore, awayOverTimeScore]);
+		return periods;
+	} else {
+		return homeGameScore.slice(0, latestLivePeriod).map((score: number, index: number) => [score, awayGameScore[index]]);
+	}
+});
+
 // 盘口类型配置
 const betTypes = [
 	{ id: 1, cardType: "capot", type: 20, selectionsLength: 2 },
 	{ id: 2, cardType: "handicap", type: 1, selectionsLength: 2 },
 	{ id: 3, cardType: "magnitude", type: 3, selectionsLength: 2 },
-	{ id: 4, cardType: "magnitude", type: 401, selectionsLength: 2 },
-	{ id: 5, cardType: "magnitude", type: 402, selectionsLength: 2 },
+	{ id: 4, cardType: "magnitude", type: [401, 402], selectionsLength: 2 },
 ];
-
-// 计算属性: 格式化比赛开始时间
-const formattedGameTime = computed(() => {
-	const minutes = Math.floor(props.event.gameInfo.seconds / 60);
-	const seconds = props.event.gameInfo.seconds % 60;
-	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-});
-
-// 计算属性: 判断比赛是否正在进行
-const isGameOngoing = computed(() => [1, 2, 3, 4, 99].includes(props.event.gameInfo.livePeriod) && !props.event.gameInfo.delayLive && !props.event.gameInfo.isHt);
-
-// 获取侧边栏图标
-const getIconName = (tool: any, events: any, index: number) => {
-	const { eventId } = SidebarStore.getEventsInfo;
-	const isEventActive = events.eventId === eventId;
-	if (!isEventActive) {
-		return tool.iconName;
-	}
-	let activeIndex = -1;
-	switch (SidebarStore.sidebarStatus) {
-		case "scoreboard":
-			activeIndex = 0;
-			break;
-		case "live":
-			activeIndex = 1;
-			break;
-		// 扩展其他可能的状态
-	}
-	return index === activeIndex ? tool.iconName : tool.iconName_active;
-};
 
 // 处理赔率变化
 const oddsChange = (obj: any) => {
 	emit("oddsChange", obj);
-};
-
-/**
- * @description  计算工具图标的显示状态
- */
-const tools = computed(() => {
-	const baseTools = [];
-	// 判断 是否在未开赛页面
-	baseTools.push({
-		iconName: "sports-score_icon",
-		iconName_active: "sports-score_icon_active",
-		tooltipText: "比分板",
-		name: "scoreboard",
-		action: (event: any) => toggleEventScoreboard(event), // 闭包函数，事件绑定传递参数
-		param: props.event, // 传递参数
-	});
-	// 判断是否有视频源
-	if (props.event.streamingOption != 0 && props.event.channelCode) {
-		baseTools.push({
-			iconName: "sports-live_icon",
-			iconName_active: "sports-live_icon_active",
-			tooltipText: "视频源",
-			name: "live",
-			action: (event: any) => toggleEventScoreboard(event, true),
-			param: props.event, // 传递参数
-		});
-	}
-	return baseTools;
-});
-
-// 点击对应工具
-const handleClick = (tool: any) => {
-	toggleEventScoreboard(props?.event);
-	tool.action(tool.param); // 执行对应工具的动作
-	SidebarStore.getSidebarStatus(tool.name);
 };
 
 // 判断是否关注
@@ -196,6 +142,13 @@ const linkDetail = () => {
 	toggleEventScoreboard(props.event);
 	gotoEventDetail(params, SportTypeEnum.Basketball);
 };
+
+//比赛时间
+const gameState = computed(() => props.event);
+const { gameTime } = useGameTimer(gameState);
+
+// 工具栏按钮
+const { Live, Scoreboard } = useHeaderTools(gameState);
 </script>
 
 <style scoped lang="scss">

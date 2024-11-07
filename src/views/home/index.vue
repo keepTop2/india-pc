@@ -3,38 +3,52 @@
 		<bannerSkeleton v-if="isLoading" />
 		<banner v-else></banner>
 
+		<!--跑马灯-->
+		<HorseRaceLamp />
+
 		<div class="max-width">
 			<!-- 热门推荐 -->
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
 			<hotGame :hotGameList="hotGameList" v-else-if="hotGameList.length" />
+			<!-- 收藏的游戏 -->
+			<collectGames :gameList="collectGamesStore.getCollectGamesList" title="喜欢的游戏" v-if="collectGamesStore.getCollectGamesList.length" />
 			<div v-if="isLoading">
 				<lobbyGameSkeleton v-for="(count, index) in [6, 3, 6, 1, 5]" :key="index" :skeletonCount="count" />
 			</div>
 			<div v-else>
 				<lobbyGameCard v-for="(item, index) in lobbyGameList" :key="index" :gameList="item" :title="item.name" />
 			</div>
-			<redbagRainCountdown v-model="showCountdown" :redBagInfo="redBagInfo" />
+			<redbagRainCountdown v-model="showCountdown" />
 		</div>
+
+		<!--公告-->
+		<Announcement />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import banner from "./components/banner.vue";
 import bannerSkeleton from "./components/bannerSkeleton.vue";
 import hotGame from "./components/hotGame.vue";
 import hotGameSkeleton from "./components/hotGameSkeleton.vue";
 import lobbyGameSkeleton from "./components/lobbyGameSkeleton.vue";
 import lobbyGameCard from "./components/lobbyGameCard.vue";
+import collectGames from "./components/collectGames.vue";
 import { HomeApi } from "/@/api/home";
 import pubsub from "/@/pubSub/pubSub";
 import activitySocketService from "/@/utils/activitySocketService";
+import HorseRaceLamp from "/@/views/home/components/horseRaceLamp.vue";
+import Announcement from "/@/components/Announcement/Announcement.vue";
+import { useActivityStore } from "/@/stores/modules/activity";
+import { useCollectGamesStore } from "/@/stores/modules/collectGames";
+const activityStore = useActivityStore();
+const collectGamesStore = useCollectGamesStore();
 const websocketService: any = activitySocketService.getInstance();
 const showCountdown = ref(false);
 const isLoading = ref(true);
 const lobbyGameList: any = ref([]);
 const hotGameList = ref([]);
-const redBagInfo = ref({});
 const queryGameInfoDetail = async () => {
 	const params = {
 		label: 1,
@@ -68,6 +82,7 @@ onMounted(async () => {
 		clearTimeout(timer);
 		isLoading.value = false;
 	}, delay);
+
 	// 如果socket连接成功
 	if (websocketService.socket?.readyState) {
 		//直接发订阅
@@ -81,7 +96,7 @@ onMounted(async () => {
 
 	pubsub.subscribe("/activity/redBagRain", (data) => {
 		showCountdown.value = true;
-		redBagInfo.value = data;
+		activityStore.setCurrentActivityData({ ...data });
 	});
 });
 </script>

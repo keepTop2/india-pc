@@ -1,6 +1,6 @@
 <template>
 	<div class="banner">
-		<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
+		<Swiper :autoplay="true" :slidesPerView="slidesPerView" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
 			<SwiperSlide v-for="(item, index) in announcementList" :key="index">
 				<img :src="item" alt="" />
 			</SwiperSlide>
@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -25,14 +25,33 @@ const announcementList = [banner1, banner2, banner3, banner1, banner2, banner3];
 const onSwiper = (swiper: any) => {
 	swiperRef.value = swiper;
 };
+
+const slidesPerView = ref(3);
+
+const handleScreenWidthChange = (event) => {
+	if (event.matches) {
+		// 窄屏处理逻辑
+		slidesPerView.value = 2;
+	} else {
+		// 宽屏处理逻辑
+		slidesPerView.value = 3;
+	}
+};
+
+onBeforeMount(() => {
+	const mediaQuery = window.matchMedia("(max-width: 1439px)"); // 设置需要的宽度
+	// 添加监听器
+	mediaQuery.addListener(handleScreenWidthChange);
+
+	// 初次调用，检查当前宽度
+	handleScreenWidthChange(mediaQuery);
+});
 </script>
 
 <style scoped lang="scss">
 .banner {
 	width: 100%;
 	height: 240px;
-	padding-top: 16px;
-	padding-bottom: 10px;
 	box-sizing: border-box;
 }
 .swiper {

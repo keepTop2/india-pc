@@ -11,19 +11,20 @@
 			<div class="pr_10">
 				<div class="Text_s fs_12">
 					{{ item.label }}
-
-					<ClickTooltip v-if="item.flag == 'weekSportFlag'" class="ml_5 curp">
+					<ClickTooltip v-if="item.flag == 'weekSportFlag'" class="ml_5 curp" width="230">
 						<template v-slot:icon>
 							<img src="../image/tooltip.png" alt="" class="tooltipImg" />
 						</template>
 						<template v-slot:message>
-							<div>
-								<p>7天体育赌注：</p>
+							<div style="text-align: left" class="Text1">
+								<p>·7天体育赌注：</p>
 								<p v-for="i in data.vipWeekSportVOS">
-									-投注{{ useUserStore().getUserInfo.platCurrencySymbol }} {{ i.weekSportMin }} 至 {{ useUserStore().getUserInfo.platCurrencySymbol }} {{ i.weekSportMax }} =
-									{{ i.weekSportBonus }} {{ useUserStore().getUserInfo.platCurrencySymbol }}
+									&nbsp;&nbsp;-投注{{ useUserStore().getUserInfo.platCurrencySymbol }}&nbsp;{{ i.weekSportMin }}
+									{{ i.weekSportMax > 0 ? `至${useUserStore().getUserInfo.platCurrencySymbol} ${i.weekSportMax}` : "或以上" }} =
+									{{ useUserStore().getUserInfo.platCurrencySymbol }}&nbsp;{{ i.weekSportBonus }}
 								</p>
-								<p>-流水统计时间：周六00:00时～周五 23:59时（7天） ﻿﻿礼金发放时间：每周六"</p>
+								<p>&nbsp;&nbsp;-流水统计时间：周六00:00时～周五 23:59时（7天）</p>
+								<p>·礼金发放时间：每周六</p>
 							</div>
 						</template>
 					</ClickTooltip>
@@ -33,6 +34,9 @@
 						<span
 							v-html="$t(`vip['会员根据每周投注额度获得周流水的礼金奖励']`, { value1: `<span class='color_f1'>*${data.weekAmountProp1}%*${data.weekAmountProp2}%</span>` })"
 						></span>
+					</span>
+					<span class="Text1 fs_12" v-if="item.flag == 'luckFlag'">
+						<span v-html="$t(`vip['从VIP8开始，达到活动要求即可获得每日抽取幸运大奖得机会']`, { value: data.luckMinVipGradeName })"></span>
 					</span>
 					<span class="Text1 fs_12" v-else-if="item.flag == 'monthAmountFlag'">
 						<span
@@ -126,7 +130,7 @@ const awardList: any = [
 	gap: 24px;
 	padding: 0 24px;
 	.awardCard {
-		width: 354px;
+		width: 100%;
 		height: 78px;
 		background: url("../image/awardCardBg.png") no-repeat;
 		background-size: 100% 100%;

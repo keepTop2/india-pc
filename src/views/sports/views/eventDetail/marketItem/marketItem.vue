@@ -36,26 +36,18 @@
 										}"
 										:key="market.marketId + selection.key"
 									>
-										<div v-if="market.marketStatus === 'running'">
-											<span :class="['fs_14', 'fw_400', 'selectionTitle']">
-												<SelectionName :name="selection?.keyName" :betType="market.betType" />
-												<span v-show="selection.key != 'x'">&nbsp;{{ SportsCommon.formatPoint({ betType: market.betType, point: selection?.point, key: selection?.key }) }}</span>
-											</span>
-											<span :class="['fs_14', 'fw_400', 'price', changeClass(selection)]"
-												>{{ selection.oddsPrice.decimalPrice }}
-												<span>
-													<RiseOrFall
-														v-if="selection.oddsChange"
-														:time="3000"
-														:status="selection.oddsChange == 'oddsUp' ? 1 : 2"
-														@animationEnd="animationEnd(market.marketId, selection)"
-													/>
+										<BetSelector :value="selection.oddsPrice.decimalPrice" :is-run="market.marketStatus === 'running'">
+											<div class="selection-box" v-if="market.marketStatus === 'running'">
+												<span :class="['fs_14', 'fw_400', 'selectionTitle']">
+													<SelectionName :name="selection?.keyName" :betType="market.betType" />
+													<span v-show="selection.key != 'x'">&nbsp;{{ SportsCommon.formatPoint({ betType: market.betType, point: selection?.point, key: selection?.key }) }}</span>
 												</span>
-											</span>
-										</div>
-										<div v-else class="lock">
-											<svg-icon name="sports-lock" size="14" />
-										</div>
+												<span :class="['fs_14', 'fw_400', 'price', 'value']">{{ selection.oddsPrice.decimalPrice }} </span>
+											</div>
+											<div v-else class="lock">
+												<svg-icon name="sports-lock" size="14" />
+											</div>
+										</BetSelector>
 									</div>
 								</li>
 							</ul>
@@ -76,12 +68,11 @@
 import { ref, computed, watch } from "vue";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import SportsCommon from "/@/views/sports/utils/common";
-import RiseOrFall from "/@/components/Sport/RiseOrFall.vue";
 import SelectionName from "../components/selectionName.vue";
 import { useRoute } from "vue-router";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 import { useCommonShopCat } from "/@/stores/modules/sports/commonShopCat";
-
+import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
 const commonShopCat = useCommonShopCat();
 const ChampionShopCartStore = useSportsBetChampionStore();
 
@@ -301,7 +292,6 @@ watch(
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			padding-left: 10px;
 			:first-child {
 				color: var(--Text1);
 			}
@@ -418,15 +408,17 @@ watch(
 						display: inline-block;
 					}
 				}
-				> div {
+				.selection-box {
 					display: flex;
 					justify-content: space-between;
 					height: 100%;
+					padding: 0 15px 0 10px;
 				}
 				.lock {
 					display: flex;
 					justify-content: center;
 					align-items: center;
+					height: 100%;
 				}
 			}
 

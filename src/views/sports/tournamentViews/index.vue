@@ -1,17 +1,27 @@
 <template>
-	<SelectCard :teamData="listData" :expandedCount="expandedPanels.size" @onToggleAllStates="onToggleAllStates(listData)" />
+	<div style="height: 34px; margin: 4px 0">
+		<SelectCard :teamData="listData" :expandedCount="expandedPanels.size" @onToggleAllStates="onToggleAllStates(listData)" />
+	</div>
 
 	<!-- 联赛数据统计卡片 -->
 	<div :style="computedHeight" class="box-content">
-		<DynamicScroller :items="listData" :min-item-size="34" class="scroller" key-field="leagueId" :prerender="10">
+		<DynamicScroller :items="listData" :min-item-size="154" class="scroller" key-field="leagueId">
 			<template v-slot="{ item, index, active }">
-				<DynamicScrollerItem :item="item" :active="active" :data-index="index" :data-active="active">
-					<component
+				<DynamicScrollerItem :item="item" :key="item.leagueId" :active="active" :data-index="index" :data-active="active">
+					<!-- <component
 						:is="cardComponent"
 						:teamData="item"
 						:dataIndex="index"
 						:isExpanded="!expandedPanels.has(index)"
 						@oddsChange="handleOddsChange"
+						@toggleDisplay="toggleDisplay"
+					/> -->
+					<MatchCard
+						:scoreboardId="eventsInfo?.eventId"
+						:data-index="index"
+						:isExpanded="!expandedPanels.has(index)"
+						:events="item"
+						:sport-type="Number(route.query.sportType)"
 						@toggleDisplay="toggleDisplay"
 					/>
 				</DynamicScrollerItem>
@@ -27,6 +37,8 @@ import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import useExpandPanels from "/@/views/sports/hooks/useExpandPanels";
 import { Selection } from "/@/views/sports/models/interface";
+import MatchCard from "/@/views/sports/components/MatchCard";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 // 展开收起总控
 const SelectCard = defineAsyncComponent(() => import("/@/views/sports/components/selectCard/selectCard.vue"));
 
@@ -46,18 +58,37 @@ const sportsMap: Record<number, ReturnType<typeof defineAsyncComponent>> = {
 
 const route = useRoute(); // 获取当前路由实例
 
-defineProps({
+const props = defineProps({
 	listData: {
 		type: Array,
 		default: () => [], // 默认值
 	},
 });
 
-// 根据路由的 sportType 查询对应的组件
-const cardComponent = computed(() => {
-	const sportType = Number(route.query.sportType); // 获取当前 sportType
-	return sportsMap[sportType] || null; // 返回对应的组件，若无则返回 null
+// 获取到的数据
+const eventsInfo = computed(() => {
+	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
+	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData || [];
+
+	if (route.meta.name === "champion" && promotionsViewData.length) {
+		return promotionsViewData[0];
+	}
+	// 非冠军
+	if (route.meta.name !== "champion" && childrenViewData?.length) {
+		return childrenViewData[0]?.events[0];
+	}
+
+	if (promotionsViewData.length) {
+		return promotionsViewData[0];
+	}
+	return null;
 });
+
+// 根据路由的 sportType 查询对应的组件
+// const cardComponent = computed(() => {
+// 	const sportType = Number(route.query.sportType); // 获取当前 sportType
+// 	return sportsMap[sportType] || null; // 返回对应的组件，若无则返回 null
+// });
 
 // 引入赔率变化事件的相关逻辑
 const { clearSportsOddsChange } = useSportPubSubEvents();
@@ -75,10 +106,10 @@ const handleOddsChange = ({ marketId, selections }: { marketId: number; selectio
 // 计算高度，根据不同的路由动态设置高度
 const computedHeight = computed(() => {
 	// 默认高度
-	let baseHeight = "calc(100vh - 227px)";
+	let baseHeight = "calc(100vh - 247px)";
 	// 如果当前路由是 /sports/morningTrading, 加上 48px
 	if (route.path === "/sports/morningTrading") {
-		baseHeight = `calc(100vh - 276px)`;
+		baseHeight = `calc(100vh - 296px)`;
 	}
 	return {
 		height: baseHeight,
@@ -101,6 +132,43 @@ const { expandedPanels, onToggleAllStates, toggleDisplay } = useExpandPanels();
 
 	.scroller {
 		height: 100%;
+	}
+	:deep(.market-item) {
+		&:hover {
+			background-color: var(--betselector-hover-bg);
+		}
+	}
+	:deep(.isBright) {
+		background-color: var(--Bg3) !important;
+		&::after {
+			content: "";
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			border: 1px solid var(--Bg5) !important;
+			border-radius: 4px;
+			left: 0;
+			top: 0;
+		}
+		.label {
+			color: var(--Text_a);
+		}
+	}
+	:deep(.league-info) {
+		.team-name {
+			white-space: nowrap; /* 防止文本换行 */
+			overflow: hidden; /* 超出部分隐藏 */
+			text-overflow: ellipsis; /* 超出部分显示省略号 */
+		}
+
+		.team-icon .icon {
+			vertical-align: revert;
+		}
+	}
+	:deep(.vue-recycle-scroller) {
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 }
 

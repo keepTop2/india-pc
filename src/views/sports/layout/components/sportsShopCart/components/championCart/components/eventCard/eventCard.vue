@@ -20,16 +20,10 @@
 				</div>
 				<!-- 未投注赛事卡片赔率显示 -->
 				<div v-if="hasClose" style="position: relative">
-					<span class="value" v-if="props.shopData.eventStatus !== 'running' || props.shopData.betMarketInfo?.marketStatus !== 'running'">@ - </span>
-					<span class="value" v-else :class="changeClass(props.shopData.betMarketInfo)">@{{ shopCartPubSub.decimalPrice(props.shopData) }}</span>
-					<div class="change-icon">
-						<RiseOrFall
-							v-if="props.shopData.betMarketInfo.oddsChange"
-							:time="3000"
-							:status="props.shopData.betMarketInfo?.oddsChange == 'oddsUp' ? 1 : 2"
-							@animationEnd="animationEnd(props.shopData.betMarketInfo)"
-						/>
-					</div>
+					<BetSelector :value="shopCartPubSub.decimalPrice(props.shopData)" isShopCar>
+						<span class="value" v-if="props.shopData.eventStatus !== 'running' || props.shopData.betMarketInfo?.marketStatus !== 'running'">@ - </span>
+						<span class="value" v-else :class="changeClass(props.shopData.betMarketInfo)">@{{ shopCartPubSub.decimalPrice(props.shopData) }}</span>
+					</BetSelector>
 				</div>
 				<!-- 已投注卡片赔率显示 -->
 				<div v-else>
@@ -38,7 +32,7 @@
 			</div>
 			<div class="bet_slip_type">
 				<div>
-					<span v-if="shopData.isLive" class="mr_6 Bg5">[滚球]</span>
+					<span v-if="shopData.isLive" class="mr_6 color-f2">[滚球]</span>
 					<span class="mr_6">{{ props.shopData.betMarketInfo.betTypeName }}</span>
 					<span>[欧洲盘]</span>
 				</div>
@@ -62,9 +56,9 @@
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import SportsCommon from "/@/views/sports/utils/common";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { RiseOrFall } from "/@/components/Sport/index";
 import { i18n } from "/@/i18n/index";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
+import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
 
 const $: any = i18n.global;
 const sportsBetEvent = useSportsBetEventStore();
@@ -94,7 +88,7 @@ const getName = (item: any) => {
 	} else if ((item.betMarketInfo.betType == 5 || item.betMarketInfo.betType == 15) && item.betMarketInfo.key == "2") {
 		return item.teamInfo.awayName;
 	} else if ((item.betMarketInfo.betType == 5 || item.betMarketInfo.betType == 15) && item.betMarketInfo.key == "x") {
-		return $.t(`sports['平局']`);
+		return $.t(`sports['和局']`);
 	} else if ((item.betMarketInfo.betType == 1303 || item.betMarketInfo.betType == 704) && item.betMarketInfo.key == "h") {
 		return item.teamInfo.homeName;
 	} else if ((item.betMarketInfo.betType == 1303 || item.betMarketInfo.betType == 704) && item.betMarketInfo.key == "a") {
@@ -231,8 +225,8 @@ const animationEnd = (item: any) => {
 		.bet_slip_type {
 			display: flex;
 			justify-content: space-between;
-			.Bg5 {
-				color: var(--Bg5);
+			.color-f2 {
+				color: var(--F2);
 			}
 			.tip {
 				display: block;

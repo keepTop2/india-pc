@@ -2,7 +2,9 @@ import { computed, ref, watch } from "vue";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import SportsApi from "/@/api/sports/sports";
 import Common from "/@/utils/common";
-import { SportViewProcessWorkerCommandType, WorkerName } from "/@/enum/workerTransferEnum";
+// import { SportViewProcessWorkerApi, WorkerName } from "../../../enum/webworkerEnum/workerTransferEnum";
+import { SportViewProcessWorkerApi, WorkerName } from "/@/enum/webworkerEnum/workerTransferEnum";
+import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
 import pubSub from "/@/pubSub/pubSub";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import SportsCommonFn from "/@/views/sports/utils/common";
@@ -11,10 +13,17 @@ import workerManage from "/@/webWorker/workerManage";
 import { useUserStore } from "/@/stores/modules/user";
 import { useHaveToken } from "/@/hooks/useHaveToken";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
+import { useRoute } from "vue-router";
+
+const isNonEmptyArray = <T>(arr: T[]): arr is [T, ...T[]] => {
+	return arr.length > 0;
+};
+
 export function useToolsHooks() {
 	const SidebarStore = useSidebarStore();
 	const SportsInfoStore = useSportsInfoStore();
 	const UserStore = useUserStore();
+	const route = useRoute();
 	// 切换计分板功能
 	const toggleEventScoreboard = (eventInfo: any, isVideo: boolean = false) => {
 		// 如果是切换视频，先判断登录状态
@@ -33,13 +42,13 @@ export function useToolsHooks() {
 			const { sportType, eventId } = eventInfo;
 			//判断是否在同一场比赛，切换比分跟直播
 			if (sportType === (eViewData.sportType || pViewData.sportType) && eventId === (eViewData.eventId || pViewData.eventId)) {
-				isVideo && switchEventVideoSource(eventInfo);
+				isVideo ? switchEventVideoSource(eventInfo) : SidebarStore.clearLiveUrl();
 				return;
 			}
 		}
-
 		// 清空状态
 		SidebarStore.clearEventsInfo();
+
 		if (eventInfo) {
 			if (workerManage.getWorkerList().length) {
 				// 关闭侧边栏events线程
@@ -56,7 +65,6 @@ export function useToolsHooks() {
 			if (isVideo) {
 				switchEventVideoSource(eventInfo);
 			} else {
-				console.log("???");
 				// 清除直播地址信息
 				SidebarStore.clearLiveUrl();
 				SidebarStore.getSidebarStatus("scoreboard");
@@ -113,7 +121,8 @@ export function useToolsHooks() {
 			language: SportsCommonFn.getSportLanguage(),
 		};
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sidebarWorker;
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sidebarEventSource;
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.controllerName = WebWorkerControllerE.SidebarEventControllers;
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerApi.sidebarEventSource;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportsEventDetailPush.openEvents((eventId as number) || id), params);
 		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 	};
@@ -130,7 +139,8 @@ export function useToolsHooks() {
 			language: SportsCommonFn.getSportLanguage(),
 		};
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sidebarWorker;
-		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sidebarEventSource;
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.controllerName = WebWorkerControllerE.SidebarEventControllers;
+		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerApi.sidebarEventSource;
 		pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, sportsEventDetailPush.openMarkets((eventId as number) || id), params);
 		pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 	};
@@ -152,7 +162,8 @@ export function useToolsHooks() {
 				language: SportsCommonFn.getSportLanguage(),
 			};
 			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.workerName = WorkerName.sidebarWorker;
-			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.commandType = SportViewProcessWorkerCommandType.sidebarEventSource;
+			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.controllerName = WebWorkerControllerE.SidebarEventControllers;
+			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.apiName = SportViewProcessWorkerApi.sidebarEventSource;
 			pubSub.PubSubEvents.WorkerEvents.viewToWorker.params!.data = Object.assign({}, promotionsEventsSSEPush.openEvents(eventIds as string), params);
 			pubSub.publish(pubSub.PubSubEvents.WorkerEvents.viewToWorker.eventName, pubSub.PubSubEvents.WorkerEvents.viewToWorker.params);
 		}

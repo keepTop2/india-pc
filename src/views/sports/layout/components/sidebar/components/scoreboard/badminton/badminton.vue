@@ -4,7 +4,7 @@
 			<div class="scoreboard-center">
 				<template v-if="Object.keys(eventsInfo).length !== 0">
 					<div class="header cell">
-						<div class="label">{{ getEventsTitle(eventsInfo) }}</div>
+						<div class="label">{{ getEventsTitle(eventsInfo) }} {{ gameTime }}</div>
 						<div class="value">
 							<!-- 渲染前两节得分 -->
 							<template v-for="(period, index) in gameSession" :key="index">
@@ -29,7 +29,7 @@
 							</div>
 						</div>
 						<div class="value">
-							<template v-for="(score, index) in homeScores.slice(0, gameSession + 1)" :key="index">
+							<template v-for="(score, index) in homeScores.slice(0, gameSession)" :key="index">
 								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
 									<span v-if="isPeriodActive(index + 1)">
 										{{ score }}
@@ -42,7 +42,7 @@
 							</div>
 							<!-- 总分 -->
 							<div class="num F2">
-								<span>{{ eventsInfo?.badmintonInfo?.homeCurrentPoint }}</span>
+								<span>{{ homeScores.reduce((accumulator, currentValue) => accumulator + currentValue, 0) }}</span>
 							</div>
 						</div>
 					</div>
@@ -58,7 +58,7 @@
 							</div>
 						</div>
 						<div class="value">
-							<template v-for="(score, index) in awayScores.slice(0, gameSession + 1)" :key="index">
+							<template v-for="(score, index) in awayScores.slice(0, gameSession)" :key="index">
 								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
 									<span v-if="isPeriodActive(index + 1)">
 										{{ score }}
@@ -71,7 +71,7 @@
 							</div>
 							<!-- 总分 -->
 							<div class="num F2">
-								<span>{{ eventsInfo?.badmintonInfo?.awayCurrentPoint }}</span>
+								<span>{{ awayScores.reduce((accumulator, currentValue) => accumulator + currentValue, 0) }}</span>
 							</div>
 						</div>
 					</div>
@@ -85,6 +85,7 @@
 import { computed } from "vue";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 import { i18n } from "/@/i18n/index";
 const { getEventsTitle } = SportsCommonFn;
 const $: any = i18n.global;
@@ -111,7 +112,9 @@ const isPeriodActive = (period: number) => gameSession.value >= period;
 const homeScores = computed(() => props.eventsInfo?.badmintonInfo?.homeGameScore || []);
 // 计算客队得分
 const awayScores = computed(() => props.eventsInfo?.badmintonInfo?.awayGameScore || []);
-
+//比赛时间
+const gameState = computed(() => props.eventsInfo);
+const { gameTime } = useGameTimer(gameState);
 // 计算局
 /*const calculateSetScore = (scores: number[], opponentScores: number[]) => {
 	if (currentSet.value === 1) {

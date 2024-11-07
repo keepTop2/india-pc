@@ -6,7 +6,9 @@
 			<div class="team">
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.homeIconUrl" /></div>
 				<div class="team-name">
-					<div class="name">{{ teamData.teamInfo.homeName }}</div>
+					<div class="name">
+						<span v-ok-tooltip>{{ teamData.teamInfo.homeName }}</span>
+					</div>
 				</div>
 				<!-- 红牌黄牌数量 -->
 				<div class="foul-info" v-if="teamData.soccerInfo?.homeRedCard > 0 || teamData.soccerInfo?.homeYellowCard > 0">
@@ -20,7 +22,9 @@
 			<div class="team">
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.awayIconUrl" /></div>
 				<div class="team-name">
-					<div class="name">{{ teamData.teamInfo.awayName }}</div>
+					<div class="name">
+						<span v-ok-tooltip>{{ teamData.teamInfo.awayName }}</span>
+					</div>
 				</div>
 				<!-- 红牌黄牌数量 -->
 				<div class="foul-info" v-if="teamData.soccerInfo?.awayRedCard > 0 || teamData.soccerInfo?.awayYellowCard > 0">
@@ -34,10 +38,7 @@
 		<div class="other-info">
 			<!-- 塞节时间 -->
 			<div class="date">
-				<span>{{ SportsCommonFn.getEventsTitle(teamData) }}</span>
-				<!-- <span v-if="(teamData.gameInfo.livePeriod == 2 || teamData.gameInfo.livePeriod == 1) && !teamData.gameInfo.delayLive && !teamData.gameInfo.isHt">{{
-					formattedGameTime
-				}}</span> -->
+				<span>{{ SportsCommonFn.getEventsTitle(teamData) }} {{ gameTime }}</span>
 			</div>
 			<!-- 其他信息 -->
 			<div class="info-list">
@@ -65,6 +66,7 @@ import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { convertUtcToUtc5AndFormatMD } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 const { toggleEventScoreboard, switchEventVideoSource } = useToolsHooks();
 
 const SportAttentionStore = useSportAttentionStore();
@@ -89,13 +91,6 @@ const props = withDefaults(defineProps<teamDataType>(), {
 	teamData: () => {
 		return {};
 	},
-});
-
-// 定义计算属性 格式化比赛开始时间
-const formattedGameTime = computed(() => {
-	const minutes = Math.floor(props.teamData.gameInfo.seconds / 60);
-	const seconds = props.teamData.gameInfo.seconds % 60;
-	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 });
 
 /**
@@ -131,6 +126,10 @@ const attentionEvent = async (isActive: boolean) => {
 	}
 	PubSub.publish(PubSub.PubSubEvents.SportEvents.attentionChange.eventName, {});
 };
+
+//比赛时间
+const gameState = computed(() => props.teamData);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">

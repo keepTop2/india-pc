@@ -11,14 +11,20 @@
 					<span>{{ show ? "显示" : "隐藏" }}</span>
 					<svg-icon :name="show ? 'eyes' : 'eyes_on'" size="16px"></svg-icon>
 				</div>
+				<template v-if="hideLive">
+					<Scoreboard />
+					<Live />
+				</template>
+
 				<svg-icon class="saveFollow" :name="isAttention ? 'sports-already_collected' : 'sports-collection'" @click="attentionEvent(true)" size="20" />
+				<!-- <Refresh @onChange="handleRefresh" /> -->
 				<!-- <svg-icon name="sports-shuaxin" :class="{ cycling: loading }" size="20" @click="$emit('refresh')" /> -->
 			</div>
 		</div>
 		<div class="content" :class="!show ? 'showContent' : 'hideContent'">
 			<!-- <SportEventDetail :sportInfo="sportInfo" :size="'large'" /> -->
 			<!-- 计分板组件 -->
-			<div class="events-container">
+			<div class="events-container" :class="{ 'has-video': SidebarStore.sidebarStatus === 'live' && toolState.isOpen }">
 				<!-- 动态记分板组件 -->
 				<!-- 已开赛的动态组件计分板 -->
 				<component
@@ -28,25 +34,27 @@
 				></component>
 				<!-- 未开赛计分板显示 -->
 				<NotStarted v-else :eventsInfo="sportInfo" />
+
+				<template v-if="SidebarStore.sidebarStatus === 'live' && toolState.isOpen">
+					<VideoSource class="detail-video" :source="SidebarStore.getLiveUrl" />
+				</template>
 			</div>
-			<!-- 直播 -->
-			<!-- <div v-else-if="SidebarStore.sidebarStatus === 'live'" class="events-live">
-				<VideoSource />
-			</div> -->
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from "vue";
+import { computed, defineAsyncComponent, ref, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import SportsApi from "/@/api/sports/sports";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
 import { useSportHotStore } from "/@/stores/modules/sports/sportHot";
 import PubSub from "/@/pubSub/pubSub";
+import useHeaderTools from "/@/views/sports/components/HeaderTools";
 // import SportEventDetail from "/@/views/sports/layout/components/sportRight/components/sprotVideo/sportEventDetail.vue";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+import useVideo from "/@/views/sports/components/VideoSource";
 
 const SportAttentionStore = useSportAttentionStore();
 const SportHotStore = useSportHotStore();
@@ -58,8 +66,7 @@ const emits = defineEmits(["back", "isHidden", "isCollect", "refresh", "filter",
 
 // 未开赛
 const NotStarted = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/scoreboard/notStarted/notStarted.vue"));
-// 视频
-const VideoSource = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/videoSource/videoSource.vue"));
+
 // 热门赛事
 const HotEvents = defineAsyncComponent(() => import("/@/views/sports/layout/components/sidebar/components/hotEvents/hotEvents.vue"));
 // 盘口列表
@@ -166,6 +173,35 @@ const handleGoBack = () => {
 	router.back();
 	SportHotStore.updateToHotEvent();
 };
+
+// 工具栏按钮
+const gameState = computed(() => props.sportInfo);
+const { Live, Scoreboard, Refresh, toolState } = useHeaderTools(gameState);
+
+const hideLive = ref(false);
+const handleScreenWidthChange = (event) => {
+	if (event.matches) {
+		// 窄屏处理逻辑
+		hideLive.value = true;
+	} else {
+		// 宽屏处理逻辑
+		hideLive.value = false;
+	}
+};
+onBeforeMount(() => {
+	const mediaQuery = window.matchMedia("(max-width: 1439px)"); // 设置需要的宽度
+	// 添加监听器
+	mediaQuery.addListener(handleScreenWidthChange);
+
+	// 初次调用，检查当前宽度
+	handleScreenWidthChange(mediaQuery);
+});
+
+const handleRefresh = () => {
+	// emits("refresh");
+};
+
+const { VideoSource } = useVideo();
 </script>
 
 <style lang="scss" scoped>
@@ -200,10 +236,23 @@ const handleGoBack = () => {
 	}
 
 	:deep(.scoreboard-container) {
-		.header,
-		.row {
-			.value {
-				min-width: 300px !important;
+		height: 276px !important;
+		.scoreboard {
+			padding: 0 75px;
+		}
+
+		.scoreboard-center {
+			height: 166px;
+			width: 100% !important;
+			.row {
+				height: 65px !important;
+			}
+			.header,
+			.row {
+				padding: 0 24px !important;
+				.value {
+					min-width: 300px !important;
+				}
 			}
 		}
 	}
@@ -240,25 +289,74 @@ const handleGoBack = () => {
 	// transition: all 0.3s linear;
 	// overflow: hidden;
 	// z-index: 1;
+	width: 100%;
+	.has-video {
+		position: relative;
+		:deep(.scoreboard-center) {
+			display: none !important;
+		}
+		:deep(.request-failed-svg) {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 200px;
+			height: 200px;
+		}
+		:deep(.detail-video) {
+			height: 276px;
+			width: 490px;
+			position: absolute;
+			left: 50%;
+			bottom: 0;
+			transform: translateX(-50%);
+			margin: 0 auto;
+			color: #fff;
+			background-color: #000;
+			padding: 0;
+			font-size: 10px;
+			line-height: 1;
+			font-weight: normal;
+			font-style: normal;
+			font-family: Arial, Helvetica, sans-serif;
+			word-break: initial;
+			display: inline-block;
+			vertical-align: top;
+			.vjs-tech {
+				width: 100%;
+				height: 100%;
+			}
+			.vjs-text-track-display {
+				bottom: 1em;
+			}
+			.vjs-control-text {
+				display: none;
+			}
+		}
+	}
 	:deep(.scoreboard-container) {
-		height: 208px;
+		height: 276px !important;
+		.scoreboard {
+			height: 100% !important;
+		}
 		& > div:nth-child(2) {
 			display: none;
 		}
 		.scoreboard-center {
-			width: 892px !important;
+			width: 100%;
+			// width: 892px !important;
 		}
 		.scoreboard-info {
 			height: 130px !important;
+			.home-team-name,
+			.away-team-name {
+				max-width: 100% !important;
+			}
 		}
 	}
 
-	> .main {
-		width: 892px;
-	}
-
 	&.showContent {
-		height: 208px;
+		height: 276px;
 	}
 
 	&.hideContent {

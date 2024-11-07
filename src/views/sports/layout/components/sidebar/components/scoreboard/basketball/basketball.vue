@@ -4,7 +4,7 @@
 			<div class="scoreboard-center">
 				<template v-if="Object.keys(eventsInfo).length !== 0">
 					<div class="header cell">
-						<div class="label">{{ getEventsTitle(eventsInfo) }}</div>
+						<div class="label">{{ getEventsTitle(eventsInfo) }} {{ gameTime }}</div>
 						<div class="value">
 							<!-- 渲染前两节得分 -->
 							<template v-for="(period, index) in periods.slice(0, 2)" :key="index">
@@ -107,10 +107,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, watch, toRefs } from "vue";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { i18n } from "/@/i18n/index";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 const { getEventsTitle } = SportsCommonFn;
 const $: any = i18n.global;
 
@@ -142,6 +143,10 @@ const totalScore = (scores: number[]) => scores.reduce((acc, score) => acc + sco
 
 // 计算半场得分 (前两节得分相加)
 const halftimeScore = (scores: number[]) => scores.slice(0, 2).reduce((acc, score) => acc + score, 0);
+
+//比赛时间倒计时
+const gameState = computed(() => props.eventsInfo);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">

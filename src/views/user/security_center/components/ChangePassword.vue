@@ -73,7 +73,7 @@ const VerifyError = reactive({
 // 验证码
 const hcaptcha: any = ref(null);
 
-// 登陆表单
+// 登录表单
 const payLoad = reactive({
 	oldPassword: "",
 	newPassword: "",
@@ -81,7 +81,7 @@ const payLoad = reactive({
 	verifyCode: "",
 });
 
-// 校验完成登陆按钮可以点击
+// 校验完成登录按钮可以点击
 const disabledBtn = ref(true);
 
 // 显示密码

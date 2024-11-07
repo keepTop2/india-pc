@@ -1,0 +1,76 @@
+@media (min-width: 1440px) and (max-width: 1919px) {
+	/* 在屏幕宽度在1440px到1919px之间时生效的样式 */
+	.base-body {
+		width: 1176px !important;
+		:deep(.banner) {
+			.swiper-slide {
+				width: calc((100% - 30px) / 3);
+				img {
+					width: 100%;
+				}
+			}
+		}
+		:deep(.main-container) {
+			// 联赛玩法标题
+			.market-name-list .label {
+				font-size: 12px !important;
+			}
+
+			.league-info,
+			.content-left {
+				min-width: 248px;
+				width: 248px;
+			}
+
+			.league-markets {
+				min-width: auto !important;
+				width: auto !important;
+			}
+
+			// 足球
+			.card-container-1 {
+				.market-name-list,
+				.league-markets {
+					> div:first-child,
+					> div:nth-child(4) {
+						width: 61px !important;
+					}
+					> div:nth-child(2) {
+						width: 85px !important;
+					}
+					> div:nth-child(3) {
+						width: 103px !important;
+					}
+					> div:nth-child(5) {
+						width: 78px !important;
+					}
+					> div:nth-child(6) {
+						width: 92px !important;
+					}
+				}
+			}
+			// 篮球
+			.card-container-2 {
+				.market-name-list,
+				.league-markets {
+					> div:first-child {
+						width: 90px !important;
+					}
+					> div:nth-child(2),
+					> div:nth-child(3) {
+						width: 93px !important;
+					}
+					> div:last-child {
+						width: 212px !important;
+						> .market-column {
+							width: 212px !important;
+							> .market-content {
+								width: 105px !important;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

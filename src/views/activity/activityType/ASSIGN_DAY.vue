@@ -2,7 +2,7 @@
 	<div class="activityWrapper">
 		<div class="activityHeader">
 			{{ activityData.activityNameI18nCode || "指定日期存款" }}
-			<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../components/image/close_icon.png" alt="" /></span>
+			<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="../components/image/close_icon.png" alt="" /></span>
 		</div>
 		<div class="activityMain">
 			<div class="activityImg">
@@ -104,4 +104,10 @@ const confirmDialog = () => {
 	showCommonDialog.value = false;
 };
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.ruleDetails {
+	:deep(img) {
+		max-width: 100%;
+	}
+}
+</style>

@@ -10,7 +10,7 @@
 				<!-- 第一步 -->
 				<div v-if="currentStep === 0">
 					<p class="Text_s mb_8 mt_8">{{ verifyType == "email" ? $t(`security_center['邮箱验证']`) : $t(`security_center['手机号验证']`) }}</p>
-					<p class="Theme_text fs_12 text_unline curp">
+					<p class="color_Theme fs_12 text_unline curp">
 						<span @click="changeVerifyType" v-if="UserStore.getUserGlobalSetInfo.email && UserStore.getUserGlobalSetInfo.phone">{{ $t(`security_center['其他方式']`) }}</span>
 					</p>
 					<div>
@@ -92,7 +92,8 @@
 							/>
 						</p>
 						<p class="fs_14 Text1 mt_16 fw_200">
-							{{ $t(`security_center['未收到验证码？请重新发送或']`) }}<span class="Theme_text">{{ $t(`security_center['联系客服']`) }}</span>
+							{{ $t(`security_center['未收到验证码？请重新发送或']`)
+							}}<span class="color_Theme" @click="Common.getSiteCustomerChannel">{{ $t(`security_center['联系客服']`) }}</span>
 						</p>
 					</div>
 				</div>
@@ -139,7 +140,7 @@ const VerifyError = reactive({
 const hcaptcha: any = ref(null);
 
 const AreaCodeOptions: any = ref([]);
-// 登陆表单
+// 登录表单
 const payLoad = reactive({
 	userAccount: "",
 	areaCode: "",
@@ -159,7 +160,7 @@ const passWordregex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@_$]{8,16}$/;
 //显示校验提示
 const userAccountVerifyError = ref(false);
 const userVerifyTypeVerifyError = ref(false);
-// 校验完成登陆按钮可以点击
+// 校验完成登录按钮可以点击
 const disabledBtn = ref(true);
 const verificationBtn = ref(false);
 // 显示密码
@@ -289,7 +290,7 @@ const onSubmit = async (token: string) => {
 		modalStore.closeModal();
 		localStorage.setItem("userInfo", JSON.stringify(data));
 		UserStore.setUserInfo(data);
-		showToast("登陆成功");
+		showToast("登录成功");
 	} else {
 		payLoad.userAccount = "";
 		showToast(message);

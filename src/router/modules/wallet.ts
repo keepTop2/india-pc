@@ -1,6 +1,15 @@
 // 1号布局
 import wallet from "/@/views/wallet/wallet.vue";
 import { i18n } from "/@/i18n/index";
+import { useUserStore } from "/@/stores/modules/user";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import showToast from "/@/hooks/useToast";
+import { walletApi } from "/@/api/wallet";
+import common from "/@/utils/common";
+import { nextTick } from "process";
+import { toRefs, watchEffect } from "vue";
+import { useHaveToken } from "/@/hooks/useHaveToken";
+import { useTipsDialog } from "/@/hooks/useTipsDialog";
 const $: any = i18n.global;
 
 //首页
@@ -19,6 +28,19 @@ const walletLayout = {
 				icon: "recharge",
 				active_icon: "recharge_active",
 			},
+			beforeEnter: (to: any, from: any, next: (bool?: boolean | undefined) => void) => {
+				const haveToken = useHaveToken();
+				if (!haveToken()) return next(false); // 取消导航
+				// const UserStore = useUserStore();
+				// const { rechargeWithdrawLimit } = toRefs(UserStore.getUserInfo);
+				// // 检查账户是否被锁定
+				// if (rechargeWithdrawLimit.value === 1) {
+				// 	showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
+				// 	return next(false);
+				// }
+				// 继续导航
+				next();
+			},
 		},
 		{
 			path: "/withdrawal",
@@ -28,6 +50,29 @@ const walletLayout = {
 				title: $.t("wallet['提款']"),
 				icon: "withdrawal",
 				active_icon: "withdrawal_active",
+			},
+			beforeEnter: async (to: any, from: any, next: (bool?: boolean | undefined) => void) => {
+				const haveToken = useHaveToken();
+				if (!haveToken()) return next(false); // 取消导航
+				const modalStore = useModalStore();
+				const UserStore = useUserStore();
+				// const { rechargeWithdrawLimit, withdrawLimit } = toRefs(UserStore.getUserInfo);
+				// // 检查账户是否被锁定
+				// const isAccountLocked = rechargeWithdrawLimit.value === 1 || withdrawLimit.value === 1;
+				// if (isAccountLocked) {
+				// 	showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
+				// 	return next(false);
+				// }
+
+				const { isSetPwd, phone } = toRefs(UserStore.getUserGlobalSetInfo);
+				// 检查用户是否已设置交易密码或绑定手机号
+				const hasUserSetup = isSetPwd?.value || phone?.value;
+				if (hasUserSetup) {
+					return next();
+				} else {
+					modalStore.openModal("hintDialog");
+					return next(false);
+				}
 			},
 		},
 		{

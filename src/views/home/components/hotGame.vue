@@ -1,5 +1,5 @@
 <template>
-	<div class="mt_40 pr_10 pl_10">
+	<div class="pr_10 pl_10 mt_40" v-if="hotGameList?.length">
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
@@ -8,33 +8,43 @@
 				</span>
 			</div>
 		</div>
-		<slide class="hotGameList">
-			<div v-for="(item, index) in hotGameList" :key="index" class="hotGameItem">
-				<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
-				<div class="gameInfo Texta">
-					<div class="fs_19">
-						<img v-lazy-load="hotGameIcon" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
+		<div class="hotGameList">
+			<Swiper :slidesPerView="4" :spaceBetween="15" :modules="modules" class="swiper-container curp" @swiper="onSwiper">
+				<SwiperSlide v-for="(item, index) in hotGameList" :key="index" class="hotGameItem">
+					<img v-lazy-load="item.icon ? item.icon : ''" alt="" />
+					<div class="gameInfo Texta">
+						<div class="fs_19">
+							<img v-lazy-load="hotGameIcon" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
+						</div>
+						<div class="fs_13 mt_9">
+							{{ item.name }}
+						</div>
+						<div class="gotoGameBtn mt_9">
+							<button class="common_btn" @click="Common.goToGame(item)">进入游戏</button>
+						</div>
 					</div>
-					<div class="fs_13 mt_9">
-						{{ item.name }}
+					<div class="collect" @click="collectGame(item)">
+						<svg-icon :name="collectGamesStore.getCollectGamesList.some((game:any) => game.id === item.id) ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
 					</div>
-					<div class="gotoGameBtn mt_9">
-						<button class="common_btn" @click="Common.goToGame(item)">进入游戏</button>
-					</div>
-				</div>
-				<div class="collect" @click="collectGame(item)">
-					<svg-icon :name="item.collect ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
-				</div>
-			</div>
-		</slide>
+				</SwiperSlide>
+			</Swiper>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import Common from "/@/utils/common";
+import { Swiper, SwiperSlide } from "swiper/vue";
 import hotGameIcon from "./image/hotGameIcon.png";
 import { HomeApi } from "/@/api/home";
 import showToast from "/@/hooks/useToast";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import { useUserStore } from "/@/stores/modules/user";
+import { useCollectGamesStore } from "/@/stores/modules/collectGames";
+import { Autoplay, Navigation } from "swiper/modules";
+import { ref } from "vue";
+const modules = ref([Autoplay, Navigation]);
+const swiperRef: any = ref(null);
 interface gameInfo {
 	id: string;
 	name: string;
@@ -55,17 +65,28 @@ const props = defineProps({
 		type: Array<gameInfo>,
 	},
 });
+const onSwiper = (swiper: any) => {
+	if (swiperRef.value) {
+		swiperRef.value = swiper;
+	}
+};
+const collectGamesStore = useCollectGamesStore();
 const collectGame = (game: gameInfo) => {
-	const params = {
-		gameId: game.id,
-		type: !game.collect,
-	};
-	game.collect = !game.collect;
-	HomeApi.collection(params).then((res) => {
-		if (res.code === Common.ResCode.SUCCESS) {
-			showToast(!game.collect ? "取消收藏成功" : "收藏成功");
-		}
-	});
+	if (useUserStore().getLogin) {
+		const params = {
+			gameId: game.id,
+			type: !game.collect,
+		};
+		game.collect = !game.collect;
+		HomeApi.collection(params).then((res) => {
+			if (res.code === Common.ResCode.SUCCESS) {
+				showToast(!game.collect ? "取消收藏成功" : "收藏成功");
+			}
+			collectGamesStore.setCollectGamesList();
+		});
+	} else {
+		useModalStore().openModal("LoginModal");
+	}
 };
 </script>
 
@@ -82,7 +103,6 @@ const collectGame = (game: gameInfo) => {
 }
 
 .hotGameList {
-	display: flex;
 	.hotGameItem {
 		margin-right: 15px;
 		position: relative;
@@ -95,8 +115,8 @@ const collectGame = (game: gameInfo) => {
 			cursor: pointer;
 		}
 		img {
-			width: 258px;
-			height: 258px;
+			width: 100%;
+			height: 315px;
 			border-radius: 12px;
 			object-fit: cover;
 			pointer-events: none;

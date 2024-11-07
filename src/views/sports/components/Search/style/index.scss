@@ -1,0 +1,206 @@
+.el-overlay-dialog {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.sport-search-dialog {
+		width: 1308px;
+		// 上下间距48px
+		height: calc(100vh - 96px);
+		padding: 32px;
+		border-radius: calc(var(--border-radius) * 2);
+		background-color: var(--Bg);
+		// 自定义头部
+		.search-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.el-dialog__title {
+				color: var(--Text_a) !important;
+				font-weight: 400;
+				font-size: 32px;
+			}
+
+			.close {
+				padding: 6px;
+				background-color: var(--Bg2);
+				border-radius: var(--border-radius);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
+			}
+		}
+
+		// 搜索框
+		.search-input {
+			margin-top: 24px;
+			margin-bottom: 12px;
+
+			.el-input__wrapper {
+				width: 100%;
+				border-radius: var(--border-radius);
+				background-color: var(--Bg2);
+				padding: 16px;
+				height: 54px;
+				box-shadow: 0 0 0 1px var(--Line_2, var(--Line_2)) inset;
+
+				.el-input__inner::placeholder {
+					font-size: var(--title2-text-size);
+				}
+
+				.el-input__inner {
+					color: var(--Text_a);
+					font-size: var(--title2-text-size);
+				}
+			}
+
+			.el-icon {
+				width: 20px;
+			}
+		}
+
+		.search-body {
+			// overflow: hidden;
+		}
+
+		// 主体内容
+		.content {
+			// 上下间距：96px dialog的padding-top + bottom：32px * 2 头部：45px 搜索内容+margin：90px
+			height: calc(100vh - 96px - 32px * 2 - 45px - 90px);
+			overflow-y: auto;
+			box-sizing: content-box;
+			padding-right: 6px;
+			width: calc(100% + 6px);
+
+			&::-webkit-scrollbar-thumb {
+				background-color: var(--Bg3);
+				border-radius: 6px;
+			}
+
+			&::-webkit-scrollbar {
+				width: 6px;
+			}
+
+			.scroll {
+				overflow-y: auto;
+			}
+
+			.search-content {
+				&:has(.event-card-item) {
+					margin-top: 20px;
+				}
+
+				.empty {
+					text-align: center;
+					margin-top: 32px;
+
+					p {
+						font-size: 14px;
+					}
+				}
+			}
+
+			.loading-mask {
+				background-color: initial;
+			}
+		}
+	}
+}
+
+.table-style-common {
+	--el-table-border-color: var(--light-ok-Line-2-, #373a40) !important;
+	--el-table-text-color: var(--light-ok-Text-1-1, #98a7b5) !important;
+	--el-table-tr-bg-color: var(--Bg1) !important;
+	--el-table-row-hover-bg-color: transparent !important;
+	border-radius: 8px;
+
+	.el-table__header-wrapper {
+		.el-table__cell {
+			background: var(--light-ok-Bg-2-2, #1a1c20);
+			color: var(--light-ok-text-s, #fff);
+			font-weight: normal;
+			font-size: 14px;
+		}
+	}
+
+	.el-table__body-wrapper {
+		.el-table__cell {
+			font-size: 12px;
+		}
+	}
+
+	.el-table__empty-block {
+		background: var(--Bg1) !important;
+	}
+}
+
+.table-style-expand {
+	--el-table-border-color: var(--light-ok-Line-2-, #373a40) !important;
+	--el-table-text-color: var(--light-ok-Text-1-1, #98a7b5) !important;
+	--el-table-tr-bg-color: var(--Bg3) !important;
+	--el-table-row-hover-bg-color: transparent !important;
+	--el-table-expanded-cell-bg-color: var(--Bg4) !important;
+	border-radius: 8px;
+	//--el-table-border: 2px solid var(--el-table-border-color) !important;
+	//border: 1px solid var(--el-table-border-color) !important;
+
+	.el-table__header-wrapper {
+		.el-table__cell {
+			background: var(--light-ok-Bg-2-2, #1a1c20);
+			color: var(--light-ok-text-s, #fff);
+			font-weight: normal;
+			font-size: 14px;
+		}
+	}
+
+	.el-table__body-wrapper {
+		.el-table__cell {
+			font-size: 12px;
+		}
+	}
+
+	colgroup {
+		& > col:first-child {
+			width: 0 !important;
+			//overflow: hidden;
+		}
+	}
+
+	.el-table__row {
+		position: relative;
+	}
+
+	.el-table__expand-column {
+		width: 0 !important;
+		overflow: hidden;
+		position: static !important;
+
+		* {
+			position: static !important;
+		}
+
+		.el-table__expanded-cell {
+			&:hover {
+				background-color: var(--Bg4) !important;
+			}
+		}
+
+		.el-table__expand-icon {
+			position: absolute !important;
+			top: 50%;
+			right: 2%;
+			transform: translate(-50%, -50%);
+			z-index: 10;
+		}
+
+		.el-table__expand-icon--expanded {
+			transform: rotate(90deg) translateX(-70%) !important;
+		}
+	}
+
+	.el-table__empty-block {
+		background: var(--Bg3) !important;
+	}
+}

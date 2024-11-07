@@ -1,8 +1,10 @@
 <template>
-	<div class="base-body">
+	<div style="height: 24px; width: 100%"></div>
+	<div class="base-body sports-body">
+		<!-- banner控制器 -->
+		<BannerController />
 		<!-- 体育 主体内容区域  -->
 		<Banner />
-
 		<div class="main-container">
 			<!-- 左侧 体育游戏列表 -->
 			<div class="left-container">
@@ -16,14 +18,18 @@
 				</div>
 				<div class="back-container">
 					<!-- 主体路由页面显示区域 -->
-					<router-view v-cloak />
+					<transition name="fade">
+						<div>
+							<router-view v-cloak />
+						</div>
+					</transition>
 					<!-- 搜索触发的遮罩 -->
 					<div class="overlay" v-if="isShowMask"></div>
 				</div>
 			</div>
 
 			<!-- 右边侧边栏，只有在特定条件下显示 -->
-			<div class="right-container" v-if="popularLeague.visible">
+			<div class="right-container" v-if="popularLeague.visible && !hideSlider">
 				<Sidebar v-if="SportsInfoStore.getSportsToken" />
 			</div>
 		</div>
@@ -45,8 +51,9 @@ import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import pubSub from "/@/pubSub/pubSub";
 import SportsApi from "/@/api/sports/sports";
-import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar, Banner } from "./components";
+import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar } from "./components";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
+import userBanner from "./components/banner";
 
 const SportAttentionStore = useSportAttentionStore();
 // 路由实例
@@ -75,8 +82,8 @@ watch(
 	(newValue, oldValue) => {
 		if (newValue !== oldValue) {
 			// sportsBetEvent.clearHotLeagueList();
-			openSportPush(route.query.sportType as string, tabActive.value);
 			pubSub.publish("SkeletonLoading", true);
+			openSportPush(route.query.sportType as string, tabActive.value);
 		}
 	}
 );
@@ -146,13 +153,43 @@ const unSport = () => {
 	// 发布清除热门联赛列表的事件，通知其他组件进行相关处理
 	pubSub.publish("clearHotLeagueList", "on");
 };
+
+const hideSlider = ref(false);
+const handleScreenWidthChange = (event) => {
+	if (event.matches) {
+		// 窄屏处理逻辑
+		hideSlider.value = true;
+	} else {
+		// 宽屏处理逻辑
+		hideSlider.value = false;
+	}
+};
+
+onBeforeMount(() => {
+	const mediaQuery = window.matchMedia("(max-width: 1439px)"); // 设置需要的宽度
+	// 添加监听器
+	mediaQuery.addListener(handleScreenWidthChange);
+
+	// 初次调用，检查当前宽度
+	handleScreenWidthChange(mediaQuery);
+});
+
+const { Banner, BannerController } = userBanner();
 </script>
 
 <style lang="scss" scoped>
+@import "./media/media-1440.scss";
+@import "./media/media-1024.scss";
 .base-body {
 	width: 1308px;
-	height: calc(100vh - 64px);
+	height: calc(100vh - 88px);
 	margin: 0 auto;
+	:deep(.banner-controller) {
+		position: fixed;
+		top: 60px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
 	// overflow-x: auto;
 }
 
@@ -163,7 +200,6 @@ const unSport = () => {
 	overflow: hidden;
 	overflow-x: auto;
 	justify-content: center;
-	padding-top: 6px;
 	.left-container {
 		// width: 930px;
 		flex: 1;

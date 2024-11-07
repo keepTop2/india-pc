@@ -1,20 +1,16 @@
 <template>
-	<form class="loginWrapper">
-		<div class="login_left_img">
-			<img src="/@/assets/common/login_left.png" alt="Login Image" />
-		</div>
-
+	<div class="loginWrapper">
 		<div class="login_right_form">
 			<!-- 登录标题 -->
-			<div class="login_text fs_16 mb_20">
-				<span>{{ $t(`login['登陆']`) }}</span>
+			<div class="login_text fs_24 mb_27">
+				<span>{{ $t(`login['登录']`) }}</span>
 			</div>
 
 			<!-- 登录表单 -->
 			<div class="login_form">
 				<!-- 账号输入 -->
 				<div class="mb_12">
-					<p class="Text_s fs_12"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
+					<p class="Text_s fs_14"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
 						<input
 							type="text"
@@ -30,7 +26,7 @@
 
 				<!-- 密码输入 -->
 				<div class="mb_12">
-					<p class="Text_s mb_8 mt_8 fs_12"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
+					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
 					<p class="common_password">
 						<input
 							:type="showPassword ? 'password' : 'text'"
@@ -63,13 +59,13 @@
 
 				<!-- 登录按钮 -->
 				<div class="mt_40 mb_12">
-					<button class="common_btn fs_12" type="button" @click="onLogin" :disabled="disabledBtn || !isOnloadScript">
-						{{ $t(`login['登陆']`) }}
-					</button>
+					<Button class="fs_12" @click="onLogin" :disabled="disabledBtn || !isOnloadScript">
+						{{ $t(`login['登录']`) }}
+					</Button>
 				</div>
 
 				<!-- 注册和联系客服 -->
-				<div class="flex_space-between fs_12">
+				<div class="flex_space-between fs_14">
 					<div class="Text1">
 						{{ $t(`login['新用户']`) }}？
 						<span class="Wran_text curp" @click="toRegister">
@@ -77,21 +73,21 @@
 						</span>
 					</div>
 					<div>
-						<span class="Wran_text fs_12">{{ $t(`login['联系客服']`) }}</span>
+						<span class="color_F2 fs_14" @click="Common.getSiteCustomerChannel">{{ $t(`login['联系客服']`) }}</span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- 验证码容器 -->
-		<article>
+		<p>
 			<p id="captcha-element" ref="captchaBtn" />
 			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript" v-if="HcaptchaMounted" />
-		</article>
-	</form>
+		</p>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { onBeforeMount, onMounted, reactive, ref } from "vue";
 import { loginApi } from "/@/api/login";
 import { userApi } from "/@/api/user";
 import Common from "/@/utils/common";
@@ -118,7 +114,6 @@ const rememberPassword = ref(false);
 // 验证提示
 const userAccountVerifyError = ref(false);
 const passWordVerifyError = ref(false);
-
 // 密码显示切换
 const showPassword = ref(true);
 
@@ -204,28 +199,18 @@ const forgetPassword = () => {
 const toRegister = () => {
 	modalStore.openModal("RegisterModal");
 };
-const getInstance = (instance: any) => {
-	hcaptcha.value = instance;
-};
 </script>
 <style lang="scss" scoped>
 .loginWrapper {
-	width: 680px;
+	width: 436px;
 	height: 542px;
 	border-radius: 12px;
-	display: flex;
-	background: var(--Bg);
+
+	background-image: url("./image/headerBg.png"), url("./image/bottomBg.png");
+	background-repeat: no-repeat no-repeat;
+	background-size: 100% auto, 320px;
+	background-position: top, bottom left;
 	position: relative;
-	> div {
-		width: 50%;
-	}
-	.login_left_img {
-		img {
-			height: 100%;
-			width: 100%;
-			border-radius: 12px;
-		}
-	}
 	.login_right_form {
 		padding: 18px 25px;
 		.common_password {
@@ -241,21 +226,7 @@ const getInstance = (instance: any) => {
 		.login_text {
 			color: var(--Text_s);
 			font-weight: 500;
-
-			span {
-				position: relative;
-			}
-			span::after {
-				content: "";
-				position: absolute;
-				bottom: -2px;
-				left: 50%;
-				transform: translateX(-50%);
-				right: 0;
-				width: 18px;
-				height: 2px;
-				background-color: var(--Theme);
-			}
+			text-align: center;
 		}
 	}
 }

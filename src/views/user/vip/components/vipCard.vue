@@ -1,24 +1,28 @@
 <template>
 	<div class="card">
-		<div class="vipLevelBg">
+		<div class="vipLevelBg" :class="vipInfo.vipGradeUp === vipInfo.vipGradeCode ? 'topLevelBg' : ''">
 			<div class="currentLevelText">当前等级</div>
 			<div>
 				<img v-lazy-load="getViplevelImg(vipInfo.vipRank)" alt="" class="vipLevelIcon" />
 			</div>
-			<div class="experience">
+			<div class="experience" v-if="vipInfo.vipGradeUp !== vipInfo.vipGradeCode">
 				<div class="fs_20 mb_5">{{ vipInfo.vipGradeName }}</div>
 				<div class="flex-alignCenter">
-					<span>升级所需经验:</span> <span>{{ vipInfo.currentVipExp }}/{{ vipInfo.upgradeVipExp }}</span>
-					<ClickTooltip class="ml_5 curp" message="">
+					<span>升级所需经验:</span> <span>{{ vipInfo.currentExp }}/{{ vipInfo.currentVipExp }}</span>
+					<ClickTooltip class="ml_5 curp" message="" width="270">
 						<template v-slot:icon>
 							<img src="../image/tooltip.png" alt="" class="tooltipImg" />
 						</template>
-						<template v-slot:message> 体育/电竞场馆投注1 $ = 2积分，其他场馆投注 1$=1积分，所有投注 均按当前汇率兑换为美元结算 </template>
+						<template v-slot:message>
+							体育/电竞场馆投注 1 {{ useUserStore().getUserInfo.platCurrencyName }} = {{ vipInfo.sportExe }} 积分，其他场馆投注 1
+							{{ useUserStore().getUserInfo.platCurrencyName }}
+							= 1 积分，所有投注 均按当前汇率兑换为{{ useUserStore().getUserInfo.platCurrencyName }}结算
+						</template>
 					</ClickTooltip>
 				</div>
 			</div>
 
-			<div class="progress">
+			<div class="progress" v-if="vipInfo.vipGradeUp !== vipInfo.vipGradeCode">
 				<div class="levelIcon">
 					<img v-lazy-load="getVipRankImg(vipInfo.vipRank)" alt="" />
 					<span class="levelvalue">{{ vipInfo.vipGradeName }}</span>
@@ -27,21 +31,25 @@
 					<div
 						class="value"
 						:style="{
-							width: (vipInfo.currentVipExp / vipInfo.upgradeVipExp) * 100 + '%',
-							background: vipInfo.currentVipExp / vipInfo.upgradeVipExp == 0 ? 'rgba(0,0,0,0)' : 'var(--Theme)',
+							width: (vipInfo.currentExp / vipInfo.currentVipExp) * 100 + '%',
+							background: vipInfo.currentExp / vipInfo.currentVipExp == 0 ? 'rgba(0,0,0,0)' : 'var(--Theme)',
 						}"
 					>
-						<div class="progressValue">
-							<div>{{ ((vipInfo.currentVipExp / vipInfo.upgradeVipExp) * 100 || 0).toFixed(2) }}%</div>
+						<div class="progressValue" v-if="(vipInfo.currentExp / vipInfo.currentVipExp) * 100 < 100">
+							<div>{{ truncateToTwoDecimals((vipInfo.currentExp / vipInfo.currentVipExp) * 100 || 0) }}%</div>
 							<img src="../image/jiantou.png" alt="" />
 						</div>
-						<img src="../image/progressIcon.png" alt="" v-if="vipInfo.currentVipExp / vipInfo.upgradeVipExp > 0" />
+						<img src="../image/progressIcon.png" alt="" v-if="vipInfo.currentExp / vipInfo.currentVipExp > 0" />
 					</div>
 				</div>
 				<div class="levelIcon">
 					<img v-lazy-load="getVipRankImg(vipInfo.nextVipRank)" alt="" />
 					<span class="levelvalue">{{ vipInfo.vipGradeUpName }}</span>
 				</div>
+			</div>
+			<div v-else class="topLevel">
+				<div class="fs_20 mb_5">{{ vipInfo.vipGradeName }}</div>
+				<div class="fs_20 mb_5">恭喜！您已达到最高等级</div>
 			</div>
 		</div>
 	</div>
@@ -59,6 +67,7 @@ import rank2 from "../image/rank2.png";
 import rank3 from "../image/rank3.png";
 import rank4 from "../image/rank4.png";
 import rank5 from "../image/rank5.png";
+import { useUserStore } from "/@/stores/modules/user";
 const getViplevelImg = (vipRankCode) => {
 	return vipRankCode == 1 ? level1 : vipRankCode == 2 ? level2 : vipRankCode == 3 ? level3 : vipRankCode == 4 ? level4 : vipRankCode == 5 ? level4 : level5;
 };
@@ -68,6 +77,13 @@ const getVipRankImg = (vipRankCode) => {
 const props = defineProps({
 	vipInfo: {},
 });
+const truncateToTwoDecimals = (num) => {
+	const [integerPart, decimalPart] = String(num).split(".");
+	// 如果没有小数部分，直接返回整数部分
+	if (!decimalPart) return integerPart + ".00";
+	// 截取小数点后两位
+	return integerPart + "." + decimalPart.slice(0, 2);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -76,29 +92,31 @@ const props = defineProps({
 	justify-content: center;
 	align-items: flex-end;
 	gap: 16px;
+
 	.vipLevelBg {
-		padding-top: 20px;
-		width: 540px;
-		height: 260px;
+		padding-top: 16px;
+		width: 486px;
+		height: 209px;
 		position: relative;
 		background: url("../image/vipLevelBg.png") no-repeat;
 		background-size: 100% 100%;
 		.currentLevelText {
+			width: 106px;
 			background: url("../image/levelText_bg.png") no-repeat;
-			background-size: auto 100%;
-			padding: 8px 21px;
+			background-size: 100% 100%;
+			padding: 5px 21px;
 			color: var(--Text_a);
 			font-weight: 500;
 		}
 		.vipLevelIcon {
 			position: absolute;
-			right: 0;
+			right: 30px;
 			top: 0px;
-			width: 158px;
-			height: 152px;
+			width: 131px;
+			height: 124px;
 		}
 		.experience {
-			height: 100px;
+			height: 70px;
 			padding-left: 38px;
 			margin-top: 22px;
 			color: var(--Text_a);
@@ -111,6 +129,7 @@ const props = defineProps({
 			display: flex;
 			padding: 0 42px;
 			gap: 10px;
+
 			.levelIcon {
 				position: relative;
 				img {
@@ -143,6 +162,7 @@ const props = defineProps({
 					height: 11px;
 					padding-left: 20px;
 					border-radius: 15.36px;
+					max-width: 100%;
 					background: var(--Theme);
 					> img {
 						position: absolute;
@@ -202,5 +222,21 @@ const props = defineProps({
 			padding: 0 20px;
 		}
 	}
+	.topLevelBg {
+		height: 159px;
+		padding-top: 18px;
+		background: url("../image/vipLevelBg2.png") no-repeat;
+		background-size: 100% 100%;
+	}
+}
+.topLevel {
+	background: linear-gradient(250deg, #fdfdfd 6.39%, #bebebe 35.7%, #fdfdfd 66.76%, #979797 93.89%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	margin-left: 22px;
+	margin-top: 25px;
+	font-weight: 500;
+	font-size: 20px;
 }
 </style>

@@ -3,7 +3,8 @@ import { defineStore } from "pinia";
 import { i18n } from "/@/i18n/index";
 import _ from "lodash";
 import workerManage from "/@/webWorker/workerManage";
-import { SportShopCartProcessWorkerCommandType, WorkerName } from "/@/enum/workerTransferEnum";
+import { SportShopCartProcessWorkerApi, WorkerName } from "/@/enum/webworkerEnum/workerTransferEnum";
+import { WebWorkerControllerE } from "/@/enum/webworkerEnum/webworkerControllerE";
 import { OpenSportEventSourceParams } from "/@/views/sports/models/sportEventSourceModel";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
@@ -263,9 +264,10 @@ export const useSportsBetEventStore = defineStore("sportsBetEvent", {
 					query: `$filter=eventId in (${this.getEventIdCollection()})`,
 				},
 			};
-			const viewsToWorkData: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerCommandType> = {
+			const viewsToWorkData: WorkerTransfer<OpenSportEventSourceParams, SportShopCartProcessWorkerApi> = {
 				workerName: WorkerName.sportShopCartProcessWorker,
-				commandType: SportShopCartProcessWorkerCommandType.sportsShopCartViewChanges,
+				controllerName: WebWorkerControllerE.SportsShopCartSSEController,
+				apiName: SportShopCartProcessWorkerApi.sportsShopCartViewChanges,
 				data: params,
 			};
 			//发送SSE指令到线程管理器

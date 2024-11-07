@@ -22,6 +22,24 @@ export const HomeApi = {
 		return useAxiosApi(`/app/game/api/collection`, {
 			method: "POST",
 			data,
+			headers: {
+				showLoading: true,
+			},
+		});
+	},
+	// 跑马灯消息
+	horseRaceLampList: (data = {}, headers = { showLoading: false }) => {
+		return useAxiosApi(`/app/client/user/notice/getUserNoticeHeadList`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+	// 公告
+	noticeList: (data = {}, headers = { showLoading: false }) => {
+		return useAxiosApi(`/app/client/user/notice/getForceUserNoticeHeadList`, {
+			method: "POST",
+			data,
 			headers,
 		});
 	},

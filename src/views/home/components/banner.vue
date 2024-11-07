@@ -1,20 +1,12 @@
 <template>
 	<div class="banner">
-		<img src="./image/image.webp" alt="" style="width: 100%" />
-		<div class="swiper-box">
+		<img src="./image/image.webp" alt="" style="width: 100%" v-if="!useUserStore().getLogin" />
+		<div class="swiper-box max-width" v-else>
 			<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
 				<SwiperSlide v-for="(item, index) in announcementList" :key="index">
 					<img :src="item" alt="" />
 				</SwiperSlide>
 			</Swiper>
-			<div class="arrow">
-				<div class="arrow_left" @click="goToPrevSlide">
-					<svg-icon name="arrow_left" width="6px" height="16px"></svg-icon>
-				</div>
-				<div class="arrow_right" @click="goToNextSlide">
-					<svg-icon name="arrow_right" width="6px" height="16px"></svg-icon>
-				</div>
-			</div>
 		</div>
 	</div>
 </template>
@@ -30,22 +22,13 @@ import banner1 from "./image/banner1.png";
 import banner2 from "./image/banner2.png";
 import banner3 from "./image/banner3.png";
 import { ref } from "vue";
+import { useUserStore } from "/@/stores/modules/user";
 const swiperRef: any = ref(null);
 const modules = ref([Autoplay, Pagination, Navigation]);
 const announcementList = [banner1, banner2, banner3, banner1, banner2, banner3];
 const onSwiper = (swiper: any) => {
 	if (swiperRef.value) {
 		swiperRef.value = swiper;
-	}
-};
-const goToNextSlide = () => {
-	if (swiperRef.value) {
-		swiperRef.value?.slideNext();
-	}
-};
-const goToPrevSlide = () => {
-	if (swiperRef.value) {
-		swiperRef.value?.slidePrev();
 	}
 };
 </script>
@@ -60,42 +43,13 @@ const goToPrevSlide = () => {
 	}
 	.swiper-box {
 		position: relative;
-		max-width: 1350px;
+
 		margin: 0 auto;
-		.arrow {
-			max-width: 1350px;
-			position: absolute;
-			left: 10px;
-			right: 10px;
-			top: 50%;
-			transform: translateY(-50%);
-			display: flex;
-			justify-content: space-between;
-			color: var(--Text_s);
-			margin: 0 auto;
-			cursor: pointer;
-			.arrow_left,
-			.arrow_right {
-				background-color: var(--button);
-				height: 82px;
-				width: 36px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-			.arrow_left {
-				border-top-left-radius: 9px;
-				border-bottom-left-radius: 9px;
-			}
-			.arrow_right {
-				border-top-right-radius: 9px;
-				border-bottom-right-radius: 9px;
-			}
-		}
+		margin-top: 20px;
+		padding: 0 10px;
 	}
 	.swiper {
-		margin: -55px 55px 0;
-		max-width: 1254px;
+		max-width: 1308px;
 		padding-bottom: 20px;
 		:deep(.swiper-pagination) {
 			bottom: -2px !important;

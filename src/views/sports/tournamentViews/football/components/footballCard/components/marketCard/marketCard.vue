@@ -1,73 +1,74 @@
 <template>
 	<div class="market-content">
-		<!-- 判断是否有卡片数据 -->
-		<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
-			<!-- 独赢 -->
-			<template v-if="cardType === 'capot'">
-				<div class="label">{{ cardData?.keyName }}</div>
-				<!-- 状态正常 -->
-				<template v-if="market.marketStatus === 'running'">
-					<div class="value">
-						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
+		<BetSelector :value="cardData?.oddsPrice?.decimalPrice" :id="market?.marketId + cardData?.key" :isRun="market.marketStatus === 'running'">
+			<!-- 判断是否有卡片数据 -->
+			<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
+				<!-- 独赢 -->
+				<template v-if="cardType === 'capot'">
+					<div class="label">{{ cardData?.keyName?.slice(0, 1) }}</div>
+					<!-- 状态正常 -->
+					<template v-if="market.marketStatus === 'running'">
+						<div class="value">
+							<span>{{ cardData?.oddsPrice?.decimalPrice }}</span>
+						</div>
+					</template>
+					<!-- 锁 -->
+					<div class="lock" v-else>
+						<svg-icon name="sports-lock" size="16px"></svg-icon>
 					</div>
-					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
 				</template>
-				<!-- 锁 -->
-				<div class="lock" v-else>
-					<svg-icon name="sports-lock" size="16px"></svg-icon>
-				</div>
-			</template>
 
-			<!-- 让球 -->
-			<template v-else-if="cardType === 'handicap'">
-				<div class="label">
-					<span><span v-if="cardData.point && cardData.point > 0">+</span>{{ cardData?.point }}</span>
-				</div>
-				<!-- 状态正常 -->
-				<template v-if="market.marketStatus === 'running'">
-					<div class="value">
-						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
+				<!-- 让球 -->
+				<template v-else-if="cardType === 'handicap'">
+					<div class="label">
+						<span><span v-if="cardData.point && cardData.point > 0">+</span>{{ cardData?.point }}</span>
 					</div>
-					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
-				</template>
-				<!-- 锁 -->
-				<div class="lock" v-else>
-					<svg-icon name="sports-lock" size="16px"></svg-icon>
-				</div>
-			</template>
-
-			<!-- 大小 -->
-			<template v-else-if="cardType === 'magnitude'">
-				<div class="label">
-					<span>{{ cardData.keyName }}</span>
-					<span>{{ cardData?.point }}</span>
-				</div>
-				<!-- 状态正常 -->
-				<template v-if="market.marketStatus === 'running'">
-					<div class="value">
-						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
+					<!-- 状态正常 -->
+					<template v-if="market.marketStatus === 'running'">
+						<div class="value">
+							<span>{{ cardData?.oddsPrice?.decimalPrice }}</span>
+						</div>
+						<!--  -->
+					</template>
+					<!-- 锁 -->
+					<div class="lock" v-else>
+						<svg-icon name="sports-lock" size="16px"></svg-icon>
 					</div>
-					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
 				</template>
-				<!-- 锁 -->
-				<div class="lock" v-else>
-					<svg-icon name="sports-lock" size="16px"></svg-icon>
-				</div>
-			</template>
-		</div>
 
-		<!-- 没有卡片数据时的显示 -->
-		<div v-else class="market-item">
-			<div class="noData">-</div>
-		</div>
+				<!-- 大小 -->
+				<template v-else-if="cardType === 'magnitude'">
+					<div class="label">
+						<span>{{ cardData.keyName }}</span>
+						<span>{{ cardData?.point }}</span>
+					</div>
+					<!-- 状态正常 -->
+					<template v-if="market.marketStatus === 'running'">
+						<div class="value">
+							<span>{{ cardData?.oddsPrice?.decimalPrice }}</span>
+						</div>
+					</template>
+					<!-- 锁 -->
+					<div class="lock" v-else>
+						<svg-icon name="sports-lock" size="16px"></svg-icon>
+					</div>
+				</template>
+			</div>
+
+			<!-- 没有卡片数据时的显示 -->
+			<div v-else class="market-item">
+				<div class="noData">-</div>
+			</div>
+		</BetSelector>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
-import { RiseOrFall } from "/@/components/Sport/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
+import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
+
 const ShopCatControlStore = useShopCatControlStore();
 const sportsBetEvent = useSportsBetEventStore();
 // 事件发射器定义
@@ -84,8 +85,8 @@ interface CapotCardType {
 		oddsPrice?: {
 			decimalPrice: number;
 		};
-		key?: string;
-	} | null;
+		key: string;
+	};
 	/** 体育信息（每一行） */
 	sportInfo: {
 		eventId: number;
@@ -202,7 +203,7 @@ const isBright = (): boolean => {
 		}
 
 		.value {
-			max-width: 40%;
+			// max-width: 40%;
 			position: relative;
 			color: var(--Text_a);
 			font-family: "PingFang SC";
@@ -224,26 +225,6 @@ const isBright = (): boolean => {
 			font-size: 14px;
 			font-weight: 400;
 		}
-
-		&:hover {
-			background-color: rgba(255, 255, 255, 0.05);
-		}
 	}
-
-	.isBright {
-		background: var(--Bg5) !important;
-
-		.label {
-			color: var(--Text_a);
-		}
-	}
-}
-
-.oddsUp {
-	color: var(--Theme) !important;
-}
-
-.oddsDown {
-	color: var(--Success) !important;
 }
 </style>

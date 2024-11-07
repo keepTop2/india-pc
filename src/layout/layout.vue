@@ -10,6 +10,9 @@
 			</div>
 		</div>
 		<Modal />
+		<Kefu />
+		<!-- 钱包弹窗 -->
+		<WalletDialog />
 	</div>
 </template>
 
@@ -25,6 +28,7 @@ import { useRoute } from "vue-router";
 import { webSocketMsgTopicEnum } from "/@/enum/webSocketEnum";
 import activitySocketService from "../utils/activitySocketService";
 import pubsub from "../pubSub/pubSub";
+import WalletDialog from "/@/views/wallet/walletDialog/walletDialog.vue";
 const websocketService = activitySocketService.getInstance();
 const route = useRoute();
 const MenuStore = useMenuStore();
@@ -69,7 +73,7 @@ onUnmounted(() => {
 	height: 100vh;
 
 	background: var(--Bg);
-	width: calc(100vw - 260px);
+	width: calc(100vw - 224px);
 
 	// margin-left: 260px;
 }
@@ -87,17 +91,8 @@ onUnmounted(() => {
 	overflow-y: auto;
 	height: calc(100vh - 64px);
 }
+
 .mainArea::-webkit-scrollbar {
-	display: none;
+	width: 6px;
 }
-// .mainArea::-webkit-scrollbar {
-// 	width: 6px;
-// }
-// .mainArea::-webkit-scrollbar-track {
-// 	background-color: transparent;
-// }
-// .mainArea::-webkit-scrollbar-thumb {
-// 	background: var(--icon);
-// 	border-radius: 5px;
-// }
 </style>

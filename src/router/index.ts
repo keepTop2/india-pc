@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, createWebHistory, onBeforeRouteLeave, Router } from "vue-router";
+import { createRouter, createWebHashHistory, Router } from "vue-router";
 //引入首页路由
 import frontPage from "./modules/frontPage";
 // 错误页
@@ -11,12 +11,9 @@ import activityRoutes from "/@/router/modules/activity";
 import sportsRoutes from "/@/router/modules/sports/sports";
 
 import walletLayout from "/@/router/modules/wallet";
-// 登录注册弹窗
-const routes = [
-	//首页模块路由
-	frontPage,
-	// 错误页
+import lotteryRoutes from "/@/router/modules/lottery";
 
+const routes = [
 	{
 		path: "/",
 		component: layout,
@@ -46,6 +43,22 @@ const routes = [
 						meta: {
 							title: "vipBenefits",
 							showFooter: true,
+						},
+					},
+					{
+						path: "/user/feedback/feedbackList",
+						name: "feedbackList",
+						component: () => import("/@/views/user/feedback/feedbackList.vue"),
+						meta: {
+							title: "feedbackList",
+						},
+					},
+					{
+						path: "/user/feedback/feedbackDetails",
+						name: "feedbackDetails",
+						component: () => import("/@/views/user/feedback/feedbackDetails.vue"),
+						meta: {
+							title: "feedbackDetails",
 						},
 					},
 				],
@@ -117,6 +130,8 @@ const routes = [
 			},
 			//钱包路由
 			walletLayout,
+			// 彩票
+			lotteryRoutes,
 		],
 	},
 
@@ -134,12 +149,12 @@ const router: Router = createRouter({
 		// 如果有保存的滚动位置（比如返回前进浏览器时）
 		if (savedPosition) {
 			return savedPosition;
-		} else if (to.meta.scrollTop !== undefined) {
-			// 在体育模块导航栏headerMenuNav组件中记录了scrollTop
+		} else if (from.meta.scrollTop !== undefined) {
+			// 在体育模块导航栏headerMenuNav、headerMenuCondition组件中记录了scrollTop
 			const scrollDom = document.querySelector(".mainArea");
-
 			if (scrollDom) {
-				scrollDom.scrollTop = to.meta.scrollTop as number;
+				scrollDom.scrollTop = from.meta.scrollTop as number;
+				delete from.meta.scrollTop;
 			}
 		} else {
 			// 记录自定义的滚动行为，跳转到指定位置

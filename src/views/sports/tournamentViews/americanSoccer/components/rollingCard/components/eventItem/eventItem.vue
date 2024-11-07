@@ -24,7 +24,7 @@
 				<div class="other-info">
 					<!-- 显示赛事时间 -->
 					<div class="date">
-						<span>{{ SportsCommonFn.getEventsTitle(event) }}</span>
+						<span>{{ SportsCommonFn.getEventsTitle(event) }} {{ gameTime }}</span>
 						<!-- 未开始的比赛才显示格式化时间 -->
 						<!-- <span v-if="!SportsCommonFn.isStartMatch(event.globalShowTime)">{{ formattedGameTime }}</span> -->
 					</div>
@@ -67,6 +67,7 @@ import { useLink } from "/@/views/sports/hooks/useLink";
 import { SportTypeEnum } from "/@/views/sports/enum/sportEnum/sportEnum";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
+import useGameTimer from "/@/views/sports/hooks/useGameTimer";
 
 const SportAttentionStore = useSportAttentionStore();
 const SidebarStore = useSidebarStore();
@@ -190,6 +191,10 @@ const linkDetail = () => {
 	toggleEventScoreboard(props.event);
 	gotoEventDetail(params, SportTypeEnum.AmericanSoccer);
 };
+
+//比赛时间
+const gameState = computed(() => props.event);
+const { gameTime } = useGameTimer(gameState);
 </script>
 
 <style scoped lang="scss">

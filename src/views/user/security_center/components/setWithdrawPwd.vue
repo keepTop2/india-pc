@@ -92,7 +92,7 @@
 					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">{{ $t(`security_center['确定']`) }}</button>
 					<div class="findOldPwd">
 						{{ $t(`security_center['忘记了旧交易密码？']`) }}
-						<span class="Theme_text curp" @click="goToFindWithdrawPwd">{{ $t(`security_center['找回交易密码']`) }}</span>
+						<span class="color_Theme curp" @click="goToFindWithdrawPwd">{{ $t(`security_center['找回交易密码']`) }}</span>
 					</div>
 				</div>
 			</div>
@@ -110,7 +110,7 @@ import { useModalStore } from "/@/stores/modules/modalStore";
 import CommonRegex from "/@/utils/CommonRegex";
 const modalStore = useModalStore();
 const userStore = useUserStore();
-// 登陆表单
+// 登录表单
 const payLoad = reactive({
 	password: "",
 	confirmPassword: "",
@@ -123,7 +123,7 @@ const showPassword = ref(false);
 const showOldPassword = ref(false);
 const showNewPassword = ref(false);
 const showConfirmPassword = ref(false);
-// 校验完成登陆按钮可以点击
+// 校验完成登录按钮可以点击
 const disabledBtn = ref(true);
 const verificationBtn = ref(true);
 const passwordVerifyTypeVerifyError = ref(false);

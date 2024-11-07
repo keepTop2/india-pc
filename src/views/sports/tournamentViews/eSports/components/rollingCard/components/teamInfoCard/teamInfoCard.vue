@@ -5,7 +5,9 @@
 			<!-- 主队 -->
 			<div class="team">
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.homeIconUrl" /></div>
-				<div class="team-name">{{ teamData.teamInfo.homeName }}</div>
+				<div class="team-name">
+					<span v-ok-tooltip>{{ teamData.teamInfo.homeName }}</span>
+				</div>
 				<!-- 得分 -->
 				<div class="score">{{ teamData.gameInfo?.liveHomeScore }}</div>
 			</div>
@@ -14,7 +16,9 @@
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.awayIconUrl" /></div>
 				<div class="team-name">{{ teamData.teamInfo.awayName }}</div>
 				<!-- 得分 -->
-				<div class="score">{{ teamData.gameInfo?.liveAwayScore }}</div>
+				<div class="score">
+					<span v-ok-tooltip>{{ teamData.gameInfo.liveAwayScore }}</span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -31,6 +35,8 @@ const props = withDefaults(defineProps<teamDataType>(), {
 		return {};
 	},
 });
+
+console.log(props.teamData, "teamData.teamInfo");
 </script>
 
 <style scoped lang="scss">

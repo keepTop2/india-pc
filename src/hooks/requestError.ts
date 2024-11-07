@@ -10,7 +10,7 @@ export function useRequestError() {
 		const UserStore = useUserStore();
 		const { name, res } = response;
 		if (res.code === ResCode.LOGIN_EXPIRE || res.code === ResCode.TOKEN_INVALID || res.code === ResCode.TOKEN_MISSION) {
-			//退出登陆（清除用户信息及跳转登陆）
+			//退出登录（清除用户信息及跳转登录）
 			// UserStore.clearInfo();
 			// dialogSingleton.showDialog({ componentActive: 1 });
 		} else if (res.code === ResCode.SERVICE_MAINTENANCE) {

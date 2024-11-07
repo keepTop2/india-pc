@@ -39,23 +39,24 @@
 									:class="{ isBright: isBright(market, selection) }"
 									:key="market.marketId + selection.key"
 								>
-									<span class="label">
-										<SelectionName class="label_one" :class="[selection.key != 'x' ? 'narrow' : 'wide']" :name="selection?.keyName" :betType="market.betType" />
-										<span class="label_two" v-show="selection.key != 'x'">{{
-											SportsCommon.formatPoint({
-												betType: market.betType,
-												point: selection?.point,
-												key: selection?.key,
-											})
-										}}</span>
-									</span>
-									<template v-if="market.marketStatus === 'running'">
-										<div class="price" :class="changeClass(selection)">
-											<span>{{ selection.oddsPrice.decimalPrice }}</span>
-										</div>
-										<RiseOrFall v-if="selection.oddsChange" :status="selection.oddsChange == 'oddsUp' ? 1 : 2" @animationEnd="animationEnd(market.marketId, selection)" />
-									</template>
-									<svg-icon v-else name="sports-lock" class="icon-lock" />
+									<BetSelector :value="selection.oddsPrice.decimalPrice" :isRun="market.marketStatus === 'running'">
+										<span class="label">
+											<SelectionName class="label_one" :class="[selection.key != 'x' ? 'narrow' : 'wide']" :name="selection?.keyName" :betType="market.betType" />
+											<span class="label_two" v-show="selection.key != 'x'">{{
+												SportsCommon.formatPoint({
+													betType: market.betType,
+													point: selection?.point,
+													key: selection?.key,
+												})
+											}}</span>
+										</span>
+										<template v-if="market.marketStatus === 'running'">
+											<div class="price value">
+												<span>{{ selection.oddsPrice.decimalPrice }}</span>
+											</div>
+										</template>
+										<svg-icon v-else name="sports-lock" class="icon-lock" />
+									</BetSelector>
 								</div>
 							</li>
 						</ul>
@@ -75,13 +76,13 @@
 import { ref, computed, watch } from "vue";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import SportsCommon from "/@/views/sports/utils/common";
-import RiseOrFall from "/@/components/Sport/RiseOrFall.vue";
 import SelectionName from "./components/selectionName.vue";
 import { LocationQueryValue, useRoute } from "vue-router";
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 import { useCommonShopCat } from "/@/stores/modules/sports/commonShopCat";
+import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
 const SidebarStore = useSidebarStore();
 /**
  * @description 市场类型接口
@@ -303,6 +304,9 @@ watch(
 		flex: 1;
 		overflow-y: auto;
 		margin-top: 8px;
+		&::-webkit-scrollbar {
+			display: none;
+		}
 		// 盘口子项
 		.selection_item {
 			margin-bottom: 4px;
@@ -383,14 +387,18 @@ watch(
 				position: relative;
 				width: 100%;
 				height: 34px;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				gap: 8px;
-				padding: 6px 8px;
+
 				background-color: var(--Bg3);
 				border-radius: 4px;
 				cursor: pointer;
+				:deep(.bet-selector) {
+					padding: 6px 8px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 8px;
+					width: 100%;
+				}
 				.label {
 					display: flex;
 					align-items: center;

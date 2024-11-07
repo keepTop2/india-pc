@@ -1,14 +1,16 @@
 <template>
-	<Skeleton>
-		<!-- 骨架屏的占位内容 -->
-		<template #skeleton>
-			<SkeletonList />
-		</template>
-		<!-- 默认内容：动态加载选中的组件 -->
-		<template #default>
-			<SelectCard :listData="leagues" :matchedLeague="matchedLeague" />
-		</template>
-	</Skeleton>
+	<div>
+		<Skeleton>
+			<!-- 骨架屏的占位内容 -->
+			<template #skeleton>
+				<SkeletonList />
+			</template>
+			<!-- 默认内容：动态加载选中的组件 -->
+			<template #default>
+				<SelectCard :listData="leagues" />
+			</template>
+		</Skeleton>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -25,7 +27,7 @@ const route = useRoute(); // 获取当前路由实例
 const leagues = computed(() => {
 	const data = viewSportPubSubEventData.getSportData(); // 获取体育数据
 	if (data.length > 0) {
-		pubsub.publish("SkeletonLoading", false); // 数据加载完成，关闭骨架屏
+		// pubsub.publish("SkeletonLoading", false); // 数据加载完成，关闭骨架屏
 	}
 	return data; // 返回联赛数据
 });

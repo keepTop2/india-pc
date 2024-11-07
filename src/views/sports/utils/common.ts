@@ -8,6 +8,7 @@ import { i18n } from "/@/i18n/index";
 import { SportsRootObject } from "/@/views/sports/models/interface";
 import { convertUtcToUtc5AndFormatMD, convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
 import common from "/@/utils/common";
+import { RouteLocationNormalized } from "vue-router";
 const $: any = i18n.global;
 dayjs.extend(duration); // 启用 duration 插件
 dayjs.extend(relativeTime);
@@ -229,10 +230,10 @@ class SportsCommonFn {
 					return $.t("sports['延迟开赛']");
 				}
 				if (livePeriod == 1 && !delayLive && !isHt) {
-					return $.t("sports['上半场']") + " " + computerSeconds(seconds);
+					return $.t("sports['上半场']");
 				}
 				if (livePeriod == 2 && !delayLive && !isHt) {
-					return $.t("sports['下半场']") + " " + computerSeconds(seconds);
+					return $.t("sports['下半场']");
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -257,7 +258,7 @@ class SportsCommonFn {
 					return $.t("sports['加时赛']");
 				}
 				if (!delayLive && !isHt && numMap.get(livePeriod)) {
-					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + " " + computerSeconds(seconds);
+					return $.t(`sports['第${numMap.get(livePeriod)}节']`);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -275,7 +276,7 @@ class SportsCommonFn {
 					return $.t("sports['中场休息']");
 				}
 				if (!delayLive && !isHt && numMap.get(livePeriod)) {
-					return $.t(`sports['第${numMap.get(livePeriod)}节']`) + computerSeconds(seconds);
+					return $.t(`sports['第${numMap.get(livePeriod)}节']`);
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -557,7 +558,7 @@ class SportsCommonFn {
 	 */
 	public static getResultDateRange = (date: string, dayEnd: number = 0, format = "YYYY-MM-DDTHH:mm:ss") => {
 		// 确保解析时按照 YYYY-MM-DD 格式
-		const easternTime = dayjs(date, "YYYY-MM-DD").utcOffset(-5);
+		const easternTime = dayjs(date, "YYYY-MM-DD").utcOffset(this.getUtc());
 
 		// 计算0点（开始时间）
 		const startDate = easternTime.startOf("day").toISOString();
@@ -590,9 +591,9 @@ class SportsCommonFn {
 		return {
 			startDate: dayjs()
 				.subtract(index - 1, "days")
-				.utcOffset(-5)
+				.utcOffset(this.getUtc())
 				.startOf("days"),
-			endDate: dayjs().utcOffset(-5).endOf("days"),
+			endDate: dayjs().utcOffset(this.getUtc()).endOf("days"),
 		};
 	};
 
@@ -666,7 +667,7 @@ class SportsCommonFn {
 	}
 
 	/**
-	 * @description 防抖函数
+	 * @description 节流
 	 */
 	public static throttle<T extends (...args: any[]) => void, U>(func: T, delay: number): (this: U, ...args: Parameters<T>) => void {
 		let lastTime = 0;
@@ -691,6 +692,62 @@ class SportsCommonFn {
 				}
 			}
 		};
+	}
+
+	public static debounce<T extends (...args: any[]) => any>(func: T, delay: number, immediate: boolean = false): (...args: Parameters<T>) => void {
+		let timeoutId: ReturnType<typeof setTimeout> | null;
+
+		return function (...args: Parameters<T>): void {
+			const later = () => {
+				timeoutId = null;
+				if (!immediate) {
+					func(...args);
+				}
+			};
+
+			const callNow = immediate && !timeoutId;
+
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+
+			timeoutId = setTimeout(later, delay);
+
+			if (callNow) {
+				func(...args);
+			}
+		};
+	}
+
+	/**
+	 * .mainArea节点
+	 * 体育模块点击导航栏时，记录当前页面scrollTop到route.mate.scrollTop中，优化用户体验
+	 */
+	public static saveScrollTop(route: RouteLocationNormalized) {
+		const scrollDom = document.querySelector(".mainArea") as HTMLElement;
+		route.meta.scrollTop = scrollDom.scrollTop;
+	}
+
+	/**
+	 * @description 将秒转换成分:秒
+	 * @param seconds 秒数
+	 * @returns 转换后的格式00:00
+	 */
+	public static formatSeconds(seconds: number): string {
+		if (typeof seconds !== "number" || seconds <= 0) return "";
+
+		const timeDuration = dayjs.duration(seconds, "seconds");
+		const minutes = String(timeDuration.minutes()).padStart(2, "0"); // 获取分钟并补零
+		const secs = String(timeDuration.seconds()).padStart(2, "0"); // 获取秒并补零
+		return `${minutes}:${secs}`;
+	}
+
+	/**
+	 * @description 获取站点utc
+	 */
+	public static getUtc() {
+		const { timezone = "" } = JSON.parse(localStorage.getItem("userInfo") as string) || {};
+		return timezone.replace("UTC", "");
 	}
 }
 

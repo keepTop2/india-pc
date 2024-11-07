@@ -14,6 +14,7 @@ import { loginApi } from "/@/api/login";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import activitySocketService from "/@/utils/activitySocketService";
 import pubsub from "/@/pubSub/pubSub";
+import { useCollectGamesStore } from "./collectGames";
 
 interface StoreUser {
 	lang: string;
@@ -85,12 +86,19 @@ export const useUserStore = defineStore("User", {
 		},
 
 		// 设置货币语言下拉
-		async setCommonBusiness() {
-			const res: any = await CommonApi.getCommonBusinessDownBox().catch((err: any) => err);
+		async setLangDownBox() {
+			const res: any = await CommonApi.getLangDownBox().catch((err: any) => err);
 			const { code, data } = res;
 			if (code == Common.ResCode.SUCCESS) {
-				this.LangList = data.languageEnums;
-				this.currencyList = data.currencyEnums;
+				this.LangList = data;
+			}
+		},
+		// 设置货币语言下拉
+		async setCurrencyList() {
+			const res: any = await CommonApi.getCurrencyList().catch((err: any) => err);
+			const { code, data } = res;
+			if (code == Common.ResCode.SUCCESS) {
+				this.currencyList = data;
 			}
 		},
 		// 设置用户信息
@@ -131,17 +139,21 @@ export const useUserStore = defineStore("User", {
 			if (this.getUserInfo.token) {
 				this.initUserInfo();
 			}
-			await this.setCommonBusiness();
+			await this.setLangDownBox();
 			this.setLangs(this.getLang);
+			this.setCurrencyList();
 			this.initUserMenu();
 		},
-		// 退出登陆
+		// 退出登录
 		logOut(): void {
+			console.log(3333333);
+
 			loginApi
 				.logout()
 				.then(() => {})
 				.finally(() => {
 					localStorage.removeItem("userInfo");
+					localStorage.removeItem("userGlobalSetInfo");
 					window.location.replace("/");
 				});
 		},
@@ -149,7 +161,11 @@ export const useUserStore = defineStore("User", {
 		async initUserInfo() {
 			const websocketService: any = activitySocketService.getInstance();
 			const sportsBetInfo = useSportsBetInfoStore();
+			const collectGamesStore = useCollectGamesStore();
 			this.setBasionInfo();
+			this.uplateUserGlobalSetInfo();
+			// 设置收藏的游戏
+			collectGamesStore.setCollectGamesList();
 			const res = await userApi.getIndexInfo().catch((err) => err);
 			const { code, data, message } = res;
 			if (code === Common.ResCode.SUCCESS) {
@@ -158,6 +174,7 @@ export const useUserStore = defineStore("User", {
 				localStorage.setItem("userInfo", JSON.stringify(userInfo));
 				// 同步体育余额信息
 				sportsBetInfo.balance = data.totalBalance;
+
 				websocketService.connect().then(() => {
 					pubsub.publish("websocketReady");
 				});
@@ -179,6 +196,11 @@ export const useUserStore = defineStore("User", {
 			key: "loginInfo",
 			storage: localStorage,
 			paths: ["loginInfo", "token"],
+		},
+		{
+			key: "userGlobalSetInfo",
+			storage: localStorage,
+			paths: [...["userGlobalSetInfo"]],
 		},
 	],
 });

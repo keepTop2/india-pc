@@ -34,7 +34,7 @@
 							/>
 						</p>
 						<p class="fs_14 Text1 mt_16 fw_200">
-							{{ $t(`security_center['有效时间']`) }}<span class="Theme_text">{{ $t(`security_center['联系客服']`) }}</span>
+							{{ $t(`security_center['有效时间']`) }}<span class="color_Theme" @click="Common.getSiteCustomerChannel">{{ $t(`security_center['联系客服']`) }}</span>
 						</p>
 					</div>
 				</div>
@@ -73,7 +73,7 @@ const modalStore = useModalStore();
 const userStore = useUserStore();
 const VerificationCodeRef = ref(null);
 
-// 登陆表单
+// 登录表单
 const payLoad = reactive({
 	email: "",
 	verifyCode: "",
@@ -81,7 +81,7 @@ const payLoad = reactive({
 });
 const isCreate = ref(true);
 const isEdit = ref(false);
-// 校验完成登陆按钮可以点击
+// 校验完成登录按钮可以点击
 const disabledBtn = ref(true);
 const verificationBtn = ref(true);
 const userVerifyTypeVerifyError = ref(false);

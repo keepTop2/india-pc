@@ -4,7 +4,7 @@
 			<div class="title">
 				{{ "VIP等级制度" }}
 			</div>
-			<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="./image/close_icon.png" alt="" /></span>
+			<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="./image/close_icon.png" alt="" /></span>
 		</div>
 		<div class="content">
 			<CollapsePanel
@@ -39,6 +39,7 @@ onMounted(() => {
 		.getUserVipBenefitDetail()
 		.then((res) => {
 			vipInfo.value = res.data;
+			activePanelIndex.value = res.data.currentVIPRankCode - 1;
 		})
 		.finally(() => {
 			loading.value = false;
@@ -48,9 +49,9 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .vipWrapper {
-	width: 780px;
+	width: 534px;
 	max-height: 80vh;
-	min-height: 50vh;
+	height: 80vh;
 	background-size: 100% 100%;
 	padding: 24px;
 

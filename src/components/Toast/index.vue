@@ -38,7 +38,7 @@ onUnmounted(() => {
 	min-width: 202px;
 	border-radius: 8px;
 	font-size: 14px;
-	z-index: 1000;
+	z-index: 10000;
 	opacity: 1;
 	transition: opacity 0.3s;
 	text-align: center;

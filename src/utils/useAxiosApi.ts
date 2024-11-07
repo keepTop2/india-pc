@@ -6,10 +6,10 @@ import { debounce } from "lodash-es";
 import { useLoading } from "/@/directive/loading/hooks";
 import { useUserStore } from "/@/stores/modules/user";
 import router from "/@/router";
-import { useRequestError } from "/@/hooks/requestError";
+// import { useRequestError } from "/@/hooks/requestError";
 import showToast from "../hooks/useToast";
 const { startLoading, stopLoading } = useLoading();
-const { handleRequestError } = useRequestError();
+// const { handleRequestError } = useRequestError();
 import { useModalStore } from "/@/stores/modules/modalStore";
 // 获取 config 配置请求 api
 function getUrl() {
@@ -65,7 +65,7 @@ instance.interceptors.request.use(
 		}
 		const UserStore = useUserStore();
 		const modalStore = useModalStore();
-		// 需要登陆的处理
+		// 需要登录的处理
 		if (config["headers"]["needLogin"] == "true" && !UserStore.getUserInfo.token) {
 			hideLoading();
 			modalStore.openModal("LoginModal");
@@ -99,10 +99,10 @@ instance.interceptors.response.use(
 		const res = response.data;
 		// 如果自定义代码不是 200，则判断为错误。
 		switch (res.code) {
-			// 登陆过期
+			// 登录过期
 			case ResCode.LOGIN_EXPIRE:
 				const userStore = useUserStore();
-				userStore.logOut();
+				// userStore.logOut();
 				break;
 		}
 
@@ -110,10 +110,14 @@ instance.interceptors.response.use(
 			if (res.type == "image/png") {
 				return res;
 			}
-			handleRequestError({
-				name: "mainApp",
-				res,
-			});
+			// if (!response.config.headers.hideToast) {
+			// 	handleRequestError({
+			// 		name: "mainApp",
+			// 		res,
+			// 	});
+			// }
+
+			if (!response.config.headers.hideToast) showToast(res.message);
 			return res;
 		} else {
 			return res;
@@ -125,7 +129,8 @@ instance.interceptors.response.use(
 		if (error.config.headers.showLoading !== false) {
 			hideLoading();
 		}
-		ElMessage.error(error.message);
+		showToast(error.message);
+		// ElMessage.error(error.message);
 		return Promise.reject(error);
 	}
 );

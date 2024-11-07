@@ -1,13 +1,16 @@
 <template>
 	<header class="header" :class="collapse ? 'collapse' : ''">
-		<div class="max-width">
+		<div class="max-width center">
+			<div class="login_plan">
+				<svg-icon name="logo" width="132px" height="16px" v-if="collapse" class="curp" @click="router.push('/')" />
+			</div>
 			<div class="flex-center" v-if="isLogin">
 				<div class="balance_box flex-center">
 					<div class="balance">
 						<img src="/@/assets/common/coin.png" alt="" style="height: 16px" class="mr_4" />
 						<span>{{ Common.thousands(UserStore.getUserInfo.totalBalance) }}</span>
 					</div>
-					<div class="recharge" @click="router.push('/recharge')">{{ $t(`common['充值']`) }}</div>
+					<div class="recharge" @click="openWalletDialog">{{ $t(`common['充值']`) }}</div>
 				</div>
 				<div class="flex-center message" @click="openMessageCenter" v-hover-svg>
 					<svg-icon name="message" size="32px" />
@@ -17,14 +20,13 @@
 					<div>
 						<img v-lazy-load="LangIcon" alt="" @click="openUserMenu" />
 						<div class="userMenu" v-if="isOpenMenu" ref="userMenu">
-							<div v-for="(route, index) in userRoutes" :key="index" @click="goToPath(route)" v-hover-svg>
-								<span><svg-icon :name="'user-' + route.meta.icon" size="18px"></svg-icon></span>
-								<span>{{ $t(`common['${route.meta.title}']`) }}</span>
+							<div v-for="(item, index) in userMenus" :key="index" @click="goToPath(item)" v-hover-svg>
+								<span><svg-icon :name="'user-' + item.icon" size="18px"></svg-icon></span>
+								<span>{{ item.title }}</span>
 							</div>
-
 							<div class="mt_6px mb_6px login_out" @click="logOut" v-hover-svg>
 								<span><svg-icon name="user-logout" size="18px"></svg-icon></span>
-								<span> {{ $t(`common['退出登陆']`) }}</span>
+								<span> {{ $t(`common['退出登录']`) }}</span>
 							</div>
 						</div>
 					</div>
@@ -32,13 +34,11 @@
 			</div>
 
 			<div class="flex-center" v-else>
-				<div class="loginBtn btn" @click="openLoginModal">{{ $t(`common['登陆']`) }}</div>
+				<div class="loginBtn btn" @click="openLoginModal">{{ $t(`common['登录']`) }}</div>
 				<div class="registerBtn btn" @click="openRegisterModal">{{ $t(`common['注册']`) }}</div>
 			</div>
 
-			<div class="lang">
-				<img v-lazy-load="LangIcon" alt="" @click="openLangCurrenyConfig" />
-			</div>
+			<messageCenter v-model="messageCenterVisible" />
 		</div>
 	</header>
 </template>
@@ -47,11 +47,80 @@
 import { computed, ref } from "vue";
 import { useMenuStore } from "/@/stores/modules/menu";
 import { useUserStore } from "/@/stores/modules/user";
+import pubsub from "/@/pubSub/pubSub";
 import Common from "/@/utils/common";
 import { onClickOutside } from "@vueuse/core";
 import userRoutes from "/@/router/modules/userMenu";
 import router from "/@/router";
 import { useModalStore } from "/@/stores/modules/modalStore";
+import messageCenter from "/@/views/messageCenter/index.vue";
+const userMenus = [
+	{
+		title: "个人信息",
+		icon: "user_info",
+		type: "modal",
+		value: "userInfo",
+	},
+	{
+		title: "存款",
+		icon: "deposit",
+		type: "page",
+		value: "recharge",
+	},
+	{
+		title: "提款",
+		icon: "withdraw",
+		type: "page",
+		value: "withdrawal",
+	},
+	{
+		title: "平台币转换",
+		icon: "currencyConverter",
+		type: "page",
+		value: "currencyConverter",
+	},
+	{
+		title: "交易记录",
+		icon: "transaction_history",
+		type: "page",
+		value: "transactionRecords",
+	},
+	{
+		title: "投注记录",
+		icon: "bet_records",
+		type: "page",
+		value: "bettingRecords",
+	},
+	{
+		title: "安全中心",
+		icon: "security_center",
+		type: "page",
+		value: "security_center",
+	},
+	{
+		title: "VIP俱乐部",
+		icon: "vip",
+		type: "modal",
+		value: "vip",
+	},
+	{
+		title: "邀请好友",
+		icon: "invite_friends",
+		type: "modal",
+		value: "InviteFriends",
+	},
+	{
+		title: "联盟计划",
+		icon: "league",
+		type: "modal",
+	},
+	{
+		title: "意见反馈",
+		icon: "feedback",
+		type: "page",
+		value: "feedback",
+	},
+];
 const modalStore = useModalStore();
 
 const MenuStore = useMenuStore();
@@ -68,7 +137,7 @@ const isLogin = computed(() => {
 	return UserStore.getLogin;
 });
 const LangIcon = computed(() => {
-	return UserStore.getLangList.find((item: any) => item.code == UserStore.getLang)?.icon;
+	return UserStore.getLangList.find((item: any) => item.code == UserStore.getLang)?.iconFileUrl;
 });
 
 const openUserMenu = () => {
@@ -79,8 +148,11 @@ onClickOutside(userMenu, () => {
 	isOpenMenu.value = false;
 });
 
+// 消息中心
+const messageCenterVisible = ref(false);
 const openMessageCenter = () => {
-	modalStore.openModal("messageCenter");
+	messageCenterVisible.value = true;
+	// modalStore.openModal("messageCenter");
 };
 const openLoginModal = () => {
 	modalStore.openModal("LoginModal");
@@ -91,14 +163,27 @@ const openRegisterModal = () => {
 const openLangCurrenyConfig = () => {
 	modalStore.openModal("LangCurrenyConfig");
 };
+
+const openWalletDialog = () => {
+	pubsub.publish("openWalletDialog");
+};
 const goToPath = (route: any) => {
-	if (route.name === "invite_friends") {
-		modalStore.openModal("InviteFriends");
-	} else if (route.name === "vip") {
-		modalStore.openModal("vip");
+	if (route.type === "page") {
+		router.push({ name: route.value });
 	} else {
-		router.push({ name: route.name });
+		modalStore.openModal(route.value);
 	}
+	// if (route.name === "invite_friends") {
+	// 	modalStore.openModal("InviteFriends");
+	// } else if (route.name === "vip") {
+	// 	modalStore.openModal("vip");
+	// } else if (route.name === "userInfo") {
+	// 	modalStore.openModal("userInfo");
+	// } else if (route.name === "medal") {
+	// 	modalStore.openModal("medal");
+	// } else {
+	// 	router.push({ name: route.name });
+	// }
 	isOpenMenu.value = false;
 };
 const logOut = () => {
@@ -122,20 +207,32 @@ const logOut = () => {
 	z-index: 100;
 	padding-left: 260px;
 	transition: all 0.2s ease;
+	.login_plan {
+		height: 16px;
+		padding-left: 10px;
+		z-index: 1100;
+		position: absolute;
+		left: 60px;
+		height: 64px;
+		line-height: 64px;
+	}
 	&.collapse {
 		padding-left: 64px;
 	}
-	> div {
+
+	> div.center {
 		flex: 1;
 		display: flex;
 		justify-content: end;
 		align-items: center;
+
 		.balance_box {
 			background: var(--Bg2);
 			height: 44px;
 			padding: 3px;
 			gap: 0;
 			border-radius: 4px;
+
 			.recharge {
 				border-radius: 4px;
 				width: 78px;
@@ -145,14 +242,17 @@ const logOut = () => {
 				background: linear-gradient(180deg, rgba(255, 40, 75, 0.1) 0%, rgba(255, 40, 75, 0.8) 100%);
 				color: var(--Text_a);
 			}
+
 			.balance {
 				margin: 0 18px 0 12px;
 				display: flex;
 				align-items: center;
 			}
 		}
+
 		.message {
 			position: relative;
+
 			.notice {
 				position: absolute;
 				top: 0;
@@ -163,6 +263,7 @@ const logOut = () => {
 				border-radius: 50%;
 			}
 		}
+
 		.user {
 			position: relative;
 
@@ -178,6 +279,7 @@ const logOut = () => {
 				border-radius: 4px;
 				z-index: 150;
 				box-shadow: 0px 4px 12px 0px rgba(14, 16, 19, 0.25);
+
 				> div {
 					display: flex;
 					align-items: center;
@@ -187,36 +289,45 @@ const logOut = () => {
 					font-size: 14px;
 					line-height: 14px;
 				}
+
 				.login_out {
 					border-top: 1px solid var(--Line_2);
 					height: 58px;
 				}
+
 				> div:hover {
 					background: var(--Bg2);
 					color: var(--Text_s);
 				}
 			}
+
 			.userMenu::-webkit-scrollbar {
 				display: none;
 			}
 		}
+
 		> div {
 			margin: 8px;
 			cursor: pointer;
 		}
+
 		.btn {
 			padding: 11px 40px;
 			border-radius: 4px;
 		}
+
 		.loginBtn {
 			background: var(--butter);
 		}
+
 		.registerBtn {
 			color: var(--Text_a);
 			background: linear-gradient(180deg, rgba(255, 40, 75, 0.1) 0%, rgba(255, 40, 75, 0.8) 100%);
 		}
+
 		.lang {
 			position: relative;
+
 			img {
 				width: 27px;
 				height: 27px;
@@ -227,6 +338,7 @@ const logOut = () => {
 		}
 	}
 }
+
 .lang::after {
 	content: "";
 	position: absolute;

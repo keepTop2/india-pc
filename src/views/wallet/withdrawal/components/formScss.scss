@@ -1,0 +1,151 @@
+.form {
+	display: grid;
+	grid-template-columns: 1fr 1fr; /* 每行两个元素，等分宽度 */
+	gap: 16px; /* 元素之间的间隔 */
+}
+
+.footer_form {
+	max-width: 450px;
+}
+
+.cell {
+	width: 100%;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 12px;
+	border-radius: 4px;
+	background: var(--Bg2);
+	box-sizing: border-box;
+	input {
+		flex: 1;
+		margin: 0px;
+		padding: 0px;
+		border: 0;
+		background: var(--Bg2);
+		color: var(--Text_s);
+		font-family: "PingFang SC";
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+		&:read-only {
+			cursor: pointer;
+		}
+		&::placeholder {
+			color: var(--Text2_2);
+		}
+	}
+
+	.bold_input {
+		color: var(--Text_s);
+		font-family: "DIN Alternate";
+		font-size: 18px;
+		font-weight: 700;
+		&::placeholder {
+			color: var(--Text2_2);
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+		}
+	}
+
+	.icon {
+		width: 16px;
+		height: 16px;
+	}
+
+	.all {
+		position: relative;
+		color: var(--Theme);
+		font-family: "PingFang SC";
+		font-size: 14px;
+		font-weight: 400;
+		padding-left: 18px;
+		cursor: pointer;
+		&::after {
+			position: absolute;
+			content: "";
+			top: 50%;
+			left: 0px;
+			transform: translateY(-50%);
+			width: 1px;
+			height: 28px;
+			background: var(--Bg1);
+		}
+	}
+}
+
+.phone {
+	padding: 10px 12px 10px 0px;
+	border: 1px solid transparent;
+
+	.area_code {
+		position: relative;
+		display: flex;
+		align-items: center;
+		padding: 10px 12px;
+		gap: 8px;
+		cursor: pointer;
+		.icon {
+			width: 16px;
+			height: 16px;
+		}
+		.value {
+			color: var(--Text_s);
+			text-align: center;
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-weight: 400;
+		}
+		&::after {
+			position: absolute;
+			content: "";
+			top: 50%;
+			right: 0px;
+			transform: translateY(-50%);
+			width: 1px;
+			height: 32px;
+			background: var(--Bg1);
+		}
+	}
+}
+
+.error {
+	position: relative;
+	border-radius: 4px;
+	border: 1px solid var(--F1);
+	box-sizing: border-box;
+	transition: all 0.2s;
+}
+
+.error_input_text {
+	position: absolute;
+	left: 0px;
+	bottom: -14px;
+	color: var(--F1);
+	font-family: "PingFang SC";
+	font-size: 10px;
+	font-weight: 400;
+	transition: all 0.2s;
+}
+
+.disabled_cell {
+	background: var(--Bg3);
+	gap: 18px;
+}
+.disabled_label {
+	color: var(--Text_s);
+	font-family: "PingFang SC";
+	font-size: 14px;
+	font-weight: 400;
+}
+.disabled_value {
+	flex: 1;
+	color: var(--Text1);
+	font-family: "PingFang SC";
+	font-size: 14px;
+	font-weight: 400;
+}

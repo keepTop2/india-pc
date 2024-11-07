@@ -5,14 +5,18 @@
 			<!-- 主队 -->
 			<div class="team">
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.homeIconUrl" /></div>
-				<div class="team-name">{{ teamData.teamInfo.homeName }}</div>
+				<div class="team-name" v-ok-tooltip>
+					<span v-ok-tooltip>{{ teamData.teamInfo.homeName }}</span>
+				</div>
 				<!-- 得分 -->
 				<div class="score">{{ teamData.gameInfo?.liveHomeScore }}</div>
 			</div>
 			<!-- 客队 -->
 			<div class="team">
 				<div class="team-icon"><img class="icon" :src="teamData.teamInfo?.awayIconUrl" /></div>
-				<div class="team-name">{{ teamData.teamInfo.awayName }}</div>
+				<div class="team-name">
+					<span v-ok-tooltip>{{ teamData.teamInfo.awayName }}</span>
+				</div>
 				<!-- 得分 -->
 				<div class="score">{{ teamData.gameInfo?.liveAwayScore }}</div>
 			</div>

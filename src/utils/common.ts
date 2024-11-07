@@ -8,11 +8,13 @@ import dayjs from "dayjs";
 import useClipboard from "vue-clipboard3";
 import { i18n } from "../i18n";
 import { gameApi } from "../api/game";
+import { CommonApi } from "../api/common";
 import router from "../router";
 import qs from "qs";
 import showToast from "../hooks/useToast";
+import pubsub from "../pubSub/pubSub";
 // // 全局设置moment时区 (上海)
-moment.tz.setDefault("Pacific/Guadalcanal");
+// moment.tz.setDefault("Pacific/Guadalcanal");
 class Common {
 	static ResCode = {
 		//成功
@@ -21,7 +23,7 @@ class Common {
 		TOKEN_MISSION: 10006,
 		//令牌错误
 		TOKEN_INVALID: 10007,
-		//登陆过期
+		//登录过期
 		LOGIN_EXPIRE: 10008,
 		//授权失败
 		Authorization_Failed: 10014,
@@ -46,6 +48,7 @@ class Common {
 
 	// 电话号码转换*
 	static maskString(str: string) {
+		if (!str) return;
 		const length = str.length;
 		// 对于长度大于等于8的情况
 		if (length >= 8) {
@@ -387,24 +390,51 @@ class Common {
 	}
 
 	/**
-	 * @description 若超出10位数，千位用K表示
+	 * @description 若超出指定位数，千位用K表示，默认超出10位数，最小支持5位
 	 */
-	static formatAmount(number: number) {
+	static formatAmount(number: number, digits: number = 10): string {
+		// 限制最小位数为 5
+		const minDigits = 5;
+		const thresholdDigits = Math.max(digits, minDigits);
+		const threshold = Math.pow(10, thresholdDigits - 1);
+
 		const absNumber = Math.abs(number);
-		const threshold = 10000000;
-		let formattedNumber = "" as number | string;
+		let formattedNumber: string;
+
 		if (absNumber >= threshold) {
 			const quotient = Math.floor(this.div(absNumber, 1000));
 			formattedNumber = `${quotient}K`;
 		} else {
 			formattedNumber = this.formatFloat(Number(absNumber));
 		}
+
 		// 处理负数情况
 		if (number < 0) {
 			formattedNumber = "-" + formattedNumber;
 		}
+
 		return formattedNumber;
 	}
+
+	/**
+	 * @description 若超出10位数，千位用K表示
+	 */
+	// static formatAmount(number: number) {
+	// 	const absNumber = Math.abs(number);
+	// 	const threshold = 10000000;
+	// 	let formattedNumber = "" as number | string;
+	// 	if (absNumber >= threshold) {
+	// 		const quotient = Math.floor(this.div(absNumber, 1000));
+	// 		formattedNumber = `${quotient}K`;
+	// 	} else {
+	// 		formattedNumber = this.formatFloat(Number(absNumber));
+	// 	}
+	// 	// 处理负数情况
+	// 	if (number < 0) {
+	// 		formattedNumber = "-" + formattedNumber;
+	// 	}
+	// 	return formattedNumber;
+	// }
 
 	// 获取 config 配置请求 api
 	static getUrl() {
@@ -440,6 +470,10 @@ class Common {
 	static getlangImgPath(path: string) {
 		const themesStore = useThemesStore();
 		return new URL(`../assets/lang/${i18n.global.locale.value}/${themesStore.themeName}/${path}`, import.meta.url).href;
+	}
+	static getlangThemeImgPath(path: string) {
+		const themesStore = useThemesStore();
+		return new URL(`../assets/${i18n.global.locale.value}/${themesStore.themeName}/${path}`, import.meta.url).href;
 	}
 
 	// 加载脚本
@@ -545,6 +579,14 @@ class Common {
 				func(...args);
 			}, delay);
 		};
+	}
+
+	// 联系客服
+	static async getSiteCustomerChannel() {
+		const res = await CommonApi.getSiteCustomerChannel().catch((err) => err);
+		if (res.code == 10000) {
+			pubsub.publish("showCustomer", res.data.channelAddr);
+		}
 	}
 }
 

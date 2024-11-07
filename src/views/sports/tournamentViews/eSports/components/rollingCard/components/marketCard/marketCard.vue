@@ -1,66 +1,64 @@
 <template>
 	<div class="market-content">
-		<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
-			<!-- 独赢 -->
-			<template v-if="cardType == `capot`">
-				<div class="label">{{ cardData?.key == "h" ? "主" : "客" }}</div>
-				<!-- 状态正常 -->
-				<template v-if="market.marketStatus === 'running'">
-					<div class="value">
-						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
-					</div>
-					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+		<BetSelector :value="cardData?.oddsPrice?.decimalPrice" :id="market.marketId + cardData?.key" :isRun="market.marketStatus === 'running'">
+			<div class="market-item" v-if="cardData" :class="{ isBright: isBright() }" @click="onSetSportsEventData">
+				<!-- 独赢 -->
+				<template v-if="cardType == `capot`">
+					<div class="label">{{ cardData?.key == "h" ? "主" : "客" }}</div>
+					<!-- 状态正常 -->
+					<template v-if="market.marketStatus === 'running'">
+						<div class="value">
+							<span>{{ cardData?.oddsPrice?.decimalPrice }}</span>
+						</div>
+					</template>
+					<!-- 锁 -->
+					<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 				</template>
-				<!-- 锁 -->
-				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
-			</template>
 
-			<!-- 独赢 -->
-			<template v-else-if="cardType == `handicap`">
-				<div class="label">
-					<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
-				</div>
-				<!-- 状态正常 -->
-				<template v-if="market.marketStatus === 'running'">
-					<div class="value">
-						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
+				<!-- 独赢 -->
+				<template v-else-if="cardType == `handicap`">
+					<div class="label">
+						<span><span v-if="cardData.point > 0">+</span>{{ cardData?.point }}</span>
 					</div>
-					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					<!-- 状态正常 -->
+					<template v-if="market.marketStatus === 'running'">
+						<div class="value">
+							<span>{{ cardData?.oddsPrice?.decimalPrice }}</span>
+						</div>
+					</template>
+					<!-- 锁 -->
+					<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 				</template>
-				<!-- 锁 -->
-				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
-			</template>
 
-			<!-- 独赢 -->
-			<template v-else-if="cardType == `magnitude`">
-				<div class="label">
-					<span>{{ cardData.keyName }}</span>
-					<span>{{ cardData?.point }}</span>
-				</div>
-				<!-- 状态正常 -->
-				<template v-if="market.marketStatus === 'running'">
-					<div class="value">
-						<span :class="changeClass[oddsChange]">{{ cardData?.oddsPrice?.decimalPrice }}</span>
+				<!-- 独赢 -->
+				<template v-else-if="cardType == `magnitude`">
+					<div class="label">
+						<span>{{ cardData.keyName }}</span>
+						<span>{{ cardData?.point }}</span>
 					</div>
-					<RiseOrFall :status="oddsChange" @animationEnd="animationEnd(market.marketId, cardData)" />
+					<!-- 状态正常 -->
+					<template v-if="market.marketStatus === 'running'">
+						<div class="value">
+							<span>{{ cardData?.oddsPrice?.decimalPrice }}</span>
+						</div>
+					</template>
+					<!-- 锁 -->
+					<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
 				</template>
-				<!-- 锁 -->
-				<div class="lock" v-else><svg-icon name="sports-lock" size="16px"></svg-icon></div>
-			</template>
-		</div>
-		<div v-else class="market-item">
-			<div class="noData">-</div>
-		</div>
+			</div>
+			<div v-else class="market-item">
+				<div class="noData">-</div>
+			</div>
+		</BetSelector>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import { RiseOrFall } from "/@/components/Sport/index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { marketsMatchData } from "/@/views/sports/utils/formattingViewData";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
-
+import BetSelector from "/@/views/sports/components/BetSelector/index.vue";
 const emit = defineEmits(["oddsChange"]);
 
 // /** 市场 (盘口信息) */
@@ -194,9 +192,6 @@ const isBright = () => {
 			font-size: 12px;
 			font-weight: 400;
 		}
-		&:hover {
-			background-color: rgba(255, 255, 255, 0.05);
-		}
 
 		.lock {
 			width: 16px;
@@ -211,13 +206,6 @@ const isBright = () => {
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
-		}
-	}
-
-	.isBright {
-		background: var(--Bg5) !important;
-		.label {
-			color: var(--Text_a);
 		}
 	}
 }

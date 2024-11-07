@@ -31,10 +31,10 @@
 								</div>
 								<div class="fs_12 Text_s bottom">
 									<span
-										>奖励：<span class="color_f1"> {{ item.currencyName }} {{ item.rewardAmount }}</span></span
+										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
 									<span
-										><span class="Theme_text">{{ item.achieveAmount || 0 }}</span
+										><span class="color_Theme">{{ item.achieveAmount || 0 }}</span
 										>/{{ item.minBetAmount }}</span
 									>
 								</div>
@@ -59,10 +59,10 @@
 								</div>
 								<div class="fs_12 Text_s bottom">
 									<span
-										>奖励：<span class="color_f1"> {{ item.currencyName }} {{ item.rewardAmount }}</span></span
+										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
 									<span
-										><span class="Theme_text">{{ item.achieveAmount || 0 }}</span
+										><span class="color_Theme">{{ item.achieveAmount || 0 }}</span
 										>/{{ item.minBetAmount }}</span
 									>
 								</div>
@@ -77,7 +77,7 @@
 					</div>
 					<div v-if="currentTab == 2">
 						<div class="daojishiBg fs_14 mt_0 mb_14">
-							<span class="Text_s">剩余时间：</span><span class="Theme_text">{{ Common.convertMilliseconds(countdown * 1000) }}</span>
+							<span class="Text_s">剩余时间：</span><span class="color_Theme">{{ Common.convertMilliseconds(countdown * 1000) }}</span>
 						</div>
 						<div v-for="item in taskData?.noviceTask" class="card" :class="item.subTaskType">
 							<div>
@@ -87,10 +87,10 @@
 							<div>
 								<div class="fs_14 Text_s fw_500">{{ item.taskNameI18nCode }}</div>
 								<!-- <div class="fs_18 color_TB htmlDesc" v-html="item.taskDescI18nCode"></div> -->
-								<div class="fs_12 Text_s ellipsis pr_5" v-html="item.taskDescI18nCode"></div>
+								<div class="fs_12 Text_s ellipsis pr_5" v-html="item.taskDescriptionI18nCode"></div>
 								<div class="fs_12 Text_s bottom">
 									<span
-										>奖励：<span class="color_f1"> {{ item.currencyName }} {{ item.rewardAmount }}</span></span
+										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
 								</div>
 							</div>
@@ -136,6 +136,8 @@ const { countdown, startCountdown, stopCountdown } = useCountdown();
 // import CommonDialog from "../../components/activityDialog.vue";
 import mainImage from "./image/image.png";
 import { useCountdown } from "/@/hooks/countdown";
+import { useUserStore } from "/@/stores/modules/user";
+const modalStore = useModalStore();
 const tasktype = ref([
 	{
 		label: "每日任务",
@@ -147,10 +149,10 @@ const tasktype = ref([
 	},
 ]);
 const taskStatus: any = {
-	0: "去完成",
-	1: "领取",
-	2: "已领取",
-	3: "已经过期",
+	3: "去完成",
+	0: "去领取",
+	1: "已领取",
+	2: "已过期",
 };
 const router = useRouter();
 const taskData: any = ref({});
@@ -176,7 +178,7 @@ const calculatePercentage = (part: any, whole: any) => {
 };
 const openDialog = (item: any) => {
 	showRule.value = true;
-	rule.value = item.taskDescriptionI18nCode;
+	rule.value = item.taskDescI18nCode;
 };
 const getTaskDetail = () => {
 	activityApi.getTaskDetail().then((res) => {
@@ -205,25 +207,20 @@ const changeTab = (value: number) => {
 };
 
 const HandleBtn = (item: any) => {
+	if (item.subTaskType === "phone" && !useUserStore().getUserInfo.phone) {
+		return modalStore.openModal("setPhone");
+	} else if (item.subTaskType === "email" && !useUserStore().getUserInfo.email) {
+		return modalStore.openModal("setEmail");
+	}
 	if (item.taskStatus == 0) {
 		useModalStore().closeModal();
+		router.push("/welfareCenter");
+	} else if (item.taskStatus == 3) {
+		useModalStore().closeModal();
 		router.push("/");
-	} else if (item.taskStatus == 1) {
-		activityApi
-			.receiveTask({
-				id: item.id,
-				subTaskType: item.subTaskType,
-			})
-			.then((res: any) => {
-				if (res.code === 10000) {
-					showDialog.value = true;
-					dialogInfo.value = res.data;
-					dialogInfo.value.currencyName = item.currencyName;
-					getTaskDetail();
-				}
-			});
 	}
 };
+
 const confirmDialog = () => {
 	showDialog.value = false;
 };
@@ -281,6 +278,7 @@ const confirmDialog = () => {
 	border-radius: 14px;
 	background: var(--Bg4);
 	padding: 16px;
+	min-height: 300px;
 	.card {
 		margin-bottom: 10px;
 		height: 88px;
@@ -333,17 +331,20 @@ const confirmDialog = () => {
 		text-align: center;
 		font-size: 12px;
 		color: var(--Text_s);
-
+		cursor: pointer;
 		border-radius: 6px 6px 5px 5px;
 	}
 	.btnType0 {
-		background: linear-gradient(270deg, #ebb360 0%, #eb7933 100%);
+		background: linear-gradient(270deg, #fd6780 0%, #ff405e 100%);
 	}
 	.btnType1 {
-		background: linear-gradient(270deg, #fd6780 0%, #ff405e 100%);
+		background: linear-gradient(270deg, #afafb3 0%, #87878b 100%);
 	}
 	.btnType2 {
 		background: linear-gradient(270deg, #afafb3 0%, #87878b 100%);
+	}
+	.btnType3 {
+		background: linear-gradient(270deg, #ebb360 0%, #eb7933 100%);
 	}
 	.card.welcome {
 		background: url("./image/cardBg2.png") no-repeat;

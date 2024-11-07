@@ -32,7 +32,8 @@
 	</div>
 
 	<!-- 搜索框组件 -->
-	<searchBar v-else @cancel="handleSearch(false)" />
+	<Search />
+	<!-- <searchBar v-else @cancel="handleSearch(false)" /> -->
 </template>
 
 <script setup lang="ts">
@@ -49,7 +50,9 @@ import { useMatchEvents } from "/@/views/sports/hooks/eventMatch";
 import sportsApi from "/@/api/sports/sports"; // 保留引用
 import searchBar from "./components/searchBar/searchBar.vue";
 import pubsub from "/@/pubSub/pubSub";
-import usePageScrollTop from "/@/views/sports/hooks/usePageScrollTop";
+import SportsCommonFn from "/@/views/sports/utils/common";
+import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
+import useSearch from "/@/views/sports/components/Search";
 
 const sportsBetEvent = useSportsBetEventStore();
 const SportAttentionStore = useSportAttentionStore();
@@ -59,6 +62,7 @@ const SportLeagueSearchStore = useSportLeagueSearchStore();
 const popularLeague = usePopularLeague();
 const SportMorningTradingStore = useSportMorningTradingStore();
 const { searchMatches } = useMatchEvents();
+const ShopCatControlStore = useShopCatControlStore();
 
 // 控制是否显示搜索框
 const isSearch = ref(false);
@@ -99,7 +103,8 @@ onBeforeMount(() => {
 
 // 处理搜索框的显示/隐藏
 const handleSearch = (data: boolean) => {
-	isSearch.value = data;
+	// isSearch.value = data;
+	openSearch();
 };
 
 // 判断是否是今日赛事路由
@@ -135,12 +140,12 @@ const onType = (item: any) => {
 			eventStatusData.value[key as "off" | "on"].active = false;
 		});
 	}
-	// 获取滚动元素节点scrollTop
-	const { saveScrollTop } = usePageScrollTop();
+	// 关闭弹窗购物车
+	ShopCatControlStore.setShopCatShow(false);
+	// 记录滚动元素节点scrollTop
+	SportsCommonFn.saveScrollTop(route);
 	// 跳转到所选分类对应的路径
-	router.push({ path: item.path }).then(() => {
-		saveScrollTop(route);
-	});
+	router.push({ path: item.path }).then(() => {});
 };
 
 // 切换今日赛事下的滚球/未开赛
@@ -155,7 +160,9 @@ const onEventStatusData = (e: "off" | "on") => {
 	});
 	// 将传入的 e 对应的对象 active 设置为 true，激活用户选择的状态
 	eventStatusData.value[e].active = true;
-	// 跳转到激活状态对应的路径，并保留查询参数 sportType
+
+	// 记录滚动元素节点scrollTop
+	SportsCommonFn.saveScrollTop(route);
 	router.push({
 		path: eventStatusData.value[e].path,
 		query: { sportType: sportType },
@@ -199,6 +206,9 @@ const GetPromotions = async () => {
 		sportsBetEvent.setHotLeagueList(list);
 	}
 };
+
+// 搜索弹窗
+const { Search, openSearch, closeSearch } = useSearch();
 </script>
 
 <style scoped lang="scss">

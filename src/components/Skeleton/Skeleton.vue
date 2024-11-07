@@ -44,15 +44,11 @@ const props = withDefaults(defineProps<SkeletonProps>(), {
 
 const pubsubLoading = ref(true);
 
-onBeforeMount(() => {
+onMounted(() => {
 	pubsub.subscribe("SkeletonLoading", (data) => {
-		if (data) {
-			pubsubLoading.value = data;
-		} else {
-			setTimeout(() => {
-				pubsubLoading.value = data;
-			}, 1000);
-		}
+		console.log("SkeletonLoading", data);
+
+		pubsubLoading.value = data;
 	});
 });
 

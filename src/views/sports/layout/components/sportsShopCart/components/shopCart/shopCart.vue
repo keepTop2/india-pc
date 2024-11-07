@@ -1,5 +1,5 @@
 <template>
-	<div class="shopCart" v-if="!isOrdered">
+	<div class="shopCart" :class="[ShopCatControlStore.getShopCatShow && sportsBetEvent.sportsBetEventData.length ? 'shop-cart-show' : 'shop-cart-hide']" v-if="!isOrdered">
 		<!-- 头部信息 -->
 		<div class="header-container" @click="changeShopCart">
 			<div class="left">
@@ -238,11 +238,7 @@ const refreshBalance = () => {
 
 // 打开关闭弹窗
 const changeShopCart = () => {
-	if (ShopCatControlStore.getShopCatShow) {
-		ShopCatControlStore.setShopCatShow(false);
-	} else {
-		ShopCatControlStore.setShopCatShow(true);
-	}
+	ShopCatControlStore.setShopCatShow(!ShopCatControlStore.getShopCatShow);
 };
 
 /**
@@ -294,7 +290,9 @@ const totalAnimationEnd = () => {
 	background: var(--Bg1);
 	box-shadow: 0px -3px 30px 0px rgba(14, 16, 19, 0.7);
 	box-sizing: border-box;
-
+	&.shop-cart-hide {
+		background-color: var(--shopcar_header_bg);
+	}
 	.header-container {
 		height: 52px;
 		display: flex;
@@ -321,7 +319,7 @@ const totalAnimationEnd = () => {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background: var(--Theme);
+				background: var(--F1);
 				font-size: 14px;
 				color: #fff;
 				border-radius: 50%;
@@ -436,6 +434,13 @@ const totalAnimationEnd = () => {
 		padding: 0px 15px;
 		max-height: 450px;
 		overflow-y: auto;
+		&::-webkit-scrollbar-thumb {
+			background-color: var(--Bg3);
+			border-radius: 6px;
+		}
+		&::-webkit-scrollbar {
+			width: 6px;
+		}
 	}
 	.footer-container {
 		padding: 0px 15px;
