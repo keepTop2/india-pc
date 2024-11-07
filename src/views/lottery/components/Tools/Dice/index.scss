@@ -1,0 +1,160 @@
+// 定义 mixins
+@mixin center-dice() {
+	transform: translate(-50%, -50%);
+	left: 50%;
+	top: 50%;
+}
+
+@mixin position-dot() {
+	top: 6px;
+	left: 6px;
+
+	&:nth-child(2) {
+		bottom: 6px;
+		right: 6px;
+	}
+
+	&:nth-child(3) {
+		top: 6px;
+		right: 6px;
+	}
+
+	&:nth-child(4) {
+		bottom: 6px;
+		left: 6px;
+	}
+}
+
+// lottery-dice 样式
+.lottery-dice {
+	width: 30px;
+	height: 30px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	position: relative;
+	cursor: pointer;
+
+	.dice {
+		width: 6px;
+		height: 6px;
+		position: absolute;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+
+	.dice-1 {
+		@include center-dice();
+		width: 10px;
+		height: 10px;
+	}
+
+	.dice-2 {
+		&:nth-child(1) {
+			left: 6px;
+			top: 6px;
+		}
+
+		&:nth-child(2) {
+			bottom: 6px;
+			right: 6px;
+		}
+	}
+
+	.dice-3 {
+		&:nth-child(1) {
+			left: 6px;
+			top: 6px;
+		}
+
+		&:nth-child(2) {
+			bottom: 6px;
+			right: 6px;
+		}
+
+		&:nth-child(3) {
+			@include center-dice();
+		}
+	}
+
+	.dice-4 {
+		&:nth-child(1) {
+			left: 6px;
+			top: 6px;
+		}
+
+		&:nth-child(2) {
+			bottom: 6px;
+			right: 6px;
+		}
+
+		&:nth-child(3) {
+			right: 6px;
+			top: 6px;
+		}
+
+		&:nth-child(4) {
+			bottom: 6px;
+			left: 6px;
+		}
+	}
+
+	.dice-5 {
+		&:nth-child(1) {
+			left: 6px;
+			top: 6px;
+		}
+
+		&:nth-child(2) {
+			bottom: 6px;
+			right: 6px;
+		}
+
+		&:nth-child(3) {
+			right: 6px;
+			top: 6px;
+		}
+
+		&:nth-child(4) {
+			bottom: 6px;
+			left: 6px;
+		}
+
+		&:nth-child(5) {
+			@include center-dice();
+		}
+	}
+
+	.dice-6 {
+		&:nth-child(1) {
+			left: 7px;
+			top: 5px;
+		}
+
+		&:nth-child(2) {
+			right: 7px;
+			top: 5px;
+		}
+
+		&:nth-child(3) {
+			left: 7px;
+			top: 12px;
+		}
+
+		&:nth-child(4) {
+			right: 7px;
+			top: 12px;
+		}
+
+		&:nth-child(5) {
+			bottom: 5px;
+			left: 7px;
+		}
+
+		&:nth-child(6) {
+			bottom: 5px;
+			right: 7px;
+		}
+	}
+}

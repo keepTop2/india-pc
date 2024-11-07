@@ -13,7 +13,7 @@
 						<DatePicker :range="range" v-model="showDatePicker" :minDate="minDate" :maxDate="maxDate" @updateRange="updateRange" />
 					</div>
 					<div class="formItem">
-						<Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.welfareCenterRewardType"></Dropdown>
+						<Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.venueType"></Dropdown>
 					</div>
 					<div class="formItem">
 						<Dropdown :options="activityReceiveStatusOptions" v-model="params.receiveStatus"></Dropdown>
@@ -130,7 +130,7 @@ const params = reactive({
 	betEndTime:dayjs().endOf('day').unix(),
 	pageNumber: 1,
 	pageSize: 50,
-	receiveStatus: "-1",
+	receiveStatus: "",
 	welfareCenterRewardType: "1",
 	venueType: "1",
 });
@@ -173,8 +173,7 @@ const pageQuery = (type?:boolean) => {
 		params.betEndTime =new Date(range.end).getTime();
 	}
 	// params.orderClassifyList = +params.receiveStatus;
-	params.venueType = +params.venueType;
-	welfareCenterApi.tzPageQuery(params).then((res) => {
+	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList: [+params.receiveStatus] }).then((res) => {
 		console.log(res, "res");
 		if (!res.data) return;
 		tableData.value = res.data.sabOrderList;
@@ -219,7 +218,7 @@ const getDownBox = () => {
 		});
 		activityReceiveStatusOptions.value.unshift({
 			text: "全部状态",
-			value: "-1",
+			value: "",
 		});
 	});
 };

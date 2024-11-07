@@ -8,18 +8,23 @@
 		<div class="content">
 			<div class="treasureChest">
 				<div class="boxList">
-					<div v-for="(item, index) in medalRewardRespVOS" class="box" @click="openMedalReward(item)" :class="findInterval() > index ? 'active' : ''">
+					<div
+						v-for="(item, index) in medalRewardRespVOS"
+						class="box"
+						@click="openMedalReward(item)"
+						:class="medalRewardRespVOS.filter((item: any) => item.openStatus !== 2).length > index ? 'active' : ''"
+					>
 						<img :src="imgObj['status' + item.openStatus + '_' + (index + 1)]" alt="" />
 						<div>{{ item.unlockMedalNum }}</div>
 					</div>
 				</div>
-				<div class="progress mb_14">
-					<div class="value" :style="{ width: findInterval() * 20 + '%' }"></div>
+				<div class="progress mb_14" v-if="findInterval()">
+					<div class="value" :style="{ width: findInterval() + '%' }"></div>
 				</div>
 				<div class="medalRewardList">
 					<div v-for="(item, index) in medalRewardRespVOS" class="pl_16">
 						<div>
-							解锁<span class="color_Theme">{{ item.unlockMedalNum }}枚</span> 勋章:获得{{ item.rewardAmount }}{{ useUserStore().getUserInfo.platCurrencySymbol }}
+							解锁<span class="color_Theme">{{ item.unlockMedalNum }}枚</span> 勋章:获得 {{ useUserStore().getUserInfo.platCurrencySymbol }} {{ item.rewardAmount }}
 						</div>
 					</div>
 					<div class="mark">
@@ -27,7 +32,11 @@
 							<template v-slot:icon>
 								<svg-icon name="mark " size="20px"></svg-icon>
 							</template>
-							<template v-slot:message> 宝箱奖励流水倍数{{ medalRewardRespVOS[findInterval()].typingMultiple }}为倍 </template>
+							<template v-slot:message>
+								宝箱奖励流水倍数{{
+									medalRewardRespVOS.find((item: any) => item.openStatus !== 1)?.typingMultiple || medalRewardRespVOS[medalRewardRespVOS.length - 1]?.typingMultiple
+								}}为倍
+							</template>
 						</ClickTooltip>
 					</div>
 				</div>
@@ -119,18 +128,22 @@ const findInterval = () => {
 	}
 
 	let index = 0;
+	let max = 0;
+	let min = 0;
 	for (let i = 0; i < intervals.length - 1; i++) {
 		if (intervals[i] <= num && num <= intervals[i + 1]) {
+			max = intervals[i + 1];
+			min = intervals[i];
 			index = i + 1;
 		}
 	}
-
-	return index;
+	const index2 = ((num - min) / (max - min)) * 20;
+	return index * 20 + index2;
 };
 const openMedalReward = (item: any) => {
 	if (item.openStatus === 0) {
 		MedalApi.openMedalReward({ rewardNo: item.rewardNo }).then(async (res) => {
-			showToast(`恭喜你获得${res.data.unlockMedalNum}个勋章，解锁宝箱，奖励${res.data.rewardAmount} ${useUserStore().getUserInfo.platCurrencySymbol}已发送到您的账号`);
+			showToast(`恭喜你获得${res.data.unlockMedalNum}个勋章，解锁宝箱，奖励${useUserStore().getUserInfo.platCurrencySymbol} ${res.data.rewardAmount}已发送到您的账号`);
 			await getUserMedalInfo();
 			findInterval();
 		});

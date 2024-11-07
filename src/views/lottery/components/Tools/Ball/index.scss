@@ -1,0 +1,57 @@
+.lottery-ball {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--Bg4);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+	.ball {
+		font-size: 16px;
+		font-weight: 600;
+		color: var(--Text1);
+	}
+	&.actived {
+		.ball {
+			color: var(--Bg);
+		}
+	}
+}
+.lottery-ball-group {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: start;
+	gap: 8px 12px;
+	flex-wrap: wrap;
+}
+
+.select-ball-group {
+	.warn {
+		color: var(--Text1);
+		font-size: 14px;
+		margin-bottom: 8px;
+	}
+	.control {
+		color: var(--Text2_1);
+		font-size: 14px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 16px;
+		.clear,
+		.other {
+			cursor: pointer;
+		}
+	}
+	.balls-box {
+		display: flex;
+		align-items: center;
+		gap: 8px 12px;
+		flex-wrap: wrap;
+	}
+}

@@ -31,7 +31,7 @@
 					</div>
 					<div class="flex-center">
 						<img src="./image/fudai.png" alt="" width="20px" />
-						您有4个待领取福利
+						您有{{}}个待领取福利
 					</div>
 				</div>
 				<div class="table">

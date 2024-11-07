@@ -3,12 +3,12 @@
  * @Description: 菜单管理；
  */
 import { defineStore } from "pinia";
-import { activityApi } from "/@/api/activity";
+import { gameApi } from "/@/api/game";
 
-export const collectGamesStore = defineStore("collectGames", {
+export const useCollectGamesStore = defineStore("collectGames", {
 	state: () => {
 		return {
-			collectGamesList: {} as any,
+			collectGamesList: [] as any,
 		};
 	},
 	getters: {
@@ -22,8 +22,10 @@ export const collectGamesStore = defineStore("collectGames", {
 	},
 
 	actions: {
-		setCollectGamesList(data: any) {
-			this.collectGamesList = data;
+		setCollectGamesList() {
+			gameApi.queryCollection().then((res) => {
+				this.collectGamesList = res.data.records;
+			});
 		},
 	},
 });
