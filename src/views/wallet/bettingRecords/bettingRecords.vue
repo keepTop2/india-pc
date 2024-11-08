@@ -158,6 +158,7 @@ const pageData = reactive({
 const total = ref(0);
 const hasData = ref(false);
 const updateRange = (value: any) => {
+	console.log(value)
 	range.start = value[0];
 	range.end = value[1];
 };
@@ -169,15 +170,74 @@ onMounted(() => {
 });
 const pageQuery = (type?:boolean) => {
 	if (!type) {
-		params.betStartTime = new Date(range.start).getTime();
-		params.betEndTime =new Date(range.end).getTime();
+		params.betStartTime = dayjs(new Date(range.start)).startOf('day').unix();
+		params.betEndTime = dayjs(new Date(range.end)).endOf('day').unix()
 	}
 	// params.orderClassifyList = +params.receiveStatus;
 	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList: [+params.receiveStatus] }).then((res) => {
 		console.log(res, "res");
-		if (!res.data) return;
+		// if (!res.data) return;
+		res.data = {}
+		res.data.sabOrderList = [
+    {
+        "orderId": "314050735991947301",
+        "eventInfo": "*意大利甲组联赛",
+        "teamInfo": "卡利亚里 VS 博洛尼亚",
+        "betContent": "全场.独赢盘 卡利亚里",
+        "betAmount": 1,
+        "winLossAmount": -1,
+        "odds": 2.76,
+        "betTime": 1729725435600,
+        "orderClassify": 1,
+        "orderClassifyText": "已结算",
+        "multipleBet": false,
+        "orderMultipleBetList": null
+    },
+    {
+        "orderId": "314047673680265269",
+        "eventInfo": "*意大利甲组联赛",
+        "teamInfo": "AC米兰 VS 拿玻里",
+        "betContent": "让球 AC米兰",
+        "betAmount": 3,
+        "winLossAmount": -3,
+        "odds": 2.02,
+        "betTime": 1729724722987,
+        "orderClassify": 1,
+        "orderClassifyText": "已结算",
+        "multipleBet": false,
+        "orderMultipleBetList": null
+    },
+    {
+        "orderId": "314047596370853901",
+        "eventInfo": "*意大利甲组联赛",
+        "teamInfo": "卡利亚里 VS 博洛尼亚",
+        "betContent": "全场.独赢盘 博洛尼亚",
+        "betAmount": 8,
+        "winLossAmount": 11.84,
+        "odds": 2.48,
+        "betTime": 1729724704297,
+        "orderClassify": 1,
+        "orderClassifyText": "已结算",
+        "multipleBet": false,
+        "orderMultipleBetList": null
+    },
+    {
+        "orderId": "314047553421180958",
+        "eventInfo": "*意大利甲组联赛",
+        "teamInfo": "卡利亚里 VS 博洛尼亚",
+        "betContent": "让球 卡利亚里",
+        "betAmount": 1,
+        "winLossAmount": -1,
+        "odds": 2.04,
+        "betTime": 1729724694980,
+        "orderClassify": 1,
+        "orderClassifyText": "已结算",
+        "multipleBet": false,
+        "orderMultipleBetList": null
+    }
+		]
 		tableData.value = res.data.sabOrderList;
-		pageData.totalSize =  res.data.sabOrderList.length;
+		pageData.totalSize = 11|| res.data.sabOrderList.length;
 		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
 		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
 		pageData.platCurrencyCode = res.data.platCurrencyCode;
