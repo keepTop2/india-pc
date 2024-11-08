@@ -41,7 +41,9 @@
 						</span>
 						<span class="ml_20">
 							<span>输赢金额：</span>
-							<span :class="[ String( winOrLoseAmount).indexOf('-')>-1?'lose_color':'win_color']">{{String( winOrLoseAmount).indexOf('-')>-1? winOrLoseAmount:'+'+winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span>
+							<span :class="[String(winOrLoseAmount).indexOf('-') > -1 ? 'lose_color' : 'win_color']"
+								>{{ String(winOrLoseAmount).indexOf("-") > -1 ? winOrLoseAmount : "+" + winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span
+							>
 						</span>
 					</div>
 					<!-- <div class="flex-center">
@@ -63,36 +65,38 @@
 										<div style="width: 25%" class="fir_item">@{{ props.row.odds }}</div>
 									</div>
 									<div class="winlogo">
-										<img :src="props.row.orderClassify == '1' ? winlogo :props.row.orderClassify == '0'?helogo: loselogo" alt="" />
+										<img :src="props.row.orderClassify == '1' ? winlogo : props.row.orderClassify == '0' ? helogo : loselogo" alt="" />
 									</div>
 								</div>
 							</template>
-						</el-table-column> 
+						</el-table-column>
 						<!-- 订单号 -->
-						<el-table-column v-else-if="item.label =='订单号'" width="250" :label="item.label" :prop="item.props" align="center" >
+						<el-table-column v-else-if="item.label == '订单号'" width="250" :label="item.label" :prop="item.props" align="center">
 							<template #default="props">
 								<div class="orderId_style">
-									<div>{{ props.row.orderId}}</div>
-									<img @click="copyId(props.row.orderId)" :src="copyimg" alt="">
+									<div>{{ props.row.orderId }}</div>
+									<img @click="copyId(props.row.orderId)" :src="copyimg" alt="" />
 								</div>
 							</template>
 						</el-table-column>
 						<!-- 投注时间 -->
-						<el-table-column v-else-if="item.label =='投注时间'" :label="item.label" :prop="item.props" align="center" >
+						<el-table-column v-else-if="item.label == '投注时间'" :label="item.label" :prop="item.props" align="center">
 							<template #default="props">
-								<div >{{ dayjs(props.row.betTime).format("YYYY-MM-DD HH:mm:ss")}}</div>
+								<div>{{ dayjs(props.row.betTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
 							</template>
 						</el-table-column>
 						<!-- 投注金额 -->
-						<el-table-column v-else-if="item.label =='投注金额'" :label="item.label" :prop="item.props" align="center" >
+						<el-table-column v-else-if="item.label == '投注金额'" :label="item.label" :prop="item.props" align="center">
 							<template #default="props">
-								<div >{{ props.row.betAmount }} CNY</div>
+								<div>{{ props.row.betAmount }} CNY</div>
 							</template>
 						</el-table-column>
 						<!-- 输赢金额 -->
-						<el-table-column v-else-if="item.label =='输赢金额'" :label="item.label" :prop="item.props" align="center" >
+						<el-table-column v-else-if="item.label == '输赢金额'" :label="item.label" :prop="item.props" align="center">
 							<template #default="props">
-								<div :style="{'color':String(props.row.winLossAmount).indexOf('-')> -1?'#FF8C00':'#FF284B'}">{{ String(props.row.winLossAmount).indexOf('-')> -1?props.row.winLossAmount:'+'+props.row.winLossAmount }} CNY</div>
+								<div :style="{ color: String(props.row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
+									{{ String(props.row.winLossAmount).indexOf("-") > -1 ? props.row.winLossAmount : "+" + props.row.winLossAmount }} CNY
+								</div>
 							</template>
 						</el-table-column>
 
@@ -126,8 +130,8 @@ const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
 const today = dayjs();
 const params = reactive({
-	betStartTime: dayjs().startOf('day').unix(),
-	betEndTime:dayjs().endOf('day').unix(),
+	betStartTime: dayjs().startOf("day").unix(),
+	betEndTime: dayjs().endOf("day").unix(),
 	pageNumber: 1,
 	pageSize: 50,
 	receiveStatus: "",
@@ -158,7 +162,7 @@ const pageData = reactive({
 const total = ref(0);
 const hasData = ref(false);
 const updateRange = (value: any) => {
-	console.log(value)
+	console.log(value);
 	range.start = value[0];
 	range.end = value[1];
 };
@@ -168,76 +172,17 @@ onMounted(() => {
 	getDownBox();
 	pageQuery(true);
 });
-const pageQuery = (type?:boolean) => {
+const pageQuery = (type?: boolean) => {
 	if (!type) {
-		params.betStartTime = dayjs(new Date(range.start)).startOf('day').unix();
-		params.betEndTime = dayjs(new Date(range.end)).endOf('day').unix()
+		params.betStartTime = dayjs(new Date(range.start)).startOf("day").unix();
+		params.betEndTime = dayjs(new Date(range.end)).endOf("day").unix();
 	}
 	// params.orderClassifyList = +params.receiveStatus;
 	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList: [+params.receiveStatus] }).then((res) => {
 		console.log(res, "res");
-		// if (!res.data) return;
-		res.data = {}
-		res.data.sabOrderList = [
-    {
-        "orderId": "314050735991947301",
-        "eventInfo": "*意大利甲组联赛",
-        "teamInfo": "卡利亚里 VS 博洛尼亚",
-        "betContent": "全场.独赢盘 卡利亚里",
-        "betAmount": 1,
-        "winLossAmount": -1,
-        "odds": 2.76,
-        "betTime": 1729725435600,
-        "orderClassify": 1,
-        "orderClassifyText": "已结算",
-        "multipleBet": false,
-        "orderMultipleBetList": null
-    },
-    {
-        "orderId": "314047673680265269",
-        "eventInfo": "*意大利甲组联赛",
-        "teamInfo": "AC米兰 VS 拿玻里",
-        "betContent": "让球 AC米兰",
-        "betAmount": 3,
-        "winLossAmount": -3,
-        "odds": 2.02,
-        "betTime": 1729724722987,
-        "orderClassify": 1,
-        "orderClassifyText": "已结算",
-        "multipleBet": false,
-        "orderMultipleBetList": null
-    },
-    {
-        "orderId": "314047596370853901",
-        "eventInfo": "*意大利甲组联赛",
-        "teamInfo": "卡利亚里 VS 博洛尼亚",
-        "betContent": "全场.独赢盘 博洛尼亚",
-        "betAmount": 8,
-        "winLossAmount": 11.84,
-        "odds": 2.48,
-        "betTime": 1729724704297,
-        "orderClassify": 1,
-        "orderClassifyText": "已结算",
-        "multipleBet": false,
-        "orderMultipleBetList": null
-    },
-    {
-        "orderId": "314047553421180958",
-        "eventInfo": "*意大利甲组联赛",
-        "teamInfo": "卡利亚里 VS 博洛尼亚",
-        "betContent": "让球 卡利亚里",
-        "betAmount": 1,
-        "winLossAmount": -1,
-        "odds": 2.04,
-        "betTime": 1729724694980,
-        "orderClassify": 1,
-        "orderClassifyText": "已结算",
-        "multipleBet": false,
-        "orderMultipleBetList": null
-    }
-		]
+		if (!res.data) return;
 		tableData.value = res.data.sabOrderList;
-		pageData.totalSize = 11|| res.data.sabOrderList.length;
+		pageData.totalSize = 11 || res.data.sabOrderList.length;
 		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
 		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
 		pageData.platCurrencyCode = res.data.platCurrencyCode;
@@ -252,10 +197,10 @@ const pageQuery = (type?:boolean) => {
 			return a + b.winLossAmount;
 		}, 0);
 
-		tableData.value.forEach((item:any) => {
-			item.betAmount = item.betAmount.toFixed(2)
-			item.winLossAmount = item.winLossAmount.toFixed(2)
-		})
+		tableData.value.forEach((item: any) => {
+			item.betAmount = item.betAmount.toFixed(2);
+			item.winLossAmount = item.winLossAmount.toFixed(2);
+		});
 
 		hasData.value =
 			res.data.sabOrderList?.length > 0 ||
@@ -285,17 +230,17 @@ const getDownBox = () => {
 
 // 複製id
 const copyId = (id: string) => {
-	const input = document.createElement('input');
-  input.setAttribute('value', id);
-  document.body.appendChild(input);
-  input.select();
-  // 执行复制命令
-  document.execCommand('copy');
-  // 移除输入框
-  document.body.removeChild(input);
+	const input = document.createElement("input");
+	input.setAttribute("value", id);
+	document.body.appendChild(input);
+	input.select();
+	// 执行复制命令
+	document.execCommand("copy");
+	// 移除输入框
+	document.body.removeChild(input);
 
 	showToast("复制成功");
-}
+};
 
 // watch([() => params.welfareCenterRewardType, () => welfareCenterRewardTypeOptions.value], (val) => {
 // 	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == val[0]);
@@ -419,8 +364,8 @@ function getTableType() {
 	.lose_color {
 		color: #01aff6;
 	}
-	.win_color{
-		color: var(--light-ok-Theme--, #FF284B);
+	.win_color {
+		color: var(--light-ok-Theme--, #ff284b);
 	}
 	.table {
 		border: 1px solid var(--Line_2);
@@ -487,11 +432,11 @@ function getTableType() {
 	display: flex;
 	align-items: center;
 }
-.orderId_style{
+.orderId_style {
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	img{
+	img {
 		cursor: pointer;
 	}
 }
