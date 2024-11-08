@@ -1,0 +1,455 @@
+<template>
+	<div class="lottery-bet-page lottery-kuaisan">
+		<!-- 头部 -->
+		<LotteryHeader />
+		<!-- 分割线 -->
+		<div class="line" />
+
+		<div class="tabs">
+			<div :class="['tabs-item', tabsActived === item.value ? 'actived' : '']" @click="handleTabChange(item.value)" v-for="item in tabs" :key="item.value">{{ item.label }}</div>
+		</div>
+
+		<div class="content">
+			<div style="display: flex; justify-content: space-between; align-items: start; gap: 8px">
+				<div style="width: 100%; flex: 1">
+					<Accordion
+						style="margin-bottom: 4px"
+						v-for="(item, index) in gamePlayConfig"
+						:isExpanded="item.actived"
+						@change="(status) => clearAccordionStatus(status, index)"
+						:title="item.gamePlayName"
+					>
+						<template v-if="item.actived" #content>
+							<div class="gameplay">
+								<p v-html="item.desc"></p>
+							</div>
+							<AccordionItem
+								style="margin-bottom: 4px"
+								v-for="(plays, i) in item.playMethods"
+								:actived="plays.actived"
+								@select="(status) => handleExpanded(i, status, plays, item)"
+								:title="plays.title"
+								:info="plays.desc"
+								:odds="plays.odds"
+							>
+								<template v-if="plays.actived && plays.type === 'selectBall'" #default>
+									<div class="accordion-content-item-balls">
+										<SelectBallGroup @clear="() => (balls = [])" :type="2" @select="handleSelectBalls" :renderBallNum="plays.ballNum" :maxLeng="3" :value="balls" />
+									</div>
+								</template>
+							</AccordionItem>
+						</template>
+					</Accordion>
+				</div>
+				<BetForm @submit="handleSubmit" :actived="formActived">
+					<template v-if="formActived" #default>
+						<div class="bet-form-slot-header">
+							<div>{{ gameInfo.gamePlayName }}</div>
+							<div>{{ gameInfo.children.title }}</div>
+							<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px" v-if="formActived">
+								<Ball v-for="item in balls" :key="item" :ball-number="item" :type="2" />
+							</div>
+						</div>
+					</template>
+				</BetForm>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import useLotteryHeader from "/@/views/lottery/components/LotteryHeader/Index";
+import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
+import useBall from "/@/views/lottery/components/Tools/Ball/Index";
+import useBetForm from "/@/views/lottery/components/BetForm/Index";
+import { useTab } from "/@/views/lottery/hooks/useLottery";
+
+const mockData = {
+	icon: "https://ctopalistat3.zengchenglm.com/pc/images/db_DB5FC2cea4e2f859029cdbda33fffda6ea1f2.png",
+	title: "快三",
+	desc: "三分钟一期",
+	seconds: 100,
+	betStatusName: "投注中",
+	issuesNo: "20230812-084",
+	recentlyAwarded: 5403.23,
+};
+const { LotteryHeader } = useLotteryHeader({ data: mockData });
+const { Accordion, AccordionItem } = useAccordion();
+const { Ball, SelectBallGroup } = useBall();
+const { BetForm } = useBetForm();
+const { tabs, tabsActived, handleTabChange } = useTab();
+
+const gamePlayConfig = ref([
+	{
+		gamePlayName: "三军 总和大小",
+		gamePlayCode: "sum",
+		desc: `选择1个号码组成1注，开奖号码包含所选号码，即中奖。<br> 总和大小：开奖号码之和≥11为“大”，≤10为“小”，若3个号码相同，则不中奖。`,
+		id: "1",
+		actived: false,
+		playMethods: [
+			{
+				title: "号码1",
+				desc: "开奖号码1,1,3，投注「1」，即中奖",
+				odds: 1.995,
+				id: "1-1",
+				actived: false,
+			},
+			{
+				title: "号码2",
+				desc: "开奖号码2,1,3，投注「2」，即中奖",
+				odds: 1.995,
+				id: "1-2",
+				actived: false,
+			},
+			{
+				title: "号码3",
+				desc: "开奖号码3,1,3，投注「3」，即中奖",
+				odds: 1.995,
+				id: "1-3",
+				actived: false,
+			},
+			{
+				title: "号码4",
+				desc: "开奖号码4,1,3，投注「4」，即中奖",
+				odds: 1.995,
+				id: "1-4",
+				actived: false,
+			},
+			{
+				title: "号码5",
+				desc: "开奖号码5,1,3，投注「5」，即中奖",
+				odds: 1.995,
+				id: "1-5",
+				actived: false,
+			},
+			{
+				title: "号码6",
+				desc: "开奖号码6,1,3，投注「6」，即中奖",
+				odds: 1.995,
+				id: "1-6",
+				actived: false,
+			},
+			{
+				title: "大的",
+				desc: "开奖号码之和≥11为“大”",
+				odds: 1.995,
+				id: "1-7",
+				actived: false,
+			},
+			{
+				title: "小的",
+				desc: "开奖号码之和≤10为“小”",
+				odds: 1.995,
+				id: "1-8",
+				actived: false,
+			},
+		],
+	},
+	{
+		gamePlayName: "围骰 全骰",
+		gamePlayCode: "selectBall",
+		desc: `围骰：选择1个组合为1注，所选组合与开奖号码相同，即中奖。<br>举例：开奖号码1,1,1，投注「111」，即中奖。<br>全骰：开奖的3个号码相同，即中奖。`,
+		id: "2",
+		actived: false,
+		playMethods: [
+			{
+				title: "No.1 x 3",
+				desc: "例如中奖号码1,1,1；投注「111」，即为中奖",
+				odds: 1.995,
+				id: "2-1",
+				actived: false,
+			},
+			{
+				title: "No.2 x 3",
+				desc: "例如：中奖号码2,2,2；投注「222」，即为中奖",
+				odds: 1.995,
+				id: "2-2",
+				actived: false,
+			},
+			{
+				title: "No.3 x 3",
+				desc: "例如中奖号码3,3,3；投注「333」，即为中奖",
+				odds: 1.05,
+				id: "2-3",
+				actived: false,
+			},
+			{
+				title: "No.4 x 3",
+				desc: "例如：中奖号码4,4,4；投注「444」，即为中奖",
+				odds: 1.995,
+				id: "2-4",
+				actived: false,
+			},
+			{
+				title: "No.5 x 3",
+				desc: "例如中奖号码5,5,5；投注「555」，即为中奖",
+				odds: 1.995,
+				id: "2-5",
+				actived: false,
+			},
+			{
+				title: "No.6 x 3",
+				desc: "例如中奖号码6,6,6；投注「666」，即为中奖",
+				odds: 1.995,
+				id: "2-6",
+				actived: false,
+			},
+			{
+				title: "任意三重",
+				desc: "开奖的3个号码相同，即中奖",
+				odds: 1.995,
+				id: "2-7",
+				actived: false,
+			},
+		],
+	},
+	{
+		gamePlayName: "观点",
+		gamePlayCode: "selectBall",
+		desc: `选择1个数值，与开奖号码之和相同，即中奖。<br>举例：开奖号码1,1,1，投注「3」，即中奖。`,
+		id: "3",
+		actived: false,
+		playMethods: [
+			{
+				title: "3",
+				desc: "中奖号码1、1、1；投注「3」，即为中奖",
+				odds: 1.995,
+				id: "3-1",
+				actived: false,
+			},
+			{
+				title: "4",
+				desc: "中奖号码1、1、2；投注「4」，为中奖",
+				odds: 1.995,
+				id: "3-2",
+				actived: false,
+			},
+			{
+				title: "5",
+				desc: "中奖号码1、1、3；投注「5」，为中奖",
+				odds: 1.995,
+				id: "3-3",
+				actived: false,
+			},
+			{
+				title: "6",
+				desc: "开奖号码2,1,3，投注「6」，即中奖",
+				odds: 1.995,
+				id: "3-4",
+				actived: false,
+			},
+			{
+				title: "7",
+				desc: "中奖号码2、1、4；投注「7」，为中奖",
+				odds: 1.995,
+				id: "3-5",
+				actived: false,
+			},
+			{
+				title: "8",
+				desc: "中奖号码2、1、5；投注「8」，为中奖",
+				odds: 1.995,
+				id: "3-6",
+				actived: false,
+			},
+			{
+				title: "9",
+				desc: "中奖号码2、1、6；投注「9」，为中奖",
+				odds: 1.995,
+				id: "3-7",
+				actived: false,
+			},
+			{
+				title: "10",
+				desc: "中奖号码3、1、6；投注「10」，为中奖",
+				odds: 1.995,
+				id: "3-8",
+				actived: false,
+			},
+			{
+				title: "11",
+				desc: "中奖号码3、2、6；投注「11」，为中奖",
+				odds: 1.995,
+				id: "3-9",
+				actived: false,
+			},
+			{
+				title: "12",
+				desc: "中奖号码3、3、6；投注「12」，为中奖",
+				odds: 1.995,
+				id: "3-10",
+				actived: false,
+			},
+			{
+				title: "13",
+				desc: "中奖号码3、4、6；投注「13」，为中奖",
+				odds: 1.995,
+				id: "3-11",
+				actived: false,
+			},
+			{
+				title: "14",
+				desc: "中奖号码3、5、6；投注「14」，为中奖",
+				odds: 1.995,
+				id: "3-12",
+				actived: false,
+			},
+			{
+				title: "15",
+				desc: "中奖号码3、6、6；投注「15」，为中奖",
+				odds: 1.995,
+				id: "3-13",
+				actived: false,
+			},
+			{
+				title: "16",
+				desc: "中奖号码4、6、6；投注「16」，为中奖",
+				odds: 1.995,
+				id: "3-14",
+				actived: false,
+			},
+			{
+				title: "17",
+				desc: "中奖号码5、6、6；投注「17」，为中奖",
+				odds: 1.995,
+				id: "3-15",
+				actived: false,
+			},
+			{
+				title: "18",
+				desc: "开奖号码6,6,6，投注「18」，即中奖",
+				odds: 1.995,
+				id: "3-16",
+				actived: false,
+			},
+		],
+	},
+	{
+		gamePlayName: "鱼/虾/蟹",
+		gamePlayCode: "selectBall",
+		desc: `开奖号码其中1个与所选号码相同，即为中奖。<br>举例：开奖号码1,2,3，投注「鱼（1）」，即中奖。`,
+		id: "4",
+		actived: false,
+		playMethods: [
+			{
+				title: "鱼 (1)",
+				desc: "开奖号码1,2,3，投注「鱼（1）」，即中奖",
+				odds: 1.995,
+				id: "4-1",
+				actived: false,
+			},
+			{
+				title: "虾 (2)",
+				desc: "开奖号码1,2,3，投注「虾（2）」，即中奖",
+				odds: 1.995,
+				id: "4-2",
+				actived: false,
+			},
+			{
+				title: "葫芦 (3)",
+				desc: "开奖号码1,2,3，投注「葫芦（3）」，即中奖",
+				odds: 1.995,
+				id: "4-3",
+				actived: false,
+			},
+			{
+				title: "金币 (4)",
+				desc: "开奖号码1,2,4，投注「金币（4）」，即中奖",
+				odds: 1.995,
+				id: "4-4",
+				actived: false,
+			},
+			{
+				title: "螃蟹 (5)",
+				desc: "开奖号码1,2,5，投注「螃蟹（5）」，即中奖",
+				odds: 1.995,
+				id: "4-5",
+				actived: false,
+			},
+			{
+				title: "鸡 (6)",
+				desc: "开奖号码1,2,6，投注「鸡（6）」，即中奖",
+				odds: 1.995,
+				id: "4-6",
+				actived: false,
+			},
+		],
+	},
+]);
+
+const balls = ref([]);
+const gameInfo = ref();
+const formActived = ref(false);
+
+const handleExpanded = (index: number, status: boolean, childData: any, data: any) => {
+	gamePlayConfig.value.forEach((v) => {
+		v.playMethods.forEach((w) => (w.actived = false));
+	});
+	childData.actived = status;
+	balls.value = [];
+	formActived.value = status;
+	gameInfo.value = status ? { ...data, children: { ...childData } } : null;
+};
+
+const handleSelectBalls = ({ value, list }) => {
+	balls.value = list;
+};
+
+const clearAccordionStatus = (status, index) => {
+	gamePlayConfig.value.forEach((item, i) => {
+		item.actived = index === i && status ? true : false;
+	});
+};
+
+const handleSubmit = () => {};
+</script>
+
+<style lang="scss" scoped>
+.lottery-bet-page {
+	width: 1308px;
+	margin: 0 auto;
+	margin-top: 24px;
+	background-color: var(--Bg1);
+	border-radius: 12px;
+	padding: 20px;
+	.line {
+		border: 1px solid var(--lineBg);
+		margin: 16px 0;
+	}
+	.tabs {
+		display: flex;
+		align-items: center;
+		column-gap: 4px;
+		margin-bottom: 16px;
+		&-item {
+			width: 96px;
+			height: 30px;
+			line-height: 30px;
+			text-align: center;
+			color: var(--Text1);
+			font-size: 14px;
+			background-color: var(--button);
+			border-radius: 4px;
+			cursor: pointer;
+			&.actived {
+				background-color: var(--Bg5);
+				color: var(--Text_a);
+			}
+		}
+	}
+	.accordion-content-item-balls {
+		padding: 12px;
+		background-color: var(--Bg1);
+		border: 1px solid var(--Line_2);
+		border-radius: 8px;
+		margin-top: 4px;
+	}
+	.bet-form-slot-header {
+		> div:nth-child(2) {
+			font-size: 12px;
+			margin-top: 8px;
+		}
+	}
+}
+</style>
