@@ -63,7 +63,7 @@ import useLotteryHeader from "/@/views/lottery/components/LotteryHeader/Index";
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
-import { useTab } from "../hooks/useLottery";
+import { useTab } from "/@/views/lottery/hooks/useLottery";
 
 const mockData = {
 	icon: "https://ctopalistat3.zengchenglm.com/pc/images/db_DB5FC2cea4e2f859029cdbda33fffda6ea1f2.png",
