@@ -27,15 +27,24 @@ export default () => {
 				default: () => [],
 				required: true,
 			},
+			multiple: {
+				//是否多选
+				type: Boolean,
+				default: true,
+			},
 		},
 		// 自定义事件：选择球、清除全部选中
 		emits: ["select", "clear"],
 
 		setup(props, { emit }) {
-			const { renderBallNum, maxLeng, type = 1 } = props;
+			const { renderBallNum, maxLeng, type = 1, multiple = true } = props;
 
 			// 处理球的选择逻辑
 			const handleSelect = (ballNum: number) => {
+				if (!multiple) {
+					emit("select", { value: ballNum, list: props.value.includes(ballNum) ? [] : [ballNum] });
+					return;
+				}
 				// 如果球号已经选中，移除该球号
 				if (props.value.includes(ballNum)) {
 					emit("select", {
@@ -58,7 +67,7 @@ export default () => {
 			return () => (
 				<div class="select-ball-group">
 					{/* 提示信息 */}
-					<div class="warn">选择至少一个球号</div>
+					<div class="warn">请{props.multiple ? "至少" : ""}选择1个球号</div>
 					<div className="control">
 						{/* 清除全部选中 */}
 						<div className="clear">
@@ -97,7 +106,7 @@ export default () => {
 				default: true,
 			},
 			type: {
-				// 球的类型：1 红球，2 蓝球
+				// 球的类型：1 红球，2 蓝球 3默认球
 				type: Number,
 				default: 1,
 			},
@@ -114,8 +123,14 @@ export default () => {
 				emit("select");
 			};
 
+			const bgTypeMap = new Map([
+				[1, "blueBall"], // 蓝球
+				[2, "redBall"], // 红球
+				[3, "defBall"], //默认球
+			]);
+
 			// 根据球的类型选择不同的 SVG 图标
-			const ballSvg = computed(() => `/@/assets/svg/dark/sports/${props.type === 1 ? "red" : "blue"}Ball.svg`);
+			const ballSvg = computed(() => `/@/assets/svg/dark/sports/${bgTypeMap.get(props.type)}.svg`);
 
 			// 渲染球组件
 			return () => (
