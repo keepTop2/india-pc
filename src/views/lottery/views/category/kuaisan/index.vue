@@ -14,17 +14,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineAsyncComponent } from "vue";
+import { ref, defineAsyncComponent, watchEffect } from "vue";
+import { useRoute } from "vue-router";
 // 引入各组件和工具方法
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
-import playsConfig from "./components/playsConfig";
+import playsConfig, { codes } from "./components/playsConfig";
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
-const $: any = i18n.global;
+import { lotteryApi } from "/@/api/lottery";
+import { useTab } from "/@/views/lottery/hooks/useLottery";
 
+const $: any = i18n.global;
+console.log("$", $);
 const BayLottery = defineAsyncComponent(() => import("./components/bayLottery.vue"));
 const Result = defineAsyncComponent(() => import("./components/result.vue"));
 
@@ -36,7 +40,7 @@ const tabComponents = new Map([
 // 模拟数据，用于显示在页面头部
 const mockData = {
 	icon: "https://ctopalistat3.zengchenglm.com/pc/images/db_DB5FC2cea4e2f859029cdbda33fffda6ea1f2.png",
-	title: "时时彩",
+	title: "快三",
 	desc: "五分钟一期",
 	seconds: 100,
 	betStatusName: "投注中",
@@ -45,16 +49,17 @@ const mockData = {
 };
 
 // 标签栏的配置数据
-const tabs = [
-	{ label: "购买彩票", value: 1 },
-	{ label: "开奖结果", value: 2 },
-];
+const { tabs, tabsActived, handleTabChange } = useTab();
 
-// 标签栏切换的处理方法
-const tabsActived = ref<number>(1);
-const handleTabChange = (id: number) => {
-	tabsActived.value = id;
-};
+const lotteryDetail = ref({});
+const route = useRoute();
+
+watchEffect(async () => {
+	const { id } = route.query;
+	if (!id) return;
+	const res = await lotteryApi.queryGameList(codes);
+	lotteryDetail.value = res.data[0];
+});
 </script>
 
 <style lang="scss" scoped></style>
