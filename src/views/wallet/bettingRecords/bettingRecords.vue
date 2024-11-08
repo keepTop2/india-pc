@@ -68,10 +68,25 @@
 								</div>
 							</template>
 						</el-table-column> 
-						<!-- 输赢金额 -->
+						<!-- 订单号 -->
+						<el-table-column v-else-if="item.label =='订单号'" width="250" :label="item.label" :prop="item.props" align="center" >
+							<template #default="props">
+								<div class="orderId_style">
+									<div>{{ props.row.orderId}}</div>
+									<img @click="copyId(props.row.orderId)" :src="copyimg" alt="">
+								</div>
+							</template>
+						</el-table-column>
+						<!-- 投注时间 -->
 						<el-table-column v-else-if="item.label =='投注时间'" :label="item.label" :prop="item.props" align="center" >
 							<template #default="props">
 								<div >{{ dayjs(props.row.betTime).format("YYYY-MM-DD HH:mm:ss")}}</div>
+							</template>
+						</el-table-column>
+						<!-- 投注金额 -->
+						<el-table-column v-else-if="item.label =='投注金额'" :label="item.label" :prop="item.props" align="center" >
+							<template #default="props">
+								<div >{{ props.row.betAmount }} CNY</div>
 							</template>
 						</el-table-column>
 						<!-- 输赢金额 -->
@@ -103,23 +118,25 @@ import colmuns, { columnsType, columnType } from "./bettingRecordsColumns";
 import loselogo from "/@/assets/zh-CN/wallet/loselogo.png";
 import winlogo from "/@/assets/zh-CN/wallet/winlogo.png";
 import helogo from "/@/assets/zh-CN/wallet/he.png";
+import copyimg from "/@/assets/zh-CN/wallet/copy.png";
 import NoData from "/@/views/messageCenter/components/NoData.vue";
 
 const showDatePicker = ref(false);
 const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
+const today = dayjs();
 const params = reactive({
-	betStartTime: new Date("2024-11-08 00:00:00").getTime(),
-	betEndTime: new Date("2024-12-08 00:00:00").getTime(),
+	betStartTime: dayjs().startOf('day').unix(),
+	betEndTime:dayjs().endOf('day').unix(),
 	pageNumber: 1,
-	pageSize: 10,
+	pageSize: 50,
 	receiveStatus: "",
 	welfareCenterRewardType: "1",
 	venueType: "1",
 });
-const today = dayjs();
+
 const range = reactive({
-	start: new Date(today.subtract(1, "day").format("YYYY/MM/DD")),
+	start: new Date(today.subtract(0, "day").format("YYYY/MM/DD")),
 	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
 });
 const minDate = today.subtract(180, "day").format("YYYY/MM/DD");
@@ -148,17 +165,19 @@ const updateRange = (value: any) => {
 const type = ref("1");
 onMounted(() => {
 	getDownBox();
-	pageQuery();
+	pageQuery(true);
 });
-const pageQuery = () => {
-	params.betStartTime = new Date(range.start).getTime();
-	params.betEndTime = new Date(range.end).getTime();
+const pageQuery = (type?:boolean) => {
+	if (!type) {
+		params.betStartTime = new Date(range.start).getTime();
+		params.betEndTime =new Date(range.end).getTime();
+	}
 	// params.orderClassifyList = +params.receiveStatus;
 	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList: [+params.receiveStatus] }).then((res) => {
 		console.log(res, "res");
 		if (!res.data) return;
 		tableData.value = res.data.sabOrderList;
-		pageData.totalSize = res.data.totalSize || 999999;
+		pageData.totalSize =  res.data.sabOrderList.length;
 		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
 		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
 		pageData.platCurrencyCode = res.data.platCurrencyCode;
@@ -172,6 +191,11 @@ const pageQuery = () => {
 		winOrLoseAmount.value = tableData.value.reduce((a: any, b: any) => {
 			return a + b.winLossAmount;
 		}, 0);
+
+		tableData.value.forEach((item:any) => {
+			item.betAmount = item.betAmount.toFixed(2)
+			item.winLossAmount = item.winLossAmount.toFixed(2)
+		})
 
 		hasData.value =
 			res.data.sabOrderList?.length > 0 ||
@@ -198,6 +222,20 @@ const getDownBox = () => {
 		});
 	});
 };
+
+// 複製id
+const copyId = (id: string) => {
+	const input = document.createElement('input');
+  input.setAttribute('value', id);
+  document.body.appendChild(input);
+  input.select();
+  // 执行复制命令
+  document.execCommand('copy');
+  // 移除输入框
+  document.body.removeChild(input);
+
+	showToast("复制成功");
+}
 
 // watch([() => params.welfareCenterRewardType, () => welfareCenterRewardTypeOptions.value], (val) => {
 // 	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == val[0]);
@@ -389,7 +427,14 @@ function getTableType() {
 	display: flex;
 	align-items: center;
 }
-
+.orderId_style{
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	img{
+		cursor: pointer;
+	}
+}
 .dropDown_line {
 	display: flex;
 	align-items: center;
