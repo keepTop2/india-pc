@@ -30,7 +30,7 @@
 					<span className="name">热门推荐</span>
 				</div>
 				<div class="content">
-					<HotLotteryCard v-bind="item" v-for="item in hotGame.slice(0, 4)" />
+					<HotLotteryCard :data="item" v-for="item in hotGame.slice(0, 4)" />
 				</div>
 			</div>
 			<div class="new-games"></div>
@@ -44,7 +44,8 @@ import { gameApi } from "/@/api/game";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import { useRoute } from "vue-router";
 
-const { LotteryCard, HotLotteryCard } = useLotteryCard({});
+const { LotteryCard, HotLotteryCard } = useLotteryCard();
+
 const currentTab = ref<number>(0);
 const searchQuery = ref<string>(""); // 搜索关键词
 const searchinputFocus = ref(false);
@@ -122,14 +123,13 @@ const hotGame = computed(() => {
 	gameData.value.forEach((item) => {
 		if (item.label === 1) {
 			item.gameInfoList.forEach((game) => {
-				const {
-					data: { lotteryDate, lotteryTime, gameName, gameDesc, iconPc, maxWin },
-				} = game;
+				const { data } = game;
 
-				games.push({ gameName, gameDesc, iconPc, maxWin, seconds: Math.floor((lotteryDate - lotteryTime) / 1000) });
+				games.push({ ...data, seconds: Math.floor((data.lotteryDate - data.lotteryTime) / 1000) });
 			});
 		}
 	});
+
 	return games;
 });
 // 监听 query 参数变化

@@ -5,9 +5,7 @@ import Common from "/@/utils/common";
 import "./index.scss";
 
 // 主组件，使用 useTimer 获取计时器相关的状态和方法
-export default (props: { data?: any; immediate?: boolean }) => {
-	const { data, immediate = true } = props;
-
+export default () => {
 	// 获取用户信息 store
 	const {
 		getUserInfo: { mainCurrency },
@@ -20,7 +18,7 @@ export default (props: { data?: any; immediate?: boolean }) => {
 			seconds: { type: Number, required: true },
 		},
 		setup(props) {
-			const { ClockTime } = useTimer({ seconds: props.seconds });
+			const { ClockTime } = useTimer({ value: props });
 			return () => (
 				<div class="card-header">
 					{/* 左侧图片 */}
@@ -44,19 +42,16 @@ export default (props: { data?: any; immediate?: boolean }) => {
 			gameDesc: { type: String, required: true },
 		},
 		setup(props) {
-			console.log(props, "定义卡片内容组件，可以根据需要传入");
-
-			const { iconPc, gameDesc, gameName } = props;
 			return () => (
 				<div class="card-content">
 					{/* 左侧内容区域 */}
 					<div class="left">
-						<img src={iconPc} alt="Content Image" />
+						<img src={props.iconPc} alt="Content Image" />
 					</div>
 					{/* 右侧类型名称和标题 */}
 					<div class="right">
-						<div class="type-name">{gameName || "-"}</div>
-						<div class="title">{gameDesc || "-"}</div>
+						<div class="type-name">{props.gameName || "-"}</div>
+						<div class="title">{props.gameDesc || "-"}</div>
 					</div>
 				</div>
 			);
@@ -69,7 +64,6 @@ export default (props: { data?: any; immediate?: boolean }) => {
 			maxWin: { type: Number, required: true },
 		},
 		setup(props) {
-			const { maxWin } = props;
 			return () => (
 				<div class="card-footer">
 					<div class="left">
@@ -77,7 +71,7 @@ export default (props: { data?: any; immediate?: boolean }) => {
 					</div>
 					<div class="right">
 						<span>
-							{Common.thousands(maxWin)} {mainCurrency}
+							{Common.thousands(props.maxWin)} {mainCurrency}
 						</span>
 					</div>
 				</div>
@@ -97,19 +91,19 @@ export default (props: { data?: any; immediate?: boolean }) => {
 		name: "LotteryCard",
 		emits: ["select"],
 		props: {
-			data: { type: Object },
+			data: { type: Object, required: true },
 		},
-		setup(_, { emit }) {
+		setup(props, { emit }) {
 			return () => (
 				<div onClick={() => emit("select")} class="lottery-card">
 					{/* 卡片头部 */}
-					<Header {...props} />
+					<Header {...props.data} />
 					{/* 分割线 */}
 					<div class="line"></div>
 					{/* 卡片内容 */}
-					<Content {...props} />
+					<Content {...props.data} />
 					{/* 卡片底部 */}
-					<Footer {...props} />
+					<Footer {...props.data} />
 				</div>
 			);
 		},
@@ -120,19 +114,17 @@ export default (props: { data?: any; immediate?: boolean }) => {
 		name: "HotLotteryCard",
 		emits: ["select"],
 		props: {
-			data: { type: Object },
+			data: { type: Object, required: true },
 		},
-		setup(props, { emit, attrs }) {
-			console.log(props, attrs, "props====");
-
+		setup(props, { emit }) {
 			return () => (
 				<div class="lottery-card hot-lottery-card">
 					{/* 卡片头部 */}
-					<Header {...attrs} />
+					<Header {...props.data} />
 					{/* 卡片内容 */}
-					<Content {...attrs} />
+					<Content {...props.data} />
 					{/* 卡片底部 */}
-					<Footer {...attrs} />
+					<Footer {...props.data} />
 					{/* 卡片按钮 */}
 					<Button onClick={() => emit("select")} />
 				</div>
