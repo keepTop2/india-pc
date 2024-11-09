@@ -17,7 +17,7 @@
 						@toggleDisplay="toggleDisplay"
 					/> -->
 					<MatchCard
-						:scoreboardId="eventsInfo?.eventId"
+						:scoreboardId="eventId"
 						:data-index="index"
 						:isExpanded="!expandedPanels.has(index)"
 						:events="item"
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, defineProps, computed, watch } from "vue";
+import { defineAsyncComponent, defineProps, computed, watch, ref } from "vue";
 import { useRoute } from "vue-router";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
@@ -66,22 +66,14 @@ const props = defineProps({
 });
 
 // 获取到的数据
-const eventsInfo = computed(() => {
-	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
-	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData || [];
+const eventId = computed(() => {
+	const childrenViewData = viewSportPubSubEventData.sidebarData.childrenViewData;
+	if (childrenViewData.length) {
+		console.log(childrenViewData[0]?.events[0].eventId, "childrenViewData[0]?.events[0].eventId");
 
-	if (route.meta.name === "champion" && promotionsViewData.length) {
-		return promotionsViewData[0];
+		return childrenViewData[0]?.events[0].eventId;
 	}
-	// 非冠军
-	if (route.meta.name !== "champion" && childrenViewData?.length) {
-		return childrenViewData[0]?.events[0];
-	}
-
-	if (promotionsViewData.length) {
-		return promotionsViewData[0];
-	}
-	return null;
+	return "";
 });
 
 // 根据路由的 sportType 查询对应的组件
