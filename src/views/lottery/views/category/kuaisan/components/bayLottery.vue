@@ -20,13 +20,13 @@
 
 						<!-- 展示每个玩法项 -->
 						<AccordionItem
-							v-for="(plays, i) in item.playMethods"
+							v-for="(plays, i) in item.oddsList"
 							:key="plays.id"
 							:actived="plays.actived"
 							@select="(status) => handleExpanded(status, plays, item)"
 							:title="plays.title"
 							:info="plays.desc"
-							:odds="plays.odds"
+							:odds="plays.itemOdds"
 							style="margin-bottom: 4px"
 						>
 							<!-- 显示选择球组组件，当玩法类型为 'selectBall' 且激活时渲染 -->
@@ -66,28 +66,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 // 引入各组件和工具方法
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
-import playsConfig from "./playsConfig";
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
-const $: any = i18n.global;
+import { playsConfigList, queryGameListParams, queryGamePlayOddsListParams } from "./playsConfig";
+import { integratePlaysConfig } from "/@//views/lottery/utils/index.ts";
+import { lotteryApi } from "/@/api/lottery";
 
+const $: any = i18n.global;
+const props = defineProps({
+	lotteryDetail: { type: Object, default: () => ({}) },
+});
 // 使用各自的组件
 const { Accordion, AccordionItem } = useAccordion();
 const { Ball, SelectBallGroup } = useBall();
 const { BetForm } = useBetForm();
 
 // 游戏玩法配置数据
-const gamePlayConfig = ref(playsConfig());
+const gamePlayConfig = ref({});
 
 // 选中的球的数组，用于投注表单
 const balls = ref([]);
 const gameInfo = ref();
 const formActived = ref(false);
+const currentItem = ref({}); // 向前选中高亮的项
 
 /**
  * @description 手风琴展开玩法项的处理方法
@@ -97,9 +103,11 @@ const formActived = ref(false);
  */
 const handleExpanded = (status: boolean, childData: any, data: any) => {
 	gamePlayConfig.value.forEach((v) => {
-		v.playMethods.forEach((w) => (w.actived = false));
+		v.oddsList.forEach((w) => (w.actived = false));
 	});
 	childData.actived = status;
+	currentItem.value = childData;
+	console.log("childData", childData);
 	balls.value = [];
 	// 排除选择球玩法
 	if (childData.type !== "selectBall") {
@@ -124,10 +132,24 @@ const clearAccordionStatus = (status: boolean, index: number) => {
 
 // 提交表单的处理方法
 const betFormRef = ref();
-const handleSubmit = () => {
+const handleSubmit = async ({ stake: betMoney }) => {
+	const { gameCode, gamePlayCode, optionCode: nums } = currentItem.value;
+	const { issueNum: issueNo } = props.lotteryDetail;
+	const submitData = {
+		list: [{ betCount: 1, multiple: 1, betMoney, nums, gameCode, gamePlayCode, issueNo }],
+	};
+	const res = await lotteryApi.betting(submitData);
 	showToast($.t(`lottery['投注成功']`));
 	betFormRef.value.clearForm();
 };
+
+onMounted(async () => {
+	// 获取 单个彩种的动态的玩法与赔率信息
+	const res = await lotteryApi.queryGamePlayOddsList(queryGamePlayOddsListParams);
+	gamePlayConfig.value = integratePlaysConfig(playsConfigList, res.data);
+
+	console.log("gamePlayConfig.value", gamePlayConfig.value);
+});
 </script>
 
 <style lang="scss" scoped></style>

@@ -134,7 +134,7 @@ export const BettingCom = defineComponent({
 			const SelectedComponent = betComponents[props.betType];
 
 			return props.cardData ? (
-				<Moneyline cardData={props.cardData} market={props.market} />
+				<SelectedComponent cardData={props.cardData} market={props.market} />
 			) : (
 				<div className="market-item">
 					<div className="noData">-</div>
