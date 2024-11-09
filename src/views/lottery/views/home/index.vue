@@ -13,26 +13,48 @@
 					:class="searchinputFocus ? 'onFocus' : ''"
 					@focus="searchinputFocus = true"
 					@blur="searchinputFocus = false"
+					@input="
+						() => {
+							isLoading = true;
+							filterGames();
+						}
+					"
 				/>
 				<div class="close_icon curp" v-if="searchQuery">
 					<svg-icon name="close" size="18px" @click="searchQuery = ''" v-hover-svg></svg-icon>
 				</div>
 			</div>
 			<div class="tabs curp">
-				<span :class="currentTab == 0 ? 'active tab' : 'tab'" @click="clickTab(0)">全部</span>
-				<span v-for="(item, index) in gameData" class="tab" :class="currentTab == item.id ? 'active' : ''" @click="clickTab(item.id)" :key="index">{{ item.name }}</span>
+				<span :class="currentTab == '0' ? 'active tab' : 'tab'" @click="clickTab('0')">全部</span>
+				<span v-for="(item, index) in gameData" class="tab" :class="currentTab == item._key ? 'active' : ''" @click="clickTab(item._key)" :key="index">{{ item.name }}</span>
 			</div>
-			<!-- 查询展示 -->
-			<div v-if="searchQuery"></div>
 
-			<div class="games-module" v-for="item in gameData" :key="item.id">
-				<div className="module-title">
-					<img :src="item.iconFileUrl" alt="" />
-					<span className="name">{{ item.name }}</span>
+			<div v-ok-loading="isLoading" class="containers">
+				<!-- 查询展示 -->
+				<div v-if="searchQuery">
+					<div class="games-module">
+						<div class="content" v-if="searchGames.length">
+							<LotteryCard :key="game._key" :data="game.data" v-for="game in searchGames" />
+						</div>
+						<div class="empty" v-else-if="!searchGames.length && !isLoading">
+							<svg-icon name="sports-empty" width="142px" height="120px" />
+							<p>哎呀！还没有数据！</p>
+						</div>
+					</div>
 				</div>
-				<div class="content">
-					<HotLotteryCard v-if="item.label === 1" :data="game.data" v-for="game in item.gameInfoList.slice(0, 4)" />
-					<LotteryCard v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" />
+
+				<div v-else class="games-module" v-for="item in games" :key="item._key">
+					<div className="module-title" v-if="currentTab === '0'">
+						<div style="display: flex; gap: 12px; align-items: center">
+							<img :src="item.iconFileUrl" alt="" />
+							<span className="name">{{ item.name }}</span>
+						</div>
+						<span @click="currentTab = item._key" class="more">更多</span>
+					</div>
+					<div class="content">
+						<HotLotteryCard v-if="item.label === 1" :data="game.data" :key="item._key" v-for="game in item.gameInfoList.slice(0, 4)" />
+						<LotteryCard v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -44,97 +66,78 @@ import { ref, watch, onMounted, computed } from "vue";
 import { gameApi } from "/@/api/game";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import { useRoute } from "vue-router";
-
+import Common from "/@/views/sports/utils/common";
 const { LotteryCard, HotLotteryCard } = useLotteryCard();
 
-const currentTab = ref<number>(0);
+const currentTab = ref<string | undefined>("0");
 const searchQuery = ref<string>(""); // 搜索关键词
 const searchinputFocus = ref(false);
 
-const gameData = ref<any[]>([
-	{ id: 0, name: "全部" },
-	{ id: 1, name: "热门推荐" },
-	{ id: 2, name: "新游戏" },
-	{ id: 3, name: "独家" },
-]);
+const gameData = ref<any[]>([]);
 
-const clickTab = (id: number) => {
+const clickTab = (id: string) => {
 	currentTab.value = id;
+	filterGames();
 };
 const isLoading = ref(false);
 // 根据标签添加预定义的选项
 onMounted(async () => {
 	await queryGameInfoByOneClassId();
-	currentTab.value = Number(route.query.gameTwoId);
+	currentTab.value = route.query.gameTwoId as string;
 });
 const route = useRoute();
 const queryGameInfoByOneClassId = async () => {
-	isLoading.value = true;
 	const gameOneId = route.query.gameOneId;
 	await gameApi
 		.queryGameInfoByOneClassId({ gameOneId })
 		.then((res) => {
 			gameData.value = res.data.map((item: any) => {
+				const _key = (item.id || "") + "-" + item.label;
 				return {
 					...item,
-					id: item.label == 1 ? 1 : item.label == 2 ? 2 : item.id,
+					_key: item.label == 1 ? 1 : item.label == 2 ? 2 : item.id,
 					name: item.label == 1 ? "热门推荐" : item.label == 2 ? "新游戏" : item.name,
 					gameInfoList: item.gameInfoList?.map((game) => ({ ...game, data: { ...game.data, seconds: Math.floor((game.data.lotteryDate - game.data.lotteryTime) / 1000) } })),
 				};
 			});
 		})
-		.finally(() => {
-			isLoading.value = false;
-		})
+		.finally(() => {})
 		.catch((err) => {
 			err;
 		});
 };
 // 模糊查询
-const filteredResults = computed(() => {
-	if (!searchQuery.value) {
-		return [];
-	}
-	let currentTabGameData = [];
-	// 处理数据源
-	if (currentTab.value == 0) {
-		currentTabGameData = gameData.value
-			.filter((item: any) => item.label == 0)
-			.reduce((acc: any[], item: any) => {
-				if (item.gameInfoList && item.gameInfoList.length > 0) {
-					acc.push(...item.gameInfoList);
-				}
-				return acc;
-			}, []);
-	} else if (currentTab.value == 1) {
-		currentTabGameData = gameData.value.find((item: any) => item.id == 1)?.gameInfoList;
-	} else if (currentTab.value == 2) {
-		currentTabGameData = gameData.value.find((item: any) => item.id == 2)?.gameInfoList;
+const searchGames = ref<any[]>([]);
+const filterGames = Common.debounce(() => {
+	isLoading.value = true;
+	if (!searchQuery.value.trim()) {
+		searchGames.value = [];
+		isLoading.value = false;
 	} else {
-		currentTabGameData = gameData.value.find((item: any) => item.id == currentTab.value)?.gameInfoList;
+		const curData =
+			currentTab.value === "0"
+				? gameData.value.flatMap((item) => item.gameInfoList)
+				: gameData.value.filter((item) => item._key === currentTab.value).flatMap((item) => item.gameInfoList);
+
+		searchGames.value = curData.filter((game) => game.data.gameName.includes(searchQuery.value));
 	}
-	return Array.from(
-		new Set(
-			currentTabGameData.filter((item: any) => item.name.toLocaleLowerCase().includes(searchQuery.value.toLocaleLowerCase())).map((item: any) => JSON.stringify(item)) // 转换对象为字符串以去重
-		)
-	).map((item: any) => JSON.parse(item)); // 将字符串转换回对象
+
+	setTimeout(() => {
+		isLoading.value = false;
+	}, 500);
+}, 300);
+
+const games = computed(() => {
+	if (currentTab.value === "0") return gameData.value;
+
+	return gameData.value.filter((game) => game._key === currentTab.value);
 });
-const getGames = (gameLabel?: number) => {
-	return (gameData.value || []).flatMap((item) =>
-		(item.gameInfoList || [])
-			.filter(() => !gameLabel || item.label === gameLabel)
-			.map((game) => ({
-				...game.data,
-				seconds: Math.floor((game.data.lotteryDate - game.data.lotteryTime) / 1000),
-			}))
-	);
-};
+
 // 监听 query 参数变化
 watch(
-	() => route.query.gameOneId,
+	() => route.query.gameTwoId,
 	async () => {
-		await queryGameInfoByOneClassId();
-		currentTab.value = Number(route.query.gameTwoId);
+		currentTab.value = route.query.gameTwoId as string;
 	}
 );
 </script>
@@ -198,29 +201,49 @@ watch(
 		top: 16px;
 	}
 }
-.games-module {
-	margin-top: 24px;
-	.module-title {
-		display: flex;
-		align-items: center;
-		column-gap: 12px;
-		margin-bottom: 20px;
-		img {
-			width: 24px;
-			height: 24px;
+.containers {
+	height: calc(100vh - 200px);
+	position: relative;
+	.games-module {
+		margin-top: 24px;
+		.module-title {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			column-gap: 12px;
+			margin-bottom: 20px;
+			img {
+				width: 24px;
+				height: 24px;
+			}
+			.name {
+				font-size: var(--title-text-size);
+				color: var(--Text_a);
+			}
+			.more {
+				color: var(--Text1);
+				font-size: 18px;
+				cursor: pointer;
+			}
 		}
-		.name {
-			font-size: var(--title-text-size);
-			color: var(--Text_a);
+		.content {
+			display: flex;
+			gap: 16px;
+			align-items: center;
+			flex-wrap: wrap;
+			> div {
+				width: calc((100% - 48px) / 4);
+			}
 		}
-	}
-	.content {
-		display: flex;
-		column-gap: 16px;
-		align-items: center;
-		flex-wrap: wrap;
-		> div {
-			width: calc((100% - 48px) / 4);
+		.empty {
+			text-align: center;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			p {
+				color: var(--Text1);
+			}
 		}
 	}
 }

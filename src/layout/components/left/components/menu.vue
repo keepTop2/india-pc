@@ -105,7 +105,11 @@ const setOpenMenu = () => {
 };
 const goToPath = (item: any, subItem: any, index: number, subIndex: number) => {
 	openSubMenuIndex.value = index + "," + subIndex;
-	router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: subItem.id } });
+	if (item.modelCode === "ACELT") {
+		router.push({ path: "/lottery/home", query: { gameOneId: item.gameOneClassId, gameTwoId: subItem.id } });
+	} else {
+		router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: subItem.id } });
+	}
 };
 
 onMounted(() => {
