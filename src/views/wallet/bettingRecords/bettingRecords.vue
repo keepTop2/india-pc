@@ -187,10 +187,10 @@ const pageQuery = (type?: boolean) => {
 		if (!res.data) return;
 		let rows = res.data[fieldMap[params.venueType]];
 
-		if (params.venueType == "2" || !rows) {
-			tableData.value = [];
-			return;
-		}
+		//if (params.venueType == "2" || !rows) {
+		//	tableData.value = [];
+		//	return;
+		//}
 		console.log(fieldMap[params.venueType], "rows");
 		tableData.value = rows.records || rows;
 		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
