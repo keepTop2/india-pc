@@ -41,7 +41,9 @@
 						</span>
 						<span class="ml_20">
 							<span>输赢金额：</span>
-							<span class="loseOrWin_color">{{ winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span>
+							<span :class="[String(winOrLoseAmount).indexOf('-') > -1 ? 'lose_color' : 'win_color']"
+								>{{ String(winOrLoseAmount).indexOf("-") > -1 ? winOrLoseAmount : "+" + winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span
+							>
 						</span>
 					</div>
 					<!-- <div class="flex-center">
@@ -63,11 +65,41 @@
 										<div style="width: 25%" class="fir_item">@{{ props.row.odds }}</div>
 									</div>
 									<div class="winlogo">
-										<img :src="props.row.orderClassify == '1' || props.row.orderClassify == '0' ? winlogo : loselogo" alt="" />
+										<img :src="props.row.orderClassify == '1' ? winlogo : props.row.orderClassify == '0' ? helogo : loselogo" alt="" />
 									</div>
 								</div>
 							</template>
 						</el-table-column>
+						<!-- 订单号 -->
+						<el-table-column v-else-if="item.label == '订单号'" width="250" :label="item.label" :prop="item.props" align="center">
+							<template #default="props">
+								<div class="orderId_style">
+									<div>{{ props.row.orderId }}</div>
+									<img @click="copyId(props.row.orderId)" :src="copyimg" alt="" />
+								</div>
+							</template>
+						</el-table-column>
+						<!-- 投注时间 -->
+						<el-table-column v-else-if="item.label == '投注时间'" :label="item.label" :prop="item.props" align="center">
+							<template #default="props">
+								<div>{{ dayjs(props.row.betTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
+							</template>
+						</el-table-column>
+						<!-- 投注金额 -->
+						<el-table-column v-else-if="item.label == '投注金额'" :label="item.label" :prop="item.props" align="center">
+							<template #default="props">
+								<div>{{ props.row.betAmount }} CNY</div>
+							</template>
+						</el-table-column>
+						<!-- 输赢金额 -->
+						<el-table-column v-else-if="item.label == '输赢金额'" :label="item.label" :prop="item.props" align="center">
+							<template #default="props">
+								<div :style="{ color: String(props.row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
+									{{ String(props.row.winLossAmount).indexOf("-") > -1 ? props.row.winLossAmount : "+" + props.row.winLossAmount }} CNY
+								</div>
+							</template>
+						</el-table-column>
+
 						<el-table-column v-else :label="item.label" :prop="item.props" align="center" />
 					</template>
 					<template #empty>{{ $t(`common['暂无数据']`) }}</template>
@@ -86,26 +118,28 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
 import showToast from "/@/hooks/useToast";
-import colmuns, { columnsType, columnType } from "./bettingRecordsColumns";
+import { fieldMap, colmuns, columnsType, columnType } from "./bettingRecordsColumns";
 import loselogo from "/@/assets/zh-CN/wallet/loselogo.png";
 import winlogo from "/@/assets/zh-CN/wallet/winlogo.png";
+import helogo from "/@/assets/zh-CN/wallet/he.png";
+import copyimg from "/@/assets/zh-CN/wallet/copy.png";
 import NoData from "/@/views/messageCenter/components/NoData.vue";
 
 const showDatePicker = ref(false);
 const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
+const today = dayjs();
 const params = reactive({
-	betStartTime: new Date("2024-11-08 00:00:00").getTime(),
-	betEndTime: new Date("2024-12-08 00:00:00").getTime(),
+	betStartTime: dayjs().startOf("day").valueOf(),
+	betEndTime: dayjs().endOf("day").valueOf(),
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "",
-	welfareCenterRewardType: "1",
 	venueType: "1",
 });
-const today = dayjs();
+
 const range = reactive({
-	start: new Date(today.subtract(1, "day").format("YYYY/MM/DD")),
+	start: new Date(today.subtract(0, "day").format("YYYY/MM/DD")),
 	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
 });
 const minDate = today.subtract(180, "day").format("YYYY/MM/DD");
@@ -127,6 +161,7 @@ const pageData = reactive({
 const total = ref(0);
 const hasData = ref(false);
 const updateRange = (value: any) => {
+	console.log(value);
 	range.start = value[0];
 	range.end = value[1];
 };
@@ -134,17 +169,31 @@ const updateRange = (value: any) => {
 const type = ref("1");
 onMounted(() => {
 	getDownBox();
-	pageQuery();
+	pageQuery(true);
 });
-const pageQuery = () => {
-	params.betStartTime = new Date(range.start).getTime();
-	params.betEndTime = new Date(range.end).getTime();
-	// params.orderClassifyList = +params.receiveStatus;
-	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList: [+params.receiveStatus] }).then((res) => {
-		console.log(res, "res");
+const pageQuery = (type?: boolean) => {
+	if (!type) {
+		params.betStartTime = dayjs(new Date(range.start)).startOf("day").valueOf();
+		params.betEndTime = dayjs(new Date(range.end)).endOf("day").valueOf();
+	}
+	let orderClassifyList: any = [];
+	if (params.receiveStatus === "") {
+		orderClassifyList = [];
+	} else {
+		orderClassifyList = [+params.receiveStatus];
+	}
+
+	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList }).then((res) => {
 		if (!res.data) return;
-		tableData.value = res.data.sabOrderList;
-		pageData.totalSize = res.data.totalSize || 999999;
+		let rows = res.data[fieldMap[params.venueType]];
+
+		if (params.venueType == "2" || !rows) {
+			tableData.value = [];
+			return;
+		}
+		console.log(fieldMap[params.venueType], "rows");
+		tableData.value = rows.records || rows;
+		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
 		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
 		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
 		pageData.platCurrencyCode = res.data.platCurrencyCode;
@@ -155,9 +204,24 @@ const pageQuery = () => {
 			return a + b.betAmount;
 		}, 0);
 
-		winOrLoseAmount.value = tableData.value.reduce((a: any, b: any) => {
-			return a + b.winLossAmount;
-		}, 0);
+		winOrLoseAmount.value = tableData.value
+			.reduce((a: any, b: any) => {
+				return a + b.winLossAmount;
+			}, 0)
+			?.toFixed(2);
+
+		tableData.value.forEach((item: any) => {
+			if (item.betAmount) {
+				item.betAmount = item.betAmount.toFixed(2);
+			} else {
+				item.betAmount = "";
+			}
+			if (item.winLossAmount) {
+				item.winLossAmount = item.winLossAmount.toFixed(2);
+			} else {
+				item.winLossAmount = "";
+			}
+		});
 
 		hasData.value =
 			res.data.sabOrderList?.length > 0 ||
@@ -183,6 +247,20 @@ const getDownBox = () => {
 			value: "",
 		});
 	});
+};
+
+// 複製id
+const copyId = (id: string) => {
+	const input = document.createElement("input");
+	input.setAttribute("value", id);
+	document.body.appendChild(input);
+	input.select();
+	// 执行复制命令
+	document.execCommand("copy");
+	// 移除输入框
+	document.body.removeChild(input);
+
+	showToast("复制成功");
 };
 
 // watch([() => params.welfareCenterRewardType, () => welfareCenterRewardTypeOptions.value], (val) => {
@@ -235,9 +313,9 @@ const handleQuery = () => {
 	params.pageNumber = 1;
 	pageQuery();
 };
-
+handleQuery();
 function getTableType() {
-	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.welfareCenterRewardType[0]);
+	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.venueType);
 	if (!selectCurrent || !selectCurrent.text) return;
 	tableColumns.value = colmunsrow.value[selectCurrent.text];
 }
@@ -304,10 +382,12 @@ function getTableType() {
 	flex-direction: column;
 	justify-content: space-between;
 
-	.loseOrWin_color {
+	.lose_color {
 		color: #01aff6;
 	}
-
+	.win_color {
+		color: var(--light-ok-Theme--, #ff284b);
+	}
 	.table {
 		border: 1px solid var(--Line_2);
 		border-radius: 8px;
@@ -373,7 +453,14 @@ function getTableType() {
 	display: flex;
 	align-items: center;
 }
-
+.orderId_style {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	img {
+		cursor: pointer;
+	}
+}
 .dropDown_line {
 	display: flex;
 	align-items: center;

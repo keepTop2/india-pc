@@ -4,19 +4,26 @@
 	</div>
 
 	<!-- 联赛数据统计卡片 -->
-	<div :style="computedHeight" class="box-content">
+	<div v-if="listData.length" :style="computedHeight" class="box-content">
 		<DynamicScroller :items="listData" :min-item-size="154" class="scroller" key-field="leagueId">
 			<template v-slot="{ item, index, active }">
 				<DynamicScrollerItem :item="item" :key="item.leagueId" :active="active" :data-index="index" :data-active="active">
-					<!-- <component
+					<component
 						:is="cardComponent"
 						:teamData="item"
 						:dataIndex="index"
 						:isExpanded="!expandedPanels.has(index)"
 						@oddsChange="handleOddsChange"
 						@toggleDisplay="toggleDisplay"
+					/>
+					<!-- <MatchCard
+						:scoreboardId="eventId"
+						:data-index="index"
+						:isExpanded="!expandedPanels.has(index)"
+						:events="item"
+						:sport-type="Number(route.query.sportType)"
+						@toggleDisplay="toggleDisplay"
 					/> -->
-					<MatchCard :data-index="index" :isExpanded="!expandedPanels.has(index)" :events="item" :sport-type="Number(route.query.sportType)" @toggleDisplay="toggleDisplay" />
 				</DynamicScrollerItem>
 			</template>
 		</DynamicScroller>
@@ -24,13 +31,14 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, defineProps, computed, watch } from "vue";
+import { defineAsyncComponent, defineProps, computed, watch, ref } from "vue";
 import { useRoute } from "vue-router";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
 import useExpandPanels from "/@/views/sports/hooks/useExpandPanels";
 import { Selection } from "/@/views/sports/models/interface";
 import MatchCard from "/@/views/sports/components/MatchCard";
+import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 // 展开收起总控
 const SelectCard = defineAsyncComponent(() => import("/@/views/sports/components/selectCard/selectCard.vue"));
 
@@ -57,11 +65,22 @@ const props = defineProps({
 	},
 });
 
-// 根据路由的 sportType 查询对应的组件
-// const cardComponent = computed(() => {
-// 	const sportType = Number(route.query.sportType); // 获取当前 sportType
-// 	return sportsMap[sportType] || null; // 返回对应的组件，若无则返回 null
+// 获取到的数据
+// const eventId = computed(() => {
+// 	const childrenViewData = viewSportPubSubEventData.sidebarData.childrenViewData;
+// 	if (childrenViewData.length) {
+// 		console.log(childrenViewData[0]?.events[0].eventId, "childrenViewData[0]?.events[0].eventId");
+
+// 		return childrenViewData[0]?.events[0].eventId;
+// 	}
+// 	return "";
 // });
+
+// 根据路由的 sportType 查询对应的组件
+const cardComponent = computed(() => {
+	const sportType = Number(route.query.sportType); // 获取当前 sportType
+	return sportsMap[sportType] || null; // 返回对应的组件，若无则返回 null
+});
 
 // 引入赔率变化事件的相关逻辑
 const { clearSportsOddsChange } = useSportPubSubEvents();

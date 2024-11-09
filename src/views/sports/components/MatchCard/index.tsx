@@ -189,6 +189,7 @@ const MatchCard = defineComponent({
 		isExpanded: { type: Boolean, default: true, required: true },
 		sportType: { type: Number, required: true },
 		dataIndex: { type: Number },
+		scoreboardId: { type: Number, required: true, default: 0 },
 	},
 	emits: ["toggleDisplay"],
 	setup(props, { emit }) {
@@ -223,8 +224,8 @@ const MatchCard = defineComponent({
 							</div>
 							{/* 比分板直播工具栏 */}
 							<div className="league-option">
-								<Scoreboard />
-								<Live />
+								<Scoreboard isCurrent={props.scoreboardId === item.eventId} />
+								<Live isCurrent={props.scoreboardId === item.eventId} />
 							</div>
 						</div>
 					);

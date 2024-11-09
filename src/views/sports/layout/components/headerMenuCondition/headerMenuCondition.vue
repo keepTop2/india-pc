@@ -27,7 +27,7 @@
 				<wSwitch v-if="isShowTime" class="ml_12" :switchObj="switchObjRight" :disabled="switchDisable.right" @selected="wSwitchSelectRight"></wSwitch>
 			</div>
 			<!-- 教程按钮 -->
-			<span class="icon"><svg-icon name="sports-tutorial" size="20px"></svg-icon></span>
+			<!-- <span class="icon"><svg-icon name="sports-tutorial" size="20px"></svg-icon></span> -->
 		</div>
 	</div>
 

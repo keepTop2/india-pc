@@ -105,7 +105,11 @@ const setOpenMenu = () => {
 };
 const goToPath = (item: any, subItem: any, index: number, subIndex: number) => {
 	openSubMenuIndex.value = index + "," + subIndex;
-	router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: subItem.id } });
+	if (item.modelCode === "ACELT") {
+		router.push({ path: "/lottery/home", query: { gameOneId: item.gameOneClassId, gameTwoId: subItem.id } });
+	} else {
+		router.push({ path: "/game/venue", query: { gameOneId: item.gameOneClassId, gameTwoId: subItem.id } });
+	}
 };
 
 onMounted(() => {
@@ -118,6 +122,29 @@ onMounted(() => {
  * LT:"进入gamePage页面"
  */
 const selectMenu = (item: any, index: number) => {
+	const gameOneIdParams = { gameOneId: item.gameOneClassId, gameTwoId: 0 };
+	const singVenueMap = new Map([
+		["SBA", { path: "/sports" }],
+		["ACELT", { path: "/lottery/home", query: gameOneIdParams }],
+	]);
+
+	if (openMenuIndex.value === index) {
+		// 取消选中状态，
+		openMenuIndex.value = null;
+		// 取消二级分类选中状态，
+		openSubMenuIndex.value = null;
+	} else {
+		openMenuIndex.value = index;
+	}
+	const { modelCode } = item;
+	if (singVenueMap.has(modelCode)) {
+		router.push({ ...singVenueMap.get(modelCode) });
+	} else if (modelCode === "SIGN_VENUE") {
+		Common.goToGame(item);
+	} else {
+		router.push({ path: "/game/venue", query: gameOneIdParams });
+	}
+	return;
 	// 如果一级分类是选中状态，
 	if (openMenuIndex.value === index) {
 		// 取消选中状态，
