@@ -9,6 +9,9 @@ export interface columnType {
 interface fieldMapType {
 	[key: string]: string;
 }
+interface fieldMapType {
+	[key: string]: string;
+}
 
 export const fieldMap: fieldMapType = {
 	"1": "sabOrderList",
