@@ -6,7 +6,6 @@ import "./index.scss";
 
 // 主组件，使用 useTimer 获取计时器相关的状态和方法
 export default () => {
-	const { ClockTime, start, pause, reset } = useTimer({ seconds: 73000 });
 	// 获取用户信息 store
 	const {
 		getUserInfo: { mainCurrency },
@@ -14,12 +13,17 @@ export default () => {
 
 	// 定义卡片头部组件
 	const Header = defineComponent({
-		setup() {
+		props: {
+			icon: { type: String },
+			seconds: { type: Number, required: true },
+		},
+		setup(props) {
+			const { ClockTime } = useTimer({ value: props });
 			return () => (
 				<div class="card-header">
 					{/* 左侧图片 */}
 					<div class="left">
-						<img src="https://oss.playesoversea.pro/baowang/9ff561dda4224ababf5066866014bbae.png" alt="Header Image" />
+						<img src={props.icon} alt="Header Image" />
 					</div>
 					{/* 右侧倒计时 */}
 					<div class="right">
@@ -33,22 +37,21 @@ export default () => {
 	// 定义卡片内容组件，可以根据需要传入 props 以便更灵活的显示不同内容
 	const Content = defineComponent({
 		props: {
-			icon: { type: String },
-			title: { type: String, required: true },
-			desc: { type: String, required: true },
+			iconPc: { type: String },
+			gameName: { type: String, required: true },
+			gameDesc: { type: String, required: true },
 		},
 		setup(props) {
-			const { icon, desc, title } = props;
 			return () => (
 				<div class="card-content">
 					{/* 左侧内容区域 */}
 					<div class="left">
-						<img src={icon} alt="Content Image" />
+						<img src={props.iconPc} alt="Content Image" />
 					</div>
 					{/* 右侧类型名称和标题 */}
 					<div class="right">
-						<div class="type-name">{title || "-"}</div>
-						<div class="title">{desc || "-"}</div>
+						<div class="type-name">{props.gameName || "-"}</div>
+						<div class="title">{props.gameDesc || "-"}</div>
 					</div>
 				</div>
 			);
@@ -58,10 +61,9 @@ export default () => {
 	// 定义卡片底部组件
 	const Footer = defineComponent({
 		props: {
-			amount: { type: Number, required: true },
+			maxWin: { type: Number, required: true },
 		},
 		setup(props) {
-			const { amount } = props;
 			return () => (
 				<div class="card-footer">
 					<div class="left">
@@ -69,7 +71,7 @@ export default () => {
 					</div>
 					<div class="right">
 						<span>
-							{Common.thousands(amount)} {mainCurrency}
+							{Common.thousands(props.maxWin)} {mainCurrency}
 						</span>
 					</div>
 				</div>
@@ -88,17 +90,20 @@ export default () => {
 	const LotteryCard = defineComponent({
 		name: "LotteryCard",
 		emits: ["select"],
-		setup(_, { emit }) {
+		props: {
+			data: { type: Object, required: true },
+		},
+		setup(props, { emit }) {
 			return () => (
 				<div onClick={() => emit("select")} class="lottery-card">
 					{/* 卡片头部 */}
-					<Header />
+					<Header {...props.data} />
 					{/* 分割线 */}
 					<div class="line"></div>
 					{/* 卡片内容 */}
-					<Content />
+					<Content {...props.data} />
 					{/* 卡片底部 */}
-					<Footer />
+					<Footer {...props.data} />
 				</div>
 			);
 		},
@@ -108,15 +113,18 @@ export default () => {
 	const HotLotteryCard = defineComponent({
 		name: "HotLotteryCard",
 		emits: ["select"],
-		setup(_, { emit }) {
+		props: {
+			data: { type: Object, required: true },
+		},
+		setup(props, { emit }) {
 			return () => (
 				<div class="lottery-card hot-lottery-card">
 					{/* 卡片头部 */}
-					<Header />
+					<Header {...props.data} />
 					{/* 卡片内容 */}
-					<Content />
+					<Content {...props.data} />
 					{/* 卡片底部 */}
-					<Footer />
+					<Footer {...props.data} />
 					{/* 卡片按钮 */}
 					<Button onClick={() => emit("select")} />
 				</div>
@@ -131,8 +139,5 @@ export default () => {
 		Footer,
 		Header,
 		Button,
-		startTime: start, // 开始计时
-		pauseTime: pause, // 暂停计时
-		resetTime: reset, // 重置计时
 	};
 };
