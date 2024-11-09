@@ -24,24 +24,7 @@
 			</div>
 			<!-- 查询展示 -->
 			<div v-if="searchQuery"></div>
-			<!-- <div class="hot-recommend games-module">
-				<div className="module-title">
-					<svg-icon size="24px" name="sports-hot" />
-					<span className="name">热门推荐</span>
-				</div>
-				<div class="content">
-					<HotLotteryCard :data="item" v-for="item in getGames(1).slice(0, 4)" />
-				</div>
-			</div>
-			<div class="new-games games-module">
-				<div className="module-title">
-					<svg-icon size="24px" name="sports-hot" />
-					<span className="name">新游戏</span>
-				</div>
-				<div class="content">
-					<LotteryCard :data="item" v-for="item in getGames(2).slice(0, 4)" />
-				</div>
-			</div> -->
+
 			<div class="games-module" v-for="item in gameData" :key="item.id">
 				<div className="module-title">
 					<img :src="item.iconFileUrl" alt="" />
@@ -216,12 +199,7 @@ watch(
 	}
 }
 .games-module {
-	margin-bottom: 24px;
-	// display: flex;
-	// justify-items: center;
-	// flex-wrap: wrap;
-	// column-gap: 16px;
-	// width: 100%;
+	margin-top: 24px;
 	.module-title {
 		display: flex;
 		align-items: center;
