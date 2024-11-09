@@ -315,7 +315,7 @@ const handleQuery = () => {
 };
 handleQuery();
 function getTableType() {
-	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.welfareCenterRewardType[0]);
+	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.venueType);
 	if (!selectCurrent || !selectCurrent.text) return;
 	tableColumns.value = colmunsrow.value[selectCurrent.text];
 }
