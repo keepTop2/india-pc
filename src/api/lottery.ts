@@ -2,14 +2,14 @@ import useAxiosLottery from "/@/utils/useAxiosLottery";
 import { useUserStore } from "/@/stores/modules/user";
 
 // 这里这几行代码是为了准备一些公共入参的 lang operatorId isSmp operatorAccount token
-const userStore = useUserStore();
-const language = userStore.getLang;
+const UserStore = useUserStore();
+const language = UserStore.getLang;
 const langMaps = { "zh-CN": "zh" }; // 做个映射
 const lang = (langMaps as any)[language];
 const operatorId = "trialMerchant";
 const isSmp = 1; // 1 双面盘 | 0 标准盘。目前只接双面盘，因此写死 1
 const operatorAccount = "试玩商户";
-const token = userStore.getUserInfo.token;
+const token = UserStore.getUserInfo.token;
 
 export const lotteryApi = {
 	/**
@@ -41,7 +41,7 @@ export const lotteryApi = {
 	 * @param
 	 */
 	betting: (data = {}, headers = {}) => {
-		const submitData = { operatorId, operatorAccount, toekn: token, lang, ...data }; // 写死或者固定的参数，这里统一处理就好了，不用在页面中调用的时候传入。这里的 toekn 是服务端字段就是这么写的
+		const submitData = { operatorId, operatorAccount, token, lang, ...data }; // 写死或者固定的参数，这里统一处理就好了，不用在页面中调用的时候传入。这里的 toekn 是服务端字段就是这么写的
 		return useAxiosLottery(`/openApi/v2/Bet/betting`, {
 			method: "POST",
 			data: submitData,
