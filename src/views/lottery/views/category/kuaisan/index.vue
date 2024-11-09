@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineAsyncComponent, watchEffect } from "vue";
+import { ref, defineAsyncComponent, onMounted } from "vue";
 import { useRoute } from "vue-router";
 // 引入各组件和工具方法
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
@@ -54,11 +54,17 @@ const { tabs, tabsActived, handleTabChange } = useTab();
 const lotteryDetail = ref({});
 const route = useRoute();
 
-watchEffect(async () => {
-	const { id } = route.query;
-	if (!id) return;
+// watchEffect(async () => {
+// 	const { id } = route.query;
+// 	if (!id) return;
+// 	const res = await lotteryApi.queryGameList(codes);
+// 	lotteryDetail.value = res.data[0];
+// });
+
+onMounted(async () => {
 	const res = await lotteryApi.queryGameList(codes);
 	lotteryDetail.value = res.data[0];
+	console.log("lotteryDetail.value ", lotteryDetail.value);
 });
 </script>
 
