@@ -5,6 +5,7 @@ import "./index.scss";
 // 定义定时器组件
 export default (props: { seconds: number; immediate?: boolean }) => {
 	const { seconds, immediate = true } = props; // 传入的秒数，和是否立即启动定时器的选项
+	console.log(seconds, "seconds==");
 
 	const state = reactive({
 		time: seconds, // 当前剩余时间（秒）

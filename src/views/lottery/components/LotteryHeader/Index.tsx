@@ -10,7 +10,7 @@ export default (props: { data: any; immediate?: boolean }) => {
 	const { TimeGroup, start, pause, reset } = useTimer({ seconds: data.seconds, immediate });
 
 	// 使用自定义的 LotteryCard hook，获取组件内容和页脚
-	const { Content, Footer } = useLotteryCard();
+	const { Content, Footer } = useLotteryCard({ data, immediate });
 
 	const LotteryHeader = defineComponent({
 		name: "LotteryHeader",
