@@ -24,16 +24,34 @@
 			</div>
 			<!-- 查询展示 -->
 			<div v-if="searchQuery"></div>
-			<div class="hot-recommend">
+			<!-- <div class="hot-recommend games-module">
 				<div className="module-title">
 					<svg-icon size="24px" name="sports-hot" />
 					<span className="name">热门推荐</span>
 				</div>
 				<div class="content">
-					<HotLotteryCard :data="item" v-for="item in hotGame.slice(0, 4)" />
+					<HotLotteryCard :data="item" v-for="item in getGames(1).slice(0, 4)" />
 				</div>
 			</div>
-			<div class="new-games"></div>
+			<div class="new-games games-module">
+				<div className="module-title">
+					<svg-icon size="24px" name="sports-hot" />
+					<span className="name">新游戏</span>
+				</div>
+				<div class="content">
+					<LotteryCard :data="item" v-for="item in getGames(2).slice(0, 4)" />
+				</div>
+			</div> -->
+			<div class="games-module" v-for="item in gameData" :key="item.id">
+				<div className="module-title">
+					<img :src="item.iconFileUrl" alt="" />
+					<span className="name">{{ item.name }}</span>
+				</div>
+				<div class="content">
+					<HotLotteryCard v-if="item.label === 1" :data="game.data" v-for="game in item.gameInfoList.slice(0, 4)" />
+					<LotteryCard v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" />
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -78,6 +96,7 @@ const queryGameInfoByOneClassId = async () => {
 					...item,
 					id: item.label == 1 ? 1 : item.label == 2 ? 2 : item.id,
 					name: item.label == 1 ? "热门推荐" : item.label == 2 ? "新游戏" : item.name,
+					gameInfoList: item.gameInfoList?.map((game) => ({ ...game, data: { ...game.data, seconds: Math.floor((game.data.lotteryDate - game.data.lotteryTime) / 1000) } })),
 				};
 			});
 		})
@@ -117,21 +136,16 @@ const filteredResults = computed(() => {
 		)
 	).map((item: any) => JSON.parse(item)); // 将字符串转换回对象
 });
-// 热门游戏
-const hotGame = computed(() => {
-	const games: any = [];
-	gameData.value.forEach((item) => {
-		if (item.label === 1) {
-			item.gameInfoList.forEach((game) => {
-				const { data } = game;
-
-				games.push({ ...data, seconds: Math.floor((data.lotteryDate - data.lotteryTime) / 1000) });
-			});
-		}
-	});
-
-	return games;
-});
+const getGames = (gameLabel?: number) => {
+	return (gameData.value || []).flatMap((item) =>
+		(item.gameInfoList || [])
+			.filter(() => !gameLabel || item.label === gameLabel)
+			.map((game) => ({
+				...game.data,
+				seconds: Math.floor((game.data.lotteryDate - game.data.lotteryTime) / 1000),
+			}))
+	);
+};
 // 监听 query 参数变化
 watch(
 	() => route.query.gameOneId,
@@ -201,12 +215,22 @@ watch(
 		top: 16px;
 	}
 }
-.hot-recommend {
+.games-module {
+	margin-bottom: 24px;
+	// display: flex;
+	// justify-items: center;
+	// flex-wrap: wrap;
+	// column-gap: 16px;
+	// width: 100%;
 	.module-title {
 		display: flex;
 		align-items: center;
 		column-gap: 12px;
 		margin-bottom: 20px;
+		img {
+			width: 24px;
+			height: 24px;
+		}
 		.name {
 			font-size: var(--title-text-size);
 			color: var(--Text_a);
