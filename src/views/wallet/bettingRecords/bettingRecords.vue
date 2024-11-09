@@ -68,7 +68,7 @@
 									</div>
 								</div>
 							</template>
-						</el-table-column> 
+						</el-table-column>
 						<!-- 订单号 -->
 						<el-table-column v-else-if="item.label =='订单号'" width="250" :label="item.label" :prop="item.props" align="center" >
 							<template #default="props">
@@ -175,7 +175,7 @@ const pageQuery = (type?:boolean) => {
 		params.betEndTime =1731121877590|| dayjs(new Date(range.end)).endOf('day').valueOf()
 	}
 
-	
+
 	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassify: [+params.receiveStatus] }).then((res) => {
 		if (!res.data) return;
 		let rows = res.data[fieldMap[params.venueType]]
@@ -202,15 +202,15 @@ const pageQuery = (type?:boolean) => {
 		}, 0)?.toFixed(2);
 
 		tableData.value.forEach((item:any) => {
-			if (item.betAmount) { 
+			if (item.betAmount) {
 				item.betAmount = item.betAmount.toFixed(2)
 			} else {
 				item.betAmount = ''
 			}
-			if (item.winLossAmount) { 
+			if (item.winLossAmount) {
 				item.winLossAmount = item.winLossAmount.toFixed(2)
 			} else{
-				item.winLossAmount = ''	
+				item.winLossAmount = ''
 			}
 		})
 
@@ -304,7 +304,7 @@ const handleQuery = () => {
 	params.pageNumber = 1;
 	pageQuery();
 };
-
+handleQuery()
 function getTableType() {
 	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.welfareCenterRewardType[0]);
 	if (!selectCurrent || !selectCurrent.text) return;
