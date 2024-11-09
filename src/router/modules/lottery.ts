@@ -24,6 +24,13 @@ const lotteryRoutes = {
 			meta: { name: "Shishicai", title: "时时彩" },
 			component: () => import("/@/views/lottery/views/category/shishicai/index.vue"),
 		},
+
+		{
+			path: "/lottery/kuaisan",
+			name: "Kuaisan",
+			meta: { name: "Shishicai", title: "快三" },
+			component: () => import("/@/views/lottery/views/category/kuaisan/index.vue"),
+		},
 	],
 };
 
