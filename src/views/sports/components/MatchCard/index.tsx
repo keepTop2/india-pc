@@ -189,7 +189,7 @@ const MatchCard = defineComponent({
 		isExpanded: { type: Boolean, default: true, required: true },
 		sportType: { type: Number, required: true },
 		dataIndex: { type: Number },
-		scoreboardId: { type: Number },
+		scoreboardId: { type: Number, required: true, default: 0 },
 	},
 	emits: ["toggleDisplay"],
 	setup(props, { emit }) {
