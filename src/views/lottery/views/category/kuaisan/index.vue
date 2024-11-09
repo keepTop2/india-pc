@@ -14,14 +14,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineAsyncComponent, watchEffect } from "vue";
+import { ref, defineAsyncComponent, onMounted } from "vue";
 import { useRoute } from "vue-router";
 // 引入各组件和工具方法
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
-import playsConfig, { codes } from "./components/playsConfig";
+import playsConfig, { queryGameListParams, queryGamePlayOddsListParams } from "./components/playsConfig";
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
 import { lotteryApi } from "/@/api/lottery";
@@ -51,14 +51,16 @@ const mockData = {
 // 标签栏的配置数据
 const { tabs, tabsActived, handleTabChange } = useTab();
 
-const lotteryDetail = ref({});
+const lotteryDetail = ref({}); // 彩票配置，如名字、多少分钟一期
+const dynamicPlaysConfig = ref({}); // 动态的玩法与赔率信息（玩法写死，但是需要返回的数据整合）
 const route = useRoute();
 
-watchEffect(async () => {
-	const { id } = route.query;
-	if (!id) return;
-	const res = await lotteryApi.queryGameList(codes);
-	lotteryDetail.value = res.data[0];
+onMounted(async () => {
+	const queryGameListRes = await lotteryApi.queryGameList(queryGameListParams);
+	const queryGamePlayOddsListRes = await lotteryApi.queryGamePlayOddsList(queryGamePlayOddsListParams);
+	lotteryDetail.value = queryGameListRes.data[0];
+	console.log("queryGameListRes", queryGameListRes.data[0]);
+	console.log("queryGamePlayOddsListRes", queryGamePlayOddsListRes.data);
 });
 </script>
 

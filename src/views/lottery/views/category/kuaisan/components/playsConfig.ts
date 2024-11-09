@@ -296,7 +296,11 @@ export default () => [
 	},
 ];
 
-export const codes = {
-	gameCodes: "MYK3",
+export const queryGameListParams = {
+	gameCodes: "5FK3",
 	gameCategoryCodes: "K3",
+};
+
+export const queryGamePlayOddsListParams = {
+	gameCode: "5FK3",
 };
