@@ -98,11 +98,15 @@ instance.interceptors.response.use(
 		}
 		const res = response.data;
 		// 如果自定义代码不是 200，则判断为错误。
+		const userStore = useUserStore();
 		switch (res.code) {
 			// 登录过期
+
 			case ResCode.LOGIN_EXPIRE:
-				const userStore = useUserStore();
-				// userStore.logOut();
+				userStore.logOut();
+				break;
+			case 10007:
+				userStore.logOut();
 				break;
 		}
 

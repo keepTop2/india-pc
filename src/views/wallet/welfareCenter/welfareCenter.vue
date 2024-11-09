@@ -25,13 +25,13 @@
 			<div>
 				<div class="flex_space-between Text_s fs_14 mb_12">
 					<div>
-						<span>笔数: {{ pageData.waitReceiveTotal || 0 }}</span>
+						<span>笔数: {{ pageData.totalSize || 0 }}</span>
 						<span class="ml_20">{{ pageData.mainCurrencyTotal || 0 }} {{ pageData.mainCurrency }}</span>
 						<span class="ml_20">{{ pageData.platCurrencyTotal || 0 }} {{ pageData.platCurrencyCode }}</span>
 					</div>
 					<div class="flex-center">
 						<img src="./image/fudai.png" alt="" width="20px" />
-						您有{{}}个待领取福利
+						您有{{ pageData.waitReceiveTotal }}个待领取福利
 					</div>
 				</div>
 				<div class="table">
@@ -46,8 +46,9 @@
 					<div class="tbody">
 						<div class="tr" v-for="item in tableData">
 							<div class="td Text1" style="width: 25%">{{ item.orderNo }}</div>
-							<div class="td Text1" style="width: 15%">{{ item.detailType }}</div>
 							<div class="td Text1" style="width: 15%">{{ item.welfareCenterRewardTypeText }}</div>
+							<div class="td Text1" style="width: 15%">{{ item.detailType }}</div>
+
 							<div class="td Text_s" style="width: 13%">{{ item.amount }}{{ item.currencyCode }}</div>
 							<div class="td Text1" style="width: 20%">{{ dayjs(item.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
 							<div class="td" style="width: 12%">
@@ -87,7 +88,7 @@ const range = reactive({
 });
 const minDate = today.subtract(90, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
-const receiveStatus = {
+const receiveStatus: any = {
 	0: "领取",
 	1: "已领取",
 	2: "已过期",
@@ -104,7 +105,7 @@ const pageData = reactive({
 	mainCurrencyTotal: "",
 });
 const total = ref(0);
-const updateRange = (value) => {
+const updateRange = (value: any) => {
 	range.start = value[0];
 	range.end = value[1];
 };
@@ -136,14 +137,14 @@ const pageQuery = () => {
 };
 const getDownBox = () => {
 	welfareCenterApi.getDownBox().then((res) => {
-		activityReceiveStatusOptions.value = res.data.activityReceiveStatus.map((item) => {
+		activityReceiveStatusOptions.value = res.data.activityReceiveStatus.map((item: any) => {
 			return { text: item.value, value: item.code };
 		});
 		activityReceiveStatusOptions.value.unshift({
 			text: "全部状态",
 			value: "-1",
 		});
-		welfareCenterRewardTypeOptions.value = res.data.welfareCenterRewardType.map((item) => {
+		welfareCenterRewardTypeOptions.value = res.data.welfareCenterRewardType.map((item: any) => {
 			return { text: item.value, value: item.code };
 		});
 		welfareCenterRewardTypeOptions.value.unshift({
