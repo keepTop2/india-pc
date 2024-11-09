@@ -6,8 +6,21 @@ export interface columnType{
   props: string
   type:string
 }
+interface fieldMapType{
+  [key: string]: string
+}
 
-export default {
+export const fieldMap:fieldMapType = {
+  '1': 'sabOrderList',
+  '2': 'sabOrderList',
+  '3': 'basicOrderPage',
+  '4': 'basicOrderPage',
+  '5': 'ltOrderPage',
+  '6': 'eventOrderPage',
+  '7':'eventOrderPage'
+}
+
+export const  colmuns =  {
   '体育': [
     {type:'select'},
     { label: '订单号', props: 'orderId' },

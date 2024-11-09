@@ -53,7 +53,8 @@
 					<template v-for="(item, index) in tableColumns" :key="index">
 						<el-table-column type="expand" :label="item.label" width="164px" :prop="item.props" v-if="item.type == 'select'">
 							<template #default="props">
-								<div class="dropDown_line">
+
+									<div class="dropDown_line">
 									<div class="firLine">
 										<div style="width: 50%" class="fir_item">{{ props.row.eventInfo }}</div>
 										<div style="width: 25%" class="fir_item">投注内容</div>
@@ -114,7 +115,7 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
 import showToast from "/@/hooks/useToast";
-import colmuns, { columnsType, columnType } from "./bettingRecordsColumns";
+import {fieldMap,colmuns, columnsType, columnType } from "./bettingRecordsColumns";
 import loselogo from "/@/assets/zh-CN/wallet/loselogo.png";
 import winlogo from "/@/assets/zh-CN/wallet/winlogo.png";
 import helogo from "/@/assets/zh-CN/wallet/he.png";
@@ -126,10 +127,10 @@ const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
 const today = dayjs();
 const params = reactive({
-	betStartTime: dayjs().startOf('day').unix(),
-	betEndTime:dayjs().endOf('day').unix(),
+	betStartTime: dayjs().startOf('day').valueOf(),
+	betEndTime:dayjs().endOf('day').valueOf(),
 	pageNumber: 1,
-	pageSize: 50,
+	pageSize: 10,
 	receiveStatus: "",
 	welfareCenterRewardType: "1",
 	venueType: "1",
@@ -170,74 +171,22 @@ onMounted(() => {
 });
 const pageQuery = (type?:boolean) => {
 	if (!type) {
-		params.betStartTime = dayjs(new Date(range.start)).startOf('day').unix();
-		params.betEndTime = dayjs(new Date(range.end)).endOf('day').unix()
+		params.betStartTime =1730517077590|| dayjs(new Date(range.start)).startOf('day').valueOf()
+		params.betEndTime =1731121877590|| dayjs(new Date(range.end)).endOf('day').valueOf()
 	}
-	// params.orderClassifyList = +params.receiveStatus;
-	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList: [+params.receiveStatus] }).then((res) => {
-		console.log(res, "res");
-		// if (!res.data) return;
-		res.data = {}
-		res.data.sabOrderList = [
-    {
-        "orderId": "314050735991947301",
-        "eventInfo": "*意大利甲组联赛",
-        "teamInfo": "卡利亚里 VS 博洛尼亚",
-        "betContent": "全场.独赢盘 卡利亚里",
-        "betAmount": 1,
-        "winLossAmount": -1,
-        "odds": 2.76,
-        "betTime": 1729725435600,
-        "orderClassify": 1,
-        "orderClassifyText": "已结算",
-        "multipleBet": false,
-        "orderMultipleBetList": null
-    },
-    {
-        "orderId": "314047673680265269",
-        "eventInfo": "*意大利甲组联赛",
-        "teamInfo": "AC米兰 VS 拿玻里",
-        "betContent": "让球 AC米兰",
-        "betAmount": 3,
-        "winLossAmount": -3,
-        "odds": 2.02,
-        "betTime": 1729724722987,
-        "orderClassify": 1,
-        "orderClassifyText": "已结算",
-        "multipleBet": false,
-        "orderMultipleBetList": null
-    },
-    {
-        "orderId": "314047596370853901",
-        "eventInfo": "*意大利甲组联赛",
-        "teamInfo": "卡利亚里 VS 博洛尼亚",
-        "betContent": "全场.独赢盘 博洛尼亚",
-        "betAmount": 8,
-        "winLossAmount": 11.84,
-        "odds": 2.48,
-        "betTime": 1729724704297,
-        "orderClassify": 1,
-        "orderClassifyText": "已结算",
-        "multipleBet": false,
-        "orderMultipleBetList": null
-    },
-    {
-        "orderId": "314047553421180958",
-        "eventInfo": "*意大利甲组联赛",
-        "teamInfo": "卡利亚里 VS 博洛尼亚",
-        "betContent": "让球 卡利亚里",
-        "betAmount": 1,
-        "winLossAmount": -1,
-        "odds": 2.04,
-        "betTime": 1729724694980,
-        "orderClassify": 1,
-        "orderClassifyText": "已结算",
-        "multipleBet": false,
-        "orderMultipleBetList": null
-    }
-		]
-		tableData.value = res.data.sabOrderList;
-		pageData.totalSize = 11|| res.data.sabOrderList.length;
+
+	
+	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassify: [+params.receiveStatus] }).then((res) => {
+		if (!res.data) return;
+		let rows = res.data[fieldMap[params.venueType]]
+
+		if (params.venueType == '2' || !rows) {
+			tableData.value = []
+			return
+		}
+		console.log(fieldMap[params.venueType],'rows')
+		tableData.value = rows.records||rows;
+		pageData.totalSize =  rows.total || ( rows.orderMultipleBetList?  rows.records.length:rows.length);
 		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
 		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
 		pageData.platCurrencyCode = res.data.platCurrencyCode;
@@ -250,11 +199,19 @@ const pageQuery = (type?:boolean) => {
 
 		winOrLoseAmount.value = tableData.value.reduce((a: any, b: any) => {
 			return a + b.winLossAmount;
-		}, 0);
+		}, 0)?.toFixed(2);
 
 		tableData.value.forEach((item:any) => {
-			item.betAmount = item.betAmount.toFixed(2)
-			item.winLossAmount = item.winLossAmount.toFixed(2)
+			if (item.betAmount) { 
+				item.betAmount = item.betAmount.toFixed(2)
+			} else {
+				item.betAmount = ''
+			}
+			if (item.winLossAmount) { 
+				item.winLossAmount = item.winLossAmount.toFixed(2)
+			} else{
+				item.winLossAmount = ''	
+			}
 		})
 
 		hasData.value =
