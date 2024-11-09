@@ -1,6 +1,6 @@
 import { computed, defineComponent, watch, toRefs } from "vue";
 import useTimer from "/@/views/lottery/components/Tools/Timer";
-import useLotteryCard from "/@/views/lottery/components/lotteryCard/Index";
+import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import "./index.scss";
 
 // 定义主组件
