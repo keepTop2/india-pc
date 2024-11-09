@@ -118,7 +118,7 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
 import showToast from "/@/hooks/useToast";
-import colmuns, { columnsType, columnType } from "./bettingRecordsColumns";
+import { fieldMap, colmuns, columnsType, columnType } from "./bettingRecordsColumns";
 import loselogo from "/@/assets/zh-CN/wallet/loselogo.png";
 import winlogo from "/@/assets/zh-CN/wallet/winlogo.png";
 import helogo from "/@/assets/zh-CN/wallet/he.png";
@@ -130,12 +130,11 @@ const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
 const today = dayjs();
 const params = reactive({
-	betStartTime: dayjs().startOf("day").unix(),
-	betEndTime: dayjs().endOf("day").unix(),
+	betStartTime: dayjs().startOf("day").valueOf(),
+	betEndTime: dayjs().endOf("day").valueOf(),
 	pageNumber: 1,
-	pageSize: 50,
+	pageSize: 10,
 	receiveStatus: "",
-	welfareCenterRewardType: "1",
 	venueType: "1",
 });
 
@@ -174,15 +173,27 @@ onMounted(() => {
 });
 const pageQuery = (type?: boolean) => {
 	if (!type) {
-		params.betStartTime = dayjs(new Date(range.start)).startOf("day").unix();
-		params.betEndTime = dayjs(new Date(range.end)).endOf("day").unix();
+		params.betStartTime = dayjs(new Date(range.start)).startOf("day").valueOf();
+		params.betEndTime = dayjs(new Date(range.end)).endOf("day").valueOf();
 	}
-	// params.orderClassifyList = +params.receiveStatus;
-	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList: [+params.receiveStatus] }).then((res) => {
-		console.log(res, "res");
+	let orderClassifyList: any = [];
+	if (params.receiveStatus === "") {
+		orderClassifyList = [];
+	} else {
+		orderClassifyList = [+params.receiveStatus];
+	}
+
+	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList }).then((res) => {
 		if (!res.data) return;
-		tableData.value = res.data.sabOrderList;
-		pageData.totalSize = 11 || res.data.sabOrderList.length;
+		let rows = res.data[fieldMap[params.venueType]];
+
+		if (params.venueType == "2" || !rows) {
+			tableData.value = [];
+			return;
+		}
+		console.log(fieldMap[params.venueType], "rows");
+		tableData.value = rows.records || rows;
+		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
 		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
 		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
 		pageData.platCurrencyCode = res.data.platCurrencyCode;
@@ -193,13 +204,23 @@ const pageQuery = (type?: boolean) => {
 			return a + b.betAmount;
 		}, 0);
 
-		winOrLoseAmount.value = tableData.value.reduce((a: any, b: any) => {
-			return a + b.winLossAmount;
-		}, 0);
+		winOrLoseAmount.value = tableData.value
+			.reduce((a: any, b: any) => {
+				return a + b.winLossAmount;
+			}, 0)
+			?.toFixed(2);
 
 		tableData.value.forEach((item: any) => {
-			item.betAmount = item.betAmount.toFixed(2);
-			item.winLossAmount = item.winLossAmount.toFixed(2);
+			if (item.betAmount) {
+				item.betAmount = item.betAmount.toFixed(2);
+			} else {
+				item.betAmount = "";
+			}
+			if (item.winLossAmount) {
+				item.winLossAmount = item.winLossAmount.toFixed(2);
+			} else {
+				item.winLossAmount = "";
+			}
 		});
 
 		hasData.value =
@@ -292,9 +313,9 @@ const handleQuery = () => {
 	params.pageNumber = 1;
 	pageQuery();
 };
-
+handleQuery();
 function getTableType() {
-	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.welfareCenterRewardType[0]);
+	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.venueType);
 	if (!selectCurrent || !selectCurrent.text) return;
 	tableColumns.value = colmunsrow.value[selectCurrent.text];
 }
