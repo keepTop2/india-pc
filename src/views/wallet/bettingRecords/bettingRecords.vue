@@ -130,13 +130,13 @@ const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
 const today = dayjs();
 const params = reactive({
-	betStartTime: dayjs().startOf("day").unix(),
-	betEndTime: dayjs().endOf("day").unix(),
+	betStartTime: dayjs().startOf("day").valueOf(),
+	betEndTime: dayjs().endOf("day").valueOf(),
 	pageNumber: 1,
 	pageSize: 50,
 	receiveStatus: "",
-	welfareCenterRewardType: "1",
 	venueType: "1",
+	orderClassifyList: [],
 });
 
 const range = reactive({
@@ -174,11 +174,17 @@ onMounted(() => {
 });
 const pageQuery = (type?: boolean) => {
 	if (!type) {
-		params.betStartTime = dayjs(new Date(range.start)).startOf("day").unix();
-		params.betEndTime = dayjs(new Date(range.end)).endOf("day").unix();
+		params.betStartTime = dayjs().startOf("day").valueOf();
+		params.betEndTime = dayjs().endOf("day").valueOf();
 	}
 	// params.orderClassifyList = +params.receiveStatus;
-	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList: [+params.receiveStatus] }).then((res) => {
+	let orderClassifyList: any = [];
+	if (params.receiveStatus === "") {
+		orderClassifyList = [];
+	} else {
+		orderClassifyList = [+params.receiveStatus];
+	}
+	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList }).then((res) => {
 		console.log(res, "res");
 		if (!res.data) return;
 		tableData.value = res.data.sabOrderList;
