@@ -32,7 +32,7 @@
 				<div class="flex_space-between Text_s fs_14 mb_12">
 					<div>
 						<span>
-							<span>共计: </span>
+							<span style="color: var(--light-ok-Text-2-1, #656e78)">共计: </span>
 							{{ tableData.length || 0 }} 笔投入
 						</span>
 						<span class="ml_20">
@@ -40,60 +40,71 @@
 							{{ tzAmount || 0 }} {{ "CNY" || pageData.mainCurrency }}
 						</span>
 						<span class="ml_20">
-							<span>输赢金额：</span>
-							<span :class="[ String( winOrLoseAmount).indexOf('-')>-1?'lose_color':'win_color']">{{String( winOrLoseAmount).indexOf('-')>-1? winOrLoseAmount:'+'+winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span>
+							<span style="color: var(--light-ok-Text-2-1, #656e78)">输赢金额：</span>
+							<span :class="[String(winOrLoseAmount).indexOf('-') > -1 ? 'lose_color' : 'win_color']"
+								>{{ String(winOrLoseAmount).indexOf("-") > -1 ? winOrLoseAmount : "+" + winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span
+							>
 						</span>
 					</div>
 					<!-- <div class="flex-center">
-						<img src="./image/fudai.png" alt="" width="20px" />
-						您有4个待领取福利
-					</div> -->
+            <img src="./image/fudai.png" alt="" width="20px" />
+            您有4个待领取福利
+          </div> -->
 				</div>
 				<el-table :class="[tableColumns[0] && tableColumns[0].type == 'select' ? 'table-style-expand' : 'table-style-common']" :data="tableData" style="width: 100%" border>
 					<template v-for="(item, index) in tableColumns" :key="index">
 						<el-table-column type="expand" :label="item.label" width="164px" :prop="item.props" v-if="item.type == 'select'">
 							<template #default="props">
-
-									<div class="dropDown_line">
+								<div class="dropDown_line">
 									<div class="firLine">
-										<div style="width: 50%" class="fir_item">{{ props.row.eventInfo }}</div>
-										<div style="width: 25%" class="fir_item">投注内容</div>
-										<div style="width: 25%" class="fir_item">赔率</div>
-										<div style="width: 50%" class="fir_item">{{ props.row.teamInfo }}</div>
-										<div style="width: 25%" class="fir_item">{{ props.row.betContent }}</div>
-										<div style="width: 25%" class="fir_item">@{{ props.row.odds }}</div>
-									</div>
-									<div class="winlogo">
-										<img :src="props.row.orderClassify == '1' ? winlogo :props.row.orderClassify == '0'?helogo: loselogo" alt="" />
+										<div>
+											<span>{{ props.row.eventInfo }}</span>
+											<span>{{ props.row.teamInfo }}</span>
+										</div>
+										<div class="p">
+											<span>投注内容</span>
+											<span>{{ props.row.betContent }}</span>
+										</div>
+										<div class="p">
+											<span>赔率</span>
+											<span>@{{ props.row.odds }}</span>
+										</div>
+
+										<div class="winlogo">
+											<img :src="props.row.orderClassify == '1' ? winlogo : props.row.orderClassify == '0' ? helogo : loselogo" alt="" />
+										</div>
 									</div>
 								</div>
 							</template>
 						</el-table-column>
 						<!-- 订单号 -->
-						<el-table-column v-else-if="item.label =='订单号'" width="250" :label="item.label" :prop="item.props" align="center" >
+						<el-table-column v-else-if="item.label == '订单号'" width="250" :label="item.label" :prop="item.props" align="center">
 							<template #default="props">
 								<div class="orderId_style">
-									<div>{{ props.row.orderId}}</div>
-									<img @click="copyId(props.row.orderId)" :src="copyimg" alt="">
+									<div>{{ props.row.orderId }}</div>
+									<img @click="copyId(props.row.orderId)" :src="copyimg" alt="" />
 								</div>
 							</template>
 						</el-table-column>
 						<!-- 投注时间 -->
-						<el-table-column v-else-if="item.label =='投注时间'" :label="item.label" :prop="item.props" align="center" >
+						<el-table-column v-else-if="item.label == '投注时间'" :label="item.label" :prop="item.props" align="center">
 							<template #default="props">
-								<div >{{ dayjs(props.row.betTime).format("YYYY-MM-DD HH:mm:ss")}}</div>
+								<div>{{ dayjs(props.row.betTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
 							</template>
 						</el-table-column>
 						<!-- 投注金额 -->
-						<el-table-column v-else-if="item.label =='投注金额'" :label="item.label" :prop="item.props" align="center" >
+						<el-table-column v-else-if="item.label == '投注金额'" :label="item.label" :prop="item.props" align="center">
 							<template #default="props">
-								<div >{{ props.row.betAmount }} CNY</div>
+								<div>{{ props.row.betAmount }} CNY</div>
 							</template>
 						</el-table-column>
 						<!-- 输赢金额 -->
-						<el-table-column v-else-if="item.label =='输赢金额'" :label="item.label" :prop="item.props" align="center" >
-							<template #default="props">
-								<div :style="{'color':String(props.row.winLossAmount).indexOf('-')> -1?'#FF8C00':'#FF284B'}">{{ String(props.row.winLossAmount).indexOf('-')> -1?props.row.winLossAmount:'+'+props.row.winLossAmount }} CNY</div>
+						<el-table-column v-else-if="item.label == '输赢金额'" :label="item.label" :prop="item.props" align="center">
+							<template #default="{ row }">
+								<div v-if="row.winLossAmount" :style="{ color: String(row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
+									{{ String(row.winLossAmount).indexOf("-") > -1 ? row.winLossAmount : "+" + row.winLossAmount }} CNY
+								</div>
+								<div v-else>-</div>
 							</template>
 						</el-table-column>
 
@@ -115,7 +126,7 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
 import showToast from "/@/hooks/useToast";
-import {fieldMap,colmuns, columnsType, columnType } from "./bettingRecordsColumns";
+import { fieldMap, colmuns, columnsType, columnType } from "./bettingRecordsColumns";
 import loselogo from "/@/assets/zh-CN/wallet/loselogo.png";
 import winlogo from "/@/assets/zh-CN/wallet/winlogo.png";
 import helogo from "/@/assets/zh-CN/wallet/he.png";
@@ -127,8 +138,8 @@ const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
 const today = dayjs();
 const params = reactive({
-	betStartTime: dayjs().startOf('day').valueOf(),
-	betEndTime:dayjs().endOf('day').valueOf(),
+	betStartTime: dayjs().startOf("day").valueOf(),
+	betEndTime: dayjs().endOf("day").valueOf(),
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "",
@@ -159,7 +170,7 @@ const pageData = reactive({
 const total = ref(0);
 const hasData = ref(false);
 const updateRange = (value: any) => {
-	console.log(value)
+	console.log(value);
 	range.start = value[0];
 	range.end = value[1];
 };
@@ -169,58 +180,65 @@ onMounted(() => {
 	getDownBox();
 	pageQuery(true);
 });
-const pageQuery = (type?:boolean) => {
+const pageQuery = (type?: boolean) => {
 	if (!type) {
-		params.betStartTime =1730517077590|| dayjs(new Date(range.start)).startOf('day').valueOf()
-		params.betEndTime =1731121877590|| dayjs(new Date(range.end)).endOf('day').valueOf()
+		params.betStartTime = 1730517077590 || dayjs(new Date(range.start)).startOf("day").valueOf();
+		params.betEndTime = 1731121877590 || dayjs(new Date(range.end)).endOf("day").valueOf();
 	}
 
-
-	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassify: [+params.receiveStatus] }).then((res) => {
-		if (!res.data) return;
-		let rows = res.data[fieldMap[params.venueType]]
-
-		if (params.venueType == '2' || !rows) {
-			tableData.value = []
-			return
-		}
-		console.log(fieldMap[params.venueType],'rows')
-		tableData.value = rows.records||rows;
-		pageData.totalSize =  rows.total || ( rows.orderMultipleBetList?  rows.records.length:rows.length);
-		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
-		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
-		pageData.platCurrencyCode = res.data.platCurrencyCode;
-		pageData.mainCurrency = res.data.mainCurrency;
-		pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
-
-		tzAmount.value = tableData.value.reduce((a: any, b: any) => {
-			return a + b.betAmount;
-		}, 0);
-
-		winOrLoseAmount.value = tableData.value.reduce((a: any, b: any) => {
-			return a + b.winLossAmount;
-		}, 0)?.toFixed(2);
-
-		tableData.value.forEach((item:any) => {
-			if (item.betAmount) {
-				item.betAmount = item.betAmount.toFixed(2)
-			} else {
-				item.betAmount = ''
-			}
-			if (item.winLossAmount) {
-				item.winLossAmount = item.winLossAmount.toFixed(2)
-			} else{
-				item.winLossAmount = ''
-			}
+	welfareCenterApi
+		.tzPageQuery({
+			...params,
+			venueType: +params.venueType,
+			orderClassify: params.receiveStatus ? [+params.receiveStatus] : [],
 		})
+		.then((res) => {
+			if (!res.data) return;
+			let rows = res.data[fieldMap[params.venueType]];
 
-		hasData.value =
-			res.data.sabOrderList?.length > 0 ||
-			res.data.eventOrderPage?.records?.length > 0 ||
-			res.data.basicOrderPage?.records?.length > 0 ||
-			res.data.tableOrderPage?.records?.length > 0;
-		getTableType();
-	});
+			if (params.venueType == "2" || !rows) {
+				tableData.value = [];
+				return;
+			}
+			console.log(fieldMap[params.venueType], "rows");
+			tableData.value = rows.records || rows;
+			pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
+			pageData.waitReceiveTotal = res.data.waitReceiveTotal;
+			pageData.platCurrencyTotal = res.data.platCurrencyTotal;
+			pageData.platCurrencyCode = res.data.platCurrencyCode;
+			pageData.mainCurrency = res.data.mainCurrency;
+			pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
+
+			tzAmount.value = tableData.value.reduce((a: any, b: any) => {
+				return a + b.betAmount;
+			}, 0);
+
+			winOrLoseAmount.value = tableData.value
+				.reduce((a: any, b: any) => {
+					return a + b.winLossAmount;
+				}, 0)
+				?.toFixed(2);
+
+			tableData.value.forEach((item: any) => {
+				if (item.betAmount) {
+					item.betAmount = item.betAmount.toFixed(2);
+				} else {
+					item.betAmount = "";
+				}
+				if (item.winLossAmount) {
+					item.winLossAmount = item.winLossAmount.toFixed(2);
+				} else {
+					item.winLossAmount = "";
+				}
+			});
+
+			hasData.value =
+				res.data.sabOrderList?.length > 0 ||
+				res.data.eventOrderPage?.records?.length > 0 ||
+				res.data.basicOrderPage?.records?.length > 0 ||
+				res.data.tableOrderPage?.records?.length > 0;
+			getTableType();
+		});
 };
 // 获取 查询目录
 const getDownBox = () => {
@@ -242,17 +260,17 @@ const getDownBox = () => {
 
 // 複製id
 const copyId = (id: string) => {
-	const input = document.createElement('input');
-  input.setAttribute('value', id);
-  document.body.appendChild(input);
-  input.select();
-  // 执行复制命令
-  document.execCommand('copy');
-  // 移除输入框
-  document.body.removeChild(input);
+	const input = document.createElement("input");
+	input.setAttribute("value", id);
+	document.body.appendChild(input);
+	input.select();
+	// 执行复制命令
+	document.execCommand("copy");
+	// 移除输入框
+	document.body.removeChild(input);
 
 	showToast("复制成功");
-}
+};
 
 // watch([() => params.welfareCenterRewardType, () => welfareCenterRewardTypeOptions.value], (val) => {
 // 	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == val[0]);
@@ -304,7 +322,8 @@ const handleQuery = () => {
 	params.pageNumber = 1;
 	pageQuery();
 };
-handleQuery()
+handleQuery();
+
 function getTableType() {
 	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.welfareCenterRewardType[0]);
 	if (!selectCurrent || !selectCurrent.text) return;
@@ -376,9 +395,11 @@ function getTableType() {
 	.lose_color {
 		color: #01aff6;
 	}
-	.win_color{
-		color: var(--light-ok-Theme--, #FF284B);
+
+	.win_color {
+		color: var(--light-ok-Theme--, #ff284b);
 	}
+
 	.table {
 		border: 1px solid var(--Line_2);
 		border-radius: 8px;
@@ -444,31 +465,52 @@ function getTableType() {
 	display: flex;
 	align-items: center;
 }
-.orderId_style{
+
+.orderId_style {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	gap: 10px;
-	img{
+
+	img {
 		cursor: pointer;
 	}
 }
+
 .dropDown_line {
 	display: flex;
 	align-items: center;
 
 	.firLine {
-		width: 80%;
-		display: flex;
-		flex-wrap: wrap;
+		width: 100%;
+		display: grid;
+		grid-template-columns: 1.8fr 1fr 1fr 1fr;
+		font-size: 14px;
 
-		.fir_item {
-			padding: 6px 12px 8px;
+		& > div {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
 		}
-	}
 
-	.winlogo {
-		width: 20%;
-		text-align: center;
+		.p {
+			text-align: center;
+			& > span:first-child {
+				color: var(--light-ok-text-s, #fff);
+			}
+		}
+
+		.winlogo {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			img {
+				width: 58px;
+			}
+
+			//width: 20%;
+			//text-align: center;
+		}
 	}
 }
 
@@ -478,5 +520,13 @@ function getTableType() {
 
 :deep(.nodata) {
 	height: 70vh;
+}
+
+:deep(.dropdown-header),
+:deep(.curp) {
+	color: var(--light-ok-Text-1-1, #98a7b5);
+}
+:deep(.formItem) {
+	border-radius: 4px;
 }
 </style>

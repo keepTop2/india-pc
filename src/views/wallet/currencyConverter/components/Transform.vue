@@ -3,7 +3,7 @@
 		<div class="wrapper">
 			<div class="form card-style">
 				<div class="balance">
-					<div>From</div>
+					<div>从</div>
 					<div>
 						<svg-icon name="wallet" size="20px" />
 						<span>{{ transformInfo.platAvailableAmount }}.{{ transformInfo.platCurrency }}</span>
@@ -15,7 +15,7 @@
 				</div>
 				<div class="number">
 					<el-input v-model.number="formValue" type="number"></el-input>
-					<div>MAX</div>
+					<div @click="formValue = transformInfo.platAvailableAmount">全部</div>
 				</div>
 				<div class="line"></div>
 				<div class="rate none">1</div>
@@ -25,11 +25,11 @@
 			<!--			</div>-->
 			<div class="to card-style">
 				<div class="balance">
-					<div>To</div>
-					<div>
-						<svg-icon name="wallet" size="20px" />
-						<span>{{ transformInfo.userAvailableAmount }}.{{ transformInfo.userCurrencyCode }}</span>
-					</div>
+					<div>到</div>
+<!--					<div>-->
+<!--						<svg-icon name="wallet" size="20px" />-->
+<!--						<span>{{ transformInfo.userAvailableAmount }}.{{ transformInfo.userCurrencyCode }}</span>-->
+<!--					</div>-->
 				</div>
 				<div class="type">
 					<svg-icon name="USD" size="36px" />
@@ -37,13 +37,13 @@
 				</div>
 				<div class="number">
 					<el-input v-model="toValue" readonly></el-input>
-					<div>MAX</div>
+					<div></div>
 				</div>
 				<div class="line"></div>
-				<div class="rate">Exchange Rate：{{ transformInfo.transferRate }}</div>
+				<div class="rate">汇率：{{ transformInfo.transferRate }}</div>
 			</div>
 		</div>
-		<el-button class="transform-button" @click="handleTransform">一键转换</el-button>
+		<el-button class="transform-button" @click="handleTransform" :disabled="!formValue" color="#ff284b">一键转换</el-button>
 	</div>
 </template>
 
@@ -73,6 +73,7 @@ const transformInfo = ref<Partial<TransformInfo>>({});
 const handleTransform = async () => {
 	const res = await walletApi.transferAmount({ transferAmount: formValue.value });
 	if (res.code !== 10000) return ElMessage.error(res.message);
+  ElMessage.success("转账成功")
 	await getUserPlatformBalance();
 };
 
@@ -146,7 +147,8 @@ getUserPlatformBalance();
 		}
 
 		.number {
-			display: flex;
+			display: grid;
+      grid-template-columns: 1fr auto;
 			align-items: center;
 			justify-content: space-between;
 
@@ -169,6 +171,8 @@ getUserPlatformBalance();
 				font-size: 18px;
 				font-weight: 400;
 				color: var(--light-ok-Text-1-1, #98a7b5);
+        cursor: pointer;
+        user-select: none;
 			}
 		}
 
