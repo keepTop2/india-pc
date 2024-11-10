@@ -484,7 +484,7 @@ function getTableType() {
 	.firLine {
 		width: 100%;
 		display: grid;
-		grid-template-columns: 1.8fr 1fr 1fr 1fr;
+		grid-template-columns: 2fr 2fr 1fr 1fr;
 		font-size: 14px;
 
 		& > div {
