@@ -74,6 +74,7 @@ const handleTransform = async () => {
 	const res = await walletApi.transferAmount({ transferAmount: formValue.value });
 	if (res.code !== 10000) return ElMessage.error(res.message);
   ElMessage.success("转账成功")
+  formValue.value = ""
 	await getUserPlatformBalance();
 };
 
