@@ -57,8 +57,9 @@ const handleClose = () => {
 };
 
 const handleConfirm = () => {
+	visible.value = false;
 	if (props.onConfirm) props.onConfirm();
-	handleClose();
+	// handleClose();
 };
 </script>
 

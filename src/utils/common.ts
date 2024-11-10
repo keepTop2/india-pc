@@ -46,6 +46,36 @@ class Common {
 		return /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(password);
 	}
 
+	/**
+	 * @description 转换银行卡号
+	 */
+	static bankCardHiding(value: string) {
+		if (value) {
+			const length = value.length;
+			if (length > 8) {
+				const hiddenChars = " **** **** ";
+				return value.slice(0, 4) + hiddenChars + value.slice(-4);
+			} else if (length <= 8) {
+				const hiddenChars = " ** ";
+				return value.slice(0, 2) + hiddenChars + value.slice(-2);
+			} else {
+				return value; // 如果长度不足4位，返回原值
+			}
+		}
+		return "";
+	}
+
+	/**
+	 * @description 转换USDT地址
+	 */
+	static USDTAddressHiding(value: string) {
+		if (value) {
+			const hiddenChars = " **** **** ";
+			const visibleChars = value.slice(0, 6) + hiddenChars + value.slice(-6);
+			return visibleChars;
+		}
+	}
+
 	// 电话号码转换*
 	static maskString(str: string) {
 		if (!str) return;
