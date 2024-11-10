@@ -71,7 +71,8 @@
 										</div>
 
 										<div class="winlogo">
-											<img :src="props.row.orderClassify == '1' ? winlogo : props.row.orderClassify == '0' ? helogo : loselogo" alt="" />
+											<img v-if="props.row.orderClassify == '1'" :src="props.row.winLossAmount > 0 ? winlogo : loselogo" alt="" />
+                      <span v-else>-</span>
 										</div>
 									</div>
 								</div>
@@ -329,6 +330,17 @@ function getTableType() {
 	if (!selectCurrent || !selectCurrent.text) return;
 	tableColumns.value = colmunsrow.value[selectCurrent.text];
 }
+
+const logo = {
+	1: winlogo,
+};
+
+/*
+0=未结算
+1=已结算
+2=已取消
+*/
+const getLogo = (type) => {};
 </script>
 
 <style scoped lang="scss">
