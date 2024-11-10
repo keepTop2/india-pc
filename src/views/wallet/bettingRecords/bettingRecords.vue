@@ -340,7 +340,6 @@ const logo = {
 1=已结算
 2=已取消
 */
-const getLogo = (type) => {};
 </script>
 
 <style scoped lang="scss">
