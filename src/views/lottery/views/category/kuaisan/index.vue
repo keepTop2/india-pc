@@ -9,7 +9,7 @@
 		</div>
 
 		<!-- 内容部分 -->
-		<component :is="tabComponents.get(tabsActived)" />
+		<component :is="tabComponents.get(tabsActived)" :lottery-detail="lotteryDetail" />
 	</Containers>
 </template>
 
@@ -21,14 +21,14 @@ import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
-import playsConfig, { queryGameListParams, queryGamePlayOddsListParams } from "./components/playsConfig";
+import { queryGameListParams, queryGamePlayOddsListParams } from "./components/playsConfig";
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
 import { lotteryApi } from "/@/api/lottery";
 import { useTab } from "/@/views/lottery/hooks/useLottery";
 
 const $: any = i18n.global;
-console.log("$", $);
+
 const BayLottery = defineAsyncComponent(() => import("./components/bayLottery.vue"));
 const Result = defineAsyncComponent(() => import("./components/result.vue"));
 
@@ -51,16 +51,15 @@ const mockData = {
 // 标签栏的配置数据
 const { tabs, tabsActived, handleTabChange } = useTab();
 
-const lotteryDetail = ref({}); // 彩票配置，如名字、多少分钟一期
-const dynamicPlaysConfig = ref({}); // 动态的玩法与赔率信息（玩法写死，但是需要返回的数据整合）
+const lotteryDetail = ref({}); // 单个彩种的详情，如名字、多少分钟一期
+const integratePlaysConfigList = ref({}); // 单个彩种的动态的玩法与赔率信息（玩法写死，但是需要返回的数据整合）
 const route = useRoute();
 
 onMounted(async () => {
-	const queryGameListRes = await lotteryApi.queryGameList(queryGameListParams);
-	const queryGamePlayOddsListRes = await lotteryApi.queryGamePlayOddsList(queryGamePlayOddsListParams);
-	lotteryDetail.value = queryGameListRes.data[0];
-	console.log("queryGameListRes", queryGameListRes.data[0]);
-	console.log("queryGamePlayOddsListRes", queryGamePlayOddsListRes.data);
+	// 获取 单个彩种的详情
+	const res = await lotteryApi.queryGameList(queryGameListParams);
+	lotteryDetail.value = res.data[0];
+	console.log("lotteryDetail", lotteryDetail);
 });
 </script>
 
