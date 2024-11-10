@@ -330,16 +330,6 @@ function getTableType() {
 	if (!selectCurrent || !selectCurrent.text) return;
 	tableColumns.value = colmunsrow.value[selectCurrent.text];
 }
-
-const logo = {
-	1: winlogo,
-};
-
-/*
-0=未结算
-1=已结算
-2=已取消
-*/
 </script>
 
 <style scoped lang="scss">
