@@ -195,6 +195,7 @@ const pageQuery = (type?: boolean) => {
 		})
 		.then((res) => {
 			if (!res.data) return;
+      console.log(params.venueType, "params.venueType")
 			let rows = res.data[fieldMap[params.venueType]];
 
 			if (params.venueType == "2" || !rows) {
@@ -492,6 +493,7 @@ function getTableType() {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
+      gap: 10px;
 		}
 
 		.p {
