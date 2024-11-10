@@ -35,14 +35,16 @@ const AccordionItem = defineComponent({
 		};
 
 		return () => (
-			<div onClick={handleClick} class={`accordion-content-item ${props.actived ? "actived" : ""}`}>
-				<div>
-					<div class="left">
-						<span class="title">{props.title}</span>
-						<span class="info">{props.info}</span>
-					</div>
-					<div class="right">
-						<span class="odds">{props.odds ? `${props.odds}x` : ""}</span>
+			<div class={`accordion-content-item-box${props.actived ? " actived" : ""}`}>
+				<div onClick={handleClick} className="accordion-content-item">
+					<div>
+						<div class="left">
+							<span class="title">{props.title}</span>
+							<span class="info">{props.info}</span>
+						</div>
+						<div class="right">
+							<span class="odds">{props.odds ? `${props.odds}x` : ""}</span>
+						</div>
 					</div>
 				</div>
 				{/* 插槽内容 */}

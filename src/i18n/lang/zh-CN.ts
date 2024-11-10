@@ -1,6 +1,7 @@
 import common from "./zh-CN/common";
 import login from "./zh-CN/login";
 import sports from "./zh-CN/sports";
+import lottery from "./zh-CN/lottery";
 export const lang = {
 	common: {
 		...common,
@@ -10,6 +11,9 @@ export const lang = {
 	},
 	sports: {
 		...sports,
+	},
+	lottery: {
+		...lottery,
 	},
 	pagination: {
 		总计: "总计{value}项",

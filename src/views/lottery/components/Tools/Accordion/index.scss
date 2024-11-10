@@ -40,36 +40,40 @@
 			color: var(--Text1);
 			margin-bottom: 16px;
 		}
-		.accordion-content-item {
-			min-height: 44px;
-			width: 100%;
-
-			padding: 12px;
-			font-size: 14px;
-			background-color: var(--Bg3);
-			border-radius: 8px;
-			cursor: pointer;
-			transition: background-color 0.15s ease;
-			> div:first-child {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				width: 100%;
-			}
+		.accordion-content-item-box {
 			&.actived {
-				background-color: var(--Theme);
-				.info {
-					color: var(--Text_a);
+				.accordion-content-item {
+					background-color: var(--Theme);
+					.info {
+						color: var(--Text_a);
+					}
 				}
 			}
-			.title,
-			.odds {
-				color: var(--Text_a);
-			}
-			.info {
-				color: var(--Text2_1);
-				margin-left: 8px;
-				transition: color 0.15s ease;
+			.accordion-content-item {
+				width: 100%;
+				min-height: 44px;
+				padding: 12px;
+				font-size: 14px;
+				background-color: var(--Bg3);
+				border-radius: 8px;
+				cursor: pointer;
+				transition: background-color 0.15s ease;
+				> div:first-child {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					width: 100%;
+				}
+
+				.title,
+				.odds {
+					color: var(--Text_a);
+				}
+				.info {
+					color: var(--Text2_1);
+					margin-left: 8px;
+					transition: color 0.15s ease;
+				}
 			}
 		}
 	}

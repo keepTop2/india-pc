@@ -4,11 +4,6 @@
 	color: var(--Text2_1);
 	border-radius: 8px;
 	background-color: var(--Bg4);
-	&.actived {
-		.bet-form-btn .now-bet {
-			opacity: 1;
-		}
-	}
 	.bet-form-header {
 		color: var(--Text_a);
 		font-size: 16px;
@@ -42,6 +37,11 @@
 		}
 		.input-item {
 			border-bottom: 1px solid var(--Line_2);
+			&.success {
+				.el-input__inner {
+					color: var(--Text_a);
+				}
+			}
 			> span {
 				font-size: 14px;
 			}
@@ -52,6 +52,10 @@
 				border: 1px solid var(--Line_2);
 				border-radius: 4px;
 			}
+		}
+		.error-message {
+			color: var(--F1);
+			font-size: 12px;
 		}
 	}
 	.bet-form-btn {
@@ -68,9 +72,14 @@
 			font-size: 16px;
 			color: var(--Text_a);
 			border-radius: 4px;
-			cursor: pointer;
 			opacity: 0.3;
 			transition: opacity 0.15s ease;
+			user-select: none;
+			&.actived {
+				opacity: 1;
+				user-select: initial;
+				cursor: pointer;
+			}
 		}
 	}
 }
