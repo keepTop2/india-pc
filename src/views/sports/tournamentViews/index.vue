@@ -8,22 +8,22 @@
 		<DynamicScroller :items="listData" :min-item-size="154" class="scroller" key-field="leagueId">
 			<template v-slot="{ item, index, active }">
 				<DynamicScrollerItem :item="item" :key="item.leagueId" :active="active" :data-index="index" :data-active="active">
-					<!-- <component
+					<component
 						:is="cardComponent"
 						:teamData="item"
 						:dataIndex="index"
 						:isExpanded="!expandedPanels.has(index)"
 						@oddsChange="handleOddsChange"
 						@toggleDisplay="toggleDisplay"
-					/> -->
-					<MatchCard
-						:scoreboardId="eventsInfo?.eventId"
+					/>
+					<!-- <MatchCard
+						:scoreboardId="eventId"
 						:data-index="index"
 						:isExpanded="!expandedPanels.has(index)"
 						:events="item"
 						:sport-type="Number(route.query.sportType)"
 						@toggleDisplay="toggleDisplay"
-					/>
+					/> -->
 				</DynamicScrollerItem>
 			</template>
 		</DynamicScroller>
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, defineProps, computed, watch } from "vue";
+import { defineAsyncComponent, defineProps, computed, watch, ref } from "vue";
 import { useRoute } from "vue-router";
 import useSportPubSubEvents from "/@/views/sports/hooks/useSportPubSubEvents";
 import { WebToPushApi } from "/@/views/sports/enum/sportEnum/sportEventSourceEnum";
@@ -66,29 +66,21 @@ const props = defineProps({
 });
 
 // 获取到的数据
-const eventsInfo = computed(() => {
-	const childrenViewData = viewSportPubSubEventData.getSportData("sidebarData");
-	const promotionsViewData = viewSportPubSubEventData.sidebarData.promotionsViewData || [];
+// const eventId = computed(() => {
+// 	const childrenViewData = viewSportPubSubEventData.sidebarData.childrenViewData;
+// 	if (childrenViewData.length) {
+// 		console.log(childrenViewData[0]?.events[0].eventId, "childrenViewData[0]?.events[0].eventId");
 
-	if (route.meta.name === "champion" && promotionsViewData.length) {
-		return promotionsViewData[0];
-	}
-	// 非冠军
-	if (route.meta.name !== "champion" && childrenViewData?.length) {
-		return childrenViewData[0]?.events[0];
-	}
-
-	if (promotionsViewData.length) {
-		return promotionsViewData[0];
-	}
-	return null;
-});
+// 		return childrenViewData[0]?.events[0].eventId;
+// 	}
+// 	return "";
+// });
 
 // 根据路由的 sportType 查询对应的组件
-// const cardComponent = computed(() => {
-// 	const sportType = Number(route.query.sportType); // 获取当前 sportType
-// 	return sportsMap[sportType] || null; // 返回对应的组件，若无则返回 null
-// });
+const cardComponent = computed(() => {
+	const sportType = Number(route.query.sportType); // 获取当前 sportType
+	return sportsMap[sportType] || null; // 返回对应的组件，若无则返回 null
+});
 
 // 引入赔率变化事件的相关逻辑
 const { clearSportsOddsChange } = useSportPubSubEvents();

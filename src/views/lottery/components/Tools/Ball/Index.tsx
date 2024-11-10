@@ -114,6 +114,10 @@ export default () => {
 				// 球的编号
 				type: Number,
 			},
+			size: {
+				type: String,
+				default: "36px",
+			},
 		},
 		emits: ["select"], // 修正事件名称为 "select"
 
@@ -136,6 +140,8 @@ export default () => {
 			return () => (
 				<div
 					style={{
+						width: props.size,
+						height: props.size,
 						"background-image": `url(${props.actived ? ballSvg.value : ""})`, // 根据是否选中决定是否显示背景图
 					}}
 					onClick={handleClick} // 点击球触发选择事件

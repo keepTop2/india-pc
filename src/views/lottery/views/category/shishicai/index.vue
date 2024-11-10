@@ -16,12 +16,7 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from "vue";
 // 引入各组件和工具方法
-import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
-import useBall from "/@/views/lottery/components/Tools/Ball/Index";
-import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
-import playsConfig from "./components/playsConfig";
-import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
 const $: any = i18n.global;
 
@@ -51,7 +46,7 @@ const tabs = [
 ];
 
 // 标签栏切换的处理方法
-const tabsActived = ref<number>(1);
+const tabsActived = ref<number>(2);
 const handleTabChange = (id: number) => {
 	tabsActived.value = id;
 };

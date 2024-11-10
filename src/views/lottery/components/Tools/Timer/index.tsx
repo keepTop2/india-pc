@@ -1,13 +1,11 @@
-import { ref, reactive, defineComponent, onMounted, onBeforeUnmount, nextTick } from "vue";
+import { ref, reactive, defineComponent, onMounted, onBeforeUnmount, toRefs, watch, computed } from "vue";
 import SvgIcon from "/@/components/svgIcon/index.vue";
 import "./index.scss";
 
 // 定义定时器组件
-export default (props: { seconds: number; immediate?: boolean }) => {
-	const { seconds, immediate = true } = props; // 传入的秒数，和是否立即启动定时器的选项
-
+export default (props: any) => {
 	const state = reactive({
-		time: seconds, // 当前剩余时间（秒）
+		time: props?.value?.seconds || 0, // 当前剩余时间（秒）
 		hours: 0, // 小时
 		minutes: 0, // 分钟
 		seconds: 0, // 秒
@@ -31,7 +29,7 @@ export default (props: { seconds: number; immediate?: boolean }) => {
 
 		// 计算经过的时间（秒）
 		const elapsed = Math.floor((timestamp - startTime) / 1000);
-		state.time = Math.max(props.seconds - elapsed, 0); // 计算剩余时间，不能小于 0
+		state.time = Math.max(props?.value?.seconds - elapsed, 0); // 计算剩余时间，不能小于 0
 
 		updateDisplay(); // 更新显示
 
@@ -64,9 +62,18 @@ export default (props: { seconds: number; immediate?: boolean }) => {
 	// 重置倒计时
 	const reset = () => {
 		pause(); // 暂停定时器
-		state.time = props.seconds; // 重置时间为初始秒数
+		state.time = props?.value?.seconds; // 重置时间为初始秒数
 		updateDisplay(); // 更新显示
 	};
+
+	watch(
+		() => props.value,
+		(a) => {
+			state.time = props?.value?.seconds || 0;
+			start();
+		},
+		{ deep: true, immediate: true }
+	);
 
 	// 定义 Timer 组件，显示倒计时
 	const Timer = defineComponent({
@@ -75,11 +82,11 @@ export default (props: { seconds: number; immediate?: boolean }) => {
 			height: { default: "100%", type: String }, // 设置定时器的高度
 			class: { type: String, default: "" }, // 可自定义的 class 样式
 		},
-		setup(props) {
+		setup(_props) {
 			// 组件挂载时初始化显示，并根据 immediate 设置是否立即启动定时器
 			onMounted(() => {
 				updateDisplay(); // 初始化显示
-				immediate && start(); // 如果 immediate 为 true，则立即启动定时器
+				props?.value?.immediate && start(); // 如果 immediate 为 true，则立即启动定时器
 			});
 
 			// 组件销毁时取消动画帧
@@ -91,7 +98,7 @@ export default (props: { seconds: number; immediate?: boolean }) => {
 
 			// 定时器 UI 模板，显示小时、分钟和秒
 			return () => (
-				<div className="lottery-time" style={{ height: props.height }}>
+				<div className="lottery-time" style={{ height: _props.height }}>
 					{/* 小时 */}
 					<div className="time-box">
 						<span className="num_left text">{Math.floor(state.hours / 10)}</span>
@@ -135,12 +142,12 @@ export default (props: { seconds: number; immediate?: boolean }) => {
 	// 定义 TimeGroup 组件，包含日期标签和状态
 	const TimeGroup = defineComponent({
 		name: "TimeGroup",
-		setup() {
+		setup(_, { attrs }) {
 			return () => (
 				<div className="lottery-time-group">
 					<div>
 						<div className="date-tag">
-							<span>20230812-084</span>
+							<span>{attrs.issueNum}</span>
 							{/* 显示日期标签 */}
 							<SvgIcon name="sports-date_tag" width="119px" height="36px" />
 						</div>
