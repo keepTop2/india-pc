@@ -72,7 +72,7 @@
 
 										<div class="winlogo">
 											<img v-if="props.row.orderClassify == '1'" :src="props.row.winLossAmount > 0 ? winlogo : loselogo" alt="" />
-                      <span v-else>-</span>
+											<span v-else>-</span>
 										</div>
 									</div>
 								</div>
@@ -198,9 +198,39 @@ const pageQuery = (type?: boolean) => {
       console.log(params.venueType, "params.venueType")
 			let rows = res.data[fieldMap[params.venueType]];
 
-			if (params.venueType == "2" || !rows) {
-				tableData.value = [];
-				return;
+		//if (params.venueType == "2" || !rows) {
+		//	tableData.value = [];
+		//	return;
+		//}
+		console.log(fieldMap[params.venueType], "rows");
+		tableData.value = rows.records || rows;
+		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
+		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
+		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
+		pageData.platCurrencyCode = res.data.platCurrencyCode;
+		pageData.mainCurrency = res.data.mainCurrency;
+		pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
+
+		tzAmount.value = tableData.value.reduce((a: any, b: any) => {
+			return a + b.betAmount;
+		}, 0);
+
+		winOrLoseAmount.value = tableData.value
+			.reduce((a: any, b: any) => {
+				return a + b.winLossAmount;
+			}, 0)
+			?.toFixed(2);
+
+		tableData.value.forEach((item: any) => {
+			if (item.betAmount) {
+				item.betAmount = item.betAmount.toFixed(2);
+			} else {
+				item.betAmount = "";
+			}
+			if (item.winLossAmount) {
+				item.winLossAmount = item.winLossAmount.toFixed(2);
+			} else {
+				item.winLossAmount = "";
 			}
 			console.log(fieldMap[params.venueType], "rows");
 			tableData.value = rows.records || rows;
@@ -493,7 +523,7 @@ function getTableType() {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
-      gap: 10px;
+			gap: 10px;
 		}
 
 		.p {
