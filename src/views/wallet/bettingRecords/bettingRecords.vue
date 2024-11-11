@@ -380,7 +380,7 @@ function getTableType() {
 
 .content {
 	min-height: calc(100vh - 260px);
-	margin-top: 20px;
+	margin-top: 14px;
 	background: var(--Bg1);
 	border-radius: 12px;
 	padding: 20px;
