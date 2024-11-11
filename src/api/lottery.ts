@@ -1,5 +1,5 @@
-import { useUserStore } from "/@/stores/modules/user";
 import useAxiosLottery from "/@/utils/useAxiosLottery";
+import { useUserStore } from "/@/stores/modules/user";
 
 // 这里这几行代码是为了准备一些公共入参的 lang operatorId isSmp operatorAccount
 const UserStore = useUserStore();
@@ -22,12 +22,12 @@ export const lotteryApi = {
 		});
 	},
 	/**
-	 * @description 根据 gameCodes 和 gameCategoryCodes 查询彩种详情
+	 * @description 查询开盘信息
 	 * @param data 的字段举例：{ gameCodes: "5FK3", lang: "zh", gameCategoryCodes: "K3" }
 	 */
-	queryGameList: (data = {}, headers = {}) => {
+	beginPageData: (data = {}, headers = {}) => {
 		const submitData = { operatorId, lang, ...data }; // 写死或者固定的参数，这里统一处理就好了，不用在页面中调用
-		return useAxiosLottery(`/openApi/v2/game/queryGameList`, {
+		return useAxiosLottery(`/openApi/v2/issue/beginPageData`, {
 			method: "POST",
 			data: submitData,
 			headers,

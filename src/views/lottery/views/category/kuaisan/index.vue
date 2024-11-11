@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from "vue";
-import { queryGameListParams } from "./components/playsConfig";
+import { beginPageDataParams } from "./components/playsConfig";
 import { lotteryApi } from "/@/api/lottery";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
 import { useUpdateThirdPartyTokenTimer } from "/@/views/lottery/hooks/useFetchThirdPartyTimer";
@@ -56,8 +56,8 @@ onMounted(async () => {
 	turnOnTimer();
 
 	// 获取 单个彩种的详情
-	const res = await lotteryApi.queryGameList(queryGameListParams);
-	lotteryDetail.value = res.data[0];
+	const res = await lotteryApi.beginPageData(beginPageDataParams);
+	lotteryDetail.value = (res.data || []).shift(); // 有时候会有两条数据，始终取下标为 0 的那一条数据
 });
 
 onBeforeUnmount(turnOffTimer);

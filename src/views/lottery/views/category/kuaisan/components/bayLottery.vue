@@ -74,6 +74,7 @@ import showToast from "/@/hooks/useToast";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
+import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { type MergedLotteryList, type OddsListItem } from "/@/views/lottery/types/index";
 
@@ -86,7 +87,7 @@ const { Accordion, AccordionItem } = useAccordion();
 const { Ball, SelectBallGroup } = useBall();
 const { BetForm } = useBetForm();
 const { satoken } = useLoginGame();
-
+useWebSocket();
 // 合并后的玩法列表
 const mergedLotteryList = ref<MergedLotteryList>([]);
 
