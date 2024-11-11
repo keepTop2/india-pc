@@ -21,7 +21,7 @@ import { onMounted, reactive, ref } from "vue";
 import activityCard from "./components/activityCard.vue";
 import { activityApi } from "/@/api/activity";
 import Common from "/@/utils/common";
-
+import { useUserStore } from "/@/stores/modules/user";
 const activityList = ref([]);
 const activityTabsList: any = ref([]);
 const currentTab = ref(0);

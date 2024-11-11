@@ -110,23 +110,33 @@ const showCommonDialog = ref(false);
 import { useRouter } from "vue-router";
 import { useUserStore } from "/@/stores/modules/user";
 import { useActivityStore } from "/@/stores/modules/activity";
+import showToast from "/@/hooks/useToast";
 const activityStore = useActivityStore();
 const router = useRouter();
 const dialogInfo: any = ref({});
 const isLoading = ref(false);
 const showNeedLogin = ref(false);
+const ActivitySwitch: any = ref([]);
 onMounted(() => {
-	isLoading.value = true;
-	setTimeout(() => {
-		isLoading.value = false;
-	}, 1500);
+	queryLobbyLabelActivitySwitch();
 });
 
-const showSpin = () => {
-	activityApi.getSpindetail().then((res) => {
-		activityStore.setCurrentActivityData(res.data);
-		modalStore.openModal("SPIN_WHEEL");
+const queryLobbyLabelActivitySwitch = () => {
+	activityApi.queryLobbyLabelActivitySwitch().then((res) => {
+		ActivitySwitch.value = res.data.activityTemplate || [];
 	});
+};
+const showSpin = () => {
+	console.log(ActivitySwitch.value);
+
+	if (ActivitySwitch.value.includes("SPIN_WHEEL")) {
+		activityApi.getSpindetail().then((res) => {
+			activityStore.setCurrentActivityData(res.data);
+			modalStore.openModal("SPIN_WHEEL");
+		});
+	} else {
+		showToast("敬请期待");
+	}
 };
 const confirmDialog = () => {
 	showCommonDialog.value = false;

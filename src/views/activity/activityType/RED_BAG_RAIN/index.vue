@@ -7,7 +7,7 @@
 
 		<div class="activityMain">
 			<div class="activityImg">
-				<img v-lazy-load="activityData?.headPicturePcI18nCode" alt="" />
+				<img v-lazy-load="activityData?.headPicturePcI18nCodeFileUrl" alt="" />
 			</div>
 			<div class="activityContent">
 				<div class="bonus_card">
