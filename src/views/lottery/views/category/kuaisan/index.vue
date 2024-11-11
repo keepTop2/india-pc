@@ -57,7 +57,8 @@ onMounted(async () => {
 
 	// 获取 单个彩种的详情
 	const res = await lotteryApi.beginPageData(beginPageDataParams);
-	lotteryDetail.value = (res.data || []).shift(); // 有时候会有两条数据，始终取下标为 0 的那一条数据
+	lotteryDetail.value = (res.data || []).shift() || {}; // 有时候会有两条数据，始终取下标为 0 的那一条数据
+	console.log("lotteryDetail.value", lotteryDetail.value);
 });
 
 onBeforeUnmount(turnOffTimer);
