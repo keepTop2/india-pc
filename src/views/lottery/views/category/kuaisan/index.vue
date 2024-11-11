@@ -14,10 +14,11 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref } from "vue";
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from "vue";
 import { queryGameListParams } from "./components/playsConfig";
 import { lotteryApi } from "/@/api/lottery";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
+import { useUpdateThirdPartyTokenTimer } from "/@/views/lottery/hooks/useFetchThirdPartyTimer";
 import { useTab } from "/@/views/lottery/hooks/useTab";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 
@@ -45,15 +46,21 @@ const { tabs, tabsActived, handleTabChange } = useTab();
 
 const lotteryDetail = ref({}); // 单个彩种的详情，如名字、多少分钟一期
 const { loginGame } = useLoginGame();
+const { turnOnTimer, turnOffTimer } = useUpdateThirdPartyTokenTimer(loginGame);
 
 onMounted(async () => {
+	// 登录第三方拿 token
+	loginGame();
+
+	// 定时去刷新第三方返回的 token
+	turnOnTimer();
+
 	// 获取 单个彩种的详情
 	const res = await lotteryApi.queryGameList(queryGameListParams);
 	lotteryDetail.value = res.data[0];
-
-	// 登录第三方拿 token
-	await loginGame();
 });
+
+onBeforeUnmount(turnOffTimer);
 </script>
 
 <style lang="scss" scoped></style>
