@@ -21,7 +21,7 @@ interface InstancesMap {
 }
 
 /**
- * @description 彩种详情页切换购买彩票、开奖结果的 tabs 逻辑
+ * @description 彩种详情页切换购买彩票、开奖结果的 tabs 逻辑。一个 url 一个实例，不同的 url 支持多实例
  * @param
  * @returns
  */
@@ -30,7 +30,6 @@ const instancesMap: InstancesMap = {};
 export function useWebSocket(callback = Function.prototype, baseURL = BASE_URL) {
 	let websocketInstance = instancesMap[baseURL];
 
-	// 一个 ws 连接只支持一个实例
 	if (websocketInstance) {
 		return websocketInstance;
 	}
@@ -62,7 +61,11 @@ export function useWebSocket(callback = Function.prototype, baseURL = BASE_URL) 
 			} catch {
 				message = {} as WebSocketResponseMessage;
 			}
-			console.log("WebSocketResponseMessage", message);
+
+			// 这个 if 语句是调试用的，可以删掉没事
+			if (message.id) {
+				console.log("WebSocketResponseMessage", message);
+			}
 			isValidWebSocketMessage(message.id) && callback(message);
 		},
 	});
