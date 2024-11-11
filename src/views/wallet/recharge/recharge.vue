@@ -98,7 +98,8 @@
 				<div class="remind_main">
 					<i18n-t class="text" keypath="wallet['请使用']" :tag="'p'">
 						<template v-slot:value>
-							<span class="text_2"> {{ $t(`wallet['波场链']`) }} </span>
+							<span class="text_2" v-if="rechargeWayData.networkType == 'TRC20'"> {{ $t(`wallet['波场链']`) }} </span>
+							<span class="text_2" v-if="rechargeWayData.networkType == 'ERC20'"> {{ $t(`wallet['以太坊链']`) }} </span>
 						</template>
 						<template v-slot:currency>
 							<span class="text_2">({{ rechargeWayData.networkType }})</span>
@@ -313,6 +314,7 @@ const onNotRemind = async () => {
 
 // 清空参数
 const clearRequestParams = () => {
+	quickAmountList.value = [];
 	amountItemActive.value = null;
 	Object.keys(requestParams).forEach((key) => {
 		requestParams[key] = "";
