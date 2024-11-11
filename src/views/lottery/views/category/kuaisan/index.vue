@@ -14,22 +14,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineAsyncComponent, onMounted } from "vue";
-import { useRoute } from "vue-router";
-// 引入各组件和工具方法
-import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
-import useBall from "/@/views/lottery/components/Tools/Ball/Index";
-import useBetForm from "/@/views/lottery/components/BetForm/Index";
-import Containers from "/@/views/lottery/components/Containers/index.vue";
-import { queryGameListParams, queryGamePlayOddsListParams } from "./components/playsConfig";
-import showToast from "/@/hooks/useToast";
-import { i18n } from "/@/i18n/index";
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from "vue";
+import { queryGameListParams } from "./components/playsConfig";
 import { lotteryApi } from "/@/api/lottery";
-import { useTab } from "/@/views/lottery/hooks/useTab.ts";
-import { gameApi } from "/@/api/game";
+import Containers from "/@/views/lottery/components/Containers/index.vue";
+import { useUpdateThirdPartyTokenTimer } from "/@/views/lottery/hooks/useFetchThirdPartyTimer";
+import { useTab } from "/@/views/lottery/hooks/useTab";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
-
-const $: any = i18n.global;
 
 const BayLottery = defineAsyncComponent(() => import("./components/bayLottery.vue"));
 const Result = defineAsyncComponent(() => import("./components/result.vue"));
@@ -54,18 +45,22 @@ const mockData = {
 const { tabs, tabsActived, handleTabChange } = useTab();
 
 const lotteryDetail = ref({}); // 单个彩种的详情，如名字、多少分钟一期
-const integratePlaysConfigList = ref({}); // 单个彩种的动态的玩法与赔率信息（玩法写死，但是需要返回的数据整合）
-const route = useRoute();
 const { loginGame } = useLoginGame();
+const { turnOnTimer, turnOffTimer } = useUpdateThirdPartyTokenTimer(loginGame);
 
 onMounted(async () => {
+	// 登录第三方拿 token
+	loginGame();
+
+	// 定时去刷新第三方返回的 token
+	turnOnTimer();
+
 	// 获取 单个彩种的详情
 	const res = await lotteryApi.queryGameList(queryGameListParams);
 	lotteryDetail.value = res.data[0];
-
-	// 登录第三方拿 token
-	await loginGame();
 });
+
+onBeforeUnmount(turnOffTimer);
 </script>
 
 <style lang="scss" scoped></style>
