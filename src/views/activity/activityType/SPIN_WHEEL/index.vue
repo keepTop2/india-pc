@@ -81,7 +81,7 @@
 			<div class="betResult">
 				<img :src="reward.prizePictureUrl" alt="" />
 				<div class="Text_s fs_20 fw_600">恭喜您获得</div>
-				<div class="amunt mt_40 mb_33">{{ reward.prizeAmount }} {{ useUserStore().getUserInfo.platCurrencySymbol }}</div>
+				<div class="amunt mt_40 mb_33">{{ useUserStore().getUserInfo.platCurrencySymbol }}{{ reward.prizeAmount }}</div>
 				<div class="againBtn">
 					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
 					<button class="common_btn active" @click="palyAgain">再抽一次：1</button>
@@ -99,7 +99,7 @@
 				<div class="mt_80 mb_80 color_Theme fs_20">谢谢惠顾</div>
 				<div class="againBtn">
 					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
-					<button class="common_btn active" @click="handleStartSpin">再抽一次：1</button>
+					<button class="common_btn active" @click="startVerification">再抽一次：1</button>
 				</div>
 			</div>
 			<div class="closeRecord" @click="showLosserbetResult = false">
@@ -161,7 +161,7 @@ const VerificationInfo: any = ref({});
 // 奖项列表
 const spinList = ref();
 // 获得的奖励
-const reward = ref({});
+const reward: any = ref({});
 // 当前选中的标签
 const currentTab: any = ref(activityData.value.vipRankCode >= 3 ? 3 : activityData.value.vipRankCode ? activityData.value.vipRankCode : 1);
 // 标签列表
@@ -205,7 +205,7 @@ const startVerification = () => {
 	}
 	// showVerificationDialog.value = true;
 };
-const delay = (ms) => {
+const delay = (ms: any) => {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
@@ -230,6 +230,10 @@ const spinStart = () => {
 			} else if (res.code === 80019) {
 				VerificationInfo.value = res;
 				showNoMoreBet.value = true;
+				SpinRef.value?.endSpinning();
+			} else {
+				VerificationInfo.value = res;
+				showVerificationDialog.value = true;
 				SpinRef.value?.endSpinning();
 			}
 		});
