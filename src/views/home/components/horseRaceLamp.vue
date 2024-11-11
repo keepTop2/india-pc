@@ -1,5 +1,5 @@
 <template>
-	<div class="announcement max-width">
+	<div class="announcement max-width" v-if="messageList.length > 0">
 		<div class="content">
 			<img src="./image/megaphone.png" alt="megaphone" />
 			<div class="text">

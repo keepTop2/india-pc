@@ -7,6 +7,7 @@ export const gameApi = {
 			method: "POST",
 			data,
 			headers: {
+				...headers,
 				needLogin: true,
 			},
 		});

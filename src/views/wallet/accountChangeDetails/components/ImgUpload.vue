@@ -4,7 +4,7 @@
 		<input type="file" id="fileInput" @change="handleFileChange" class="hidden-input" />
 		<div class="preview-container">
 			<div v-for="(file, index) in files" :key="index" class="preview-item">
-				<img :src="file.preview" alt="Preview" class="preview-image" />
+				<img :src="file.url" alt="Preview" class="preview-image" />
 				<div class="deleteBtn" @click="deleteImg(index)">
 					<img :src="upload_delete_icon" alt="" />
 				</div>
@@ -20,7 +20,7 @@ import upload_delete_icon from "../../../../assets/common/upload_delete_icon.png
 const props = defineProps({
 	max: Number,
 	files: {
-		type: Array as () => Array<{ name: string; preview: string }>,
+		type: Array as () => Array<{ fileKey: string; url: string }>,
 		required: true,
 	},
 	onUpload: {
@@ -30,7 +30,7 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(["update:files"]);
+const emit = defineEmits(["update:files", "del"]);
 
 const handleFileChange = (event: Event) => {
 	const target = event.target as HTMLInputElement;
@@ -55,7 +55,8 @@ const handleFileChange = (event: Event) => {
 
 const deleteImg = (index: number) => {
 	props.files.splice(index, 1);
-	emit("update:files", props.files);
+	// emit("update:files", props.files);
+	emit("del", props.files);
 };
 </script>
 

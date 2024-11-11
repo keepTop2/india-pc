@@ -1,49 +1,49 @@
-import { OddsList, PlaysConfig, DynamicPlaysConfig, PlaysConfigList, DynamicPlaysConfigList } from "/@/views/lottery/types/index";
+import { type DynamicLotteryItem, type DynamicLotteryList, type LotteryItem, type LotteryList, type OddsList } from "/@/views/lottery/types/index";
 
 /**
- * @description 这个函数是整合 playsConfig 和 dynamicPlaysConfig ，返回可以直接渲染使用的数据
- * @param playsConfig 前端写死的玩法
- * @param dynamicPlaysConfig 接口返回的玩法、赔率
+ * @description 这个函数是合并本地的玩法列表 LotteryList 和接口返回的玩法列表 DynamicLotteryList ，返回的列表可以直接用于渲染页面
+ * @param lotteryList 本地的玩法列表
+ * @param dynamicLotteryList 接口返回的玩法列表
  * @returns
  */
-export function integratePlaysConfig(playsConfigList: PlaysConfigList, dynamicPlaysConfigList: DynamicPlaysConfigList) {
-	return playsConfigList.map((playsConfig) => mergePlaysConfig(playsConfig, dynamicPlaysConfigList));
+export function mergeLotteryList(lotteryList: LotteryList, dynamicLotteryList: DynamicLotteryList) {
+	return lotteryList.map((v) => mergeLotteryItem(v, dynamicLotteryList));
 }
 
 /**
- * @description 这个函数是根据本地的玩法和接口返回的玩法做一个合并
- * @param playsConfig 本地的玩法
- * @param dynamicPlaysConfigList 接口返回的玩法
+ * @description 这个函数是合并单个玩法
+ * @param lotteryItem 本地的玩法
+ * @param dynamicLotteryList 接口返回的玩法
  * @returns
  */
-function mergePlaysConfig(playsConfig: PlaysConfig, dynamicPlaysConfigList: DynamicPlaysConfigList) {
-	const { gamePlayCodes } = playsConfig;
-	const filterList = dynamicPlaysConfigList.filter((item) => gamePlayCodes.includes(item.gamePlayCode));
+function mergeLotteryItem(lotteryItem: LotteryItem, dynamicLotteryList: DynamicLotteryList) {
+	const { gamePlayCodes } = lotteryItem;
+	const filterList = dynamicLotteryList.filter((v) => gamePlayCodes.includes(v.gamePlayCode));
 	if (filterList.length === 0) return {};
-	const { oddsList: playsConfigOddsList, ...restPlaysConfig } = playsConfig;
-	const dynamicPlaysConfig = filterList.reduce((prev, next) => {
-		const { oddsList: l1 = [], ...dynamicPlaysConfig1 } = prev;
-		const { oddsList: l2 = [], ...dynamicPlaysConfi2 } = next;
-		return { ...dynamicPlaysConfig1, ...dynamicPlaysConfi2, oddsList: [...l1, ...l2] };
-	}, {} as DynamicPlaysConfig);
-	const { oddsList: dynamicPlaysConfigOddsList, ...restDynamicPlaysConfig } = dynamicPlaysConfig;
+	const { oddsList, ...restLotteryItem } = lotteryItem;
+	const mergedDynamicLotteryItem = filterList.reduce((prev, next) => {
+		const { oddsList: l1 = [], ...dynamicLotteryItem1 } = prev;
+		const { oddsList: l2 = [], ...dynamicLotteryItem2 } = next;
+		return { ...dynamicLotteryItem1, ...dynamicLotteryItem2, oddsList: [...l1, ...l2] };
+	}, {} as DynamicLotteryItem);
+	const { oddsList: dynamicOddsList, ...restDynamicLotteryItem } = mergedDynamicLotteryItem;
 
 	return {
-		...restDynamicPlaysConfig,
-		...restPlaysConfig, // 主要是想覆盖 gamePlayName desc actived
-		oddsList: mergeOddsList(playsConfigOddsList, dynamicPlaysConfigOddsList),
+		...restDynamicLotteryItem,
+		...restLotteryItem, // 主要是想覆盖 gamePlayName desc actived
+		oddsList: mergeOddsList(oddsList, dynamicOddsList),
 	};
 }
 
 /**
- * @description 这个函数是根据本地的 oddsList 和接口返回的 oddsList 做一个合并
- * @param playsConfigOddsList 本地的 oddsList
- * @param dynamicPlaysConfigOddsList 接口返回的 oddsList，需要注意的是，三军 总和大小，可以映射到接口返回的两个数据，这两个对应的 oddsList 合并传入
+ * @description 这个函数是合并单个玩法里面的 oddsList
+ * @param oddsList 本地的 oddsList
+ * @param dynamicOddsList 接口返回的 oddsList，需要注意的是，三军 总和大小，可以映射到接口返回的两个数据，这两个对应的 oddsList 合并传入
  * @returns 返回一个合并后的 oddsList
  */
-function mergeOddsList(playsConfigOddsList: OddsList, dynamicPlaysConfigOddsList: OddsList) {
-	return playsConfigOddsList.map((item) => {
-		const findItem = dynamicPlaysConfigOddsList.find((v) => v.optionCode === item.optionCode);
+function mergeOddsList(oddsList: OddsList, dynamicOddsList: OddsList) {
+	return oddsList.map((item) => {
+		const findItem = dynamicOddsList.find((v) => v.optionCode === item.optionCode);
 		if (!findItem) return {};
 		const { itemOdds } = findItem;
 		return { ...findItem, ...item, itemOdds }; // 主要是想覆盖 itemOdds

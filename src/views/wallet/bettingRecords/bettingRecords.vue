@@ -72,7 +72,7 @@
 
 										<div class="winlogo">
 											<img v-if="props.row.orderClassify == '1'" :src="props.row.winLossAmount > 0 ? winlogo : loselogo" alt="" />
-                      <span v-else>-</span>
+											<span v-else>-</span>
 										</div>
 									</div>
 								</div>
@@ -139,8 +139,8 @@ const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
 const today = dayjs();
 const params = reactive({
-	betStartTime: dayjs().startOf("day").valueOf(),
-	betEndTime: dayjs().endOf("day").valueOf(),
+	betStartTime: dayjs(new Date()).startOf("day").valueOf(),
+	betEndTime: dayjs(new Date()).endOf("day").valueOf(),
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "",
@@ -149,8 +149,8 @@ const params = reactive({
 });
 
 const range = reactive({
-	start: new Date(today.subtract(0, "day").format("YYYY/MM/DD")),
-	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
+	start: dayjs(new Date()).startOf("day").valueOf(), // 今天 00:00:00
+	end: dayjs(new Date()).endOf("day").valueOf(), // 今天 23:59:59
 });
 const minDate = today.subtract(180, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
@@ -176,14 +176,31 @@ const updateRange = (value: any) => {
 };
 
 const type = ref("1");
+// 获取 查询目录
+const getDownBox = () => {
+	const params = ["order_status_client", "order_date_num", "venue_type"];
+	welfareCenterApi.requestGetTypeList(params).then((res) => {
+		welfareCenterRewardTypeOptions.value = res.data.venue_type.map((item: any) => {
+			return { text: item.value, value: item.code };
+		});
+
+		activityReceiveStatusOptions.value = res.data.order_status_client.map((item: any) => {
+			return { text: item.value, value: item.code };
+		});
+		activityReceiveStatusOptions.value.unshift({
+			text: "全部状态",
+			value: "",
+		});
+	});
+};
 onMounted(() => {
 	getDownBox();
 	pageQuery(true);
 });
 const pageQuery = (type?: boolean) => {
 	if (!type) {
-		params.betStartTime = 1730517077590 || dayjs(new Date(range.start)).startOf("day").valueOf();
-		params.betEndTime = 1731121877590 || dayjs(new Date(range.end)).endOf("day").valueOf();
+		params.betStartTime = dayjs(new Date(range.start)).startOf("day").valueOf();
+		params.betEndTime = dayjs(new Date(range.end)).endOf("day").valueOf();
 	}
 
 	welfareCenterApi
@@ -194,13 +211,9 @@ const pageQuery = (type?: boolean) => {
 		})
 		.then((res) => {
 			if (!res.data) return;
-      console.log(params.venueType, "params.venueType")
+			console.log(params.venueType, "params.venueType");
 			let rows = res.data[fieldMap[params.venueType]];
 
-			if (params.venueType == "2" || !rows) {
-				tableData.value = [];
-				return;
-			}
 			console.log(fieldMap[params.venueType], "rows");
 			tableData.value = rows.records || rows;
 			pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
@@ -235,23 +248,6 @@ const pageQuery = (type?: boolean) => {
 
 			getTableType();
 		});
-};
-// 获取 查询目录
-const getDownBox = () => {
-	const params = ["order_status_client", "order_date_num", "venue_type"];
-	welfareCenterApi.requestGetTypeList(params).then((res) => {
-		welfareCenterRewardTypeOptions.value = res.data.venue_type.map((item: any) => {
-			return { text: item.value, value: item.code };
-		});
-
-		activityReceiveStatusOptions.value = res.data.order_status_client.map((item: any) => {
-			return { text: item.value, value: item.code };
-		});
-		activityReceiveStatusOptions.value.unshift({
-			text: "全部状态",
-			value: "",
-		});
-	});
 };
 
 // 複製id
@@ -487,7 +483,7 @@ function getTableType() {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
-      gap: 10px;
+			gap: 10px;
 		}
 
 		.p {

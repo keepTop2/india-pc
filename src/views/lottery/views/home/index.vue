@@ -34,7 +34,7 @@
 				<div v-if="searchQuery">
 					<div class="games-module">
 						<div class="content" v-if="searchGames.length">
-							<LotteryCard :key="game._key" :data="game.data" v-for="game in searchGames" />
+							<LotteryCard :key="game._key" :data="game.data" v-for="game in searchGames" @select="pushView(game)" />
 						</div>
 						<div class="empty" v-else-if="!searchGames.length && !isLoading">
 							<svg-icon name="sports-empty" width="142px" height="120px" />
@@ -52,8 +52,8 @@
 						<span @click="currentTab = item._key" class="more">更多</span>
 					</div>
 					<div class="content">
-						<HotLotteryCard v-if="item.label === 1" :data="game.data" :key="item._key" v-for="game in item.gameInfoList.slice(0, 4)" />
-						<LotteryCard v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" />
+						<HotLotteryCard v-if="item.label === 1" :data="game.data" :key="item._key" v-for="game in item.gameInfoList.slice(0, 4)" @select="pushView(game)" />
+						<LotteryCard v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" @select="pushView(game)" />
 					</div>
 				</div>
 			</div>
@@ -62,16 +62,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, computed } from "vue";
+import { stringify } from "qs";
+import { computed, onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { gameApi } from "/@/api/game";
+import showToast from "/@/hooks/useToast";
+import { i18n } from "/@/i18n/index";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
-import { useRoute } from "vue-router";
+import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import Common from "/@/views/sports/utils/common";
+
+const $: any = i18n.global;
+
 const { LotteryCard, HotLotteryCard } = useLotteryCard();
 
 const currentTab = ref<string | undefined>("0");
 const searchQuery = ref<string>(""); // 搜索关键词
 const searchinputFocus = ref(false);
+
+useWebSocket();
 
 const gameData = ref<any[]>([]);
 
@@ -86,6 +95,7 @@ onMounted(async () => {
 	currentTab.value = route.query.gameTwoId as string;
 });
 const route = useRoute();
+const router = useRouter();
 const queryGameInfoByOneClassId = async () => {
 	const gameOneId = route.query.gameOneId;
 	await gameApi
@@ -133,6 +143,8 @@ const games = computed(() => {
 	return gameData.value.filter((game) => game._key === currentTab.value);
 });
 
+const handleSelect = (game) => {};
+
 // 监听 query 参数变化
 watch(
 	() => route.query.gameTwoId,
@@ -140,6 +152,24 @@ watch(
 		currentTab.value = route.query.gameTwoId as string;
 	}
 );
+
+const maps = {
+	K3: "/lottery/kuaisan",
+};
+const pushView = (game) => {
+	console.log("game", game);
+	const { gameCategoryCode, venueCode, gameCode } = game;
+	const targetPath = { venueCode, gameCode };
+	const targetView = maps[gameCategoryCode];
+	console.log("gameCategoryCode", gameCategoryCode);
+	console.log("targetView", targetView);
+	console.log("targetPath", targetPath);
+	if (!targetView) {
+		showToast("Error: Path Not Found!");
+		return;
+	}
+	router.push(`${targetView}?${stringify(targetPath)}`);
+};
 </script>
 
 <style scoped lang="scss">
