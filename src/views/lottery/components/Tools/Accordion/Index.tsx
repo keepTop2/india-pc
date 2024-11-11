@@ -17,7 +17,7 @@ const AccordionItem = defineComponent({
 		},
 		odds: {
 			// 赔率
-			type: Number,
+			type: String,
 			default: 0,
 		},
 		actived: {

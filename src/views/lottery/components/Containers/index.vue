@@ -84,6 +84,135 @@ const { LotteryHeader } = useLotteryHeader({ data: props.data });
 				gap: 8px;
 			}
 		}
+
+		:deep(.lottery-result) {
+			.search {
+				.el-select__wrapper {
+					height: 40px;
+					background-color: var(--Bg2);
+					border-color: var(--Line_2);
+					box-shadow: 0 0 0 1px var(--Line_2);
+					&.is-focused {
+						border-color: var(--Line_2);
+						box-shadow: 0 0 0 1px var(--Line_2);
+					}
+				}
+				.el-popper.is-light {
+					background-color: var(--Bg1);
+					border-color: var(--Line_2);
+					padding: 0;
+					&:has(.is-selected) {
+						background-color: var(--Bg2);
+					}
+					.el-scrollbar__view {
+						padding: 0;
+					}
+					.el-select-dropdown__item {
+						background-color: var(--Bg1);
+						padding: 0;
+						height: 40px;
+						line-height: 40px;
+						padding: 0 12px;
+						&.is-selected {
+							color: var(--Text_a);
+							background-color: var(--Bg2);
+						}
+					}
+					.el-popper__arrow {
+						display: none;
+					}
+				}
+			}
+			.table {
+				margin: 12px 0;
+
+				.balls {
+					display: flex;
+					justify-content: end;
+					column-gap: 8px;
+					align-items: center;
+				}
+				.table-header-cell .el-table__body {
+					.el-table__cell {
+						padding: 0px;
+						.cell {
+							width: 100%;
+							height: 100%;
+							padding: 15px;
+						}
+					}
+				}
+
+				// 修改头部背景色
+				.table-header-cell {
+					height: 44px;
+					background: var(--Bg3) !important;
+				}
+				// 修改鼠标移入表格行背景色
+				.el-table--enable-row-hover {
+					.el-table__body tr:hover > td.el-table__cell {
+						background-color: var(--Bg1);
+					}
+				}
+
+				.el-table {
+					height: 100%;
+					max-height: inherit;
+					background-color: transparent;
+					--el-table-row-hover-bg-color: var(--Line_2);
+					border-radius: 8px;
+					border: 1px solid var(--Line_2);
+
+					.el-table__inner-wrapper {
+						max-height: inherit;
+					}
+
+					th.is-leaf {
+						border-bottom: 1px solid var(--Line_2) !important;
+					}
+
+					.el-table__body-wrapper {
+						overflow: auto;
+						border-right: 0;
+						border-bottom: 0;
+					}
+
+					td,
+					th.is-leaf,
+					.el-table--border,
+					.el-table--group {
+						border-color: var(--Line_2);
+					}
+
+					.el-table__cell:last-child {
+						border-right: 0px !important;
+					}
+
+					// 行内样式
+					.row-cell,
+					tr {
+						background: var(--Bg1) !important;
+						background-color: transparent;
+					}
+
+					tr td:nth-child(1),
+					tr th:nth-child(1) {
+						border-left: 0px !important;
+					}
+
+					.el-table__inner-wrapper::after {
+						display: none;
+					}
+				}
+				.el-table__border-left-patch,
+				.el-table--border:before,
+				.el-table--border:after,
+				.el-table__inner-wrapper:before {
+					width: 0px;
+					height: 0px;
+				}
+			}
+		}
 	}
 }
 </style>

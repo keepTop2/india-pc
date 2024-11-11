@@ -1,213 +1,249 @@
 <template>
-	<div class="lottery">
-		<div class="lottery-list">
-			<LotteryCard />
-		</div>
-
-		<div class="lottery-list mt-20">
-			<HotLotteryCard />
-		</div>
-
-		<div class="lottery-header-box bg1 mt-20">
-			<LotteryHeader />
-		</div>
-		<div style="margin: 20px 0 0 20px">
-			<el-button type="primary" size="default" @click="startTime">开始</el-button>
-			<el-button type="primary" size="default" @click="resetTime">重置</el-button>
-		</div>
-
-		<div class="lottery-ball-box bg1 mt-20">
-			<div style="display: flex; column-gap: 10px">
-				<Ball
-					v-for="(item, index) in ballActiveds2"
-					:key="index"
-					@select="
-						() => {
-							ballActiveds2[index] = !ballActiveds2[index];
-						}
-					"
-					:actived="item"
-					:type="1"
-					:ball-number="index + 1"
-				/>
-			</div>
-		</div>
-
-		<div class="lottery-ball-box bg1 mt-20">
-			<div style="display: flex; column-gap: 10px">
-				<Ball
-					v-for="(item, index) in ballActiveds1"
-					:key="index"
-					@select="
-						() => {
-							ballActiveds1[index] = !ballActiveds1[index];
-						}
-					"
-					:actived="item"
-					:type="2"
-					:ball-number="index + 1"
-				/>
-			</div>
-		</div>
-
-		<div class="lottery-ball-box bg1 mt-20">
-			<div style="display: flex; column-gap: 10px">
-				<Ball v-for="item in 7" :key="item" :ball-number="item" :type="1" />
-
-				<Ball :ball-number="8" :type="2" />
-			</div>
-		</div>
-
-		<div class="lottery-dice-box bg1 mt-20">
-			<div style="display: flex; column-gap: 10px">
-				<Dice v-for="item in 6" :points="item" :type="1" />
-
-				<Dice v-for="item in 6" :points="item" :type="2" />
-			</div>
-		</div>
-
-		<div class="lottery-bet-form-box bg1 mt-20">
-			<div style="display: flex; justify-content: space-between; align-items: start; gap: 8px">
-				<div style="width: 100%; flex: 1">
-					<Accordion :isExpanded="expandedArr[0]" @change="(status) => (expandedArr[0] = status)" title="总和">
-						<template v-if="expandedArr[0]" #content>
-							<div class="gameplay">
-								<p>总和大小：开奖号码之和≥23为“大”，≤22为“小”。</p>
-								<p>总和单双：开奖号码之和的个位数为1、3、5、7、9为“单”，0、2、4、6、8为“双”。</p>
-							</div>
-							<AccordionItem
-								:actived="activdIndex === 0"
-								@select="(status) => handleExpanded(0, status, { title: '总和', rule: '大' })"
-								title="大"
-								info="开奖号码之和≥23为“大”"
-								:odds="1.995"
-							/>
-						</template>
-					</Accordion>
-
-					<Accordion :isExpanded="expandedArr[1]" @change="(status) => (expandedArr[1] = status)">
-						<template #title>
-							<span>选择球</span>
-						</template>
-						<template v-if="expandedArr[1]" #content>
-							<div class="gameplay">
-								<p>总和大小：开奖号码之和≥23为“大”，≤22为“小”。</p>
-								<p>总和单双：开奖号码之和的个位数为1、3、5、7、9为“单”，0、2、4、6、8为“双”。</p>
-							</div>
-							<AccordionItem :actived="activdIndex === 1" @select="(status) => handleBallsExpanded(1, status, { title: '总和', rule: '选择球' })" title="选择球" :odds="1.995" />
-							<div v-if="showBalls" class="accordion-content-item-balls">
-								<SelectBallGroup @clear="() => (balls = [])" :type="2" @select="handleSelectBalls" :renderBallNum="27" :maxLeng="3" :value="balls" />
-							</div>
-						</template>
-					</Accordion>
+	<div class="lottery-home">
+		<div class="mt_40 pr_10 pl_10">
+			<div class="search-component" ref="resultList">
+				<!-- 搜索框 -->
+				<div class="search_icon">
+					<svg-icon name="search" size="18px"></svg-icon>
 				</div>
-				<BetForm @submit="handleSubmit" :actived="gameInfo ? true : false">
-					<template v-if="gameInfo" #default>
-						<div class="bet-form-slot-header">
-							<div>{{ gameInfo?.title }}</div>
-							<div>{{ gameInfo?.rule }}</div>
-							<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px" v-if="showBalls">
-								<Ball v-for="item in balls" :key="item" :ball-number="item" :type="2" />
-							</div>
+				<input
+					type="text"
+					v-model="searchQuery"
+					class="search-input"
+					:class="searchinputFocus ? 'onFocus' : ''"
+					@focus="searchinputFocus = true"
+					@blur="searchinputFocus = false"
+					@input="
+						() => {
+							isLoading = true;
+							filterGames();
+						}
+					"
+				/>
+				<div class="close_icon curp" v-if="searchQuery">
+					<svg-icon name="close" size="18px" @click="searchQuery = ''" v-hover-svg></svg-icon>
+				</div>
+			</div>
+			<div class="tabs curp">
+				<span :class="currentTab == '0' ? 'active tab' : 'tab'" @click="clickTab('0')">全部</span>
+				<span v-for="(item, index) in gameData" class="tab" :class="currentTab == item._key ? 'active' : ''" @click="clickTab(item._key)" :key="index">{{ item.name }}</span>
+			</div>
+
+			<div v-ok-loading="isLoading" class="containers">
+				<!-- 查询展示 -->
+				<div v-if="searchQuery">
+					<div class="games-module">
+						<div class="content" v-if="searchGames.length">
+							<LotteryCard :key="game._key" :data="game.data" v-for="game in searchGames" />
 						</div>
-					</template>
-				</BetForm>
+						<div class="empty" v-else-if="!searchGames.length && !isLoading">
+							<svg-icon name="sports-empty" width="142px" height="120px" />
+							<p>哎呀！还没有数据！</p>
+						</div>
+					</div>
+				</div>
+
+				<div v-else class="games-module" v-for="item in games" :key="item._key">
+					<div className="module-title" v-if="currentTab === '0'">
+						<div style="display: flex; gap: 12px; align-items: center">
+							<img :src="item.iconFileUrl" alt="" />
+							<span className="name">{{ item.name }}</span>
+						</div>
+						<span @click="currentTab = item._key" class="more">更多</span>
+					</div>
+					<div class="content">
+						<HotLotteryCard v-if="item.label === 1" :data="game.data" :key="item._key" v-for="game in item.gameInfoList.slice(0, 4)" />
+						<LotteryCard v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" />
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-// import useLotteryCard from "../../components/lotteryCard/Index";
-import useLotteryCard from "/@/views/lottery/components/lotteryCard/Index";
-import useLotteryHeader from "/@/views/lottery/components/LotteryHeader/Index";
-import useBall from "/@/views/lottery/components/Tools/Ball/Index";
-import useDice from "/@/views/lottery/components/Tools/Dice/Index";
-import useBetForm from "/@/views/lottery/components/BetForm/Index";
-import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
+import { ref, watch, onMounted, computed } from "vue";
+import { gameApi } from "/@/api/game";
+import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
+import { useRoute } from "vue-router";
+import Common from "/@/views/sports/utils/common";
 const { LotteryCard, HotLotteryCard } = useLotteryCard();
-const { LotteryHeader, startTime, pauseTime, resetTime } = useLotteryHeader({ seconds: 68, immediate: false });
-const { Ball, SelectBallGroup } = useBall();
-const { Dice } = useDice();
-const { Accordion, AccordionItem } = useAccordion();
-const { BetForm } = useBetForm();
 
-const ballActiveds1 = ref(new Array(10).fill(false));
-const ballActiveds2 = ref(new Array(10).fill(false));
+const currentTab = ref<string | undefined>("0");
+const searchQuery = ref<string>(""); // 搜索关键词
+const searchinputFocus = ref(false);
 
-const expandedArr = ref([true, false]);
-const balls = ref([]);
-const showBalls = ref(false);
-const gameInfo = ref();
-const activdIndex = ref();
-const handleSelectBalls = ({ value, list }) => {
-	balls.value = list;
+const gameData = ref<any[]>([]);
+
+const clickTab = (id: string) => {
+	currentTab.value = id;
+	filterGames();
 };
-const handleBallsExpanded = (index: number, status: boolean, data: any) => {
-	showBalls.value = status;
-	handleExpanded(index, status, data);
+const isLoading = ref(false);
+// 根据标签添加预定义的选项
+onMounted(async () => {
+	await queryGameInfoByOneClassId();
+	currentTab.value = route.query.gameTwoId as string;
+});
+const route = useRoute();
+const queryGameInfoByOneClassId = async () => {
+	const gameOneId = route.query.gameOneId;
+	await gameApi
+		.queryGameInfoByOneClassId({ gameOneId })
+		.then((res) => {
+			gameData.value = res.data.map((item: any) => {
+				const _key = (item.id || "") + "-" + item.label;
+				return {
+					...item,
+					_key: item.label == 1 ? 1 : item.label == 2 ? 2 : item.id,
+					name: item.label == 1 ? "热门推荐" : item.label == 2 ? "新游戏" : item.name,
+					gameInfoList: item.gameInfoList?.map((game) => ({ ...game, data: { ...game.data, seconds: Math.floor((game.data.lotteryDate - game.data.lotteryTime) / 1000) } })),
+				};
+			});
+		})
+		.finally(() => {})
+		.catch((err) => {
+			err;
+		});
 };
-const handleExpanded = (index: number, status: boolean, data: any) => {
-	activdIndex.value = status ? index : undefined;
-	Ball.value = [];
-	gameInfo.value = status ? { ...data } : null;
-};
-const handleSubmit = () => {};
+// 模糊查询
+const searchGames = ref<any[]>([]);
+const filterGames = Common.debounce(() => {
+	isLoading.value = true;
+	if (!searchQuery.value.trim()) {
+		searchGames.value = [];
+		isLoading.value = false;
+	} else {
+		const curData =
+			currentTab.value === "0"
+				? gameData.value.flatMap((item) => item.gameInfoList)
+				: gameData.value.filter((item) => item._key === currentTab.value).flatMap((item) => item.gameInfoList);
+
+		searchGames.value = curData.filter((game) => game.data.gameName.includes(searchQuery.value));
+	}
+
+	setTimeout(() => {
+		isLoading.value = false;
+	}, 500);
+}, 300);
+
+const games = computed(() => {
+	if (currentTab.value === "0") return gameData.value;
+
+	return gameData.value.filter((game) => game._key === currentTab.value);
+});
+
+// 监听 query 参数变化
+watch(
+	() => route.query.gameTwoId,
+	async () => {
+		currentTab.value = route.query.gameTwoId as string;
+	}
+);
 </script>
 
-<style lang="scss" scoped>
-.lottery {
+<style scoped lang="scss">
+.lottery-home {
 	width: 1308px;
-	margin: 0 auto;
-	margin-top: 24px;
-	.lottery-list {
+	margin: 24px auto;
+}
+.tabs {
+	display: flex;
+	margin-top: 12px;
+	.tab {
+		padding: 7px 12px;
+		margin-right: 8px;
+		background: var(--button);
+		font-size: 14px;
+		color: var(--Text1);
+		border-radius: 4px;
+		transition: background-color 0.3s ease;
+		&.active {
+			background-color: var(--Theme);
+			color: var(--Text_s);
+		}
+	}
+}
+.search-component {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	position: relative;
+	.search-input {
+		width: 100%;
+		height: 50px;
+		background: var(--Bg2);
+		border-radius: 6px;
+		font-size: 14px;
+		border: 1px solid var(--Line_2);
+		padding-left: 54px;
+		color: var(--Text_s);
+		transition: border-color 0.3s ease;
+		&.onFocus {
+			border: 1px solid var(--Theme);
+		}
+	}
+
+	.search_icon {
+		position: absolute;
+		left: 12px;
+		top: 16px;
+		margin-right: 24px;
+		padding-right: 12px;
+		border-right: 1px solid var(--Line_2);
 		display: flex;
 		align-items: center;
-		gap: 16px;
-		flex-wrap: wrap;
-		.lottery-card {
-			width: calc((100% - 48px) / 4);
+	}
+	.close_icon {
+		position: absolute;
+		right: 12px;
+		top: 16px;
+	}
+}
+.containers {
+	height: calc(100vh - 200px);
+	position: relative;
+	.games-module {
+		margin-top: 24px;
+		.module-title {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			column-gap: 12px;
+			margin-bottom: 20px;
+			img {
+				width: 24px;
+				height: 24px;
+			}
+			.name {
+				font-size: var(--title-text-size);
+				color: var(--Text_a);
+			}
+			.more {
+				color: var(--Text1);
+				font-size: 18px;
+				cursor: pointer;
+			}
 		}
-	}
-	.mt-20 {
-		margin-top: 20px;
-	}
-	.bg1 {
-		background-color: var(--Bg1);
-	}
-	.lottery-header-box {
-		width: 100%;
-
-		padding: 20px 0;
-		:deep(.lottery-card) {
-			height: auto;
+		.content {
+			display: flex;
+			gap: 16px;
+			align-items: center;
+			flex-wrap: wrap;
+			> div {
+				width: calc((100% - 48px) / 4);
+			}
 		}
-	}
-
-	.lottery-ball-box {
-		padding: 20px;
-	}
-	.lottery-dice-box {
-		padding: 20px;
-	}
-	.lottery-bet-form-box {
-		padding: 20px;
-	}
-	:deep(.lottery-accordion) {
-		margin-bottom: 4px;
-	}
-	.accordion-content-item-balls {
-		padding: 12px;
-		background-color: var(--Bg1);
-		border: 1px solid var(--Line_2);
-		border-radius: 8px;
-		margin-top: 4px;
-	}
-	.bet-form-slot-header {
-		> div:nth-child(2) {
-			font-size: 12px;
-			margin-top: 8px;
+		.empty {
+			text-align: center;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			p {
+				color: var(--Text1);
+			}
 		}
 	}
 }
