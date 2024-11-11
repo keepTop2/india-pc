@@ -6,7 +6,7 @@
 					<div>从</div>
 					<div>
 						<svg-icon name="wallet" size="20px" />
-						<span>{{ transformInfo.platAvailableAmount }}.{{ transformInfo.platCurrency }}</span>
+						<span>{{ transformInfo.platAvailableAmount }} {{ transformInfo.platCurrency }}</span>
 					</div>
 				</div>
 				<div class="type">
