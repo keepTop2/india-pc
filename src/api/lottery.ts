@@ -8,7 +8,7 @@ const langMaps = { "zh-CN": "zh" }; // 做个映射
 const lang = (langMaps as any)[language];
 const operatorId = "cj20203";
 const isSmp = 1; // 1 双面盘 | 0 标准盘。目前只接双面盘，因此写死 1
-const operatorAccount = "cj20203_Utest_76920035";
+const operatorAccount = "Utest_76920035";
 
 export const lotteryApi = {
 	/**

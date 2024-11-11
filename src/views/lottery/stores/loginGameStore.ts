@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from "pinia";
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { gameApi } from "/@/api/game";
 
 /**
@@ -9,6 +9,7 @@ import { gameApi } from "/@/api/game";
 const useLoginGameStore = defineStore("LoginGameStore", () => {
 	const satoken = ref("");
 	const route = useRoute();
+	const router = useRouter();
 
 	/**
 	 * @description 这个函数是每个彩种进入时登录第三方拿 token 的
@@ -18,6 +19,12 @@ const useLoginGameStore = defineStore("LoginGameStore", () => {
 	const loginGame = async () => {
 		// 登录第三方拿 token
 		const { venueCode, gameCode } = route.query;
+
+		if (!venueCode || !gameCode) {
+			// 任意一个没有就不发送请求了，跳转回首页去
+			router.push("/");
+			return;
+		}
 		const submitData = { venueCode, gameCode };
 		const res = await gameApi.loginGame(submitData);
 		const SEPARATOR = "=";
