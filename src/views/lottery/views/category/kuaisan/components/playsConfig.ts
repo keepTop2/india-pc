@@ -1,4 +1,4 @@
-import { PlaysConfigList } from "/@/views/lottery/types/index";
+import { type LotteryList } from "/@/views/lottery/types/index";
 // 投注项
 
 // queryGameList 接口的入参
@@ -12,7 +12,7 @@ export const queryGamePlayOddsListParams = {
 	gameCode: "5FK3",
 };
 
-export const playsConfigList: PlaysConfigList = [
+export const lotteryList: LotteryList = [
 	{
 		id: "1",
 		gamePlayName: "三军 总和大小",

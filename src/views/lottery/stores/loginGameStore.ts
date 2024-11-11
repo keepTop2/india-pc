@@ -1,7 +1,8 @@
 import { defineStore, storeToRefs } from "pinia";
-import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+
 import { gameApi } from "/@/api/game";
+import { ref } from "vue";
 
 /**
  * @description 这个是基础函数，不会直接导出使用，给下面的 useLoginGame 钩子用的
@@ -40,7 +41,6 @@ const useLoginGameStore = defineStore("LoginGameStore", () => {
  */
 export function useLoginGame() {
 	const loginGameStore = useLoginGameStore();
-	console.log("loginGameStore", loginGameStore);
 	const { satoken } = storeToRefs(loginGameStore);
 	const { loginGame } = loginGameStore;
 	return { satoken, loginGame };
