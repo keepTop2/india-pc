@@ -74,8 +74,9 @@ import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
 import { playsConfigList, queryGameListParams, queryGamePlayOddsListParams } from "./playsConfig";
-import { integratePlaysConfig } from "/@//views/lottery/utils/index.ts";
+import { integratePlaysConfig } from "/@//views/lottery/utils/index";
 import { lotteryApi } from "/@/api/lottery";
+import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 
 const $: any = i18n.global;
 const props = defineProps({
@@ -85,6 +86,7 @@ const props = defineProps({
 const { Accordion, AccordionItem } = useAccordion();
 const { Ball, SelectBallGroup } = useBall();
 const { BetForm } = useBetForm();
+const { satoken } = useLoginGame();
 
 // 游戏玩法配置数据
 const gamePlayConfig = ref({});
@@ -136,8 +138,10 @@ const handleSubmit = async ({ stake: betMoney }) => {
 	const { gameCode, gamePlayCode, optionCode: nums } = currentItem.value;
 	const { issueNum: issueNo } = props.lotteryDetail;
 	const submitData = {
+		token: satoken.value,
 		list: [{ betCount: 1, multiple: 1, betMoney, nums, gameCode, gamePlayCode, issueNo }],
 	};
+	console.log("submitData", submitData);
 	const res = await lotteryApi.betting(submitData);
 	showToast($.t(`lottery['投注成功']`));
 	betFormRef.value.clearForm();
@@ -147,8 +151,6 @@ onMounted(async () => {
 	// 获取 单个彩种的动态的玩法与赔率信息
 	const res = await lotteryApi.queryGamePlayOddsList(queryGamePlayOddsListParams);
 	gamePlayConfig.value = integratePlaysConfig(playsConfigList, res.data);
-
-	console.log("gamePlayConfig.value", gamePlayConfig.value);
 });
 </script>
 
