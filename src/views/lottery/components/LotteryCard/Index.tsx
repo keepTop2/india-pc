@@ -19,8 +19,9 @@ export default () => {
 		},
 		setup(props) {
 			const { ClockTime } = useTimer({ value: props });
+			console.log(props.icon, "=======icon");
 			return () => (
-				<div class="card-header">
+				<div class="card-header">	
 					{/* 左侧图片 */}
 					<div class="left">
 						<img src={props.icon} alt="Header Image" />

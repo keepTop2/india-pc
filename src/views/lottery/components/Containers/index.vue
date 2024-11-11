@@ -1,7 +1,7 @@
 <template>
 	<div class="lottery-type-containers" :class="class">
 		<!-- 头部组件 -->
-		<LotteryHeader />
+		<LotteryHeader :data="data" />
 
 		<!-- 分割线 -->
 		<div class="line" />
@@ -20,8 +20,8 @@ const props = defineProps({
 	class: { type: String, default: "" },
 	data: { type: Object },
 });
-
-const { LotteryHeader } = useLotteryHeader({ data: props.data });
+console.log(props.data, "=======props.data");
+const { LotteryHeader } = useLotteryHeader();
 </script>
 
 <style scoped lang="scss">
