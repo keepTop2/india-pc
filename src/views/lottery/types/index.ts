@@ -26,5 +26,5 @@ export interface DynamicPlaysConfig extends BasePlaysConfig {
 	gamePlayCode: string;
 }
 
-export type PlaysConfigList = PlaysConfig[];
-export type DynamicPlaysConfigList = DynamicPlaysConfig[];
+export type PlaysConfigList = PlaysConfig[]; // 本地返回的玩法
+export type DynamicPlaysConfigList = DynamicPlaysConfig[]; // 接口返回的玩法
