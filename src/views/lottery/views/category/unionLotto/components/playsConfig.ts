@@ -1,348 +1,191 @@
-import { PlaysConfigList } from "/@/views/lottery/types/index";
-// 投注项
+import { type LotteryList } from "/@/views/lottery/types/index";
 
-// queryGameList 接口的入参
-export const queryGameListParams = {
-	gameCodes: "5FK3",
-	gameCategoryCodes: "K3",
+/**
+ * @description 接口参数配置
+ */
+export const beginPageDataParams = {
+	gameCode: "HTSSQ", // 极速双色球
+	gameCategoryCodes: "UNION_LOTTO", // 联合彩票类型
 };
 
-// queryGamePlayOddsList 接口的入参
 export const queryGamePlayOddsListParams = {
-	gameCode: "5FK3",
+	gameCode: "HTSSQ",
 };
 
-export const playsConfigList: PlaysConfigList = [
+/**
+ * @description 双色球玩法配置
+ */
+export const lotteryList: LotteryList = [
 	{
 		id: "1",
-		gamePlayName: "三军 总和大小",
-		gamePlayCodes: ["smp_dxtb_sj", "smp_dxtb_sjdx"],
-		desc: `选择1个号码组成1注，开奖号码包含所选号码，即中奖。<br> 总和大小：开奖号码之和≥11为“大”，≤10为“小”，若3个号码相同，则不中奖。`,
+		gamePlayName: "红球",
+		gamePlayCodes: ["smp_hq_sm_dsd", "smp_hq_sm_dxd", "smp_hq_rx1"],
+		desc: "红球单双多：开奖的6个红球号码中尾数为1、3、5、7、9的号码数量，比尾数为0、2、4、6、8的号码数量多为“单多”，反之为“双多”，分别都是3个为“和” /n 红球大小多：开奖的6个红球号码中≥17的号码数量比≤16的的号码数量多为“大多”，反之为“小多”，分别都是3个为“和”",
 		actived: false,
 		oddsList: [
 			{
-				id: "1-1",
-				title: "号码1",
-				desc: "开奖号码1,1,3，投注「1」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "1",
-			},
-			{
-				id: "1-2",
-				title: "号码2",
-				desc: "开奖号码2,1,3，投注「2」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "2",
-			},
-			{
-				id: "1-3",
-				title: "号码3",
-				desc: "开奖号码3,1,3，投注「3」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "3",
-			},
-			{
-				id: "1-4",
-				title: "号码4",
-				desc: "开奖号码4,1,3，投注「4」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "4",
-			},
-			{
-				title: "号码5",
-				desc: "开奖号码5,1,3，投注「5」，即中奖",
-				itemOdds: 1.995,
-				id: "1-5",
-				actived: false,
-				optionCode: "5",
-			},
-			{
-				id: "1-6",
-				title: "号码6",
-				desc: "开奖号码6,1,3，投注「6」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "6",
-			},
-			{
-				id: "1-7",
-				title: "大的",
-				desc: "开奖号码之和≥11为“大”",
+				id: "1-1", 
+				title: "大",
+				desc: "开奖的6个红球号码中≥17的号码数量比≤16的的号码数量多为“大多”",
 				itemOdds: 1.995,
 				actived: false,
 				optionCode: "大",
+				gamePlayCode: "smp_hq_sm_dxd",
+				minBet: 2,
+				maxBet: 10000
 			},
 			{
-				id: "1-8",
-				title: "小的",
-				desc: "开奖号码之和≤10为“小”",
+				id: "1-2",
+				title: "小",
+				desc: "开奖的6个红球号码中≤16的号码数量比≥17的的号码数量多为“小多”",
 				itemOdds: 1.995,
 				actived: false,
 				optionCode: "小",
+				gamePlayCode: "smp_hq_sm_dxd",
+				minBet: 2,
+				maxBet: 10000
 			},
-		],
+			{
+				id: "1-3",
+				title: "大小和",
+				desc: "开奖的6个红球号码中≥17和≤16的号码数量相等为“和”",
+				itemOdds: 1.995,
+				actived: false,
+				optionCode: "和",
+				gamePlayCode: "smp_hq_sm_dxd",
+				minBet: 2,
+				maxBet: 10000
+			},
+			{
+				id: "1-4",
+				title: "单",
+				desc: "开奖的6个红球号码中尾数为1、3、5、7、9的号码数量比尾数为0、2、4、6、8的号码数量多为“单多”",
+				itemOdds: 1.995,
+				actived: false,
+				optionCode: "单",
+				gamePlayCode: "smp_hq_sm_dsd",
+				minBet: 2,
+				maxBet: 10000
+			},
+			{
+				id: "1-5",
+				title: "双",
+				desc: "开奖的6个红球号码中尾数为0、2、4、6、8的号码数量比尾数为1、3、5、7、9的号码数量多为“双多”",
+				itemOdds: 1.995,
+				actived: false,
+				optionCode: "双",
+				gamePlayCode: "smp_hq_sm_dsd",
+				minBet: 2,
+				maxBet: 10000
+			},
+			{
+				id: "1-6",
+				title: "单双和",
+				desc: "开奖的6个红球号码中单双数字数量相等为“和”",
+				itemOdds: 1.995,
+				actived: false,
+				optionCode: "和",
+				gamePlayCode: "smp_hq_sm_dsd",
+				minBet: 2,
+				maxBet: 10000
+			},
+			{
+				id: "1-7",
+				title: "选择红球",
+				desc: "选择1个红球号码",
+				itemOdds: 1.995,
+				actived: false,
+				optionCode: "rx1",
+				gamePlayCode: "smp_hq_rx1",
+				type: "selectBall",
+				ballNum: 33,
+				maxSelect: 1
+			}
+		]
 	},
 	{
 		id: "2",
-		gamePlayName: "围骰 全骰",
-		gamePlayCodes: ["smp_dxtb_ws", "smp_dxtb_qs"],
-		desc: `围骰：选择1个组合为1注，所选组合与开奖号码相同，即中奖。<br>举例：开奖号码1,1,1，投注「111」，即中奖。<br>全骰：开奖的3个号码相同，即中奖。`,
+		gamePlayName: "蓝球",
+		gamePlayCodes: ["smp_lq_sm", "smp_lq_lqxh"],
+		desc: "蓝球玩法，包含双面玩法和蓝球选号",
 		actived: false,
 		oddsList: [
 			{
 				id: "2-1",
-				title: "No.1 x 3",
-				desc: "例如中奖号码1,1,1；投注「111」，即为中奖",
-				itemOdds: 1.995,
+				title: "大",
+				desc: "选择蓝球大数",
+				itemOdds: 1.97,
 				actived: false,
-				optionCode: "1,1,1",
+				optionCode: "大",
+				gamePlayCode: "smp_lq_sm",
+				minBet: 2,
+				maxBet: 10000
 			},
 			{
-				title: "No.2 x 3",
-				desc: "例如：中奖号码2,2,2；投注「222」，即为中奖",
-				itemOdds: 1.995,
 				id: "2-2",
+				title: "小",
+				desc: "选择蓝球小数",
+				itemOdds: 1.97,
 				actived: false,
-				optionCode: "2,2,2",
+				optionCode: "小",
+				gamePlayCode: "smp_lq_sm",
+				minBet: 2,
+				maxBet: 10000
 			},
 			{
-				title: "No.3 x 3",
-				desc: "例如中奖号码3,3,3；投注「333」，即为中奖",
-				itemOdds: 1.05,
 				id: "2-3",
+				title: "单",
+				desc: "选择蓝球单数",
+				itemOdds: 1.97,
 				actived: false,
-				optionCode: "3,3,3",
+				optionCode: "单",
+				gamePlayCode: "smp_lq_sm",
+				minBet: 2,
+				maxBet: 10000
 			},
 			{
-				title: "No.4 x 3",
-				desc: "例如：中奖号码4,4,4；投注「444」，即为中奖",
-				itemOdds: 1.995,
 				id: "2-4",
+				title: "双",
+				desc: "选择蓝球双数",
+				itemOdds: 1.97,
 				actived: false,
-				optionCode: "4,4,4",
+				optionCode: "双",
+				gamePlayCode: "smp_lq_sm",
+				minBet: 2,
+				maxBet: 10000
 			},
 			{
-				title: "No.5 x 3",
-				desc: "例如中奖号码5,5,5；投注「555」，即为中奖",
-				itemOdds: 1.995,
 				id: "2-5",
+				title: "蓝球选号",
+				desc: "选择1个蓝球号码",
+				itemOdds: 13.97,
 				actived: false,
-				optionCode: "5,5,5",
-			},
-			{
-				title: "No.6 x 3",
-				desc: "例如中奖号码6,6,6；投注「666」，即为中奖",
-				itemOdds: 1.995,
-				id: "2-6",
-				actived: false,
-				optionCode: "6,6,6",
-			},
-			{
-				title: "任意三重",
-				desc: "开奖的3个号码相同，即中奖",
-				itemOdds: 1.995,
-				id: "2-7",
-				actived: false,
-				optionCode: "1,1,1-6,6,6",
-			},
-		],
-	},
-	{
-		id: "3",
-		gamePlayName: "点数",
-		gamePlayCodes: ["smp_dxtb_3_18ds"],
-		desc: `选择1个数值，与开奖号码之和相同，即中奖。<br>举例：开奖号码1,1,1，投注「3」，即中奖。`,
-		actived: false,
-		oddsList: [
-			{
-				id: "3-1",
-				title: "3",
-				desc: "中奖号码1、1、1；投注「3」，即为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "3",
-			},
-			{
-				id: "3-2",
-				title: "4",
-				desc: "中奖号码1、1、2；投注「4」，为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "4",
-			},
-			{
-				title: "5",
-				desc: "中奖号码1、1、3；投注「5」，为中奖",
-				itemOdds: 1.995,
-				id: "3-3",
-				actived: false,
-				optionCode: "5",
-			},
-			{
-				id: "3-4",
-				title: "6",
-				desc: "开奖号码2,1,3，投注「6」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "6",
-			},
-			{
-				id: "3-5",
-				title: "7",
-				desc: "中奖号码2、1、4；投注「7」，为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "7",
-			},
-			{
-				id: "3-6",
-				title: "8",
-				desc: "中奖号码2、1、5；投注「8」，为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "8",
-			},
-			{
-				title: "9",
-				desc: "中奖号码2、1、6；投注「9」，为中奖",
-				itemOdds: 1.995,
-				id: "3-7",
-				actived: false,
-				optionCode: "9",
-			},
-			{
-				id: "3-8",
-				title: "10",
-				desc: "中奖号码3、1、6；投注「10」，为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "10",
-			},
-			{
-				id: "3-9",
-				title: "11",
-				desc: "中奖号码3、2、6；投注「11」，为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "11",
-			},
-			{
-				id: "3-10",
-				title: "12",
-				desc: "中奖号码3、3、6；投注「12」，为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "12",
-			},
-			{
-				title: "13",
-				desc: "中奖号码3、4、6；投注「13」，为中奖",
-				itemOdds: 1.995,
-				id: "3-11",
-				actived: false,
-				optionCode: "13",
-			},
-			{
-				id: "3-12",
-				title: "14",
-				desc: "中奖号码3、5、6；投注「14」，为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "14",
-			},
-			{
-				id: "3-13",
-				title: "15",
-				desc: "中奖号码3、6、6；投注「15」，为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "15",
-			},
-			{
-				id: "3-14",
-				title: "16",
-				desc: "中奖号码4、6、6；投注「16」，为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "16",
-			},
-			{
-				id: "3-15",
-				title: "17",
-				desc: "中奖号码5、6、6；投注「17」，为中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "17",
-			},
-			{
-				id: "3-16",
-				title: "18",
-				desc: "开奖号码6,6,6，投注「18」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "18",
-			},
-		],
-	},
-	{
-		id: "4",
-		gamePlayName: "鱼/虾/蟹",
-		gamePlayCodes: ["smp_dxtb_yxx"],
-		desc: `开奖号码其中1个与所选号码相同，即为中奖。<br>举例：开奖号码1,2,3，投注「鱼（1）」，即中奖。`,
-		actived: false,
-		oddsList: [
-			{
-				id: "4-1",
-				title: "鱼 (1)",
-				desc: "开奖号码1,2,3，投注「鱼（1）」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "1",
-			},
-			{
-				id: "4-2",
-				title: "虾 (2)",
-				desc: "开奖号码1,2,3，投注「虾（2）」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "2",
-			},
-			{
-				id: "4-3",
-				title: "葫芦 (3)",
-				desc: "开奖号码1,2,3，投注「葫芦（3）」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "3",
-			},
-			{
-				id: "4-4",
-				title: "金币 (4)",
-				desc: "开奖号码1,2,4，投注「金币（4）」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "5",
-			},
-			{
-				id: "4-5",
-				title: "螃蟹 (5)",
-				desc: "开奖号码1,2,5，投注「螃蟹（5）」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "5",
-			},
-			{
-				id: "4-6",
-				title: "鸡 (6)",
-				desc: "开奖号码1,2,6，投注「鸡（6）」，即中奖",
-				itemOdds: 1.995,
-				actived: false,
-				optionCode: "6",
-			},
-		],
-	},
+				optionCode: "lqxh",
+				gamePlayCode: "smp_lq_lqxh",
+				type: "selectBall",
+				ballNum: 16,
+				maxSelect: 1
+			}
+		]
+	}
 ];
+
+/**
+ * @description 游戏代码类型
+ */
+export enum GameCode {
+	HTSSQ = "HTSSQ", // 极速双色球
+	XYSSQ = "3FSSQ", // 幸运双色球
+	SSQ = "5FSSQ"    // 双色球
+}
+
+/**
+ * @description 玩法代码类型
+ */
+export enum PlayCode {
+	RED_DS = "smp_hq_sm_dsd",  // 红球单双多
+	RED_DX = "smp_hq_sm_dxd",  // 红球大小多
+	RED_RX = "smp_hq_rx1",     // 红球任选一
+	BLUE_SM = "smp_lq_sm",     // 蓝球双面
+	BLUE_XH = "smp_lq_lqxh"    // 蓝球选号
+}

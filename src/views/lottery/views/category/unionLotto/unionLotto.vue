@@ -1,5 +1,5 @@
 <template>
-	<Containers :data="mockData" class="lottery-shishicai">
+	<Containers :data="lotteryInfo" class="lottery-union">
 		<!-- 标签栏 -->
 		<div class="tabs">
 			<!-- 循环渲染每个标签，基于当前选中的标签动态添加类名 -->
@@ -14,54 +14,51 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineAsyncComponent, onMounted } from "vue";
-import { useRoute } from "vue-router";
-// 引入各组件和工具方法
-import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
-import useBall from "/@/views/lottery/components/Tools/Ball/Index";
-import useBetForm from "/@/views/lottery/components/BetForm/Index";
-import Containers from "/@/views/lottery/components/Containers/index.vue";
-import Icon from "/@/assets/zh-CN/lottery/unionLotto.svg";
-import { queryGameListParams, queryGamePlayOddsListParams } from "./components/playsConfig";
-import showToast from "/@/hooks/useToast";
-import { i18n } from "/@/i18n/index";
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from "vue";
+import { beginPageDataParams } from "./components/playsConfig";
 import { lotteryApi } from "/@/api/lottery";
-import { useTab } from "/@/views/lottery/hooks/useLottery";
+import Containers from "/@/views/lottery/components/Containers/index.vue";
+import { useUpdateThirdPartyTokenTimer } from "/@/views/lottery/hooks/useFetchThirdPartyTimer";
+import { useTab } from "/@/views/lottery/hooks/useTab";
+import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 
-const $: any = i18n.global;
-
-const BayLottery = defineAsyncComponent(() => import("./components/bayLottery.vue"));
+const BuyLottery = defineAsyncComponent(() => import("./components/BuyLottery.vue"));
 const Result = defineAsyncComponent(() => import("./components/result.vue"));
 
 const tabComponents = new Map([
-	[1, BayLottery],
+	[1, BuyLottery],
 	[2, Result],
 ]);
 
-// 模拟数据，用于显示在页面头部
-const mockData = {
-	icon: Icon,
+// 彩票基本信息
+const lotteryInfo = {
+	icon: "https://example.com/ssq-icon.png",
 	title: "双色球",
-	desc: "五分钟一期",
-	seconds: 100,
+	desc: "每周二、四、日开奖",
+	seconds: 86400, // 距离下次开奖的秒数
 	betStatusName: "投注中",
-	issuesNo: "20230812-084",
-	recentlyAwarded: 5403.23,
+	issuesNo: "2023094", // 期号
+	recentlyAwarded: 10000000, // 最近一期头奖金额
 };
 
-// 标签栏的配置数据
 const { tabs, tabsActived, handleTabChange } = useTab();
-
-const lotteryDetail = ref({}); // 单个彩种的详情，如名字、多少分钟一期
-const integratePlaysConfigList = ref({}); // 单个彩种的动态的玩法与赔率信息（玩法写死，但是需要返回的数据整合）
-const route = useRoute();
+const lotteryDetail = ref({});
+const { loginGame } = useLoginGame();
+const { turnOnTimer, turnOffTimer } = useUpdateThirdPartyTokenTimer(loginGame);
 
 onMounted(async () => {
-	// 获取 单个彩种的详情
-	const res = await lotteryApi.queryGameList(queryGameListParams);
-	lotteryDetail.value = res.data[0];
-	console.log("lotteryDetail", lotteryDetail);
+	loginGame();
+	turnOnTimer();
+	
+	const res = await lotteryApi.beginPageData(beginPageDataParams);
+	lotteryDetail.value = res.data?.[0] || {};
 });
+
+onBeforeUnmount(turnOffTimer);
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.lottery-union {
+	
+}
+</style>
