@@ -141,7 +141,7 @@
 						<span class="red">{{ $t(`wallet['（图片限制10MB）']`) }}</span>
 					</p>
 					<div class="list">
-						<Upload :files="files" :max="3" @update:files="updateFiles" :onUpload="uploadImg" />
+						<Upload :files="cashFlowFileList" :max="3" @update:files="updateFiles" :onUpload="uploadImg" @del="uploadDel" />
 					</div>
 					<div class="form">
 						<div class="cell">
@@ -361,17 +361,27 @@ const onContinueRecharge = () => {
 
 // 获取更新后的本地图片
 const updateFiles = (newFiles: Array<{ name: string; preview: string }>) => {
+	console.log("newFiles", newFiles);
 	files.value = newFiles;
+	console.log("cashFlowFileList", cashFlowFileList.value);
 };
 
 // 上传图片
 const uploadImg = async (file: any) => {
+	console.log("file", file);
+
 	const formData = new FormData();
 	formData.append("file", file);
 	const res = await uploadApi.upload(formData);
 	if (res.code === common.ResCode.SUCCESS) {
 		cashFlowFileList.value.push(res.data);
+		console.log("cashFlowFileList", cashFlowFileList.value);
 	}
+};
+
+// 图片删除
+const uploadDel = (newFiles: any) => {
+	cashFlowFileList.value = newFiles;
 };
 
 // 倒计时函数

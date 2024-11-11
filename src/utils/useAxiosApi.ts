@@ -11,6 +11,7 @@ import showToast from "../hooks/useToast";
 const { startLoading, stopLoading } = useLoading();
 // const { handleRequestError } = useRequestError();
 import { useModalStore } from "/@/stores/modules/modalStore";
+import pubsub from "/@/pubSub/pubSub";
 // 获取 config 配置请求 api
 function getUrl() {
 	switch (import.meta.env.VITE_BASEENV) {
@@ -101,11 +102,11 @@ instance.interceptors.response.use(
 		const userStore = useUserStore();
 		switch (res.code) {
 			// 登录过期
-
 			case ResCode.LOGIN_EXPIRE:
 				userStore.logOut();
 				break;
-			case 10007:
+			// 令牌错误
+			case ResCode.TOKEN_INVALID:
 				userStore.logOut();
 				break;
 		}

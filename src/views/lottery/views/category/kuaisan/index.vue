@@ -25,7 +25,9 @@ import { queryGameListParams, queryGamePlayOddsListParams } from "./components/p
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
 import { lotteryApi } from "/@/api/lottery";
-import { useTab } from "/@/views/lottery/hooks/useLottery";
+import { useTab } from "/@/views/lottery/hooks/useTab.ts";
+import { gameApi } from "/@/api/game";
+import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 
 const $: any = i18n.global;
 
@@ -54,12 +56,15 @@ const { tabs, tabsActived, handleTabChange } = useTab();
 const lotteryDetail = ref({}); // 单个彩种的详情，如名字、多少分钟一期
 const integratePlaysConfigList = ref({}); // 单个彩种的动态的玩法与赔率信息（玩法写死，但是需要返回的数据整合）
 const route = useRoute();
+const { loginGame } = useLoginGame();
 
 onMounted(async () => {
 	// 获取 单个彩种的详情
 	const res = await lotteryApi.queryGameList(queryGameListParams);
 	lotteryDetail.value = res.data[0];
-	console.log("lotteryDetail", lotteryDetail);
+
+	// 登录第三方拿 token
+	await loginGame();
 });
 </script>
 
