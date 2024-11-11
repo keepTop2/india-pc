@@ -177,6 +177,23 @@ const updateRange = (value: any) => {
 };
 
 const type = ref("1");
+// 获取 查询目录
+const getDownBox = () => {
+	const params = ["order_status_client", "order_date_num", "venue_type"];
+	welfareCenterApi.requestGetTypeList(params).then((res) => {
+		welfareCenterRewardTypeOptions.value = res.data.venue_type.map((item: any) => {
+			return { text: item.value, value: item.code };
+		});
+
+		activityReceiveStatusOptions.value = res.data.order_status_client.map((item: any) => {
+			return { text: item.value, value: item.code };
+		});
+		activityReceiveStatusOptions.value.unshift({
+			text: "全部状态",
+			value: "",
+		});
+	});
+};
 onMounted(() => {
 	getDownBox();
 	pageQuery(true);
@@ -195,43 +212,9 @@ const pageQuery = (type?: boolean) => {
 		})
 		.then((res) => {
 			if (!res.data) return;
-      console.log(params.venueType, "params.venueType")
+			console.log(params.venueType, "params.venueType");
 			let rows = res.data[fieldMap[params.venueType]];
 
-		//if (params.venueType == "2" || !rows) {
-		//	tableData.value = [];
-		//	return;
-		//}
-		console.log(fieldMap[params.venueType], "rows");
-		tableData.value = rows.records || rows;
-		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
-		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
-		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
-		pageData.platCurrencyCode = res.data.platCurrencyCode;
-		pageData.mainCurrency = res.data.mainCurrency;
-		pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
-
-		tzAmount.value = tableData.value.reduce((a: any, b: any) => {
-			return a + b.betAmount;
-		}, 0);
-
-		winOrLoseAmount.value = tableData.value
-			.reduce((a: any, b: any) => {
-				return a + b.winLossAmount;
-			}, 0)
-			?.toFixed(2);
-
-		tableData.value.forEach((item: any) => {
-			if (item.betAmount) {
-				item.betAmount = item.betAmount.toFixed(2);
-			} else {
-				item.betAmount = "";
-			}
-			if (item.winLossAmount) {
-				item.winLossAmount = item.winLossAmount.toFixed(2);
-			} else {
-				item.winLossAmount = "";
-			}
 			console.log(fieldMap[params.venueType], "rows");
 			tableData.value = rows.records || rows;
 			pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
@@ -271,23 +254,6 @@ const pageQuery = (type?: boolean) => {
 				res.data.tableOrderPage?.records?.length > 0;
 			getTableType();
 		});
-};
-// 获取 查询目录
-const getDownBox = () => {
-	const params = ["order_status_client", "order_date_num", "venue_type"];
-	welfareCenterApi.requestGetTypeList(params).then((res) => {
-		welfareCenterRewardTypeOptions.value = res.data.venue_type.map((item: any) => {
-			return { text: item.value, value: item.code };
-		});
-
-		activityReceiveStatusOptions.value = res.data.order_status_client.map((item: any) => {
-			return { text: item.value, value: item.code };
-		});
-		activityReceiveStatusOptions.value.unshift({
-			text: "全部状态",
-			value: "",
-		});
-	});
 };
 
 // 複製id
