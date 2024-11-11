@@ -25,7 +25,7 @@
 					<template #option="{ option }">
 						<div class="custom-option">
 							<svg-icon class="icon" name="wallet-last" />
-							<span class="label"> {{ option.addressNo }} </span>
+							<span class="label"> {{ Common.USDTAddressHiding(option.addressNo) }} </span>
 						</div>
 					</template>
 				</DropDown>
@@ -35,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+import Common from "/@/utils/common";
 import { reactive, watch } from "vue";
 
 const props = defineProps({

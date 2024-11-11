@@ -19,14 +19,6 @@
 		<!-- 左侧菜单 -->
 		<div class="left_scroll">
 			<div class="left_scroll_conatiner1">
-				<!-- 奖金 -->
-				<div class="left_bonus">
-					<svg-icon name="bonus_icon" size="18px" />
-					<span class="left_text1">
-						{{ $t(`common['奖金']`) }}
-					</span>
-				</div>
-
 				<!-- 任务 抽奖-->
 				<div class="task_lottery mt_15">
 					<div class="task_lottery_item" @click="showTask" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('task_bg.png')})` : '', marginRight: '5px' }">
@@ -36,7 +28,7 @@
 
 					<div class="task_lottery_item" @click="showSpin" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('lottery_bg.png')})` : '' }">
 						<img :src="Common.getCommonImgPath('lottery_icon.png')" alt="" />
-						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['抽奖']`) }}</span>
+						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['转盘']`) }}</span>
 					</div>
 				</div>
 				<!-- 菜单 -->
@@ -110,23 +102,33 @@ const showCommonDialog = ref(false);
 import { useRouter } from "vue-router";
 import { useUserStore } from "/@/stores/modules/user";
 import { useActivityStore } from "/@/stores/modules/activity";
+import showToast from "/@/hooks/useToast";
 const activityStore = useActivityStore();
 const router = useRouter();
 const dialogInfo: any = ref({});
 const isLoading = ref(false);
 const showNeedLogin = ref(false);
+const ActivitySwitch: any = ref([]);
 onMounted(() => {
-	isLoading.value = true;
-	setTimeout(() => {
-		isLoading.value = false;
-	}, 1500);
+	queryLobbyLabelActivitySwitch();
 });
 
-const showSpin = () => {
-	activityApi.getSpindetail().then((res) => {
-		activityStore.setCurrentActivityData(res.data);
-		modalStore.openModal("SPIN_WHEEL");
+const queryLobbyLabelActivitySwitch = () => {
+	activityApi.queryLobbyLabelActivitySwitch().then((res) => {
+		ActivitySwitch.value = res.data.activityTemplate || [];
 	});
+};
+const showSpin = () => {
+	console.log(ActivitySwitch.value);
+
+	if (ActivitySwitch.value.includes("SPIN_WHEEL")) {
+		activityApi.getSpindetail().then((res) => {
+			activityStore.setCurrentActivityData(res.data);
+			modalStore.openModal("SPIN_WHEEL");
+		});
+	} else {
+		showToast("敬请期待");
+	}
 };
 const confirmDialog = () => {
 	showCommonDialog.value = false;
@@ -219,8 +221,7 @@ const changeCollpase = () => {
 		overflow-y: auto;
 		transition: all 0.2s ease;
 		.left_scroll_conatiner1 {
-			padding: 8px;
-			margin: 8px auto;
+			padding: 0 8px;
 			border-radius: 5px;
 			.left_bonus {
 				height: 46px;
@@ -250,9 +251,9 @@ const changeCollpase = () => {
 						color: var(--Text_a);
 					}
 					img {
-						height: 41px;
-						margin-left: 10px;
-						margin-top: -5px;
+						height: 34px;
+						margin-top: 3px;
+						margin-right: 3px;
 					}
 				}
 			}

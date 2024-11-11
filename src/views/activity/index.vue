@@ -1,15 +1,15 @@
 <template>
-	<div>
+	<div class="mb_49">
 		<venueBanner></venueBanner>
 		<div class="max-width">
-			<div class="tabs mt_40 mb_40">
+			<div class="tabs mt_40 mb_40 mr_10 ml_10">
 				<div v-for="(item, index) in activityTabsList" :key="index" class="tab" @click.stop="setCurrentTab(index)">
 					<button class="btn" :class="currentTab === index ? 'active' : ''">
 						{{ item.labNameI18Code }}
 					</button>
 				</div>
 			</div>
-			<LazyLoadList :loadMore="getactivityList" :finished="finished" :loading="isLoading">
+			<LazyLoadList :loadMore="getactivityList" :finished="finished" :loading="isLoading" :noData="activityList.length < 1">
 				<activityCard :activityList="activityList" />
 			</LazyLoadList>
 		</div>
@@ -21,7 +21,7 @@ import { onMounted, reactive, ref } from "vue";
 import activityCard from "./components/activityCard.vue";
 import { activityApi } from "/@/api/activity";
 import Common from "/@/utils/common";
-
+import { useUserStore } from "/@/stores/modules/user";
 const activityList = ref([]);
 const activityTabsList: any = ref([]);
 const currentTab = ref(0);

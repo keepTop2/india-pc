@@ -15,12 +15,12 @@
 		</div>
 		<div class="lobbyGameList">
 			<div class="onlyOneGame" v-if="bigOneItem && gameList?.gameInfoList?.length == 1" @click="Common.goToGame(gameList?.gameInfoList[0])">
-				<img v-lazy-load="gameList?.gameInfoList[0].iconFileUrl" alt="" />
+				<img v-lazy-load="gameList?.iconFileUrl" alt="" />
 			</div>
 
 			<div v-else>
 				<Swiper :slidesPerView="8" :spaceBetween="15" :modules="modules" class="swiper-container curp" @swiper="onSwiper">
-					<SwiperSlide v-for="(item, index) in [...gameList?.gameInfoList, ...gameList?.gameInfoList]" :key="index" class="lobbyGameItem">
+					<SwiperSlide v-for="(item, index) in gameList?.gameInfoList" :key="index" class="lobbyGameItem">
 						<div class="cornerMark">
 							<svg-icon name="new_game_icon" v-if="item.cornerLabels == 1" size="60" />
 							<svg-icon name="hot_game_icon" v-else-if="item.cornerLabels == 2" size="60" />

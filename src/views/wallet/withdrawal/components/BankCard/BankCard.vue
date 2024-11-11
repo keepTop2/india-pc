@@ -23,7 +23,7 @@
 					<template #option="{ option }">
 						<div class="custom-option">
 							<svg-icon class="icon" name="wallet-last" />
-							<span class="label"> {{ option.bankCard }} </span>
+							<span class="label"> {{ Common.bankCardHiding(option.bankCard) }} </span>
 						</div>
 					</template>
 				</DropDown>

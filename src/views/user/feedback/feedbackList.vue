@@ -173,6 +173,7 @@ const sizeChange = (pageSize: number) => {
 			text-overflow: ellipsis; /* 显示省略号 */
 			line-height: 1.5; /* 行高 */
 			max-height: 3em; /* 限制最大高度 */
+			max-width: 704px;
 		}
 		.icon {
 			width: 32px;

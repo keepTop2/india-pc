@@ -181,12 +181,6 @@
 			position: static !important;
 		}
 
-		.el-table__expanded-cell {
-			&:hover {
-				background-color: var(--Bg4) !important;
-			}
-		}
-
 		.el-table__expand-icon {
 			position: absolute !important;
 			top: 50%;
@@ -197,6 +191,12 @@
 
 		.el-table__expand-icon--expanded {
 			transform: rotate(90deg) translateX(-70%) !important;
+		}
+	}
+	.el-table__expanded-cell {
+		padding: 14px 12px !important;
+		&:hover {
+			background-color: var(--Bg4) !important;
 		}
 	}
 

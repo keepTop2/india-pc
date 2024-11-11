@@ -6,11 +6,13 @@ export interface OddsListItem {
 	itemOdds: number;
 	actived: boolean;
 	optionCode: string;
+	gameCode?: string;
+	gamePlayCode?: string;
 }
 export type OddsList = OddsListItem[];
 
-// 玩法的大类
-export interface BasePlaysConfig {
+// 玩法的大类，不导出使用，给下面的 LotteryItem 和 DynamicLotteryItem 使用的
+interface BaseLotteryItem {
 	id: string;
 	gamePlayName: string;
 	desc: string;
@@ -18,13 +20,16 @@ export interface BasePlaysConfig {
 	oddsList: OddsList;
 }
 
-export interface PlaysConfig extends BasePlaysConfig {
+export interface LotteryItem extends BaseLotteryItem {
 	gamePlayCodes: string[];
 }
 
-export interface DynamicPlaysConfig extends BasePlaysConfig {
+export interface DynamicLotteryItem extends BaseLotteryItem {
 	gamePlayCode: string;
 }
 
-export type PlaysConfigList = PlaysConfig[];
-export type DynamicPlaysConfigList = DynamicPlaysConfig[];
+export interface MergedLotteryItem extends LotteryItem, DynamicLotteryItem {}
+
+export type LotteryList = LotteryItem[]; // 本地的玩法列表
+export type DynamicLotteryList = DynamicLotteryItem[]; // 接口返回的玩法列表
+export type MergedLotteryList = MergedLotteryItem[]; // 合并后的玩法列表
