@@ -7,6 +7,10 @@
 					<span class="Text_s fs_20">热门推荐</span>
 				</span>
 			</div>
+			<div class="more Text1 fs_18 curp" v-if="hotGameList?.length !== 1">
+				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'arrow_left' : 'arrow_left_on'" width="8" height="12" /></span>
+				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'arrow_right' : 'arrow_right_on'" width="8" height="12" /></span>
+			</div>
 		</div>
 		<div class="hotGameList">
 			<Swiper :slidesPerView="4" :spaceBetween="15" :modules="modules" class="swiper-container curp" @swiper="onSwiper">
@@ -60,18 +64,14 @@ interface gameInfo {
 	maintenanceEndTime: string;
 	collect: boolean;
 }
-
+const isEnd = ref(false);
+const isBeginning = ref(true);
 const props = defineProps({
 	hotGameList: {
 		type: Array<gameInfo>,
 	},
 });
 
-const onSwiper = (swiper: any) => {
-	if (swiperRef.value) {
-		swiperRef.value = swiper;
-	}
-};
 const collectGamesStore = useCollectGamesStore();
 const collectGame = (game: gameInfo) => {
 	if (useUserStore().getLogin) {
@@ -90,6 +90,22 @@ const collectGame = (game: gameInfo) => {
 		useModalStore().openModal("LoginModal");
 	}
 };
+
+const onSwiper = (swiper: any) => {
+	swiperRef.value = swiper;
+};
+const goToNextSlide = () => {
+	if (isEnd.value) return;
+	isEnd.value = swiperRef.value.isEnd;
+	isBeginning.value = swiperRef.value.isBeginning;
+	swiperRef.value.slideNext();
+};
+const goToPrevSlide = () => {
+	if (isBeginning.value) return;
+	isEnd.value = swiperRef.value.isEnd;
+	isBeginning.value = swiperRef.value.isBeginning;
+	swiperRef.value.slidePrev();
+};
 </script>
 
 <style scoped lang="scss">
@@ -101,6 +117,16 @@ const collectGame = (game: gameInfo) => {
 	img {
 		height: 24px;
 		width: 24px;
+	}
+	.arrow {
+		background-color: var(--butter);
+		width: 28px;
+		height: 28px;
+		display: inline-block;
+		text-align: center;
+		margin: 0 4px;
+		line-height: 28px;
+		border-radius: 4px;
 	}
 }
 

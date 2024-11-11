@@ -15,13 +15,14 @@
 					<div class="formItem"><Dropdown :options="welfareCenterRewardTypeOptions" v-model="params.welfareCenterRewardType"></Dropdown></div>
 					<div class="formItem"><Dropdown :options="activityReceiveStatusOptions" v-model="params.receiveStatus"></Dropdown></div>
 				</div>
-				<div class="flex-center">
-					<div class="btn curp" @click="handleQuery"><svg-icon name="search_on" size="14px"></svg-icon> 查询</div>
-					<div class="btn curp" @click="oneClickReceive">一键领取</div>
+				<div class="flex-center btns">
+					<Button class="curp" @click="handleQuery"><svg-icon name="search_on" size="14px"></svg-icon> 查询</Button>
+
+					<Button class="" @click="oneClickReceive" :disabled="Number(pageData.waitReceiveTotal) < 1" v-if="tableData.length > 0">一键领取</Button>
 				</div>
 			</div>
 		</div>
-		<div class="content">
+		<div class="content" v-if="tableData.length > 0">
 			<div>
 				<div class="flex_space-between Text_s fs_14 mb_12">
 					<div>
@@ -31,7 +32,8 @@
 					</div>
 					<div class="flex-center">
 						<img src="./image/fudai.png" alt="" width="20px" />
-						您有{{ pageData.waitReceiveTotal }}个待领取福利
+
+						您有{{ pageData.waitReceiveTotal || 0 }}个待领取福利
 					</div>
 				</div>
 				<div class="table">
@@ -45,12 +47,16 @@
 					</div>
 					<div class="tbody">
 						<div class="tr" v-for="item in tableData">
-							<div class="td Text1" style="width: 25%">{{ item.orderNo }}</div>
-							<div class="td Text1" style="width: 15%">{{ item.welfareCenterRewardTypeText }}</div>
-							<div class="td Text1" style="width: 15%">{{ item.detailType }}</div>
+							<div class="td Text1 td1 curp" style="width: 25%">
+								<svg-icon name="add_icon" size="16px" @click="showDetails(item)"></svg-icon>
+								<div class="ellipsis">{{ item.orderNo }}</div>
+								<svg-icon name="copy" size="16px" @click="common.copy(item.orderNo)"></svg-icon>
+							</div>
+							<div class="td Text1" style="width: 15%" @click="showDetails(item)">{{ item.welfareCenterRewardTypeText }}</div>
+							<div class="td Text1" style="width: 15%" @click="showDetails(item)">{{ item.detailType }}</div>
 
-							<div class="td Text_s" style="width: 13%">{{ item.amount }}{{ item.currencyCode }}</div>
-							<div class="td Text1" style="width: 20%">{{ dayjs(item.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
+							<div class="td Text_s" style="width: 13%" @click="showDetails(item)">{{ item.amount }}{{ item.currencyCode }}</div>
+							<div class="td Text1" style="width: 20%" @click="showDetails(item)">{{ dayjs(item.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
 							<div class="td" style="width: 12%">
 								<span class="btn curp" :class="'status' + item.receiveStatus" @click="handleReceive(item)">{{ receiveStatus[item.receiveStatus] }}</span>
 							</div>
@@ -62,7 +68,45 @@
 				<Pagination v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="pageData.totalSize" @sizeChange="sizeChange" @pageChange="pageQuery" />
 			</div>
 		</div>
+		<div class="content flex_center" v-else>
+			<NoneData></NoneData>
+		</div>
 	</div>
+	<CommonDialog v-model="showDetailsDialog">
+		<div class="Dialog">
+			<div class="header">
+				<div class="fs_20 Text_s fw_500 mt_5">福利详情</div>
+				<div class="close curp" @click="showDetailsDialog = false">
+					<img src="../../../assets/common/close_btn_bg.png" alt="" />
+				</div>
+			</div>
+			<div class="text-center fs_28 Text_s"><img src="./image/fudai.png" alt="" width="26px" /> {{ detailsInfo.amount }} {{ pageData.platCurrencyCode }}</div>
+
+			<div class="filed">
+				<div>状态</div>
+				<div :class="detailsInfo.receiveStatus == 0 ? 'color_F2' : detailsInfo.receiveStatus == 1 ? 'color_sussess' : 'Text2'">{{ detailsInfo.receiveStatusText }}</div>
+			</div>
+
+			<div class="filed">
+				<div>福利类型</div>
+				<div>{{ detailsInfo.detailType }}</div>
+			</div>
+
+			<div class="filed">
+				<div>发放时间</div>
+				<div>{{ dayjs(detailsInfo.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
+			</div>
+
+			<div class="filed">
+				<div>订单号</div>
+				<div class="flex-center">{{ detailsInfo.orderNo }} <svg-icon class="curp" name="copy" size="16px" @click="common.copy(detailsInfo.orderNo)"></svg-icon></div>
+			</div>
+			<div class="submitBtn">
+				<Button style="width: 360px" v-if="detailsInfo.receiveStatus == 0">立即领取</Button>
+				<div class="mt_10">如需帮助，请 <span class="color_F2 curp" @click="common.getSiteCustomerChannel">联系客服</span></div>
+			</div>
+		</div>
+	</CommonDialog>
 </template>
 
 <script setup lang="ts">
@@ -70,7 +114,7 @@ import { onMounted, reactive, ref } from "vue";
 import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
 import showToast from "/@/hooks/useToast";
-
+import common from "/@/utils/common";
 const showDatePicker = ref(false);
 
 const params = reactive({
@@ -82,11 +126,13 @@ const params = reactive({
 	welfareCenterRewardType: "-1",
 });
 const today = dayjs();
+const detailsInfo: any = ref({});
+const showDetailsDialog = ref(false);
 const range = reactive({
-	start: new Date(today.subtract(90, "day").format("YYYY/MM/DD")),
+	start: new Date(today.subtract(89, "day").format("YYYY/MM/DD")),
 	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
 });
-const minDate = today.subtract(90, "day").format("YYYY/MM/DD");
+const minDate = today.subtract(89, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
 const receiveStatus: any = {
 	0: "领取",
@@ -124,7 +170,7 @@ onMounted(() => {
 });
 const pageQuery = () => {
 	params.pfTimeStartTime = new Date(range.start).getTime();
-	params.pfTimeEndTime = new Date(range.end).getTime();
+	params.pfTimeEndTime = new Date(range.end).getTime() + (59 + 60 * 60 * 23) * 1000;
 	welfareCenterApi.pageQuery(params).then((res) => {
 		tableData.value = res.data.pages.records;
 		pageData.totalSize = res.data.totalSize;
@@ -165,6 +211,7 @@ const handleReceive = (item: any) => {
 	};
 	welfareCenterApi.clickReceive(params).then((res) => {
 		if (res.code === 10000) {
+			showToast("领取成功");
 			pageQuery();
 		}
 	});
@@ -174,9 +221,14 @@ const oneClickReceive = () => {
 	welfareCenterApi.oneClickReceive().then((res) => {
 		if (res.code === 10000) {
 			pageQuery();
+
 			showToast("领取成功");
 		}
 	});
+};
+const showDetails = (item: any) => {
+	detailsInfo.value = item;
+	showDetailsDialog.value = true;
 };
 const handleQuery = () => {
 	params.pageNumber = 1;
@@ -223,6 +275,7 @@ const handleQuery = () => {
 		color: var(--Text_s);
 		line-height: 34px;
 		min-width: 140px;
+		border-radius: 6px;
 	}
 	.time {
 		width: 268px;
@@ -256,6 +309,18 @@ const handleQuery = () => {
 		.td:last-child {
 			border-right: none;
 		}
+		.td1 {
+			text-align: left;
+			padding-left: 5px;
+			padding-right: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+			.ellipsis {
+				max-width: 130px;
+			}
+		}
 		.btn {
 			border-radius: 4px;
 			padding: 6px 17px;
@@ -285,6 +350,61 @@ const handleQuery = () => {
 	}
 	.Pagination {
 		margin-top: 12px;
+	}
+}
+.btns {
+	button {
+		height: 32px;
+		border-radius: 6px;
+		color: var(--Text_a);
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		white-space: nowrap;
+		font-size: 12px;
+		font-weight: 400;
+	}
+	button:disabled {
+		height: 32px;
+		font-size: 12px;
+		font-weight: 400;
+	}
+}
+.Dialog {
+	width: 520px;
+	background: var(--Bg1);
+	border-radius: 12px;
+	padding-bottom: 40px;
+	.close {
+		position: absolute;
+		top: 0;
+		right: 0;
+		img {
+			width: 58px;
+			height: 45px;
+		}
+	}
+	.filed {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin: 0 24px;
+		padding: 10px 0;
+		border-bottom: 0.5px solid var(--Line_2);
+		font-size: 14px;
+		color: var(--Text1);
+	}
+	.submitBtn {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		margin-top: 40px;
+		align-items: center;
+		color: var(--Text1);
+		font-size: 12px;
+		.color_F2 {
+			text-decoration-line: underline;
+		}
 	}
 }
 </style>

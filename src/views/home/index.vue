@@ -20,7 +20,7 @@
 			</div>
 			<redbagRainCountdown v-model="showCountdown" />
 		</div>
-
+		<BackToTop></BackToTop>
 		<!--公告-->
 		<Announcement />
 	</div>
