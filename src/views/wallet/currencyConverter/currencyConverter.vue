@@ -2,7 +2,7 @@
 	<div>
 		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
-				<div class="header">{{ $t(`wallet['存款']`) }}</div>
+				<div class="header">{{ $t(`wallet['平台币转换']`) }}</div>
 			</template>
 			<div class="container">
 				<Transform />
