@@ -143,7 +143,8 @@ const handleSubmit = async ({ stake: betMoney }) => {
 	};
 	console.log("submitData", submitData);
 	const res = await lotteryApi.betting(submitData);
-	showToast($.t(`lottery['投注成功']`));
+	const { msg } = res;
+	showToast(msg);
 	betFormRef.value.clearForm();
 };
 

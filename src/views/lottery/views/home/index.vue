@@ -34,7 +34,7 @@
 				<div v-if="searchQuery">
 					<div class="games-module">
 						<div class="content" v-if="searchGames.length">
-							<LotteryCard :key="game._key" :data="game.data" v-for="game in searchGames" />
+							<LotteryCard :key="game._key" :data="game.data" v-for="game in searchGames" @select="pushView(game)" />
 						</div>
 						<div class="empty" v-else-if="!searchGames.length && !isLoading">
 							<svg-icon name="sports-empty" width="142px" height="120px" />
