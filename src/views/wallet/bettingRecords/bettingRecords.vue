@@ -139,8 +139,8 @@ const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
 const today = dayjs();
 const params = reactive({
-	betStartTime: dayjs().startOf("day").valueOf(),
-	betEndTime: dayjs().endOf("day").valueOf(),
+	betStartTime: dayjs(new Date()).startOf("day").valueOf(),
+	betEndTime: dayjs(new Date()).endOf("day").valueOf(),
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "",
@@ -149,8 +149,8 @@ const params = reactive({
 });
 
 const range = reactive({
-	start: new Date(today.subtract(0, "day").format("YYYY/MM/DD")),
-	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
+	start: dayjs(new Date()).startOf("day").valueOf(), // 今天 00:00:00
+	end: dayjs(new Date()).endOf("day").valueOf(), // 今天 23:59:59
 });
 const minDate = today.subtract(180, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
@@ -200,8 +200,8 @@ onMounted(() => {
 });
 const pageQuery = (type?: boolean) => {
 	if (!type) {
-		params.betStartTime = 1730517077590 || dayjs(new Date(range.start)).startOf("day").valueOf();
-		params.betEndTime = 1731121877590 || dayjs(new Date(range.end)).endOf("day").valueOf();
+		params.betStartTime = dayjs(new Date(range.start)).startOf("day").valueOf();
+		params.betEndTime = dayjs(new Date(range.end)).endOf("day").valueOf();
 	}
 
 	welfareCenterApi

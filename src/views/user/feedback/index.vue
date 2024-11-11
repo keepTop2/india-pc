@@ -125,6 +125,7 @@ const getfeedbackList = () => {
 	overflow: hidden;
 	.left {
 		flex: 1;
+
 		.title {
 			height: 74px;
 			line-height: 74px;
@@ -148,7 +149,7 @@ const getfeedbackList = () => {
 			background: var(--Bg1);
 			padding: 20px;
 			height: 100%;
-			min-height: calc(100vh - 190px);
+			height: calc(100vh - 190px);
 			overflow-y: auto;
 		}
 		.common_input {
