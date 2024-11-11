@@ -34,7 +34,7 @@
 				<div v-if="searchQuery">
 					<div class="games-module">
 						<div class="content" v-if="searchGames.length">
-							<LotteryCard :key="game._key" :data="game.data" v-for="game in searchGames" />
+							<LotteryCard @select="handleSelect(game)" :key="game._key" :data="game.data" v-for="game in searchGames" />
 						</div>
 						<div class="empty" v-else-if="!searchGames.length && !isLoading">
 							<svg-icon name="sports-empty" width="142px" height="120px" />
@@ -52,8 +52,8 @@
 						<span @click="currentTab = item._key" class="more">更多</span>
 					</div>
 					<div class="content">
-						<HotLotteryCard v-if="item.label === 1" :data="game.data" :key="item._key" v-for="game in item.gameInfoList.slice(0, 4)" />
-						<LotteryCard v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" />
+						<HotLotteryCard @select="handleSelect(game)" v-if="item.label === 1" :data="game.data" :key="item._key" v-for="game in item.gameInfoList.slice(0, 4)" />
+						<LotteryCard @select="handleSelect(game)" v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" />
 					</div>
 				</div>
 			</div>
@@ -132,6 +132,8 @@ const games = computed(() => {
 
 	return gameData.value.filter((game) => game._key === currentTab.value);
 });
+
+const handleSelect = (game) => {};
 
 // 监听 query 参数变化
 watch(
