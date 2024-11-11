@@ -23,7 +23,7 @@
 			</div>
 			<div v-else>
 				<div class="Text2">本轮共抢到{{ settlement.redbagCount }}个红包</div>
-				<div class="result mt_20">共计{{ settlement.amount }}</div>
+				<div class="result mt_20">共计{{ settlement.amount }} {{ useUserStore().getUserInfo.platCurrencyName }}</div>
 			</div>
 		</RED_BAG_RAIN_Dialog>
 	</div>
@@ -41,6 +41,7 @@ import { redbagRainSingleton } from "/@/hooks/useRedbagRain";
 import pubsub from "/@/pubSub/pubSub";
 import readyGo from "./image/readyGo.png";
 import RED_BAG_RAIN_Dialog from "./RED_BAG_RAIN_Dialog/index.vue";
+import { useUserStore } from "/@/stores/modules/user";
 const activitySocket = activitySocketService.getInstance();
 const { countdown, startCountdown } = useCountdown();
 const canvas = ref<HTMLCanvasElement | null>(null);
@@ -50,7 +51,6 @@ const isVisible = ref(true);
 const isPaused = ref(false);
 const setp: any = ref(1);
 const showRedBagRainResult = ref(false);
-const getReadyCountdown = ref(3);
 const dialogTitle = ref("温馨提示");
 const settlement: any = ref({});
 let ctx: CanvasRenderingContext2D | null = null;

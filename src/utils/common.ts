@@ -510,6 +510,8 @@ class Common {
 	 */
 
 	static goToGame(gameinfo: any) {
+		console.log(gameinfo, 999999999999);
+
 		const params = {
 			venueCode: gameinfo.venueCode,
 			gameCode: gameinfo.gameCode,

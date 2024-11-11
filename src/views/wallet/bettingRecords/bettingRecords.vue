@@ -32,7 +32,7 @@
 				<div class="flex_space-between Text_s fs_14 mb_12">
 					<div>
 						<span>
-							<span>共计: </span>
+							<span style="color: var(--light-ok-Text-2-1, #656e78)">共计: </span>
 							{{ tableData.length || 0 }} 笔投入
 						</span>
 						<span class="ml_20">
@@ -40,16 +40,16 @@
 							{{ tzAmount || 0 }} {{ "CNY" || pageData.mainCurrency }}
 						</span>
 						<span class="ml_20">
-							<span>输赢金额：</span>
+							<span style="color: var(--light-ok-Text-2-1, #656e78)">输赢金额：</span>
 							<span :class="[String(winOrLoseAmount).indexOf('-') > -1 ? 'lose_color' : 'win_color']"
 								>{{ String(winOrLoseAmount).indexOf("-") > -1 ? winOrLoseAmount : "+" + winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span
 							>
 						</span>
 					</div>
 					<!-- <div class="flex-center">
-						<img src="./image/fudai.png" alt="" width="20px" />
-						您有4个待领取福利
-					</div> -->
+            <img src="./image/fudai.png" alt="" width="20px" />
+            您有4个待领取福利
+          </div> -->
 				</div>
 				<el-table :class="[tableColumns[0] && tableColumns[0].type == 'select' ? 'table-style-expand' : 'table-style-common']" :data="tableData" style="width: 100%" border>
 					<template v-for="(item, index) in tableColumns" :key="index">
@@ -57,15 +57,23 @@
 							<template #default="props">
 								<div class="dropDown_line">
 									<div class="firLine">
-										<div style="width: 50%" class="fir_item">{{ props.row.eventInfo }}</div>
-										<div style="width: 25%" class="fir_item">投注内容</div>
-										<div style="width: 25%" class="fir_item">赔率</div>
-										<div style="width: 50%" class="fir_item">{{ props.row.teamInfo }}</div>
-										<div style="width: 25%" class="fir_item">{{ props.row.betContent }}</div>
-										<div style="width: 25%" class="fir_item">@{{ props.row.odds }}</div>
-									</div>
-									<div class="winlogo">
-										<img :src="props.row.orderClassify == '1' ? winlogo : props.row.orderClassify == '0' ? helogo : loselogo" alt="" />
+										<div>
+											<span>{{ props.row.eventInfo }}</span>
+											<span>{{ props.row.teamInfo }}</span>
+										</div>
+										<div class="p">
+											<span>投注内容</span>
+											<span>{{ props.row.betContent }}</span>
+										</div>
+										<div class="p">
+											<span>赔率</span>
+											<span>@{{ props.row.odds }}</span>
+										</div>
+
+										<div class="winlogo">
+											<img v-if="props.row.orderClassify == '1'" :src="props.row.winLossAmount > 0 ? winlogo : loselogo" alt="" />
+											<span v-else>-</span>
+										</div>
 									</div>
 								</div>
 							</template>
@@ -93,10 +101,11 @@
 						</el-table-column>
 						<!-- 输赢金额 -->
 						<el-table-column v-else-if="item.label == '输赢金额'" :label="item.label" :prop="item.props" align="center">
-							<template #default="props">
-								<div :style="{ color: String(props.row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
-									{{ String(props.row.winLossAmount).indexOf("-") > -1 ? props.row.winLossAmount : "+" + props.row.winLossAmount }} CNY
+							<template #default="{ row }">
+								<div v-if="row.winLossAmount" :style="{ color: String(row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
+									{{ String(row.winLossAmount).indexOf("-") > -1 ? row.winLossAmount : "+" + row.winLossAmount }} CNY
 								</div>
+								<div v-else>-</div>
 							</template>
 						</el-table-column>
 
@@ -135,6 +144,7 @@ const params = reactive({
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "",
+	welfareCenterRewardType: "1",
 	venueType: "1",
 });
 
@@ -173,24 +183,25 @@ onMounted(() => {
 });
 const pageQuery = (type?: boolean) => {
 	if (!type) {
-		params.betStartTime = dayjs(new Date(range.start)).startOf("day").valueOf();
-		params.betEndTime = dayjs(new Date(range.end)).endOf("day").valueOf();
-	}
-	let orderClassifyList: any = [];
-	if (params.receiveStatus === "") {
-		orderClassifyList = [];
-	} else {
-		orderClassifyList = [+params.receiveStatus];
+		params.betStartTime = 1730517077590 || dayjs(new Date(range.start)).startOf("day").valueOf();
+		params.betEndTime = 1731121877590 || dayjs(new Date(range.end)).endOf("day").valueOf();
 	}
 
-	welfareCenterApi.tzPageQuery({ ...params, venueType: +params.venueType, orderClassifyList }).then((res) => {
-		if (!res.data) return;
-		let rows = res.data[fieldMap[params.venueType]];
+	welfareCenterApi
+		.tzPageQuery({
+			...params,
+			venueType: +params.venueType,
+			orderClassify: params.receiveStatus ? [+params.receiveStatus] : [],
+		})
+		.then((res) => {
+			if (!res.data) return;
+      console.log(params.venueType, "params.venueType")
+			let rows = res.data[fieldMap[params.venueType]];
 
-		if (params.venueType == "2" || !rows) {
-			tableData.value = [];
-			return;
-		}
+		//if (params.venueType == "2" || !rows) {
+		//	tableData.value = [];
+		//	return;
+		//}
 		console.log(fieldMap[params.venueType], "rows");
 		tableData.value = rows.records || rows;
 		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
@@ -221,15 +232,45 @@ const pageQuery = (type?: boolean) => {
 			} else {
 				item.winLossAmount = "";
 			}
-		});
+			console.log(fieldMap[params.venueType], "rows");
+			tableData.value = rows.records || rows;
+			pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
+			pageData.waitReceiveTotal = res.data.waitReceiveTotal;
+			pageData.platCurrencyTotal = res.data.platCurrencyTotal;
+			pageData.platCurrencyCode = res.data.platCurrencyCode;
+			pageData.mainCurrency = res.data.mainCurrency;
+			pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
 
-		hasData.value =
-			res.data.sabOrderList?.length > 0 ||
-			res.data.eventOrderPage?.records?.length > 0 ||
-			res.data.basicOrderPage?.records?.length > 0 ||
-			res.data.tableOrderPage?.records?.length > 0;
-		getTableType();
-	});
+			tzAmount.value = tableData.value.reduce((a: any, b: any) => {
+				return a + b.betAmount;
+			}, 0);
+
+			winOrLoseAmount.value = tableData.value
+				.reduce((a: any, b: any) => {
+					return a + b.winLossAmount;
+				}, 0)
+				?.toFixed(2);
+
+			tableData.value.forEach((item: any) => {
+				if (item.betAmount) {
+					item.betAmount = item.betAmount.toFixed(2);
+				} else {
+					item.betAmount = "";
+				}
+				if (item.winLossAmount) {
+					item.winLossAmount = item.winLossAmount.toFixed(2);
+				} else {
+					item.winLossAmount = "";
+				}
+			});
+
+			hasData.value =
+				res.data.sabOrderList?.length > 0 ||
+				res.data.eventOrderPage?.records?.length > 0 ||
+				res.data.basicOrderPage?.records?.length > 0 ||
+				res.data.tableOrderPage?.records?.length > 0;
+			getTableType();
+		});
 };
 // 获取 查询目录
 const getDownBox = () => {
@@ -314,8 +355,9 @@ const handleQuery = () => {
 	pageQuery();
 };
 handleQuery();
+
 function getTableType() {
-	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.venueType);
+	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.welfareCenterRewardType[0]);
 	if (!selectCurrent || !selectCurrent.text) return;
 	tableColumns.value = colmunsrow.value[selectCurrent.text];
 }
@@ -385,9 +427,11 @@ function getTableType() {
 	.lose_color {
 		color: #01aff6;
 	}
+
 	.win_color {
 		color: var(--light-ok-Theme--, #ff284b);
 	}
+
 	.table {
 		border: 1px solid var(--Line_2);
 		border-radius: 8px;
@@ -453,31 +497,53 @@ function getTableType() {
 	display: flex;
 	align-items: center;
 }
+
 .orderId_style {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	gap: 10px;
+
 	img {
 		cursor: pointer;
 	}
 }
+
 .dropDown_line {
 	display: flex;
 	align-items: center;
 
 	.firLine {
-		width: 80%;
-		display: flex;
-		flex-wrap: wrap;
+		width: 100%;
+		display: grid;
+		grid-template-columns: 2fr 2fr 1fr 1fr;
+		font-size: 14px;
 
-		.fir_item {
-			padding: 6px 12px 8px;
+		& > div {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			gap: 10px;
 		}
-	}
 
-	.winlogo {
-		width: 20%;
-		text-align: center;
+		.p {
+			text-align: center;
+			& > span:first-child {
+				color: var(--light-ok-text-s, #fff);
+			}
+		}
+
+		.winlogo {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			img {
+				width: 58px;
+			}
+
+			//width: 20%;
+			//text-align: center;
+		}
 	}
 }
 
@@ -487,5 +553,13 @@ function getTableType() {
 
 :deep(.nodata) {
 	height: 70vh;
+}
+
+:deep(.dropdown-header),
+:deep(.curp) {
+	color: var(--light-ok-Text-1-1, #98a7b5);
+}
+:deep(.formItem) {
+	border-radius: 4px;
 }
 </style>
