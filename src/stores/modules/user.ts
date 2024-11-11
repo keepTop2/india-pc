@@ -1,20 +1,21 @@
 // import { useCookies } from '@vueuse/integrations/useCookies';
 
 import { defineStore } from "pinia";
-// import router from '/@/router';
-import { setLang } from "/@/i18n/index";
-import { LangEnum } from "/@/enum/appConfigEnum";
-import { CommonApi } from "/@/api/common";
-import Common from "/@/utils/common";
+import { useCollectGamesStore } from "./collectGames";
 import { useMenuStore } from "./menu";
-import EncryptionFn from "/@/utils/encryption";
-import { userApi } from "/@/api/user";
-import showToast from "/@/hooks/useToast";
+import { CommonApi } from "/@/api/common";
 import { loginApi } from "/@/api/login";
+import { userApi } from "/@/api/user";
+import { LangEnum } from "/@/enum/appConfigEnum";
+import showToast from "/@/hooks/useToast";
+import { setLang } from "/@/i18n/index";
+import pubsub from "/@/pubSub/pubSub";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import activitySocketService from "/@/utils/activitySocketService";
-import pubsub from "/@/pubSub/pubSub";
-import { useCollectGamesStore } from "./collectGames";
+import Common from "/@/utils/common";
+import EncryptionFn from "/@/utils/encryption";
+
+// import router from '/@/router';
 
 interface StoreUser {
 	lang: string;
@@ -103,6 +104,7 @@ export const useUserStore = defineStore("User", {
 		},
 		// 设置用户信息
 		setUserGlobalSetInfo(info: Object) {
+			console.log("info", info);
 			this.userGlobalSetInfo = info;
 		},
 		// 更新用户信息
@@ -167,6 +169,7 @@ export const useUserStore = defineStore("User", {
 			// 设置收藏的游戏
 			collectGamesStore.setCollectGamesList();
 			const res = await userApi.getIndexInfo().catch((err) => err);
+			console.log("getIndexInfo", res);
 			const { code, data, message } = res;
 			if (code === Common.ResCode.SUCCESS) {
 				const userInfo = { ...this.getUserInfo, ...data };

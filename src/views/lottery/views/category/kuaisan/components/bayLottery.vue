@@ -71,12 +71,14 @@ import { lotteryList, queryGamePlayOddsListParams } from "./playsConfig";
 import { mergeLotteryList } from "/@//views/lottery/utils/index";
 import { lotteryApi } from "/@/api/lottery";
 import showToast from "/@/hooks/useToast";
+import Common from "/@/utils/common";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { type MergedLotteryList, type OddsListItem } from "/@/views/lottery/types/index";
+import { getIndexInfo } from "/@/views/sports/utils/commonFn";
 
 const props = defineProps({
 	lotteryDetail: { type: Object, default: () => ({}) },
@@ -141,10 +143,20 @@ const handleSubmit = async ({ stake: betMoney }: { stake: string }) => {
 		list: [{ betCount: 1, multiple: 1, betMoney, nums, gameCode, gamePlayCode, issueNo }],
 	};
 	console.log("submitData", submitData);
+	//
+	Common.ResCode.SUCCESS;
+
 	const res = await lotteryApi.betting(submitData);
-	const { msg } = res;
-	showToast(msg);
-	betFormRef.value.clearForm();
+	const { code, msg } = res;
+
+	// 这里这个 code 需要特殊判断一下
+	if (code !== Common.ResCode.SUCCESS) {
+		showToast(msg);
+		return;
+	}
+
+	getIndexInfo(); // 拉一下用户信息更新一下余额，后面可以考虑做成 ws 推送
+	betFormRef.value.clearForm(); // 成功才清空文本框
 };
 
 onMounted(async () => {
