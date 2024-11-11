@@ -19,14 +19,6 @@
 		<!-- 左侧菜单 -->
 		<div class="left_scroll">
 			<div class="left_scroll_conatiner1">
-				<!-- 奖金 -->
-				<div class="left_bonus">
-					<svg-icon name="bonus_icon" size="18px" />
-					<span class="left_text1">
-						{{ $t(`common['奖金']`) }}
-					</span>
-				</div>
-
 				<!-- 任务 抽奖-->
 				<div class="task_lottery mt_15">
 					<div class="task_lottery_item" @click="showTask" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('task_bg.png')})` : '', marginRight: '5px' }">
@@ -36,7 +28,7 @@
 
 					<div class="task_lottery_item" @click="showSpin" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('lottery_bg.png')})` : '' }">
 						<img :src="Common.getCommonImgPath('lottery_icon.png')" alt="" />
-						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['抽奖']`) }}</span>
+						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['转盘']`) }}</span>
 					</div>
 				</div>
 				<!-- 菜单 -->
@@ -229,8 +221,7 @@ const changeCollpase = () => {
 		overflow-y: auto;
 		transition: all 0.2s ease;
 		.left_scroll_conatiner1 {
-			padding: 8px;
-			margin: 8px auto;
+			padding: 0 8px;
 			border-radius: 5px;
 			.left_bonus {
 				height: 46px;
@@ -260,9 +251,9 @@ const changeCollpase = () => {
 						color: var(--Text_a);
 					}
 					img {
-						height: 41px;
-						margin-left: 10px;
-						margin-top: -5px;
+						height: 34px;
+						margin-top: 3px;
+						margin-right: 3px;
 					}
 				}
 			}
