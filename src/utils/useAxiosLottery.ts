@@ -9,9 +9,9 @@ import axios from "axios";
 function getUrl() {
 	switch (import.meta.env.VITE_BASEENV) {
 		case "development":
-			return (window as any)["PLATFROM_CONFIG"].developmentlotteryBaseURL;
+			return (window as any)["PLATFROM_CONFIG"].developmentLotteryBaseURL;
 		case "production":
-			return (window as any)["PLATFROM_CONFIG"].developmentlotteryBaseURL;
+			return (window as any)["PLATFROM_CONFIG"].developmentLotteryBaseURL;
 		default:
 			return "";
 	}

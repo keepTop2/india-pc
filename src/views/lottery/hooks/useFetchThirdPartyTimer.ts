@@ -6,7 +6,7 @@ import { ref } from "vue";
  * @returns interval 定时器的时间，默认一小时，支持传入
  */
 const INTERVAL = 1000 * 60 * 60; // 一小时拉一遍
-export function useUpdateThirdPartyTokenTimer(callback: Function, interval = INTERVAL) {
+export function useUpdateThirdPartyTokenTimer(callback = Function.prototype, interval = INTERVAL) {
 	const timer = ref();
 	const turnOnTimer = () => {
 		turnOffTimer();
