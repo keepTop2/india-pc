@@ -21,6 +21,9 @@ defineProps({
 	justify-content: center;
 	flex-direction: column;
 	gap: 10px;
+  background: var(--Bg1-1, #24262b);
+  margin-top: 14px;
+  border-radius: 12px;
 	img {
 		width: 142px;
 		height: 120px;
