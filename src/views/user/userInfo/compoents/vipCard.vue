@@ -12,7 +12,7 @@
 						><span class="color_Theme">{{ vipInfo.currentExp }}</span
 						>/{{ vipInfo.currentVipExp }}</span
 					>
-					<span v-else>您已到达最高等级</span>
+					<span v-else-if="vipInfo.vipGradeUp">您已到达最高等级</span>
 				</div>
 			</div>
 

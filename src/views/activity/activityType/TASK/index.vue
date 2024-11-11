@@ -11,7 +11,7 @@
 			<div class="Content">
 				<div class="rewardsBg">
 					<div class="mb_11 Text_s">累计奖励</div>
-					<div class="color_f1">{{ taskData?.currencyName }} {{ taskData?.totalAmount }}</div>
+					<div class="color_f1">{{ taskData?.platCurrencySymbol }} {{ taskData?.totalAmount }}</div>
 				</div>
 				<div class="tabs">
 					<div class="tab" v-for="item in tasktype" @click="changeTab(item.value)" :class="item.value == currentTab ? 'active' : ''">
@@ -344,7 +344,7 @@ const confirmDialog = () => {
 		background: linear-gradient(270deg, #afafb3 0%, #87878b 100%);
 	}
 	.btnType3 {
-		background: linear-gradient(270deg, #ebb360 0%, #eb7933 100%);
+		background: linear-gradient(270deg, #3fb8ff 0%, #1283e0 100%);
 	}
 	.card.welcome {
 		background: url("./image/cardBg2.png") no-repeat;

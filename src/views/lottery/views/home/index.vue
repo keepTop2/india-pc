@@ -140,6 +140,8 @@ const games = computed(() => {
 	return gameData.value.filter((game) => game._key === currentTab.value);
 });
 
+const handleSelect = (game) => {};
+
 // 监听 query 参数变化
 watch(
 	() => route.query.gameTwoId,

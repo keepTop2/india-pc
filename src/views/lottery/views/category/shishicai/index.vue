@@ -30,13 +30,13 @@ const tabComponents = new Map([
 
 // 模拟数据，用于显示在页面头部
 const mockData = {
-	icon: "https://ctopalistat3.zengchenglm.com/pc/images/db_DB5FC2cea4e2f859029cdbda33fffda6ea1f2.png",
-	title: "时时彩",
-	desc: "五分钟一期",
+	iconPc: "https://ctopalistat3.zengchenglm.com/pc/images/db_DB5FC2cea4e2f859029cdbda33fffda6ea1f2.png",
+	gameName: "时时彩",
+	gameDesc: "五分钟一期",
 	seconds: 100,
 	betStatusName: "投注中",
-	issuesNo: "20230812-084",
-	recentlyAwarded: 5403.23,
+	issueNum: "20230812-084",
+	maxWin: 5403.23,
 };
 
 // 标签栏的配置数据

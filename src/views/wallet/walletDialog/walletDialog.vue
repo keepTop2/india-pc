@@ -36,7 +36,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
-
+import { useTipsDialog } from "/@/hooks/useTipsDialog";
 const route = useRoute();
 const router = useRouter();
 const $: any = i18n.global;
@@ -86,27 +86,46 @@ pubsub.subscribe("closeWalletDialog", () => {
 function setComponent(walletDialogName: string) {
 	const UserStore = useUserStore();
 	const modalStore = useModalStore();
-	// const { rechargeWithdrawLimit, withdrawLimit } = toRefs(UserStore.getUserInfo);
 	const { isSetPwd, phone } = toRefs(UserStore.getUserGlobalSetInfo);
-	// 处理 "recharge" 情况：如果账户锁定，提示用户
-	// if (walletDialogName === "recharge") {
-	// 	if (rechargeWithdrawLimit.value === 1) {
-	// 		showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
-	// 		return;
-	// 	}
-	// }
-	// 处理 "withdrawal" 情况
+
 	if (walletDialogName === "withdrawal") {
-		// const isAccountLocked = rechargeWithdrawLimit.value === 1;
-		// const isWithdrawalLocked = isAccountLocked || withdrawLimit.value === 1;
-		// if (isWithdrawalLocked) {
-		// 	showToast($.t("wallet['你的账户已被锁定，请联系在线客服']"));
-		// 	return;
-		// }
-		// 检查是否绑定手机号或设置交易密码
-		const hasUserSetup = isSetPwd?.value || phone?.value;
-		if (!hasUserSetup) {
-			modalStore.openModal("hintDialog");
+		if (!phone.value && !isSetPwd.value) {
+			useTipsDialog({
+				title: $.t(`wallet["温馨提示"]`),
+				text: $.t(`wallet["您还未设置交易密码，请先设置交易密码"]`),
+				confirmText: $.t(`wallet["去设置"]`),
+				onConfirm: async () => {
+					await clearComponent();
+					await router.replace({ path: "/user/security_center" }); // 跳转到设置页面
+					await modalStore.openModal("setWithdrawPwd");
+				},
+				onClose: () => {
+					useTipsDialog({
+						title: $.t(`wallet["温馨提示"]`),
+						text: $.t(`wallet["您还未绑定手机号，请先绑定手机号"]`),
+						confirmText: $.t(`wallet["去绑定"]`),
+						onConfirm: async () => {
+							await clearComponent();
+							await router.replace({ path: "/user/security_center" }); // 跳转到绑定手机号页面
+							await modalStore.openModal("setPhone");
+						},
+						onClose: () => {},
+					});
+				},
+			});
+			return;
+		} else if (phone.value && !isSetPwd.value) {
+			useTipsDialog({
+				title: $.t(`wallet["温馨提示"]`),
+				text: $.t(`wallet["您还未设置交易密码，请先设置交易密码"]`),
+				confirmText: $.t(`wallet["去设置"]`),
+				onConfirm: async () => {
+					await clearComponent();
+					await router.replace({ path: "/user/security_center" }); // 跳转到设置页面
+					await modalStore.openModal("setWithdrawPwd");
+				},
+				onClose: () => {},
+			});
 			return;
 		}
 	}
