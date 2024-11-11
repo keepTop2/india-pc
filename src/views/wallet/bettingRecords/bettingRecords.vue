@@ -27,7 +27,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="hasData" class="content">
+		<div v-if="tableData.length" class="content">
 			<div>
 				<div class="flex_space-between Text_s fs_14 mb_12">
 					<div>
@@ -169,7 +169,6 @@ const pageData = reactive({
 	mainCurrencyTotal: "",
 });
 const total = ref(0);
-const hasData = ref(false);
 const updateRange = (value: any) => {
 	console.log(value);
 	range.start = value[0];
@@ -234,11 +233,6 @@ const pageQuery = (type?: boolean) => {
 				}
 			});
 
-			hasData.value =
-				res.data.sabOrderList?.length > 0 ||
-				res.data.eventOrderPage?.records?.length > 0 ||
-				res.data.basicOrderPage?.records?.length > 0 ||
-				res.data.tableOrderPage?.records?.length > 0;
 			getTableType();
 		});
 };
