@@ -63,7 +63,7 @@ const params = {
 };
 const getMessageList = async (type: number) => {
 	const res = await MessageApi.messageList({ noticeType: type, ...params });
-	if (res.code !== 10000) return ElMessage.warning(res.message);
+	// if (res.code !== 10000) return ElMessage.warning(res.message);
 	messageList.value = res.data.records;
 };
 
@@ -82,14 +82,14 @@ const handleReadAll = async () => {
 	const res = await MessageApi.setReadAll({ noticeType: activeTab.value });
 	if (res.code !== 10000) return ElMessage.warning(res.message);
 	await getMessageList(activeTab.value);
-	ElMessage.success("操作成功");
+	// ElMessage.success("操作成功");
 };
 // 一键删除
 const handleDeleteAll = async () => {
 	const res = await MessageApi.setDelStateAll({ noticeType: activeTab.value });
 	if (res.code !== 10000) return ElMessage.warning(res.message);
 	await getMessageList(activeTab.value);
-	ElMessage.success("删除成功");
+	// ElMessage.success("删除成功");
 };
 // 删除成功回调
 const deleteSuccess = (index: number) => {
