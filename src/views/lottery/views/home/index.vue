@@ -139,7 +139,7 @@ const filterGames = Common.debounce(() => {
 
 const games = computed(() => {
 	if (currentTab.value === "0") return gameData.value;
-
+	console.log(gameData.value.filter((game) => game._key === currentTab.value), "=======currentTab.value");
 	return gameData.value.filter((game) => game._key === currentTab.value);
 });
 
@@ -155,6 +155,7 @@ watch(
 
 const maps = {
 	K3: "/lottery/kuaisan",
+	SSQ: "/lottery/unionLotto",
 };
 const pushView = (game) => {
 	console.log("game", game);

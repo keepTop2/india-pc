@@ -1,3 +1,9 @@
+export * from "./base";
+export * from "./lottery";
+export * from "./game";
+export * from "./betting";
+export * from "./playCode";
+export * from "./account";
 // 投注项
 export interface OddsListItem {
 	id: string;
@@ -33,3 +39,4 @@ export interface MergedLotteryItem extends LotteryItem, DynamicLotteryItem {}
 export type LotteryList = LotteryItem[]; // 本地的玩法列表
 export type DynamicLotteryList = DynamicLotteryItem[]; // 接口返回的玩法列表
 export type MergedLotteryList = MergedLotteryItem[]; // 合并后的玩法列表
+

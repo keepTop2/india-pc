@@ -31,6 +31,12 @@ const lotteryRoutes = {
 			meta: { name: "Shishicai", title: "快三" },
 			component: () => import("/@/views/lottery/views/category/kuaisan/index.vue"),
 		},
+		{
+			path: "/lottery/unionLotto",
+			name: "UnionLotto",
+			meta: { name: "UnionLotto", title: "双色球" },
+			component: () => import("/@/views/lottery/views/category/unionLotto/unionLotto.vue"),
+		},
 	],
 };
 
