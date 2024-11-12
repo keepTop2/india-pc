@@ -21,7 +21,7 @@ export const useSportMorningTradingStore = defineStore("SportMorningTrading", {
 		/** 处理早盘日期 */
 		const todayDate = dayjs(SportsCommon.todayDate()).add(2, "day").toISOString();
 		/** 今日15天的开始结束 */
-		const { startDate, endDate } = SportsCommon.getResultDateRange(todayDate, 15);
+		const { startDate, endDate } = SportsCommon.getResultDateRange(todayDate, 14);
 
 		return {
 			activeDate: "all",

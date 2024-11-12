@@ -101,6 +101,9 @@ onMounted(() => {
 watch(
 	() => sportsBetEvent.sportsBetEventData.length,
 	(newValue, oldValue) => {
+		if (newValue === 0 && oldValue) {
+			ShopCatControlStore.setShopCatShow(false);
+		}
 		// 长度变化则监听
 		if (newValue === 1 && !oldValue) {
 			// 首次有赛事加入开启弹窗
@@ -282,12 +285,12 @@ const totalAnimationEnd = () => {
 .shopCart {
 	width: 520px;
 	min-height: 100%;
-	color: var(--Text_s);
+	color: var(--Text-s);
 	border-radius: 8px 8px 0px 0px;
-	border-top: 1px solid var(--Line_2);
-	border-right: 1px solid var(--Line_2);
-	border-left: 1px solid var(--Line_2);
-	background: var(--Bg1);
+	border-top: 1px solid var(--Line-2);
+	border-right: 1px solid var(--Line-2);
+	border-left: 1px solid var(--Line-2);
+	background: var(--Bg-1);
 	box-shadow: 0px -3px 30px 0px rgba(14, 16, 19, 0.7);
 	box-sizing: border-box;
 	&.shop-cart-hide {
@@ -307,7 +310,7 @@ const totalAnimationEnd = () => {
 			gap: 8px;
 
 			.label {
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 500;
@@ -319,7 +322,7 @@ const totalAnimationEnd = () => {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background: var(--F1);
+				background: var(--F-1);
 				font-size: 14px;
 				color: #fff;
 				border-radius: 50%;
@@ -355,7 +358,7 @@ const totalAnimationEnd = () => {
 				padding: 8px 10px;
 				border-radius: 34px;
 				gap: 10px;
-				background: var(--Bg3);
+				background: var(--Bg-3);
 				color: var(--Theme);
 				cursor: pointer;
 
@@ -366,7 +369,7 @@ const totalAnimationEnd = () => {
 					font-style: normal;
 					font-weight: 700;
 					line-height: normal;
-					color: var(--Text_s) !important;
+					color: var(--Text-s) !important;
 				}
 				.refresh_icon {
 					width: 18px;
@@ -412,7 +415,7 @@ const totalAnimationEnd = () => {
 			left: 0px;
 			width: 100%;
 			height: 1px;
-			background-color: var(--Line_1);
+			background-color: var(--Line-1);
 			box-shadow: 0px 1px 0px 0px #343d48;
 		}
 	}
@@ -421,7 +424,7 @@ const totalAnimationEnd = () => {
 		padding: 18px 0;
 		text-align: center;
 		font-size: 14px;
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 }
 
@@ -435,7 +438,7 @@ const totalAnimationEnd = () => {
 		max-height: 450px;
 		overflow-y: auto;
 		&::-webkit-scrollbar-thumb {
-			background-color: var(--Bg3);
+			background-color: var(--Bg-3);
 			border-radius: 6px;
 		}
 		&::-webkit-scrollbar {

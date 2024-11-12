@@ -1,20 +1,21 @@
 // import { useCookies } from '@vueuse/integrations/useCookies';
 
 import { defineStore } from "pinia";
-// import router from '/@/router';
-import { setLang } from "/@/i18n/index";
-import { LangEnum } from "/@/enum/appConfigEnum";
-import { CommonApi } from "/@/api/common";
-import Common from "/@/utils/common";
+import { useCollectGamesStore } from "./collectGames";
 import { useMenuStore } from "./menu";
-import EncryptionFn from "/@/utils/encryption";
-import { userApi } from "/@/api/user";
-import showToast from "/@/hooks/useToast";
+import { CommonApi } from "/@/api/common";
 import { loginApi } from "/@/api/login";
+import { userApi } from "/@/api/user";
+import { LangEnum } from "/@/enum/appConfigEnum";
+import showToast from "/@/hooks/useToast";
+import { setLang } from "/@/i18n/index";
+import pubsub from "/@/pubSub/pubSub";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import activitySocketService from "/@/utils/activitySocketService";
-import pubsub from "/@/pubSub/pubSub";
-import { useCollectGamesStore } from "./collectGames";
+import Common from "/@/utils/common";
+import EncryptionFn from "/@/utils/encryption";
+
+// import router from '/@/router';
 
 interface StoreUser {
 	lang: string;

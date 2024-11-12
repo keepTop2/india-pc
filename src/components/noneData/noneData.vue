@@ -5,7 +5,7 @@
 <template>
 	<div class="noneData_container">
 		<div class="center">
-			<div class="icon" v-if="themed == 'default'">
+			<div class="icon" v-if="themed == 'light'">
 				<svg-icon :name="iconSvgLight" size="120px" />
 			</div>
 			<div class="icon" v-if="themed == 'dark'">
@@ -48,6 +48,7 @@ const props = withDefaults(defineProps<NoneData>(), {
 	width: 100%;
 	height: 100%;
 	display: flex;
+	flex: 1;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -71,7 +72,7 @@ const props = withDefaults(defineProps<NoneData>(), {
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
-			color: var(--Text2_1);
+			color: var(--Text-2-1);
 			line-height: normal;
 		}
 	}

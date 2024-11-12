@@ -168,7 +168,7 @@ onMounted(() => {
 		}
 		.bannberLabel {
 			font-size: 18px;
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 		.bannberBottom {
 			display: flex;
@@ -180,8 +180,8 @@ onMounted(() => {
 				height: 46px;
 				line-height: 46px;
 				text-align: center;
-				color: var(--Text_a);
-				background: var(--butter);
+				color: var(--Text-a);
+				background: var(--Butter);
 				cursor: pointer;
 				font-size: 13.818px;
 			}
@@ -215,8 +215,8 @@ onMounted(() => {
 .table {
 	display: flex;
 	justify-content: space-around;
-	border-left: 1px solid var(--Line_2);
-	border-top: 1px solid var(--Line_2);
+	border-left: 1px solid var(--Line-2);
+	border-top: 1px solid var(--Line-2);
 	border-radius: 12px;
 	overflow: hidden;
 	.row {
@@ -228,9 +228,9 @@ onMounted(() => {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-right: 1px solid var(--Line_2);
-		border-bottom: 1px solid var(--Line_2);
-		background: var(--Bg3);
+		border-right: 1px solid var(--Line-2);
+		border-bottom: 1px solid var(--Line-2);
+		background: var(--Bg-3);
 		padding: 16px;
 		img {
 			height: 30px;
@@ -249,7 +249,7 @@ onMounted(() => {
 	}
 	.row {
 		.cell:first-child {
-			background: var(--Bg2);
+			background: var(--Bg-2);
 		}
 	}
 }

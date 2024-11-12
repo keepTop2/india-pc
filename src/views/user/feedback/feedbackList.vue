@@ -4,7 +4,7 @@
 			<div class="title fs_24 pl_20 fw_500">
 				<span class="Text2 curp" @click="router.push('/user/feedBack')">意见反馈</span>
 				<span>
-					<svg-icon name="arrow_right" size="16px" class="mr_10 ml_10 Text2"></svg-icon>
+					<svg-icon name="common-arrow_right" size="16px" class="mr_10 ml_10 Text2"></svg-icon>
 				</span>
 				<span class="Text_s fs_18">我的反馈</span>
 			</div>
@@ -112,7 +112,7 @@ const sizeChange = (pageSize: number) => {
 			height: 74px;
 			display: flex;
 			align-items: center;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			position: relative;
 			border-radius: 12px 12px 0 0;
 		}
@@ -129,7 +129,7 @@ const sizeChange = (pageSize: number) => {
 		}
 		.center {
 			border-radius: 0 0 12px 12px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			padding: 0 20px 20px;
 			min-height: calc(100vh - 180px);
 			display: flex;
@@ -142,7 +142,7 @@ const sizeChange = (pageSize: number) => {
 			width: 360px;
 			height: 34px;
 			line-height: 34px;
-			background: var(--Bg2);
+			background: var(--Bg-2);
 			border-radius: 4px;
 		}
 	}
@@ -161,7 +161,7 @@ const sizeChange = (pageSize: number) => {
 				height: 46px;
 				object-fit: cover;
 				border-radius: 8px;
-				border: 1px solid var(--Line_2);
+				border: 1px solid var(--Line-2);
 				margin-right: 8px;
 			}
 		}
@@ -173,6 +173,7 @@ const sizeChange = (pageSize: number) => {
 			text-overflow: ellipsis; /* 显示省略号 */
 			line-height: 1.5; /* 行高 */
 			max-height: 3em; /* 限制最大高度 */
+			max-width: 704px;
 		}
 		.icon {
 			width: 32px;
@@ -187,7 +188,7 @@ const sizeChange = (pageSize: number) => {
 			height: 1px;
 			width: 100%;
 			margin-top: 6px;
-			background: var(--Line_1);
+			background: var(--Line-1);
 			box-shadow: 0px 1px 0px 0px #343d48;
 		}
 	}

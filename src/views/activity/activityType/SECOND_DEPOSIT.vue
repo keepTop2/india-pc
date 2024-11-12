@@ -14,16 +14,16 @@
 					<div class="bonus_card_content">
 						<div>
 							<div class="fs_12">存款金额</div>
-							<div class="amount fs_14">{{ activityData.depositAmount || 0 }} {{ activityData.depositCurrencyCode }}</div>
+							<div class="amount fs_14">{{ activityData.depositAmount || "0.00" }} {{ activityData.depositCurrencyCode }}</div>
 						</div>
 						<div class="line"></div>
 						<div>
 							<div class="fs_12">需打流水</div>
-							<div class="amount fs_14">{{ activityData.runningWater || 0 }} {{ activityData.runningWaterCurrencyCode }}</div>
+							<div class="amount fs_14">{{ activityData.runningWater || "0.00" }} {{ activityData.runningWaterCurrencyCode }}</div>
 						</div>
 					</div>
 					<div class="bonus_card_footer">
-						可得彩金: <span class="color_Theme">{{ activityData.activityAmount || 0 }}{{ activityData.activityAmountCurrencyCode }}</span>
+						可得彩金: <span class="color_Theme">{{ activityData.activityAmount || "0.00" }}{{ activityData.activityAmountCurrencyCode }}</span>
 					</div>
 					<!-- <div>
 						<button class="common_btn" @click="getActivityReward">立即申请</button>
@@ -82,7 +82,7 @@
 			</div>
 		</div>
 	</div>
-	<CommonDialog v-model="showCommonDialog" title="123123" :confirm="confirmDialog">
+	<CommonDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
 		{{ dialogInfo.message }}
 		<template v-slot:footer v-if="dialogInfo.status == 30049"> 去存款 </template>
 	</CommonDialog>
@@ -102,6 +102,7 @@ import Common from "/@/utils/common";
 import CommonDialog from "../components/activityDialog.vue";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import showToast from "/@/hooks/useToast";
+import { useUserStore } from "/@/stores/modules/user";
 const activityStore = useActivityStore();
 const router = useRouter();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
@@ -109,11 +110,11 @@ const dialogInfo: any = ref({});
 const showCommonDialog = ref(false);
 const showNeedLogin = ref(false);
 const apply = async () => {
+	if (!useUserStore().getLogin) {
+		showNeedLogin.value = true;
+		return;
+	}
 	await activityApi.getToActivity({ id: activityData.value.id }).then((res: any) => {
-		if (res.code === 10007) {
-			showNeedLogin.value = true;
-			return;
-		}
 		if (res.code === 10000) {
 			if (res.code.status !== 10000) {
 				dialogInfo.value = res.data;
@@ -129,8 +130,15 @@ const apply = async () => {
 };
 const confirmDialog = () => {
 	if (dialogInfo.status == 30049) {
-		router.push("/user/deposit");
+		router.push("/recharge");
 	}
 	showCommonDialog.value = false;
 };
 </script>
+<style scoped lang="scss">
+.ruleDetails {
+	:deep(img) {
+		max-width: 100%;
+	}
+}
+</style>

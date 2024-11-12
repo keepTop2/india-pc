@@ -135,10 +135,10 @@ const { gameTime } = useGameTimer(gameState);
 			.header {
 				width: 100%;
 				height: 36px;
-				background: var(--Bg3);
+				background: var(--Bg-3);
 				border-radius: 8px 8px 0px 0px;
 				.label {
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-family: "PingFang SC";
 					font-size: 12px;
 					font-weight: 400;
@@ -167,7 +167,7 @@ const { gameTime } = useGameTimer(gameState);
 					.name,
 					:deep(.name) {
 						flex: 1;
-						color: var(--Text1);
+						color: var(--Text-1);
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 400;
@@ -183,7 +183,7 @@ const { gameTime } = useGameTimer(gameState);
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
@@ -216,7 +216,7 @@ const { gameTime } = useGameTimer(gameState);
 				margin: 0 auto;
 				border-radius: 2px;
 				opacity: 0.5;
-				background-color: var(--Line_2);
+				background-color: var(--Line-2);
 			}
 		}
 	}
@@ -225,7 +225,7 @@ const { gameTime } = useGameTimer(gameState);
 		height: 68px;
 		display: flex;
 		padding: 0px 12px;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		.team {
 			width: 30%;
 			margin-top: 8px;
@@ -246,7 +246,7 @@ const { gameTime } = useGameTimer(gameState);
 				}
 				.name {
 					flex: 1;
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
@@ -269,7 +269,7 @@ const { gameTime } = useGameTimer(gameState);
 						height: 16px;
 					}
 					.value {
-						color: var(--Text1);
+						color: var(--Text-1);
 						font-family: "PingFang SC";
 						font-size: 12px;
 						font-weight: 400;
@@ -292,7 +292,7 @@ const { gameTime } = useGameTimer(gameState);
 				justify-content: center;
 				gap: 4px;
 				margin-top: 8px;
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
@@ -313,8 +313,8 @@ const { gameTime } = useGameTimer(gameState);
 					align-items: center;
 					justify-content: center;
 					border-radius: 4px;
-					background-color: var(--Bg4);
-					color: var(--Text_s);
+					background-color: var(--Bg-4);
+					color: var(--Text-s);
 					font-family: "DIN Alternate";
 					font-size: 14px;
 					font-weight: 700;
@@ -323,7 +323,7 @@ const { gameTime } = useGameTimer(gameState);
 					width: 16px;
 					height: 2px;
 					border-radius: 2px;
-					background: var(--Line_2);
+					background: var(--Line-2);
 				}
 			}
 		}
@@ -332,8 +332,8 @@ const { gameTime } = useGameTimer(gameState);
 	.line {
 		width: 370px;
 		height: 1px;
-		background: var(--Line_1);
-		box-shadow: 0px 1px 0px 0px var(--Line_2);
+		background: var(--Line-1);
+		box-shadow: 0px 1px 0px 0px var(--Line-2);
 	}
 }
 </style>

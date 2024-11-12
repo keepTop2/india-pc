@@ -21,13 +21,16 @@ defineProps({
 	justify-content: center;
 	flex-direction: column;
 	gap: 10px;
+	background: var(--Bg-1-1, #24262b);
+	margin-top: 14px;
+	border-radius: 12px;
 	img {
 		width: 142px;
 		height: 120px;
 	}
 
 	div {
-		color: var(--light-ok-Text-2-1, #656e78);
+		color: var(--Text-2-1, #656e78);
 		text-align: center;
 		font-family: "PingFang SC";
 		font-size: 14px;

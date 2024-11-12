@@ -68,8 +68,8 @@ const onOrderConfirm = () => {
 .shopCart {
 	width: 100%;
 	min-height: 100%;
-	background: var(--Bg1);
-	color: var(--Text_s);
+	background: var(--Bg-1);
+	color: var(--Text-s);
 	box-sizing: border-box;
 
 	.header-container {
@@ -102,7 +102,7 @@ const onOrderConfirm = () => {
 			left: 0px;
 			width: 100%;
 			height: 1px;
-			background-color: var(--Line_1);
+			background-color: var(--Line-1);
 			box-shadow: 0px 1px 0px 0px #343d48;
 		}
 	}
@@ -113,7 +113,7 @@ const onOrderConfirm = () => {
 	padding: 10px 15px 15px;
 	border-radius: 8px;
 	align-items: center;
-	background: var(--Bg4);
+	background: var(--Bg-4);
 	:deep(.el-button) {
 		margin-top: 10px;
 		border-radius: 4px;
@@ -121,7 +121,7 @@ const onOrderConfirm = () => {
 		width: 100%;
 		border: 1px solid var(--Theme);
 		background: var(--Theme);
-		color: var(--Text_a);
+		color: var(--Text-a);
 	}
 
 	.bet-info {
@@ -134,14 +134,14 @@ const onOrderConfirm = () => {
 			justify-content: space-between;
 
 			.label {
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 500;
 				line-height: 20px;
 			}
 			.value {
-				color: var(--Text1);
+				color: var(--Text-1);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
@@ -149,7 +149,7 @@ const onOrderConfirm = () => {
 			}
 
 			.success {
-				color: var(--Success);
+				color: var(--success);
 			}
 		}
 	}

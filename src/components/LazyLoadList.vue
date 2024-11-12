@@ -2,7 +2,7 @@
 	<div class="lazy-load-container" ref="container">
 		<slot></slot>
 		<div ref="trigger" class="lazy-load-trigger fade-in">
-			<div v-if="finished" class="noData">
+			<div v-if="noData" class="noData">
 				<img src="/@/assets/common/nodata.png" alt="" />
 				<p class="fs_14 Text2_1 mt_10">哎呀！还没有数据</p>
 			</div>
@@ -19,7 +19,8 @@ const props = defineProps({
 		required: true,
 		validator: (value: any) => typeof value === "function",
 	},
-	finished: {
+
+	noData: {
 		type: Boolean,
 		required: true,
 	},
@@ -101,7 +102,7 @@ onBeforeUnmount(() => {
 .lazy-load-trigger {
 	font-size: 20px;
 	text-align: center;
-	color: var(--Text1);
+	color: var(--Text-1);
 }
 .noData {
 	img {

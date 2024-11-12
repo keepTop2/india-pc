@@ -111,7 +111,7 @@ watch(
 :deep(.el-drawer) {
 	width: 348px !important;
 
-	background: var(--Bg1);
+	background: var(--Bg-1);
 
 	.el-drawer__body {
 		padding: 0;
@@ -120,7 +120,7 @@ watch(
 
 		.header {
 			height: 64px;
-			background-color: var(--Bg3);
+			background-color: var(--Bg-3);
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -167,11 +167,11 @@ watch(
 						border-radius: 12px;
 						background-color: var(--Bg);
 						transition: 0.2s;
-						color: var(--Text2_1);
+						color: var(--Text-2-1);
 					}
 
 					.active {
-						background-color: var(--Bg3);
+						background-color: var(--Bg-3);
 						color: var(--Text_s);
 					}
 				}

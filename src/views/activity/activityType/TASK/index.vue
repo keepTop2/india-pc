@@ -252,16 +252,16 @@ const confirmDialog = () => {
 		flex: 1;
 		text-align: center;
 		border-radius: 14px 14px 0px 0px;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		padding: 10px;
 		position: relative;
 		font-size: 14px;
-		color: var(--Text2_1);
+		color: var(--Text-2-1);
 		cursor: pointer;
 	}
 	.active {
 		background-color: var(--Theme);
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 	.active::after {
 		content: "";
@@ -276,7 +276,7 @@ const confirmDialog = () => {
 }
 .taskList {
 	border-radius: 14px;
-	background: var(--Bg4);
+	background: var(--Bg-4);
 	padding: 16px;
 	min-height: 300px;
 	.card {
@@ -313,7 +313,7 @@ const confirmDialog = () => {
 					height: 5px;
 					max-width: calc(226px - 3px);
 					border-radius: 8px;
-					background-color: var(--Success);
+					background-color: var(--success);
 				}
 			}
 			.bottom {
@@ -330,7 +330,7 @@ const confirmDialog = () => {
 		line-height: 26px;
 		text-align: center;
 		font-size: 12px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		cursor: pointer;
 		border-radius: 6px 6px 5px 5px;
 	}
@@ -386,13 +386,13 @@ const confirmDialog = () => {
 	max-width: 70vh;
 	border-radius: 12px;
 	min-height: 300px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	.title {
 		display: flex;
 		justify-content: space-between;
-		border-bottom: 1px solid var(--Line_2);
+		border-bottom: 1px solid var(--Line-2);
 		padding: 13px 20px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		img {
 			width: 24px;
 			height: 24px;
@@ -401,7 +401,7 @@ const confirmDialog = () => {
 	}
 	.content {
 		padding: 10px 20px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		:deep(img) {
 			max-width: 100%;
 		}

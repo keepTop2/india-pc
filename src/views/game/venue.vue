@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<venueBanner></venueBanner>
+		<venueBanner :bannerList="bannerList"></venueBanner>
 		<div class="max-width">
 			<div class="mt_40 pr_10 pl_10">
 				<div class="search-component" ref="resultList">
@@ -32,7 +32,7 @@
 			</div>
 			<div v-else>
 				<hotGame :hotGameList="gameData.find((item:any) => item.label == 1)?.gameInfoList" v-if="currentTab == 0 || currentTab == 1" />
-				<lobbyGameCard :gameList="gameData.find((item:any) => item.label == 2)" title="新游戏" v-if="currentTab == 0 || currentTab == 2" />
+				<lobbyGameCard :gameList="gameData.find((item:any) => item.label == 2)" title="新游戏" v-if="currentTab == 0 || currentTab == 2" :newGame="true" />
 				<div v-for="(item, index) in gameData.filter((item:any) => item.label == 0)" :key="index">
 					<lobbyGameCard :gameList="item" v-if="currentTab == 0 || item.id == currentTab" />
 				</div>
@@ -50,12 +50,15 @@ import venueGameCard from "./components/venueGameCard.vue";
 import { gameApi } from "/@/api/game";
 import { useRoute } from "vue-router";
 import router from "/@/router";
+import { bannerApi } from "/@/api/banner";
 const isLoading = ref(true);
 const searchinputFocus = ref(false);
 const gameData: any = ref([]);
 const currentTab: any = ref(0);
+const bannerList: any = ref([]);
 // 根据标签添加预定义的选项
 onMounted(async () => {
+	getBannerList();
 	await queryGameInfoByOneClassId();
 	currentTab.value = route.query.gameTwoId;
 });
@@ -85,6 +88,7 @@ const queryGameInfoByOneClassId = async () => {
 watch(
 	() => route.query.gameOneId,
 	async () => {
+		getBannerList();
 		await queryGameInfoByOneClassId();
 		currentTab.value = route.query.gameTwoId;
 	}
@@ -95,6 +99,15 @@ watch(
 		currentTab.value = route.query.gameTwoId;
 	}
 );
+const getBannerList = () => {
+	bannerApi
+		.queryBannerList({
+			gameOneClassId: route.query.gameOneId,
+		})
+		.then((res) => {
+			bannerList.value = [...res.data];
+		});
+};
 const searchQuery = ref(""); // 搜索关键词
 // 模糊查询
 const filteredResults = computed(() => {
@@ -140,14 +153,14 @@ const clickTab = (index: number) => {
 	.tab {
 		padding: 12px 22px;
 		margin-right: 8px;
-		background: var(--Bg2);
+		background: var(--Bg-2);
 		font-size: 14px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		border-radius: 4px;
 	}
 	.active {
 		background-color: var(--Theme);
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 }
 .search-component {
@@ -159,12 +172,12 @@ const clickTab = (index: number) => {
 	.search-input {
 		width: 100%;
 		height: 50px;
-		background: var(--Bg2);
+		background: var(--Bg-2);
 		border-radius: 6px;
 		font-size: 14px;
-		border: 1px solid var(--Line_2);
+		border: 1px solid var(--Line-2);
 		padding-left: 54px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 
 	.onFocus {
@@ -176,7 +189,7 @@ const clickTab = (index: number) => {
 		top: 16px;
 		margin-right: 24px;
 		padding-right: 12px;
-		border-right: 1px solid var(--Line_2);
+		border-right: 1px solid var(--Line-2);
 		display: flex;
 		align-items: center;
 	}

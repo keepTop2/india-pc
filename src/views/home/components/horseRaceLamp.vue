@@ -1,5 +1,5 @@
 <template>
-	<div class="announcement max-width">
+	<div class="announcement max-width" v-if="messageList.length > 0">
 		<div class="content">
 			<img src="./image/megaphone.png" alt="megaphone" />
 			<div class="text">
@@ -74,7 +74,7 @@ onMounted(() => {
 		height: 40px;
 		background: url("./image/announcement_bg2.png") no-repeat;
 		background-size: 100% 100%;
-		color: var(--light-ok-text-s, #ffffff);
+		color: var(--Text-s);
 		display: flex;
 		align-items: center;
 		gap: 12px;

@@ -2,11 +2,11 @@
 	<!-- 图片预览弹窗 -->
 	<div v-if="isOpen" class="overlay" @click="closePreview">
 		<div class="preview-container" @click.stop>
-			<button @click="prevImage" class="nav-button left"><svg-icon name="arrow_left_on" width="8px" height="12px"></svg-icon></button>
+			<button @click="prevImage" class="nav-button left"><svg-icon name="common-common-arrow_left_on" width="8px" height="12px"></svg-icon></button>
 			<div class="imgBox">
 				<img v-lazy-load="images[currentIndex]" alt="Preview" class="preview-image" />
 			</div>
-			<button @click="nextImage" class="nav-button right"><svg-icon name="arrow_right" width="8px" height="12px"></svg-icon></button>
+			<button @click="nextImage" class="nav-button right"><svg-icon name="common-arrow_right" width="8px" height="12px"></svg-icon></button>
 			<div @click="closePreview" class="close-button curp"><img src="/@/assets/common/close_btn_bg.png" alt="" /></div>
 			<div class="index Text1">{{ currentIndex + 1 }}/{{ images.length }}</div>
 		</div>
@@ -61,7 +61,7 @@ const closePreview = () => {
 .preview-container {
 	position: relative;
 	text-align: center;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	padding: 0 50px;
 	width: 676px;
 	height: 595px;
@@ -92,7 +92,7 @@ const closePreview = () => {
 	width: 28px;
 	height: 28px;
 	transform: translateY(-50%);
-	background: var(--butter);
+	background: var(--Butter);
 	color: #fff;
 	border: none;
 	display: flex;

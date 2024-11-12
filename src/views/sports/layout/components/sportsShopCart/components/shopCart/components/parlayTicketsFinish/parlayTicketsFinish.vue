@@ -28,7 +28,7 @@
 						<!-- 可赢价格 -->
 						<div class="cell">
 							<div class="left">
-								<span class="success">预计可赢:</span> <span>{{ getParlayTicketsWinningAmount(item) }} {{ UserStore.getUserInfo.mainCurrency }}</span>
+								<span>预计可赢:</span> <span class="main-currency">{{ getParlayTicketsWinningAmount(item) }} {{ UserStore.getUserInfo.mainCurrency }}</span>
 							</div>
 							<div class="right">
 								<span>小计: {{ Common.formatFloat(Common.mul(item.stake, item.betCount)) }} {{ UserStore.getUserInfo.mainCurrency }}</span>
@@ -102,8 +102,8 @@ const onSecondBet = () => {
 .shopCart {
 	width: 100%;
 	min-height: 100%;
-	background: var(--Bg1);
-	color: var(--Text_s);
+	background: var(--Bg-1);
+	color: var(--Text-s);
 	box-sizing: border-box;
 
 	.header-container {
@@ -136,7 +136,7 @@ const onSecondBet = () => {
 			left: 0px;
 			width: 100%;
 			height: 1px;
-			background-color: var(--Line_1);
+			background-color: var(--Line-1);
 			box-shadow: 0px 1px 0px 0px #343d48;
 		}
 
@@ -154,7 +154,7 @@ const onSecondBet = () => {
 				padding: 15px 15px 10px 15px;
 				box-sizing: border-box;
 				border-radius: 8px;
-				background: var(--Bg4);
+				background: var(--Bg-4);
 
 				.cell {
 					display: flex;
@@ -163,13 +163,13 @@ const onSecondBet = () => {
 
 					.left,
 					.right {
-						color: var(--Text1);
+						color: var(--Text-1);
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 400;
 						line-height: normal;
 						.title {
-							color: var(--Text_s);
+							color: var(--Text-s);
 							font-family: "PingFang SC";
 							font-size: 16px;
 							font-weight: 500;
@@ -177,13 +177,16 @@ const onSecondBet = () => {
 						}
 						.unitPrice {
 							margin-right: 6px;
-							color: var(--Text_s);
+							color: var(--Text-s);
 							font-family: "PingFang SC";
 							font-size: 20px;
 							font-weight: 500;
 						}
+						.main-currency {
+							color: var(--Text_a);
+						}
 						.success {
-							color: var(--Success);
+							color: var(--success);
 						}
 					}
 				}
@@ -197,7 +200,7 @@ const onSecondBet = () => {
 	border-radius: 8px;
 	margin: 5px 0 0;
 	align-items: center;
-	background: var(--Bg3);
+	background: var(--Bg-3);
 
 	.bet-info {
 		display: flex;
@@ -219,7 +222,7 @@ const onSecondBet = () => {
 			}
 
 			.transId {
-				color: var(--Text1);
+				color: var(--Text-1);
 			}
 		}
 	}
@@ -234,7 +237,7 @@ const onSecondBet = () => {
 	z-index: 99;
 	display: grid;
 	gap: 5px;
-	background: var(--Bg4);
+	background: var(--Bg-4);
 
 	:deep(.el-button) {
 		border-radius: 4px;
@@ -242,13 +245,13 @@ const onSecondBet = () => {
 		width: 100%;
 		border: 1px solid var(--Theme);
 		background: var(--Theme);
-		color: var(--Text_a);
+		color: var(--Text-a);
 	}
 
 	.btnKeep {
 		margin: 0px;
 		border: 1px solid var(--Theme);
-		background: var(--Bg4);
+		background: var(--Bg-4);
 		color: var(--Theme);
 	}
 }

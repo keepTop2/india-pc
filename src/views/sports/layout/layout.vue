@@ -4,7 +4,7 @@
 		<!-- banner控制器 -->
 		<BannerController />
 		<!-- 体育 主体内容区域  -->
-		<Banner />
+		<venueBanner :bannerList="bannerList"></venueBanner>
 		<div class="main-container">
 			<!-- 左侧 体育游戏列表 -->
 			<div class="left-container">
@@ -54,7 +54,8 @@ import SportsApi from "/@/api/sports/sports";
 import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar } from "./components";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
 import userBanner from "./components/banner";
-
+import workerManage from "/@/webWorker/workerManage";
+import { bannerApi } from "/@/api/banner";
 const SportAttentionStore = useSportAttentionStore();
 // 路由实例
 const route = useRoute();
@@ -76,6 +77,16 @@ const tabActive = ref("");
 // 是否显示条件菜单，根据路由 meta 类型判断
 const isShowCondition = computed(() => route.meta.type === "list");
 
+const bannerList = ref([]);
+const getBannerList = () => {
+	bannerApi
+		.queryBannerList({
+			gameOneClassId: "SBA",
+		})
+		.then((res) => {
+			bannerList.value = res.data;
+		});
+};
 // 监听路由地址变化，切换推送
 watch(
 	() => route.fullPath,
@@ -87,7 +98,6 @@ watch(
 		}
 	}
 );
-
 // 生命周期钩子函数
 onBeforeMount(() => {
 	// 订阅遮罩层显示事件
@@ -98,6 +108,7 @@ onBeforeMount(() => {
 	pubSub.subscribe(pubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
 	// 初始化体育请求
 	initSportRequest();
+	getBannerList();
 });
 
 onBeforeUnmount(() => {
@@ -152,6 +163,8 @@ const unSport = () => {
 	sportsBetEvent.clearHotLeagueList();
 	// 发布清除热门联赛列表的事件，通知其他组件进行相关处理
 	pubSub.publish("clearHotLeagueList", "on");
+	clearState();
+	workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
 };
 
 const hideSlider = ref(false);
@@ -212,7 +225,7 @@ const { Banner, BannerController } = userBanner();
 			.line {
 				width: 100%;
 				height: 1px;
-				background: var(--Line_1);
+				background: var(--Line-1);
 				box-shadow: 0px 1px 0px 0px #343d48;
 			}
 		}

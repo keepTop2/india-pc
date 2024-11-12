@@ -88,23 +88,24 @@ const getConfigDetail = async (item: any) => {
 <style scoped lang="scss">
 .cardList {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(430px, 1fr)); /* 自动填充，最小宽度100px */
+	grid-template-columns: repeat(auto-fill, minmax(324px, 1fr)); /* 自动填充，最小宽度100px */
 	grid-gap: 15px; /* 每个格子的间距 */
 	width: 100%; /* 父容器的宽度 */
 	padding: 0 10px;
 	.btn {
 		border-radius: 4px;
 		padding: 8px 22px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-weight: 400;
 		cursor: pointer;
+		white-space: nowrap;
 		background: linear-gradient(0deg, rgba(255, 40, 75, 0.6) 0%, rgba(255, 40, 75, 0.1) 100%);
 	}
 }
 .cardBox {
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 12px;
-	color: var(--Text1);
+	color: var(--Text-1);
 	img {
 		width: 100%;
 		height: 188px;

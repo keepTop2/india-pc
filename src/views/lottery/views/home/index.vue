@@ -34,7 +34,7 @@
 				<div v-if="searchQuery">
 					<div class="games-module">
 						<div class="content" v-if="searchGames.length">
-							<LotteryCard @select="handleSelect(game)" :key="game._key" :data="game.data" v-for="game in searchGames" />
+							<LotteryCard :key="game._key" :data="game.data" v-for="game in searchGames" @select="pushView(game)" />
 						</div>
 						<div class="empty" v-else-if="!searchGames.length && !isLoading">
 							<svg-icon name="sports-empty" width="142px" height="120px" />
@@ -52,8 +52,8 @@
 						<span @click="currentTab = item._key" class="more">更多</span>
 					</div>
 					<div class="content">
-						<HotLotteryCard @select="handleSelect(game)" v-if="item.label === 1" :data="game.data" :key="item._key" v-for="game in item.gameInfoList.slice(0, 4)" />
-						<LotteryCard @select="handleSelect(game)" v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" />
+						<HotLotteryCard v-if="item.label === 1" :data="game.data" :key="item._key" v-for="game in item.gameInfoList.slice(0, 4)" @select="pushView(game)" />
+						<LotteryCard v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" @select="pushView(game)" />
 					</div>
 				</div>
 			</div>
@@ -62,16 +62,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, computed } from "vue";
+import { stringify } from "qs";
+import { computed, onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { gameApi } from "/@/api/game";
+import showToast from "/@/hooks/useToast";
+import { i18n } from "/@/i18n/index";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
-import { useRoute } from "vue-router";
+import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import Common from "/@/views/sports/utils/common";
+
+const $: any = i18n.global;
+
 const { LotteryCard, HotLotteryCard } = useLotteryCard();
 
 const currentTab = ref<string | undefined>("0");
 const searchQuery = ref<string>(""); // 搜索关键词
 const searchinputFocus = ref(false);
+
+useWebSocket({});
 
 const gameData = ref<any[]>([]);
 
@@ -86,6 +95,7 @@ onMounted(async () => {
 	currentTab.value = route.query.gameTwoId as string;
 });
 const route = useRoute();
+const router = useRouter();
 const queryGameInfoByOneClassId = async () => {
 	const gameOneId = route.query.gameOneId;
 	await gameApi
@@ -129,7 +139,10 @@ const filterGames = Common.debounce(() => {
 
 const games = computed(() => {
 	if (currentTab.value === "0") return gameData.value;
-
+	console.log(
+		gameData.value.filter((game) => game._key === currentTab.value),
+		"=======currentTab.value"
+	);
 	return gameData.value.filter((game) => game._key === currentTab.value);
 });
 
@@ -142,6 +155,25 @@ watch(
 		currentTab.value = route.query.gameTwoId as string;
 	}
 );
+
+const maps = {
+	K3: "/lottery/kuaisan",
+	SSQ: "/lottery/unionLotto",
+};
+const pushView = (game) => {
+	console.log("game", game);
+	const { gameCategoryCode, venueCode, gameCode } = game;
+	const searchParams = { venueCode, gameCode };
+	const targetView = maps[gameCategoryCode];
+	console.log("gameCategoryCode", gameCategoryCode);
+	console.log("targetView", targetView);
+	console.log("searchParams", searchParams);
+	if (!targetView) {
+		showToast("Error: Path Not Found!");
+		return;
+	}
+	router.push(`${targetView}?${stringify(searchParams)}`);
+};
 </script>
 
 <style scoped lang="scss">
@@ -155,14 +187,14 @@ watch(
 	.tab {
 		padding: 7px 12px;
 		margin-right: 8px;
-		background: var(--button);
+		background: var(--Button);
 		font-size: 14px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		border-radius: 4px;
 		transition: background-color 0.3s ease;
 		&.active {
 			background-color: var(--Theme);
-			color: var(--Text_s);
+			color: var(--Text-s);
 		}
 	}
 }
@@ -175,12 +207,12 @@ watch(
 	.search-input {
 		width: 100%;
 		height: 50px;
-		background: var(--Bg2);
+		background: var(--Bg-2);
 		border-radius: 6px;
 		font-size: 14px;
-		border: 1px solid var(--Line_2);
+		border: 1px solid var(--Line-2);
 		padding-left: 54px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		transition: border-color 0.3s ease;
 		&.onFocus {
 			border: 1px solid var(--Theme);
@@ -193,7 +225,7 @@ watch(
 		top: 16px;
 		margin-right: 24px;
 		padding-right: 12px;
-		border-right: 1px solid var(--Line_2);
+		border-right: 1px solid var(--Line-2);
 		display: flex;
 		align-items: center;
 	}
@@ -220,10 +252,10 @@ watch(
 			}
 			.name {
 				font-size: var(--title-text-size);
-				color: var(--Text_a);
+				color: var(--Text-a);
 			}
 			.more {
-				color: var(--Text1);
+				color: var(--Text-1);
 				font-size: 18px;
 				cursor: pointer;
 			}
@@ -244,7 +276,7 @@ watch(
 			top: 50%;
 			transform: translate(-50%, -50%);
 			p {
-				color: var(--Text1);
+				color: var(--Text-1);
 			}
 		}
 	}

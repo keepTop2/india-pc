@@ -3,7 +3,7 @@
 		<el-dropdown ref="selectRef" trigger="click" :teleported="false" :placement="'bottom-end'" :popper-class="'popperClass'" @visible-change="visibleChange" @command="onCommand">
 			<div class="el-dropdown-content">
 				<span class="content"><slot name="prefix"></slot>{{ selectDateLabel }}</span>
-				<svg-icon class="icon" name="arrow_down" size="12" />
+				<svg-icon class="icon" name="common-arrow_down" size="12" />
 			</div>
 			<template #dropdown>
 				<el-dropdown-menu>
@@ -55,7 +55,7 @@ const onCommand = (e: any) => {
 .select-date {
 	width: 200px;
 	height: 44px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 8px;
 	box-sizing: border-box;
 
@@ -71,7 +71,7 @@ const onCommand = (e: any) => {
 			padding: 8px 10px;
 			cursor: pointer;
 			box-sizing: border-box;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
@@ -79,7 +79,7 @@ const onCommand = (e: any) => {
 
 		.popperClass {
 			width: 160px;
-			background-color: var(--Bg1);
+			background-color: var(--Bg-1);
 			box-shadow: var(--popoverShadow);
 
 			border-radius: 8px;
@@ -99,8 +99,8 @@ const onCommand = (e: any) => {
 							background-color: transparent;
 
 							.dropdown-item-active {
-								background-color: var(--Bg5) !important;
-								color: var(--Text_s) !important;
+								background-color: var(--Bg-5) !important;
+								color: var(--Text-s) !important;
 								font-family: "PingFang SC";
 								font-size: 14px;
 								font-weight: 500;
@@ -113,7 +113,7 @@ const onCommand = (e: any) => {
 								align-items: center;
 								justify-content: space-between;
 								padding: 0px 12px;
-								color: var(--Text1);
+								color: var(--Text-1);
 								overflow: unset;
 								white-space: nowrap;
 								text-overflow: ellipsis;
@@ -139,7 +139,7 @@ const onCommand = (e: any) => {
 										border-radius: 8px;
 										border: 1px solid;
 										border-color: var(--Line);
-										background-color: var(--Bg4);
+										background-color: var(--Bg-4);
 										box-shadow: var(--popoverShadow);
 
 										.vc-pane-container {
@@ -150,7 +150,7 @@ const onCommand = (e: any) => {
 												grid-gap: 0px;
 
 												.vc-title-wrapper {
-													color: var(--Text1);
+													color: var(--Text-1);
 													font-family: "PingFang SC";
 													font-size: 14px;
 													font-weight: 500;
@@ -164,20 +164,20 @@ const onCommand = (e: any) => {
 												}
 
 												.vc-focus:focus-within {
-													box-shadow: 0 0 0 2px var(--Bg5);
+													box-shadow: 0 0 0 2px var(--Bg-5);
 												}
 											}
 
 											.vc-weeks {
 												.vc-weekdays {
-													color: var(--Text2_1);
+													color: var(--Text-2-1);
 													font-family: "PingFang SC";
 													font-size: 14px;
 													line-height: 22px;
 												}
 
 												.vc-day-content {
-													color: var(--Text1);
+													color: var(--Text-1);
 													font-family: "PingFang SC";
 													font-size: 14px;
 													font-weight: 500;
@@ -185,7 +185,7 @@ const onCommand = (e: any) => {
 												}
 
 												.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-solid.vc-blue {
-													color: var(--Text_s);
+													color: var(--Text-s);
 													background-color: var(--Theme);
 												}
 
@@ -193,8 +193,8 @@ const onCommand = (e: any) => {
 												.vc-highlight.vc-highlight-base-start.vc-highlight-bg-light,
 												.vc-highlight.vc-highlight-base-end.vc-highlight-bg-light,
 												.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-outline.vc-blue {
-													background-color: var(--Bg5);
-													box-shadow: 0px 0px 0px 1px var(--Bg5);
+													background-color: var(--Bg-5);
+													box-shadow: 0px 0px 0px 1px var(--Bg-5);
 												}
 
 												.vc-focus:focus-within {
@@ -212,7 +212,7 @@ const onCommand = (e: any) => {
 						}
 
 						.el-dropdown-menu__item:focus {
-							background-color: var(--Bg3);
+							background-color: var(--Bg-3);
 						}
 					}
 				}

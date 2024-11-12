@@ -2,7 +2,7 @@
 	<div>
 		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
-				<div class="header">{{ $t(`wallet['存款']`) }}</div>
+				<div class="header">{{ $t(`wallet['平台币转换']`) }}</div>
 			</template>
 			<div class="container">
 				<Transform />
@@ -31,9 +31,9 @@ const props = withDefaults(
 }
 .header {
 	padding-bottom: 6px;
-	border-bottom: 1px solid var(--Line_1);
+	border-bottom: 1px solid var(--Line-1);
 	box-shadow: 0px 1px 0px 0px #343d48;
-	color: var(--Text_s);
+	color: var(--Text-s);
 	font-family: "PingFang SC";
 	font-size: 24px;
 	font-weight: 500;

@@ -1,32 +1,18 @@
 <template>
-	<div
-		class="left_main"
-		:class="collapse ? 'collapse' : ''"
-		:style="{
-			backgroundImage: !collapse ? `url(${Common.getCommonImgPath('sideBar_open.png')})` : `url(${Common.getCommonImgPath('sideBar_close.png')})`,
-		}"
-	>
+	<div class="left_main" :class="collapse ? 'collapse' : ''">
 		<!-- 左侧头 -->
 		<div class="left_main_header">
 			<div class="left_imgs_collapse collapse_icon icon">
-				<SvgIcon name="collapse_icon" :class="collapse ? 'active' : ''" width="24px" height="21px" @click="changeCollpase" />
+				<SvgIcon :name="collapse ? 'common-collapse_close_icon' : 'common-collapse_open_icon'" width="24px" height="21px" @click="changeCollpase" />
 			</div>
 			<div class="login_plan" @click="router.push('/')" v-if="!collapse">
-				<svg-icon name="logo" width="132px" height="16px" />
+				<svg-icon name="common-logo" width="132px" height="16px" />
 			</div>
 		</div>
 		<div class="line1"></div>
 		<!-- 左侧菜单 -->
 		<div class="left_scroll">
 			<div class="left_scroll_conatiner1">
-				<!-- 奖金 -->
-				<div class="left_bonus">
-					<svg-icon name="bonus_icon" size="18px" />
-					<span class="left_text1">
-						{{ $t(`common['奖金']`) }}
-					</span>
-				</div>
-
 				<!-- 任务 抽奖-->
 				<div class="task_lottery mt_15">
 					<div class="task_lottery_item" @click="showTask" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('task_bg.png')})` : '', marginRight: '5px' }">
@@ -36,7 +22,7 @@
 
 					<div class="task_lottery_item" @click="showSpin" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('lottery_bg.png')})` : '' }">
 						<img :src="Common.getCommonImgPath('lottery_icon.png')" alt="" />
-						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['抽奖']`) }}</span>
+						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['转盘']`) }}</span>
 					</div>
 				</div>
 				<!-- 菜单 -->
@@ -57,19 +43,19 @@
 							<!-- 白天 -->
 							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('light')">
 								<svg-icon name="light_icon" size="17px" class="mr_8" />
-								<span class="left_text1" :class="{ activeColor: ThemesStore.themeName == 'light' }"> {{ $t(`layout['layout1']['白天']`) }}</span>
+								<span> {{ $t(`layout['layout1']['白天']`) }}</span>
 							</div>
 							<!-- 黑夜 -->
-							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('dark')">
+							<div class="dayOrNight_item" :class="ThemesStore.themeName == 'dark' ? 'darkbg1' : 'darkbg2'" @click="onSetTheme('dark')">
 								<svg-icon name="dark_icon" size="17px" class="mr_8" />
-								<span class="left_text1" :class="{ activeColor: ThemesStore.themeName == 'dark' }"> {{ $t(`layout['layout1']['黑夜']`) }}</span>
+								<span> {{ $t(`layout['layout1']['黑夜']`) }}</span>
 							</div>
 						</div>
 
 						<!-- 白天黑夜  关闭侧边栏状态-->
 						<div class="dayOrNight mt_12 mb_10" v-else>
 							<!-- 白天 -->
-							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('light')" v-if="ThemesStore.themeName == 'dark'">
+							<div class="dayOrNight_item" @click="onSetTheme('light')" v-if="ThemesStore.themeName == 'dark'">
 								<svg-icon name="light_icon" size="17px" />
 							</div>
 							<!-- 白天 -->
@@ -179,6 +165,7 @@ const changeCollpase = () => {
 	transition: all 0.2s ease;
 	box-sizing: border-box;
 	z-index: 120;
+	background: var(--sideBar_bg);
 
 	.left_main_header {
 		width: 224px;
@@ -197,7 +184,7 @@ const changeCollpase = () => {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				color: var(--Icon_1);
+				color: var(--Icon-1);
 			}
 		}
 		.login_plan {
@@ -210,14 +197,13 @@ const changeCollpase = () => {
 	.line1 {
 		position: fixed;
 		top: 64px;
-		left: 0;
-		right: 0;
-		width: 224px;
-		background: var(--Line_1);
-		box-shadow: 0px 1px 0px 0px #343d48;
-
+		left: 6px;
+		right: 6px;
+		width: 212px;
+		background: var(--Line-1);
 		height: 1px;
 		flex-shrink: 0;
+		box-shadow: 0px 1px 0px 0px var(--lineBg);
 	}
 	.login_plan {
 		cursor: pointer;
@@ -229,16 +215,15 @@ const changeCollpase = () => {
 		overflow-y: auto;
 		transition: all 0.2s ease;
 		.left_scroll_conatiner1 {
-			padding: 8px;
-			margin: 8px auto;
+			padding: 0 8px;
 			border-radius: 5px;
 			.left_bonus {
 				height: 46px;
 				display: flex;
 				align-items: center;
 				padding: 0 20px;
-				background: var(--Bg2);
-				color: var(--Text1);
+				background: var(--Bg-2);
+				color: var(--Text-1);
 				border-radius: 4px;
 				.left_text1 {
 					padding: 0 16px;
@@ -257,12 +242,12 @@ const changeCollpase = () => {
 					font-size: 13px;
 
 					.task_lottery_item_text1 {
-						color: var(--Text_a);
+						color: var(--Text-a);
 					}
 					img {
-						height: 41px;
-						margin-left: 10px;
-						margin-top: -5px;
+						height: 34px;
+						margin-top: 3px;
+						margin-right: 3px;
 					}
 				}
 			}
@@ -270,8 +255,8 @@ const changeCollpase = () => {
 	}
 
 	.sidebar_bttom {
-		background: var(--Bg1);
-		color: var(--Text1);
+		background: var(--Bg-1);
+		color: var(--Text-1);
 
 		.helpcenter_container {
 			width: 100%;
@@ -282,8 +267,8 @@ const changeCollpase = () => {
 			border-radius: 4px;
 			box-sizing: border-box;
 			cursor: pointer;
-			background: var(--Bg2);
-			color: var(--Text1);
+			background: var(--Bg-2);
+			color: var(--Text-1);
 			.left_text1 {
 				margin-left: 16px;
 			}
@@ -292,8 +277,8 @@ const changeCollpase = () => {
 			margin: 12px 0;
 			padding: 8px;
 			border-radius: 4px;
-			background: var(--Bg2);
-			color: var(--Text1);
+			background: var(--Bg-2);
+			color: var(--Text-1);
 
 			.referralcode_row1 {
 				display: flex;
@@ -309,8 +294,8 @@ const changeCollpase = () => {
 					height: 42px;
 					border: none;
 					padding: 0 4px 0 10px;
-					background: var(--Bg1);
-					color: var(--Text1);
+					background: var(--Bg-1);
+					color: var(--Text-1);
 				}
 				.referralcode_btn1 {
 					position: absolute;
@@ -319,8 +304,8 @@ const changeCollpase = () => {
 					line-height: 38px;
 					padding: 0 26px;
 					cursor: pointer;
-					background: var(--butter);
-					color: var(--Text2);
+					background: var(--Butter);
+					color: var(--Text-2);
 				}
 			}
 		}
@@ -328,8 +313,10 @@ const changeCollpase = () => {
 			display: flex;
 			height: 46px;
 			width: 100%;
-			background: var(--Bg2);
-			color: var(--Text1);
+			background: var(--Bg);
+			color: var(--Text-1);
+			border-radius: 6px;
+			border-bottom: 2px solid rgba(#fff, $alpha: 0.05);
 			.dayOrNight_item {
 				flex: 1;
 				height: 100%;
@@ -339,6 +326,7 @@ const changeCollpase = () => {
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				border-radius: 6px;
 				img {
 					height: 18px;
 					margin-right: 8px;
@@ -346,31 +334,38 @@ const changeCollpase = () => {
 			}
 			.dayOrNight_item.active {
 				flex: 1;
-				background: var(--butter);
-				color: var(--Text_s);
+				background: var(--Butter);
+				color: var(--Text-s);
 			}
-			.activeBg {
-				background: var(--butter);
+
+			.darkbg1 {
+				background: var(--Butter);
+				color: var(--Text-s);
+			}
+			.darkbg2 {
+				background: var(--Bg-3);
+				color: var(--Text-s);
 			}
 		}
 	}
 
 	&.collapse {
-		width: 64px;
+		width: 52px;
+
 		.left_main_header {
-			width: 64px;
+			width: 52px;
 			.collapse_icon {
-				color: var(--Text_a);
+				color: var(--Text-a);
 			}
 			.login_plan {
 				display: none;
 			}
 		}
 		.line1 {
-			width: 64px;
+			width: 40px;
 		}
 		.left_scroll {
-			width: 64px;
+			width: 52px;
 			padding: 0px;
 			display: flex;
 			flex-direction: column;
@@ -413,7 +408,7 @@ const changeCollpase = () => {
 
 			.left_scroll_conatiner2 {
 				margin: 0px;
-				width: 64px;
+				width: 52px;
 				padding: 0px;
 				display: flex;
 				flex-direction: column;
@@ -436,7 +431,7 @@ const changeCollpase = () => {
 			display: flex;
 			flex-direction: column;
 			margin-top: 16px !important;
-			background: var(--Bg4);
+			background: var(--Bg-4);
 
 			.dayOrNight_item {
 				width: 44px;
@@ -450,7 +445,7 @@ const changeCollpase = () => {
 				margin-bottom: 16px;
 
 				&:hover {
-					background: var(--Bg1);
+					background: var(--Bg-1);
 				}
 
 				img {

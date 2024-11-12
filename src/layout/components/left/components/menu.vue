@@ -11,9 +11,9 @@
 				<div class="menu_item" :class="openMenuIndex == index ? 'activeMenu' : ''" @click="selectMenu(item, index)">
 					<span class="menu_icon"><img v-lazy-load="item.iconFileUrl" alt="" /></span>
 					<span class="menu_name ellipsis">{{ item.directoryName }}</span>
-					<span class="arrow" v-if="item.twoList?.length && !collapse">
-						<svg-icon name="arrow_up" v-if="openMenuIndex == index" height="8px" width="14px" />
-						<svg-icon name="arrow_down" v-else height="8px" width="14px" />
+					<span class="arrow" v-if="item.twoList?.length && !collapse" @click.stop="selectMenu(item, index, true)">
+						<svg-icon name="common-arrow_up" v-if="openMenuIndex == index" height="6px" width="10.5px" />
+						<svg-icon name="common-arrow_down" v-else height="6px" width="10.5px" />
 					</span>
 				</div>
 				<transition name="drawer-expand" @before-enter="beforeEnter" @enter="enter" @before-leave="beforeLeave" @leave="leave">
@@ -35,22 +35,22 @@
 			</div>
 			<div>
 				<div class="menu_item" :class="openMenuIndex == 'helpCenter' ? 'activeMenu' : ''" @click="router.push('/helpCenter')">
-					<span class="menu_icon"><svg-icon name="help_icon" size="17px"></svg-icon></span>
+					<span class="menu_icon"><svg-icon name="common-help_icon" size="17px"></svg-icon></span>
 					<span class="menu_name ellipsis">帮助中心</span>
 				</div>
 				<div class="menu_item" @click="Common.getSiteCustomerChannel">
-					<span class="menu_icon"><svg-icon name="kefu" size="17px"></svg-icon></span>
+					<span class="menu_icon"><svg-icon name="common-kefu_icon" size="17px"></svg-icon></span>
 					<span class="menu_name ellipsis">线上客服</span>
 				</div>
 				<div class="menu_item" @click="router.push('/helpCenter')">
-					<span class="menu_icon"><svg-icon name="join_us" size="17px"></svg-icon></span>
+					<span class="menu_icon"><svg-icon name="common-join_us_icon" size="17px"></svg-icon></span>
 					<span class="menu_name ellipsis">加入我们</span>
 				</div>
 				<div class="menu_item" @click="useModalStore().openModal('setLang')">
 					<span class="menu_icon"><img :src="LangIcon" alt="" class="langIcon" /></span>
 					<span class="menu_name ellipsis">语言切换</span>
 					<span class="arrow">
-						<svg-icon name="arrow_right" height="8px" width="14px" />
+						<svg-icon name="common-arrow_right" height="8px" width="14px" />
 					</span>
 				</div>
 			</div>
@@ -121,7 +121,16 @@ onMounted(() => {
  * CA:"进入通用场馆"
  * LT:"进入gamePage页面"
  */
-const selectMenu = (item: any, index: number) => {
+const selectMenu = (item: any, index: number, isArrow?: string) => {
+	// 展开菜单
+	if (isArrow) {
+		if (openMenuIndex.value === index) {
+			openMenuIndex.value = null;
+		} else {
+			openMenuIndex.value = index;
+		}
+		return;
+	}
 	const gameOneIdParams = { gameOneId: item.gameOneClassId, gameTwoId: 0 };
 	const singVenueMap = new Map([
 		["SBA", { path: "/sports" }],
@@ -136,6 +145,7 @@ const selectMenu = (item: any, index: number) => {
 	} else {
 		openMenuIndex.value = index;
 	}
+
 	const { modelCode } = item;
 	if (singVenueMap.has(modelCode)) {
 		router.push({ ...singVenueMap.get(modelCode) });
@@ -214,8 +224,8 @@ const leave = (el: Element) => {
 		flex-wrap: wrap;
 		font-size: 14px;
 		border-radius: 4px;
-		color: var(--Text_a);
-		background: var(--Bg3);
+		color: var(--Text-s);
+		background: var(--Bg-3);
 		border-bottom: 2px solid rgba(#9fa5ac, $alpha: 0.1);
 		z-index: 10;
 		line-height: 40px;
@@ -241,11 +251,11 @@ const leave = (el: Element) => {
 	}
 	.menu_item.activeMenu,
 	.menu_item:hover {
-		color: var(--Text_a);
+		color: var(--Text-a);
 		background: linear-gradient(to top, rgba(255, 40, 75, 0.3), rgba(255, 40, 75, 0.05));
 		border-bottom: 2px solid var(--Theme);
 		.menu_name {
-			color: var(--Text_a);
+			color: var(--Text-s);
 		}
 	}
 	.subItem.menu_item.activeMenu,
@@ -253,13 +263,13 @@ const leave = (el: Element) => {
 		background: linear-gradient(to top, rgba(255, 40, 75, 0.2), rgba(255, 40, 75, 0.05));
 		border-bottom: 2px solid rgba(#ff284b, 0.5);
 		.menu_name {
-			color: var(--Text1);
+			color: var(--Text-1);
 		}
 	}
 
 	.subItem {
-		background: var(--Bg4);
-		color: var(--Text1);
+		background: var(--Bg-4);
+		color: var(--Text-1);
 		z-index: 5;
 	}
 	&.collapse {
@@ -287,11 +297,11 @@ const leave = (el: Element) => {
 		}
 		.menu_item.activeMenu,
 		.menu_item:hover {
-			color: var(--Text_a);
+			color: var(--Text-a);
 			background: linear-gradient(to top, rgba(255, 40, 75, 0.3), rgba(255, 40, 75, 0.05));
 			border-bottom: 2px solid var(--Theme);
 			.menu_name {
-				color: var(--Text_a);
+				color: var(--Text-a);
 			}
 		}
 		.subItem.menu_item.activeMenu,
@@ -299,7 +309,7 @@ const leave = (el: Element) => {
 			background: linear-gradient(to top, rgba(255, 40, 75, 0.2), rgba(255, 40, 75, 0.05));
 			border-bottom: 2px solid rgba(#ff284b, 0.5);
 			.menu_name {
-				color: var(--Text1);
+				color: var(--Text-1);
 			}
 		}
 	}
@@ -310,7 +320,7 @@ const leave = (el: Element) => {
 .arrow {
 	width: 20px;
 	height: 20px;
-	background-color: var(--Line_2);
+	background-color: var(--Line-2);
 	padding: 2px;
 	display: flex;
 	align-items: center;

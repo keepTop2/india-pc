@@ -1,6 +1,6 @@
 <template>
-	<div class="max-width back-to-top-box">
-		<button v-show="visible" class="back-to-top max-width" @click="scrollToTop">↑ Top</button>
+	<div class="back-to-top-box" @click="scrollToTop">
+		<svg-icon name="common-arrow_up" width="26px" height="15px"></svg-icon>
 	</div>
 </template>
 
@@ -37,13 +37,19 @@ onUnmounted(() => {
 .back-to-top-box {
 	position: fixed;
 	z-index: 800;
-	width: 100%;
-	bottom: 20px;
-	right: 50%;
-	left: 50%;
-	transform: translateX(-50%);
+
+	width: 60px;
+	height: 60px;
+	bottom: 90px;
+	right: 20px;
 	margin: 0 auto;
 	color: #333;
 	text-align: right;
+	border-radius: 26px;
+	background: var(--Bg-3);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
 }
 </style>

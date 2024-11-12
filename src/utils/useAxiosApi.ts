@@ -1,17 +1,17 @@
-import axios from "axios";
-import { ElMessage } from "element-plus";
-import ResCode from "./resCode";
 import EncryptionFn from "/@/utils/encryption";
+import ResCode from "./resCode";
+import axios from "axios";
 import { debounce } from "lodash-es";
-import { useLoading } from "/@/directive/loading/hooks";
-import { useUserStore } from "/@/stores/modules/user";
-import router from "/@/router";
-// import { useRequestError } from "/@/hooks/requestError";
 import showToast from "../hooks/useToast";
+import { useLoading } from "/@/directive/loading/hooks";
+import { useModalStore } from "/@/stores/modules/modalStore";
+import { useUserStore } from "/@/stores/modules/user";
+
+// import { useRequestError } from "/@/hooks/requestError";
+
 const { startLoading, stopLoading } = useLoading();
 // const { handleRequestError } = useRequestError();
-import { useModalStore } from "/@/stores/modules/modalStore";
-import pubsub from "/@/pubSub/pubSub";
+
 // 获取 config 配置请求 api
 function getUrl() {
 	switch (import.meta.env.VITE_BASEENV) {

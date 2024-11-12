@@ -2,7 +2,7 @@
 	<div class="dropdown pl_14 pr_14" ref="dropdownRef">
 		<div class="dropdown-header Text_s fs_12" @click="toggleDropdown" placeholder="">
 			<span>{{ selectedOption.text || placeholder }}</span>
-			<svg-icon :name="isOpen ? 'arrow_up' : 'arrow_down'" size="12px"></svg-icon>
+			<svg-icon :name="isOpen ? 'common-arrow_up' : 'common-arrow_down'" size="12px"></svg-icon>
 		</div>
 		<ul v-if="isOpen" class="dropdown-menu fs_12">
 			<li class="dropdown-item pl_14 pr_14" v-for="(item, index) in options" :key="index" @click="selectOption(item)" :class="item.value === selectedOption.value ? 'select' : ''">
@@ -52,7 +52,7 @@ function selectOption(option: any) {
 .dropdown {
 	position: relative;
 	max-width: 360px;
-	background-color: var(--Bg2);
+	background-color: var(--Bg-2);
 	color: #fff;
 	border-radius: 4px;
 	cursor: pointer;
@@ -79,7 +79,7 @@ function selectOption(option: any) {
 	top: 100%; /* 下拉框显示在按钮正下方 */
 	left: 0;
 	width: 100%;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	border-radius: 4px;
 	list-style: none;
 	padding: 0;
@@ -92,15 +92,15 @@ function selectOption(option: any) {
 .dropdown-item {
 	padding: 8px 0;
 	cursor: pointer;
-	color: var(--Text1);
+	color: var(--Text-1);
 }
 .select {
-	background-color: var(--Bg2);
-	color: var(--Text_s);
+	background-color: var(--Bg-2);
+	color: var(--Text-s);
 }
 
 .dropdown-item:hover {
-	color: var(--Text_s);
-	background-color: var(--Bg2);
+	color: var(--Text-s);
+	background-color: var(--Bg-2);
 }
 </style>

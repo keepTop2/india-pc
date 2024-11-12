@@ -25,7 +25,7 @@
 				<div>
 					<ImgUpload :files="files" :max="3" @update:files="updateFiles" />
 				</div>
-				<div class="Text2_1 mt_10 mb_40">最大不超过5 M，最多3张， 支持格式：jpg.png.jpeg</div>
+				<div class="Text2_1 mt_10 mb_40"></div>
 				<Button class="common_btn" @click="onSubmit" :disabled="disabledBtn">提交</Button>
 			</div>
 		</div>
@@ -33,7 +33,7 @@
 			<div class="flex_space-between mb_12">
 				<span>我的反馈</span>
 				<span @click="router.push('/user/feedback/feedbackList')" class="flex_space-between fs_14 Text1 curp"
-					>查看更多 <svg-icon name="arrow_right" size="14px" class="mr_10 Text2"></svg-icon
+					>查看更多 <svg-icon name="common-arrow_right" size="14px" class="mr_10 Text2"></svg-icon
 				></span>
 			</div>
 			<div class="rightScroll" v-ok-loading="listLoading">
@@ -125,10 +125,11 @@ const getfeedbackList = () => {
 	overflow: hidden;
 	.left {
 		flex: 1;
+
 		.title {
 			height: 74px;
 			line-height: 74px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			position: relative;
 			border-radius: 12px;
 		}
@@ -145,26 +146,26 @@ const getfeedbackList = () => {
 		}
 		.center {
 			border-radius: 12px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			padding: 20px;
 			height: 100%;
-			min-height: calc(100vh - 190px);
+			height: calc(100vh - 190px);
 			overflow-y: auto;
 		}
 		.common_input {
 			width: 360px;
 			height: 34px;
 			line-height: 34px;
-			background: var(--Bg2);
+			background: var(--Bg-2);
 			border-radius: 4px;
 		}
 	}
 	.right {
 		border-radius: 12px;
 		width: 240px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		.card {
-			background: var(--Bg3);
+			background: var(--Bg-3);
 			border-radius: 14px;
 			margin: 12px 0;
 			padding: 10px 14px;
@@ -173,7 +174,7 @@ const getfeedbackList = () => {
 				height: 1px;
 
 				margin: 8px 0 10px;
-				background: var(--Line_1);
+				background: var(--Line-1);
 				box-shadow: 0px 1px 0px 0px #343d48;
 			}
 		}
@@ -182,7 +183,7 @@ const getfeedbackList = () => {
 			height: 100%;
 			.noMoreData {
 				min-height: 300px;
-				color: var(--Text2);
+				color: var(--Text-2);
 				font-size: 12px;
 				line-height: 300px;
 				text-align: center;
@@ -194,14 +195,14 @@ const getfeedbackList = () => {
 	width: 100%;
 	min-height: 242px;
 	height: auto;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 8px;
 	border: none;
 	outline: none;
 	resize: none;
 	padding: 14px;
-	color: var(--Text_s);
-	border: 1px solid var(--Bg3);
+	color: var(--Text-s);
+	border: 1px solid var(--Bg-3);
 }
 .textareaBox {
 	position: relative;
@@ -212,7 +213,7 @@ const getfeedbackList = () => {
 	right: 10px;
 	bottom: 10px;
 	font-size: 12px;
-	color: var(--Text2);
+	color: var(--Text-2);
 }
 .common_btn {
 	width: 384px;

@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper3">
 		<div class="flex_space-between Text_s p_24">
-			<svg-icon name="arrow_left" width="13px" height="24px" class="curp" @click="emit('update:modelValue', 1)"></svg-icon>
+			<svg-icon name="common-arrow_left" width="13px" height="24px" class="curp" @click="emit('update:modelValue', 1)"></svg-icon>
 			<span class="fs_18">勋章详情</span>
 			<svg-icon name="close" size="30px" class="curp" @click="useModalStore().closeModal()"></svg-icon>
 		</div>
@@ -74,12 +74,12 @@ const emit = defineEmits(["update:modelValue"]);
 	.Desc {
 		margin-top: 80px;
 		text-align: center;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-size: 14px;
 	}
 	.cell {
 		padding: 12px 24px;
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 }
 </style>

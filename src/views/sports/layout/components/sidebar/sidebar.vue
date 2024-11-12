@@ -8,7 +8,7 @@
 					<Tv />
 				</div>
 				<div class="center">
-					<Scoreboard />
+					<Scoreboard isCurrent />
 					<Live />
 				</div>
 				<div class="right">
@@ -247,7 +247,7 @@ const { VideoSource } = useVideo();
 	.affix {
 		position: sticky;
 		top: 0px;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		z-index: 1;
 
 		.header {
@@ -299,7 +299,7 @@ const { VideoSource } = useVideo();
 				left: 0px;
 				width: 100%;
 				height: 1px;
-				background-color: var(--Line_1);
+				background-color: var(--Line-1);
 				box-shadow: 0px 1px 0px 0px #343d48;
 			}
 
@@ -312,7 +312,7 @@ const { VideoSource } = useVideo();
 				padding: 5px 12px;
 				.icon.is-active {
 					svg {
-						color: var(--Icon_1);
+						color: var(--Icon-1);
 					}
 				}
 				.icon {
@@ -320,7 +320,7 @@ const { VideoSource } = useVideo();
 					height: 16px;
 
 					svg {
-						color: var(--Text1);
+						color: var(--Text-1);
 					}
 				}
 
@@ -328,7 +328,7 @@ const { VideoSource } = useVideo();
 					display: flex;
 					align-items: center;
 					gap: 8px;
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
@@ -362,7 +362,7 @@ const { VideoSource } = useVideo();
 	}
 	:deep(.event-list) {
 		&::-webkit-scrollbar-thumb {
-			background-color: var(--Bg3);
+			background-color: var(--Bg-3);
 			border-radius: 6px;
 		}
 		&::-webkit-scrollbar {

@@ -105,7 +105,7 @@ const truncateToTwoDecimals = (num) => {
 			background: url("../image/levelText_bg.png") no-repeat;
 			background-size: 100% 100%;
 			padding: 5px 21px;
-			color: var(--Text_a);
+			color: var(--Text-a);
 			font-weight: 500;
 		}
 		.vipLevelIcon {
@@ -119,7 +119,7 @@ const truncateToTwoDecimals = (num) => {
 			height: 70px;
 			padding-left: 38px;
 			margin-top: 22px;
-			color: var(--Text_a);
+			color: var(--Text-a);
 			.tooltipImg {
 				width: 16px;
 				height: 16px;
@@ -143,7 +143,7 @@ const truncateToTwoDecimals = (num) => {
 					width: 100%;
 					text-align: center;
 					line-height: 38px;
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-size: 12px;
 				}
 			}
@@ -192,14 +192,14 @@ const truncateToTwoDecimals = (num) => {
 	.kefu {
 		width: 176px;
 		height: 195px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		border-radius: 12px;
 		overflow: hidden;
 		position: relative;
 
 		.kefuTagBg {
 			font-size: 16px;
-			color: var(--Text_a);
+			color: var(--Text-a);
 			padding-left: 5px;
 			background: url("../image/kefuTagBg.png") no-repeat;
 			background-size: auto 100%;

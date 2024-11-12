@@ -202,7 +202,7 @@ const closeDialog = () => {
 		top: 0px;
 		z-index: 1;
 		padding: 20px 20px 0px 20px;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		border-top-left-radius: 12px;
 		border-top-right-radius: 12px;
 	}
@@ -217,7 +217,7 @@ const closeDialog = () => {
 		display: flex;
 		gap: 10px;
 		padding-right: 30px;
-		border-bottom: 1px solid var(--Line_1);
+		border-bottom: 1px solid var(--Line-1);
 		box-shadow: 0px 1px 0px 0px #343d48;
 
 		.tab {
@@ -225,7 +225,7 @@ const closeDialog = () => {
 			height: 40px;
 			padding: 2px;
 			text-align: center;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 22px;
 			font-weight: 400;
@@ -234,7 +234,7 @@ const closeDialog = () => {
 
 		.tab_active {
 			position: relative;
-			color: var(--Text_s);
+			color: var(--Text-s);
 			&::after {
 				position: absolute;
 				content: "";

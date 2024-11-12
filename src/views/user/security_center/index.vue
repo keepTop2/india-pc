@@ -7,7 +7,7 @@
 		<div class="content">
 			<div @click="modifyHandle('password')">
 				<span>{{ $t(`security_center['登录密码']`) }}</span>
-				<span><svg-icon name="arrow_right" size="14px" /> </span>
+				<span><svg-icon name="common-arrow_right" size="14px" /> </span>
 			</div>
 			<div @click="modifyHandle('phone')">
 				<span>{{ $t(`security_center['手机号']`) }}</span>
@@ -17,7 +17,7 @@
 					</span>
 					<span class="modifyBtn">{{ $t(`security_center['修改']`) }}</span>
 				</span>
-				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
+				<span v-else><svg-icon name="common-arrow_right" size="14px" /> </span>
 			</div>
 			<div @click="modifyHandle('email')">
 				<span>{{ $t(`security_center['电子邮箱']`) }}</span>
@@ -25,14 +25,14 @@
 					<span class="info"> {{ Common.maskEmail(userGlobalSetInfo.email) }} </span>
 					<span class="modifyBtn">{{ $t(`security_center['修改']`) }}</span>
 				</span>
-				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
+				<span v-else><svg-icon name="common-arrow_right" size="14px" /> </span>
 			</div>
 			<div @click="modifyHandle('withdrawPwd')">
 				<span>{{ $t(`security_center['交易密码']`) }}</span>
 				<span v-if="userGlobalSetInfo.isSetPwd">
 					<span class="modifyBtn">{{ $t(`security_center['修改']`) }}</span>
 				</span>
-				<span v-else><svg-icon name="arrow_right" size="14px" /> </span>
+				<span v-else><svg-icon name="common-arrow_right" size="14px" /> </span>
 			</div>
 		</div>
 	</div>
@@ -78,7 +78,7 @@ const modifyHandle = (type: string) => {
 
 <style scoped lang="scss">
 .security_center {
-	color: var(--Text_s);
+	color: var(--Text-s);
 	.title {
 		font-size: 20px;
 		display: flex;
@@ -87,13 +87,13 @@ const modifyHandle = (type: string) => {
 		font-weight: 500;
 	}
 	.content {
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		padding: 40px 28px;
 		border-radius: 12px;
 
 		> div {
 			height: 88px;
-			background: var(--Bg3);
+			background: var(--Bg-3);
 			margin-bottom: 16px;
 			display: flex;
 			align-items: center;
@@ -101,7 +101,7 @@ const modifyHandle = (type: string) => {
 			padding: 0 24px;
 			border-radius: 4px;
 			font-size: 16px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			cursor: pointer;
 		}
 		> div:hover {
@@ -111,7 +111,7 @@ const modifyHandle = (type: string) => {
 			background: var(--Theme);
 			font-size: 16px;
 			border-radius: 4px;
-			color: var(--Text_a);
+			color: var(--Text-a);
 			padding: 5px 30px;
 			margin-left: 16px;
 		}
