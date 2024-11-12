@@ -1,5 +1,5 @@
 import { useWebSocket as useWebSocketFromVueUse, type UseWebSocketReturn } from "@vueuse/core";
-import { computed, ComputedRef } from "vue";
+import { Ref } from "vue";
 import { useTimer } from "/@/views/lottery/hooks/useTimer";
 
 export interface WebSocketResponseData {
@@ -19,7 +19,7 @@ export interface WebSocketResponseMessage {
 }
 
 interface WSReturn<T> extends UseWebSocketReturn<T> {
-	isWsAlive: ComputedRef<boolean>;
+	isWsAlive: Ref<boolean>;
 }
 
 interface InstancesMap {
@@ -75,8 +75,8 @@ export function useWebSocket({ callback = Function.prototype, fallbackFn = Funct
 	}) as WSReturn<WebSocketResponseMessage>;
 
 	const { status, data, send, open, close } = websocketInstance;
-	const isWsAlive = computed(() => status.value === "OPEN");
-	return { status, data, send, open, close, isWsAlive };
+	console.log("status", status);
+	return { status, data, send, open, close };
 }
 
 /**

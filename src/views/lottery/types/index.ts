@@ -1,21 +1,22 @@
-export * from "./base";
-export * from "./lottery";
-export * from "./game";
-export * from "./betting";
-export * from "./playCode";
 export * from "./account";
+export * from "./base";
+export * from "./betting";
+export * from "./game";
+export * from "./lottery";
+export * from "./playCode";
 // 投注项
 export interface OddsListItem {
 	id: string;
 	title: string;
 	desc: string;
-	itemOdds: number;
+	itemOdds: string;
 	actived: boolean;
 	optionCode: string;
 	gameCode?: string;
 	gamePlayCode?: string;
-	minLimit?: number;
-	maxLimit?: number;
+
+	type?: string;
+	ballNum?: number;
 }
 export type OddsList = OddsListItem[];
 
@@ -26,6 +27,8 @@ interface BaseLotteryItem {
 	desc: string;
 	actived: boolean;
 	oddsList: OddsList;
+	minLimit?: number;
+	maxLimit?: number;
 }
 
 export interface LotteryItem extends BaseLotteryItem {
@@ -42,3 +45,10 @@ export type LotteryList = LotteryItem[]; // 本地的玩法列表
 export type DynamicLotteryList = DynamicLotteryItem[]; // 接口返回的玩法列表
 export type MergedLotteryList = MergedLotteryItem[]; // 合并后的玩法列表
 
+export interface LotteryDetail {
+	id: string;
+	issueNum: string;
+	gameName: string;
+	gameCode: string;
+	iconPc?: string;
+}
