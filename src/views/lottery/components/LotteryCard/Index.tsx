@@ -1,8 +1,9 @@
+import "./index.scss";
+
 import { defineComponent } from "vue";
-import useTimer from "/@/views/lottery/components/Tools/Timer";
 import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息 store
 import Common from "/@/utils/common";
-import "./index.scss";
+import useTimer from "/@/views/lottery/components/Tools/Timer";
 
 // 主组件，使用 useTimer 获取计时器相关的状态和方法
 export default () => {
@@ -36,22 +37,21 @@ export default () => {
 
 	// 定义卡片内容组件，可以根据需要传入 props 以便更灵活的显示不同内容
 	const Content = defineComponent({
+		name: "Content",
 		props: {
-			iconPc: { type: String },
-			gameName: { type: String, required: true },
-			gameDesc: { type: String, required: true },
+			data: { type: Object, default: () => ({}) },
 		},
 		setup(props) {
 			return () => (
 				<div class="card-content">
 					{/* 左侧内容区域 */}
 					<div class="left">
-						<img src={props.iconPc} alt="Content Image" />
+						<img src={props.data.iconPc} alt="Content Image" />
 					</div>
 					{/* 右侧类型名称和标题 */}
 					<div class="right">
-						<div class="type-name">{props.gameName || "-"}</div>
-						<div class="title">{props.gameDesc || "-"}</div>
+						<div class="type-name">{props.data.gameName}</div>
+						<div class="title">{props.data.gameDesc}</div>
 					</div>
 				</div>
 			);
@@ -60,6 +60,7 @@ export default () => {
 
 	// 定义卡片底部组件
 	const Footer = defineComponent({
+		name: "Footer",
 		props: {
 			maxWin: { type: Number, required: true },
 		},
@@ -97,13 +98,13 @@ export default () => {
 			return () => (
 				<div onClick={() => emit("select")} class="lottery-card">
 					{/* 卡片头部 */}
-					<Header {...props.data} />
+					<Header data={props.data} />
 					{/* 分割线 */}
 					<div class="line"></div>
 					{/* 卡片内容 */}
-					<Content {...props.data} />
+					<Content data={props.data} />
 					{/* 卡片底部 */}
-					<Footer {...props.data} />
+					<Footer data={props.data} />
 				</div>
 			);
 		},

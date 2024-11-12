@@ -1,5 +1,5 @@
 <template>
-	<Containers :data="mockData" class="lottery-shishicai">
+	<Containers :data="lotteryDetail" class="lottery-shishicai">
 		<!-- 标签栏 -->
 		<div class="tabs">
 			<!-- 循环渲染每个标签，基于当前选中的标签动态添加类名 -->
@@ -21,6 +21,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
 import { useUpdateThirdPartyTokenTimer } from "/@/views/lottery/hooks/useFetchThirdPartyTimer";
 import { useTab } from "/@/views/lottery/hooks/useTab";
+import iconPc from "/@/views/lottery/images/iconPc.png";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { DEFAULT_LANG, langMaps } from "/@/views/lottery/views/category/kuaisan/components/playsConfig";
 
@@ -32,16 +33,16 @@ const tabComponents = new Map([
 	[2, Result],
 ]);
 
-// 模拟数据，用于显示在页面头部
-const mockData = {
-	icon: "https://ctopalistat3.zengchenglm.com/pc/images/db_DB5FC2cea4e2f859029cdbda33fffda6ea1f2.png",
-	title: "快三",
-	desc: "五分钟一期",
-	seconds: 100,
-	betStatusName: "投注中",
-	issuesNo: "20230812-084",
-	recentlyAwarded: 5403.23,
-};
+// // 模拟数据，用于显示在页面头部
+// const mockData = {
+// 	icon: "https://ctopalistat3.zengchenglm.com/pc/images/db_DB5FC2cea4e2f859029cdbda33fffda6ea1f2.png",
+// 	title: "快三",
+// 	desc: "五分钟一期",
+// 	seconds: 100,
+// 	betStatusName: "投注中",
+// 	issuesNo: "20230812-084",
+// 	recentlyAwarded: 5403.23,
+// };
 
 // 标签栏的配置数据
 const { tabs, tabsActived, handleTabChange } = useTab();
@@ -68,7 +69,8 @@ onMounted(async () => {
 
 	// 3.2 准备好了，发送请求
 	const res = await lotteryApi.beginPageData(submitData);
-	lotteryDetail.value = (res.data || []).shift() || {}; // 有时候会有两条数据，始终取下标为 0 的那一条数据
+	const resData = (res.data || []).shift() || {};
+	lotteryDetail.value = { ...resData, iconPc }; // 有时候会有两条数据，始终取下标为 0 的那一条数据
 });
 
 onBeforeUnmount(turnOffTimer);

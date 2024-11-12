@@ -18,7 +18,7 @@ import useLotteryHeader from "/@/views/lottery/components/LotteryHeader/Index";
 
 const props = defineProps({
 	class: { type: String, default: "" },
-	data: { type: Object },
+	data: { type: Object, default: () => ({}) },
 });
 
 const { LotteryHeader } = useLotteryHeader();
