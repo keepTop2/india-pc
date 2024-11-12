@@ -207,7 +207,7 @@ const pageQuery = (type?: boolean) => {
 		.tzPageQuery({
 			...params,
 			venueType: +params.venueType,
-			orderClassify: params.receiveStatus ? [+params.receiveStatus] : [],
+			orderClassifyList: params.receiveStatus ? [+params.receiveStatus] : [],
 		})
 		.then((res) => {
 			if (!res.data) return;
