@@ -80,7 +80,7 @@ const currentTab = ref<string | undefined>("0");
 const searchQuery = ref<string>(""); // 搜索关键词
 const searchinputFocus = ref(false);
 
-useWebSocket();
+useWebSocket({});
 
 const gameData = ref<any[]>([]);
 

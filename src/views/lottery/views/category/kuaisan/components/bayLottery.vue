@@ -77,12 +77,10 @@ import { useUserStore } from "/@/stores/modules/user";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
-import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { type MergedLotteryList, type OddsListItem } from "/@/views/lottery/types/index";
 import { DEFAULT_LANG, langMaps } from "/@/views/lottery/views/category/kuaisan/components/playsConfig";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
-
 const props = defineProps({
 	lotteryDetail: { type: Object, default: () => ({}) },
 });
@@ -93,7 +91,7 @@ const { Ball, SelectBallGroup } = useBall();
 const { BetForm } = useBetForm();
 const route = useRoute();
 const { satoken, isThirdPartyLoggedin, merchantInfo } = useLoginGame();
-useWebSocket();
+
 // 合并后的玩法列表
 const mergedLotteryList = ref<MergedLotteryList>([]);
 
@@ -216,7 +214,7 @@ const handleSubmit = async ({ stake: betMoney }: { stake: string }) => {
 	betFormRef.value.clearForm(); // 成功才清空文本框
 };
 
-onMounted(async () => {
+async function queryGamePlayOddsList() {
 	// 1. 获取 单个彩种的动态的玩法与赔率信息
 
 	// 1.1 准备一下入参 gameCode lang 两个入参
@@ -226,7 +224,9 @@ onMounted(async () => {
 	// 1.2 准备好了，发送请求
 	const res = await lotteryApi.queryGamePlayOddsList(submitData);
 	mergedLotteryList.value = mergeLotteryList(lotteryList, res.data) as MergedLotteryList;
-});
+}
+
+onMounted(queryGamePlayOddsList);
 </script>
 
 <style lang="scss" scoped></style>

@@ -14,13 +14,14 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from "vue";
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { lotteryApi } from "/@/api/lottery";
 import { useUserStore } from "/@/stores/modules/user";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
-import { useUpdateThirdPartyTokenTimer } from "/@/views/lottery/hooks/useFetchThirdPartyTimer";
 import { useTab } from "/@/views/lottery/hooks/useTab";
+import { useTimer } from "/@/views/lottery/hooks/useTimer";
+import { useWebSocket, type WebSocketResponseData, type WebSocketResponseMessage } from "/@/views/lottery/hooks/useWebSocket";
 import iconPc from "/@/views/lottery/images/iconPc.png";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { DEFAULT_LANG, langMaps } from "/@/views/lottery/views/category/kuaisan/components/playsConfig";
@@ -49,7 +50,11 @@ const { tabs, tabsActived, handleTabChange } = useTab();
 
 const lotteryDetail = ref({}); // 单个彩种的详情，如名字、多少分钟一期
 const { loginGame } = useLoginGame();
-const { turnOnTimer, turnOffTimer } = useUpdateThirdPartyTokenTimer(loginGame);
+const { turnOnTimer, turnOffTimer } = useTimer(loginGame);
+const { turnOnTimer: turnOnLotteryDetailTimer, turnOffTimer: turnOffLotteryDetailTimer } = useTimer(beginPageData, 5000);
+
+const { isWsAlive } = useWebSocket({ callback, fallbackFn: beginPageData });
+
 const route = useRoute();
 const UserStore = useUserStore();
 const language = UserStore.getLang;
@@ -62,6 +67,11 @@ onMounted(async () => {
 	turnOnTimer();
 
 	// 3. 获取 单个彩种的详情
+	beginPageData();
+});
+
+async function beginPageData() {
+	// 3. 获取 单个彩种的详情
 	// 3.1 准备一下入参 gameCode lang 两个入参
 	const { gameCode = "" } = route.query;
 	const lang = (langMaps as any)[language] || DEFAULT_LANG;
@@ -71,9 +81,30 @@ onMounted(async () => {
 	const res = await lotteryApi.beginPageData(submitData);
 	const resData = (res.data || []).shift() || {};
 	lotteryDetail.value = { ...resData, iconPc }; // 有时候会有两条数据，始终取下标为 0 的那一条数据
+}
+
+function callback(message: WebSocketResponseMessage) {
+	const { data } = message;
+	const { gameCode: wsGameCode } = data as WebSocketResponseData;
+	const { gameCode = "" } = route.query;
+	if (wsGameCode !== gameCode) return;
+	beginPageData();
+}
+
+onBeforeUnmount(() => {
+	turnOffTimer();
+	turnOffLotteryDetailTimer();
 });
 
-onBeforeUnmount(turnOffTimer);
+watch(
+	() => isWsAlive.value,
+	(newValue) => {
+		if (newValue) {
+			return turnOffLotteryDetailTimer(); // ws 有的话就关闭轮询
+		}
+		turnOnLotteryDetailTimer(); // ws 没有的话就开启轮询
+	}
+);
 </script>
 
 <style lang="scss" scoped></style>
