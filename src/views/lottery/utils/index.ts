@@ -18,6 +18,7 @@ export function mergeLotteryList(lotteryList: LotteryList, dynamicLotteryList: D
  */
 function mergeLotteryItem(lotteryItem: LotteryItem, dynamicLotteryList: DynamicLotteryList) {
 	const { gamePlayCodes } = lotteryItem;
+	// 过滤出接口返回的玩法列表中，gamePlayCodes 包含的玩法
 	const filterList = dynamicLotteryList.filter((v) => gamePlayCodes.includes(v.gamePlayCode));
 	if (filterList.length === 0) return {};
 	const { oddsList, ...restLotteryItem } = lotteryItem;

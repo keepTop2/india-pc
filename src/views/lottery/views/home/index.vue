@@ -71,6 +71,7 @@ import { i18n } from "/@/i18n/index";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import Common from "/@/views/sports/utils/common";
+import { GameBaseInfo, GameListItem } from "../../types/game";
 
 const $: any = i18n.global;
 
@@ -157,11 +158,11 @@ const maps = {
 	K3: "/lottery/kuaisan",
 	SSQ: "/lottery/unionLotto",
 };
-const pushView = (game) => {
+const pushView = (game: GameListItem) => {
 	console.log("game", game);
 	const { gameCategoryCode, venueCode, gameCode } = game;
 	const searchParams = { venueCode, gameCode };
-	const targetView = maps[gameCategoryCode];
+	const targetView = maps[gameCategoryCode as keyof typeof maps];
 	console.log("gameCategoryCode", gameCategoryCode);
 	console.log("targetView", targetView);
 	console.log("searchParams", searchParams);

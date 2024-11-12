@@ -1,63 +1,37 @@
 <template>
-	<Containers :data="lotteryInfo" class="lottery-union">
+	<Containers :data="renderLotteryDetail" class="lottery-shishicai">
 		<!-- 标签栏 -->
 		<div class="tabs">
 			<!-- 循环渲染每个标签，基于当前选中的标签动态添加类名 -->
-			<!-- <div :class="['tabs-item', tabsActived === item.value ? 'actived' : '']" @click="handleTabChange(item.value)" v-for="item in tabs" :key="item.value">
+			<div :class="['tabs-item', tabsActived === index ? 'actived' : '']" @click="handleTabChange(index)" v-for="(item, index) in tabs" :key="item.id">
 				{{ item.label }}
-			</div> -->
+			</div>
 		</div>
-
 		<!-- 内容部分 -->
-		<!-- <component :is="tabComponents.get(tabsActived)" :lottery-detail="lotteryDetail" /> -->
+		<component :is="renderComponent" :lottery-detail="lotteryDetail" />
 	</Containers>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from "vue";
-import { beginPageDataParams } from "./components/playsConfig";
-import { lotteryApi } from "/@/api/lottery";
+import { computed, defineAsyncComponent } from "vue";
+import iconPc from "./images/iconPc.png";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
-// import { useUpdateThirdPartyTokenTimer } from "/@/views/lottery/hooks/useFetchThirdPartyTimer";
+import { usePageInit } from "/@/views/lottery/hooks/usePageInit";
 import { useTab } from "/@/views/lottery/hooks/useTab";
-import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
-
-const BuyLottery = defineAsyncComponent(() => import("./components/BuyLottery.vue"));
+const BayLottery = defineAsyncComponent(() => import("./components/bayLottery.vue"));
 const Result = defineAsyncComponent(() => import("./components/result.vue"));
 
-// const tabComponents = new Map([
-// 	[1, BuyLottery],
-// 	[2, Result],
-// ]);
+// 标签栏的配置数据
+const { tabs, tabsActived, handleTabChange } = useTab(BayLottery, Result);
+const { lotteryDetail } = usePageInit(); // 这个 hook 是重点。主要就是 onMounted onBeforeUnmount watch 里面需要做的事情
 
-// 彩票基本信息
-const lotteryInfo = {
-	icon: "https://example.com/ssq-icon.png",
-	title: "双色球",
-	desc: "每周二、四、日开奖",
-	seconds: 86400, // 距离下次开奖的秒数
-	betStatusName: "投注中",
-	issuesNo: "2023094", // 期号
-	recentlyAwarded: 10000000, // 最近一期头奖金额
-};
+// 这里其实就是在 lotteryDetail 的基础上加了个彩种的图片。因为涉及单个业务彩种，因此不在 hook 里面处理
+const renderLotteryDetail = computed(() => {
+	return { ...lotteryDetail.value, iconPc };
+});
 
-// const { tabs, tabsActived, handleTabChange } = useTab();
-const lotteryDetail = ref({});
-const { loginGame } = useLoginGame();
-// const { turnOnTimer, turnOffTimer } = useUpdateThirdPartyTokenTimer(loginGame);
-
-// onMounted(async () => {
-// 	loginGame();
-// 	turnOnTimer();
-
-// 	const res = await lotteryApi.beginPageData(beginPageDataParams);
-// 	lotteryDetail.value = res.data?.[0] || {};
-// });
-
-// onBeforeUnmount(turnOffTimer);
+const renderComponent = computed(() => {
+	const item = tabs[tabsActived.value || 0];
+	return item.component;
+});
 </script>
-
-<style lang="scss" scoped>
-.lottery-union {
-}
-</style>
