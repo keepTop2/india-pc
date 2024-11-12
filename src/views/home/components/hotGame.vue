@@ -16,9 +16,10 @@
 			<Swiper :slidesPerView="4" :spaceBetween="15" :modules="modules" class="swiper-container curp" @swiper="onSwiper">
 				<SwiperSlide v-for="(item, index) in hotGameList" :key="index" class="hotGameItem">
 					<img v-lazy-load="item.iconFileUrl ? item.iconFileUrl : ''" alt="" />
+
 					<div class="gameInfo Texta">
 						<div class="fs_19">
-							<img v-lazy-load="hotGameIcon" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
+							<img v-lazy-load="item.iconFileUrl" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
 						</div>
 						<div class="fs_13 mt_9">
 							{{ item.name }}
@@ -68,7 +69,7 @@ const isEnd = ref(false);
 const isBeginning = ref(true);
 const props = defineProps({
 	hotGameList: {
-		type: Array<gameInfo>,
+		type: Array<any>,
 	},
 });
 

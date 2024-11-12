@@ -38,20 +38,20 @@ export const welfareCenterApi = {
 		});
 	},
 	// 点击领取
-	clickReceive: (data = {}, headers = { showLoading: false }) => {
+	clickReceive: (data = {}, headers = { showLoading: true }) => {
 		return useAxiosApi(`/app/user-welfareCenter/api/clickReceive`, {
 			method: "POST",
 			data,
 			headers,
 		});
 	},
-		// 投注记录 类型目录
-		requestGetTypeList: (data = {}, headers = { showLoading: true }) => {
-			return useAxiosApi(`/app/common/getDownBox`, {
-				method: "POST",
-				data,
-				headers,
-			});
+	// 投注记录 类型目录
+	requestGetTypeList: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/common/getDownBox`, {
+			method: "POST",
+			data,
+			headers,
+		});
 	},
 	// 投注记录-分页查询
 	tzPageQuery: (data = {}, headers = { showLoading: false }) => {

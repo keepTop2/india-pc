@@ -32,7 +32,7 @@
 			</div>
 			<div v-else>
 				<hotGame :hotGameList="gameData.find((item:any) => item.label == 1)?.gameInfoList" v-if="currentTab == 0 || currentTab == 1" />
-				<lobbyGameCard :gameList="gameData.find((item:any) => item.label == 2)" title="新游戏" v-if="currentTab == 0 || currentTab == 2" />
+				<lobbyGameCard :gameList="gameData.find((item:any) => item.label == 2)" title="新游戏" v-if="currentTab == 0 || currentTab == 2" :newGame="true" />
 				<div v-for="(item, index) in gameData.filter((item:any) => item.label == 0)" :key="index">
 					<lobbyGameCard :gameList="item" v-if="currentTab == 0 || item.id == currentTab" />
 				</div>

@@ -3,7 +3,7 @@
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
-					<img v-lazy-load="gameList?.iconFileUrl" alt="" />
+					<img v-lazy-load="collectGames_icon" alt="" />
 					<span class="Text_s fs_20">{{ "喜欢的游戏" }}</span>
 				</span>
 			</div>
@@ -40,6 +40,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import Common from "/@/utils/common";
 import { useRoute } from "vue-router";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
+import collectGames_icon from "/@/assets/common/collectGames_icon.png";
 const collectGamesStore = useCollectGamesStore();
 interface gameInfo {
 	id: string;

@@ -11,7 +11,7 @@
 				<div class="menu_item" :class="openMenuIndex == index ? 'activeMenu' : ''" @click="selectMenu(item, index)">
 					<span class="menu_icon"><img v-lazy-load="item.iconFileUrl" alt="" /></span>
 					<span class="menu_name ellipsis">{{ item.directoryName }}</span>
-					<span class="arrow" v-if="item.twoList?.length && !collapse" @click.stop="selectMenu(item, index)">
+					<span class="arrow" v-if="item.twoList?.length && !collapse" @click.stop="selectMenu(item, index, true)">
 						<svg-icon name="arrow_up" v-if="openMenuIndex == index" height="8px" width="14px" />
 						<svg-icon name="arrow_down" v-else height="8px" width="14px" />
 					</span>
@@ -121,7 +121,16 @@ onMounted(() => {
  * CA:"进入通用场馆"
  * LT:"进入gamePage页面"
  */
-const selectMenu = (item: any, index: number) => {
+const selectMenu = (item: any, index: number, isArrow?: string) => {
+	// 展开菜单
+	if (isArrow) {
+		if (openMenuIndex.value === index) {
+			openMenuIndex.value = null;
+		} else {
+			openMenuIndex.value = index;
+		}
+		return;
+	}
 	const gameOneIdParams = { gameOneId: item.gameOneClassId, gameTwoId: 0 };
 	const singVenueMap = new Map([
 		["SBA", { path: "/sports" }],
@@ -136,6 +145,7 @@ const selectMenu = (item: any, index: number) => {
 	} else {
 		openMenuIndex.value = index;
 	}
+
 	const { modelCode } = item;
 	if (singVenueMap.has(modelCode)) {
 		router.push({ ...singVenueMap.get(modelCode) });

@@ -3,7 +3,7 @@
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
-					<img v-lazy-load="gameList?.iconFileUrl" alt="" />
+					<img v-lazy-load="newGame ? newGameIcon : gameList?.iconFileUrl" alt="" />
 					<span class="Text_s fs_20">{{ title ? title : gameList?.name ? gameList?.name : "热门推荐" }}</span>
 				</span>
 			</div>
@@ -15,7 +15,7 @@
 		</div>
 		<div class="lobbyGameList">
 			<div class="onlyOneGame" v-if="bigOneItem && gameList?.gameInfoList?.length == 1" @click="Common.goToGame(gameList?.gameInfoList[0])">
-				<img v-lazy-load="gameList?.iconFileUrl" alt="" />
+				<img v-lazy-load="gameList?.gameInfoList[0].iconFileUrl" alt="" />
 			</div>
 
 			<div v-else>
@@ -54,6 +54,7 @@ import { useRoute } from "vue-router";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
 import { ref } from "vue";
 import { Autoplay, Navigation } from "swiper/modules";
+import newGameIcon from "/@/assets/common/newGame_icon.png";
 const collectGamesStore = useCollectGamesStore();
 const modules = ref([Autoplay, Navigation]);
 interface gameInfo {
@@ -81,6 +82,10 @@ const props = defineProps({
 	},
 	title: {
 		type: String,
+	},
+	newGame: {
+		type: Boolean,
+		default: false,
 	},
 	bigOneItem: {
 		type: Boolean,

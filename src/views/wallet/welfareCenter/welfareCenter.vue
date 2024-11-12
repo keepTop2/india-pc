@@ -89,7 +89,7 @@
 
 			<div class="filed">
 				<div>福利类型</div>
-				<div>{{ detailsInfo.detailType }}</div>
+				<div>{{ detailsInfo.welfareCenterRewardTypeText }}</div>
 			</div>
 
 			<div class="filed">
@@ -102,7 +102,7 @@
 				<div class="flex-center">{{ detailsInfo.orderNo }} <svg-icon class="curp" name="copy" size="16px" @click="common.copy(detailsInfo.orderNo)"></svg-icon></div>
 			</div>
 			<div class="submitBtn">
-				<Button style="width: 360px" v-if="detailsInfo.receiveStatus == 0">立即领取</Button>
+				<Button style="width: 360px" v-if="detailsInfo.receiveStatus == 0" @click="handleReceive(detailsInfo)">立即领取</Button>
 				<div class="mt_10">如需帮助，请 <span class="color_F2 curp" @click="common.getSiteCustomerChannel">联系客服</span></div>
 			</div>
 		</div>
@@ -117,9 +117,9 @@ import showToast from "/@/hooks/useToast";
 import common from "/@/utils/common";
 const showDatePicker = ref(false);
 
-const params = reactive({
-	pfTimeStartTime: new Date("2024-09-08 00:00:00").getTime(),
-	pfTimeEndTime: new Date("2024-12-08 00:00:00").getTime(),
+const params: any = reactive({
+	pfTimeStartTime: "",
+	pfTimeEndTime: "",
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "-1",
@@ -170,7 +170,7 @@ onMounted(() => {
 });
 const pageQuery = () => {
 	params.pfTimeStartTime = new Date(range.start).getTime();
-	params.pfTimeEndTime = new Date(range.end).getTime() + (59 + 60 * 60 * 23) * 1000;
+	params.pfTimeEndTime = new Date(range.end).getTime() + (59 + 60 * 60 * 23 + 59 * 60) * 1000;
 	welfareCenterApi.pageQuery(params).then((res) => {
 		tableData.value = res.data.pages.records;
 		pageData.totalSize = res.data.totalSize;
@@ -211,6 +211,7 @@ const handleReceive = (item: any) => {
 	};
 	welfareCenterApi.clickReceive(params).then((res) => {
 		if (res.code === 10000) {
+			showDetailsDialog.value = false;
 			showToast("领取成功");
 			pageQuery();
 		}
