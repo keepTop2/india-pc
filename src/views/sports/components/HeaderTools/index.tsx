@@ -5,11 +5,13 @@ import { Refresh as RefreshIcon } from "@element-plus/icons-vue";
 import { ElIcon } from "element-plus";
 import { debounce } from "lodash-es";
 import { useSportAttentionStore } from "/@/stores/modules/sports/sportAttention";
+import { useUserStore } from "/@/stores/modules/user";
 import SportsApi from "/@/api/sports/sports";
 import PubSub from "/@/pubSub/pubSub";
 import { AxiosResponse } from "axios";
 import { i18n } from "/@/i18n/index";
 import showToast from "/@/hooks/useToast";
+import { useModalStore } from "/@/stores/modules/modalStore";
 const $: any = i18n.global;
 import SvgIcon from "/@/components/svgIcon/index.vue";
 
@@ -46,7 +48,7 @@ export default (eventsInfo: any): HeaderTools => {
 	const Scoreboard = defineComponent({
 		name: "Scoreboard",
 		props: {
-			isCurrent: { type: Boolean, default: true },
+			isCurrent: { type: Boolean, default: false },
 		},
 		setup(props) {
 			const { toggleEventScoreboard } = useToolsHooks();
@@ -154,7 +156,9 @@ export default (eventsInfo: any): HeaderTools => {
 		setup(props) {
 			const SportAttentionStore = useSportAttentionStore();
 			// 判断是否收藏
-			const isAttention = computed(() => SportAttentionStore.attentionEventIdList.includes(eventsInfo.eventId));
+			const isAttention = computed(() => {
+				return SportAttentionStore.attentionEventIdList.includes(eventsInfo.eventId);
+			});
 
 			// 处理收藏或取消收藏操作
 			const handleCollection = async (action: () => Promise<AxiosResponse<any, any>>, successMessage: string, errorMessage: string) => {
@@ -173,6 +177,10 @@ export default (eventsInfo: any): HeaderTools => {
 
 			// 点击事件
 			const handleClick = () => {
+				if (!useUserStore().getLogin) {
+					useModalStore().openModal("LoginModal");
+					return;
+				}
 				if (isAttention.value) {
 					handleCollection(() => SportsApi.unFollow({ thirdId: [eventsInfo.eventId] }), "取消收藏成功！", "取消收藏失败！");
 				} else {
