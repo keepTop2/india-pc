@@ -53,8 +53,8 @@ export function usePageInit() {
 	async function beginPageData() {
 		// 3.1 准备一下入参 gameCode lang 两个入参
 		const { gameCode = "" } = route.query;
-		const UserStore = useUserStore();
-		const language = UserStore.getLang;
+		const userStore = useUserStore();
+		const language = userStore.getLang;
 		const lang = (langMaps as any)[language] || DEFAULT_LANG;
 		const submitData = { gameCode, lang };
 
