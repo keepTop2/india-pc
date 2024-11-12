@@ -114,7 +114,7 @@
 					<template #empty>{{ $t(`common['暂无数据']`) }}</template>
 				</el-table>
 			</div>
-			<div class="flex-center Pagination" v-if="tableData.length">
+			<div class="flex-center Pagination" v-if="tableData.length && params.venueType !== '1'">
 				<Pagination v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="pageData.totalSize" @sizeChange="sizeChange" @pageChange="pageQuery" />
 			</div>
 		</div>
@@ -203,51 +203,51 @@ const pageQuery = (type?: boolean) => {
 		params.betEndTime = dayjs(new Date(range.end)).endOf("day").valueOf();
 	}
 
-	welfareCenterApi
-		.tzPageQuery({
-			...params,
-			venueType: +params.venueType,
-			orderClassifyList: params.receiveStatus ? [+params.receiveStatus] : [],
-		})
-		.then((res) => {
-			if (!res.data) return;
-			console.log(params.venueType, "params.venueType");
-			let rows = res.data[fieldMap[params.venueType]];
+	const data = {
+		...params,
+		venueType: +params.venueType,
+		orderClassifyList: params.receiveStatus ? [+params.receiveStatus] : [],
+	};
+	delete data.receiveStatus;
+	delete data.welfareCenterRewardType;
 
-			console.log(fieldMap[params.venueType], "rows");
-			tableData.value = rows.records || rows;
-			pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
-			pageData.waitReceiveTotal = res.data.waitReceiveTotal;
-			pageData.platCurrencyTotal = res.data.platCurrencyTotal;
-			pageData.platCurrencyCode = res.data.platCurrencyCode;
-			pageData.mainCurrency = res.data.mainCurrency;
-			pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
+	welfareCenterApi.tzPageQuery(data).then((res) => {
+		if (!res.data) return;
+		let rows = res.data[fieldMap[params.venueType]];
 
-			tzAmount.value = tableData.value.reduce((a: any, b: any) => {
-				return a + b.betAmount;
-			}, 0);
+		tableData.value = rows.records || rows;
+		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
+		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
+		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
+		pageData.platCurrencyCode = res.data.platCurrencyCode;
+		pageData.mainCurrency = res.data.mainCurrency;
+		pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
 
-			winOrLoseAmount.value = tableData.value
-				.reduce((a: any, b: any) => {
-					return a + b.winLossAmount;
-				}, 0)
-				?.toFixed(2);
+		tzAmount.value = tableData.value.reduce((a: any, b: any) => {
+			return a + b.betAmount;
+		}, 0);
 
-			tableData.value.forEach((item: any) => {
-				if (item.betAmount) {
-					item.betAmount = item.betAmount.toFixed(2);
-				} else {
-					item.betAmount = "";
-				}
-				if (item.winLossAmount) {
-					item.winLossAmount = item.winLossAmount.toFixed(2);
-				} else {
-					item.winLossAmount = "";
-				}
-			});
+		winOrLoseAmount.value = tableData.value
+			.reduce((a: any, b: any) => {
+				return a + b.winLossAmount;
+			}, 0)
+			?.toFixed(2);
 
-			getTableType();
+		tableData.value.forEach((item: any) => {
+			if (item.betAmount) {
+				item.betAmount = item.betAmount.toFixed(2);
+			} else {
+				item.betAmount = "";
+			}
+			if (item.winLossAmount) {
+				item.winLossAmount = item.winLossAmount.toFixed(2);
+			} else {
+				item.winLossAmount = "";
+			}
 		});
+
+		getTableType();
+	});
 };
 
 // 複製id
@@ -476,8 +476,9 @@ function getTableType() {
 	.firLine {
 		width: 100%;
 		display: grid;
-		grid-template-columns: 2fr 2fr 1fr 1fr;
+		grid-template-columns: 3fr 1fr 1fr 1fr;
 		font-size: 14px;
+		gap: 15px;
 
 		& > div {
 			display: flex;
