@@ -68,19 +68,21 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import { isSmp, lotteryList } from "./playsConfig";
-import { mergeLotteryList } from "/@//views/lottery/utils/index";
+import { lotteryList } from "./playsConfig";
 import { lotteryApi } from "/@/api/lottery";
 import showToast from "/@/hooks/useToast";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
+import { SUCCESS_CODE } from "/@/utils/useAxiosLottery";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
+import { DEFAULT_LANG, isSmp, langMaps } from "/@/views/lottery/constant/index";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { type MergedLotteryList, type OddsListItem } from "/@/views/lottery/types/index";
-import { DEFAULT_LANG, langMaps } from "/@/views/lottery/views/category/kuaisan/components/playsConfig";
+import { mergeLotteryList } from "/@/views/lottery/utils/index";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
+
 const props = defineProps({
 	lotteryDetail: { type: Object, default: () => ({}) },
 });
@@ -204,7 +206,6 @@ const handleSubmit = async ({ stake: betMoney }: { stake: string }) => {
 
 	// 2.2 准备好了，发送请求
 	const res = await lotteryApi.betting(submitData);
-	const SUCCESS_CODE = 0; // 这个 code 等需求做完了肯定是要抽出去的。但是现在还找不到项目哪个地方定义了，现已这里先放着
 	const { code, msg } = res;
 	showToast(msg);
 
