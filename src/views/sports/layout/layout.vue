@@ -4,7 +4,7 @@
 		<!-- banner控制器 -->
 		<BannerController />
 		<!-- 体育 主体内容区域  -->
-		<Banner />
+		<venueBanner :bannerList="bannerList"></venueBanner>
 		<div class="main-container">
 			<!-- 左侧 体育游戏列表 -->
 			<div class="left-container">
@@ -55,6 +55,7 @@ import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar } from "./c
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
 import userBanner from "./components/banner";
 import workerManage from "/@/webWorker/workerManage";
+import { bannerApi } from "/@/api/banner";
 const SportAttentionStore = useSportAttentionStore();
 // 路由实例
 const route = useRoute();
@@ -76,6 +77,16 @@ const tabActive = ref("");
 // 是否显示条件菜单，根据路由 meta 类型判断
 const isShowCondition = computed(() => route.meta.type === "list");
 
+const bannerList = ref([]);
+const getBannerList = () => {
+	bannerApi
+		.queryBannerList({
+			gameOneClassId: "SBA",
+		})
+		.then((res) => {
+			bannerList.value = res.data;
+		});
+};
 // 监听路由地址变化，切换推送
 watch(
 	() => route.fullPath,
@@ -97,6 +108,7 @@ onBeforeMount(() => {
 	pubSub.subscribe(pubSub.PubSubEvents.SportEvents.attentionChange.eventName, getAttention);
 	// 初始化体育请求
 	initSportRequest();
+	getBannerList();
 });
 
 onBeforeUnmount(() => {

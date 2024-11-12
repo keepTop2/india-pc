@@ -255,7 +255,7 @@ const leave = (el: Element) => {
 		background: linear-gradient(to top, rgba(255, 40, 75, 0.3), rgba(255, 40, 75, 0.05));
 		border-bottom: 2px solid var(--Theme);
 		.menu_name {
-			color: var(--Text-a);
+			color: var(--Text-s);
 		}
 	}
 	.subItem.menu_item.activeMenu,

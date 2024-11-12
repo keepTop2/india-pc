@@ -9,8 +9,14 @@
 			</div>
 			<input type="text" v-model="searchQuery" placeholder="搜索" class="search-input" />
 		</div>
-		<div v-for="item in userStore.getLangList">
-			{{ item.name }}
+		<div class="langList">
+			<div v-for="item in userStore.getLangList" class="flex_space-between langItem" :class="userStore.getLang == item.code ? 'active' : ''" @click="setLang(item.code)">
+				<span>
+					<img v-lazy-load="item.iconFileUrl" alt="" />
+					{{ item.name }}</span
+				>
+				<span><svg-icon :name="userStore.getLang == item.code ? 'common-cricle_theme' : 'common-cricle'" size="16px"> </svg-icon> </span>
+			</div>
 		</div>
 	</div>
 </template>
@@ -23,7 +29,7 @@ const userStore = useUserStore();
 const searchQuery = ref("");
 const setLang = (lang: LangEnum) => {
 	userStore.setLangs(lang);
-	window.location.reload();
+	location.reload();
 };
 const filteredResults = computed(() => {
 	if (!searchQuery.value) {
@@ -39,11 +45,15 @@ const filteredResults = computed(() => {
 	height: 720px;
 	border-radius: 12px;
 	background: var(--Bg);
-	padding: 24px;
+	.langList {
+		overflow-y: auto;
+		height: calc(100% - 130px);
+	}
 	.title {
 		text-align: center;
 		font-size: 20px;
 		color: var(--Text-s);
+		padding: 24px;
 	}
 	.search-component {
 		display: flex;
@@ -51,6 +61,7 @@ const filteredResults = computed(() => {
 		align-items: flex-start;
 		gap: 10px;
 		position: relative;
+		margin: 0 24px;
 		.search-input {
 			width: 100%;
 			height: 42px;
@@ -72,6 +83,30 @@ const filteredResults = computed(() => {
 			border-right: 1px solid var(--Line-2);
 			display: flex;
 			align-items: center;
+		}
+	}
+	.langItem {
+		height: 40px;
+		line-height: 40px;
+		color: var(--Text-1);
+		cursor: pointer;
+		margin: 0 24px;
+		padding: 0 12px;
+		img {
+			width: 14px;
+			height: 14px;
+			border-radius: 50%;
+			margin-right: 8px;
+		}
+	}
+	.langItem:hover {
+		border-radius: 4px;
+		background: var(--Bg-3);
+	}
+	.active.langItem {
+		color: var(--Text-s);
+		svg {
+			color: var(--Theme);
 		}
 	}
 }
