@@ -157,7 +157,7 @@ const { gameTime } = useGameTimer(gameState);
 			}
 			.team-name {
 				flex: 1;
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
@@ -182,7 +182,7 @@ const { gameTime } = useGameTimer(gameState);
 					justify-content: center;
 					padding: 2px;
 					border-radius: 2px;
-					color: var(--Text_a, #fff);
+					color: var(--Text-a, #fff);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
@@ -192,7 +192,7 @@ const { gameTime } = useGameTimer(gameState);
 					background: var(--Theme);
 				}
 				.yellow {
-					background: var(--F1);
+					background: var(--F-1);
 				}
 			}
 			.score {
@@ -241,7 +241,7 @@ const { gameTime } = useGameTimer(gameState);
 				display: flex;
 				align-items: center;
 				justify-content: flex-end;
-				color: var(--Text1, #98a7b5);
+				color: var(--Text-1, #98a7b5);
 				font-family: "PingFang SC";
 				font-size: 12px;
 				font-weight: 400;

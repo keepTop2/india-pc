@@ -26,7 +26,7 @@ const props = defineProps({
 <style scoped lang="scss">
 .card {
 	border-radius: 12px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	overflow: hidden;
 	.header {
 		position: relative;

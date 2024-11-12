@@ -1,9 +1,9 @@
 <template>
-	<CommonDialog v-model="isModalVisible" @close="clearComponent">
+	<CommonDialog v-model="isModalVisible">
 		<div class="wallet_container">
 			<div class="wallet_main">
 				<div class="wallet_container_header">
-					<svg-icon name="close" size="30px" class="close pointer" @click="isModalVisible = false" />
+					<svg-icon name="close" size="30px" class="close pointer" @click="closeDialog" />
 					<div class="tabs">
 						<div class="tab" :class="{ tab_active: activeTab === 'recharge' }" @click="setComponent('recharge')">{{ $t(`wallet['存款']`) }}</div>
 						<div class="tab" :class="{ tab_active: activeTab === 'withdrawal' }" @click="setComponent('withdrawal')">{{ $t(`wallet['提款']`) }}</div>
@@ -124,7 +124,11 @@ function setComponent(walletDialogName: string) {
 					await router.replace({ path: "/user/security_center" }); // 跳转到设置页面
 					await modalStore.openModal("setWithdrawPwd");
 				},
-				onClose: () => {},
+				onClose: () => {
+					// 更新激活的标签并更新路由参数
+					activeTab.value = walletDialogName;
+					router.replace({ query: { ...route.query, walletDialogName } });
+				},
 			});
 			return;
 		}
@@ -136,14 +140,19 @@ function setComponent(walletDialogName: string) {
 
 // 清空路由参数，关闭弹窗
 const clearComponent = () => {
+	// router.replace({ query: {} });
+	isModalVisible.value = false;
+};
+
+const closeDialog = () => {
 	router.replace({ query: {} });
 	isModalVisible.value = false;
 };
 
 // 关闭时清空组件信息
-watch(isModalVisible, (visible) => {
-	if (!visible) clearComponent();
-});
+// watch(isModalVisible, (visible) => {
+// 	if (!visible) clearComponent();
+// });
 </script>
 
 <style scoped lang="scss">
@@ -193,7 +202,7 @@ watch(isModalVisible, (visible) => {
 		top: 0px;
 		z-index: 1;
 		padding: 20px 20px 0px 20px;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		border-top-left-radius: 12px;
 		border-top-right-radius: 12px;
 	}
@@ -208,7 +217,7 @@ watch(isModalVisible, (visible) => {
 		display: flex;
 		gap: 10px;
 		padding-right: 30px;
-		border-bottom: 1px solid var(--Line_1);
+		border-bottom: 1px solid var(--Line-1);
 		box-shadow: 0px 1px 0px 0px #343d48;
 
 		.tab {
@@ -216,7 +225,7 @@ watch(isModalVisible, (visible) => {
 			height: 40px;
 			padding: 2px;
 			text-align: center;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 22px;
 			font-weight: 400;
@@ -225,7 +234,7 @@ watch(isModalVisible, (visible) => {
 
 		.tab_active {
 			position: relative;
-			color: var(--Text_s);
+			color: var(--Text-s);
 			&::after {
 				position: absolute;
 				content: "";

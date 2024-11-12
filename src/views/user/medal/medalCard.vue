@@ -52,7 +52,7 @@ const handleClick = (item: any) => {
 			width: 100%;
 			position: absolute;
 			bottom: 0;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			z-index: -1;
 			border-radius: 12px;
 		}
@@ -60,7 +60,7 @@ const handleClick = (item: any) => {
 			width: 100%;
 			text-align: center;
 			font-size: 12px;
-			color: var(--Text2);
+			color: var(--Text-2);
 		}
 		img {
 			width: 70px;
@@ -92,7 +92,7 @@ const handleClick = (item: any) => {
 			width: 10px;
 			height: 10px;
 			background: var(--Theme);
-			border: 1px solid var(--Text1);
+			border: 1px solid var(--Text-1);
 			border-radius: 50%;
 			top: 0;
 			right: 10px;

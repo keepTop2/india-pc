@@ -46,14 +46,14 @@
 		// 注释掉的是原始颜色
 		// background: linear-gradient(90deg, #8c8c8c 25%, #737373 37%, #8a8a8a 63%);
 		// 使用CSS变量实现动态颜色
-		background: linear-gradient(90deg, var(--Bg3) 25%, var(--Bg1) 37%, var(--Bg3) 63%);
+		background: linear-gradient(90deg, var(--Bg-3) 25%, var(--Bg-1) 37%, var(--Bg-3) 63%);
 		background-size: 400% 100%;
 	}
 	// 选择卡片样式
 	.selectCard {
 		width: 100%;
 		height: 34px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		border-radius: 4px;
 		margin: 4px 0;
 		padding: 0px 19px;
@@ -62,7 +62,7 @@
 	// 骨架项样式
 	&-item {
 		margin-bottom: 10px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		border-radius: 8px;
 	}
 	// 骨架项头部样式
@@ -71,7 +71,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 10px;
-		background: var(--Bg6);
+		background: var(--Bg-6);
 		border-radius: 8px 8px 0 0;
 		height: 34px;
 	}
@@ -79,14 +79,14 @@
 	&-league {
 		width: 70%;
 		height: 20px;
-		background: var(--Bg3);
+		background: var(--Bg-3);
 		border-radius: 4px;
 	}
 	// 箭头骨架样式（未使用）
 	&-arrow {
 		width: 20px;
 		height: 20px;
-		background: var(--Bg3);
+		background: var(--Bg-3);
 		border-radius: 50%;
 	}
 	// 骨架项内容样式
@@ -106,7 +106,7 @@
 	&-team {
 		width: 100%;
 		height: 34px;
-		background: var(--Bg3);
+		background: var(--Bg-3);
 		border-radius: 4px;
 		display: flex;
 		align-items: center;
@@ -117,7 +117,7 @@
 	&-odds {
 		width: 40%;
 		height: 24px;
-		background: var(--Bg3);
+		background: var(--Bg-3);
 		border-radius: 4px;
 	}
 }

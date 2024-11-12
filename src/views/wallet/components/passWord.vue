@@ -18,7 +18,7 @@
 				<!-- 确认按钮 -->
 				<div class="button" @click="handleConfirm">{{ $t('wallet["立即提款"]') }}</div>
 				<div class="tips">
-					<span class="curp" @click="router.push('/user/security_center')">{{ $t('wallet["忘记密码"]') }}</span>
+					<span class="curp" @click="goto">{{ $t('wallet["忘记密码"]') }}</span>
 				</div>
 			</div>
 		</CommonDialog>
@@ -28,13 +28,22 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import pubsub from "/@/pubSub/pubSub";
 
 // 路由和 props 定义
 const router = useRouter();
-const props = defineProps<{
-	modelValue?: boolean;
-	password?: string;
-}>();
+const props = withDefaults(
+	defineProps<{
+		dialogType?: boolean;
+		modelValue?: boolean;
+		password?: string;
+	}>(),
+	{
+		dialogType: false, // 设置默认值为 false
+		modelValue: false, // 设置默认值为 false
+		password: "", // 设置默认值为空字符串
+	}
+);
 
 // 事件 emit 定义
 const emit = defineEmits<{
@@ -53,6 +62,14 @@ watch(
 		password.value = newPassword || "";
 	}
 );
+
+const goto = () => {
+	if (props.dialogType) {
+		// 关闭钱包弹窗
+		pubsub.publish("closeWalletDialog");
+	}
+	router.push("/user/security_center");
+};
 
 // 监听输入框变化
 function onPasswordInput() {
@@ -74,13 +91,13 @@ function handleConfirm() {
 <style scoped lang="scss">
 .container {
 	width: 380px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	border-radius: 12px;
 	overflow: hidden;
 	.header {
 		position: relative;
 		padding: 24px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 20px;
 		font-weight: 500;
@@ -97,7 +114,7 @@ function handleConfirm() {
 			align-items: center;
 			justify-content: center;
 			border-bottom-left-radius: 12px;
-			background-color: var(--Bg2);
+			background-color: var(--Bg-2);
 			cursor: pointer;
 			.icon {
 				width: 30px;
@@ -116,13 +133,13 @@ function handleConfirm() {
 			gap: 10px;
 			padding: 10px 12px;
 			border-radius: 4px;
-			background: var(--Bg2);
+			background: var(--Bg-2);
 			overflow: hidden;
 			input {
 				flex: 1;
 				height: 100%;
-				background: var(--Bg2);
-				color: var(--Text_s);
+				background: var(--Bg-2);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
@@ -142,7 +159,7 @@ function handleConfirm() {
 		margin: 0 auto;
 		border-radius: 4px;
 		background: var(--Theme, #ff284b);
-		color: var(--Text_a);
+		color: var(--Text-a);
 		font-family: "PingFang SC";
 		font-size: 14px;
 		font-weight: 500;

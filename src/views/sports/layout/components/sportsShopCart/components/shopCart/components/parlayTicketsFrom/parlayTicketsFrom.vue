@@ -50,7 +50,7 @@ const onInputEnter = (item: any) => {
 		border-radius: 8px;
 		display: flex;
 		flex-direction: column;
-		background: var(--Bg4);
+		background: var(--Bg-4);
 
 		.singlePass_top {
 			display: flex;
@@ -58,7 +58,7 @@ const onInputEnter = (item: any) => {
 			justify-content: space-between;
 
 			.value {
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 500;
@@ -70,7 +70,7 @@ const onInputEnter = (item: any) => {
 			flex-direction: column;
 			align-items: end;
 			span {
-				color: var(--Text1);
+				color: var(--Text-1);
 				font-size: 14px;
 				font-weight: 400;
 			}
@@ -81,19 +81,19 @@ const onInputEnter = (item: any) => {
 			height: 50px;
 			// padding: 19px 10px;
 			border-radius: 8px;
-			background: var(--Bg4);
+			background: var(--Bg-4);
 
 			.el-input__wrapper {
-				background: var(--Bg1);
+				background: var(--Bg-1);
 				box-shadow: none;
-				border: 1px solid var(--Line_2);
+				border: 1px solid var(--Line-2);
 				border-radius: 8px;
 
 				&:focus-within {
 					border-color: var(--Theme); /* 设置聚焦时的边框颜色 */
 				}
 				.el-input__inner {
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-size: 16px;
 					font-weight: 400;
 					caret-color: var(--Theme);
@@ -101,11 +101,11 @@ const onInputEnter = (item: any) => {
 
 				input {
 					&::placeholder {
-						color: var(--Text2);
+						color: var(--Text-2);
 					}
 				}
 				.el-input__suffix {
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-size: 16px;
 					font-weight: 400;
 				}

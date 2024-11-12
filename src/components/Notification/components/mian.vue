@@ -86,12 +86,12 @@ onUnmounted(() => {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	background-color: var(--Bg3);
+	background-color: var(--Bg-3);
 	padding: 20px 25px;
 	box-sizing: border-box;
 
 	.text_plan {
-		color: var(--Text1);
+		color: var(--Text-1);
 		.title {
 		}
 		.content {
@@ -107,11 +107,11 @@ onUnmounted(() => {
 			.el-progress {
 				padding: 3px;
 				border-radius: 50%;
-				background-color: var(--Bg4);
+				background-color: var(--Bg-4);
 				.el-progress-circle {
 					//圆背景
 					.el-progress-circle__track {
-						stroke: var(--Bg4);
+						stroke: var(--Bg-4);
 					}
 					//圆进度
 					.el-progress-circle__path {

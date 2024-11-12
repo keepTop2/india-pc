@@ -94,7 +94,7 @@ const gettopNList = () => {
 		flex-direction: column;
 		gap: 0;
 		.userId {
-			background: var(--Bg3);
+			background: var(--Bg-3);
 			padding: 2px 10px;
 			border-radius: 50px;
 			display: flex;

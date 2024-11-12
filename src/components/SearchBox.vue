@@ -51,12 +51,12 @@ onClickOutside(resultList, (event) => {
 	.search-input {
 		width: 100%;
 		height: 50px;
-		background: var(--Bg2);
+		background: var(--Bg-2);
 		border-radius: 6px;
 		font-size: 14px;
-		border: 1px solid var(--Line_2);
+		border: 1px solid var(--Line-2);
 		padding-left: 54px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 
 	.search_icon {
@@ -65,7 +65,7 @@ onClickOutside(resultList, (event) => {
 		top: 16px;
 		margin-right: 24px;
 		padding-right: 12px;
-		border-right: 1px solid var(--Line_2);
+		border-right: 1px solid var(--Line-2);
 		display: flex;
 		align-items: center;
 	}
@@ -78,10 +78,10 @@ onClickOutside(resultList, (event) => {
 	position: absolute;
 	top: 100%;
 	width: 100%;
-	background: var(--Bg2);
-	border: 1px solid var(--Line_2);
+	background: var(--Bg-2);
+	border: 1px solid var(--Line-2);
 	cursor: pointer;
-	color: var(--Text1);
+	color: var(--Text-1);
 	z-index: 10;
 	border-radius: 6px;
 }
@@ -93,7 +93,7 @@ onClickOutside(resultList, (event) => {
 		align-items: center;
 	}
 	li:hover {
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 }
 

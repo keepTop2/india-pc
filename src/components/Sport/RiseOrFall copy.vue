@@ -170,7 +170,7 @@ defineExpose({ state });
 				transform: rotate(180deg);
 			}
 
-			color: var(--Success);
+			color: var(--success);
 		}
 	}
 }

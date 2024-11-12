@@ -144,7 +144,7 @@ const onSubmit = async () => {
 			}
 		}
 		.login_text {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-weight: 500;
 			span {
 				position: relative;

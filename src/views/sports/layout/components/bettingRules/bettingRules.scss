@@ -10,7 +10,7 @@
 			display: block;
 			//margin: 30px 0 18px 0;
 
-			color: var(--Text_s);
+			color: var(--Text-s);
 
 			font-family: "PingFang SC";
 			font-size: 20px;
@@ -41,7 +41,7 @@
 		.el-menu-vertical-demo {
 			border-radius: 8px;
 
-			background: var(--Bg1);
+			background: var(--Bg-1);
 		}
 	}
 
@@ -49,7 +49,7 @@
 		flex: 1;
 		border-radius: 8px;
 		padding: 40px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 
 		:deep() {
 			> .title {
@@ -66,7 +66,7 @@
 			> .desc {
 				font-size: 14px;
 				line-height: 1.6;
-				color: var(--Text1);
+				color: var(--Text-1);
 			}
 
 			ol.desc {
@@ -81,7 +81,7 @@
 		border-radius: 8px;
 		border: none;
 
-		background: var(--Bg1);
+		background: var(--Bg-1);
 
 		padding: 13px;
 	}
@@ -94,7 +94,7 @@
 		justify-content: center;
 		align-items: center;
 
-		color: var(--Text1);
+		color: var(--Text-1);
 
 		font-family: "PingFang SC";
 		font-size: 14px;
@@ -105,18 +105,18 @@
 		padding-left: 0 !important;
 
 		&:hover {
-			background: var(--Bg3);
+			background: var(--Bg-3);
 		}
 
 		&.is-active {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-style: normal;
 			font-weight: 600;
 			line-height: normal;
 
-			background: var(--Bg3);
+			background: var(--Bg-3);
 		}
 	}
 }

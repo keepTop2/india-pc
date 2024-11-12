@@ -85,10 +85,10 @@
 							<v-date-picker @dayclick="dayclick" :min-date="minDate" :max-date="maxDate" v-model="currentDay" v-if="showDate">
 								<template #header-title-wrapper>{{ dayjs(currentDay).format("YYYY年MM月") }}</template>
 								<template #header-prev-button>
-									<svg-icon class="searchIcon" name="arrow_left" size="14px" />
+									<svg-icon class="searchIcon" name="common-arrow_left" size="14px" />
 								</template>
 								<template #header-next-button>
-									<svg-icon class="searchIcon" name="arrow_right" size="14px" />
+									<svg-icon class="searchIcon" name="common-arrow_right" size="14px" />
 								</template>
 							</v-date-picker>
 						</div>
@@ -281,16 +281,16 @@ onBeforeUnmount(() => {
 		line-height: 38px;
 		padding: 0 12px;
 		font-size: 14px;
-		background-color: var(--Bg3); /* 可选：背景色 */
+		background-color: var(--Bg-3); /* 可选：背景色 */
 		text-align: center;
 		border-radius: 4px;
 		cursor: pointer;
 		user-select: none;
-		color: var(--Text2);
+		color: var(--Text-2);
 	}
 	.active {
 		background-color: var(--Theme); /* 可选：背景色 */
-		color: var(--Text_a);
+		color: var(--Text-a);
 	}
 }
 .PrizePool {
@@ -313,7 +313,7 @@ onBeforeUnmount(() => {
 	}
 	.money {
 		font-family: "DIN Alternate";
-		color: var(--F1);
+		color: var(--F-1);
 		font-size: 20px;
 	}
 	.help {
@@ -391,7 +391,7 @@ onBeforeUnmount(() => {
 	}
 }
 .table {
-	background: var(--Bg3);
+	background: var(--Bg-3);
 	margin: 0 20px;
 	border-radius: 12px;
 	.headearea {
@@ -420,27 +420,27 @@ onBeforeUnmount(() => {
 		:deep(.vc-pane-container) {
 			width: 268px;
 			border-radius: 8px;
-			background: var(--Bg4);
+			background: var(--Bg-4);
 		}
 		:deep(.vc-bordered) {
-			background: var(--Bg4);
-			border: 1px solid var(--Line_2);
+			background: var(--Bg-4);
+			border: 1px solid var(--Line-2);
 			box-shadow: 0px 0px 4px 0px rgba(255, 40, 75, 0.08);
 		}
 		:deep(.vc-light) {
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 		:deep(.vc-header.is-lg) {
 			font-size: 14px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-weight: 500;
 		}
 		:deep(.vc-header) {
 			margin-top: 0;
-			border-bottom: 1px solid var(--Line_2);
+			border-bottom: 1px solid var(--Line-2);
 		}
 		:deep(.vc-focus:focus-within) {
-			color: var(--Text_a);
+			color: var(--Text-a);
 			box-shadow: none;
 		}
 		:deep(.vc-highlight-bg-solid) {
@@ -459,7 +459,7 @@ onBeforeUnmount(() => {
 		display: flex;
 		justify-content: space-around;
 
-		color: var(--Text_s);
+		color: var(--Text-s);
 		height: 42px;
 		line-height: 42px;
 		> div {
@@ -474,7 +474,7 @@ onBeforeUnmount(() => {
 
 			height: 42px;
 			line-height: 42px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-weight: 300;
 			> div {
 				width: 25%;
@@ -488,7 +488,7 @@ onBeforeUnmount(() => {
 		.active {
 			background: url("./images/table_active_bg.png") no-repeat;
 			background-size: 100% 100%;
-			color: var(--Text_s);
+			color: var(--Text-s);
 		}
 	}
 }
@@ -499,16 +499,16 @@ onBeforeUnmount(() => {
 .dialogWrapper {
 	width: 448px;
 
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 12px;
 
 	.title {
 		height: 54px;
 		line-height: 54px;
 		padding: 0 20px;
-		color: var(--Text_a);
+		color: var(--Text-a);
 		font-size: 20px;
-		border-bottom: 1px solid var(--Line_2);
+		border-bottom: 1px solid var(--Line-2);
 		display: flex;
 		justify-content: space-between;
 	}
@@ -517,7 +517,7 @@ onBeforeUnmount(() => {
 		max-height: 618px;
 		overflow-y: auto;
 		padding: 10px 20px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-size: 14px;
 	}
 	.rule::-webkit-scrollbar {
@@ -527,7 +527,7 @@ onBeforeUnmount(() => {
 		background-color: transparent;
 	}
 	.rule::-webkit-scrollbar-thumb {
-		background: var(--Line_2);
+		background: var(--Line-2);
 		border-radius: 5px;
 	}
 }

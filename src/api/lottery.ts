@@ -36,4 +36,14 @@ export const lotteryApi = {
 			headers: { showLoading: true, needLogin: true },
 		});
 	},
+	/**
+	 * @description 投注接口
+	 * @param
+	 */ issueHistory: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosLottery(`/openApi/v2/issue/issueHistory`, {
+			method: "POST",
+			data,
+			headers: { showLoading: true, needLogin: true },
+		});
+	},
 };

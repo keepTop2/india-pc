@@ -1,10 +1,10 @@
 <template>
-	<div class="banner">
-		<img src="./image/image.webp" alt="" style="width: 100%" v-if="!useUserStore().getLogin" />
+	<div class="banner max-width">
+		<img class="max-width mt_24" src="./image/image.png" alt="" style="width: 100%" v-if="!useUserStore().getLogin" />
 		<div class="swiper-box max-width" v-else>
 			<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
-				<SwiperSlide v-for="(item, index) in announcementList" :key="index">
-					<img :src="item" alt="" />
+				<SwiperSlide v-for="(item, index) in bannerList?.length > 0 ? bannerList : 3" :key="index">
+					<img v-lazy-load="item.iconFileUrl" alt="" />
 				</SwiperSlide>
 			</Swiper>
 		</div>
@@ -17,15 +17,13 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
-import banner1 from "./image/banner1.png";
-import banner2 from "./image/banner2.png";
-import banner3 from "./image/banner3.png";
 import { ref } from "vue";
 import { useUserStore } from "/@/stores/modules/user";
+const props = defineProps({
+	bannerList: [] as any,
+});
 const swiperRef: any = ref(null);
 const modules = ref([Autoplay, Pagination, Navigation]);
-const announcementList = [banner1, banner2, banner3, banner1, banner2, banner3];
 const onSwiper = (swiper: any) => {
 	if (swiperRef.value) {
 		swiperRef.value = swiper;
@@ -36,10 +34,12 @@ const onSwiper = (swiper: any) => {
 <style scoped lang="scss">
 .banner {
 	width: 100%;
-	max-width: 1636px;
 	margin: 0 auto;
-	img {
+	> img {
 		width: 100%;
+		height: 345.19px;
+		border-radius: 16px;
+		object-fit: cover;
 	}
 	.swiper-box {
 		position: relative;
@@ -62,6 +62,15 @@ const onSwiper = (swiper: any) => {
 		:deep(.swiper-pagination-bullet-active) {
 			width: 26px !important;
 			background: var(--Theme) !important;
+		}
+		:deep(.swiper-slide) {
+			height: 204px;
+			img {
+				height: 204px;
+				width: 100%;
+				object-fit: cover;
+				border-radius: 12px;
+			}
 		}
 	}
 }

@@ -129,7 +129,7 @@ const { Live, Scoreboard } = useHeaderTools(gameState);
 	width: 100%;
 	height: 114px;
 	display: flex;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	&:last-child {
 		border-bottom: 0px;
 		.league-option {
@@ -161,7 +161,7 @@ const { Live, Scoreboard } = useHeaderTools(gameState);
 			width: 100%;
 			height: 30px;
 			display: flex;
-			background: var(--Bg3);
+			background: var(--Bg-3);
 
 			.other-info {
 				width: 284px;
@@ -199,7 +199,7 @@ const { Live, Scoreboard } = useHeaderTools(gameState);
 						display: flex;
 						align-items: center;
 						justify-content: flex-end;
-						color: var(--Text1);
+						color: var(--Text-1);
 						font-family: "PingFang SC";
 						font-size: 12px;
 						font-weight: 400;
@@ -220,7 +220,7 @@ const { Live, Scoreboard } = useHeaderTools(gameState);
 				align-items: center;
 				gap: 20px;
 				.item {
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-family: "PingFang SC";
 					font-size: 12px;
 					font-weight: 400;
@@ -239,8 +239,8 @@ const { Live, Scoreboard } = useHeaderTools(gameState);
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		border-left: 1px solid var(--Line_2);
-		border-bottom: 1px solid var(--Line_2);
+		border-left: 1px solid var(--Line-2);
+		border-bottom: 1px solid var(--Line-2);
 		overflow: hidden;
 		.tooltip-container {
 			cursor: pointer;

@@ -8,7 +8,7 @@
 					<div class="time formItem pl_14 pr_14" @click="showDatePicker = true" style="position: relative">
 						<div class="flex_space-between curp">
 							<span>{{ dayjs(range.start).format("YYYY/MM/DD") }} - {{ dayjs(range.end).format("YYYY/MM/DD") }}</span>
-							<svg-icon name="arrow_down" width="12px" height="8px"></svg-icon>
+							<svg-icon name="common-arrow_down" width="12px" height="8px"></svg-icon>
 						</div>
 						<DatePicker :range="range" v-model="showDatePicker" :minDate="minDate" :maxDate="maxDate" @updateRange="updateRange" />
 					</div>
@@ -32,7 +32,7 @@
 				<div class="flex_space-between Text_s fs_14 mb_12">
 					<div>
 						<span>
-							<span style="color: var(--light-ok-Text-2-1, #656e78)">共计: </span>
+							<span style="color: var(--Text-2-1)">共计: </span>
 							{{ totalVO.betNum }} 笔投入
 						</span>
 						<span class="ml_20">
@@ -40,7 +40,7 @@
 							{{ totalVO.betAmount }} CNY
 						</span>
 						<span class="ml_20">
-							<span style="color: var(--light-ok-Text-2-1, #656e78)">输赢金额：</span>
+							<span style="color: var(--Text-2-1)">输赢金额：</span>
 							<span :class="[String(totalVO.winLoseAmount).indexOf('-') > -1 ? 'lose_color' : 'win_color']"
 								>{{ String(totalVO.winLoseAmount).indexOf("-") > -1 ? totalVO.winLoseAmount : "+" + totalVO.winLoseAmount || 0 }} CNY</span
 							>
@@ -328,7 +328,7 @@ function getTableType() {
 
 <style scoped lang="scss">
 .header {
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 12px;
 	padding: 20px;
 
@@ -350,7 +350,7 @@ function getTableType() {
 
 	.line {
 		height: 1px;
-		background: var(--Line_1);
+		background: var(--Line-1);
 		box-shadow: 0px 1px 0px 0px #343d48;
 	}
 
@@ -358,7 +358,7 @@ function getTableType() {
 		background: var(--Theme);
 		padding: 6px 20px;
 		border-radius: 6px;
-		color: var(--Text_a);
+		color: var(--Text-a);
 		display: flex;
 		align-items: center;
 		gap: 4px;
@@ -366,8 +366,8 @@ function getTableType() {
 
 	.formItem {
 		height: 34px;
-		background: var(--Bg2);
-		color: var(--Text_s);
+		background: var(--Bg-2);
+		color: var(--Text-s);
 		line-height: 34px;
 		min-width: 140px;
 	}
@@ -380,7 +380,7 @@ function getTableType() {
 .content {
 	min-height: calc(100vh - 260px);
 	margin-top: 14px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 12px;
 	padding: 20px;
 	display: flex;
@@ -392,18 +392,18 @@ function getTableType() {
 	}
 
 	.win_color {
-		color: var(--light-ok-Theme--, #ff284b);
+		color: var(--Theme);
 	}
 
 	.table {
-		border: 1px solid var(--Line_2);
+		border: 1px solid var(--Line-2);
 		border-radius: 8px;
 	}
 
 	.tr {
 		display: flex;
 		justify-content: space-around;
-		border-bottom: 1px solid var(--Line_2);
+		border-bottom: 1px solid var(--Line-2);
 		height: 50px;
 		line-height: 50px;
 		font-size: 14px;
@@ -411,7 +411,7 @@ function getTableType() {
 		.td {
 			text-align: center;
 			width: 100%;
-			border-right: 1px solid var(--Line_2);
+			border-right: 1px solid var(--Line-2);
 		}
 
 		.td:last-child {
@@ -426,16 +426,16 @@ function getTableType() {
 
 		.status0 {
 			background: var(--Theme);
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 
 		.status1 {
-			background: var(--Line_2);
-			color: var(--Success);
+			background: var(--Line-2);
+			color: var(--success);
 		}
 
 		.status2 {
-			color: var(--Text2);
+			color: var(--Text-2);
 		}
 	}
 
@@ -445,10 +445,10 @@ function getTableType() {
 
 	.theader {
 		height: 42px;
-		background: var(--Bg2);
+		background: var(--Bg-2);
 		border-radius: 8px 8px 0 0;
 		line-height: 42px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 
 	.Pagination {
@@ -493,7 +493,7 @@ function getTableType() {
 		.p {
 			text-align: center;
 			& > span:first-child {
-				color: var(--light-ok-text-s, #fff);
+				color: var(--Text-s);
 			}
 		}
 
@@ -521,7 +521,7 @@ function getTableType() {
 
 :deep(.dropdown-header),
 :deep(.curp) {
-	color: var(--light-ok-Text-1-1, #98a7b5);
+	color: var(--Text-1);
 }
 :deep(.formItem) {
 	border-radius: 4px;

@@ -116,7 +116,7 @@ getUserPlatformBalance();
 			& > div:first-child {
 				font-family: "PingFang SC";
 				font-size: 20px;
-				color: var(--light-ok-Text-1-1, #98a7b5);
+				color: var(--Text-1);
 			}
 
 			& > div:last-child {
@@ -127,7 +127,7 @@ getUserPlatformBalance();
 				span {
 					font-family: PingFang SC;
 					font-size: 20px;
-					color: var(--light-ok-text-s, #ffffff);
+					color: var(--Text-s);
 				}
 			}
 		}
@@ -143,7 +143,7 @@ getUserPlatformBalance();
 				font-family: PingFang SC;
 				font-size: 24px;
 				font-weight: 600;
-				color: var(--light-ok-text-s, #ffffff);
+				color: var(--Text-s);
 			}
 		}
 
@@ -159,7 +159,7 @@ getUserPlatformBalance();
 					box-shadow: none;
 
 					input {
-						color: var(--light-ok-text-s, #ffffff);
+						color: var(--Text-s);
 						font-family: DIN Alternate;
 						font-size: 30px;
 						font-weight: 700;
@@ -171,7 +171,7 @@ getUserPlatformBalance();
 				font-family: PingFang SC;
 				font-size: 18px;
 				font-weight: 400;
-				color: var(--light-ok-Text-1-1, #98a7b5);
+				color: var(--Text-1);
 				cursor: pointer;
 				user-select: none;
 			}
@@ -180,7 +180,7 @@ getUserPlatformBalance();
 		.line {
 			margin-top: 10px;
 			//margin-bottom: 47px;
-			background: var(--light-ok-Line-2-, #373a40);
+			background: var(--Line-2);
 			height: 1px;
 			border-radius: 4.26px 0px 0px 0px;
 		}
@@ -191,7 +191,7 @@ getUserPlatformBalance();
 			font-family: PingFang SC;
 			font-size: 12px;
 			font-weight: 400;
-			color: var(--light-ok-Text-1-1, #98a7b5);
+			color: var(--Text-1);
 		}
 	}
 
@@ -224,8 +224,8 @@ getUserPlatformBalance();
 	border: none;
 	gap: 10px;
 	border-radius: 4px;
-	background: var(--light-ok-Theme--, #ff284b);
-	color: var(--light-ok-text-a, #ffffff);
+	background: var(--Theme);
+	color: var(--Text-a);
 	font-size: 16px;
 }
 </style>

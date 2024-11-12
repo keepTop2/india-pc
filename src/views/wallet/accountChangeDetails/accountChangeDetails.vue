@@ -453,17 +453,17 @@ onUnmounted(() => {
 	align-items: center;
 	gap: 10px;
 	padding-bottom: 6px;
-	border-bottom: 1px solid var(--Line_1);
+	border-bottom: 1px solid var(--Line-1);
 	box-shadow: 0px 1px 0px 0px #343d48;
 
 	.label {
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 24px;
 		font-weight: 500;
 	}
 	.type_label {
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 18px;
 		font-weight: 500;
@@ -492,13 +492,13 @@ onUnmounted(() => {
 				margin-right: 10px;
 			}
 			.value {
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "DIN Alternate";
 				font-size: 26px;
 				font-weight: 700;
 			}
 			.label {
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 22px;
 				font-weight: 500;
@@ -514,20 +514,20 @@ onUnmounted(() => {
 			background: url("../../../assets/zh-CN/wallet/time_bg.png") center center / 100% 100% no-repeat;
 
 			span {
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 17px;
 				font-weight: 400;
 			}
 		}
 		.tips {
-			color: var(--Text1);
+			color: var(--Text-1);
 			text-align: center;
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
 			.a {
-				color: var(--F2);
+				color: var(--F-2);
 				text-decoration: underline;
 				cursor: pointer;
 			}
@@ -541,8 +541,8 @@ onUnmounted(() => {
 		gap: 1px;
 		margin: 30px auto 30px;
 		border-radius: 12px;
-		background: var(--Bg1);
-		border: 1px solid var(--Line_2);
+		background: var(--Bg-1);
+		border: 1px solid var(--Line-2);
 		&::after {
 			position: absolute;
 			content: "";
@@ -551,7 +551,7 @@ onUnmounted(() => {
 			width: 1px;
 			height: 142px;
 			transform: translate(-50%, -50%);
-			background: var(--Line_2);
+			background: var(--Line-2);
 		}
 		.content {
 			flex: 1;
@@ -564,7 +564,7 @@ onUnmounted(() => {
 				align-items: center;
 				justify-content: space-between;
 				.label {
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
@@ -572,7 +572,7 @@ onUnmounted(() => {
 				.value {
 					display: flex;
 					align-items: center;
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
@@ -601,7 +601,7 @@ onUnmounted(() => {
 					border-radius: 50%;
 					background-color: #7d8086;
 					span {
-						color: var(--Text_a);
+						color: var(--Text-a);
 						text-align: center;
 						font-family: "PingFang SC";
 						font-size: 16px;
@@ -622,22 +622,22 @@ onUnmounted(() => {
 					height: 4px;
 					transform: translateY(-50%);
 					border-radius: 8px;
-					background: var(--Line_2);
+					background: var(--Line-2);
 				}
 				.line_success {
-					background: var(--Success);
+					background: var(--success);
 				}
 			}
 			.label {
 				margin-top: 14px;
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
 			}
 			.value {
 				margin-top: 2px;
-				color: var(--Text1);
+				color: var(--Text-1);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
@@ -655,7 +655,7 @@ onUnmounted(() => {
 			width: 100px;
 			height: 100px;
 			border-radius: 12px;
-			border: 1px solid var(--Line_2);
+			border: 1px solid var(--Line-2);
 		}
 	}
 
@@ -684,31 +684,31 @@ onUnmounted(() => {
 		}
 		.confirm {
 			background: var(--Theme);
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 	}
 }
 
 .success {
-	color: var(--Success) !important;
+	color: var(--success) !important;
 }
 .error {
-	color: var(--F1) !important;
+	color: var(--F-1) !important;
 }
 .hint {
-	color: var(--F2) !important;
+	color: var(--F-2) !important;
 }
 
 // 凭证弹窗
 .Proof_container {
 	width: 520px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	border-radius: 12px;
 	overflow: hidden;
 	.Proof_header {
 		position: relative;
 		padding: 24px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 20px;
 		font-weight: 500;
@@ -725,7 +725,7 @@ onUnmounted(() => {
 			align-items: center;
 			justify-content: center;
 			border-bottom-left-radius: 12px;
-			background-color: var(--Bg2);
+			background-color: var(--Bg-2);
 			cursor: pointer;
 			.icon {
 				width: 30px;
@@ -736,12 +736,12 @@ onUnmounted(() => {
 	.Proof_main {
 		padding: 6px 24px 40px;
 		.tips {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
 			.red {
-				color: var(--Warn);
+				color: var(--F-1);
 			}
 		}
 		.list {
@@ -757,13 +757,13 @@ onUnmounted(() => {
 				align-items: center;
 				justify-content: space-between;
 				.label {
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
 				}
 				.value {
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
@@ -774,7 +774,7 @@ onUnmounted(() => {
 			margin-top: 16px;
 			.label {
 				margin-bottom: 8px;
-				color: var(--Text1);
+				color: var(--Text-1);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
@@ -787,10 +787,10 @@ onUnmounted(() => {
 				height: 120px;
 				margin: 0px;
 				padding: 12px;
-				border: 1px solid var(--Line_2);
+				border: 1px solid var(--Line-2);
 				border-radius: 12px;
-				background-color: var(--Bg1);
-				color: var(--Text_s);
+				background-color: var(--Bg-1);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
@@ -815,7 +815,7 @@ onUnmounted(() => {
 			margin: 40px auto 0px;
 			border-radius: 8px;
 			background-color: var(--Theme);
-			color: var(--Text_a);
+			color: var(--Text-a);
 			text-align: center;
 			font-family: "PingFang SC";
 			font-size: 16px;
@@ -832,7 +832,7 @@ onUnmounted(() => {
 	height: 260px;
 	padding: 20px;
 	border-radius: 20px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	.icon {
 		position: absolute;
 		top: -46px;
@@ -848,7 +848,7 @@ onUnmounted(() => {
 	.text1 {
 		margin-top: 57px;
 		text-align: center;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		text-align: center;
 		font-family: "PingFang SC";
 		font-size: 16px;
@@ -857,7 +857,7 @@ onUnmounted(() => {
 
 	.text2 {
 		margin-top: 22px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		text-align: center;
 		font-family: "PingFang SC";
 		font-size: 14px;
@@ -872,7 +872,7 @@ onUnmounted(() => {
 		justify-content: center;
 		margin: 30px auto 0px;
 		background: var(--Theme);
-		color: var(--Text_a);
+		color: var(--Text-a);
 		font-family: "PingFang SC";
 		font-size: 16px;
 		font-style: normal;
