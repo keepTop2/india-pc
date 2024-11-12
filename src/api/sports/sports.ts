@@ -1,5 +1,6 @@
 import useAxiosApi from "/@/utils/useAxiosApi";
 import useAxiosSabaApi from "/@/utils/useAxiosSabaApi";
+import { useUserStore } from "/@/stores/modules/user";
 import qs from "qs";
 
 class SportsApi {
@@ -7,7 +8,8 @@ class SportsApi {
 	 * @description 体育登录
 	 */
 	static sportsLogin = (data = {}, headers = { showLoading: false }) => {
-		return useAxiosApi(`/app/third/api/loginGame`, {
+		const UserStore = useUserStore();
+		return useAxiosApi(`${UserStore.getLogin ? "/app/third/api/loginGame" : "/app/anon/api/sbaAnonLogin"}`, {
 			headers,
 			method: "POST",
 			data,
