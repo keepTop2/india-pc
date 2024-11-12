@@ -80,7 +80,7 @@ import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import { DEFAULT_LANG, isSmp, langMaps } from "/@/views/lottery/constant/index";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { type MergedLotteryList, type OddsListItem } from "/@/views/lottery/types/index";
-import { mergeLotteryList } from "/@/views/lottery/utils/index";
+import { mergeLotteryList } from "/@/views/lottery/utils/mergeLotteryList";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
 
 const props = defineProps({
@@ -218,6 +218,8 @@ const handleSubmit = async ({ stake: betMoney }: { stake: string }) => {
 	betFormRef.value.clearForm(); // 成功才清空文本框
 };
 
+onMounted(queryGamePlayOddsList);
+
 async function queryGamePlayOddsList() {
 	// 1. 获取 单个彩种的动态的玩法与赔率信息
 
@@ -229,8 +231,6 @@ async function queryGamePlayOddsList() {
 	const res = await lotteryApi.queryGamePlayOddsList(submitData);
 	mergedLotteryList.value = mergeLotteryList(lotteryList, res.data) as MergedLotteryList;
 }
-
-onMounted(queryGamePlayOddsList);
 </script>
 
 <style lang="scss" scoped></style>

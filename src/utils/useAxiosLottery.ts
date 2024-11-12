@@ -43,7 +43,6 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
 	(response) => {
-		console.log("response", response);
 		const { status, data } = response;
 		const { code } = data;
 

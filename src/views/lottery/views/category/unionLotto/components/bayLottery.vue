@@ -67,8 +67,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { mergeLotteryList } from "../../../../utils/mergeLotteryList";
 import { lotteryList, queryGamePlayOddsListParams } from "./playsConfig";
-import { mergeLotteryList } from "/@//views/lottery/utils/index";
 import { lotteryApi } from "/@/api/lottery";
 import showToast from "/@/hooks/useToast";
 import Common from "/@/utils/common";
