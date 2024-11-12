@@ -9,7 +9,7 @@ import useTimer from "/@/views/lottery/components/Tools/Timer";
 export default () => {
 	// 使用自定义的 LotteryCard hook，获取组件内容和页脚
 	const { Content, Footer } = useLotteryCard();
-
+	
 	const LotteryHeader = defineComponent({
 		name: "LotteryHeader",
 		props: { data: { type: Object, required: true, default: () => {} } },

@@ -13,11 +13,15 @@ import IconsResolver from "unplugin-icons/resolver";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import { visualizer } from "rollup-plugin-visualizer";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import { execSync } from "child_process";
 // import { createSvgIconsPlugin } from "./plugins/svg-icons-plugin";
 
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 import svgLoader from "vite-svg-loader";
+
+//git版本号
+const gitVersion = getGitVersion();
 
 const pathResolve = (dir: string) => {
 	return resolve(process.cwd(), ".", dir);
@@ -78,6 +82,7 @@ const viteConfig = defineConfig(({ command, mode }: ConfigEnv) => {
 						injectOptions: {
 							data: {
 								buildTime: new Date().toLocaleString(),
+								gitVersion,
 							},
 						},
 					},
@@ -163,5 +168,20 @@ const viteConfig = defineConfig(({ command, mode }: ConfigEnv) => {
 		},
 	};
 });
-
+function getGitVersion() {
+	try {
+		// 获取最近的提交次数
+		const commitCount = execSync("git rev-list --count HEAD").toString().trim();
+		// 获取最近提交的简短哈希
+		const commitHash = execSync("git rev-parse --short HEAD").toString().trim();
+		// // 获取最近的提交信息
+		// const commitMessage = execSync('git log -1 --pretty=%B').toString().trim()
+		// 获取当前分支名
+		const branchName = execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
+		return `${commitCount}-${commitHash}-${branchName}`;
+	} catch (e) {
+		console.error("无法生成 Git 版本号:", e);
+		return "0.0.0";
+	}
+}
 export default viteConfig;

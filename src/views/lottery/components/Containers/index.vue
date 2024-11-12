@@ -14,13 +14,13 @@
 </template>
 
 <script setup lang="ts">
+import { PropType } from "vue";
 import useLotteryHeader from "/@/views/lottery/components/LotteryHeader/Index";
-
+import type { LotteryInfo } from "/@/views/lottery/views/category/unionLotto/types";
 const props = defineProps({
 	class: { type: String, default: "" },
-	data: { type: Object, default: () => ({}) },
+	data: { type: Object as PropType<LotteryInfo> },
 });
-
 const { LotteryHeader } = useLotteryHeader();
 </script>
 
