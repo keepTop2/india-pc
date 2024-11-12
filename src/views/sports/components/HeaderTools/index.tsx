@@ -48,7 +48,7 @@ export default (eventsInfo: any): HeaderTools => {
 	const Scoreboard = defineComponent({
 		name: "Scoreboard",
 		props: {
-			isCurrent: { type: Boolean, default: true },
+			isCurrent: { type: Boolean, default: false },
 		},
 		setup(props) {
 			const { toggleEventScoreboard } = useToolsHooks();
