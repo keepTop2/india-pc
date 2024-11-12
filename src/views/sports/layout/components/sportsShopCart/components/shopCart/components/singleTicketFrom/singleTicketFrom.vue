@@ -1,12 +1,13 @@
 <template>
 	<div class="singleTicketFrom">
 		<el-input
-			v-model="stake"
+			v-model.number="stake"
 			type="number"
 			:min="sportsBetInfo.singleTicketInfo.minBet"
 			:max="sportsBetInfo.singleTicketInfo.maxBet"
 			:placeholder="`限额 ${common.formatFloat(sportsBetInfo.singleTicketInfo.minBet) || '0.00'} ～ ${common.formatFloat(sportsBetInfo.singleTicketInfo.maxBet) || '0.00'}`"
 			@input="onInputEnter"
+			@keydown="preventDecimal"
 		>
 			<template #suffix>{{ UserStore.getUserInfo.mainCurrency }}</template>
 		</el-input>
@@ -31,6 +32,12 @@ let stake = computed(() => shopCartPubSub.betValueState.singleTicketBetValue);
 const onInputEnter = (value: string) => {
 	// 处理对应的金额业务
 	shopCartPubSub.setSingleTicketBetValue(value);
+};
+
+const preventDecimal = (event: KeyboardEvent) => {
+	if (event.key === "." || event.key === "-") {
+		event.preventDefault();
+	}
 };
 
 watch(
