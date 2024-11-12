@@ -27,7 +27,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="hasData" class="content">
+		<div v-if="tableData.length" class="content">
 			<div>
 				<div class="flex_space-between Text_s fs_14 mb_12">
 					<div>
@@ -139,8 +139,8 @@ const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
 const today = dayjs();
 const params = reactive({
-	betStartTime: dayjs().startOf("day").valueOf(),
-	betEndTime: dayjs().endOf("day").valueOf(),
+	betStartTime: dayjs(new Date()).startOf("day").valueOf(),
+	betEndTime: dayjs(new Date()).endOf("day").valueOf(),
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "",
@@ -149,8 +149,8 @@ const params = reactive({
 });
 
 const range = reactive({
-	start: new Date(today.subtract(0, "day").format("YYYY/MM/DD")),
-	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
+	start: dayjs(new Date()).startOf("day").valueOf(), // 今天 00:00:00
+	end: dayjs(new Date()).endOf("day").valueOf(), // 今天 23:59:59
 });
 const minDate = today.subtract(180, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
@@ -169,7 +169,6 @@ const pageData = reactive({
 	mainCurrencyTotal: "",
 });
 const total = ref(0);
-const hasData = ref(false);
 const updateRange = (value: any) => {
 	console.log(value);
 	range.start = value[0];
@@ -200,15 +199,15 @@ onMounted(() => {
 });
 const pageQuery = (type?: boolean) => {
 	if (!type) {
-		params.betStartTime = 1730517077590 || dayjs(new Date(range.start)).startOf("day").valueOf();
-		params.betEndTime = 1731121877590 || dayjs(new Date(range.end)).endOf("day").valueOf();
+		params.betStartTime = dayjs(new Date(range.start)).startOf("day").valueOf();
+		params.betEndTime = dayjs(new Date(range.end)).endOf("day").valueOf();
 	}
 
 	welfareCenterApi
 		.tzPageQuery({
 			...params,
 			venueType: +params.venueType,
-			orderClassify: params.receiveStatus ? [+params.receiveStatus] : [],
+			orderClassifyList: params.receiveStatus ? [+params.receiveStatus] : [],
 		})
 		.then((res) => {
 			if (!res.data) return;
@@ -247,11 +246,6 @@ const pageQuery = (type?: boolean) => {
 				}
 			});
 
-			hasData.value =
-				res.data.sabOrderList?.length > 0 ||
-				res.data.eventOrderPage?.records?.length > 0 ||
-				res.data.basicOrderPage?.records?.length > 0 ||
-				res.data.tableOrderPage?.records?.length > 0;
 			getTableType();
 		});
 };
@@ -382,7 +376,7 @@ function getTableType() {
 
 .content {
 	min-height: calc(100vh - 260px);
-	margin-top: 20px;
+	margin-top: 14px;
 	background: var(--Bg1);
 	border-radius: 12px;
 	padding: 20px;

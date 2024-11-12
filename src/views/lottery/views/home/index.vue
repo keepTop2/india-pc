@@ -62,15 +62,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, computed } from "vue";
-import { gameApi } from "/@/api/game";
-import { lotteryApi } from "/@/api/lottery";
-import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
+import { stringify } from "qs";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import Common from "/@/views/sports/utils/common";
+import { gameApi } from "/@/api/game";
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
-import { stringify } from "qs";
+import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
+import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
+import Common from "/@/views/sports/utils/common";
+
 const $: any = i18n.global;
 
 const { LotteryCard, HotLotteryCard } = useLotteryCard();
@@ -78,6 +79,8 @@ const { LotteryCard, HotLotteryCard } = useLotteryCard();
 const currentTab = ref<string | undefined>("0");
 const searchQuery = ref<string>(""); // 搜索关键词
 const searchinputFocus = ref(false);
+
+useWebSocket();
 
 const gameData = ref<any[]>([]);
 
@@ -136,7 +139,7 @@ const filterGames = Common.debounce(() => {
 
 const games = computed(() => {
 	if (currentTab.value === "0") return gameData.value;
-
+	console.log(gameData.value.filter((game) => game._key === currentTab.value), "=======currentTab.value");
 	return gameData.value.filter((game) => game._key === currentTab.value);
 });
 
@@ -152,6 +155,7 @@ watch(
 
 const maps = {
 	K3: "/lottery/kuaisan",
+	SSQ: "/lottery/unionLotto",
 };
 const pushView = (game) => {
 	console.log("game", game);

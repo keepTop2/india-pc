@@ -6,7 +6,7 @@
 					<div>从</div>
 					<div>
 						<svg-icon name="wallet" size="20px" />
-						<span>{{ transformInfo.platAvailableAmount }}.{{ transformInfo.platCurrency }}</span>
+						<span>{{ transformInfo.platAvailableAmount }} {{ transformInfo.platCurrency }}</span>
 					</div>
 				</div>
 				<div class="type">
@@ -26,10 +26,10 @@
 			<div class="to card-style">
 				<div class="balance">
 					<div>到</div>
-<!--					<div>-->
-<!--						<svg-icon name="wallet" size="20px" />-->
-<!--						<span>{{ transformInfo.userAvailableAmount }}.{{ transformInfo.userCurrencyCode }}</span>-->
-<!--					</div>-->
+					<!--					<div>-->
+					<!--						<svg-icon name="wallet" size="20px" />-->
+					<!--						<span>{{ transformInfo.userAvailableAmount }}.{{ transformInfo.userCurrencyCode }}</span>-->
+					<!--					</div>-->
 				</div>
 				<div class="type">
 					<svg-icon name="USD" size="36px" />
@@ -73,8 +73,8 @@ const transformInfo = ref<Partial<TransformInfo>>({});
 const handleTransform = async () => {
 	const res = await walletApi.transferAmount({ transferAmount: formValue.value });
 	if (res.code !== 10000) return ElMessage.error(res.message);
-  ElMessage.success("转账成功")
-  formValue.value = ""
+	ElMessage.success("转账成功");
+	formValue.value = "";
 	await getUserPlatformBalance();
 };
 
@@ -149,7 +149,7 @@ getUserPlatformBalance();
 
 		.number {
 			display: grid;
-      grid-template-columns: 1fr auto;
+			grid-template-columns: 1fr auto;
 			align-items: center;
 			justify-content: space-between;
 
@@ -172,8 +172,8 @@ getUserPlatformBalance();
 				font-size: 18px;
 				font-weight: 400;
 				color: var(--light-ok-Text-1-1, #98a7b5);
-        cursor: pointer;
-        user-select: none;
+				cursor: pointer;
+				user-select: none;
 			}
 		}
 
