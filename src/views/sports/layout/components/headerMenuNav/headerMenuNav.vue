@@ -3,9 +3,9 @@
 		<div class="menu-nav">
 			<div class="right" ref="rightContainer">
 				<!-- 左侧滚动箭头，只有在有滚动时才显示 -->
-				<div class="arrow_content arrow_left" v-show="showLeftArrow" @click="scrollLeft">
+				<div class="arrow_content common-arrow_left" v-show="showLeftArrow" @click="scrollLeft">
 					<span class="icon">
-						<svg-icon name="arrow_left" size="12px"></svg-icon>
+						<svg-icon name="common-arrow_left" size="12px"></svg-icon>
 					</span>
 				</div>
 				<!-- 导航项容器，支持水平滚动 -->
@@ -18,7 +18,7 @@
 					</div>
 				</div>
 				<!-- 右侧滚动箭头，只有在有滚动时才显示 -->
-				<div class="arrow_content arrow_right" v-show="showRightArrow" @click="scrollRight">
+				<div class="arrow_content common-arrow_right" v-show="showRightArrow" @click="scrollRight">
 					<span class="icon">
 						<svg-icon name="sports-arrow" size="12px"></svg-icon>
 					</span>
@@ -170,7 +170,7 @@ watch(sportsData, () => {
 	display: flex;
 	align-items: center;
 	border-radius: 8px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	overflow: hidden;
 	box-sizing: border-box;
 	&.list {
@@ -179,7 +179,7 @@ watch(sportsData, () => {
 	&.result {
 		border-radius: 8px 8px 0px 0px;
 		// margin-bottom: 1px;
-		border-bottom: 1px solid var(--Line_1);
+		border-bottom: 1px solid var(--Line-1);
 	}
 	&.morningTrading {
 		border-radius: 0;
@@ -193,17 +193,17 @@ watch(sportsData, () => {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: var(--butter);
+		background-color: var(--Butter);
 		cursor: pointer;
 		z-index: 1;
-		&.arrow_left {
+		&.common-arrow_left {
 			left: 4px;
 		}
-		&.arrow_right {
+		&.common-arrow_right {
 			right: 0;
 		}
 		.icon {
-			color: var(--Icon_1);
+			color: var(--Icon-1);
 		}
 	}
 
@@ -219,7 +219,7 @@ watch(sportsData, () => {
 			width: 1px;
 			height: 34px;
 			margin: 0 4px;
-			background: var(--Line_1);
+			background: var(--Line-1);
 			box-shadow: 1px 0 0 0 #343d48;
 		}
 
@@ -254,7 +254,7 @@ watch(sportsData, () => {
 			align-items: center;
 			justify-content: center;
 			// padding: 0px 12px;
-			// background: var(--butter);
+			// background: var(--Butter);
 			border-radius: 4px;
 			white-space: nowrap;
 			overflow: hidden;
@@ -268,7 +268,7 @@ watch(sportsData, () => {
 			.icon {
 				width: 16px;
 				height: 16px;
-				color: var(--Icon_1);
+				color: var(--Icon-1);
 			}
 
 			a {
@@ -281,7 +281,7 @@ watch(sportsData, () => {
 				gap: 4px;
 			}
 			.value {
-				color: var(--Text1, #98a7b5);
+				color: var(--Text-1, #98a7b5);
 				text-align: center;
 				font-family: "PingFang SC";
 				font-size: 14px;

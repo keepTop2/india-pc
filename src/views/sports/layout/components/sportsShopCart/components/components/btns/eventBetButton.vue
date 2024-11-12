@@ -50,17 +50,17 @@ const oddsChanges = () => {
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
-		background-color: var(--Bg5);
+		background-color: var(--Bg-5);
 		cursor: pointer;
 		user-select: none;
 		.label_one {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-weight: 500;
 		}
 		.label_two {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-family: "PingFang SC";
 			font-size: 12px;
 			font-weight: 400;
@@ -74,7 +74,7 @@ const oddsChanges = () => {
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
-		background-color: var(--butter);
+		background-color: var(--Butter);
 		cursor: no-drop;
 		user-select: none;
 	}

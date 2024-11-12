@@ -64,7 +64,7 @@
 .el-popper__arrow {
 	&::before {
 		border: none !important;
-		background-color: var(--Bg1) !important;
+		background-color: var(--Bg-1) !important;
 	}
 }
 
@@ -72,20 +72,20 @@
 	border: none !important;
 
 	.el-select-dropdown__list {
-		background-color: var(--Bg1) !important;
+		background-color: var(--Bg-1) !important;
 	}
 
 	.el-select-dropdown__header {
 		border: none;
-		background-color: var(--Bg1) !important;
+		background-color: var(--Bg-1) !important;
 		.el-input__wrapper {
 			box-shadow: none;
 			border-radius: 8px;
 
-			background-color: var(--Bg2) !important;
+			background-color: var(--Bg-2) !important;
 
 			input {
-				color: var(--Text2_1);
+				color: var(--Text-2-1);
 			}
 		}
 	}
@@ -93,7 +93,7 @@
 	.is-hovering {
 		background-color: var(--Theme) !important;
 		.option-box {
-			color: var(--Text_s);
+			color: var(--Text-s);
 		}
 	}
 }

@@ -33,7 +33,7 @@ onUnmounted(() => {
 	top: 50%;
 	transform: translate(-50%, -50%);
 	background-color: rgba(0, 0, 0, 0.5);
-	color: var(--Text_a);
+	color: var(--Text-a);
 	padding: 10px;
 	min-width: 202px;
 	border-radius: 8px;

@@ -263,8 +263,8 @@ const onOrderConfirm = () => {
 .shopCart {
 	width: 520px;
 	min-height: 100%;
-	background: var(--Bg1);
-	color: var(--Text_s);
+	background: var(--Bg-1);
+	color: var(--Text-s);
 	box-shadow: 0px -3px 30px 0px rgba(14, 16, 19, 0.4);
 	border-radius: 4px;
 	box-sizing: border-box;
@@ -285,7 +285,7 @@ const onOrderConfirm = () => {
 			gap: 8px;
 
 			.label {
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 500;
@@ -297,7 +297,7 @@ const onOrderConfirm = () => {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background: var(--F1);
+				background: var(--F-1);
 				font-size: 14px;
 				color: #fff;
 				border-radius: 50%;
@@ -330,7 +330,7 @@ const onOrderConfirm = () => {
 				padding: 8px 10px;
 				border-radius: 34px;
 				gap: 10px;
-				background: var(--Bg3);
+				background: var(--Bg-3);
 				color: var(--Theme);
 				cursor: pointer;
 
@@ -341,7 +341,7 @@ const onOrderConfirm = () => {
 					font-style: normal;
 					font-weight: 700;
 					line-height: normal;
-					color: var(--Text_s) !important;
+					color: var(--Text-s) !important;
 				}
 				.refresh_icon {
 					width: 18px;
@@ -383,7 +383,7 @@ const onOrderConfirm = () => {
 			left: 0px;
 			width: 100%;
 			height: 1px;
-			background-color: var(--Line_1);
+			background-color: var(--Line-1);
 			box-shadow: 0px 1px 0px 0px #343d48;
 		}
 	}
@@ -392,13 +392,13 @@ const onOrderConfirm = () => {
 		padding: 18px 0;
 		text-align: center;
 		font-size: 14px;
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 
 	.bottom {
 		padding: 10px 15px 15px;
 		border-radius: 8px;
-		background: var(--Bg4);
+		background: var(--Bg-4);
 		.part1 {
 			.auth {
 				.checkbox {
@@ -411,10 +411,10 @@ const onOrderConfirm = () => {
 					.icon {
 						width: 18px;
 						height: 18px;
-						color: var(--Bg5);
+						color: var(--Bg-5);
 					}
 					.label {
-						color: var(--Text1);
+						color: var(--Text-1);
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 400;
@@ -435,7 +435,7 @@ const onOrderConfirm = () => {
 			.confirming {
 				& > .el-button:last-child {
 					border: 1px solid var(--Theme);
-					background: var(--Bg3);
+					background: var(--Bg-3);
 					color: var(--Theme);
 				}
 			}
@@ -453,7 +453,7 @@ const onOrderConfirm = () => {
 		max-height: 450px;
 		overflow-y: auto;
 		&::-webkit-scrollbar-thumb {
-			background-color: var(--Bg3);
+			background-color: var(--Bg-3);
 			border-radius: 6px;
 		}
 		&::-webkit-scrollbar {

@@ -11,7 +11,7 @@
 	max-width: 1308px;
 	margin: 0 auto;
 	height: 513px; /* Adjust based on your image size */
-	background: var(--Bg3);
+	background: var(--Bg-3);
 	border-radius: 12px;
 	overflow: hidden;
 	position: relative;

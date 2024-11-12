@@ -74,13 +74,13 @@ function handleConfirm() {
 <style scoped lang="scss">
 .container {
 	width: 380px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	border-radius: 12px;
 	overflow: hidden;
 	.header {
 		position: relative;
 		padding: 24px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 20px;
 		font-weight: 500;
@@ -97,7 +97,7 @@ function handleConfirm() {
 			align-items: center;
 			justify-content: center;
 			border-bottom-left-radius: 12px;
-			background-color: var(--Bg2);
+			background-color: var(--Bg-2);
 			cursor: pointer;
 			.icon {
 				width: 30px;
@@ -116,13 +116,13 @@ function handleConfirm() {
 			gap: 10px;
 			padding: 10px 12px;
 			border-radius: 4px;
-			background: var(--Bg2);
+			background: var(--Bg-2);
 			overflow: hidden;
 			input {
 				flex: 1;
 				height: 100%;
-				background: var(--Bg2);
-				color: var(--Text_s);
+				background: var(--Bg-2);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
@@ -142,7 +142,7 @@ function handleConfirm() {
 		margin: 0 auto;
 		border-radius: 4px;
 		background: var(--Theme, #ff284b);
-		color: var(--Text_a);
+		color: var(--Text-a);
 		font-family: "PingFang SC";
 		font-size: 14px;
 		font-weight: 500;

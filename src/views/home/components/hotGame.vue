@@ -8,8 +8,8 @@
 				</span>
 			</div>
 			<div class="more Text1 fs_18 curp" v-if="hotGameList?.length !== 1">
-				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'arrow_left' : 'arrow_left_on'" width="8" height="12" /></span>
-				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'arrow_right' : 'arrow_right_on'" width="8" height="12" /></span>
+				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'common-arrow_left' : 'common-arrow_left_on'" width="8" height="12" /></span>
+				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'common-arrow_right' : 'common-arrow_right_on'" width="8" height="12" /></span>
 			</div>
 		</div>
 		<div class="hotGameList">
@@ -120,7 +120,7 @@ const goToPrevSlide = () => {
 		width: 24px;
 	}
 	.arrow {
-		background-color: var(--butter);
+		background-color: var(--Butter);
 		width: 28px;
 		height: 28px;
 		display: inline-block;

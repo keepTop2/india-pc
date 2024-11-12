@@ -122,8 +122,8 @@ const backgroundImage = computed(() => {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background-color: var(--Bg3);
-				color: var(--Text_a);
+				background-color: var(--Bg-3);
+				color: var(--Text-a);
 				text-align: center;
 				font-family: "PingFang SC";
 				font-size: 14px;
@@ -139,7 +139,7 @@ const backgroundImage = computed(() => {
 			}
 			.date {
 				width: 50px;
-				color: var(--Text_a);
+				color: var(--Text-a);
 				text-align: center;
 				font-family: "PingFang SC";
 				font-size: 12px;
@@ -163,7 +163,7 @@ const backgroundImage = computed(() => {
 				.home-team-name,
 				.away-team-name {
 					max-width: 72px;
-					color: var(--Text_a);
+					color: var(--Text-a);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;

@@ -525,9 +525,9 @@ const clearParams = () => {
 
 .header {
 	padding-bottom: 6px;
-	border-bottom: 1px solid var(--Line_1);
+	border-bottom: 1px solid var(--Line-1);
 	box-shadow: 0px 1px 0px 0px #343d48;
-	color: var(--Text_s);
+	color: var(--Text-s);
 	font-family: "PingFang SC";
 	font-size: 24px;
 	font-weight: 500;
@@ -546,7 +546,7 @@ const clearParams = () => {
 			background: url("../../../assets/zh-CN/wallet/amount_info_bg.png") center center / 100% 100% no-repeat;
 			.label {
 				grid-column: 1 / 2; /* 在左侧 */
-				color: var(--Text_a, #fff);
+				color: var(--Text-a, #fff);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;
@@ -554,7 +554,7 @@ const clearParams = () => {
 
 			.value {
 				grid-column: 1 / 2; /* 在左侧 */
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "DIN Alternate";
 				font-size: 28px;
 				font-weight: 700;
@@ -575,7 +575,7 @@ const clearParams = () => {
 	}
 
 	.title {
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 18px;
 		font-weight: 500;
@@ -592,7 +592,7 @@ const clearParams = () => {
 			height: 87px;
 			padding: 10px;
 			border-radius: 12px;
-			border: 1px solid var(--Line_2);
+			border: 1px solid var(--Line-2);
 			cursor: pointer;
 			box-sizing: border-box;
 			.tag {
@@ -617,7 +617,7 @@ const clearParams = () => {
 			}
 			.label {
 				margin-top: 6px;
-				color: var(--Text1);
+				color: var(--Text-1);
 				text-align: center;
 				font-family: "PingFang SC";
 				font-size: 14px;
@@ -637,12 +637,12 @@ const clearParams = () => {
 		margin-top: 16px;
 		padding: 20px;
 		border-radius: 12px;
-		border: 1px solid var(--Line_2);
+		border: 1px solid var(--Line-2);
 
 		.form_main {
 			width: 100%;
 			min-height: 40px;
-			background-color: var(--Bg1);
+			background-color: var(--Bg-1);
 		}
 
 		.tips {
@@ -654,7 +654,7 @@ const clearParams = () => {
 				height: 17px;
 			}
 			p {
-				color: var(--Text2_1);
+				color: var(--Text-2-1);
 				font-family: "PingFang SC";
 				font-size: 12px;
 				font-style: normal;
@@ -662,7 +662,7 @@ const clearParams = () => {
 				line-height: normal;
 			}
 			span {
-				color: var(--F2);
+				color: var(--F-2);
 				text-decoration-line: underline;
 				cursor: pointer;
 			}
@@ -670,7 +670,7 @@ const clearParams = () => {
 	}
 }
 .error_text {
-	color: var(--F1);
+	color: var(--F-1);
 	font-family: "PingFang SC";
 	font-size: 12px;
 	font-weight: 400;
@@ -682,13 +682,13 @@ const clearParams = () => {
 	justify-content: space-between;
 
 	.label {
-		color: var(--Text2_1);
+		color: var(--Text-2-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
 	}
 	.value {
-		color: var(--F1);
+		color: var(--F-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 600;
@@ -696,12 +696,12 @@ const clearParams = () => {
 }
 
 .tips {
-	color: var(--Text2_1);
+	color: var(--Text-2-1);
 	font-family: "PingFang SC";
 	font-size: 12px;
 	font-weight: 400;
 	.value {
-		color: var(--F1);
+		color: var(--F-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;

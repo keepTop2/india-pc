@@ -35,7 +35,7 @@ const updateActiveTab = (tabName: string) => {
 <style scoped>
 @import url("./bettingRules.scss");
 .title {
-	color: var(--Text_s);
+	color: var(--Text-s);
 	font-size: 20px;
 }
 </style>

@@ -255,19 +255,19 @@ watch(searchQuery, (newValue: string) => {
 		flex-grow: 1;
 		padding: 8px 12px;
 		border: 1px solid #ccc;
-		background-color: var(--Bg2);
+		background-color: var(--Bg-2);
 		height: 30px;
 		padding: 4.5px 40px 4.5px 10px;
 		border: none;
 		border-radius: 4px;
 		font-size: 14px;
 		outline: none;
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 
 	.cancel {
 		margin-left: 10px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		cursor: pointer;
 		font-size: 14px;
 		position: absolute;
@@ -282,7 +282,7 @@ watch(searchQuery, (newValue: string) => {
 		left: 0;
 		width: 100%;
 		height: 410px;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		border-top: none;
 		border-radius: 0 0 4px 4px;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -294,7 +294,7 @@ watch(searchQuery, (newValue: string) => {
 		justify-content: center;
 		align-items: center;
 		p {
-			color: var(--Text2);
+			color: var(--Text-2);
 		}
 		svg {
 			margin-bottom: 10px;
@@ -306,7 +306,7 @@ watch(searchQuery, (newValue: string) => {
 		left: 0;
 		width: 100%;
 		height: 410px;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		border-top: none;
 		border-radius: 0 0 4px 4px;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -326,7 +326,7 @@ watch(searchQuery, (newValue: string) => {
 
 			.result-info {
 				flex-grow: 1;
-				border-bottom: 1px solid var(--Line_2);
+				border-bottom: 1px solid var(--Line-2);
 				padding-bottom: 6px;
 				img {
 					width: 20px;
@@ -335,7 +335,7 @@ watch(searchQuery, (newValue: string) => {
 				.result-title {
 					font-size: 16px;
 					font-weight: bold;
-					color: var(--Text_s);
+					color: var(--Text-s);
 					display: flex;
 					gap: 8px;
 					padding: 9px 0;
@@ -344,7 +344,7 @@ watch(searchQuery, (newValue: string) => {
 
 				.result-subtitle {
 					font-size: 14px;
-					color: var(--Text1);
+					color: var(--Text-1);
 					cursor: pointer;
 				}
 			}
@@ -352,11 +352,11 @@ watch(searchQuery, (newValue: string) => {
 		.search-history-item {
 			height: 40px;
 			line-height: 40px;
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-size: 14px;
 			.history-title {
 				display: flex;
-				border-bottom: 1px solid var(--Line_2);
+				border-bottom: 1px solid var(--Line-2);
 				justify-content: space-between;
 				align-items: center;
 				svg {
@@ -370,7 +370,7 @@ watch(searchQuery, (newValue: string) => {
 		.history-count {
 			display: flex;
 			gap: 10px;
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-size: 16px;
 			padding: 8px 0px;
 			span {

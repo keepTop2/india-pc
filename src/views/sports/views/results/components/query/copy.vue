@@ -7,7 +7,7 @@
 		<div class="condition">
 			<span>{{ $t(`matchResult['体育']`) }}</span>
 			<Select :options="ballOptions" v-model="queryForm.ballType" />
-			
+
 			<span>{{ $t(`matchResult['日期']`) }}</span>
 			<el-dropdown
 				ref="selectRef"
@@ -28,12 +28,7 @@
 					<el-dropdown-menu>
 						<el-dropdown-item :class="{ 'dropdown-item-active': range.start && range.end }" command="">
 							<div class="date">
-								<VDatePicker 
-									class="v-Date" 
-									v-model.range.number="range" 
-									locale="en" 
-									@update:pages="handlePanelChange"
-								>
+								<VDatePicker class="v-Date" v-model.range.number="range" locale="en" @update:pages="handlePanelChange">
 									<template #header-title-wrapper>{{ selectDateYM }}</template>
 									<template #header-prev-button>
 										<SvgIcon style="transform: rotate(90deg)" class="icon" iconName="arrow" :size="18" />
@@ -47,21 +42,16 @@
 					</el-dropdown-menu>
 				</template>
 			</el-dropdown>
-			
+
 			<span>{{ $t(`matchResult['联赛']`) }}</span>
 			<el-input v-model="queryForm.league" :placeholder="$t(`matchResult['请输入关键字搜索']`)" />
-			
+
 			<span>{{ $t(`matchResult['赛事']`) }}</span>
 			<el-input v-model="queryForm.competition" :placeholder="$t(`matchResult['请输入']`)" />
-			
+
 			<el-checkbox v-model="queryForm.isLive">{{ $t(`matchResult['滚球']`) }}</el-checkbox>
 		</div>
-		<el-button 
-			class="query-button" 
-			:icon="loading ? 'loading' : 'search'" 
-			@click="handleSearch" 
-			:disabled="loading"
-		>
+		<el-button class="query-button" :icon="loading ? 'loading' : 'search'" @click="handleSearch" :disabled="loading">
 			<svg-icon class="searchIcon" name="result_search" :size="14" />
 			{{ $t(`matchResult['搜索']`) }}
 		</el-button>
@@ -93,11 +83,15 @@ const range = ref({ start: "", end: "" });
 const startDate = computed(() => formatDate(range.value.start));
 const endDate = computed(() => formatDate(range.value.end));
 
-watch(range, (newRange) => {
-	if (newRange.start && newRange.end) {
-		emits("updateQueryForm", { date: [newRange.start, newRange.end] });
-	}
-}, { deep: true });
+watch(
+	range,
+	(newRange) => {
+		if (newRange.start && newRange.end) {
+			emits("updateQueryForm", { date: [newRange.start, newRange.end] });
+		}
+	},
+	{ deep: true }
+);
 
 const handleSearch = () => emits("search");
 
@@ -128,170 +122,170 @@ const formatDate = (date: number | string) => {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-		width: 240px;
-		height: 44px;
-		background: var(--Bg1);
-		border-radius: 8px;
-		box-sizing: border-box;
-		:deep(.el-dropdown) {
+	width: 240px;
+	height: 44px;
+	background: var(--Bg-1);
+	border-radius: 8px;
+	box-sizing: border-box;
+	:deep(.el-dropdown) {
+		width: 100%;
+		.el-dropdown-content {
 			width: 100%;
-			.el-dropdown-content {
-				width: 100%;
-				height: 100%;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				padding: 12px 20px;
-				cursor: pointer;
-				box-sizing: border-box;
-				color: var(--Text1);
-				font-family: "PingFang SC";
-				font-size: 14px;
-				font-weight: 400;
-			}
-			.popperClass {
-				width: 160px;
-				background-color: var(--Bg1);
-				box-shadow: 0px 0px 8px 0px var(--popoverShadow);
-				border-radius: 8px;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 12px 20px;
+			cursor: pointer;
+			box-sizing: border-box;
+			color: var(--Text-1);
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-weight: 400;
+		}
+		.popperClass {
+			width: 160px;
+			background-color: var(--Bg-1);
+			box-shadow: 0px 0px 8px 0px var(--popoverShadow);
+			border-radius: 8px;
 
-				.el-scrollbar {
+			.el-scrollbar {
+				overflow: unset;
+				.el-scrollbar__wrap {
 					overflow: unset;
-					.el-scrollbar__wrap {
-						overflow: unset;
-						.el-dropdown__list {
-							margin: 0px !important;
-							padding: 8px 12px !important;
+					.el-dropdown__list {
+						margin: 0px !important;
+						padding: 8px 12px !important;
 
-							.el-dropdown-menu {
-								padding: 0px;
-								background-color: transparent;
+						.el-dropdown-menu {
+							padding: 0px;
+							background-color: transparent;
 
-								.dropdown-item-active {
-									background-color: var(--Bg5) !important;
-									color: var(--Text_s) !important;
-									font-family: "PingFang SC";
-									font-size: 14px;
-									font-weight: 500;
-								}
-								.el-dropdown-menu__item {
+							.dropdown-item-active {
+								background-color: var(--Bg-5) !important;
+								color: var(--Text-s) !important;
+								font-family: "PingFang SC";
+								font-size: 14px;
+								font-weight: 500;
+							}
+							.el-dropdown-menu__item {
+								width: 100%;
+								height: 40px;
+								display: flex;
+								align-items: center;
+								justify-content: space-between;
+								padding: 0px 12px;
+								color: var(--Text-1);
+								overflow: unset;
+								white-space: nowrap;
+								text-overflow: ellipsis;
+								font-family: "PingFang SC";
+								font-size: 14px;
+								font-weight: 400;
+								box-sizing: border-box;
+								border-radius: 4px;
+								.date {
+									position: relative;
 									width: 100%;
-									height: 40px;
-									display: flex;
-									align-items: center;
-									justify-content: space-between;
-									padding: 0px 12px;
-									color: var(--Text1);
-									overflow: unset;
-									white-space: nowrap;
-									text-overflow: ellipsis;
-									font-family: "PingFang SC";
-									font-size: 14px;
-									font-weight: 400;
-									box-sizing: border-box;
-									border-radius: 4px;
-									.date {
-										position: relative;
-										width: 100%;
-										.v-Date {
-											position: absolute;
-											top: calc(100% + 24px);
-											right: -24px;
-										}
-										.vc-bordered {
-											width: 268px;
-											border-radius: 8px;
-											border: 1px solid var(--Line);
-											background-color: var(--Bg4);
-											box-shadow: 0px 0px 8px 0px var(--popoverShadow);
+									.v-Date {
+										position: absolute;
+										top: calc(100% + 24px);
+										right: -24px;
+									}
+									.vc-bordered {
+										width: 268px;
+										border-radius: 8px;
+										border: 1px solid var(--Line);
+										background-color: var(--Bg-4);
+										box-shadow: 0px 0px 8px 0px var(--popoverShadow);
 
-											.vc-pane-container {
-												.vc-header {
-													height: 26px;
-													margin: 4px 8px 0px;
-													padding: 0px;
-													grid-gap: 0px;
-													.vc-title-wrapper {
-														color: var(--Text1);
-														font-family: "PingFang SC";
-														font-size: 14px;
-														font-weight: 500;
-														line-height: 22px;
-													}
-													.vc-arrow {
-														width: 22px;
-														height: 22px;
-														background-color: transparent;
-													}
-
-													.vc-focus:focus-within {
-														box-shadow: 0 0 0 2px var(--Bg5);
-													}
+										.vc-pane-container {
+											.vc-header {
+												height: 26px;
+												margin: 4px 8px 0px;
+												padding: 0px;
+												grid-gap: 0px;
+												.vc-title-wrapper {
+													color: var(--Text-1);
+													font-family: "PingFang SC";
+													font-size: 14px;
+													font-weight: 500;
+													line-height: 22px;
+												}
+												.vc-arrow {
+													width: 22px;
+													height: 22px;
+													background-color: transparent;
 												}
 
-												.vc-weeks {
-													.vc-weekdays {
-														color: var(--Text2_1);
-														font-family: "PingFang SC";
-														font-size: 14px;
-														line-height: 22px;
-													}
+												.vc-focus:focus-within {
+													box-shadow: 0 0 0 2px var(--Bg-5);
+												}
+											}
 
-													.vc-day-content {
-														color: var(--Text1);
-														font-family: "PingFang SC";
-														font-size: 14px;
-														font-weight: 500;
-														line-height: 22px;
-													}
+											.vc-weeks {
+												.vc-weekdays {
+													color: var(--Text-2-1);
+													font-family: "PingFang SC";
+													font-size: 14px;
+													line-height: 22px;
+												}
 
-													.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-solid.vc-blue {
-														color: var(--Text_s);
-														background-color: var(--Theme);
-													}
-													.vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light,
-													.vc-highlight.vc-highlight-base-start.vc-highlight-bg-light,
-													.vc-highlight.vc-highlight-base-end.vc-highlight-bg-light,
-													.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-outline.vc-blue {
-														background-color: var(--Bg5);
-														box-shadow: 0px 0px 0px 1px var(--Bg5);
-													}
+												.vc-day-content {
+													color: var(--Text-1);
+													font-family: "PingFang SC";
+													font-size: 14px;
+													font-weight: 500;
+													line-height: 22px;
+												}
 
-													.vc-focus:focus-within {
-														box-shadow: none;
-													}
+												.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-solid.vc-blue {
+													color: var(--Text-s);
+													background-color: var(--Theme);
+												}
+												.vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light,
+												.vc-highlight.vc-highlight-base-start.vc-highlight-bg-light,
+												.vc-highlight.vc-highlight-base-end.vc-highlight-bg-light,
+												.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-outline.vc-blue {
+													background-color: var(--Bg-5);
+													box-shadow: 0px 0px 0px 1px var(--Bg-5);
+												}
 
-													.vc-light .vc-attr {
-														background-color: var(--Bg5);
-													}
+												.vc-focus:focus-within {
+													box-shadow: none;
+												}
+
+												.vc-light .vc-attr {
+													background-color: var(--Bg-5);
 												}
 											}
 										}
 									}
 								}
 							}
+						}
 
-							.el-dropdown-menu__item:focus {
-								background-color: var(--Bg3);
-							}
+						.el-dropdown-menu__item:focus {
+							background-color: var(--Bg-3);
 						}
 					}
 				}
-
-				.el-popper__arrow {
-					display: none;
-				}
 			}
+
+			.el-popper__arrow {
+				display: none;
+			}
+		}
 	}
 	.condition {
 		display: flex;
 		gap: 16px;
 		align-items: center;
-		
+
 		span {
-			color: var(--Text1);
+			color: var(--Text-1);
 		}
-		
+
 		& > * {
 			flex-shrink: 0;
 		}
@@ -301,21 +295,25 @@ const formatDate = (date: number | string) => {
 		width: 78px;
 		height: 32px;
 		background-color: var(--Theme);
-		color: var(--Text_a);
-		
+		color: var(--Text-a);
+
 		&.is-disabled :deep(.el-icon) {
 			animation: rotate 1.5s linear infinite;
 		}
-		
+
 		.searchIcon {
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 	}
 }
 
 @keyframes rotate {
-	from { transform: rotate(0deg); }
-	to { transform: rotate(360deg); }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 :deep {
@@ -323,7 +321,7 @@ const formatDate = (date: number | string) => {
 		width: 163px;
 		height: 30px;
 	}
-	
+
 	.select-date {
 		width: 98px;
 		height: 30px;
@@ -331,30 +329,30 @@ const formatDate = (date: number | string) => {
 
 	.el-input__wrapper {
 		box-shadow: none;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 
 		input {
-			color: var(--Text2_1);
+			color: var(--Text-2-1);
 
 			&::placeholder {
-				color: var(--Text2_1);
+				color: var(--Text-2-1);
 			}
 		}
 	}
 
 	.el-checkbox__inner {
-		background-color: var(--Bg1);
-		border-color: var(--Line_2);
+		background-color: var(--Bg-1);
+		border-color: var(--Line-2);
 	}
 
 	.el-checkbox__label {
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 
 	.el-checkbox__input.is-checked {
 		.el-checkbox__inner {
 			border-color: var(--Theme);
-			
+
 			&::after {
 				border-color: var(--Theme);
 			}

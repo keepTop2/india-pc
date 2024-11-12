@@ -9,8 +9,8 @@
 			</div>
 			<div class="more Text1 fs_18 curp" v-if="gameList?.gameInfoList?.length !== 1">
 				<span @click="gotoVenue(gameList)">更多</span>
-				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'arrow_left' : 'arrow_left_on'" width="8" height="12" /></span>
-				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'arrow_right' : 'arrow_right_on'" width="8" height="12" /></span>
+				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'common-arrow_left' : 'common-arrow_left_on'" width="8" height="12" /></span>
+				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'common-arrow_right' : 'common-arrow_right_on'" width="8" height="12" /></span>
 			</div>
 		</div>
 		<div class="lobbyGameList">
@@ -146,7 +146,7 @@ const goToPrevSlide = () => {
 	}
 	margin-bottom: 12px;
 	.arrow {
-		background-color: var(--butter);
+		background-color: var(--Butter);
 		width: 28px;
 		height: 28px;
 		display: inline-block;
@@ -187,9 +187,9 @@ const goToPrevSlide = () => {
 		.gameInfo {
 			width: 100%;
 			height: 151px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			font-size: 14px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			padding: 6px 12px;
 			line-height: 22px;
 			border-radius: 8px;

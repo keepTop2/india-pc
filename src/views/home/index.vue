@@ -1,7 +1,7 @@
 <template>
 	<div class="home-wrapper">
 		<bannerSkeleton v-if="isLoading" />
-		<banner v-else></banner>
+		<banner :bannerList="bannerList" v-else></banner>
 
 		<!--跑马灯-->
 		<HorseRaceLamp />
@@ -42,6 +42,7 @@ import HorseRaceLamp from "/@/views/home/components/horseRaceLamp.vue";
 import Announcement from "/@/components/Announcement/Announcement.vue";
 import { useActivityStore } from "/@/stores/modules/activity";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
+import { bannerApi } from "/@/api/banner";
 const activityStore = useActivityStore();
 const collectGamesStore = useCollectGamesStore();
 const websocketService: any = activitySocketService.getInstance();
@@ -49,6 +50,7 @@ const showCountdown = ref(false);
 const isLoading = ref(true);
 const lobbyGameList: any = ref([]);
 const hotGameList = ref([]);
+const bannerList: any = ref([]);
 const queryGameInfoDetail = async () => {
 	const params = {
 		label: 1,
@@ -62,6 +64,15 @@ const queryGameInfoDetail = async () => {
 	}
 };
 
+const getBannerList = () => {
+	bannerApi
+		.queryBannerList({
+			gameOneClassId: 0,
+		})
+		.then((res) => {
+			bannerList.value = res.data;
+		});
+};
 const queryLobbyTopGame = async () => {
 	try {
 		const res = await HomeApi.queryLobbyTopGame();
@@ -75,6 +86,7 @@ onMounted(async () => {
 	isLoading.value = true;
 	const startTime = Date.now();
 	await queryGameInfoDetail(), queryLobbyTopGame();
+	getBannerList();
 	// 最少500毫秒loading
 	const elapsedTime = Date.now() - startTime;
 	const delay = Math.max(0, 500 - elapsedTime);

@@ -3,11 +3,11 @@
 		<div class="title fs_24 pl_20 fw_500">
 			<span class="Text2 curp" @click="router.push('/user/feedBack')">意见反馈</span>
 			<span>
-				<svg-icon name="arrow_right" size="16px" class="mr_10 ml_10 Text2"></svg-icon>
+				<svg-icon name="common-arrow_right" size="16px" class="mr_10 ml_10 Text2"></svg-icon>
 			</span>
 			<span class="fs_18 Text2 fw_500 curp" @click="router.push('/user/feedBack/feedbackList')">我的反馈</span>
 			<span>
-				<svg-icon name="arrow_right" size="16px" class="mr_10 ml_10 Text2"></svg-icon>
+				<svg-icon name="common-arrow_right" size="16px" class="mr_10 ml_10 Text2"></svg-icon>
 			</span>
 			<span class="Text_s fs_18">反馈详情</span>
 		</div>
@@ -198,7 +198,7 @@ const onSubmit = () => {
 		height: 74px;
 		display: flex;
 		align-items: center;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		position: relative;
 		border-radius: 12px 12px 0 0;
 	}
@@ -219,7 +219,7 @@ const onSubmit = () => {
 	}
 	.center {
 		border-radius: 0 0 12px 12px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		padding: 0 20px 20px;
 
 		img.icon {
@@ -255,14 +255,14 @@ const onSubmit = () => {
 .textarea {
 	width: 100%;
 	min-height: 220px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 8px;
 	border: none;
 	outline: none;
 	resize: none;
 	padding: 14px;
-	color: var(--Text_s);
-	border: 1px solid var(--Bg3);
+	color: var(--Text-s);
+	border: 1px solid var(--Bg-3);
 }
 .common_btn {
 	width: 384px;
@@ -274,7 +274,7 @@ const onSubmit = () => {
 	height: 1px;
 	width: 100%;
 	margin-top: 6px;
-	background: var(--Line_1);
+	background: var(--Line-1);
 	box-shadow: 0px 1px 0px 0px #343d48;
 }
 .textareaBox {
@@ -286,6 +286,6 @@ const onSubmit = () => {
 	right: 10px;
 	bottom: 10px;
 	font-size: 12px;
-	color: var(--Text2);
+	color: var(--Text-2);
 }
 </style>

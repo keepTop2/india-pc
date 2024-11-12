@@ -131,19 +131,19 @@ const { expandedPanels, onToggleAllStates, toggleDisplay } = useExpandPanels();
 		}
 	}
 	:deep(.isBright) {
-		background-color: var(--Bg3) !important;
+		background-color: var(--Bg-3) !important;
 		&::after {
 			content: "";
 			width: 100%;
 			height: 100%;
 			position: absolute;
-			border: 1px solid var(--Bg5) !important;
+			border: 1px solid var(--Bg-5) !important;
 			border-radius: 4px;
 			left: 0;
 			top: 0;
 		}
 		.label {
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 	}
 	:deep(.league-info) {

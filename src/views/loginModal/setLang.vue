@@ -43,7 +43,7 @@ const filteredResults = computed(() => {
 	.title {
 		text-align: center;
 		font-size: 20px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 	.search-component {
 		display: flex;
@@ -54,12 +54,12 @@ const filteredResults = computed(() => {
 		.search-input {
 			width: 100%;
 			height: 42px;
-			background: var(--Bg2);
+			background: var(--Bg-2);
 			border-radius: 6px;
 			font-size: 14px;
-			border: 1px solid var(--Line_2);
+			border: 1px solid var(--Line-2);
 			padding-left: 54px;
-			color: var(--Text_s);
+			color: var(--Text-s);
 		}
 
 		.search_icon {
@@ -69,7 +69,7 @@ const filteredResults = computed(() => {
 			transform: translateY(-50%);
 			margin-right: 24px;
 			padding-right: 12px;
-			border-right: 1px solid var(--Line_2);
+			border-right: 1px solid var(--Line-2);
 			display: flex;
 			align-items: center;
 		}

@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper2">
 		<div class="flex_space-between Text_s p_24">
-			<svg-icon name="arrow_left" width="13px" height="24px" class="curp" @click="emit('update:modelValue', 0)"></svg-icon>
+			<svg-icon name="common-arrow_left" width="13px" height="24px" class="curp" @click="emit('update:modelValue', 0)"></svg-icon>
 			<span class="fs_18">勋章收藏者</span>
 			<svg-icon name="close" size="30px" class="curp" @click="useModalStore().closeModal()"></svg-icon>
 		</div>
@@ -203,7 +203,7 @@ const openMedalReward = (item: any) => {
 		}
 		.medalRewardList {
 			line-height: 1.6;
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-size: 15px;
 			position: relative;
 		}
@@ -217,7 +217,7 @@ const openMedalReward = (item: any) => {
 			height: 2px;
 			height: 8px;
 			border-radius: 7.385px;
-			background: var(--Bg2);
+			background: var(--Bg-2);
 			margin: 5px 41px 0 16px;
 			.value {
 				height: 100%;
@@ -234,7 +234,7 @@ const openMedalReward = (item: any) => {
 	}
 }
 .line {
-	background: var(--Line_2);
+	background: var(--Line-2);
 	border-radius: 4.8px;
 	height: 1px;
 }

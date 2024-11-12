@@ -5,7 +5,7 @@
 				<img :src="getRankTextIcon(panel?.vipRankCode)" alt="" />
 				<span>{{ title }} {{ panel?.minVipGradeName }} - {{ panel?.maxVipGradeName }}</span>
 			</div>
-			<svg-icon :name="!isOpen ? 'arrow_down' : 'arrow_up'" size="20px" />
+			<svg-icon :name="!isOpen ? 'common-arrow_down' : 'common-arrow_up'" size="20px" />
 		</div>
 		<div v-show="isOpen" class="collapse-content">
 			<div>
@@ -81,7 +81,7 @@ const handleClick = () => {
 	font-weight: bold;
 	height: 46px;
 	font-size: 14px;
-	color: var(--Text_s);
+	color: var(--Text-s);
 	line-height: 46px;
 	border-radius: 12px;
 	background: linear-gradient(90deg, #353a3e 0%, #2c2d2e 100%);
@@ -104,7 +104,7 @@ const handleClick = () => {
 }
 
 .collapse-content {
-	background: var(--Bg3);
+	background: var(--Bg-3);
 	padding: 16px;
 	> div {
 		display: flex;
@@ -113,7 +113,7 @@ const handleClick = () => {
 		height: 46px;
 		line-height: 46px;
 		border-radius: 8px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		> div {
 			flex: 1;
 		}
@@ -126,7 +126,7 @@ const handleClick = () => {
 		}
 	}
 	.cell:nth-child(odd) {
-		background: var(--Bg2);
+		background: var(--Bg-2);
 	}
 }
 </style>

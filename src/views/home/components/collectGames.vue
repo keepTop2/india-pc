@@ -144,9 +144,9 @@ const gotoVenue = (gameInfo: any) => {
 		.gameInfo {
 			height: 52px;
 			width: 190px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			font-size: 14px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			padding: 6px 12px;
 			line-height: 22px;
 			border-bottom-left-radius: 12px;

@@ -34,14 +34,14 @@ const emit = defineEmits(["update:modelValue"]);
 	height: 46px;
 	padding: 13px 10px;
 	border-radius: 4px;
-	background: var(--Bg2);
+	background: var(--Bg-2);
 	box-sizing: border-box;
 	input {
 		flex: 1;
 		font-family: "PingFang SC";
 		padding: 0;
-		color: var(--Text_s);
-		background: var(--Bg2);
+		color: var(--Text-s);
+		background: var(--Bg-2);
 		font-size: 14px;
 		font-weight: 400;
 		border: 0;

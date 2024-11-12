@@ -198,7 +198,7 @@ const initCountown = () => {
 	// 	line-height: 42px;
 	// 	font-size: 20px;
 	// 	font-weight: 600;
-	// 	color: var(--Text_a);
+	// 	color: var(--Text-a);
 	// }
 
 	.sessions {
@@ -221,7 +221,7 @@ const initCountown = () => {
 				display: inline-block;
 				width: 30px;
 				height: 2px;
-				background-color: var(--Line_2);
+				background-color: var(--Line-2);
 				position: absolute;
 				left: calc(50% + 15px);
 				top: 50%;
@@ -234,7 +234,7 @@ const initCountown = () => {
 				color: var(--Theme);
 			}
 			.status1 {
-				color: var(--F1);
+				color: var(--F-1);
 			}
 		}
 	}

@@ -90,7 +90,7 @@ const gotoVenue = () => {};
 	.card-list-item {
 		width: calc((100% - 36px) / 3);
 		height: 100%;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		border-radius: 12px;
 		padding: 16px 12px;
 		header {
@@ -108,7 +108,7 @@ const gotoVenue = () => {};
 			}
 			.name {
 				width: 100%;
-				color: var(--Text1);
+				color: var(--Text-1);
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
@@ -127,7 +127,7 @@ const gotoVenue = () => {};
 			height: 20px;
 			line-height: 20px;
 			margin-top: 8px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			margin-bottom: 24px;
 		}
 		.sport-team-info {
@@ -151,18 +151,18 @@ const gotoVenue = () => {};
 					overflow: hidden;
 					text-overflow: ellipsis;
 					font-size: 20px;
-					color: var(--Text_a);
+					color: var(--Text-a);
 				}
 				.sroce {
 					height: 100%;
 					width: 48px;
 					border-radius: 8px;
-					background-color: var(--Line_2);
+					background-color: var(--Line-2);
 					display: flex;
 					justify-content: center;
 					align-items: center;
 					> span {
-						color: var(--Text_a);
+						color: var(--Text-a);
 						font-family: "DIN Alternate";
 						font-size: 18px;
 						font-weight: 700;
@@ -173,13 +173,13 @@ const gotoVenue = () => {};
 		.line {
 			width: 100%;
 			height: 1px;
-			background-color: var(--Line_1);
+			background-color: var(--Line-1);
 			margin: 14px 0;
 		}
 		footer {
 			text-align: center;
 			margin-top: 20px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-size: 16px;
 		}
 	}
