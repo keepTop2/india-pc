@@ -3,7 +3,7 @@
 		<el-dialog v-model="visible" :show-close="false" width="480">
 			<template #header>
 				公告
-				<svg-icon name="close" size="30px" class="close" @click="visible = false"/>
+				<svg-icon name="close" size="30px" class="close" @click="visible = false" />
 			</template>
 			<div class="announcement">
 				<div class="title">
@@ -36,7 +36,7 @@ const visible = ref(true);
 
 <style scoped lang="scss">
 :deep(.el-dialog) {
-	background: var(--light-ok-Bg-, #1d1f23);
+	background: var(--Bg);
 	padding: 16px;
 	position: relative;
 	border-radius: 12px;
@@ -44,7 +44,7 @@ const visible = ref(true);
 	.el-dialog__header {
 		font-family: PingFang SC;
 		font-size: 20px;
-		color: var(--light-ok-text-s, #ffffff);
+		color: var(Text-s);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -59,7 +59,7 @@ const visible = ref(true);
 	}
 
 	.announcement {
-		background: var(--light-ok-Bg-1-1, #24262b);
+		background: var(--Bg-1);
 		border-radius: 8px;
 
 		.title {
@@ -68,18 +68,18 @@ const visible = ref(true);
 			font-family: PingFang SC;
 			font-size: 16px;
 			line-height: 22.4px;
-			color: var(--light-ok-text-s, #ffffff);
+			color: var(--Text-s);
 		}
 
 		.line {
-			background: var(--light-ok-Line-1-, #111214);
-			box-shadow: 0px 1px 0px 0px var(--lightok-Line-2-);
+			background: var(--Line-1, #111214);
+			box-shadow: 0px 1px 0px 0px var(--Line-2);
 			height: 1px;
 		}
 
 		.content {
 			padding: 12px;
-			color: var(--light-ok-Text-1-1, #98a7b5);
+			color: var(--Text-1, #98a7b5);
 			font-family: PingFang SC;
 			font-size: 14px;
 			font-weight: 400;

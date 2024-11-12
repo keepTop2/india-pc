@@ -70,8 +70,8 @@
 
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_14 flex_start">{{ $t(`login['输入推荐码']`) }} 
-						<svg-icon name="arrow_down_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
-						<svg-icon name="arrow_up_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
+						<svg-icon name="common-common-common-arrow_down_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
+						<svg-icon name="common-common-arrow_up_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
 					</p>
 					<p class="common_password" v-if="openinviteCode"><input type="text" v-model="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" /></p>
 				</div>
@@ -275,7 +275,7 @@ const toLogin = () => {
 			}
 		}
 		.login_text {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-weight: 500;
 			text-align: center;
 		}

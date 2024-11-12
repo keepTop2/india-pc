@@ -16,7 +16,7 @@
 							<div class="tournament-name">{{ i.betTypeName }}</div>
 							<svg-icon
 								:class="{ sport_arrow: activeSelection.includes(i.betTypeName), 'rotate-right': !activeSelection.includes(i.betTypeName) }"
-								name="arrow_down"
+								name="common-arrow_down"
 								width="12px"
 								height="8px"
 							/>
@@ -266,7 +266,7 @@ watch(
 	.header {
 		width: 100%;
 		height: 40px;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		border-radius: 0px 0px 8px 8px;
 		overflow: hidden;
 		.tabs {
@@ -283,16 +283,16 @@ watch(
 				align-items: center;
 				height: 24px;
 				padding: 0px 10px;
-				color: var(--Text1);
+				color: var(--Text-1);
 				text-align: center;
 				font-size: 12px;
 				font-weight: 400;
 				border-radius: 4px;
-				border: 1px solid var(--Line_2);
+				border: 1px solid var(--Line-2);
 			}
 
 			.selected {
-				color: var(--Text_a);
+				color: var(--Text-a);
 				background-color: var(--Theme);
 				border: 1px solid var(--Theme);
 			}
@@ -320,7 +320,7 @@ watch(
 			align-items: center;
 			padding: 0px 12px;
 			border-radius: 4px;
-			background: var(--Bg6);
+			background: var(--Bg-6);
 			box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.1) inset;
 			cursor: pointer;
 			.header-icon {
@@ -336,7 +336,7 @@ watch(
 
 			.tournament-name {
 				flex: 1;
-				color: var(--Text_a);
+				color: var(--Text-a);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;
@@ -355,7 +355,7 @@ watch(
 			gap: 2px;
 			padding: 4px 2px;
 			margin: 0;
-			background-color: var(--Bg1);
+			background-color: var(--Bg-1);
 
 			.threeCol {
 				display: grid;
@@ -388,7 +388,7 @@ watch(
 				width: 100%;
 				height: 34px;
 
-				background-color: var(--Bg3);
+				background-color: var(--Bg-3);
 				border-radius: 4px;
 				cursor: pointer;
 				:deep(.bet-selector) {
@@ -407,14 +407,14 @@ watch(
 					text-align: left;
 
 					.label_one {
-						color: var(--Text1);
+						color: var(--Text-1);
 						overflow: hidden;
 						text-overflow: ellipsis;
 						white-space: nowrap;
 					}
 
 					.label_two {
-						color: var(--Text_s);
+						color: var(--Text-s);
 					}
 				}
 
@@ -422,15 +422,15 @@ watch(
 					display: inline-block;
 					font-size: 14px;
 					font-weight: 500;
-					color: var(--Text_a);
+					color: var(--Text-a);
 					text-align: right;
 				}
 			}
 
 			.isBright {
-				background: var(--Bg5) !important;
+				background: var(--Bg-5) !important;
 				.label_one {
-					color: var(--Text_s) !important;
+					color: var(--Text-s) !important;
 				}
 			}
 		}
@@ -442,7 +442,7 @@ watch(
 		justify-content: center;
 		flex-direction: column;
 		font-size: 14px;
-		color: var(--Text2);
+		color: var(--Text-2);
 		height: calc(100vh - 480px);
 
 		svg {

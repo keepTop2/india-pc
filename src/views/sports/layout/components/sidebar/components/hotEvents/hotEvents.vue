@@ -173,7 +173,7 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 	color: var(--Theme) !important;
 }
 .oddsDown {
-	color: var(--Success) !important;
+	color: var(--success) !important;
 }
 
 .hot-event-container {
@@ -181,7 +181,7 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 	display: flex;
 	flex-direction: column;
 	margin-top: 8px;
-	background-color: var(--Bg4);
+	background-color: var(--Bg-4);
 
 	.hot_header {
 		position: relative;
@@ -191,9 +191,9 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 		align-items: center;
 		padding: 0px 12px;
 		border-radius: 4px;
-		background: var(--Bg6);
+		background: var(--Bg-6);
 		box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.1) inset;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 16px;
 		font-weight: 300;
@@ -216,7 +216,7 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 			// padding: 12px 14px;
 			margin-top: 4px;
 			border-radius: 4px;
-			background-color: var(--Bg2);
+			background-color: var(--Bg-2);
 			.card-header {
 				width: 100%;
 				height: 36px;
@@ -224,11 +224,11 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 				align-items: center;
 				justify-content: space-between;
 				padding: 8px;
-				border-bottom: 1px solid var(--Line_1);
-				box-shadow: 0px 1px 0px 0px var(--Line_2);
+				border-bottom: 1px solid var(--Line-1);
+				box-shadow: 0px 1px 0px 0px var(--Line-2);
 
 				.event-title {
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 300;
@@ -243,7 +243,7 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 					align-items: center;
 					gap: 12px;
 					.event-date {
-						color: var(--Text1);
+						color: var(--Text-1);
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 300;
@@ -283,7 +283,7 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 					}
 					.team-name {
 						width: 150px;
-						color: var(--Text_s);
+						color: var(--Text-s);
 						font-family: "PingFang SC";
 						font-size: 12px;
 						font-weight: 400;
@@ -293,9 +293,9 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 						cursor: pointer;
 					}
 					.isBright {
-						background: var(--Bg5) !important;
+						background: var(--Bg-5) !important;
 						.label_one {
-							color: var(--Text_s) !important;
+							color: var(--Text-s) !important;
 						}
 					}
 					.market-item {
@@ -306,7 +306,7 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 						justify-content: space-between;
 						padding: 0px 18px 0px 12px;
 						border-radius: 4px;
-						background-color: var(--Bg3);
+						background-color: var(--Bg-3);
 						cursor: pointer;
 						.label {
 							width: 50%;
@@ -317,11 +317,11 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 								font-size: 12px;
 								font-weight: 400;
 								&:first-child {
-									color: var(--Text1);
+									color: var(--Text-1);
 								}
 								&:last-child {
 									margin-left: 4px;
-									color: var(--Text_s);
+									color: var(--Text-s);
 								}
 							}
 						}
@@ -332,7 +332,7 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 							display: flex;
 							align-items: center;
 							justify-content: end;
-							color: var(--Text_s);
+							color: var(--Text-s);
 							font-family: "PingFang SC";
 							font-size: 14px;
 							font-weight: 400;

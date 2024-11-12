@@ -76,8 +76,8 @@ const props = withDefaults(
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background-color: var(--Bg3);
-				color: var(--Text_a);
+				background-color: var(--Bg-3);
+				color: var(--Text-a);
 				text-align: center;
 				font-family: "PingFang SC";
 				font-size: 14px;
@@ -96,7 +96,7 @@ const props = withDefaults(
 					left: 50%;
 					bottom: 8px;
 					transform: translate(-50%, 0);
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-family: "PingFang SC";
 					font-size: 12px;
 					font-weight: 400;
@@ -108,7 +108,7 @@ const props = withDefaults(
 				align-items: center;
 				justify-content: center;
 				gap: 10px;
-				color: var(--Text_s);
+				color: var(--Text-s);
 				text-align: center;
 				font-family: "PingFang SC";
 				font-size: 24px;
@@ -136,7 +136,7 @@ const props = withDefaults(
 				.home-team-name,
 				.away-team-name {
 					flex: 1;
-					color: var(--Text_a);
+					color: var(--Text-a);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;

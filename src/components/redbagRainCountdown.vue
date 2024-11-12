@@ -187,7 +187,7 @@ onBeforeUnmount(() => {
 			bottom: 5px;
 			left: 50%;
 			transform: translateX(-50%);
-			color: var(--Text_a);
+			color: var(--Text-a);
 			text-align: center;
 		}
 		.close {

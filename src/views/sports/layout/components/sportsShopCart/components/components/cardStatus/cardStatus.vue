@@ -41,7 +41,7 @@ const props = withDefaults(
 		}
 
 		.success {
-			color: var(--Success);
+			color: var(--success);
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-weight: 500;
@@ -49,7 +49,7 @@ const props = withDefaults(
 		}
 
 		.fail {
-			color: var(--Warn);
+			color: var(--F-1);
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-weight: 500;

@@ -30,7 +30,7 @@ const props = withDefaults(
 	border: 0;
 	border-radius: 4px;
 	background: var(--Theme);
-	color: var(--Text_a);
+	color: var(--Text-a);
 	text-align: center;
 	font-family: "PingFang SC";
 	font-size: 14px;
@@ -53,8 +53,7 @@ const props = withDefaults(
 	padding: 0px 10px;
 	border: 0;
 	border-radius: 4px;
-	// background: var(--icon);
-	color: var(--Text_a);
+	color: var(--Text-a);
 	text-align: center;
 	font-family: "PingFang SC";
 	font-size: 14px;

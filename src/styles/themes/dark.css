@@ -1,32 +1,32 @@
 :root {
-	--Line_1: #111214;
-	--Line_2: #373a40;
-	--Icon_1: #67707b;
-	--Icon_2: #ffffff;
-	--Icon_3: #666869;
-	--button: #2d2e32;
+	--Line-1: #111214;
+	--Line-2: #373a40;
+	--Icon-1: #67707b;
+	--Icon-2: #ffffff;
+	--Icon-3: #666869;
+	--Button: #2d2e32;
+	--Butter: #2d2e32;
 	--icon: #9fa5ac;
 	--Bg: #1d1f23;
-	--Bg1: rgb(36, 38, 43);
-	--Bg2: #1a1c20;
-	--Bg3: #2e3035;
-	--Bg4: #212328;
-	--Bg5: #ff284b;
-	--Bg6: linear-gradient(180deg, #2e3036 0%, #2c2e34 100%);
-	--Text1: #98a7b5;
-	--Text2: #4d565e;
-	--Text3: #252c30;
-	--Text2_1: #656e78;
-	--Text2_2: #4d565e;
-	--Text_s: #ffffff;
-	--Text_a: #ffffff;
+	--Bg-1: #24262b;
+	--Bg-2: #1a1c20;
+	--Bg-3: #2e3035;
+	--Bg-4: #212328;
+	--Bg-5: #ff284b;
+	--Bg-5: #ff284b;
+	--Bg-6: linear-gradient(180deg, #2e3036 0%, #2c2e34 100%);
+
+	--success: #3bc116;
+	--Text-1: #98a7b5;
+	--Text-2: #4d565e;
+	--Text-2-1: #656e78;
+	--Text-3: #252c30;
+	--Text-s: #ffffff;
+	--Text-a: #ffffff;
 	--Theme: #ff284b;
-	--F1: #ffa800;
-	--F2: #01aff6;
-	--Warn: #ff0000;
-	--Favorites: #ff284b;
-	--Success: #3bc116;
-	--butter: #2d2e32;
+	--F-1: #ffa800;
+	--F-2: #01aff6;
+
 	--popoverShadow: rgba(14, 16, 19, 0.2);
 	/* 体育计分板背景 */
 	--scoreboard_bg: rgba(26, 28, 32, 0.7);
@@ -38,4 +38,7 @@
 	--betselector-hover-bg: rgba(255, 40, 75, 0.15);
 	/* 体育搜索 */
 	--lineBg: #343d48;
+
+	/* 侧边栏背景 */
+	--sideBar_bg: linear-gradient(352.19deg, #24262b 80.86%, #df2745 293.82%);
 }

@@ -3,11 +3,9 @@ import { LangType } from "/@/models/commonInterface";
 // import app from '/@/main';
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import miandian from "./lang/element/miandian";
-
 export function loadLang() {
 	const modules: Record<string, any> = import.meta.glob("./lang/*.ts", { eager: true });
 	const langs: Record<string, any> = {};
-
 	for (const path in modules) {
 		const name = path.replace(/(\.\/lang\/|\.ts)/g, "");
 		langs[name] = modules[path].lang;

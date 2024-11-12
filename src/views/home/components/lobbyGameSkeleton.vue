@@ -38,7 +38,7 @@ const props = defineProps({
 
 		.skeleton-header-left,
 		.skeleton-header-right {
-			background: var(--Bg3);
+			background: var(--Bg-3);
 			border-radius: 4px;
 			position: relative;
 			overflow: hidden;
@@ -79,7 +79,7 @@ const props = defineProps({
 
 			.skeleton-image,
 			.skeleton-info {
-				background: var(--Bg3);
+				background: var(--Bg-3);
 				position: relative; /* Ensure the shimmer effect is positioned correctly */
 				overflow: hidden;
 			}
@@ -93,7 +93,7 @@ const props = defineProps({
 			.skeleton-info {
 				width: 100%;
 				height: 52px;
-				background: var(--Bg1);
+				background: var(--Bg-1);
 				border-radius: 0 0 12px 12px;
 			}
 

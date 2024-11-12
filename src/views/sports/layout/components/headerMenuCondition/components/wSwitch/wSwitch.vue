@@ -53,7 +53,7 @@ const handleSwitch = (key: string) => {
 	justify-content: space-between;
 	gap: 3px;
 	padding: 3px;
-	background: var(--Bg2);
+	background: var(--Bg-2);
 
 	.tab {
 		min-width: 66px;
@@ -62,8 +62,8 @@ const handleSwitch = (key: string) => {
 		align-items: center;
 		justify-content: center;
 		border-radius: 3px;
-		background: var(--butter);
-		color: var(--Text1);
+		background: var(--Butter);
+		color: var(--Text-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
@@ -77,7 +77,7 @@ const handleSwitch = (key: string) => {
 
 	.tab_active {
 		background: var(--Theme);
-		color: var(--Text_a);
+		color: var(--Text-a);
 	}
 	.disabled {
 		cursor: not-allowed;

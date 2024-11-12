@@ -52,7 +52,7 @@ const seconds = computed(() => String(props.modelValue % 60).padStart(2, "0"));
 	align-items: center;
 	border-radius: 20px;
 	span {
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 }
 .card {
@@ -68,7 +68,7 @@ const seconds = computed(() => String(props.modelValue % 60).padStart(2, "0"));
 	flex-direction: column;
 	font-family: "MyFont", sans-serif;
 	border-radius: 10px;
-	color: var(--Text2);
+	color: var(--Text-2);
 	p {
 		font-size: 12px;
 		margin: 0;

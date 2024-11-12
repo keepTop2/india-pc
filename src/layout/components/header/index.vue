@@ -2,7 +2,7 @@
 	<header class="header" :class="collapse ? 'collapse' : ''">
 		<div class="max-width center">
 			<div class="login_plan">
-				<svg-icon name="logo" width="132px" height="16px" v-if="collapse" class="curp" @click="router.push('/')" />
+				<svg-icon name="common-logo" width="132px" height="16px" v-if="collapse" class="curp" @click="router.push('/')" />
 			</div>
 			<div class="flex-center" v-if="isLogin">
 				<div class="balance_box flex-center">
@@ -12,8 +12,8 @@
 					</div>
 					<div class="recharge" @click="openWalletDialog">{{ $t(`common['充值']`) }}</div>
 				</div>
-				<div class="flex-center message" @click="openMessageCenter" v-hover-svg>
-					<svg-icon name="message" size="32px" />
+				<div class="flex-center message" @click="openMessageCenter">
+					<svg-icon name="message" size="32px" v-hover-svg />
 					<span class="notice"></span>
 				</div>
 				<div class="lang user">
@@ -201,9 +201,9 @@ const logOut = () => {
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	box-shadow: 0px 4px 12px 0px rgba(14, 16, 19, 0.25);
-	color: var(--Text1);
+	color: var(--Text-1);
 	z-index: 100;
 	padding-left: 260px;
 	transition: all 0.2s ease;
@@ -227,7 +227,7 @@ const logOut = () => {
 		align-items: center;
 
 		.balance_box {
-			background: var(--Bg2);
+			background: var(--Bg-2);
 			height: 44px;
 			padding: 3px;
 			gap: 0;
@@ -240,7 +240,7 @@ const logOut = () => {
 				text-align: center;
 				line-height: 38px;
 				background: linear-gradient(180deg, rgba(255, 40, 75, 0.1) 0%, rgba(255, 40, 75, 0.8) 100%);
-				color: var(--Text_a);
+				color: var(--Text-a);
 			}
 
 			.balance {
@@ -275,7 +275,7 @@ const logOut = () => {
 				overflow-y: auto;
 				overflow-x: hidden;
 				transform: translateY(25px);
-				background: var(--Bg1);
+				background: var(--Bg-1);
 				border-radius: 4px;
 				z-index: 150;
 				box-shadow: 0px 4px 12px 0px rgba(14, 16, 19, 0.25);
@@ -291,13 +291,13 @@ const logOut = () => {
 				}
 
 				.login_out {
-					border-top: 1px solid var(--Line_2);
+					border-top: 1px solid var(--Line-2);
 					height: 58px;
 				}
 
 				> div:hover {
-					background: var(--Bg2);
-					color: var(--Text_s);
+					background: var(--Bg-2);
+					color: var(--Text-s);
 				}
 			}
 
@@ -317,11 +317,11 @@ const logOut = () => {
 		}
 
 		.loginBtn {
-			background: var(--butter);
+			background: var(--Butter);
 		}
 
 		.registerBtn {
-			color: var(--Text_a);
+			color: var(--Text-a);
 			background: linear-gradient(180deg, rgba(255, 40, 75, 0.1) 0%, rgba(255, 40, 75, 0.8) 100%);
 		}
 

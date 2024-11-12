@@ -6,7 +6,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: var(--Bg4);
+	background-color: var(--Bg-4);
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -14,7 +14,7 @@
 	.ball {
 		font-size: 16px;
 		font-weight: 600;
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 	&.actived {
 		.ball {
@@ -32,12 +32,12 @@
 
 .select-ball-group {
 	.warn {
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-size: 14px;
 		margin-bottom: 8px;
 	}
 	.control {
-		color: var(--Text2_1);
+		color: var(--Text-2-1);
 		font-size: 14px;
 		display: flex;
 		justify-content: space-between;

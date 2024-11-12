@@ -218,7 +218,7 @@ const { Search, openSearch, closeSearch } = useSearch();
 	display: flex;
 	align-items: center;
 	border-radius: 8px 8px 0 0;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	.left {
 		flex: 1;
 		height: 100%;
@@ -245,7 +245,7 @@ const { Search, openSearch, closeSearch } = useSearch();
 				align-items: center;
 				padding: 4px 10px;
 				border-radius: 4px;
-				background-color: var(--Bg2);
+				background-color: var(--Bg-2);
 				cursor: pointer;
 				.icon {
 					width: 14px;
@@ -257,12 +257,12 @@ const { Search, openSearch, closeSearch } = useSearch();
 					flex: 1;
 					background-color: transparent;
 					border: 0px;
-					color: var(--Text_a);
+					color: var(--Text-a);
 					font-family: "PingFang SC";
 					font-size: 12px;
 					font-weight: 400;
 					&::placeholder {
-						color: var(--Text1);
+						color: var(--Text-1);
 						font-family: "PingFang SC";
 						font-size: 12px;
 						font-weight: 400;
