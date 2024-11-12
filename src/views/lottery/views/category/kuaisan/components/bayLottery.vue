@@ -159,7 +159,10 @@ const verify = (stake: number) => {
 	}
 
 	// 3. 校验是否小于 minLimit
-	const { maxLimit = 0, minLimit = 0 } = currentOddsListItem.value;
+	const { maxLimit = 0, minLimit = 0 } = currentLotteryItem.value;
+	console.log("currentLotteryItem", currentLotteryItem.value);
+	console.log("minLimit", minLimit);
+	console.log("maxLimit", maxLimit);
 	if (stake < minLimit) {
 		return { message: `投注金额不能小于${minLimit}`, isPassed: false };
 	}

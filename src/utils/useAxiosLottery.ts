@@ -56,8 +56,7 @@ instance.interceptors.response.use(
 		return response.data;
 	},
 	(error) => {
-		// console.log("请求失败", error);
-		//判断当前请求是否设置了不显示 Loading（不显示自然无需隐藏）
+		stopLoading();
 		return Promise.reject(error);
 	}
 );
