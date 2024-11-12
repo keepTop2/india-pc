@@ -10,6 +10,8 @@
 			<!-- 热门推荐 -->
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
 			<hotGame :hotGameList="hotGameList" v-else-if="hotGameList.length" />
+			<!-- 我们的游戏 -->
+			<SportGame />
 			<!-- 收藏的游戏 -->
 			<collectGames :gameList="collectGamesStore.getCollectGamesList" title="喜欢的游戏" v-if="collectGamesStore.getCollectGamesList?.length" />
 			<div v-if="isLoading">
@@ -42,6 +44,7 @@ import HorseRaceLamp from "/@/views/home/components/horseRaceLamp.vue";
 import Announcement from "/@/components/Announcement/Announcement.vue";
 import { useActivityStore } from "/@/stores/modules/activity";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
+import SportGame from "./components/SportGame.vue";
 const activityStore = useActivityStore();
 const collectGamesStore = useCollectGamesStore();
 const websocketService: any = activitySocketService.getInstance();

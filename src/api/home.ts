@@ -43,4 +43,12 @@ export const HomeApi = {
 			headers,
 		});
 	},
+	// 获取体育推荐赛事
+	querySportEventsRecommend: (data = {}, headers = {}) => {
+		return useAxiosApi(`/app/game_lobby/api/querySportEventsRecommend`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };
