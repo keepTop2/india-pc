@@ -1,9 +1,11 @@
 import axios from "axios";
+import showToast from "../hooks/useToast";
+import { useLoading } from "/@/directive/loading/hooks";
 
-/**s128 服务地址 */
-// https://kss.cfb2.net (沙盒)
-// https://css.digmaan.biz(实时)
-// https://css.sabongderby.com (实时)
+const { startLoading, stopLoading } = useLoading();
+
+export const SUCCESS_STATUS = 200; // http 状态码
+export const SUCCESS_CODE = 0; // 业务状态码
 
 // 获取 config 配置请求 api
 function getUrl() {
@@ -27,6 +29,9 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
 	(config) => {
+		if (config.headers.showLoading !== "false") {
+			startLoading();
+		}
 		return config;
 	},
 	(error) => {
@@ -38,11 +43,27 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
 	(response) => {
-		return response.data;
+		console.log("response", response);
+		const { status, data } = response;
+		const { code } = data;
+
+		if (status !== SUCCESS_STATUS) {
+			showToast(String(status));
+		}
+
+		if (code !== SUCCESS_CODE) {
+			showToast(String(status));
+		}
+
+		if (response.config.headers.showLoading !== false) {
+			stopLoading();
+		}
+
+		return data;
 	},
 	(error) => {
-		// console.log("请求失败", error);
-		//判断当前请求是否设置了不显示 Loading（不显示自然无需隐藏）
+		stopLoading();
+		showToast(error.message);
 		return Promise.reject(error);
 	}
 );

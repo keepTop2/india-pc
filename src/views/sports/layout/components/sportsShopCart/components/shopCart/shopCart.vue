@@ -101,6 +101,9 @@ onMounted(() => {
 watch(
 	() => sportsBetEvent.sportsBetEventData.length,
 	(newValue, oldValue) => {
+		if (newValue === 0 && oldValue) {
+			ShopCatControlStore.setShopCatShow(false);
+		}
 		// 长度变化则监听
 		if (newValue === 1 && !oldValue) {
 			// 首次有赛事加入开启弹窗

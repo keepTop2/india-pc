@@ -54,7 +54,7 @@ import SportsApi from "/@/api/sports/sports";
 import { HeaderMenuNav, HeaderMenuCondition, SportsShopCart, Sidebar } from "./components";
 import { useSportEvents } from "/@/views/sports/hooks/useSportEvents";
 import userBanner from "./components/banner";
-
+import workerManage from "/@/webWorker/workerManage";
 const SportAttentionStore = useSportAttentionStore();
 // 路由实例
 const route = useRoute();
@@ -87,7 +87,6 @@ watch(
 		}
 	}
 );
-
 // 生命周期钩子函数
 onBeforeMount(() => {
 	// 订阅遮罩层显示事件
@@ -152,6 +151,8 @@ const unSport = () => {
 	sportsBetEvent.clearHotLeagueList();
 	// 发布清除热门联赛列表的事件，通知其他组件进行相关处理
 	pubSub.publish("clearHotLeagueList", "on");
+	clearState();
+	workerManage.stopWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
 };
 
 const hideSlider = ref(false);

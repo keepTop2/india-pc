@@ -1,9 +1,11 @@
-import { ref, reactive, defineComponent, onMounted, onBeforeUnmount, toRefs, watch, computed } from "vue";
-import SvgIcon from "/@/components/svgIcon/index.vue";
 import "./index.scss";
 
+import { defineComponent, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
+
+import SvgIcon from "/@/components/svgIcon/index.vue";
+
 // 定义定时器组件
-export default (props: any) => {
+export default (props?: any) => {
 	const state = reactive({
 		time: props?.value?.seconds || 0, // 当前剩余时间（秒）
 		hours: 0, // 小时
@@ -81,6 +83,7 @@ export default (props: any) => {
 		props: {
 			height: { default: "100%", type: String }, // 设置定时器的高度
 			class: { type: String, default: "" }, // 可自定义的 class 样式
+			data: { type: Object, default: () => ({}) },
 		},
 		setup(_props) {
 			// 组件挂载时初始化显示，并根据 immediate 设置是否立即启动定时器
@@ -125,6 +128,7 @@ export default (props: any) => {
 	const ClockTime = defineComponent({
 		props: {
 			size: { type: String, default: "12px" }, // 设置图标的大小
+			data: { type: Object, default: () => ({}) },
 		},
 		name: "ClockTime",
 		setup(props) {
@@ -142,12 +146,15 @@ export default (props: any) => {
 	// 定义 TimeGroup 组件，包含日期标签和状态
 	const TimeGroup = defineComponent({
 		name: "TimeGroup",
-		setup(_, { attrs }) {
+		props: {
+			data: { type: Object, default: () => ({}) },
+		},
+		setup(props, { attrs }) {
 			return () => (
 				<div className="lottery-time-group">
 					<div>
 						<div className="date-tag">
-							<span>{attrs.issueNum}</span>
+							<span>{props.data.issueNum}</span>
 							{/* 显示日期标签 */}
 							<SvgIcon name="sports-date_tag" width="119px" height="36px" />
 						</div>
@@ -157,7 +164,7 @@ export default (props: any) => {
 					</div>
 
 					{/* 显示 ClockTime 组件 */}
-					<ClockTime size="26px" />
+					<ClockTime size="26px" data={props.data} />
 				</div>
 			);
 		},

@@ -1,17 +1,6 @@
 import { type LotteryList } from "/@/views/lottery/types/index";
 // 投注项
 
-// queryGameList 接口的入参
-export const beginPageDataParams = {
-	gameCode: "5FK3",
-	gameCategoryCodes: "K3",
-};
-
-// queryGamePlayOddsList 接口的入参
-export const queryGamePlayOddsListParams = {
-	gameCode: "5FK3",
-};
-
 export const lotteryList: LotteryList = [
 	{
 		id: "1",

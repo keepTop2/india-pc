@@ -1,66 +1,38 @@
 <template>
-	<Containers :data="mockData" class="lottery-shishicai">
+	<Containers :data="renderLotteryDetail" class="lottery-shishicai">
 		<!-- 标签栏 -->
 		<div class="tabs">
 			<!-- 循环渲染每个标签，基于当前选中的标签动态添加类名 -->
-			<div :class="['tabs-item', tabsActived === item.value ? 'actived' : '']" @click="handleTabChange(item.value)" v-for="item in tabs" :key="item.value">
+			<div :class="['tabs-item', tabsActived === index ? 'actived' : '']" @click="handleTabChange(index)" v-for="(item, index) in tabs" :key="item.id">
 				{{ item.label }}
 			</div>
 		</div>
 
 		<!-- 内容部分 -->
-		<component :is="tabComponents.get(tabsActived)" :lottery-detail="lotteryDetail" />
+		<component :is="renderComponent" :lottery-detail="lotteryDetail" />
 	</Containers>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from "vue";
-import { beginPageDataParams } from "./components/playsConfig";
-import { lotteryApi } from "/@/api/lottery";
+import { computed, defineAsyncComponent } from "vue";
+import iconPc from "./images/iconPc.png";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
-import { useUpdateThirdPartyTokenTimer } from "/@/views/lottery/hooks/useFetchThirdPartyTimer";
+import { usePageInit } from "/@/views/lottery/hooks/usePageInit";
 import { useTab } from "/@/views/lottery/hooks/useTab";
-import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
-
 const BayLottery = defineAsyncComponent(() => import("./components/bayLottery.vue"));
 const Result = defineAsyncComponent(() => import("./components/result.vue"));
 
-const tabComponents = new Map([
-	[1, BayLottery],
-	[2, Result],
-]);
-
-// 模拟数据，用于显示在页面头部
-const mockData = {
-	icon: "https://ctopalistat3.zengchenglm.com/pc/images/db_DB5FC2cea4e2f859029cdbda33fffda6ea1f2.png",
-	title: "快三",
-	desc: "五分钟一期",
-	seconds: 100,
-	betStatusName: "投注中",
-	issuesNo: "20230812-084",
-	recentlyAwarded: 5403.23,
-};
-
 // 标签栏的配置数据
-const { tabs, tabsActived, handleTabChange } = useTab();
+const { tabs, tabsActived, handleTabChange } = useTab(BayLottery, Result);
+const { lotteryDetail } = usePageInit(); // 这个 hook 是重点。主要就是 onMounted onBeforeUnmount watch 里面需要做的事情
 
-const lotteryDetail = ref({}); // 单个彩种的详情，如名字、多少分钟一期
-const { loginGame } = useLoginGame();
-const { turnOnTimer, turnOffTimer } = useUpdateThirdPartyTokenTimer(loginGame);
-
-onMounted(async () => {
-	// 登录第三方拿 token
-	loginGame();
-
-	// 定时去刷新第三方返回的 token
-	turnOnTimer();
-
-	// 获取 单个彩种的详情
-	const res = await lotteryApi.beginPageData(beginPageDataParams);
-	lotteryDetail.value = (res.data || []).shift(); // 有时候会有两条数据，始终取下标为 0 的那一条数据
+// 这里其实就是在 lotteryDetail 的基础上加了个彩种的图片。因为涉及单个业务彩种，因此不在 hook 里面处理
+const renderLotteryDetail = computed(() => {
+	return { ...lotteryDetail.value, iconPc };
 });
 
-onBeforeUnmount(turnOffTimer);
+const renderComponent = computed(() => {
+	const item = tabs[tabsActived.value || 0];
+	return item.component;
+});
 </script>
-
-<style lang="scss" scoped></style>

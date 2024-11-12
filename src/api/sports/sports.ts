@@ -1,13 +1,15 @@
+import qs from "qs";
 import useAxiosApi from "/@/utils/useAxiosApi";
 import useAxiosSabaApi from "/@/utils/useAxiosSabaApi";
-import qs from "qs";
+import { useUserStore } from "/@/stores/modules/user";
 
 class SportsApi {
 	/**
 	 * @description 体育登录
 	 */
 	static sportsLogin = (data = {}, headers = { showLoading: false }) => {
-		return useAxiosApi(`/app/third/api/loginGame`, {
+		const UserStore = useUserStore();
+		return useAxiosApi(`${UserStore.getLogin ? "/app/third/api/loginGame" : "/app/anon/api/sbaAnonLogin"}`, {
 			headers,
 			method: "POST",
 			data,
@@ -241,6 +243,7 @@ class SportsApi {
 		return useAxiosApi(`/app/user-info/api/getIndexInfo`, {
 			method: "POST",
 			data,
+			headers,
 		});
 	};
 

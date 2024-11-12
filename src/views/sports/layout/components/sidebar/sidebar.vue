@@ -8,7 +8,7 @@
 					<Tv />
 				</div>
 				<div class="center">
-					<Scoreboard />
+					<Scoreboard isCurrent />
 					<Live />
 				</div>
 				<div class="right">
