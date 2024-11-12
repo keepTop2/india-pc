@@ -8,6 +8,8 @@ export interface OddsListItem {
 	optionCode: string;
 	gameCode?: string;
 	gamePlayCode?: string;
+	minLimit?: number;
+	maxLimit?: number;
 }
 export type OddsList = OddsListItem[];
 

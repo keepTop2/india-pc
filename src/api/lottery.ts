@@ -33,7 +33,7 @@ export const lotteryApi = {
 		return useAxiosLottery(`/openApi/v2/Bet/betting`, {
 			method: "POST",
 			data,
-			headers: { showLoading: true },
+			headers: { showLoading: true, needLogin: true },
 		});
 	},
 };

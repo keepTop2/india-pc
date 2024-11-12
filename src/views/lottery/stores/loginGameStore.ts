@@ -26,6 +26,8 @@ const useLoginGameStore = defineStore("LoginGameStore", () => {
 		const SEPARATOR = "=";
 		return source.split(SEPARATOR).pop();
 	});
+
+	const isThirdPartyLoggedin = computed(() => Boolean(satoken));
 	/**
 	 * @description 这个函数是每个彩种进入时登录第三方拿 token 的
 	 * @param
@@ -46,7 +48,7 @@ const useLoginGameStore = defineStore("LoginGameStore", () => {
 		merchantInfo.value = res.data || {};
 	};
 
-	return { satoken, merchantInfo, loginGame };
+	return { satoken, isThirdPartyLoggedin, merchantInfo, loginGame };
 });
 
 /**
@@ -54,8 +56,8 @@ const useLoginGameStore = defineStore("LoginGameStore", () => {
  */
 export function useLoginGame() {
 	const loginGameStore = useLoginGameStore();
-	const { satoken, merchantInfo } = storeToRefs(loginGameStore);
+	const { satoken, isThirdPartyLoggedin, merchantInfo } = storeToRefs(loginGameStore);
 	const { loginGame } = loginGameStore;
-	return { satoken, merchantInfo, loginGame };
+	return { satoken, isThirdPartyLoggedin, merchantInfo, loginGame };
 	// 建议不要使用 ...storeToRefs 这样返回出去，可读性不强
 }

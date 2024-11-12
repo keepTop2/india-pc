@@ -72,6 +72,7 @@ import { isSmp, lotteryList } from "./playsConfig";
 import { mergeLotteryList } from "/@//views/lottery/utils/index";
 import { lotteryApi } from "/@/api/lottery";
 import showToast from "/@/hooks/useToast";
+import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
@@ -91,7 +92,7 @@ const { Accordion, AccordionItem } = useAccordion();
 const { Ball, SelectBallGroup } = useBall();
 const { BetForm } = useBetForm();
 const route = useRoute();
-const { satoken, merchantInfo } = useLoginGame();
+const { satoken, isThirdPartyLoggedin, merchantInfo } = useLoginGame();
 useWebSocket();
 // 合并后的玩法列表
 const mergedLotteryList = ref<MergedLotteryList>([]);
@@ -101,9 +102,10 @@ const balls = ref([]);
 const formActived = ref(false);
 const currentLotteryItem = ref(); // 当前选中的大菜单
 const currentOddsListItem = ref({} as OddsListItem); // 当前选中高亮的项
-const UserStore = useUserStore();
-const language = UserStore.getLang;
+const userStore = useUserStore();
+const language = userStore.getLang;
 const lang = (langMaps as any)[language] || DEFAULT_LANG;
+const modalStore = useModalStore();
 
 /**
  * @description 手风琴展开玩法项的处理方法
@@ -142,22 +144,50 @@ const clearAccordionStatus = (status: boolean, index: number) => {
 // 提交表单的处理方法
 const betFormRef = ref();
 
-const shouldLetPass = () => {};
+const verify = (stake: number) => {
+	console.log("stake", stake);
+	const { getUserInfo = {} } = userStore;
+	const { token = "", totalBalance = 0 } = getUserInfo;
+	// 1. 校验是否登录 token 和 satoken
+	if (![token, isThirdPartyLoggedin.value].every(Boolean)) {
+		modalStore.openModal("LoginModal"); // 弹出登录框
+		return { message: "", isPassed: false };
+	}
+
+	// 2. 校验余额是否足够
+	console.log("totalBalance", totalBalance);
+	if (stake > totalBalance) {
+		return { message: "余额不足", isPassed: false };
+	}
+
+	// 3. 校验是否小于 minLimit
+	const { maxLimit = 0, minLimit = 0 } = currentOddsListItem.value;
+	if (stake < minLimit) {
+		return { message: `投注金额不能小于${minLimit}`, isPassed: false };
+	}
+
+	// 4. 校验是否大于 maxLimit
+	if (stake > maxLimit) {
+		return { message: `投注金额不能大于${maxLimit}`, isPassed: false };
+	}
+
+	return { message: "", isPassed: true };
+};
 
 /**
  * @description 发送请求下注
  * @param
  */
 const handleSubmit = async ({ stake: betMoney }: { stake: string }) => {
-	console.log("currentOddsListItem", currentLotteryItem.value);
+	// 1. 发送请求之前的校验
+	const { message, isPassed } = verify(+betMoney);
+	if (!isPassed) {
+		message && showToast(message);
+		return;
+	}
 
-	// 1. 校验是否登录 token 和 satoken
-
-	// 2. 校验余额是否足够
-
-	// 3. 校验是否超过了投注限额
-
-	// 3.1 准备一下入参
+	// 2. 下注
+	// 2.1 准备一下入参
 	const { gameCode, gamePlayCode, optionCode: nums } = currentOddsListItem.value;
 	const { issueNum: issueNo } = props.lotteryDetail;
 	const { merchantNo: operatorId, userAccount: operatorAccount } = merchantInfo.value;
@@ -171,7 +201,7 @@ const handleSubmit = async ({ stake: betMoney }: { stake: string }) => {
 	};
 	console.log("submitData", submitData);
 
-	// 3.2 准备好了，发送请求
+	// 2.2 准备好了，发送请求
 	const res = await lotteryApi.betting(submitData);
 	const SUCCESS_CODE = 0; // 这个 code 等需求做完了肯定是要抽出去的。但是现在还找不到项目哪个地方定义了，现已这里先放着
 	const { code, msg } = res;
