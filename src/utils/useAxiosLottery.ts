@@ -1,7 +1,11 @@
 import axios from "axios";
+import showToast from "../hooks/useToast";
 import { useLoading } from "/@/directive/loading/hooks";
 
 const { startLoading, stopLoading } = useLoading();
+
+export const SUCCESS_STATUS = 200; // http 状态码
+export const SUCCESS_CODE = 0; // 业务状态码
 
 // 获取 config 配置请求 api
 function getUrl() {
@@ -13,17 +17,6 @@ function getUrl() {
 		default:
 			return "";
 	}
-}
-
-//当前正在请求的数量
-let LoadingRequestCount = 0;
-
-//显示 loading
-function showLoading(target: any) {
-	if (LoadingRequestCount === 0) {
-		startLoading();
-	}
-	LoadingRequestCount++;
 }
 
 // 创建 axios 实例
@@ -50,13 +43,27 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
 	(response) => {
+		console.log("response", response);
+		const { status, data } = response;
+		const { code } = data;
+
+		if (status !== SUCCESS_STATUS) {
+			showToast(String(status));
+		}
+
+		if (code !== SUCCESS_CODE) {
+			showToast(String(status));
+		}
+
 		if (response.config.headers.showLoading !== false) {
 			stopLoading();
 		}
-		return response.data;
+
+		return data;
 	},
 	(error) => {
 		stopLoading();
+		showToast(error.message);
 		return Promise.reject(error);
 	}
 );
