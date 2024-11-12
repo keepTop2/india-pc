@@ -28,7 +28,7 @@
 						<!-- 可赢价格 -->
 						<div class="cell">
 							<div class="left">
-								<span class="success">预计可赢:</span> <span>{{ getParlayTicketsWinningAmount(item) }} {{ UserStore.getUserInfo.mainCurrency }}</span>
+								<span>预计可赢:</span> <span class="main-currency">{{ getParlayTicketsWinningAmount(item) }} {{ UserStore.getUserInfo.mainCurrency }}</span>
 							</div>
 							<div class="right">
 								<span>小计: {{ Common.formatFloat(Common.mul(item.stake, item.betCount)) }} {{ UserStore.getUserInfo.mainCurrency }}</span>
@@ -182,8 +182,8 @@ const onSecondBet = () => {
 							font-size: 20px;
 							font-weight: 500;
 						}
-						.success {
-							color: var(--Success);
+						.main-currency {
+							color: var(--Text_a);
 						}
 					}
 				}
