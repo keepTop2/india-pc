@@ -22,6 +22,6 @@ const str = ref("12312");
 	width: 610px;
 	height: 462px;
 	border-radius: 12px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 }
 </style>

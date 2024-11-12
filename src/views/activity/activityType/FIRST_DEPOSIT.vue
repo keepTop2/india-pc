@@ -137,3 +137,11 @@ const confirmDialog = () => {
 	showCommonDialog.value = false;
 };
 </script>
+
+<style scoped lang="scss">
+.ruleDetails {
+	:deep(img) {
+		max-width: 100%;
+	}
+}
+</style>

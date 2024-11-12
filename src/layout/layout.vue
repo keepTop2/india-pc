@@ -79,7 +79,7 @@ onUnmounted(() => {
 }
 .collapse {
 	.container {
-		width: calc(100vw - 64px);
+		width: calc(100vw - 52px);
 		// margin-left: 64px;
 	}
 }

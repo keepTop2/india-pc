@@ -66,7 +66,7 @@ defineExpose({
 	border: none;
 	width: 69px;
 	border-radius: 4px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border: 1px solid var(--Theme);
 	color: var(--Theme);
 	cursor: pointer;
@@ -76,8 +76,8 @@ defineExpose({
 .send-button:disabled {
 	cursor: not-allowed;
 	background: var(--Bg);
-	border: 1px solid var(--Line_2);
-	color: var(--Text2);
+	border: 1px solid var(--Line-2);
+	color: var(--Text-2);
 }
 .iscountdown.send-button:disabled {
 	border: 1px solid var(--Theme);

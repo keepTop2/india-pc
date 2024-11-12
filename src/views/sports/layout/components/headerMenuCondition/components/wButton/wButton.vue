@@ -33,12 +33,12 @@ const props = withDefaults(
 	font-size: 14px;
 	font-weight: 400;
 	cursor: pointer;
-	background-color: var(--butter);
-	color: var(--Text1);
+	background-color: var(--Butter);
+	color: var(--Text-1);
 
 	&.active {
 		background-color: var(--Theme);
-		color: var(--Text_a);
+		color: var(--Text-a);
 	}
 }
 </style>

@@ -78,7 +78,7 @@ const handleConfirm = () => {
 .dialog {
 	position: relative;
 	background: white;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	padding: 0 20px 40px;
 	border-radius: 20px;
 	width: 380px;
@@ -112,7 +112,7 @@ const handleConfirm = () => {
 		}
 		.confirm {
 			background: var(--Theme);
-			color: var(--Text_s);
+			color: var(--Text-s);
 		}
 	}
 }

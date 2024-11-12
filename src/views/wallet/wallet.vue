@@ -47,7 +47,7 @@ const toPath = (item) => {
 			gap: 8px;
 			padding: 12px;
 			border-radius: 12px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			user-select: none;
 			.menu {
 				width: 100%;
@@ -69,7 +69,7 @@ const toPath = (item) => {
 					}
 				}
 				.name {
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
@@ -77,14 +77,14 @@ const toPath = (item) => {
 			}
 			.menu:hover,
 			.menu_active {
-				background: var(--Bg3);
+				background: var(--Bg-3);
 				.icon {
 					svg {
-						color: var(--Text_s);
+						color: var(--Text-s);
 					}
 				}
 				.name {
-					color: var(--Text_s);
+					color: var(--Text-s);
 				}
 			}
 		}
@@ -106,7 +106,7 @@ const toPath = (item) => {
 			gap: 8px;
 			padding: 4px 12px;
 			border-radius: 12px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			user-select: none;
 			overflow-x: auto;
 			overflow-y: hidden;
@@ -130,7 +130,7 @@ const toPath = (item) => {
 				}
 				.name {
 					white-space: nowrap;
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
@@ -138,14 +138,14 @@ const toPath = (item) => {
 			}
 			.menu:hover,
 			.menu_active {
-				background: var(--Bg3);
+				background: var(--Bg-3);
 				.icon {
 					svg {
-						color: var(--Text_s);
+						color: var(--Text-s);
 					}
 				}
 				.name {
-					color: var(--Text_s);
+					color: var(--Text-s);
 				}
 			}
 

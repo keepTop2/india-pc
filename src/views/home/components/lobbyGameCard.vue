@@ -3,19 +3,19 @@
 		<div class="cardHeader">
 			<div>
 				<span class="flex-center">
-					<img v-lazy-load="gameList?.iconFileUrl" alt="" />
+					<img v-lazy-load="newGame ? newGameIcon : gameList?.iconFileUrl" alt="" />
 					<span class="Text_s fs_20">{{ title ? title : gameList?.name ? gameList?.name : "热门推荐" }}</span>
 				</span>
 			</div>
 			<div class="more Text1 fs_18 curp" v-if="gameList?.gameInfoList?.length !== 1">
 				<span @click="gotoVenue(gameList)">更多</span>
-				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'arrow_left' : 'arrow_left_on'" width="8" height="12" /></span>
-				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'arrow_right' : 'arrow_right_on'" width="8" height="12" /></span>
+				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'common-arrow_left' : 'common-arrow_left_on'" width="8" height="12" /></span>
+				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'common-arrow_right' : 'common-arrow_right_on'" width="8" height="12" /></span>
 			</div>
 		</div>
 		<div class="lobbyGameList">
 			<div class="onlyOneGame" v-if="bigOneItem && gameList?.gameInfoList?.length == 1" @click="Common.goToGame(gameList?.gameInfoList[0])">
-				<img v-lazy-load="gameList?.iconFileUrl" alt="" />
+				<img v-lazy-load="gameList?.gameInfoList[0].iconFileUrl" alt="" />
 			</div>
 
 			<div v-else>
@@ -54,6 +54,7 @@ import { useRoute } from "vue-router";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
 import { ref } from "vue";
 import { Autoplay, Navigation } from "swiper/modules";
+import newGameIcon from "/@/assets/common/newGame_icon.png";
 const collectGamesStore = useCollectGamesStore();
 const modules = ref([Autoplay, Navigation]);
 interface gameInfo {
@@ -81,6 +82,10 @@ const props = defineProps({
 	},
 	title: {
 		type: String,
+	},
+	newGame: {
+		type: Boolean,
+		default: false,
 	},
 	bigOneItem: {
 		type: Boolean,
@@ -141,7 +146,7 @@ const goToPrevSlide = () => {
 	}
 	margin-bottom: 12px;
 	.arrow {
-		background-color: var(--butter);
+		background-color: var(--Butter);
 		width: 28px;
 		height: 28px;
 		display: inline-block;
@@ -182,9 +187,9 @@ const goToPrevSlide = () => {
 		.gameInfo {
 			width: 100%;
 			height: 151px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			font-size: 14px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			padding: 6px 12px;
 			line-height: 22px;
 			border-radius: 8px;

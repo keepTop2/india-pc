@@ -1,6 +1,6 @@
 <template>
 	<div class="back-to-top-box" @click="scrollToTop">
-		<svg-icon name="arrow_up" width="26px" height="15px"></svg-icon>
+		<svg-icon name="common-arrow_up" width="26px" height="15px"></svg-icon>
 	</div>
 </template>
 
@@ -46,7 +46,7 @@ onUnmounted(() => {
 	color: #333;
 	text-align: right;
 	border-radius: 26px;
-	background: var(--Bg3);
+	background: var(--Bg-3);
 	display: flex;
 	align-items: center;
 	justify-content: center;

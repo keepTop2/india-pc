@@ -95,7 +95,7 @@ const getConfigDetail = async (item: any) => {
 	.btn {
 		border-radius: 4px;
 		padding: 8px 22px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-weight: 400;
 		cursor: pointer;
 		white-space: nowrap;
@@ -103,9 +103,9 @@ const getConfigDetail = async (item: any) => {
 	}
 }
 .cardBox {
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 12px;
-	color: var(--Text1);
+	color: var(--Text-1);
 	img {
 		width: 100%;
 		height: 188px;

@@ -243,7 +243,7 @@ onMounted(() => {
 			}
 		}
 		.login_text {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-weight: 500;
 			span {
 				position: relative;
@@ -264,7 +264,7 @@ onMounted(() => {
 	.findOldPwd {
 		text-align: right;
 		font-size: 14px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		margin-top: 16px;
 	}
 }

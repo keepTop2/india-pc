@@ -176,7 +176,7 @@ const popperOptions = {
 	.select {
 		width: 200px;
 		height: 44px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		border-radius: 8px;
 		box-sizing: border-box;
 		.el-select {
@@ -191,7 +191,7 @@ const popperOptions = {
 					background-color: unset;
 					box-shadow: none !important;
 					.el-input__inner {
-						color: var(--Text1);
+						color: var(--Text-1);
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 400;
@@ -204,7 +204,7 @@ const popperOptions = {
 			}
 
 			:deep(.el-select__popper) {
-				background-color: var(--Bg1);
+				background-color: var(--Bg-1);
 				box-shadow: var(--popoverShadow);
 				border-radius: 8px;
 			}
@@ -229,7 +229,7 @@ const popperOptions = {
 						align-items: center;
 						justify-content: space-between;
 						padding: 0px 12px;
-						color: var(--Text1);
+						color: var(--Text-1);
 						overflow: unset;
 						font-family: "PingFang SC";
 						font-size: 14px;
@@ -240,18 +240,18 @@ const popperOptions = {
 
 					.hover {
 						background-color: transparent;
-						color: var(--Text1);
+						color: var(--Text-1);
 					}
 					.selected {
-						background-color: var(--Bg5) !important;
-						color: var(--Text_s) !important;
+						background-color: var(--Bg-5) !important;
+						color: var(--Text-s) !important;
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 500;
 					}
 
 					.el-select-dropdown__item:hover {
-						background-color: var(--Bg3);
+						background-color: var(--Bg-3);
 						border-radius: 4px;
 					}
 				}
@@ -265,7 +265,7 @@ const popperOptions = {
 	.select-date {
 		width: 240px;
 		height: 44px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		border-radius: 8px;
 		box-sizing: border-box;
 		:deep(.el-dropdown) {
@@ -279,14 +279,14 @@ const popperOptions = {
 				padding: 12px 20px;
 				cursor: pointer;
 				box-sizing: border-box;
-				color: var(--Text1);
+				color: var(--Text-1);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
 			}
 			.popperClass {
 				width: 160px;
-				background-color: var(--Bg1);
+				background-color: var(--Bg-1);
 				box-shadow: var(--popoverShadow);
 
 				border-radius: 8px;
@@ -304,8 +304,8 @@ const popperOptions = {
 								background-color: transparent;
 
 								.dropdown-item-active {
-									background-color: var(--Bg5) !important;
-									color: var(--Text_s) !important;
+									background-color: var(--Bg-5) !important;
+									color: var(--Text-s) !important;
 									font-family: "PingFang SC";
 									font-size: 14px;
 									font-weight: 500;
@@ -317,7 +317,7 @@ const popperOptions = {
 									align-items: center;
 									justify-content: space-between;
 									padding: 0px 12px;
-									color: var(--Text1);
+									color: var(--Text-1);
 									overflow: unset;
 									white-space: nowrap;
 									text-overflow: ellipsis;
@@ -340,7 +340,7 @@ const popperOptions = {
 											border-radius: 8px;
 											border: 1px solid;
 											border-color: var(--Line);
-											background-color: var(--Bg4);
+											background-color: var(--Bg-4);
 											box-shadow: var(--popoverShadow);
 											.vc-pane-container {
 												.vc-header {
@@ -349,7 +349,7 @@ const popperOptions = {
 													padding: 0px;
 													grid-gap: 0px;
 													.vc-title-wrapper {
-														color: var(--Text1);
+														color: var(--Text-1);
 														font-family: "PingFang SC";
 														font-size: 14px;
 														font-weight: 500;
@@ -362,20 +362,20 @@ const popperOptions = {
 													}
 
 													.vc-focus:focus-within {
-														box-shadow: 0 0 0 2px var(--Bg5);
+														box-shadow: 0 0 0 2px var(--Bg-5);
 													}
 												}
 
 												.vc-weeks {
 													.vc-weekdays {
-														color: var(--Text2_1);
+														color: var(--Text-2-1);
 														font-family: "PingFang SC";
 														font-size: 14px;
 														line-height: 22px;
 													}
 
 													.vc-day-content {
-														color: var(--Text1);
+														color: var(--Text-1);
 														font-family: "PingFang SC";
 														font-size: 14px;
 														font-weight: 500;
@@ -383,15 +383,15 @@ const popperOptions = {
 													}
 
 													.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-solid.vc-blue {
-														color: var(--Text_s);
+														color: var(--Text-s);
 														background-color: var(--Theme);
 													}
 													.vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light,
 													.vc-highlight.vc-highlight-base-start.vc-highlight-bg-light,
 													.vc-highlight.vc-highlight-base-end.vc-highlight-bg-light,
 													.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-outline.vc-blue {
-														background-color: var(--Bg5);
-														box-shadow: 0px 0px 0px 1px var(--Bg5);
+														background-color: var(--Bg-5);
+														box-shadow: 0px 0px 0px 1px var(--Bg-5);
 													}
 
 													.vc-focus:focus-within {
@@ -399,7 +399,7 @@ const popperOptions = {
 													}
 
 													.vc-light .vc-attr {
-														background-color: var(--Bg5);
+														background-color: var(--Bg-5);
 													}
 												}
 											}
@@ -409,7 +409,7 @@ const popperOptions = {
 							}
 
 							.el-dropdown-menu__item:focus {
-								background-color: var(--Bg3);
+								background-color: var(--Bg-3);
 							}
 						}
 					}

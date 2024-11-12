@@ -69,7 +69,7 @@ const onRadio = () => {
 		color: var(--Theme);
 	}
 	.text {
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-family: "PingFang SC";
 		font-size: 14px;
 		font-weight: 400;
@@ -88,14 +88,14 @@ const onRadio = () => {
 	font-size: 20px;
 	padding: 20px;
 	text-align: center;
-	color: var(--Text_s);
+	color: var(--Text-s);
 }
 
 .dialog-body {
 	font-size: 16px;
 	line-height: 26px;
 	padding: 16px 40px;
-	color: var(--Text1);
+	color: var(--Text-1);
 }
 .know {
 	display: flex;
@@ -110,7 +110,7 @@ const onRadio = () => {
 		height: 48px;
 		border: 1px solid var(--Theme);
 		background: var(--Theme);
-		color: var(--Text_a);
+		color: var(--Text-a);
 	}
 }
 </style>

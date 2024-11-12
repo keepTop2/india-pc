@@ -13,13 +13,13 @@
 	.time-box {
 		.text {
 			font-family: "MTC-7" !important;
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 	}
 
 	.colon {
 		// margin: 0 2px;
-		color: var(--Text_a);
+		color: var(--Text-a);
 		line-height: 0.7;
 	}
 }
@@ -31,14 +31,14 @@
 	align-items: end;
 	padding: 6px;
 	border-radius: 4px;
-	background-color: var(--Bg3);
+	background-color: var(--Bg-3);
 	column-gap: 2px;
 }
 
 .lottery-time-group {
 	width: 222px;
 	height: 104px;
-	background-color: var(--Bg2);
+	background-color: var(--Bg-2);
 	padding: 10px 11px 11px 11px;
 	position: relative;
 	border-radius: 8px;
@@ -47,7 +47,7 @@
 		top: 10px;
 		left: 0;
 		font-size: 12px;
-		color: var(--Text_a);
+		color: var(--Text-a);
 		width: 119px;
 		height: 36px;
 		> svg {
@@ -65,7 +65,7 @@
 	}
 	.bet-status {
 		text-align: right;
-		color: var(--F2);
+		color: var(--F-2);
 		font-size: 14px;
 	}
 	.lottery-clock-time {

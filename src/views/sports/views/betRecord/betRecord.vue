@@ -153,7 +153,7 @@ const sizeChange = (pageSize: number) => {
 		align-items: center;
 		justify-content: space-between;
 		margin: 5px 0px;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		border-radius: 8px;
 
 		.tabs {
@@ -171,8 +171,8 @@ const sizeChange = (pageSize: number) => {
 				align-items: center;
 				justify-content: center;
 				border-radius: 4px;
-				border: 1px solid var(--Line_2);
-				color: var(--Text1);
+				border: 1px solid var(--Line-2);
+				color: var(--Text-1);
 				text-align: center;
 				font-family: "PingFang SC";
 				font-size: 14px;
@@ -199,7 +199,7 @@ const sizeChange = (pageSize: number) => {
 		.info {
 			display: flex;
 			gap: 24px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
@@ -208,7 +208,7 @@ const sizeChange = (pageSize: number) => {
 
 	:deep(.el-table__body-wrapper) {
 		&::-webkit-scrollbar-thumb {
-			background-color: var(--Bg3);
+			background-color: var(--Bg-3);
 			border-radius: 6px;
 		}
 		&::-webkit-scrollbar {

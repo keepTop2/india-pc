@@ -62,12 +62,12 @@ const toggleDisplay = () => {
 	height: 34px;
 	padding: 6px 14px 6px 8px;
 	border-radius: 8px 8px 0px 0px;
-	background: var(--Bg6);
+	background: var(--Bg-6);
 	box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.1) inset;
 	cursor: pointer;
 
 	.league_name {
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 16px;
 		font-style: normal;
@@ -99,7 +99,7 @@ const toggleDisplay = () => {
 .content {
 	width: 100%;
 	padding: 10px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 0px 0px 8px 8px;
 }
 </style>

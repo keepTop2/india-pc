@@ -17,14 +17,14 @@
 			align-items: center;
 
 			.el-dialog__title {
-				color: var(--Text_a) !important;
+				color: var(--Text-a) !important;
 				font-weight: 400;
 				font-size: 32px;
 			}
 
 			.close {
 				padding: 6px;
-				background-color: var(--Bg2);
+				background-color: var(--Bg-2);
 				border-radius: var(--border-radius);
 				display: flex;
 				align-items: center;
@@ -41,17 +41,17 @@
 			.el-input__wrapper {
 				width: 100%;
 				border-radius: var(--border-radius);
-				background-color: var(--Bg2);
+				background-color: var(--Bg-2);
 				padding: 16px;
 				height: 54px;
-				box-shadow: 0 0 0 1px var(--Line_2, var(--Line_2)) inset;
+				box-shadow: 0 0 0 1px var(--Line-2, var(--Line-2)) inset;
 
 				.el-input__inner::placeholder {
 					font-size: var(--title2-text-size);
 				}
 
 				.el-input__inner {
-					color: var(--Text_a);
+					color: var(--Text-a);
 					font-size: var(--title2-text-size);
 				}
 			}
@@ -75,7 +75,7 @@
 			width: calc(100% + 6px);
 
 			&::-webkit-scrollbar-thumb {
-				background-color: var(--Bg3);
+				background-color: var(--Bg-3);
 				border-radius: 6px;
 			}
 
@@ -110,16 +110,16 @@
 }
 
 .table-style-common {
-	--el-table-border-color: var(--light-ok-Line-2-, #373a40) !important;
-	--el-table-text-color: var(--light-ok-Text-1-1, #98a7b5) !important;
-	--el-table-tr-bg-color: var(--Bg1) !important;
+	--el-table-border-color: var(--Line-2) !important;
+	--el-table-text-color: var(--Text-1) !important;
+	--el-table-tr-bg-color: var(--Bg-1) !important;
 	--el-table-row-hover-bg-color: transparent !important;
 	border-radius: 8px;
 
 	.el-table__header-wrapper {
 		.el-table__cell {
-			background: var(--light-ok-Bg-2-2, #1a1c20);
-			color: var(--light-ok-text-s, #fff);
+			background: var(--Bg-2, #1a1c20);
+			color: var(--Text-s, #fff);
 			font-weight: normal;
 			font-size: 14px;
 		}
@@ -132,24 +132,24 @@
 	}
 
 	.el-table__empty-block {
-		background: var(--Bg1) !important;
+		background: var(--Bg-1) !important;
 	}
 }
 
 .table-style-expand {
-	--el-table-border-color: var(--light-ok-Line-2-, #373a40) !important;
-	--el-table-text-color: var(--light-ok-Text-1-1, #98a7b5) !important;
-	--el-table-tr-bg-color: var(--Bg3) !important;
+	--el-table-border-color: var(--Line-2) !important;
+	--el-table-text-color: var(--Text-1) !important;
+	--el-table-tr-bg-color: var(--Bg-3) !important;
 	--el-table-row-hover-bg-color: transparent !important;
-	--el-table-expanded-cell-bg-color: var(--Bg4) !important;
+	--el-table-expanded-cell-bg-color: var(--Bg-4) !important;
 	border-radius: 8px;
 	//--el-table-border: 2px solid var(--el-table-border-color) !important;
 	//border: 1px solid var(--el-table-border-color) !important;
 
 	.el-table__header-wrapper {
 		.el-table__cell {
-			background: var(--light-ok-Bg-2-2, #1a1c20);
-			color: var(--light-ok-text-s, #fff);
+			background: var(--Bg-2);
+			color: var(--Text-s);
 			font-weight: normal;
 			font-size: 14px;
 		}
@@ -196,11 +196,11 @@
 	.el-table__expanded-cell {
 		padding: 14px 12px !important;
 		&:hover {
-			background-color: var(--Bg4) !important;
+			background-color: var(--Bg-4) !important;
 		}
 	}
 
 	.el-table__empty-block {
-		background: var(--Bg3) !important;
+		background: var(--Bg-3) !important;
 	}
 }

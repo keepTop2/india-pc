@@ -2,7 +2,7 @@
 	<div class="dropdown-select" ref="dropdown">
 		<button class="trigger" @click="toggleDropdown">
 			<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''"> {{ selectedOptionLabel || placeholder }} </span>
-			<svg-icon name="arrow_right" size="14px" />
+			<svg-icon name="common-arrow_right" size="14px" />
 		</button>
 		<div v-if="isOpen" class="dropdown-menu">
 			<div class="flex_space-between input">
@@ -116,15 +116,15 @@ onUnmounted(() => {
 	border: none;
 	height: 100%;
 	border-radius: 4px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	text-align: left;
 	cursor: pointer;
-	color: var(--Text2);
+	color: var(--Text-2);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	.selectedOptionLabel {
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 }
 
@@ -135,20 +135,20 @@ onUnmounted(() => {
 	width: 100%;
 	border: none;
 	border-radius: 4px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	z-index: 10;
-	color: var(--Text2);
+	color: var(--Text-2);
 	padding: 0 16px;
 
 	.input {
-		background-color: var(--Bg3);
+		background-color: var(--Bg-3);
 		margin: 5px 0;
 		border-radius: 4px;
 		padding: 0px 8px;
 	}
 	.line {
 		height: 1px;
-		background: var(--Bg3);
+		background: var(--Bg-3);
 	}
 	.search-input {
 		width: 100%;
@@ -158,7 +158,7 @@ onUnmounted(() => {
 		outline: none;
 
 		border-radius: 4px;
-		background-color: var(--Bg3);
+		background-color: var(--Bg-3);
 	}
 }
 
@@ -180,7 +180,7 @@ onUnmounted(() => {
 }
 .option-item.active,
 .option-item:hover {
-	color: var(--Text_s);
+	color: var(--Text-s);
 }
 
 .no-results {

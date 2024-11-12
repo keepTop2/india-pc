@@ -331,9 +331,9 @@ getRechargeWayList();
 
 .header {
 	padding-bottom: 6px;
-	border-bottom: 1px solid var(--Line_1);
+	border-bottom: 1px solid var(--Line-1);
 	box-shadow: 0px 1px 0px 0px #343d48;
-	color: var(--Text_s);
+	color: var(--Text-s);
 	font-family: "PingFang SC";
 	font-size: 24px;
 	font-weight: 500;
@@ -345,7 +345,7 @@ getRechargeWayList();
 .container {
 	padding: 20px;
 	.title {
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 18px;
 		font-weight: 500;
@@ -362,7 +362,7 @@ getRechargeWayList();
 			height: 87px;
 			padding: 10px;
 			border-radius: 12px;
-			border: 1px solid var(--Line_2);
+			border: 1px solid var(--Line-2);
 			cursor: pointer;
 			box-sizing: border-box;
 			.tag {
@@ -387,7 +387,7 @@ getRechargeWayList();
 			}
 			.label {
 				margin-top: 6px;
-				color: var(--Text1);
+				color: var(--Text-1);
 				text-align: center;
 				font-family: "PingFang SC";
 				font-size: 14px;
@@ -417,8 +417,8 @@ getRechargeWayList();
 			justify-content: center;
 			padding: 8px 10px;
 			border-radius: 8px;
-			border: 1px solid var(--Line_2);
-			color: var(--Text1);
+			border: 1px solid var(--Line-2);
+			color: var(--Text-1);
 			font-family: "DIN Alternate";
 			font-size: 18px;
 			font-weight: 700;
@@ -440,24 +440,24 @@ getRechargeWayList();
 		gap: 10px;
 		padding: 10px 12px;
 		border-radius: 4px;
-		background: var(--Bg2);
+		background: var(--Bg-2);
 		input {
 			width: 100%;
 			height: 100%;
 			margin: 0px;
 			padding: 0px;
 			border: 0px;
-			background: var(--Bg2);
-			color: var(--Text_s);
+			background: var(--Bg-2);
+			color: var(--Text-s);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 500;
 			&::placeholder {
-				color: var(--Text2);
+				color: var(--Text-2);
 			}
 		}
 		.label {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
@@ -466,7 +466,7 @@ getRechargeWayList();
 
 	.hint {
 		margin-top: 20px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		text-align: center;
 		font-family: "PingFang SC";
 		font-size: 16px;
@@ -488,9 +488,9 @@ getRechargeWayList();
 		margin: 12px auto 0px;
 		padding: 12px 20px;
 		border-radius: 12px;
-		border: 1px solid var(--Line_2);
+		border: 1px solid var(--Line-2);
 		.value {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			text-align: center;
 			font-family: "PingFang SC";
 			font-size: 14px;
@@ -508,7 +508,7 @@ getRechargeWayList();
 	.tips {
 		margin-top: 16px;
 		.tip {
-			color: var(--Text2_1);
+			color: var(--Text-2-1);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
@@ -521,14 +521,14 @@ getRechargeWayList();
 	width: 380px;
 	height: 100%;
 	border-radius: 12px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	.remind_header {
 		width: 100%;
 		height: 68px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 20px;
 		font-weight: 500;
@@ -537,13 +537,13 @@ getRechargeWayList();
 		padding: 8px 20px;
 		text-align: center;
 		.text {
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-weight: 400;
 		}
 		.text_2 {
-			color: var(--F2);
+			color: var(--F-2);
 		}
 		.tips {
 			display: flex;
@@ -552,7 +552,7 @@ getRechargeWayList();
 			gap: 10px;
 			margin-top: 8px;
 			span {
-				color: var(--Text2_1);
+				color: var(--Text-2-1);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
@@ -574,7 +574,7 @@ getRechargeWayList();
 		padding: 12px;
 		border-radius: 4px;
 		background: var(--Theme);
-		color: var(--Text_a);
+		color: var(--Text-a);
 		font-family: "PingFang SC";
 		font-size: 16px;
 		font-weight: 500;

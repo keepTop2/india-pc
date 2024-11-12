@@ -127,7 +127,7 @@ const refresh = () => {
 	color: var(--Theme) !important;
 }
 .oddsDown {
-	color: var(--Success) !important;
+	color: var(--success) !important;
 }
 .competition {
 	display: flex;
@@ -145,8 +145,8 @@ const refresh = () => {
 			width: 100%;
 			margin: 6px 0 8px 0;
 			border-radius: 8px 8px 0px 0px;
-			background: var(--Bg1-1, #24262b);
-			box-shadow: 0px 1px 0px 0px var(--Bg1-1, #24262b) inset;
+			background: var(--Bg-1-1, #24262b);
+			box-shadow: 0px 1px 0px 0px var(--Bg-1-1, #24262b) inset;
 			.record {
 				display: flex;
 				align-items: center;
@@ -159,7 +159,7 @@ const refresh = () => {
 					margin-right: 12px;
 				}
 				.record_two {
-					color: var(--Text1-1, #98a7b5);
+					color: var(--Text-1-1, #98a7b5);
 					font-family: "PingFang SC";
 					font-size: 16px;
 					font-style: normal;

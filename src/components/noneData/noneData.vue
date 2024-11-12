@@ -72,7 +72,7 @@ const props = withDefaults(defineProps<NoneData>(), {
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
-			color: var(--Text2_1);
+			color: var(--Text-2-1);
 			line-height: normal;
 		}
 	}

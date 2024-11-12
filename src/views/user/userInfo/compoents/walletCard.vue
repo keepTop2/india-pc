@@ -52,9 +52,9 @@ import router from "/@/router";
 .card {
 	display: flex;
 	justify-content: space-around;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	padding: 15px 17px;
-	color: var(--Text1);
+	color: var(--Text-1);
 	> div {
 		display: flex;
 		flex-direction: column;

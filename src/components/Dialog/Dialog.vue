@@ -130,7 +130,7 @@ const onConfirm = () => {
 		position: relative;
 		margin: 0;
 		border-radius: 15px;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		padding: 0;
 		overflow: hidden;
 		.el-dialog__header {
@@ -144,12 +144,11 @@ const onConfirm = () => {
 			// 	}
 		}
 		.close {
-			color: var(--icon);
 			width: 30px;
 			height: 30px;
 		}
 		.close:hover {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			transform: rotate(-90deg) scale(1.05);
 			transition: all 0.3s;
 		}

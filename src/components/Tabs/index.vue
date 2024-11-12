@@ -62,8 +62,8 @@ const selectTab = (tabName: string) => {
 	border: none;
 	background: none;
 	cursor: pointer;
-	background: var(--Bg1);
-	color: var(--Text1);
+	background: var(--Bg-1);
+	color: var(--Text-1);
 	width: 174px;
 	text-align: center; /* Align text to the left */
 }
@@ -72,7 +72,7 @@ const selectTab = (tabName: string) => {
 	font-weight: bold;
 	border-radius: 4px;
 	background: var(--Theme);
-	color: var(--Text_s);
+	color: var(--Text-s);
 }
 
 .tabs-content-box {
@@ -82,7 +82,7 @@ const selectTab = (tabName: string) => {
 	overflow-y: auto; /* Add scrollbar if content overflows */
 }
 .tabs-content {
-	background-color: var(--Bg3);
+	background-color: var(--Bg-3);
 	border-radius: 8px;
 	margin-right: 5px;
 }
@@ -93,7 +93,7 @@ const selectTab = (tabName: string) => {
 	background-color: transparent;
 }
 .tabs-content-box::-webkit-scrollbar-thumb {
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 5px;
 }
 </style>

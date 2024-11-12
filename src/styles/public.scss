@@ -48,57 +48,57 @@
 		-webkit-box-orient: vertical;
 	}
 	.Wran_text {
-		color: var(--Warn);
+		color: var(--F-1);
 	}
 	.color_Theme {
 		color: var(--Theme);
 	}
 	.color_F2 {
-		color: var(--F2);
+		color: var(--F-2);
 	}
 	.color_F1 {
-		color: var(--F1);
+		color: var(--F-1);
 	}
 	.Text_s {
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 	.Text1 {
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 	.Text2 {
-		color: var(--Text2);
+		color: var(--Text-2);
 	}
 	.Text2_1 {
-		color: var(--Text2_1);
+		color: var(--Text-2-1);
 	}
 	.Text3 {
 		color: var(--Text3);
 	}
 	.Texta {
-		color: var(--Text_a);
+		color: var(--Text-a);
 	}
 	.color_f1 {
-		color: var(--F1);
+		color: var(--F-1);
 	}
 	.color_sussess {
-		color: var(--Success);
+		color: var(--success);
 	}
 	.common_input {
 		width: 100%;
 		height: 46px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		border: none;
 		padding: 0 16px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		outline: none;
 		border-radius: 4px;
 	}
 	.verifyError {
-		border: 1px solid var(--F1);
+		border: 1px solid var(--F-1);
 		border-radius: 4px;
 	}
 	.common_input::placeholder {
-		color: var(--Text2);
+		color: var(--Text-2);
 	}
 	.common_btn {
 		width: 100%;
@@ -108,11 +108,11 @@
 		border: none;
 		cursor: pointer;
 		background: var(--Theme);
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 	.common_btn:disabled {
-		background: var(--butter);
-		color: var(--Text2);
+		background: var(--Butter);
+		color: var(--Text-2);
 		cursor: not-allowed;
 	}
 }
@@ -125,7 +125,7 @@
 		background-color: transparent;
 	}
 	::-webkit-scrollbar-thumb {
-		background: var(--Line_2);
+		background: var(--Line-2);
 		border-radius: 5px;
 	}
 }

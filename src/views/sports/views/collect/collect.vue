@@ -179,7 +179,7 @@ const selectEvent = () => {
 			display: flex;
 			align-items: center;
 			cursor: pointer;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 16px;
 			font-style: normal;
@@ -187,13 +187,13 @@ const selectEvent = () => {
 			line-height: normal;
 			.icon {
 				margin-right: 10px;
-				color: var(--icon);
+				color: var(--Icon-1);
 			}
 		}
 		.icon2 {
 			width: 24px;
 			height: 24px;
-			color: var(--icon);
+			color: var(--Icon-1);
 		}
 	}
 
@@ -204,7 +204,7 @@ const selectEvent = () => {
 			width: 220px;
 			height: 48px;
 			margin-top: 10px;
-			background-color: var(--Icon, #67707b);
+			background-color: var(--Icon-1);
 
 			&:hover {
 				color: var(--text-s, #fff);

@@ -8,7 +8,7 @@
 					<div class="time formItem pl_14 pr_14" @click="showDatePicker = true" style="position: relative">
 						<div class="flex_space-between curp">
 							<span>{{ dayjs(range.start).format("YYYY/MM/DD") }} - {{ dayjs(range.end).format("YYYY/MM/DD") }}</span>
-							<svg-icon name="arrow_down" width="12px" height="8px"></svg-icon>
+							<svg-icon name="common-arrow_down" width="12px" height="8px"></svg-icon>
 						</div>
 						<DatePicker :range="range" v-model="showDatePicker" :minDate="minDate" :maxDate="maxDate" @updateRange="updateRange" />
 					</div>
@@ -89,7 +89,7 @@
 
 			<div class="filed">
 				<div>福利类型</div>
-				<div>{{ detailsInfo.detailType }}</div>
+				<div>{{ detailsInfo.welfareCenterRewardTypeText }}</div>
 			</div>
 
 			<div class="filed">
@@ -102,7 +102,7 @@
 				<div class="flex-center">{{ detailsInfo.orderNo }} <svg-icon class="curp" name="copy" size="16px" @click="common.copy(detailsInfo.orderNo)"></svg-icon></div>
 			</div>
 			<div class="submitBtn">
-				<Button style="width: 360px" v-if="detailsInfo.receiveStatus == 0">立即领取</Button>
+				<Button style="width: 360px" v-if="detailsInfo.receiveStatus == 0" @click="handleReceive(detailsInfo)">立即领取</Button>
 				<div class="mt_10">如需帮助，请 <span class="color_F2 curp" @click="common.getSiteCustomerChannel">联系客服</span></div>
 			</div>
 		</div>
@@ -117,9 +117,9 @@ import showToast from "/@/hooks/useToast";
 import common from "/@/utils/common";
 const showDatePicker = ref(false);
 
-const params = reactive({
-	pfTimeStartTime: new Date("2024-09-08 00:00:00").getTime(),
-	pfTimeEndTime: new Date("2024-12-08 00:00:00").getTime(),
+const params: any = reactive({
+	pfTimeStartTime: "",
+	pfTimeEndTime: "",
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "-1",
@@ -170,7 +170,7 @@ onMounted(() => {
 });
 const pageQuery = () => {
 	params.pfTimeStartTime = new Date(range.start).getTime();
-	params.pfTimeEndTime = new Date(range.end).getTime() + (59 + 60 * 60 * 23) * 1000;
+	params.pfTimeEndTime = new Date(range.end).getTime() + (59 + 60 * 60 * 23 + 59 * 60) * 1000;
 	welfareCenterApi.pageQuery(params).then((res) => {
 		tableData.value = res.data.pages.records;
 		pageData.totalSize = res.data.totalSize;
@@ -211,6 +211,7 @@ const handleReceive = (item: any) => {
 	};
 	welfareCenterApi.clickReceive(params).then((res) => {
 		if (res.code === 10000) {
+			showDetailsDialog.value = false;
 			showToast("领取成功");
 			pageQuery();
 		}
@@ -238,7 +239,7 @@ const handleQuery = () => {
 
 <style scoped lang="scss">
 .header {
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 12px;
 	padding: 20px;
 	.title {
@@ -257,22 +258,22 @@ const handleQuery = () => {
 	}
 	.line {
 		height: 1px;
-		background: var(--Line_1);
+		background: var(--Line-1);
 		box-shadow: 0px 1px 0px 0px #343d48;
 	}
 	.btn {
 		background: var(--Theme);
 		padding: 6px 20px;
 		border-radius: 6px;
-		color: var(--Text_a);
+		color: var(--Text-a);
 		display: flex;
 		align-items: center;
 		gap: 4px;
 	}
 	.formItem {
 		height: 34px;
-		background: var(--Bg2);
-		color: var(--Text_s);
+		background: var(--Bg-2);
+		color: var(--Text-s);
 		line-height: 34px;
 		min-width: 140px;
 		border-radius: 6px;
@@ -284,27 +285,27 @@ const handleQuery = () => {
 .content {
 	min-height: calc(100vh - 260px);
 	margin-top: 20px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 12px;
 	padding: 20px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	.table {
-		border: 1px solid var(--Line_2);
+		border: 1px solid var(--Line-2);
 		border-radius: 8px;
 	}
 	.tr {
 		display: flex;
 		justify-content: space-around;
-		border-bottom: 1px solid var(--Line_2);
+		border-bottom: 1px solid var(--Line-2);
 		height: 50px;
 		line-height: 50px;
 		font-size: 14px;
 		.td {
 			text-align: center;
 			width: 100%;
-			border-right: 1px solid var(--Line_2);
+			border-right: 1px solid var(--Line-2);
 		}
 		.td:last-child {
 			border-right: none;
@@ -328,14 +329,14 @@ const handleQuery = () => {
 		}
 		.status0 {
 			background: var(--Theme);
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 		.status1 {
-			background: var(--Line_2);
-			color: var(--Success);
+			background: var(--Line-2);
+			color: var(--success);
 		}
 		.status2 {
-			color: var(--Text2);
+			color: var(--Text-2);
 		}
 	}
 	.tr:last-child {
@@ -343,10 +344,10 @@ const handleQuery = () => {
 	}
 	.theader {
 		height: 42px;
-		background: var(--Bg2);
+		background: var(--Bg-2);
 		border-radius: 8px 8px 0 0;
 		line-height: 42px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 	.Pagination {
 		margin-top: 12px;
@@ -356,7 +357,7 @@ const handleQuery = () => {
 	button {
 		height: 32px;
 		border-radius: 6px;
-		color: var(--Text_a);
+		color: var(--Text-a);
 		display: flex;
 		align-items: center;
 		gap: 6px;
@@ -372,7 +373,7 @@ const handleQuery = () => {
 }
 .Dialog {
 	width: 520px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 12px;
 	padding-bottom: 40px;
 	.close {
@@ -390,9 +391,9 @@ const handleQuery = () => {
 		align-items: center;
 		margin: 0 24px;
 		padding: 10px 0;
-		border-bottom: 0.5px solid var(--Line_2);
+		border-bottom: 0.5px solid var(--Line-2);
 		font-size: 14px;
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 	.submitBtn {
 		display: flex;
@@ -400,7 +401,7 @@ const handleQuery = () => {
 		flex-direction: column;
 		margin-top: 40px;
 		align-items: center;
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-size: 12px;
 		.color_F2 {
 			text-decoration-line: underline;

@@ -72,7 +72,7 @@ const toggleDisplay = () => {
 		display: flex;
 		width: 100%;
 		height: 34px;
-		background: var(--Bg6);
+		background: var(--Bg-6);
 		box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25) inset;
 		border-radius: 8px 8px 0px 0px;
 		cursor: pointer;
@@ -91,7 +91,7 @@ const toggleDisplay = () => {
 				height: 20px;
 			}
 			.league_name {
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 300;
@@ -113,7 +113,7 @@ const toggleDisplay = () => {
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					color: var(--Text1);
+					color: var(--Text-1);
 					text-align: center;
 					font-family: "PingFang SC";
 					font-size: 12px;

@@ -63,7 +63,7 @@ onMounted(() => {
 			padding-bottom: 20px;
 			width: 100%;
 			text-align: center;
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-size: 20px;
 		}
 		.closeIcon {

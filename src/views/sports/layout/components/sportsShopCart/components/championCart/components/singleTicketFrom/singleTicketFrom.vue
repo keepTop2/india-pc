@@ -33,7 +33,7 @@ const onInputEnter = (value: string) => {
 .singlePass {
 	padding: 6px 15px;
 	border-radius: 8px;
-	background: var(--Bg4);
+	background: var(--Bg-4);
 
 	.el-input {
 		height: 50px;
@@ -42,21 +42,21 @@ const onInputEnter = (value: string) => {
 			.el-input__wrapper {
 				box-shadow: none;
 				border: none;
-				background: var(--Bg4);
+				background: var(--Bg-4);
 
 				.el-input__inner {
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-size: 16px;
 					font-weight: 400;
 				}
 
 				input {
 					&::placeholder {
-						color: var(--Text2);
+						color: var(--Text-2);
 					}
 				}
 				.el-input__suffix {
-					color: var(--Text1);
+					color: var(--Text-1);
 					font-size: 16px;
 					font-weight: 400;
 				}

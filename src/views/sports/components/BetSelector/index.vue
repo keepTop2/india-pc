@@ -104,7 +104,7 @@ onUnmounted(() => clearTimer());
 	}
 	&.down {
 		:deep(.value) {
-			color: var(--Success) !important;
+			color: var(--success) !important;
 		}
 	}
 
@@ -123,7 +123,7 @@ onUnmounted(() => clearTimer());
 			color: var(--Theme) !important;
 		}
 		&.down {
-			color: var(--Success) !important;
+			color: var(--success) !important;
 			transform: rotate(180deg);
 		}
 		@keyframes blinkAnimation {

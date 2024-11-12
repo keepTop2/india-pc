@@ -4,7 +4,7 @@
 			<span>勋章</span>
 			<span class="flex_space-between">
 				<span class="canLightNum" v-if="canLightNum > 0">{{ canLightNum }}</span>
-				<svg-icon name="arrow_right" size="12px" @click="emit('update:modelValue', true)"></svg-icon>
+				<svg-icon name="common-arrow_right" size="12px" @click="emit('update:modelValue', true)"></svg-icon>
 			</span>
 		</div>
 		<div class="medalList">
@@ -71,7 +71,7 @@ const handleClick = (item: any) => {
 	display: flex;
 	justify-content: space-around;
 	padding: 15px 0;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 
 	.item {
 		position: relative;
@@ -106,7 +106,7 @@ const handleClick = (item: any) => {
 			width: 7.826px;
 			height: 7.826px;
 			background: var(--Theme);
-			border: 1px solid var(--Text1);
+			border: 1px solid var(--Text-1);
 			border-radius: 50%;
 			top: 0;
 			right: 0;

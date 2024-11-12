@@ -62,12 +62,12 @@ watch([() => props.total, () => props.pageSize], () => {
 	border: 0 !important;
 }
 .paginationPop {
-	background-color: var(--Bg2);
+	background-color: var(--Bg-2);
 	color: var(--Theme);
 	border: 0 !important;
 
 	.is-hovering {
-		background-color: var(--light-ok-Butter);
+		background-color: var(--Butter);
 		color: var(--Theme);
 	}
 	.el-select-dropdown__item.is-selected {
@@ -87,28 +87,28 @@ watch([() => props.total, () => props.pageSize], () => {
 			margin: 0 10px;
 		}
 		.el-pagination__jump {
-			color: var(--Text2);
+			color: var(--Text-2);
 			.el-input {
-				--el-input-text-color: var(--Text1);
+				--el-input-text-color: var(--Text-1);
 			}
 		}
 		.el-select__placeholder {
-			color: var(--Text1);
+			color: var(--Text-1);
 		}
 		.el-select__wrapper {
-			background-color: var(--Bg2);
-			color: var(--light-ok-Text-1);
+			background-color: var(--Bg-2);
+			color: var(--Text-1);
 			box-shadow: none;
 		}
 		.el-input__wrapper {
-			background-color: var(--Bg2);
-			color: var(--Text1);
+			background-color: var(--Bg-2);
+			color: var(--Text-1);
 			box-shadow: none;
 		}
 		.btn-prev,
 		.btn-next {
-			background-color: var(--light-ok-Butter);
-			color: var(--light-ok-Text-1);
+			background-color: var(--Butter);
+			color: var(--Text-1);
 			border: none;
 			padding: 0 10px;
 			height: 32px;
@@ -125,8 +125,8 @@ watch([() => props.total, () => props.pageSize], () => {
 			}
 		}
 		.el-pager li {
-			background-color: var(--light-ok-Butter);
-			color: var(--light-ok-Text-1);
+			background-color: var(--Butter);
+			color: var(--Text-1);
 			border: none;
 			margin: 0 2px;
 			min-width: 32px;

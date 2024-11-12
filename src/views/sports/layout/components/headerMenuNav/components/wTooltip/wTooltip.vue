@@ -29,8 +29,8 @@ const props = withDefaults(
 		border-radius: 4px;
 		border: none;
 
-		background: var(--Bg2); // var(--Bg2-2, #1A1C20);
-		color: var(--Text_s);
+		background: var(--Bg-2); // var(--Bg-2-2, #1A1C20);
+		color: var(--Text-s);
 
 		.el-popper__arrow {
 			display: none !important;

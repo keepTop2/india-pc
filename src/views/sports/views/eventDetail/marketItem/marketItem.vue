@@ -19,7 +19,7 @@
 									<div class="tournament-name">{{ i.betTypeName }}</div>
 								</div>
 								<!-- 收起折叠面板箭头 -->
-								<!-- <svg-icon :class="{ sport_arrow: activeSelection.includes(i.betTypeName) }" name="arrow_down" size="12" /> -->
+								<!-- <svg-icon :class="{ sport_arrow: activeSelection.includes(i.betTypeName) }" name="common-arrow_down" size="12" /> -->
 							</div>
 						</template>
 						<template #default>
@@ -212,7 +212,7 @@ watch(
 	}
 	.isBright {
 		position: relative;
-		background: var(--Bg5) !important;
+		background: var(--Bg-5) !important;
 		&::after {
 			content: "";
 			position: absolute;
@@ -223,7 +223,7 @@ watch(
 			box-sizing: border-box;
 		}
 		.label_one {
-			color: var(--Text_s) !important;
+			color: var(--Text-s) !important;
 		}
 	}
 	.tabBox {
@@ -231,7 +231,7 @@ watch(
 		overflow: hidden;
 		display: flex;
 		align-items: center;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		border-radius: 0px 0px 8px 8px;
 
 		svg {
@@ -260,18 +260,18 @@ watch(
 		li {
 			width: 96px;
 			height: 30px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			text-align: center;
 			position: relative; /* 为li元素设置相对定位，以便::after伪元素可以相对于它定位 */
 			font-size: 14px;
 			font-weight: 400;
 			display: inline-block;
 			border-radius: 4px;
-			border: 1px solid var(--Line_2);
+			border: 1px solid var(--Line-2);
 		}
 		.selected {
 			background-color: var(--Theme);
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 	}
 	.tab::-webkit-scrollbar {
@@ -293,10 +293,10 @@ watch(
 			justify-content: center;
 			align-items: center;
 			:first-child {
-				color: var(--Text1);
+				color: var(--Text-1);
 			}
 			:last-child {
-				color: var(--Text_a);
+				color: var(--Text-a);
 			}
 		}
 	}
@@ -326,7 +326,7 @@ watch(
 			}
 
 			.tournament-name {
-				color: var(--Text_a);
+				color: var(--Text-a);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;
@@ -343,7 +343,7 @@ watch(
 		justify-content: center;
 		flex-direction: column;
 		font-size: 14px;
-		color: var(--Text2);
+		color: var(--Text-2);
 		height: calc(100vh - 480px);
 		svg {
 			width: 140px;
@@ -357,7 +357,7 @@ watch(
 		.selection_item {
 			position: relative;
 			border-radius: 8px;
-			background-color: var(--Bg1);
+			background-color: var(--Bg-1);
 			margin-bottom: 20px;
 			padding: 10px 8px 8px 8px;
 			.item-red {
@@ -392,14 +392,14 @@ watch(
 				display: flex;
 				justify-content: center;
 				flex-direction: column;
-				background-color: var(--Bg3);
+				background-color: var(--Bg-3);
 				flex-basis: calc(50% - 5px); /* 每个元素占据50%，减去10px的间隔 */
 				font-size: 14px;
 				margin-bottom: 10px;
 				.price {
 					position: relative;
 					display: inline-block;
-					color: var(--Text_a);
+					color: var(--Text-a);
 					display: flex;
 					align-items: center;
 					gap: 5px;
