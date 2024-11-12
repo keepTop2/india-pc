@@ -422,7 +422,7 @@ class Common {
 	/**
 	 * @description 若超出指定位数，千位用K表示，默认超出10位数，最小支持5位
 	 */
-	static formatAmount(number: number, digits: number = 10): string {
+	static formatAmount(number: number, digits: number = 7): string {
 		// 限制最小位数为 5
 		const minDigits = 5;
 		const thresholdDigits = Math.max(digits, minDigits);
