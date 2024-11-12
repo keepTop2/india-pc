@@ -159,16 +159,16 @@ const maps = {
 const pushView = (game) => {
 	console.log("game", game);
 	const { gameCategoryCode, venueCode, gameCode } = game;
-	const targetPath = { venueCode, gameCode };
+	const searchParams = { venueCode, gameCode };
 	const targetView = maps[gameCategoryCode];
 	console.log("gameCategoryCode", gameCategoryCode);
 	console.log("targetView", targetView);
-	console.log("targetPath", targetPath);
+	console.log("searchParams", searchParams);
 	if (!targetView) {
 		showToast("Error: Path Not Found!");
 		return;
 	}
-	router.push(`${targetView}?${stringify(targetPath)}`);
+	router.push(`${targetView}?${stringify(searchParams)}`);
 };
 </script>
 

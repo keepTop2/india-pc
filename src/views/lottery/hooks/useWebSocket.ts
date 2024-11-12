@@ -63,9 +63,9 @@ export function useWebSocket(callback = Function.prototype, baseURL = BASE_URL) 
 			}
 
 			// 这个 if 语句是调试用的，可以删掉没事
-			if (message.id) {
-				console.log("WebSocketResponseMessage", message);
-			}
+			// if (message.id) {
+			// 	console.log("WebSocketResponseMessage", message);
+			// }
 			isValidWebSocketMessage(message.id) && callback(message);
 		},
 	});

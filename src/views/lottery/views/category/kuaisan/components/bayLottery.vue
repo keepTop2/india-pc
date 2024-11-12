@@ -49,12 +49,12 @@
 			</div>
 
 			<!-- 投注表单组件 -->
-			<BetForm ref="betFormRef" @submit="handleSubmit" :value="gameInfo" :actived="formActived">
+			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentLotteryItem" :actived="formActived">
 				<!-- 表单激活时显示的插槽内容 -->
 				<template v-if="formActived" #default>
 					<div class="bet-form-slot-header">
-						<div>{{ gameInfo.gamePlayName }}</div>
-						<div>{{ gameInfo.playMethod.title }}</div>
+						<div>{{ currentLotteryItem.gamePlayName }}</div>
+						<div>{{ currentLotteryItem.oddsList.title }}</div>
 						<div v-if="formActived" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
 							<Ball v-for="item in balls" :key="item" :ball-number="item" :type="3" />
 						</div>
@@ -67,17 +67,19 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { lotteryList, queryGamePlayOddsListParams } from "./playsConfig";
+import { useRoute } from "vue-router";
+import { isSmp, lotteryList } from "./playsConfig";
 import { mergeLotteryList } from "/@//views/lottery/utils/index";
 import { lotteryApi } from "/@/api/lottery";
 import showToast from "/@/hooks/useToast";
-import Common from "/@/utils/common";
+import { useUserStore } from "/@/stores/modules/user";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { type MergedLotteryList, type OddsListItem } from "/@/views/lottery/types/index";
+import { DEFAULT_LANG, langMaps } from "/@/views/lottery/views/category/kuaisan/components/playsConfig";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
 
 const props = defineProps({
@@ -88,16 +90,20 @@ const props = defineProps({
 const { Accordion, AccordionItem } = useAccordion();
 const { Ball, SelectBallGroup } = useBall();
 const { BetForm } = useBetForm();
-const { satoken } = useLoginGame();
+const route = useRoute();
+const { satoken, merchantInfo } = useLoginGame();
 useWebSocket();
 // 合并后的玩法列表
 const mergedLotteryList = ref<MergedLotteryList>([]);
 
 // 选中的球的数组，用于投注表单
 const balls = ref([]);
-const gameInfo = ref();
 const formActived = ref(false);
-const currentOddsListItem = ref<OddsListItem>({} as OddsListItem); // 向前选中高亮的项
+const currentLotteryItem = ref(); // 当前选中的大菜单
+const currentOddsListItem = ref({} as OddsListItem); // 当前选中高亮的项
+const UserStore = useUserStore();
+const language = UserStore.getLang;
+const lang = (langMaps as any)[language] || DEFAULT_LANG;
 
 /**
  * @description 手风琴展开玩法项的处理方法
@@ -115,54 +121,82 @@ const handleExpanded = (status: boolean, childData: any, data: any) => {
 	// 排除选择球玩法
 	if (childData.type !== "selectBall") {
 		formActived.value = status;
-		gameInfo.value = status ? { ...data, playMethod: { ...childData } } : null;
+		currentLotteryItem.value = status ? { ...data, oddsList: { ...childData } } : null;
 	}
 };
 
 // 选择球组的处理方法
 const handleSelectBalls = ({ list }, childData: any, data: any) => {
 	formActived.value = list.length ? true : false;
-	gameInfo.value = list.length ? { ...data, playMethod: { ...childData } } : null;
+	currentLotteryItem.value = list.length ? { ...data, oddsList: { ...childData } } : null;
 	balls.value = list;
 };
 
 // 清除手风琴展开状态的处理方法
 const clearAccordionStatus = (status: boolean, index: number) => {
 	mergedLotteryList.value.forEach((item, i) => {
-		item.actived = index === i && status ? true : false;
+		item.actived = index === i && status;
 	});
 };
 
 // 提交表单的处理方法
 const betFormRef = ref();
+
+const shouldLetPass = () => {};
+
+/**
+ * @description 发送请求下注
+ * @param
+ */
 const handleSubmit = async ({ stake: betMoney }: { stake: string }) => {
+	console.log("currentOddsListItem", currentLotteryItem.value);
+
+	// 1. 校验是否登录 token 和 satoken
+
+	// 2. 校验余额是否足够
+
+	// 3. 校验是否超过了投注限额
+
+	// 3.1 准备一下入参
 	const { gameCode, gamePlayCode, optionCode: nums } = currentOddsListItem.value;
 	const { issueNum: issueNo } = props.lotteryDetail;
+	const { merchantNo: operatorId, userAccount: operatorAccount } = merchantInfo.value;
+
 	const submitData = {
+		lang,
+		operatorId,
+		operatorAccount,
 		token: satoken.value,
 		list: [{ betCount: 1, multiple: 1, betMoney, nums, gameCode, gamePlayCode, issueNo }],
 	};
 	console.log("submitData", submitData);
-	//
-	Common.ResCode.SUCCESS;
 
+	// 3.2 准备好了，发送请求
 	const res = await lotteryApi.betting(submitData);
+	const SUCCESS_CODE = 0; // 这个 code 等需求做完了肯定是要抽出去的。但是现在还找不到项目哪个地方定义了，现已这里先放着
 	const { code, msg } = res;
+	showToast(msg);
 
 	// 这里这个 code 需要特殊判断一下
-	if (code !== Common.ResCode.SUCCESS) {
-		showToast(msg);
+	if (code !== SUCCESS_CODE) {
 		return;
 	}
 
-	getIndexInfo(); // 拉一下用户信息更新一下余额，后面可以考虑做成 ws 推送
+	getIndexInfo({}, { showLoading: false }); // 拉一下用户信息更新一下余额，后面可以考虑做成 ws 推送
 	betFormRef.value.clearForm(); // 成功才清空文本框
 };
 
 onMounted(async () => {
-	// 获取 单个彩种的动态的玩法与赔率信息
-	const res = await lotteryApi.queryGamePlayOddsList(queryGamePlayOddsListParams);
+	// 1. 获取 单个彩种的动态的玩法与赔率信息
+
+	// 1.1 准备一下入参 gameCode lang 两个入参
+	const { gameCode = "" } = route.query;
+	const submitData = { gameCode, isSmp, lang };
+
+	// 1.2 准备好了，发送请求
+	const res = await lotteryApi.queryGamePlayOddsList(submitData);
 	mergedLotteryList.value = mergeLotteryList(lotteryList, res.data) as MergedLotteryList;
+	console.log("mergedLotteryList.value", mergedLotteryList.value);
 });
 </script>
 

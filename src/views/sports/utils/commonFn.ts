@@ -1,20 +1,17 @@
 import Common from "/@/utils/common";
+// import { useLoading } from "/@/directives/loading/hooks";
+import shopCartPubSub from "../hooks/shopCartPubSub";
 // import CommonApi from "/@/api/common";
 import sportsApi from "/@/api/sports/sports";
+import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 // import shopCartPubSub from "/@/views/venueHome/sports/hooks/shopCartPubSub";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
-import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
-// import { useLoading } from "/@/directives/loading/hooks";
-import dayjs from "dayjs";
-import { convertUtcToUtc5AndFormat } from "/@/webWorker/module/utils/formattingChildrenViewData";
-import { computed } from "vue";
-import shopCartPubSub from "../hooks/shopCartPubSub";
 
 // 请求余额信息
-export const getIndexInfo = async () => {
+export const getIndexInfo = async (params = {}, headers = {}) => {
 	const sportsBetInfo = useSportsBetInfoStore();
-	const res = await sportsApi.getIndexInfo().catch((err) => err);
+	const res = await sportsApi.getIndexInfo(params, headers).catch((err) => err);
 	if (res.code == Common.ResCode.SUCCESS) {
 		sportsBetInfo.balance = res.data.totalBalance;
 	}
