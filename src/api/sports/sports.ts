@@ -1,6 +1,6 @@
+import qs from "qs";
 import useAxiosApi from "/@/utils/useAxiosApi";
 import useAxiosSabaApi from "/@/utils/useAxiosSabaApi";
-import qs from "qs";
 
 class SportsApi {
 	/**
@@ -241,6 +241,7 @@ class SportsApi {
 		return useAxiosApi(`/app/user-info/api/getIndexInfo`, {
 			method: "POST",
 			data,
+			headers,
 		});
 	};
 

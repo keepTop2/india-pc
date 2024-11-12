@@ -1,6 +1,8 @@
 import { useWebSocket as useWebSocketFromVueUse, type UseWebSocketReturn } from "@vueuse/core";
+import { computed, ComputedRef } from "vue";
+import { useTimer } from "/@/views/lottery/hooks/useTimer";
 
-interface WebSocketResponseData {
+export interface WebSocketResponseData {
 	categoryCode: string;
 	gameCode: string;
 	gameName: string;
@@ -9,15 +11,19 @@ interface WebSocketResponseData {
 	gameName18n: { [key: string]: string };
 }
 
-interface WebSocketResponseMessage {
+export interface WebSocketResponseMessage {
 	id: number | null;
 	cmd: string;
 	action: string;
 	data: WebSocketResponseData | null;
 }
 
+interface WSReturn<T> extends UseWebSocketReturn<T> {
+	isWsAlive: ComputedRef<boolean>;
+}
+
 interface InstancesMap {
-	[key: string]: UseWebSocketReturn<WebSocketResponseMessage>;
+	[key: string]: WSReturn<WebSocketResponseMessage>;
 }
 
 /**
@@ -27,7 +33,7 @@ interface InstancesMap {
  */
 const BASE_URL = (window as any)["PLATFROM_CONFIG"].developmentLotteryWsURL;
 const instancesMap: InstancesMap = {};
-export function useWebSocket(callback = Function.prototype, baseURL = BASE_URL) {
+export function useWebSocket({ callback = Function.prototype, fallbackFn = Function.prototype, baseURL = BASE_URL }) {
 	let websocketInstance = instancesMap[baseURL];
 
 	if (websocketInstance) {
@@ -36,7 +42,6 @@ export function useWebSocket(callback = Function.prototype, baseURL = BASE_URL) 
 
 	const KEEP_ALIVE = "KEEP_ALIVE";
 	const HEART_BEAT_INTERVAL = 5000;
-	// const { status, data, send, open, close } =
 
 	websocketInstance = instancesMap[baseURL] = useWebSocketFromVueUse(baseURL, {
 		heartbeat: {
@@ -51,7 +56,10 @@ export function useWebSocket(callback = Function.prototype, baseURL = BASE_URL) 
 			retries: 3,
 			delay: HEART_BEAT_INTERVAL,
 			onFailed() {
-				alert("Failed to connect WebSocket after 3 retries");
+				// 兜底方案，wd 挂了，轮询处理
+				console.log("onFailed");
+				const { turnOnTimer } = useTimer(fallbackFn, 5000);
+				turnOnTimer();
 			},
 		},
 		onMessage(ws: WebSocket, event: MessageEvent) {
@@ -62,17 +70,13 @@ export function useWebSocket(callback = Function.prototype, baseURL = BASE_URL) 
 				message = {} as WebSocketResponseMessage;
 			}
 
-			// 这个 if 语句是调试用的，可以删掉没事
-			if (message.id) {
-				console.log("WebSocketResponseMessage", message);
-			}
 			isValidWebSocketMessage(message.id) && callback(message);
 		},
-	});
+	}) as WSReturn<WebSocketResponseMessage>;
 
 	const { status, data, send, open, close } = websocketInstance;
-
-	return { status, data, send, open, close };
+	const isWsAlive = computed(() => status.value === "OPEN");
+	return { status, data, send, open, close, isWsAlive };
 }
 
 /**

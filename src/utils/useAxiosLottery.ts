@@ -1,9 +1,7 @@
 import axios from "axios";
+import { useLoading } from "/@/directive/loading/hooks";
 
-/**s128 服务地址 */
-// https://kss.cfb2.net (沙盒)
-// https://css.digmaan.biz(实时)
-// https://css.sabongderby.com (实时)
+const { startLoading, stopLoading } = useLoading();
 
 // 获取 config 配置请求 api
 function getUrl() {
@@ -17,6 +15,17 @@ function getUrl() {
 	}
 }
 
+//当前正在请求的数量
+let LoadingRequestCount = 0;
+
+//显示 loading
+function showLoading(target: any) {
+	if (LoadingRequestCount === 0) {
+		startLoading();
+	}
+	LoadingRequestCount++;
+}
+
 // 创建 axios 实例
 const instance = axios.create({
 	baseURL: getUrl(),
@@ -27,6 +36,9 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
 	(config) => {
+		if (config.headers.showLoading !== "false") {
+			startLoading();
+		}
 		return config;
 	},
 	(error) => {
@@ -38,11 +50,13 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
 	(response) => {
+		if (response.config.headers.showLoading !== false) {
+			stopLoading();
+		}
 		return response.data;
 	},
 	(error) => {
-		// console.log("请求失败", error);
-		//判断当前请求是否设置了不显示 Loading（不显示自然无需隐藏）
+		stopLoading();
 		return Promise.reject(error);
 	}
 );

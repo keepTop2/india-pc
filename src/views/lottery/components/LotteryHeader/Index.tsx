@@ -1,7 +1,9 @@
-import { computed, defineComponent, watch, toRefs } from "vue";
-import useTimer from "/@/views/lottery/components/Tools/Timer";
-import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import "./index.scss";
+
+import { computed, defineComponent } from "vue";
+
+import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
+import useTimer from "/@/views/lottery/components/Tools/Timer";
 
 // 定义主组件
 export default () => {
@@ -21,12 +23,12 @@ export default () => {
 					<div class="left lottery-card">
 						<div class="lottery-card-box">
 							{/* 彩票卡片内容 */}
-							<Content {...props.data} />
+							<Content data={props.data} />
 							{/* 倒计时组件 */}
-							<TimeGroup {...props.data} />
+							<TimeGroup data={props.data} />
 						</div>
 						{/* 彩票卡片的页脚 */}
-						<Footer {...props.data} />
+						<Footer data={props.data} />
 					</div>
 
 					{/* 右侧部分，展示彩票信息图片 */}

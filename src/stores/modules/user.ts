@@ -104,7 +104,6 @@ export const useUserStore = defineStore("User", {
 		},
 		// 设置用户信息
 		setUserGlobalSetInfo(info: Object) {
-			console.log("info", info);
 			this.userGlobalSetInfo = info;
 		},
 		// 更新用户信息
@@ -169,7 +168,6 @@ export const useUserStore = defineStore("User", {
 			// 设置收藏的游戏
 			collectGamesStore.setCollectGamesList();
 			const res = await userApi.getIndexInfo().catch((err) => err);
-			console.log("getIndexInfo", res);
 			const { code, data, message } = res;
 			if (code === Common.ResCode.SUCCESS) {
 				const userInfo = { ...this.getUserInfo, ...data };
