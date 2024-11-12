@@ -15,14 +15,14 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 import { lotteryApi } from "/@/api/lottery";
+import { useUserStore } from "/@/stores/modules/user";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
 import { useUpdateThirdPartyTokenTimer } from "/@/views/lottery/hooks/useFetchThirdPartyTimer";
 import { useTab } from "/@/views/lottery/hooks/useTab";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
-import { useRoute } from "vue-router";
-import { useUserStore } from "/@/stores/modules/user";
-import { langMaps, DEFAULT_LANG } from "/@/views/lottery/views/category/kuaisan/components/playsConfig";
+import { DEFAULT_LANG, langMaps } from "/@/views/lottery/views/category/kuaisan/components/playsConfig";
 
 const BayLottery = defineAsyncComponent(() => import("./components/bayLottery.vue"));
 const Result = defineAsyncComponent(() => import("./components/result.vue"));
@@ -69,7 +69,6 @@ onMounted(async () => {
 	// 3.2 准备好了，发送请求
 	const res = await lotteryApi.beginPageData(submitData);
 	lotteryDetail.value = (res.data || []).shift() || {}; // 有时候会有两条数据，始终取下标为 0 的那一条数据
-	console.log("lotteryDetail.value", lotteryDetail.value);
 });
 
 onBeforeUnmount(turnOffTimer);

@@ -1,11 +1,11 @@
+import EncryptionFn from "/@/utils/encryption";
+import ResCode from "./resCode";
 import axios from "axios";
 import { debounce } from "lodash-es";
 import showToast from "../hooks/useToast";
-import ResCode from "./resCode";
 import { useLoading } from "/@/directive/loading/hooks";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
-import EncryptionFn from "/@/utils/encryption";
 
 // import { useRequestError } from "/@/hooks/requestError";
 
@@ -62,7 +62,6 @@ instance.interceptors.request.use(
 	(config) => {
 		//判断当前请求头是否设置了不显示 Loading，没有设置则默认加载
 		if (config.headers.showLoading !== false) {
-			console.log("config.headers.showLoading", config.headers.showLoading);
 			showLoading(config.headers.loadingTarget);
 		}
 		const UserStore = useUserStore();

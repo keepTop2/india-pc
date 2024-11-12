@@ -226,7 +226,6 @@ onMounted(async () => {
 	// 1.2 准备好了，发送请求
 	const res = await lotteryApi.queryGamePlayOddsList(submitData);
 	mergedLotteryList.value = mergeLotteryList(lotteryList, res.data) as MergedLotteryList;
-	console.log("mergedLotteryList.value", mergedLotteryList.value);
 });
 </script>
 
