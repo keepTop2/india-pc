@@ -45,7 +45,7 @@
 				<div class="title mt_20">{{ $t(`wallet['收款信息']`) }}</div>
 				<div class="form_container">
 					<!-- 动态表单 -->
-					<div class="form_main" v-okLoading="loadingShow">
+					<div class="form_main">
 						<component ref="childRef" :is="componentsMapsName[withdrawWayData?.withdrawTypeCode]" :withdrawWayData="withdrawWayData" :withdrawWayConfig="withdrawWayConfig" />
 					</div>
 					<div class="tips">
@@ -141,7 +141,7 @@
 		</Card>
 	</div>
 	<!-- 交易密码弹窗 -->
-	<PassWordDialog v-model:modelValue="passWordShow" v-model:password="state.withdrawPassWord" @confirm="onTransactionPasswordEntered"></PassWordDialog>
+	<PassWordDialog :dialogType="dialogType" v-model:modelValue="passWordShow" v-model:password="state.withdrawPassWord" @confirm="onTransactionPasswordEntered"></PassWordDialog>
 </template>
 
 <script setup lang="ts">
@@ -214,7 +214,7 @@ const exchangeRate = ref(0); // 预计到账金额
 
 const passWordShow = ref(false);
 
-const loadingShow = ref(false);
+// const loadingShow = ref(false);
 
 const captchaButton = ref<{
 	startCountdown: () => void;
@@ -466,13 +466,13 @@ const getRechargeWayList = async () => {
 
 // 获取通道配置
 const getWithdrawConfig = async () => {
-	loadingShow.value = true;
+	// loadingShow.value = true;
 	withdrawWayConfig.value = {};
 	const params = {
 		withdrawWayId: withdrawWayData.value.id,
 	};
 	const res = await walletApi.getWithdrawConfig(params).catch((err) => err);
-	loadingShow.value = false;
+	// loadingShow.value = false;
 	if (res.code === common.ResCode.SUCCESS) {
 		withdrawWayConfig.value = res.data;
 	}
@@ -641,7 +641,7 @@ const clearParams = () => {
 
 		.form_main {
 			width: 100%;
-			min-height: 40px;
+			// min-height: 40px;
 			background-color: var(--Bg-1);
 		}
 

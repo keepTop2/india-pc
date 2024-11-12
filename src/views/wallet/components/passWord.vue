@@ -18,7 +18,7 @@
 				<!-- 确认按钮 -->
 				<div class="button" @click="handleConfirm">{{ $t('wallet["立即提款"]') }}</div>
 				<div class="tips">
-					<span class="curp" @click="router.push('/user/security_center')">{{ $t('wallet["忘记密码"]') }}</span>
+					<span class="curp" @click="goto">{{ $t('wallet["忘记密码"]') }}</span>
 				</div>
 			</div>
 		</CommonDialog>
@@ -28,13 +28,22 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import pubsub from "/@/pubSub/pubSub";
 
 // 路由和 props 定义
 const router = useRouter();
-const props = defineProps<{
-	modelValue?: boolean;
-	password?: string;
-}>();
+const props = withDefaults(
+	defineProps<{
+		dialogType?: boolean;
+		modelValue?: boolean;
+		password?: string;
+	}>(),
+	{
+		dialogType: false, // 设置默认值为 false
+		modelValue: false, // 设置默认值为 false
+		password: "", // 设置默认值为空字符串
+	}
+);
 
 // 事件 emit 定义
 const emit = defineEmits<{
@@ -53,6 +62,14 @@ watch(
 		password.value = newPassword || "";
 	}
 );
+
+const goto = () => {
+	if (props.dialogType) {
+		// 关闭钱包弹窗
+		pubsub.publish("closeWalletDialog");
+	}
+	router.push("/user/security_center");
+};
 
 // 监听输入框变化
 function onPasswordInput() {
