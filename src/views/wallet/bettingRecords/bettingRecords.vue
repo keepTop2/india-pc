@@ -102,7 +102,7 @@
 						<!-- 输赢金额 -->
 						<el-table-column v-else-if="item.label == '输赢金额'" :label="item.label" :prop="item.props" align="center">
 							<template #default="{ row }">
-								<div v-if="row.winLossAmount" :style="{ color: String(row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
+								<div v-if="row.orderClassify" :style="{ color: String(row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
 									{{ String(row.winLossAmount).indexOf("-") > -1 ? row.winLossAmount : "+" + row.winLossAmount }} CNY
 								</div>
 								<div v-else>-</div>
@@ -158,7 +158,6 @@ const maxDate = today.add(0, "day").format("YYYY/MM/DD");
 const activityReceiveStatusOptions: any = ref([]);
 const welfareCenterRewardTypeOptions = ref<{ text: string; value: string }[]>([]);
 const tzAmount = ref(0);
-const winOrLoseAmount = ref(0);
 const tableData: any = ref([]);
 const pageData = reactive({
 	totalSize: "",
@@ -220,7 +219,7 @@ const pageQuery = (type?: boolean) => {
 	welfareCenterApi.tzPageQuery(data).then((res) => {
 		if (!res.data) return;
 		totalVO.value = res.data.totalVO;
-    console.log("=>(bettingRecords.vue:223) totalVO", totalVO);
+		console.log("=>(bettingRecords.vue:223) totalVO", totalVO);
 
 		let rows = res.data[fieldMap[params.venueType]];
 
@@ -236,19 +235,14 @@ const pageQuery = (type?: boolean) => {
 			return a + b.betAmount;
 		}, 0);
 
-		winOrLoseAmount.value = tableData.value
-			.reduce((a: any, b: any) => {
-				return a + b.winLossAmount;
-			}, 0)
-			?.toFixed(2);
-
 		tableData.value.forEach((item: any) => {
 			if (item.betAmount) {
 				item.betAmount = item.betAmount.toFixed(2);
 			} else {
 				item.betAmount = "";
 			}
-			if (item.winLossAmount) {
+			// 0被判定成false了 0也为true
+			if (typeof item.winLossAmount === "number") {
 				item.winLossAmount = item.winLossAmount.toFixed(2);
 			} else {
 				item.winLossAmount = "";
