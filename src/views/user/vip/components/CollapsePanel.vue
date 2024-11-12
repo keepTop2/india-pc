@@ -125,7 +125,7 @@ const handleClick = () => {
 			gap: 3px;
 		}
 	}
-	.cell:nth-child(odd) {
+	.cell:nth-child(even) {
 		background: var(--Bg-2);
 	}
 }

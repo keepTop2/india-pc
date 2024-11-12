@@ -25,7 +25,7 @@
 				<div>
 					<ImgUpload :files="files" :max="3" @update:files="updateFiles" />
 				</div>
-				<div class="Text2_1 mt_10 mb_40">最大不超过5 M，最多3张， 支持格式：jpg.png.jpeg</div>
+				<div class="Text2_1 mt_10 mb_40"></div>
 				<Button class="common_btn" @click="onSubmit" :disabled="disabledBtn">提交</Button>
 			</div>
 		</div>

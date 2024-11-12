@@ -48,7 +48,7 @@
 				</div>
 				<div class="activityContentFooter" />
 			</div>
-			<div class="activityContent" v-if="activityData?.winnerList.length > 1">
+			<div class="activityContent" v-if="activityData?.winnerList.length > 0">
 				<div class="activityContentHeader">
 					<div class="flex-center">
 						<img src="../image/activityContentHeaderLeft.svg" alt="" />
