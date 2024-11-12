@@ -33,16 +33,16 @@
 					<div>
 						<span>
 							<span style="color: var(--light-ok-Text-2-1, #656e78)">共计: </span>
-							{{ tableData.length || 0 }} 笔投入
+							{{ totalVO.betNum }} 笔投入
 						</span>
 						<span class="ml_20">
 							<span>投注金额：</span>
-							{{ tzAmount || 0 }} {{ "CNY" || pageData.mainCurrency }}
+							{{ totalVO.betAmount }} CNY
 						</span>
 						<span class="ml_20">
 							<span style="color: var(--light-ok-Text-2-1, #656e78)">输赢金额：</span>
-							<span :class="[String(winOrLoseAmount).indexOf('-') > -1 ? 'lose_color' : 'win_color']"
-								>{{ String(winOrLoseAmount).indexOf("-") > -1 ? winOrLoseAmount : "+" + winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span
+							<span :class="[String(totalVO.winLoseAmount).indexOf('-') > -1 ? 'lose_color' : 'win_color']"
+								>{{ String(totalVO.winLoseAmount).indexOf("-") > -1 ? totalVO.winLoseAmount : "+" + totalVO.winLoseAmount || 0 }} CNY</span
 							>
 						</span>
 					</div>
@@ -197,6 +197,12 @@ onMounted(() => {
 	getDownBox();
 	pageQuery(true);
 });
+
+const totalVO = ref({
+	betAmount: 0,
+	winLoseAmount: 0,
+	betNum: 0,
+});
 const pageQuery = (type?: boolean) => {
 	if (!type) {
 		params.betStartTime = dayjs(new Date(range.start)).startOf("day").valueOf();
@@ -213,6 +219,9 @@ const pageQuery = (type?: boolean) => {
 
 	welfareCenterApi.tzPageQuery(data).then((res) => {
 		if (!res.data) return;
+		totalVO.value = res.data.totalVO;
+    console.log("=>(bettingRecords.vue:223) totalVO", totalVO);
+
 		let rows = res.data[fieldMap[params.venueType]];
 
 		tableData.value = rows.records || rows;
