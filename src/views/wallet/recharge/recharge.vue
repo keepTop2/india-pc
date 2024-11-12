@@ -260,8 +260,9 @@ const onRechargeWay = (item: rechargeWayDataRootObject) => {
 
 // 点击充值
 const onRecharge = async () => {
+	console.log("rechargeWayData.value.id", rechargeWayData.value.id);
 	const params = {
-		depositWayId: rechargeConfig.value.rechargeWayId,
+		depositWayId: rechargeWayData.value.id,
 		amount: requestParams.amount,
 	} as {
 		depositName?: string;
