@@ -74,7 +74,6 @@ export function useBet(
 		const language = userStore.getLang;
 		const lang = (langMaps as any)[language] || DEFAULT_LANG;
 
-		console.log("issueNo", issueNo);
 		const submitData = {
 			lang,
 			operatorId,
@@ -82,7 +81,6 @@ export function useBet(
 			token: satoken.value,
 			list: [{ betCount: 1, multiple: 1, betMoney, nums, gameCode, gamePlayCode, issueNo }],
 		};
-		console.log("submitData", submitData);
 
 		// 2.2 准备好了，发送请求
 		const res = await lotteryApi.betting(submitData);

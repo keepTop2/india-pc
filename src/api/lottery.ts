@@ -28,8 +28,6 @@ export const lotteryApi = {
 	 * @param
 	 */
 	betting: (data = {}, headers = { showLoading: true }) => {
-		console.log("data", data);
-		console.log("headers", headers);
 		return useAxiosLottery(`/openApi/v2/Bet/betting`, {
 			method: "POST",
 			data,
