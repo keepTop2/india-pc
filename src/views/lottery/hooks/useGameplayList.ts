@@ -3,11 +3,11 @@ import { useRoute } from "vue-router";
 import { lotteryApi } from "/@/api/lottery";
 import { useUserStore } from "/@/stores/modules/user";
 import { DEFAULT_LANG, isSmp, langMaps } from "/@/views/lottery/constant/index";
-import { type LotteryList, type MergedLotteryList } from "/@/views/lottery/types/index";
-import { mergeLotteryList } from "/@/views/lottery/utils/mergeLotteryList";
+import { type GameplayList, type MergedGameplayList } from "/@/views/lottery/types/index";
+import { mergeGameplayList } from "/@/views/lottery/utils/mergeGameplayList";
 
-export function useLotteryList(lotteryList: LotteryList) {
-	const mergedLotteryList = ref<MergedLotteryList>([]); // 合并后的玩法列表
+export function useGameplayList(gameplayList: GameplayList) {
+	const mergedGameplayList = ref<MergedGameplayList>([]); // 合并后的玩法列表
 	const route = useRoute();
 	const userStore = useUserStore();
 
@@ -23,10 +23,10 @@ export function useLotteryList(lotteryList: LotteryList) {
 
 		// 1.2 准备好了，发送请求
 		const res = await lotteryApi.queryGamePlayOddsList(submitData);
-		mergedLotteryList.value = mergeLotteryList(lotteryList, res.data) as MergedLotteryList;
+		mergedGameplayList.value = mergeGameplayList(gameplayList, res.data) as MergedGameplayList;
 	}
 
 	onMounted(queryGamePlayOddsList);
 
-	return { mergedLotteryList };
+	return { mergedGameplayList };
 }

@@ -20,8 +20,8 @@ export interface OddsListItem {
 }
 export type OddsList = OddsListItem[];
 
-// 玩法的大类，不导出使用，给下面的 LotteryItem 和 DynamicLotteryItem 使用的
-interface BaseLotteryItem {
+// 玩法的大类，不导出使用，给下面的 GameplayItem 和 DynamicGameplayItem 使用的
+interface BaseGameplayItem {
 	id: string;
 	gamePlayName: string;
 	desc: string;
@@ -31,19 +31,19 @@ interface BaseLotteryItem {
 	maxLimit?: number;
 }
 
-export interface LotteryItem extends BaseLotteryItem {
+export interface GameplayItem extends BaseGameplayItem {
 	gamePlayCodes: string[];
 }
 
-export interface DynamicLotteryItem extends BaseLotteryItem {
+export interface DynamicGameplayItem extends BaseGameplayItem {
 	gamePlayCode: string;
 }
 
-export interface MergedLotteryItem extends LotteryItem, DynamicLotteryItem {}
+export interface MergedGameplayItem extends GameplayItem, DynamicGameplayItem {}
 
-export type LotteryList = LotteryItem[]; // 本地的玩法列表
-export type DynamicLotteryList = DynamicLotteryItem[]; // 接口返回的玩法列表
-export type MergedLotteryList = MergedLotteryItem[]; // 合并后的玩法列表
+export type GameplayList = GameplayItem[]; // 本地的玩法列表
+export type DynamicGameplayList = DynamicGameplayItem[]; // 接口返回的玩法列表
+export type MergedGameplayList = MergedGameplayItem[]; // 合并后的玩法列表
 
 export interface LotteryDetail {
 	id: string;

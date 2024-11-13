@@ -126,7 +126,7 @@ const { Collection } = useHeaderTools(props.events);
 .card-list-item {
 	width: calc((100% - 36px) / 3);
 	height: 100%;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	border-radius: 12px;
 	padding: 16px 12px;
 	header {
@@ -144,7 +144,7 @@ const { Collection } = useHeaderTools(props.events);
 		}
 		.name {
 			width: 100%;
-			color: var(--Text1);
+			color: var(--Text-1);
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -170,7 +170,7 @@ const { Collection } = useHeaderTools(props.events);
 		height: 20px;
 		line-height: 20px;
 		margin-top: 8px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		margin-bottom: 24px;
 	}
 	.sport-team-info {
@@ -194,7 +194,7 @@ const { Collection } = useHeaderTools(props.events);
 				overflow: hidden;
 				text-overflow: ellipsis;
 				font-size: 20px;
-				color: var(--Text_a);
+				color: var(--Text-a);
 				padding-left: 12px;
 			}
 			.score {
@@ -205,7 +205,7 @@ const { Collection } = useHeaderTools(props.events);
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				color: var(--Text_a);
+				color: var(--Text-a);
 				font-family: "DIN Alternate";
 				font-size: 18px;
 				font-weight: 700;
@@ -222,7 +222,7 @@ const { Collection } = useHeaderTools(props.events);
 		text-align: center;
 		margin-top: 20px;
 		cursor: pointer;
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-size: 16px;
 	}
 	.markets {
@@ -233,7 +233,7 @@ const { Collection } = useHeaderTools(props.events);
 			}
 		}
 		&-item-title {
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-size: 16px;
 			margin-bottom: 8px;
 		}
@@ -265,7 +265,7 @@ const { Collection } = useHeaderTools(props.events);
 				border-radius: 2px;
 
 				.label {
-					color: var(--Text_a);
+					color: var(--Text-a);
 				}
 				.market-item {
 					position: relative;
@@ -276,14 +276,14 @@ const { Collection } = useHeaderTools(props.events);
 					justify-content: space-between;
 					padding: 6px;
 					border-radius: 4px;
-					background: var(--Bg3);
+					background: var(--Bg-3);
 					box-sizing: border-box;
 					&:hover {
 						background-color: var(--betselector-hover-bg);
 					}
 					.label {
 						max-width: 60%;
-						color: var(--Text1);
+						color: var(--Text-1);
 						font-family: PingFang SC;
 						font-size: 12px;
 						font-weight: 400;
@@ -293,7 +293,7 @@ const { Collection } = useHeaderTools(props.events);
 					}
 					.value {
 						position: relative;
-						color: var(--Text_a);
+						color: var(--Text-a);
 
 						font-size: 18px;
 						font-weight: 400;
@@ -302,7 +302,7 @@ const { Collection } = useHeaderTools(props.events);
 						}
 					}
 					.noData {
-						color: var(--Text1);
+						color: var(--Text-1);
 					}
 				}
 			}
