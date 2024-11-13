@@ -30,10 +30,6 @@ import crypto_point from "./img/crypto_point.png";
 import crypto_btn from "./img/crypto_btn.png";
 import spinBG from "./img/spin_bg.png";
 import spinBorder from "./img/spin-img-border.png";
-import { activityApi } from "/@/api/activity";
-import showToast from "/@/hooks/useToast";
-import Common from "/@/utils/common";
-import { useUserStore } from "/@/stores/modules/user";
 
 const lightActive = ref(false);
 const spinning = ref(false);

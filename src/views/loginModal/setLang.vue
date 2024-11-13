@@ -2,13 +2,7 @@
 <template>
 	<div class="loginWrapper">
 		<div class="title">语言切换</div>
-		<div class="search-component" ref="resultList">
-			<!-- 搜索框 -->
-			<div class="search_icon">
-				<svg-icon name="search" size="18px"></svg-icon>
-			</div>
-			<input type="text" v-model="searchQuery" placeholder="搜索" class="search-input" />
-		</div>
+
 		<div class="langList">
 			<div v-for="item in userStore.getLangList" class="flex_space-between langItem" :class="userStore.getLang == item.code ? 'active' : ''" @click="setLang(item.code)">
 				<span>
@@ -42,9 +36,9 @@ const filteredResults = computed(() => {
 <style lang="scss" scoped>
 .loginWrapper {
 	width: 412px;
-	height: 720px;
+	height: 547px;
 	border-radius: 12px;
-	background: var(--Bg);
+	background: var(--Bg-1);
 	.langList {
 		overflow-y: auto;
 		height: calc(100% - 130px);

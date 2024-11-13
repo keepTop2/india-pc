@@ -17,7 +17,7 @@
 						@blur="searchinputFocus = false"
 					/>
 					<div class="close_icon curp" v-if="searchQuery">
-						<svg-icon name="close" size="18px" @click="searchQuery = ''" v-hover-svg></svg-icon>
+						<svg-icon name="common-close" size="18px" @click="searchQuery = ''" v-hover-svg></svg-icon>
 					</div>
 				</div>
 				<div class="tabs curp">

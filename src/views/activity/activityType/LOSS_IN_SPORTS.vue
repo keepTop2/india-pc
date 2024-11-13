@@ -87,11 +87,7 @@ const showCommonDialog = ref(false);
 const showNeedLogin = ref(false);
 const apply = () => {
 	activityApi.getToActivity({ id: activityData.value.id }).then((res: any) => {
-		if (res.code === 10007) {
-			showNeedLogin.value = true;
-			return;
-		}
-		if (res.code.status !== 10000) {
+		if (String(res.data.status).slice(0, 2) == "13") {
 			dialogInfo.value = res.data;
 			showCommonDialog.value = true;
 		} else {

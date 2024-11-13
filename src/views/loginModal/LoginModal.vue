@@ -1,5 +1,8 @@
 <template>
-	<div class="loginWrapper">
+	<div class="loginWrapper"  
+		:style="{backgroundImage:`url(${headerBg}),url(${Common.getThemeImgPath('bottomBg.png')})` }"
+	
+	>
 		<div class="login_right_form">
 			<!-- 登录标题 -->
 			<div class="login_text fs_24 mb_27">
@@ -212,8 +215,7 @@ const toRegister = () => {
 	width: 436px;
 	height: 542px;
 	border-radius: 12px;
-
-	background-image: url("./image/headerBg.png"), url("./image/bottomBg.png");
+	// background-image: url("./image/headerBg.png"), url("./image/bottomBg.png");
 	background-repeat: no-repeat no-repeat;
 	background-size: 100% auto, 320px;
 	background-position: top, bottom left;

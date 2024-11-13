@@ -4,7 +4,7 @@
 			<div class="header">
 				<div class="title">消息中心</div>
 				<div class="close" @click="messageCenterVisible = false">
-					<svg-icon name="close" size="20px" />
+					<svg-icon name="common-close" size="20px" />
 				</div>
 			</div>
 			<div class="content">

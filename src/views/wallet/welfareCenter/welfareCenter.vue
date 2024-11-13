@@ -40,10 +40,10 @@
 					<div class="tr theader">
 						<div class="td" style="width: 25%">订单号</div>
 						<div class="td" style="width: 15%">类型</div>
-						<div class="td" style="width: 15%">名称</div>
+						<div class="td" style="width: 14%">名称</div>
 						<div class="td" style="width: 13%">奖励</div>
-						<div class="td" style="width: 20%">时间</div>
-						<div class="td" style="width: 12%">操作</div>
+						<div class="td" style="width: 18%">时间</div>
+						<div class="td" style="width: 15%">操作</div>
 					</div>
 					<div class="tbody">
 						<div class="tr" v-for="item in tableData">
@@ -53,12 +53,13 @@
 								<svg-icon name="copy" size="16px" @click="common.copy(item.orderNo)"></svg-icon>
 							</div>
 							<div class="td Text1" style="width: 15%" @click="showDetails(item)">{{ item.welfareCenterRewardTypeText }}</div>
-							<div class="td Text1" style="width: 15%" @click="showDetails(item)">{{ item.detailType }}</div>
+							<div class="td Text1" style="width: 14%" @click="showDetails(item)">{{ item.detailType }}</div>
 
 							<div class="td Text_s" style="width: 13%" @click="showDetails(item)">{{ item.amount }}{{ item.currencyCode }}</div>
-							<div class="td Text1" style="width: 20%" @click="showDetails(item)">{{ dayjs(item.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
-							<div class="td" style="width: 12%">
+							<div class="td Text1" style="width: 18%" @click="showDetails(item)">{{ dayjs(item.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
+							<div class="td" style="width: 15%; flex-direction: column">
 								<span class="btn curp" :class="'status' + item.receiveStatus" @click="handleReceive(item)">{{ receiveStatus[item.receiveStatus] }}</span>
+								<div class="fs_11 Text1" v-if="item.receiveStatus == 0 && item.expiryTimeRemaining">{{ Common.formatTimestamp(item.expiryTimeRemaining) }}后过期</div>
 							</div>
 						</div>
 					</div>
@@ -115,6 +116,7 @@ import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
 import showToast from "/@/hooks/useToast";
 import common from "/@/utils/common";
+import Common from "/@/utils/common";
 const showDatePicker = ref(false);
 
 const params: any = reactive({
@@ -263,7 +265,7 @@ const handleQuery = () => {
 	}
 	.btn {
 		background: var(--Theme);
-		padding: 6px 20px;
+		padding: 8px 20px;
 		border-radius: 6px;
 		color: var(--Text-a);
 		display: flex;
@@ -300,11 +302,16 @@ const handleQuery = () => {
 		justify-content: space-around;
 		border-bottom: 1px solid var(--Line-2);
 		height: 50px;
-		line-height: 50px;
+		align-items: center;
+		// line-height: 50px;
 		font-size: 14px;
 		.td {
 			text-align: center;
 			width: 100%;
+			height: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			border-right: 1px solid var(--Line-2);
 		}
 		.td:last-child {
@@ -324,7 +331,7 @@ const handleQuery = () => {
 		}
 		.btn {
 			border-radius: 4px;
-			padding: 6px 17px;
+			padding: 2px 17px;
 			font-size: 12px;
 		}
 		.status0 {

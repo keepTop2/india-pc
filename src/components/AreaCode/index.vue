@@ -9,7 +9,7 @@
 			<div class="flex_space-between input">
 				<svg-icon name="search" size="14px" color="#fff" />
 				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`login['搜索国家和地区']`)" class="search-input common_input" />
-				<svg-icon name="close" size="14px" @click="searchQuery = ''" color="#fff" />
+				<svg-icon name="common-close" size="14px" @click="searchQuery = ''" color="#fff" />
 			</div>
 			<div class="line"></div>
 			<ul class="options-list">

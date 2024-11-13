@@ -1,5 +1,5 @@
 <template>
-	<div class="vipWrapper" v-ok-loading="loading">
+	<div class="vipWrapper" v-ok-loading="loading" :style="{ background: `url(${Common.getThemeImgPath('vip_bg.png')}) no-repeat 100% 100%` }">
 		<div class="Header">
 			<div class="title">
 				{{ "VIP俱乐部" }}
@@ -57,6 +57,7 @@ import rankTextIcon3 from "./image/rankTextIcon3.png";
 import rankTextIcon4 from "./image/rankTextIcon4.png";
 import rankTextIcon5 from "./image/rankTextIcon5.png";
 import { useRouter } from "vue-router";
+import Common from "/@/utils/common";
 const router = useRouter();
 const vipInfo: any = ref({});
 const vipRankList: any = ref([]);
@@ -107,9 +108,9 @@ onMounted(() => {
 .vipWrapper {
 	width: 534px;
 	max-height: 80vh;
-	background: url("./image/bg.png") no-repeat;
 	background-size: 100% 100%;
 	padding-bottom: 20px;
+	border-radius: 12px;
 	.Header {
 		position: relative;
 		margin-bottom: 5px;
@@ -118,7 +119,7 @@ onMounted(() => {
 			padding-bottom: 20px;
 			width: 100%;
 			text-align: center;
-			color: var(--Text-s);
+			color: var(--Text-a);
 			font-size: 20px;
 			background: url("./image/header_bg.png") center no-repeat;
 			background-size: 366px 34px;
@@ -185,7 +186,7 @@ onMounted(() => {
 				height: 64px;
 				margin: 0 30px;
 				border-radius: 12px;
-				background: linear-gradient(90deg, #353a3e 0%, #2c2d2e 100%);
+				background: var(--vipRankItemBg);
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -214,7 +215,7 @@ onMounted(() => {
 
 			line-height: 46px;
 			border-radius: 12px;
-			background: linear-gradient(90deg, #353a3e 0%, #2c2d2e 100%);
+			background: var(--vipRankItemBg);
 			img {
 				margin-right: 10px;
 				width: 4px;
