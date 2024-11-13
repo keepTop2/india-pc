@@ -39,7 +39,7 @@ const props = defineProps({
 
 // svg icon引入的格式
 const symbolId = computed(() => {
-	if (props.name.slice(0, 6) === "common") {
+	if (props.name?.slice(0, 6) === "common") {
 		return `#${props.name}${props.hover == props.name ? "_on" : ""}`;
 	} else {
 		return `#${themesStore.getTheme}-${props.name}${props.hover == props.name ? "_on" : ""}`;
