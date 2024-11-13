@@ -16,7 +16,7 @@ export const lotteryApi = {
 	 * @description 根据 gameCode 查询玩法与赔率信息
 	 * @param data 的字段举例 { lang: "zh", isSmp: 1, gameCode: "5FK3" }
 	 */
-	queryGamePlayOddsList: (data = {}, headers = {}) => {
+	queryGamePlayOddsList: (data = {}, headers = { showLoading: true }) => {
 		return useAxiosLottery(`/openApi/v2/game/queryGamePlayOddsList`, {
 			method: "POST",
 			data,
@@ -31,7 +31,10 @@ export const lotteryApi = {
 		return useAxiosLottery(`/openApi/v2/Bet/betting`, {
 			method: "POST",
 			data,
-			headers: { showLoading: true, needLogin: true },
+			headers: {
+				...headers,
+				needLogin: true,
+			},
 		});
 	},
 	/**

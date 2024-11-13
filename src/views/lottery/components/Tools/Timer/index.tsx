@@ -3,9 +3,10 @@ import "./index.scss";
 import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
 
 import SvgIcon from "/@/components/svgIcon/index.vue";
+import { BEGIN_PAGE_DATA_INTERVAL } from "/@/views/lottery/constant/index";
 
 // 定义定时器组件
-export default (props?: any) => {
+export default (props?: any, callback = Function.prototype) => {
 	const state = reactive({
 		time: props?.value?.seconds || 0, // 当前剩余时间（秒）
 		hours: 0, // 小时
@@ -13,6 +14,15 @@ export default (props?: any) => {
 		seconds: 0, // 秒
 		isRunning: false, // 定时器是否正在运行
 	});
+
+	const isAllowed = computed(() => {
+		return [state.hours, state.minutes, state.seconds].some((v) => v > 0);
+	});
+
+	watch(
+		() => isAllowed.value,
+		(newValue) => !newValue && setTimeout(callback, BEGIN_PAGE_DATA_INTERVAL)
+	);
 
 	// animationFrameId 用来存储动画帧的 ID，方便取消定时
 	const animationFrameId = ref<number | null>(null);
@@ -150,9 +160,6 @@ export default (props?: any) => {
 			data: { type: Object, default: () => ({}) },
 		},
 		setup(props, { attrs }) {
-			const isAllowed = computed(() => {
-				return [state.hours, state.minutes, state.seconds].some((v) => v > 0);
-			});
 			return () => (
 				<div className="lottery-time-group">
 					<div>
