@@ -1,11 +1,11 @@
-import EncryptionFn from "/@/utils/encryption";
-import ResCode from "./resCode";
 import axios from "axios";
 import { debounce } from "lodash-es";
 import showToast from "../hooks/useToast";
+import ResCode from "./resCode";
 import { useLoading } from "/@/directive/loading/hooks";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
+import EncryptionFn from "/@/utils/encryption";
 
 // import { useRequestError } from "/@/hooks/requestError";
 
@@ -131,10 +131,8 @@ instance.interceptors.response.use(
 	(error) => {
 		console.log("请求失败", error);
 		//判断当前请求是否设置了不显示 Loading（不显示自然无需隐藏）
-		if (error.config.headers.showLoading !== false) {
-			hideLoading();
-		}
-		showToast(error.message);
+		hideLoading();
+		error && showToast(error.message);
 		// ElMessage.error(error.message);
 		return Promise.reject(error);
 	}

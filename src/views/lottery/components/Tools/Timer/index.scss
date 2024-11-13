@@ -65,8 +65,15 @@
 	}
 	.bet-status {
 		text-align: right;
-		color: var(--F-2);
+
 		font-size: 14px;
+
+		.allowed {
+			color: var(--F-2);
+		}
+		.not-allowed {
+			color: var(--F-1);
+		}
 	}
 	.lottery-clock-time {
 		margin-top: 17px;

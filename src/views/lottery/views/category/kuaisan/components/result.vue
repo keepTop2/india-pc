@@ -10,15 +10,15 @@
 			<el-table :data="tableData" border :row-class-name="'row-cell'" header-cell-class-name="table-header-cell" :highlight-current-row="false">
 				<!-- 发行数量 -->
 				<el-table-column :label="$t(`lottery['发行数量']`)" align="left" :resizable="false">
-					<template #default="{ row, column, $index }">
+					<template #default="{ row }">
 						<div class="serial-number">{{ row.issueNum }}</div>
 					</template>
 				</el-table-column>
 				<!-- 中奖号码 -->
 				<el-table-column :label="$t(`lottery['中奖号码']`)" align="right" :resizable="false">
-					<template #default="{ row, column, $index }">
+					<template #default="{ row }">
 						<div class="balls">
-							<Dice size="30px" :type="item === 1 ? 2 : 1" :points="item" v-for="(item, index) in row.balls" :key="index" />
+							<Dice size="30px" :type="item === 1 ? 2 : 1" :points="item" v-for="(item, index) in formatLotteryNum(row.lotteryNum)" :key="index" />
 						</div>
 					</template>
 				</el-table-column>
@@ -30,13 +30,14 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from "vue";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { lotteryApi } from "/@/api/lottery";
 import { Pagination } from "/@/components/Pagination";
 import { useUserStore } from "/@/stores/modules/user";
 import useDice from "/@/views/lottery/components/Tools/Dice/Index";
 import { DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
+import { usePagination } from "/@/views/lottery/hooks/usePagination";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 
 interface TableDataItem {
@@ -48,43 +49,25 @@ interface TableDataItem {
 	lotteryNum: string;
 	startTime: number;
 	state: number;
-	balls: number[];
 }
 
 type TableData = TableDataItem[];
 
 const { Dice } = useDice();
-const options = [
-	{ label: "排序: 抽奖时间升序", value: 1 },
-	{ label: "排序: 抽奖时间降序", value: 0 },
-];
-const selectValue = ref(0);
-const tableData = ref<TableData>([]);
-const pagination = reactive({
-	pageNumber: 1,
-	pageSize: 10,
-	total: tableData.value.length,
-});
-
-const handleChange = (lotteryTimeSort: number) => {
-	issueHistory({ lotteryTimeSort });
-	resetPageNumber();
-};
-const sizeChange = (size: number) => {
-	issueHistory({ size });
-	resetPageNumber();
-};
-const pageChange = (page: number) => {
-	issueHistory({ page });
-};
-
 const userStore = useUserStore();
 const { merchantInfo } = useLoginGame();
 const route = useRoute();
 
-function resetPageNumber() {
-	pagination.pageNumber = 1;
-}
+// issueHistory 这个回调函数涉及业务，因此要传入处理
+const { pagination, handleChange, sizeChange, pageChange } = usePagination(issueHistory);
+
+const options = [
+	{ label: "排序: 抽奖时间升序", value: 1 },
+	{ label: "排序: 抽奖时间降序", value: 0 },
+];
+
+const selectValue = ref(0);
+const tableData = ref<TableData>([]);
 
 async function issueHistory({ lotteryTimeSort = 0, page = 1, size = 10 } = {}) {
 	// 准备入参
@@ -98,11 +81,11 @@ async function issueHistory({ lotteryTimeSort = 0, page = 1, size = 10 } = {}) {
 	// 发送请求
 	const res = await lotteryApi.issueHistory(submitData);
 	const { records = [], total = 0 } = res.data || {};
-	tableData.value = records.map((v: TableDataItem) => {
-		return { ...v, balls: (v.lotteryNum || "").split(" ").map((v) => +v) };
-	}) as TableData;
+	tableData.value = records;
 	pagination.total = total;
 }
 
-onMounted(issueHistory);
+function formatLotteryNum(lotteryNum = "") {
+	return lotteryNum.split(" ").map((v) => +v);
+}
 </script>

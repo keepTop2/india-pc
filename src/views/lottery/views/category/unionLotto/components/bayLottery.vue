@@ -142,9 +142,6 @@ const handleSubmit = async ({ stake: betMoney }: { stake: string }) => {
 		token: satoken.value,
 		list: [{ betCount: 1, multiple: 1, betMoney, nums, gameCode, gamePlayCode, issueNo }],
 	};
-	console.log("submitData", submitData);
-	//
-	Common.ResCode.SUCCESS;
 
 	const res = await lotteryApi.betting(submitData);
 	const { code, msg } = res;
