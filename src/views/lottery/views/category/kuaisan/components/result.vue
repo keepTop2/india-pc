@@ -30,13 +30,14 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from "vue";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { lotteryApi } from "/@/api/lottery";
 import { Pagination } from "/@/components/Pagination";
 import { useUserStore } from "/@/stores/modules/user";
 import useDice from "/@/views/lottery/components/Tools/Dice/Index";
 import { DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
+import { usePagination } from "/@/views/lottery/hooks/usePagination";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 
 interface TableDataItem {
@@ -57,6 +58,9 @@ const userStore = useUserStore();
 const { merchantInfo } = useLoginGame();
 const route = useRoute();
 
+// issueHistory 这个回调函数涉及业务，因此要传入处理
+const { pagination, handleChange, sizeChange, pageChange } = usePagination(issueHistory);
+
 const options = [
 	{ label: "排序: 抽奖时间升序", value: 1 },
 	{ label: "排序: 抽奖时间降序", value: 0 },
@@ -64,25 +68,6 @@ const options = [
 
 const selectValue = ref(0);
 const tableData = ref<TableData>([]);
-const pagination = reactive({ pageNumber: 1, pageSize: 10, total: 0 });
-
-const handleChange = (lotteryTimeSort: number) => {
-	issueHistory({ lotteryTimeSort });
-	resetPageNumber();
-};
-
-const sizeChange = (size: number) => {
-	issueHistory({ size });
-	resetPageNumber();
-};
-
-const pageChange = (page: number) => {
-	issueHistory({ page });
-};
-
-function resetPageNumber() {
-	pagination.pageNumber = 1;
-}
 
 async function issueHistory({ lotteryTimeSort = 0, page = 1, size = 10 } = {}) {
 	// 准备入参
@@ -103,6 +88,4 @@ async function issueHistory({ lotteryTimeSort = 0, page = 1, size = 10 } = {}) {
 function formatLotteryNum(lotteryNum = "") {
 	return lotteryNum.split(" ").map((v) => +v);
 }
-
-onMounted(issueHistory);
 </script>
