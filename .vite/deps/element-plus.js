@@ -1,8 +1,8 @@
 import {
-  arrow_down_default,
-  arrow_left_default,
-  arrow_right_default,
-  arrow_up_default,
+  common-arrow_down_default,
+  common-arrow_left_default,
+  common-arrow_right_default,
+  common-arrow_up_default,
   back_default,
   calendar_default,
   caret_right_default,
@@ -14,8 +14,8 @@ import {
   circle_close_filled_default,
   clock_default,
   close_default,
-  d_arrow_left_default,
-  d_arrow_right_default,
+  d_common-arrow_left_default,
+  d_common-arrow_right_default,
   delete_default,
   document_default,
   full_screen_default,
@@ -21817,7 +21817,7 @@ var _sfc_main27 = defineComponent({
               class: normalizeClass(["arrow-up", unref(ns).be("spinner", "arrow")])
             }, {
               default: withCtx(() => [
-                createVNode(unref(arrow_up_default))
+                createVNode(unref(common-arrow_up_default))
               ]),
               _: 1
             }, 8, ["class"])), [
@@ -21827,7 +21827,7 @@ var _sfc_main27 = defineComponent({
               class: normalizeClass(["arrow-down", unref(ns).be("spinner", "arrow")])
             }, {
               default: withCtx(() => [
-                createVNode(unref(arrow_down_default))
+                createVNode(unref(common-arrow_down_default))
               ]),
               _: 1
             }, 8, ["class"])), [
@@ -23353,7 +23353,7 @@ var _sfc_main33 = defineComponent({
             }, [
               createVNode(unref(ElIcon), null, {
                 default: withCtx(() => [
-                  createVNode(unref(arrow_left_default))
+                  createVNode(unref(common-arrow_left_default))
                 ]),
                 _: 1
               })
@@ -23382,7 +23382,7 @@ var _sfc_main33 = defineComponent({
             }, [
               createVNode(unref(ElIcon), null, {
                 default: withCtx(() => [
-                  createVNode(unref(arrow_right_default))
+                  createVNode(unref(common-arrow_right_default))
                 ]),
                 _: 1
               })
@@ -24621,7 +24621,7 @@ var _sfc_main41 = defineComponent({
     ElIcon,
     Check: check_default,
     Loading: loading_default,
-    ArrowRight: arrow_right_default
+    ArrowRight: common-arrow_right_default
   },
   props: {
     node: {
@@ -24736,7 +24736,7 @@ function _sfc_render2(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_el_icon = resolveComponent("el-icon");
   const _component_node_content = resolveComponent("node-content");
   const _component_loading = resolveComponent("loading");
-  const _component_arrow_right = resolveComponent("arrow-right");
+  const _component_common-arrow_right = resolveComponent("arrow-right");
   return openBlock(), createElementBlock("li", {
     id: `${_ctx.menuId}-${_ctx.node.uid}`,
     role: "menuitem",
@@ -24805,7 +24805,7 @@ function _sfc_render2(_ctx, _cache, $props, $setup, $data, $options) {
         class: normalizeClass(["arrow-right", _ctx.ns.e("postfix")])
       }, {
         default: withCtx(() => [
-          createVNode(_component_arrow_right)
+          createVNode(_component_common-arrow_right)
         ]),
         _: 1
       }, 8, ["class"]))
@@ -26088,7 +26088,7 @@ var _sfc_main45 = defineComponent({
                   onClick: _cache[0] || (_cache[0] = withModifiers(($event) => togglePopperVisible(), ["stop"]))
                 }, {
                   default: withCtx(() => [
-                    createVNode(unref(arrow_down_default))
+                    createVNode(unref(common-arrow_down_default))
                   ]),
                   _: 1
                 }, 8, ["class"]))
@@ -26806,7 +26806,7 @@ var _sfc_main51 = defineComponent({
             class: normalizeClass(unref(arrowKls))
           }, {
             default: withCtx(() => [
-              createVNode(unref(arrow_right_default))
+              createVNode(unref(common-arrow_right_default))
             ]),
             _: 1
           }, 8, ["class"])
@@ -28027,7 +28027,7 @@ var _sfc_main56 = defineComponent({
                     class: normalizeClass([unref(ns).be("picker", "icon"), unref(ns).is("icon-arrow-down")])
                   }, {
                     default: withCtx(() => [
-                      createVNode(unref(arrow_down_default))
+                      createVNode(unref(common-arrow_down_default))
                     ]),
                     _: 1
                   }, 8, ["class"]), [
@@ -29706,7 +29706,7 @@ var _sfc_main65 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(d_arrow_left_default))
+                      createVNode(unref(d_common-arrow_left_default))
                     ]),
                     _: 1
                   })
@@ -29719,7 +29719,7 @@ var _sfc_main65 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(arrow_left_default))
+                      createVNode(unref(common-arrow_left_default))
                     ]),
                     _: 1
                   })
@@ -29759,7 +29759,7 @@ var _sfc_main65 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(arrow_right_default))
+                      createVNode(unref(common-arrow_right_default))
                     ]),
                     _: 1
                   })
@@ -29774,7 +29774,7 @@ var _sfc_main65 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(d_arrow_right_default))
+                      createVNode(unref(d_common-arrow_right_default))
                     ]),
                     _: 1
                   })
@@ -30382,7 +30382,7 @@ var _sfc_main66 = defineComponent({
               createBaseVNode("span", null, [
                 createVNode(unref(ElIcon), null, {
                   default: withCtx(() => [
-                    createVNode(unref(arrow_right_default))
+                    createVNode(unref(common-arrow_right_default))
                   ]),
                   _: 1
                 })
@@ -30446,7 +30446,7 @@ var _sfc_main66 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(d_arrow_left_default))
+                      createVNode(unref(d_common-arrow_left_default))
                     ]),
                     _: 1
                   })
@@ -30459,7 +30459,7 @@ var _sfc_main66 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(arrow_left_default))
+                      createVNode(unref(common-arrow_left_default))
                     ]),
                     _: 1
                   })
@@ -30474,7 +30474,7 @@ var _sfc_main66 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(d_arrow_right_default))
+                      createVNode(unref(d_common-arrow_right_default))
                     ]),
                     _: 1
                   })
@@ -30492,7 +30492,7 @@ var _sfc_main66 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(arrow_right_default))
+                      createVNode(unref(common-arrow_right_default))
                     ]),
                     _: 1
                   })
@@ -30528,7 +30528,7 @@ var _sfc_main66 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(d_arrow_left_default))
+                      createVNode(unref(d_common-arrow_left_default))
                     ]),
                     _: 1
                   })
@@ -30546,7 +30546,7 @@ var _sfc_main66 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(arrow_left_default))
+                      createVNode(unref(common-arrow_left_default))
                     ]),
                     _: 1
                   })
@@ -30559,7 +30559,7 @@ var _sfc_main66 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(d_arrow_right_default))
+                      createVNode(unref(d_common-arrow_right_default))
                     ]),
                     _: 1
                   })
@@ -30572,7 +30572,7 @@ var _sfc_main66 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(arrow_right_default))
+                      createVNode(unref(common-arrow_right_default))
                     ]),
                     _: 1
                   })
@@ -30817,7 +30817,7 @@ var _sfc_main67 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(d_arrow_left_default))
+                      createVNode(unref(d_common-arrow_left_default))
                     ]),
                     _: 1
                   })
@@ -30834,7 +30834,7 @@ var _sfc_main67 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(d_arrow_right_default))
+                      createVNode(unref(d_common-arrow_right_default))
                     ]),
                     _: 1
                   })
@@ -30868,7 +30868,7 @@ var _sfc_main67 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(d_arrow_left_default))
+                      createVNode(unref(d_common-arrow_left_default))
                     ]),
                     _: 1
                   })
@@ -30880,7 +30880,7 @@ var _sfc_main67 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(d_arrow_right_default))
+                      createVNode(unref(d_common-arrow_right_default))
                     ]),
                     _: 1
                   })
@@ -32632,7 +32632,7 @@ var _sfc_main79 = defineComponent({
     ElRovingFocusGroup,
     ElOnlyChild: OnlyChild,
     ElIcon,
-    ArrowDown: arrow_down_default
+    ArrowDown: common-arrow_down_default
   },
   props: dropdownProps,
   emits: ["visible-change", "click", "command"],
@@ -32781,7 +32781,7 @@ function _sfc_render13(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_el_only_child = resolveComponent("el-only-child");
   const _component_el_tooltip = resolveComponent("el-tooltip");
   const _component_el_button = resolveComponent("el-button");
-  const _component_arrow_down = resolveComponent("arrow-down");
+  const _component_common-arrow_down = resolveComponent("arrow-down");
   const _component_el_icon = resolveComponent("el-icon");
   const _component_el_button_group = resolveComponent("el-button-group");
   return openBlock(), createElementBlock("div", {
@@ -32894,7 +32894,7 @@ function _sfc_render13(_ctx, _cache, $props, $setup, $data, $options) {
               class: normalizeClass(_ctx.ns.e("icon"))
             }, {
               default: withCtx(() => [
-                createVNode(_component_arrow_down)
+                createVNode(_component_common-arrow_down)
               ]),
               _: 1
             }, 8, ["class"])
@@ -33778,7 +33778,7 @@ var _sfc_main85 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(arrow_left_default))
+                      createVNode(unref(common-arrow_left_default))
                     ]),
                     _: 1
                   })
@@ -33789,7 +33789,7 @@ var _sfc_main85 = defineComponent({
                 }, [
                   createVNode(unref(ElIcon), null, {
                     default: withCtx(() => [
-                      createVNode(unref(arrow_right_default))
+                      createVNode(unref(common-arrow_right_default))
                     ]),
                     _: 1
                   })
@@ -34492,7 +34492,7 @@ var _sfc_main87 = defineComponent({
           renderSlot(_ctx.$slots, "decrease-icon", {}, () => [
             createVNode(unref(ElIcon), null, {
               default: withCtx(() => [
-                unref(controlsAtRight) ? (openBlock(), createBlock(unref(arrow_down_default), { key: 0 })) : (openBlock(), createBlock(unref(minus_default), { key: 1 }))
+                unref(controlsAtRight) ? (openBlock(), createBlock(unref(common-arrow_down_default), { key: 0 })) : (openBlock(), createBlock(unref(minus_default), { key: 1 }))
               ]),
               _: 1
             })
@@ -34510,7 +34510,7 @@ var _sfc_main87 = defineComponent({
           renderSlot(_ctx.$slots, "increase-icon", {}, () => [
             createVNode(unref(ElIcon), null, {
               default: withCtx(() => [
-                unref(controlsAtRight) ? (openBlock(), createBlock(unref(arrow_up_default), { key: 0 })) : (openBlock(), createBlock(unref(plus_default), { key: 1 }))
+                unref(controlsAtRight) ? (openBlock(), createBlock(unref(common-arrow_up_default), { key: 0 })) : (openBlock(), createBlock(unref(plus_default), { key: 1 }))
               ]),
               _: 1
             })
@@ -34915,7 +34915,7 @@ var SubMenu2 = defineComponent({
     const vPopper = ref(null);
     const currentPlacement = computed2(() => mode.value === "horizontal" && isFirstLevel.value ? "bottom-start" : "right-start");
     const subMenuTitleIcon = computed2(() => {
-      return mode.value === "horizontal" && isFirstLevel.value || mode.value === "vertical" && !rootMenu.props.collapse ? props.expandCloseIcon && props.expandOpenIcon ? opened.value ? props.expandOpenIcon : props.expandCloseIcon : arrow_down_default : props.collapseCloseIcon && props.collapseOpenIcon ? opened.value ? props.collapseOpenIcon : props.collapseCloseIcon : arrow_right_default;
+      return mode.value === "horizontal" && isFirstLevel.value || mode.value === "vertical" && !rootMenu.props.collapse ? props.expandCloseIcon && props.expandOpenIcon ? opened.value ? props.expandOpenIcon : props.expandCloseIcon : common-arrow_down_default : props.collapseCloseIcon && props.collapseOpenIcon ? opened.value ? props.collapseOpenIcon : props.collapseCloseIcon : common-arrow_right_default;
     });
     const isFirstLevel = computed2(() => {
       return subMenu.level === 0;
@@ -36852,7 +36852,7 @@ var SelectProps = buildProps({
   fitInputWidth: Boolean,
   suffixIcon: {
     type: iconPropType,
-    default: arrow_down_default
+    default: common-arrow_down_default
   },
   tagType: { ...tagProps.type, default: "info" },
   validateEvent: {
@@ -37685,7 +37685,7 @@ var _sfc_main102 = defineComponent({
           onFocus: _cache[2] || (_cache[2] = ($event) => onFocus(true)),
           onBlur: _cache[3] || (_cache[3] = ($event) => quickPrevFocus.value = false)
         }, [
-          (quickPrevHover.value || quickPrevFocus.value) && !_ctx.disabled ? (openBlock(), createBlock(unref(d_arrow_left_default), { key: 0 })) : (openBlock(), createBlock(unref(more_filled_default), { key: 1 }))
+          (quickPrevHover.value || quickPrevFocus.value) && !_ctx.disabled ? (openBlock(), createBlock(unref(d_common-arrow_left_default), { key: 0 })) : (openBlock(), createBlock(unref(more_filled_default), { key: 1 }))
         ], 42, _hoisted_314)) : createCommentVNode("v-if", true),
         (openBlock(true), createElementBlock(Fragment, null, renderList(unref(pagers), (pager) => {
           return openBlock(), createElementBlock("li", {
@@ -37709,7 +37709,7 @@ var _sfc_main102 = defineComponent({
           onFocus: _cache[6] || (_cache[6] = ($event) => onFocus()),
           onBlur: _cache[7] || (_cache[7] = ($event) => quickNextFocus.value = false)
         }, [
-          (quickNextHover.value || quickNextFocus.value) && !_ctx.disabled ? (openBlock(), createBlock(unref(d_arrow_right_default), { key: 0 })) : (openBlock(), createBlock(unref(more_filled_default), { key: 1 }))
+          (quickNextHover.value || quickNextFocus.value) && !_ctx.disabled ? (openBlock(), createBlock(unref(d_common-arrow_right_default), { key: 0 })) : (openBlock(), createBlock(unref(more_filled_default), { key: 1 }))
         ], 42, _hoisted_55)) : createCommentVNode("v-if", true),
         _ctx.pageCount > 1 ? (openBlock(), createElementBlock("li", {
           key: 3,
@@ -37761,7 +37761,7 @@ var paginationProps = buildProps({
   },
   prevIcon: {
     type: iconPropType,
-    default: () => arrow_left_default
+    default: () => common-arrow_left_default
   },
   nextText: {
     type: String,
@@ -37769,7 +37769,7 @@ var paginationProps = buildProps({
   },
   nextIcon: {
     type: iconPropType,
-    default: () => arrow_right_default
+    default: () => common-arrow_right_default
   },
   teleported: {
     type: Boolean,
@@ -41521,7 +41521,7 @@ var useSelect2 = (props, emit) => {
   const showClearBtn = computed2(() => {
     return props.clearable && !selectDisabled.value && states.inputHovering && hasModelValue.value;
   });
-  const iconComponent = computed2(() => props.remote && props.filterable ? "" : arrow_down_default);
+  const iconComponent = computed2(() => props.remote && props.filterable ? "" : common-arrow_down_default);
   const iconReverse = computed2(() => iconComponent.value && nsSelect.is("reverse", expanded.value));
   const validateState = computed2(() => (elFormItem == null ? void 0 : elFormItem.validateState) || "");
   const validateIcon = computed2(() => ValidateComponentsMap[validateState.value]);
@@ -46139,8 +46139,8 @@ var _sfc_main120 = defineComponent({
     ElScrollbar,
     ElTooltip,
     ElIcon,
-    ArrowDown: arrow_down_default,
-    ArrowUp: arrow_up_default
+    ArrowDown: common-arrow_down_default,
+    ArrowUp: common-arrow_up_default
   },
   directives: { ClickOutside },
   props: {
@@ -46287,8 +46287,8 @@ function _sfc_render27(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_el_checkbox = resolveComponent("el-checkbox");
   const _component_el_checkbox_group = resolveComponent("el-checkbox-group");
   const _component_el_scrollbar = resolveComponent("el-scrollbar");
-  const _component_arrow_up = resolveComponent("arrow-up");
-  const _component_arrow_down = resolveComponent("arrow-down");
+  const _component_common-arrow_up = resolveComponent("arrow-up");
+  const _component_common-arrow_down = resolveComponent("arrow-down");
   const _component_el_icon = resolveComponent("el-icon");
   const _component_el_tooltip = resolveComponent("el-tooltip");
   const _directive_click_outside = resolveDirective("click-outside");
@@ -46385,7 +46385,7 @@ function _sfc_render27(_ctx, _cache, $props, $setup, $data, $options) {
       }, [
         createVNode(_component_el_icon, null, {
           default: withCtx(() => [
-            _ctx.column.filterOpened ? (openBlock(), createBlock(_component_arrow_up, { key: 0 })) : (openBlock(), createBlock(_component_arrow_down, { key: 1 }))
+            _ctx.column.filterOpened ? (openBlock(), createBlock(_component_common-arrow_up, { key: 0 })) : (openBlock(), createBlock(_component_common-arrow_down, { key: 1 }))
           ]),
           _: 1
         })
@@ -48578,7 +48578,7 @@ var cellForced = {
           return [
             h(ElIcon, null, {
               default: () => {
-                return [h(arrow_right_default)];
+                return [h(common-arrow_right_default)];
               }
             })
           ];
@@ -48637,7 +48637,7 @@ function treeCellPrefix({
       ns.e("expand-icon"),
       treeNode.expanded ? ns.em("expand-icon", "expanded") : ""
     ];
-    let icon = arrow_right_default;
+    let icon = common-arrow_right_default;
     if (treeNode.loading) {
       icon = loading_default;
     }
@@ -50383,7 +50383,7 @@ var ExpandIcon = (props) => {
     "size": size3,
     "style": style
   }), {
-    default: () => [createVNode(arrow_right_default, null, null)]
+    default: () => [createVNode(common-arrow_right_default, null, null)]
   });
 };
 
@@ -51546,12 +51546,12 @@ var TabNav = defineComponent({
         "class": [ns.e("nav-prev"), ns.is("disabled", !scrollable.value.prev)],
         "onClick": scrollPrev
       }, [createVNode(ElIcon, null, {
-        default: () => [createVNode(arrow_left_default, null, null)]
+        default: () => [createVNode(common-arrow_left_default, null, null)]
       })]), createVNode("span", {
         "class": [ns.e("nav-next"), ns.is("disabled", !scrollable.value.next)],
         "onClick": scrollNext
       }, [createVNode(ElIcon, null, {
-        default: () => [createVNode(arrow_right_default, null, null)]
+        default: () => [createVNode(common-arrow_right_default, null, null)]
       })])] : null;
       const tabs = props.panes.map((pane, index) => {
         var _a2, _b, _c, _d;
@@ -53313,7 +53313,7 @@ var _sfc_main134 = defineComponent({
             default: withCtx(() => [
               createVNode(unref(ElIcon), null, {
                 default: withCtx(() => [
-                  createVNode(unref(arrow_left_default))
+                  createVNode(unref(common-arrow_left_default))
                 ]),
                 _: 1
               }),
@@ -53331,7 +53331,7 @@ var _sfc_main134 = defineComponent({
               !unref(isUndefined2)(_ctx.buttonTexts[1]) ? (openBlock(), createElementBlock("span", _hoisted_240, toDisplayString(_ctx.buttonTexts[1]), 1)) : createCommentVNode("v-if", true),
               createVNode(unref(ElIcon), null, {
                 default: withCtx(() => [
-                  createVNode(unref(arrow_right_default))
+                  createVNode(unref(common-arrow_right_default))
                 ]),
                 _: 1
               })

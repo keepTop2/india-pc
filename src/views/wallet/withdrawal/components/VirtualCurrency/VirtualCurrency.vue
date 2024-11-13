@@ -123,7 +123,7 @@ defineExpose({
 
 	.label,
 	.value {
-		color: var(--Text2_1);
+		color: var(--Text-2-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
@@ -136,7 +136,7 @@ defineExpose({
 	&:hover {
 		.label,
 		.value {
-			color: var(--Text_s);
+			color: var(--Text-s);
 		}
 	}
 }

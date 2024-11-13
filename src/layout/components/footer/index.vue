@@ -1,10 +1,5 @@
 <template>
-	<div
-		class="footer1 mt_40"
-		:style="{
-			backgroundImage: `url(${Common.getCommonImgPath('footer1.png')})`,
-		}"
-	>
+	<div class="footer1 mt_40">
 		<div class="max-width">
 			<div class="footer1Item">
 				<p class="mb_19">合作商</p>
@@ -32,12 +27,9 @@
 			</div>
 		</div>
 	</div>
-	<div
-		class="footer2"
-		:style="{
-			backgroundImage: `url(${Common.getCommonImgPath('footer2.png')})`,
-		}"
-	>
+
+	<div class="footer2">
+		<div class="line"></div>
 		<div class="max-width">
 			<div class="footer2_1">
 				<div class="aboutUs footer2_1_item">
@@ -95,10 +87,11 @@ const getlist = () => {
 <style scoped lang="scss">
 .footer1 {
 	height: 539px;
-	background: var(--Bg2) 0% 0% / 15px 15px repeat;
-	filter: drop-shadow(0px 1px 0px var(--Bg2));
-	color: var(--Text_s);
+	background: var(--Bg);
+	color: var(--Text-s);
 	padding: 18px 10px;
+	background: var(--Bg-1, rgba(228, 235, 242, 1));
+
 	.footer1Item {
 		padding: 20px 0 20px;
 	}
@@ -136,13 +129,12 @@ const getlist = () => {
 	}
 }
 .footer2 {
-	height: 230px;
-	background: #21232a 0% 0% / 15px 15px repeat;
-	filter: drop-shadow(0px 1px 0px var(--Bg2));
-	color: var(--Text_s);
-	padding: 35px 10px;
+	color: var(--Text-s);
+	background: var(--Bg-3, rgba(223, 229, 236, 1));
+
 	.footer2_1 {
 		display: flex;
+		padding: 20px 0;
 		.footer2_1_item {
 			width: 50%;
 			> div {
@@ -171,9 +163,9 @@ const getlist = () => {
 	}
 }
 .line {
+	background: var(--Line-1);
 	height: 1px;
-	width: 100%;
-	background: var(--Line_1);
-	box-shadow: 0px 1px 0px 0px #343d48;
+	flex-shrink: 0;
+	box-shadow: 0px 1px 0px 0px var(--lineBg);
 }
 </style>

@@ -4,7 +4,7 @@
 			<div>
 				<span>{{ panel.name }}</span>
 			</div>
-			<!-- <svg-icon :name="!isOpen ? 'arrow_down' : 'arrow_up_on'" size="14px" /> -->
+			<!-- <svg-icon :name="!isOpen ? 'common-arrow_down' : 'common-common-arrow_up_on'" size="14px" /> -->
 		</div>
 		<div v-show="isOpen" class="collapse-content">
 			<div v-for="(item, index) in panel?.subset" class="cell" @click="selectClass(index)" :class="subindex == index ? 'active' : ''">
@@ -45,9 +45,9 @@ const handleClick = () => {
 	font-weight: bold;
 	height: 44px;
 	font-size: 14px;
-	color: var(--Text_s);
+	color: var(--Text-s);
 	line-height: 44px;
-	background: var(--Bg3);
+	background: var(--Bg-3);
 	border-radius: 4px;
 	padding-left: 24px;
 	img {
@@ -69,13 +69,13 @@ const handleClick = () => {
 }
 
 .collapse-content {
-	background: var(--Bg4);
+	background: var(--Bg-4);
 	padding: 8px;
 	> div {
 		height: 46px;
 		line-height: 46px;
 		border-radius: 8px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		padding-left: 20px;
 		cursor: pointer;
 		> div {
@@ -90,10 +90,10 @@ const handleClick = () => {
 		}
 	}
 	> div:hover {
-		background: var(--Bg2);
+		background: var(--Bg-2);
 	}
 	.cell.active {
-		background: var(--Bg2);
+		background: var(--Bg-2);
 	}
 }
 </style>

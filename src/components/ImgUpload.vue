@@ -74,7 +74,7 @@ const deleteImg = (index: number) => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: 1px dashed var(--Line_2);
+	border: 1px dashed var(--Line-2);
 	img {
 		width: 34px;
 		height: 34px;

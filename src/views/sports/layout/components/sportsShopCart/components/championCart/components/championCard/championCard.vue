@@ -119,7 +119,7 @@ const changeClass = (item: any) => {
 
 <style scoped lang="scss">
 .oddsUp {
-	color: var(--Warn) !important;
+	color: var(--F-1) !important;
 }
 
 .oddsDown {
@@ -129,7 +129,7 @@ const changeClass = (item: any) => {
 .bet_slip_item {
 	position: relative;
 	border-radius: 8px;
-	background-color: var(--Bg4);
+	background-color: var(--Bg-4);
 
 	.remove {
 		position: absolute;
@@ -143,7 +143,7 @@ const changeClass = (item: any) => {
 		border-radius: 8px 0px;
 		z-index: 2;
 		cursor: pointer;
-		background-color: var(--Bg2);
+		background-color: var(--Bg-2);
 		.delete_icon {
 			width: 18px;
 			height: 18px;
@@ -164,7 +164,7 @@ const changeClass = (item: any) => {
 			line-height: 22px;
 
 			.value {
-				color: var(--Text_s);
+				color: var(--Text-s);
 				text-align: right;
 				font-family: "PingFang SC";
 				font-size: 20px;
@@ -185,15 +185,15 @@ const changeClass = (item: any) => {
 			display: flex;
 			justify-content: space-between;
 			.color-f2 {
-				color: var(--F2);
+				color: var(--F-2);
 			}
 			.tip {
 				display: block;
 				height: 20px;
 				padding: 0px 5px;
 				border-radius: 4px;
-				background-color: var(--Bg3);
-				color: var(--Text1);
+				background-color: var(--Bg-3);
+				color: var(--Text-1);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;
@@ -203,7 +203,7 @@ const changeClass = (item: any) => {
 		.bet_slip_type,
 		.bet_slip_name,
 		.bet_slip_name {
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;

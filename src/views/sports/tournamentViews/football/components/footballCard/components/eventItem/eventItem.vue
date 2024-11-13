@@ -76,8 +76,8 @@ const { Live, Scoreboard } = useHeaderTools(gameState);
 	width: 100%;
 	height: 120px;
 	display: flex;
-	background-color: var(--Bg1);
-	border-bottom: 1px solid var(--Line_2);
+	background-color: var(--Bg-1);
+	border-bottom: 1px solid var(--Line-2);
 	&:last-child {
 		border-bottom: 0px;
 	}
@@ -110,7 +110,7 @@ const { Live, Scoreboard } = useHeaderTools(gameState);
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		border-left: 1px solid var(--Line_2);
+		border-left: 1px solid var(--Line-2);
 		overflow: hidden;
 		.tooltip-container {
 			cursor: pointer;

@@ -16,15 +16,15 @@
 	gap: 10px;
 	padding: 10px 12px;
 	border-radius: 4px;
-	background: var(--Bg2);
+	background: var(--Bg-2);
 	box-sizing: border-box;
 	input {
 		flex: 1;
 		margin: 0px;
 		padding: 0px;
 		border: 0;
-		background: var(--Bg2);
-		color: var(--Text_s);
+		background: var(--Bg-2);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 14px;
 		font-style: normal;
@@ -34,17 +34,17 @@
 			cursor: pointer;
 		}
 		&::placeholder {
-			color: var(--Text2_2);
+			color: var(--Text-2_2);
 		}
 	}
 
 	.bold_input {
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "DIN Alternate";
 		font-size: 18px;
 		font-weight: 700;
 		&::placeholder {
-			color: var(--Text2_2);
+			color: var(--Text-2_2);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-style: normal;
@@ -73,7 +73,7 @@
 			transform: translateY(-50%);
 			width: 1px;
 			height: 28px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 		}
 	}
 }
@@ -94,7 +94,7 @@
 			height: 16px;
 		}
 		.value {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			text-align: center;
 			font-family: "PingFang SC";
 			font-size: 14px;
@@ -108,7 +108,7 @@
 			transform: translateY(-50%);
 			width: 1px;
 			height: 32px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 		}
 	}
 }
@@ -116,7 +116,7 @@
 .error {
 	position: relative;
 	border-radius: 4px;
-	border: 1px solid var(--F1);
+	border: 1px solid var(--F-1);
 	box-sizing: border-box;
 	transition: all 0.2s;
 }
@@ -125,7 +125,7 @@
 	position: absolute;
 	left: 0px;
 	bottom: -14px;
-	color: var(--F1);
+	color: var(--F-1);
 	font-family: "PingFang SC";
 	font-size: 10px;
 	font-weight: 400;
@@ -133,18 +133,18 @@
 }
 
 .disabled_cell {
-	background: var(--Bg3);
+	background: var(--Bg-3);
 	gap: 18px;
 }
 .disabled_label {
-	color: var(--Text_s);
+	color: var(--Text-s);
 	font-family: "PingFang SC";
 	font-size: 14px;
 	font-weight: 400;
 }
 .disabled_value {
 	flex: 1;
-	color: var(--Text1);
+	color: var(--Text-1);
 	font-family: "PingFang SC";
 	font-size: 14px;
 	font-weight: 400;

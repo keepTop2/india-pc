@@ -82,7 +82,7 @@
 			</div>
 		</div>
 	</div>
-	<CommonDialog v-model="showCommonDialog" title="123123" :confirm="confirmDialog">
+	<CommonDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
 		{{ dialogInfo.message }}
 		<template v-slot:footer v-if="dialogInfo.status == 30049"> 去存款 </template>
 	</CommonDialog>
@@ -130,8 +130,15 @@ const apply = async () => {
 };
 const confirmDialog = () => {
 	if (dialogInfo.status == 30049) {
-		router.push("/user/deposit");
+		router.push("/recharge");
 	}
 	showCommonDialog.value = false;
 };
 </script>
+<style scoped lang="scss">
+.ruleDetails {
+	:deep(img) {
+		max-width: 100%;
+	}
+}
+</style>

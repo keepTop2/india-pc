@@ -91,7 +91,7 @@ const getContent = () => {
 
 <style scoped lang="scss">
 .title {
-	color: var(--Text_s);
+	color: var(--Text-s);
 	font-size: 20px;
 }
 .wrapper {
@@ -104,7 +104,7 @@ const getContent = () => {
 	padding: 12px;
 	width: 240px;
 	min-height: calc(100vh - 200px);
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 12px;
 	overflow: hidden;
 	overflow-y: auto;
@@ -112,17 +112,17 @@ const getContent = () => {
 .tabs2 {
 	display: flex;
 	font-size: 24px;
-	color: var(--Text1);
+	color: var(--Text-1);
 	gap: 24px;
 	.active {
 		font-size: 24px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		border-bottom: 2px solid var(--Theme);
 	}
 }
 .line {
 	height: 1px;
-	background: var(--Line_1);
+	background: var(--Line-1);
 	box-shadow: 0px 1px 0px 0px #343d48;
 }
 .content {
@@ -130,7 +130,7 @@ const getContent = () => {
 	width: 100%;
 	border-radius: 12px;
 	min-height: calc(100vh - 210px);
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	.valueBox {
 		overflow-y: auto;
 		height: calc(100vh - 210px);

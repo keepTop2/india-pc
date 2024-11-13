@@ -174,7 +174,7 @@ const handleSubmit = () => {};
 		margin-top: 20px;
 	}
 	.bg1 {
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 	}
 	.lottery-header-box {
 		width: 100%;
@@ -199,8 +199,8 @@ const handleSubmit = () => {};
 	}
 	.accordion-content-item-balls {
 		padding: 12px;
-		background-color: var(--Bg1);
-		border: 1px solid var(--Line_2);
+		background-color: var(--Bg-1);
+		border: 1px solid var(--Line-2);
 		border-radius: 8px;
 		margin-top: 4px;
 	}

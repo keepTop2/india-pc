@@ -167,10 +167,10 @@ const canScrollRight = computed(() => scrollPosition.value < maxScrollPosition.v
 			.header {
 				width: 100%;
 				height: 36px;
-				background: var(--Bg3);
+				background: var(--Bg-3);
 				border-radius: 8px 8px 0px 0px;
 				.label {
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-family: "PingFang SC";
 					font-size: 12px;
 					font-weight: 400;
@@ -182,13 +182,13 @@ const canScrollRight = computed(() => scrollPosition.value < maxScrollPosition.v
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						color: var(--Text_s);
+						color: var(--Text-s);
 						font-family: "PingFang SC";
 						font-size: 12px;
 						font-weight: 400;
 					}
 					.F2 {
-						color: var(--F2);
+						color: var(--F-2);
 					}
 				}
 			}
@@ -211,7 +211,7 @@ const canScrollRight = computed(() => scrollPosition.value < maxScrollPosition.v
 					:deep(.name),
 					.name {
 						flex: 1;
-						color: var(--Text1);
+						color: var(--Text-1);
 						font-family: "PingFang SC";
 						font-size: 14px;
 						font-weight: 400;
@@ -226,13 +226,13 @@ const canScrollRight = computed(() => scrollPosition.value < maxScrollPosition.v
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-family: "PingFang SC";
 					font-size: 14px;
 					font-weight: 400;
 				}
 				.F2 {
-					color: var(--F2);
+					color: var(--F-2);
 				}
 
 				&::first-letter {
@@ -299,7 +299,7 @@ const canScrollRight = computed(() => scrollPosition.value < maxScrollPosition.v
 				margin: 0 auto;
 				border-radius: 2px;
 				opacity: 0.5;
-				background-color: var(--Line_2);
+				background-color: var(--Line-2);
 			}
 		}
 	}

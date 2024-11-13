@@ -28,7 +28,7 @@ const { LotteryHeader } = useLotteryHeader();
 	width: 1308px;
 	margin: 0 auto;
 	margin-top: 24px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	border-radius: 12px;
 	padding: 20px;
 
@@ -48,23 +48,23 @@ const { LotteryHeader } = useLotteryHeader();
 				height: 30px;
 				line-height: 30px;
 				text-align: center;
-				color: var(--Text1);
+				color: var(--Text-1);
 				font-size: 14px;
-				background-color: var(--button);
+				background-color: var(--Button);
 				border-radius: 4px;
 				cursor: pointer;
 
 				&.actived {
-					background-color: var(--Bg5);
-					color: var(--Text_a);
+					background-color: var(--Bg-5);
+					color: var(--Text-a);
 				}
 			}
 		}
 		:deep(.content) {
 			.accordion-content-item-balls {
 				padding: 12px;
-				background-color: var(--Bg1);
-				border: 1px solid var(--Line_2);
+				background-color: var(--Bg-1);
+				border: 1px solid var(--Line-2);
 				border-radius: 8px;
 				margin-top: 4px;
 			}
@@ -88,33 +88,33 @@ const { LotteryHeader } = useLotteryHeader();
 			.search {
 				.el-select__wrapper {
 					height: 40px;
-					background-color: var(--Bg2);
-					border-color: var(--Line_2);
-					box-shadow: 0 0 0 1px var(--Line_2);
+					background-color: var(--Bg-2);
+					border-color: var(--Line-2);
+					box-shadow: 0 0 0 1px var(--Line-2);
 					&.is-focused {
-						border-color: var(--Line_2);
-						box-shadow: 0 0 0 1px var(--Line_2);
+						border-color: var(--Line-2);
+						box-shadow: 0 0 0 1px var(--Line-2);
 					}
 				}
 				.el-popper.is-light {
-					background-color: var(--Bg1);
-					border-color: var(--Line_2);
+					background-color: var(--Bg-1);
+					border-color: var(--Line-2);
 					padding: 0;
 					&:has(.is-selected) {
-						background-color: var(--Bg2);
+						background-color: var(--Bg-2);
 					}
 					.el-scrollbar__view {
 						padding: 0;
 					}
 					.el-select-dropdown__item {
-						background-color: var(--Bg1);
+						background-color: var(--Bg-1);
 						padding: 0;
 						height: 40px;
 						line-height: 40px;
 						padding: 0 12px;
 						&.is-selected {
-							color: var(--Text_a);
-							background-color: var(--Bg2);
+							color: var(--Text-a);
+							background-color: var(--Bg-2);
 						}
 					}
 					.el-popper__arrow {
@@ -145,12 +145,12 @@ const { LotteryHeader } = useLotteryHeader();
 				// 修改头部背景色
 				.table-header-cell {
 					height: 44px;
-					background: var(--Bg3) !important;
+					background: var(--Bg-3) !important;
 				}
 				// 修改鼠标移入表格行背景色
 				.el-table--enable-row-hover {
 					.el-table__body tr:hover > td.el-table__cell {
-						background-color: var(--Bg1);
+						background-color: var(--Bg-1);
 					}
 				}
 
@@ -158,16 +158,16 @@ const { LotteryHeader } = useLotteryHeader();
 					height: 100%;
 					max-height: inherit;
 					background-color: transparent;
-					--el-table-row-hover-bg-color: var(--Line_2);
+					--el-table-row-hover-bg-color: var(--Line-2);
 					border-radius: 8px;
-					border: 1px solid var(--Line_2);
+					border: 1px solid var(--Line-2);
 
 					.el-table__inner-wrapper {
 						max-height: inherit;
 					}
 
 					th.is-leaf {
-						border-bottom: 1px solid var(--Line_2) !important;
+						border-bottom: 1px solid var(--Line-2) !important;
 					}
 
 					.el-table__body-wrapper {
@@ -180,7 +180,7 @@ const { LotteryHeader } = useLotteryHeader();
 					th.is-leaf,
 					.el-table--border,
 					.el-table--group {
-						border-color: var(--Line_2);
+						border-color: var(--Line-2);
 					}
 
 					.el-table__cell:last-child {
@@ -190,7 +190,7 @@ const { LotteryHeader } = useLotteryHeader();
 					// 行内样式
 					.row-cell,
 					tr {
-						background: var(--Bg1) !important;
+						background: var(--Bg-1) !important;
 						background-color: transparent;
 					}
 

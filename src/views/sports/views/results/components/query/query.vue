@@ -10,16 +10,16 @@
 			<el-dropdown ref="selectRef" trigger="click" :teleported="false" placement="bottom-end" popper-class="popperClass" @visible-change="visibleChange" @command="onCommand">
 				<div class="el-dropdown-content">
 					<span>{{ startDate }} - {{ endDate }}</span>
-					<svg-icon class="searchIcon" name="arrow_down" size="14" />
+					<svg-icon class="searchIcon" name="common-arrow_down" size="14" />
 				</div>
 				<template #dropdown>
 					<VDatePicker class="v-Date" v-model.range.number="range" locale="en" @update:pages="handlePanelChange">
 						<template #header-title-wrapper>{{ selectDateYM }}</template>
 						<template #header-prev-button>
-							<svg-icon class="searchIcon" name="arrow_up" size="14" />
+							<svg-icon class="searchIcon" name="common-arrow_up" size="14" />
 						</template>
 						<template #header-next-button>
-							<svg-icon class="searchIcon" name="arrow_down" size="14" />
+							<svg-icon class="searchIcon" name="common-arrow_down" size="14" />
 						</template>
 					</VDatePicker>
 				</template>
@@ -134,12 +134,12 @@ const formatDate = (date: any) => {
 	align-items: center;
 	justify-content: space-between;
 	height: 44px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 0 0 8px 8px;
 	box-sizing: border-box;
 	padding: 0 24px;
 	:deep(.el-dropdown) {
-		background: var(--Bg2);
+		background: var(--Bg-2);
 		height: 30px;
 		.el-dropdown-content {
 			width: 230px;
@@ -150,16 +150,16 @@ const formatDate = (date: any) => {
 			padding: 8px 10px;
 			cursor: pointer;
 			box-sizing: border-box;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;
 		}
 		.popperClass {
-			background-color: var(--Bg1);
+			background-color: var(--Bg-1);
 			box-shadow: 0px 0px 8px 0px var(--popoverShadow);
 			border-radius: 8px;
-			border-color: var(--Line_2);
+			border-color: var(--Line-2);
 			.el-scrollbar {
 				overflow: unset;
 				.el-scrollbar__wrap {
@@ -172,7 +172,7 @@ const formatDate = (date: any) => {
 							width: 268px;
 							border-radius: 8px;
 							border: 1px solid var(--Line);
-							background-color: var(--Bg4);
+							background-color: var(--Bg-4);
 							box-shadow: 0px 0px 8px 0px var(--popoverShadow);
 
 							.vc-pane-container {
@@ -182,7 +182,7 @@ const formatDate = (date: any) => {
 									padding: 0px;
 									grid-gap: 0px;
 									.vc-title-wrapper {
-										color: var(--Text1);
+										color: var(--Text-1);
 										font-family: "PingFang SC";
 										font-size: 14px;
 										font-weight: 500;
@@ -195,20 +195,20 @@ const formatDate = (date: any) => {
 									}
 
 									.vc-focus:focus-within {
-										box-shadow: 0 0 0 2px var(--Bg5);
+										box-shadow: 0 0 0 2px var(--Bg-5);
 									}
 								}
 
 								.vc-weeks {
 									.vc-weekdays {
-										color: var(--Text2_1);
+										color: var(--Text-2-1);
 										font-family: "PingFang SC";
 										font-size: 14px;
 										line-height: 22px;
 									}
 
 									.vc-day-content {
-										color: var(--Text1);
+										color: var(--Text-1);
 										font-family: "PingFang SC";
 										font-size: 14px;
 										font-weight: 500;
@@ -216,15 +216,15 @@ const formatDate = (date: any) => {
 									}
 
 									.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-solid.vc-blue {
-										color: var(--Text_s);
+										color: var(--Text-s);
 										background-color: var(--Theme);
 									}
 									.vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light,
 									.vc-highlight.vc-highlight-base-start.vc-highlight-bg-light,
 									.vc-highlight.vc-highlight-base-end.vc-highlight-bg-light,
 									.vc-day-content.vc-focusable.vc-focus.vc-attr.vc-attr.vc-highlight-content-outline.vc-blue {
-										background-color: var(--Bg5);
-										box-shadow: 0px 0px 0px 1px var(--Bg5);
+										background-color: var(--Bg-5);
+										box-shadow: 0px 0px 0px 1px var(--Bg-5);
 									}
 
 									.vc-focus:focus-within {
@@ -232,14 +232,14 @@ const formatDate = (date: any) => {
 									}
 
 									.vc-light .vc-attr {
-										background-color: var(--Bg5);
+										background-color: var(--Bg-5);
 									}
 								}
 							}
 						}
 
 						.el-dropdown-menu__item:focus {
-							background-color: var(--Bg3);
+							background-color: var(--Bg-3);
 						}
 					}
 				}
@@ -256,7 +256,7 @@ const formatDate = (date: any) => {
 		align-items: center;
 		font-size: 14px;
 		span {
-			color: var(--Text1);
+			color: var(--Text-1);
 		}
 
 		& > * {
@@ -268,14 +268,14 @@ const formatDate = (date: any) => {
 		width: 78px;
 		height: 30px;
 		background-color: var(--Theme);
-		color: var(--Text_a);
+		color: var(--Text-a);
 		border: 0;
 		&.is-disabled :deep(.el-icon) {
 			animation: rotate 1.5s linear infinite;
 		}
 
 		.searchIcon {
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 	}
 }
@@ -302,24 +302,24 @@ const formatDate = (date: any) => {
 
 	.el-input__wrapper {
 		box-shadow: none;
-		background: var(--Bg2);
+		background: var(--Bg-2);
 
 		input {
-			color: var(--Text2_1);
+			color: var(--Text-2-1);
 
 			&::placeholder {
-				color: var(--Text2_1);
+				color: var(--Text-2-1);
 			}
 		}
 	}
 
 	.el-checkbox__inner {
 		background-color: unset;
-		border-color: var(--Line_2);
+		border-color: var(--Line-2);
 	}
 
 	.el-checkbox__label {
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 
 	.el-checkbox__input.is-checked {
@@ -331,7 +331,7 @@ const formatDate = (date: any) => {
 			}
 		}
 		.el-checkbox__label {
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-weight: normal;
 		}
 	}

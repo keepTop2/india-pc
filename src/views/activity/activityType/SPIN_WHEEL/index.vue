@@ -28,7 +28,7 @@
 						<div>转盘奖金总计</div>
 						<div class="fs_14 color_Theme">{{ activityData?.totalAmount }}</div>
 					</div>
-					<div class="record" @click="handleRecord">我的抽奖记录 <svg-icon name="arrow_right" size="16px"></svg-icon></div>
+					<div class="record" @click="handleRecord">我的抽奖记录 <svg-icon name="common-arrow_right" size="16px"></svg-icon></div>
 				</div>
 				<div class="activityContent">
 					<div class="activityContentHeader">
@@ -300,7 +300,7 @@ const goToDeposit = () => {
 		background: url("./images/remaining_times_bg.png") no-repeat;
 		background-size: 100% 100%;
 		margin: 20px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 	.common_btn {
 		background-size: 100% 100%;
@@ -310,7 +310,7 @@ const goToDeposit = () => {
 	.flex_space-between {
 		width: 444px;
 		padding: 0 20px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		> div {
 			flex: 1;
 			width: 50%;
@@ -349,7 +349,7 @@ const goToDeposit = () => {
 			justify-content: space-around;
 			height: 50px;
 			line-height: 50px;
-			color: var(--Text_s);
+			color: var(--Text-s);
 			border-radius: 16px 16px 0px 0px;
 			background: linear-gradient(90deg, #a0b9b9 0%, #536a6a 100%);
 			.tab {
@@ -379,7 +379,7 @@ const goToDeposit = () => {
 			line-height: 32px;
 			text-align: center;
 			font-size: 14px;
-			color: var(--Text_s);
+			color: var(--Text-s);
 		}
 		.vip1 {
 			background: url("./images/vipbg_1.png");
@@ -401,7 +401,7 @@ const goToDeposit = () => {
 		height: 80vh;
 		min-height: 500px;
 		background: url("./images/record_dialog_bg.png") no-repeat;
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 		background-size: 100% 100%;
 		position: relative;
 		padding-top: 20px;
@@ -418,7 +418,7 @@ const goToDeposit = () => {
 			text-align: center;
 			line-height: 64px;
 			font-size: 20px;
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 		.dialogTableHeader {
 			display: flex;
@@ -432,13 +432,13 @@ const goToDeposit = () => {
 				display: flex;
 				height: 56px;
 				justify-content: space-around;
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-size: 14px;
 				span {
 					flex: 1;
 					font-weight: 400;
 					text-align: center;
-					border-right: 1px solid var(--Line_2);
+					border-right: 1px solid var(--Line-2);
 					display: flex;
 					justify-content: center;
 					align-items: center;
@@ -452,10 +452,10 @@ const goToDeposit = () => {
 				font-size: 16px;
 			}
 			.dialogTableItem:nth-child(odd) {
-				background: var(--Bg3);
+				background: var(--Bg-3);
 			}
 			.dialogTableItem:nth-child(even) {
-				background: var(--Bg2);
+				background: var(--Bg-2);
 			}
 		}
 		.dialogTableBody::-webkit-scrollbar {
@@ -466,7 +466,7 @@ const goToDeposit = () => {
 			background-color: transparent;
 		}
 		.dialogTableBody::-webkit-scrollbar-thumb {
-			background: var(--icon);
+			background: var(--Icon-1);
 			border-radius: 5px;
 		}
 	}
@@ -546,7 +546,7 @@ const goToDeposit = () => {
 			height: 37px;
 			background: url("./images/bubble.png") no-repeat;
 			background-size: 100% 100%;
-			color: var(--Text_a);
+			color: var(--Text-a);
 			line-height: 27.5px;
 			font-size: 14px;
 		}

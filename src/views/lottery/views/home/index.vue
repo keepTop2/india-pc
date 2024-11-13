@@ -140,7 +140,10 @@ const filterGames = Common.debounce(() => {
 
 const games = computed(() => {
 	if (currentTab.value === "0") return gameData.value;
-	console.log(gameData.value.filter((game) => game._key === currentTab.value), "=======currentTab.value");
+	console.log(
+		gameData.value.filter((game) => game._key === currentTab.value),
+		"=======currentTab.value"
+	);
 	return gameData.value.filter((game) => game._key === currentTab.value);
 });
 
@@ -185,14 +188,14 @@ const pushView = (game: GameListItem) => {
 	.tab {
 		padding: 7px 12px;
 		margin-right: 8px;
-		background: var(--button);
+		background: var(--Button);
 		font-size: 14px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		border-radius: 4px;
 		transition: background-color 0.3s ease;
 		&.active {
 			background-color: var(--Theme);
-			color: var(--Text_s);
+			color: var(--Text-s);
 		}
 	}
 }
@@ -205,12 +208,12 @@ const pushView = (game: GameListItem) => {
 	.search-input {
 		width: 100%;
 		height: 50px;
-		background: var(--Bg2);
+		background: var(--Bg-2);
 		border-radius: 6px;
 		font-size: 14px;
-		border: 1px solid var(--Line_2);
+		border: 1px solid var(--Line-2);
 		padding-left: 54px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		transition: border-color 0.3s ease;
 		&.onFocus {
 			border: 1px solid var(--Theme);
@@ -223,7 +226,7 @@ const pushView = (game: GameListItem) => {
 		top: 16px;
 		margin-right: 24px;
 		padding-right: 12px;
-		border-right: 1px solid var(--Line_2);
+		border-right: 1px solid var(--Line-2);
 		display: flex;
 		align-items: center;
 	}
@@ -250,10 +253,10 @@ const pushView = (game: GameListItem) => {
 			}
 			.name {
 				font-size: var(--title-text-size);
-				color: var(--Text_a);
+				color: var(--Text-a);
 			}
 			.more {
-				color: var(--Text1);
+				color: var(--Text-1);
 				font-size: 18px;
 				cursor: pointer;
 			}
@@ -274,7 +277,7 @@ const pushView = (game: GameListItem) => {
 			top: 50%;
 			transform: translate(-50%, -50%);
 			p {
-				color: var(--Text1);
+				color: var(--Text-1);
 			}
 		}
 	}

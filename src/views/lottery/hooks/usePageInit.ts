@@ -22,9 +22,8 @@ export function usePageInit() {
 	const { loginGame } = useLoginGame();
 	const { turnOnTimer, turnOffTimer } = useTimer(loginGame);
 	const { turnOnTimer: turnOnLotteryDetailTimer, turnOffTimer: turnOffLotteryDetailTimer } = useTimer(beginPageData, 5000);
-	const { isWsAlive } = useWebSocket({ callback, fallbackFn: beginPageData });
+	const { status } = useWebSocket({ callback, fallbackFn: beginPageData });
 	// 标签栏的配置数据
-
 	onMounted(async () => {
 		// 1. 登录第三方拿 token
 		loginGame();
@@ -42,9 +41,9 @@ export function usePageInit() {
 	});
 
 	watch(
-		() => isWsAlive.value,
+		() => status.value,
 		(newValue) => {
-			if (newValue) {
+			if (status.value === "OPEN") {
 				return turnOffLotteryDetailTimer(); // ws 有的话就关闭轮询
 			}
 			turnOnLotteryDetailTimer(); // ws 没有的话就开启轮询
@@ -54,8 +53,8 @@ export function usePageInit() {
 	async function beginPageData() {
 		// 3.1 准备一下入参 gameCode lang 两个入参
 		const { gameCode = "" } = route.query;
-		const UserStore = useUserStore();
-		const language = UserStore.getLang;
+		const userStore = useUserStore();
+		const language = userStore.getLang;
 		const lang = (langMaps as any)[language] || DEFAULT_LANG;
 		const submitData = { gameCode, lang };
 

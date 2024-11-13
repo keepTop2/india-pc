@@ -188,12 +188,12 @@ const isBright = (): boolean => {
 		justify-content: space-between;
 		padding: 6px;
 		border-radius: 4px;
-		background: var(--Bg3);
+		background: var(--Bg-3);
 		box-sizing: border-box;
 
 		.label {
 			max-width: 60%;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 12px;
 			font-weight: 400;
@@ -205,7 +205,7 @@ const isBright = (): boolean => {
 		.value {
 			// max-width: 40%;
 			position: relative;
-			color: var(--Text_a);
+			color: var(--Text-a);
 			font-family: "PingFang SC";
 			font-size: 12px;
 			font-weight: 400;
@@ -220,7 +220,7 @@ const isBright = (): boolean => {
 			width: 100%;
 			height: 100%;
 			text-align: center;
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-weight: 400;

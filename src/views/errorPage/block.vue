@@ -58,16 +58,16 @@ const refresh = () => {
 				border-radius: 6px;
 			}
 			.cancel {
-				border: 2px solid var(--Text_s);
+				border: 2px solid var(--Text-s);
 
 				font-size: 20px;
-				color: var(--Text_s);
+				color: var(--Text-s);
 			}
 			.refresh {
 				font-size: 20px;
 				color: var(--Theme);
 				border: none;
-				background: var(--Bg3);
+				background: var(--Bg-3);
 			}
 		}
 		.common_btn {

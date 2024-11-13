@@ -8,17 +8,18 @@
 				</span>
 			</div>
 			<div class="more Text1 fs_18 curp" v-if="hotGameList?.length !== 1">
-				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'arrow_left' : 'arrow_left_on'" width="8" height="12" /></span>
-				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'arrow_right' : 'arrow_right_on'" width="8" height="12" /></span>
+				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'common-arrow_left' : 'common-arrow_left_on'" width="8" height="12" /></span>
+				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'common-arrow_right' : 'common-arrow_right_on'" width="8" height="12" /></span>
 			</div>
 		</div>
 		<div class="hotGameList">
 			<Swiper :slidesPerView="4" :spaceBetween="15" :modules="modules" class="swiper-container curp" @swiper="onSwiper">
 				<SwiperSlide v-for="(item, index) in hotGameList" :key="index" class="hotGameItem">
 					<img v-lazy-load="item.iconFileUrl ? item.iconFileUrl : ''" alt="" />
+
 					<div class="gameInfo Texta">
 						<div class="fs_19">
-							<img v-lazy-load="hotGameIcon" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
+							<img v-lazy-load="item.iconFileUrl" alt="" class="mr_6" /><span>{{ item.venueCode }}</span>
 						</div>
 						<div class="fs_13 mt_9">
 							{{ item.name }}
@@ -68,7 +69,7 @@ const isEnd = ref(false);
 const isBeginning = ref(true);
 const props = defineProps({
 	hotGameList: {
-		type: Array<gameInfo>,
+		type: Array<any>,
 	},
 });
 
@@ -119,7 +120,7 @@ const goToPrevSlide = () => {
 		width: 24px;
 	}
 	.arrow {
-		background-color: var(--butter);
+		background-color: var(--Butter);
 		width: 28px;
 		height: 28px;
 		display: inline-block;
