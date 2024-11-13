@@ -1,6 +1,6 @@
 import "./index.scss";
 
-import { defineComponent, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
+import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
 
 import SvgIcon from "/@/components/svgIcon/index.vue";
 
@@ -137,7 +137,7 @@ export default (props?: any) => {
 					{/* 显示时钟图标 */}
 					<SvgIcon size={props.size} name="sports-alarm_clock" />
 					{/* 显示 Timer 组件 */}
-					<Timer {...state} />
+					<Timer data={props.data} />
 				</div>
 			);
 		},
@@ -150,6 +150,9 @@ export default (props?: any) => {
 			data: { type: Object, default: () => ({}) },
 		},
 		setup(props, { attrs }) {
+			const isAllowed = computed(() => {
+				return [state.hours, state.minutes, state.seconds].some((v) => v > 0);
+			});
 			return () => (
 				<div className="lottery-time-group">
 					<div>
@@ -158,9 +161,7 @@ export default (props?: any) => {
 							{/* 显示日期标签 */}
 							<SvgIcon name="sports-date_tag" width="119px" height="36px" />
 						</div>
-						<div className="bet-status">
-							<span>投注中</span>
-						</div>
+						<div className="bet-status">{isAllowed.value ? <span class="allowed"> 投注中</span> : <span class="not-allowed">封盘中</span>}</div>
 					</div>
 
 					{/* 显示 ClockTime 组件 */}

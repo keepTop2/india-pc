@@ -75,7 +75,6 @@ export function useWebSocket({ callback = Function.prototype, fallbackFn = Funct
 	}) as WSReturn<WebSocketResponseMessage>;
 
 	const { status, data, send, open, close } = websocketInstance;
-	console.log("status", status);
 	return { status, data, send, open, close };
 }
 
