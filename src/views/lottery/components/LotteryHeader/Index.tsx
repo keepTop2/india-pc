@@ -9,14 +9,17 @@ import useTimer from "/@/views/lottery/components/Tools/Timer";
 export default () => {
 	// 使用自定义的 LotteryCard hook，获取组件内容和页脚
 	const { Content, Footer } = useLotteryCard();
-	
+
 	const LotteryHeader = defineComponent({
 		name: "LotteryHeader",
-		props: { data: { type: Object, required: true, default: () => {} } },
+		props: {
+			data: { type: Object, required: true, default: () => ({}) },
+			timerEndCallback: { type: Function, default: Function.prototype },
+		},
 		setup(props) {
 			const propsData = computed(() => props.data);
 			// 使用自定义的定时器 hook，获取时间相关的状态和方法
-			const { TimeGroup } = useTimer(propsData);
+			const { TimeGroup } = useTimer(propsData, props.timerEndCallback);
 			return () => (
 				<div class="lottery-header">
 					{/* 左侧部分，包含彩票卡片和倒计时 */}

@@ -6,7 +6,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import { SUCCESS_CODE } from "/@/utils/useAxiosLottery";
 import { DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
-import { type LotteryDetail, type MergedLotteryItem, type OddsListItem } from "/@/views/lottery/types/index";
+import { type LotteryDetail, type MergedGameplayItem, type OddsListItem } from "/@/views/lottery/types/index";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
 
 export interface Props {
@@ -14,7 +14,7 @@ export interface Props {
 }
 
 export function useBet(
-	currentLotteryItem: Ref<MergedLotteryItem>,
+	currentGameplayItem: Ref<MergedGameplayItem>,
 
 	currentOddsListItem: Ref<OddsListItem>,
 
@@ -41,7 +41,7 @@ export function useBet(
 		}
 
 		// 3. 校验是否小于 minLimit
-		const { maxLimit = 0, minLimit = 0 } = currentLotteryItem.value;
+		const { maxLimit = 0, minLimit = 0 } = currentGameplayItem.value;
 		if (stake < minLimit) {
 			return { message: `投注金额不能小于${minLimit}`, isPassed: false };
 		}
@@ -74,7 +74,6 @@ export function useBet(
 		const language = userStore.getLang;
 		const lang = (langMaps as any)[language] || DEFAULT_LANG;
 
-		console.log("issueNo", issueNo);
 		const submitData = {
 			lang,
 			operatorId,
@@ -82,7 +81,6 @@ export function useBet(
 			token: satoken.value,
 			list: [{ betCount: 1, multiple: 1, betMoney, nums, gameCode, gamePlayCode, issueNo }],
 		};
-		console.log("submitData", submitData);
 
 		// 2.2 准备好了，发送请求
 		const res = await lotteryApi.betting(submitData);

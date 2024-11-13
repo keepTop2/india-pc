@@ -4,7 +4,7 @@
 			<div style="width: 100%; flex: 1">
 				<!-- 展示玩法配置的 Accordion 手风琴组件 -->
 				<Accordion
-					v-for="(item, index) in mergedLotteryList"
+					v-for="(item, index) in mergedGameplayList"
 					:key="item.id"
 					:isExpanded="item.actived"
 					@change="(status) => clearAccordionStatus(status, index)"
@@ -67,8 +67,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { mergeLotteryList } from "../../../../utils/mergeLotteryList";
-import { lotteryList, queryGamePlayOddsListParams } from "./playsConfig";
+import { mergeGameplayList } from "../../../../utils/mergeGameplayList";
+import { gameplayList, queryGamePlayOddsListParams } from "./playsConfig";
 import { lotteryApi } from "/@/api/lottery";
 import showToast from "/@/hooks/useToast";
 import Common from "/@/utils/common";
@@ -77,7 +77,7 @@ import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
-import { type MergedLotteryList, type OddsListItem } from "/@/views/lottery/types/index";
+import { type MergedGameplayList, type OddsListItem } from "/@/views/lottery/types/index";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
 
 const props = defineProps({
@@ -91,7 +91,7 @@ const { BetForm } = useBetForm();
 const { satoken } = useLoginGame();
 useWebSocket();
 // 合并后的玩法列表
-const mergedLotteryList = ref<MergedLotteryList>([]);
+const mergedGameplayList = ref<MergedGameplayList>([]);
 
 // 选中的球的数组，用于投注表单
 const balls = ref([]);
@@ -106,7 +106,7 @@ const currentOddsListItem = ref<OddsListItem>({} as OddsListItem); // 向前选�
  * @param data 父数据
  */
 const handleExpanded = (status: boolean, childData: any, data: any) => {
-	mergedLotteryList.value.forEach((v) => {
+	mergedGameplayList.value.forEach((v) => {
 		v.oddsList.forEach((w) => (w.actived = false));
 	});
 	childData.actived = status;
@@ -128,7 +128,7 @@ const handleSelectBalls = ({ list }, childData: any, data: any) => {
 
 // 清除手风琴展开状态的处理方法
 const clearAccordionStatus = (status: boolean, index: number) => {
-	mergedLotteryList.value.forEach((item, i) => {
+	mergedGameplayList.value.forEach((item, i) => {
 		item.actived = index === i && status ? true : false;
 	});
 };
@@ -142,9 +142,6 @@ const handleSubmit = async ({ stake: betMoney }: { stake: string }) => {
 		token: satoken.value,
 		list: [{ betCount: 1, multiple: 1, betMoney, nums, gameCode, gamePlayCode, issueNo }],
 	};
-	console.log("submitData", submitData);
-	//
-	Common.ResCode.SUCCESS;
 
 	const res = await lotteryApi.betting(submitData);
 	const { code, msg } = res;
@@ -162,7 +159,7 @@ const handleSubmit = async ({ stake: betMoney }: { stake: string }) => {
 onMounted(async () => {
 	// 获取 单个彩种的动态的玩法与赔率信息
 	const res = await lotteryApi.queryGamePlayOddsList(queryGamePlayOddsListParams);
-	mergedLotteryList.value = mergeLotteryList(lotteryList, res.data) as MergedLotteryList;
+	mergedGameplayList.value = mergeGameplayList(gameplayList, res.data) as MergedGameplayList;
 });
 </script>
 

@@ -16,9 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
 import { ElConfigProvider } from "element-plus";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
+import { computed, watch } from "vue";
 
 const props = defineProps<{
 	currentPage: number;
@@ -31,7 +31,6 @@ const emit = defineEmits(["update:currentPage", "prevClick", "nextClick", "sizeC
 const currentPage = computed({
 	get: () => props.currentPage,
 	set: (value) => {
-		console.log(value, "----value");
 		emit("update:currentPage", value);
 	},
 });
