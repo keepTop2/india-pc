@@ -23,6 +23,12 @@ export function usePageInit() {
 	const { turnOnTimer, turnOffTimer } = useTimer(loginGame);
 	const { turnOnTimer: turnOnLotteryDetailTimer, turnOffTimer: turnOffLotteryDetailTimer } = useTimer(beginPageData, 5000);
 	const { status } = useWebSocket({ callback, fallbackFn: beginPageData });
+
+	// 这个定时器是方便调试的，可以删除没问题的
+	setInterval(() => {
+		console.log("WebSocket Status", status.value);
+	}, 1000);
+
 	// 标签栏的配置数据
 	onMounted(async () => {
 		// 1. 登录第三方拿 token
@@ -43,7 +49,7 @@ export function usePageInit() {
 	watch(
 		() => status.value,
 		(newValue) => {
-			if (status.value === "OPEN") {
+			if (newValue === "OPEN") {
 				return turnOffLotteryDetailTimer(); // ws 有的话就关闭轮询
 			}
 			turnOnLotteryDetailTimer(); // ws 没有的话就开启轮询
@@ -60,8 +66,10 @@ export function usePageInit() {
 
 		// 3.2 准备好了，发送请求
 		const res = await lotteryApi.beginPageData(submitData);
-		const resData = (res.data || []).shift() || {};
-		lotteryDetail.value = { ...resData }; // 有时候会有两条数据，始终取下标为 0 的那一条数据
+		const resData = (res.data || []).shift() || {}; // 有时候会有两条数据，始终取下标为 0 的那一条数据
+
+		const seconds = Math.floor((resData.endTime - resData.currentTime) / 1000);
+		lotteryDetail.value = { ...resData, seconds };
 	}
 
 	function callback(message: WebSocketResponseMessage) {

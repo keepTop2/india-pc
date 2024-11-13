@@ -1,15 +1,15 @@
 import { Ref, ref } from "vue";
-import { type MergedLotteryList, type OddsListItem } from "/@/views/lottery/types/index";
+import { type MergedGameplayList, type OddsListItem } from "/@/views/lottery/types/index";
 
-export function useAccordion(mergedLotteryList: Ref<MergedLotteryList>) {
+export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 	const formActived = ref(false);
 	const balls = ref([]);
-	const currentLotteryItem = ref(); // 当前选中的大菜单
+	const currentGameplayItem = ref(); // 当前选中的大菜单
 	const currentOddsListItem = ref({} as OddsListItem); // 当前选中高亮的项
 
 	// 清除手风琴展开状态的处理方法
 	const clearAccordionStatus = (status: boolean, index: number) => {
-		mergedLotteryList.value.forEach((item, i) => {
+		mergedGameplayList.value.forEach((item, i) => {
 			item.actived = index === i && status;
 		});
 	};
@@ -18,7 +18,7 @@ export function useAccordion(mergedLotteryList: Ref<MergedLotteryList>) {
 	const handleSelectBalls = ({ list }, childData: any, data: any) => {
 		console.log("list", list);
 		formActived.value = list.length ? true : false;
-		currentLotteryItem.value = list.length ? { ...data, oddsList: { ...childData } } : null;
+		currentGameplayItem.value = list.length ? { ...data, oddsList: { ...childData } } : null;
 		balls.value = list;
 		currentOddsListItem.value.optionCode = list.join(",");
 	};
@@ -30,7 +30,7 @@ export function useAccordion(mergedLotteryList: Ref<MergedLotteryList>) {
 	 * @param data 父数据
 	 */
 	const handleExpanded = (status: boolean, childData: any, data: any) => {
-		mergedLotteryList.value.forEach((v) => {
+		mergedGameplayList.value.forEach((v) => {
 			v.oddsList.forEach((w) => (w.actived = false));
 		});
 		childData.actived = status;
@@ -39,7 +39,7 @@ export function useAccordion(mergedLotteryList: Ref<MergedLotteryList>) {
 		// 排除选择球玩法
 		if (childData.type !== "selectBall") {
 			formActived.value = status;
-			currentLotteryItem.value = status ? { ...data, oddsList: { ...childData } } : null;
+			currentGameplayItem.value = status ? { ...data, oddsList: { ...childData } } : null;
 		}
 	};
 
@@ -49,7 +49,7 @@ export function useAccordion(mergedLotteryList: Ref<MergedLotteryList>) {
 		clearAccordionStatus,
 		handleSelectBalls,
 		handleExpanded,
-		currentLotteryItem,
+		currentGameplayItem,
 		currentOddsListItem,
 	};
 }

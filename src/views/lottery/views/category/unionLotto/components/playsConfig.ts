@@ -50,7 +50,7 @@ export const lotteryList: LotteryPlayGroup[] = [
 				optionCode: "和",
 			},
 			{
-				id:2,
+				id: 2,
 				type: "selectBall",
 				title: "选择球",
 				// desc: "请选择一个球号",
@@ -94,8 +94,8 @@ export const lotteryList: LotteryPlayGroup[] = [
 				optionCode: "双",
 			},
 			{
-				id:1,
-				type:"selectBall",
+				id: 1,
+				type: "selectBall",
 				title: "蓝球选号",
 				// desc: "选择1个蓝球号码",
 				actived: false,
