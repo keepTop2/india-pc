@@ -51,4 +51,5 @@ export interface LotteryDetail {
 	gameName: string;
 	gameCode: string;
 	iconPc?: string;
+	seconds: number;
 }
