@@ -160,6 +160,7 @@ watch(
 const maps = {
 	K3: "/lottery/kuaisan",
 	SSQ: "/lottery/unionLotto",
+	PK10: "/lottery/pk10",
 };
 const pushView = (game: GameListItem) => {
 	console.log("game", game);

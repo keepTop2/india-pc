@@ -20,6 +20,7 @@ export function useAccordion(mergedLotteryList: Ref<MergedLotteryList>) {
 		formActived.value = list.length ? true : false;
 		currentLotteryItem.value = list.length ? { ...data, oddsList: { ...childData } } : null;
 		balls.value = list;
+		currentOddsListItem.value.optionCode = list.join(",");
 	};
 
 	/**

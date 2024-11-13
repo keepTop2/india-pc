@@ -28,7 +28,6 @@ function mergeLotteryItem(lotteryItem: LotteryItem, dynamicLotteryList: DynamicL
 		return { ...dynamicLotteryItem1, ...dynamicLotteryItem2, oddsList: [...l1, ...l2] };
 	}, {} as DynamicLotteryItem);
 	const { oddsList: dynamicOddsList, ...restDynamicLotteryItem } = mergedDynamicLotteryItem;
-
 	return {
 		...restDynamicLotteryItem,
 		...restLotteryItem, // 主要是想覆盖 gamePlayName desc actived
