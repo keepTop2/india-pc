@@ -5,7 +5,7 @@ import { LotteryPlayGroup } from "/@/views/lottery/types/lottery";
  * @author Hida
  * @description 特殊玩法 需要配置 gamePlayCode 用于匹配玩法，isSpecialPlay走特殊玩法逻辑 对应数据会直接返回不做投注项处理
  */
-export const lotteryList: LotteryPlayGroup[] = [
+export const gameplayList: LotteryPlayGroup[] = [
 	{
 		id: "1",
 		gamePlayName: "冠亚军和",
@@ -36,6 +36,14 @@ export const lotteryList: LotteryPlayGroup[] = [
 				desc: "开奖号码中冠军与亚军之和的个位数为0、2、4、6、8为“双”",
 				actived: false,
 				optionCode: "双",
+			},
+			{
+				type: "selectBallLine",
+				title: "选择球",
+				selectBallDesc: "选择1个数值，与开奖号码中冠军、亚军的2个号码之和相同，即中奖<br />举例：开奖号码1, 2,*,*,*,*,*,*,*,*，投注「3」，即中奖",
+				actived: false,
+				gamePlayCode: "smp_gyh3d19",
+				isSpecialPlay: true,
 			},
 		],
 	},

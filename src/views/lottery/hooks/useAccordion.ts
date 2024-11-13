@@ -3,10 +3,10 @@ import { type MergedGameplayList, type OddsListItem } from "/@/views/lottery/typ
 
 export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 	const formActived = ref(false);
-	const balls = ref([]);
+	const balls = ref<string[]>([]);
 	const currentGameplayItem = ref(); // 当前选中的大菜单
 	const currentOddsListItem = ref({} as OddsListItem); // 当前选中高亮的项
-
+	const currentK10OddsList = ref<string[]>([]); // 当前选中高亮的项
 	// 清除手风琴展开状态的处理方法
 	const clearAccordionStatus = (status: boolean, index: number) => {
 		mergedGameplayList.value.forEach((item, i) => {
@@ -16,11 +16,24 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 
 	// 选择球组的处理方法
 	const handleSelectBalls = ({ list }, childData: any, data: any) => {
-		console.log("list", list);
 		formActived.value = list.length ? true : false;
 		currentGameplayItem.value = list.length ? { ...data, oddsList: { ...childData } } : null;
+		console.log("currentGameplayItem.value", currentGameplayItem.value);
 		balls.value = list;
-		currentOddsListItem.value.optionCode = list.join(",");
+		currentOddsListItem.value = childData;
+	};
+
+	// k10 选择球
+	const handleSelectBallsK10 = (childData: any) => {
+		if (currentK10OddsList.value.includes(childData.optionCode)) {
+			balls.value = [];
+			currentK10OddsList.value = [];
+			currentOddsListItem.value = {} as OddsListItem;
+			return;
+		}
+		balls.value = [childData.optionName];
+		currentK10OddsList.value = [childData.optionCode];
+		currentOddsListItem.value = childData;
 	};
 
 	/**
@@ -36,6 +49,7 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 		childData.actived = status;
 		currentOddsListItem.value = childData;
 		balls.value = [];
+		currentK10OddsList.value = [];
 		// 排除选择球玩法
 		if (childData.type !== "selectBall") {
 			formActived.value = status;
@@ -48,6 +62,8 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 		balls,
 		clearAccordionStatus,
 		handleSelectBalls,
+		handleSelectBallsK10,
+		currentK10OddsList,
 		handleExpanded,
 		currentGameplayItem,
 		currentOddsListItem,
