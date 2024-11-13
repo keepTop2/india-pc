@@ -166,20 +166,14 @@ const eventList = ref<any[]>([]);
 watch(
 	() => viewSportPubSubEventData.getSportData(),
 	(newData, oldData) => {
-		console.log(newData, oldData, "oldData==");
-
 		// console.log(JSON.stringify(newData));
 		/**
 		 * @description 根据 sportType 获取对应的数据
 		 * @param {Sports} sportType
 		 */
-		const football = newData[1] || [];
-		const basketball = newData[2] || [];
-		const leagues = [...football, ...basketball];
+
 		const newEvents = newData.flatMap((item) => item.events);
-		leagues.forEach((item) => {
-			newEvents.push(...item.events);
-		});
+
 		eventList.value = newEvents;
 	}
 );
