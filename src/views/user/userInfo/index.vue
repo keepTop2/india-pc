@@ -3,7 +3,7 @@
 		<div class="wrapper" v-show="showMedal == 0">
 			<div class="flex_space-between Text_s">
 				<span class="fs_18">用户信息</span>
-				<svg-icon name="close" size="30px" class="curp" @click="useModalStore().closeModal()"></svg-icon>
+				<svg-icon name="common-close" size="30px" class="curp" @click="useModalStore().closeModal()"></svg-icon>
 			</div>
 			<div class="userinfo flex-center">
 				<div>

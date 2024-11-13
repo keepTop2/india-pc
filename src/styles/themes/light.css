@@ -38,7 +38,8 @@
 	--betselector-hover-bg: rgba(255, 40, 75, 0.15);
 	/* 体育搜索 */
 	--lineBg: #fff;
-
+	--vipRankItemBg: linear-gradient(90deg, #f6f7fa 0%, #fdfdfd 100%);
+	--vipBenefitsCardBg: linear-gradient(0deg, rgba(246, 247, 250, 0.6) 0%, #fdfdfd 100%);
 	/* 侧边栏背景 */
 	--sideBar_bg: linear-gradient(349.03deg, #e8f0f7 83.7%, #ff758c 146.12%);
 }

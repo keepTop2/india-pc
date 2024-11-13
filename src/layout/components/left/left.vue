@@ -5,7 +5,7 @@
 			<div class="left_imgs_collapse collapse_icon icon">
 				<SvgIcon :name="collapse ? 'common-collapse_close_icon' : 'common-collapse_open_icon'" width="24px" height="21px" @click="changeCollpase" />
 			</div>
-			<div class="login_plan" @click="router.push('/')" v-if="!collapse">
+			<div class="logo" @click="router.push('/')" v-if="!collapse">
 				<svg-icon name="common-logo" width="132px" height="16px" />
 			</div>
 		</div>
@@ -39,7 +39,7 @@
 							</span>
 						</div> -->
 						<!-- 白天黑夜  打开侧边栏状态-->
-						<div class="dayOrNight mt_12 mb_10" v-if="!collapse">
+						<div class="dayOrNight mt_4" v-if="!collapse">
 							<!-- 白天 -->
 							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('light')">
 								<svg-icon name="light_icon" size="17px" class="mr_8" />
@@ -53,13 +53,13 @@
 						</div>
 
 						<!-- 白天黑夜  关闭侧边栏状态-->
-						<div class="dayOrNight mt_12 mb_10" v-else>
+						<div class="dayOrNight mt_4" v-else>
 							<!-- 白天 -->
-							<div class="dayOrNight_item" @click="onSetTheme('light')" v-if="ThemesStore.themeName == 'dark'">
+							<div class="dayOrNight_item" @click="onSetTheme('dark')" v-if="ThemesStore.themeName == 'light'">
 								<svg-icon name="light_icon" size="17px" />
 							</div>
 							<!-- 白天 -->
-							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('dark')" v-else>
+							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'dark' }" @click="onSetTheme('light')" v-else>
 								<svg-icon name="dark_icon" size="17px" />
 							</div>
 						</div>
@@ -166,7 +166,6 @@ const changeCollpase = () => {
 	box-sizing: border-box;
 	z-index: 120;
 	background: var(--sideBar_bg);
-
 	.left_main_header {
 		width: 224px;
 		height: 64px;
@@ -174,7 +173,6 @@ const changeCollpase = () => {
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
-
 		.collapse_icon {
 			width: 44px;
 			height: 44px;
@@ -187,7 +185,7 @@ const changeCollpase = () => {
 				color: var(--Icon-1);
 			}
 		}
-		.login_plan {
+		.logo {
 			display: flex;
 			align-items: center;
 			flex: 1;
@@ -205,7 +203,7 @@ const changeCollpase = () => {
 		flex-shrink: 0;
 		box-shadow: 0px 1px 0px 0px var(--lineBg);
 	}
-	.login_plan {
+	.logo {
 		cursor: pointer;
 	}
 	.left_scroll {
@@ -213,10 +211,12 @@ const changeCollpase = () => {
 		box-sizing: border-box;
 		cursor: pointer;
 		overflow-y: auto;
+		height: calc(100vh - 70px);
 		transition: all 0.2s ease;
 		.left_scroll_conatiner1 {
 			padding: 0 8px;
 			border-radius: 5px;
+
 			.left_bonus {
 				height: 46px;
 				display: flex;
@@ -233,7 +233,7 @@ const changeCollpase = () => {
 				display: flex;
 				width: 100%;
 				height: 46px;
-				margin-bottom: 16px;
+				margin-bottom: 8px;
 				.task_lottery_item {
 					width: 100%;
 					line-height: 46px;
@@ -311,7 +311,7 @@ const changeCollpase = () => {
 		}
 		.dayOrNight {
 			display: flex;
-			height: 46px;
+			height: 40px;
 			width: 100%;
 			background: var(--Bg);
 			color: var(--Text-1);
@@ -320,7 +320,7 @@ const changeCollpase = () => {
 			.dayOrNight_item {
 				flex: 1;
 				height: 100%;
-				line-height: 46px;
+				line-height: 40px;
 				text-align: center;
 				cursor: pointer;
 				display: flex;
@@ -357,7 +357,7 @@ const changeCollpase = () => {
 			.collapse_icon {
 				color: var(--Text-a);
 			}
-			.login_plan {
+			.logo {
 				display: none;
 			}
 		}
@@ -416,7 +416,7 @@ const changeCollpase = () => {
 			}
 		}
 		.sidebar_bttom {
-			width: 44px;
+			width: 40px;
 			transition: width 0.2s ease;
 		}
 		.referralcode_conatiner {
@@ -430,12 +430,10 @@ const changeCollpase = () => {
 		.dayOrNight {
 			display: flex;
 			flex-direction: column;
-			margin-top: 16px !important;
-			background: var(--Bg-4);
-
+			background: var(--Bg-3);
+			width: 40px;
+			height: 40px;
 			.dayOrNight_item {
-				width: 44px;
-				height: 44px;
 				flex: none;
 				display: flex;
 				align-items: center;

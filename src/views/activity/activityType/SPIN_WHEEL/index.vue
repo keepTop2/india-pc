@@ -194,7 +194,7 @@ const startVerification = () => {
 		showNeedLogin.value = true;
 	} else {
 		activityApi.getToSpinActivity().then((res) => {
-			if (res.data.status === Common.ResCode.SUCCESS) {
+			if (String(res.data.status).slice(0, 2) == "13") {
 				SpinRef.value?.handleStartSpin();
 				spinStart();
 			} else {

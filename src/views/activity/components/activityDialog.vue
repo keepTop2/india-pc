@@ -62,7 +62,7 @@ onMounted(() => {
 	currentZIndex.value += document.getElementsByClassName("dialog-backdrop").length + 1;
 });
 const confirm = () => {
-	props.confirm() ? props.confirm() : emit("update:modelValue", false);
+	props.confirm() ? props.confirm() : close();
 };
 const close = () => {
 	emit("update:modelValue", false);

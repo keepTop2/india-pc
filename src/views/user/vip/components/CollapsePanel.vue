@@ -84,7 +84,7 @@ const handleClick = () => {
 	color: var(--Text-s);
 	line-height: 46px;
 	border-radius: 12px;
-	background: linear-gradient(90deg, #353a3e 0%, #2c2d2e 100%);
+	background: var(--vipRankItemBg);
 	img {
 		margin-right: 10px;
 		width: 4px;

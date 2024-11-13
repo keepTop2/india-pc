@@ -201,7 +201,7 @@ const { Collection } = useHeaderTools(props.events);
 				height: 100%;
 				width: 48px;
 				border-radius: 8px;
-				background-color: var(--Line_2);
+				background-color: var(--Line-2);
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -215,7 +215,7 @@ const { Collection } = useHeaderTools(props.events);
 	.line {
 		width: 100%;
 		height: 1px;
-		background-color: var(--Line_1);
+		background-color: var(--Line-1);
 		margin: 14px 0;
 	}
 	footer {
@@ -253,7 +253,7 @@ const { Collection } = useHeaderTools(props.events);
 					width: 100%;
 					height: 100%;
 					position: absolute;
-					border: 1px solid var(--Bg5) !important;
+					border: 1px solid var(--Bg-5) !important;
 					border-radius: 4px;
 					box-sizing: border-box;
 					left: 0;
@@ -261,7 +261,7 @@ const { Collection } = useHeaderTools(props.events);
 				}
 			}
 			:deep(.bet-selector) {
-				background-color: var(--Line_2);
+				background-color: var(--Line-2);
 				border-radius: 2px;
 
 				.label {

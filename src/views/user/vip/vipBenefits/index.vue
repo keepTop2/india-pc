@@ -17,7 +17,7 @@
 					<img :src="item.icon" alt="" />
 				</div>
 				<div>
-					<div class="fs_22 Texta mb_10">{{ item.title }}</div>
+					<div class="fs_22 Text_s mb_10">{{ item.title }}</div>
 					<div class="Text1">{{ item.label }}</div>
 				</div>
 			</div>
@@ -119,7 +119,7 @@ const awardList: any = [
 	},
 
 	{
-		label: $.t(`vip['免加密货币提款手续费']`),
+		label: $.t(`vip['免费提款']`),
 		flag: "encryCoinFee",
 	},
 	{
@@ -181,7 +181,7 @@ onMounted(() => {
 				line-height: 46px;
 				text-align: center;
 				color: var(--Text-a);
-				background: var(--Butter);
+				background: var(--Text-3);
 				cursor: pointer;
 				font-size: 13.818px;
 			}
@@ -204,7 +204,8 @@ onMounted(() => {
 		align-items: center;
 		padding: 21px 43px;
 		gap: 38px;
-		background: url("./image/cardBg.png") no-repeat;
+		background: var(--vipBenefitsCardBg);
+		border-radius: 12px;
 		background-size: 100% 100%;
 		img {
 			width: 130px;
