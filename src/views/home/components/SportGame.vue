@@ -173,13 +173,9 @@ watch(
 		 * @description 根据 sportType 获取对应的数据
 		 * @param {Sports} sportType
 		 */
-		const football = newData[1] || [];
-		const basketball = newData[2] || [];
-		const leagues = [...football, ...basketball];
+
 		const newEvents = newData.flatMap((item) => item.events);
-		leagues.forEach((item) => {
-			newEvents.push(...item.events);
-		});
+
 		eventList.value = newEvents;
 	}
 );

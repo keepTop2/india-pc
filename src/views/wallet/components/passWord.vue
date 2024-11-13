@@ -7,7 +7,7 @@
 					<span>{{ $t('wallet["交易密码"]') }}</span>
 					<!-- 关闭按钮 -->
 					<i @click="handleClose">
-						<svg-icon class="icon" name="close" />
+						<svg-icon class="icon" name="common-close" />
 					</i>
 				</div>
 				<div class="main">

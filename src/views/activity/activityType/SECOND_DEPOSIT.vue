@@ -116,7 +116,7 @@ const apply = async () => {
 	}
 	await activityApi.getToActivity({ id: activityData.value.id }).then((res: any) => {
 		if (res.code === 10000) {
-			if (res.code.status !== 10000) {
+			if (String(res.data.status).slice(0, 2) == "13") {
 				dialogInfo.value = res.data;
 				showCommonDialog.value = true;
 			} else {
@@ -129,10 +129,12 @@ const apply = async () => {
 	});
 };
 const confirmDialog = () => {
-	if (dialogInfo.status == 30049) {
+	if (dialogInfo.value.status == 30049) {
 		router.push("/recharge");
+		useModalStore().closeModal();
+	} else {
+		showCommonDialog.value = false;
 	}
-	showCommonDialog.value = false;
 };
 </script>
 <style scoped lang="scss">

@@ -1,6 +1,10 @@
 <template>
 	<div class="awardCardList" v-if="data">
-		<div v-for="item in awardList.filter((item) => data[item.flag])" class="awardCard">
+		<div
+			v-for="item in awardList.filter((item:any) => data[item.flag])"
+			class="awardCard"
+			:style="{ background: `url(${Common.getThemeImgPath('awardCardBg.png')}) no-repeat 100% 100%` }"
+		>
 			<div class="imgBox">
 				<img :src="item.icon" alt="" />
 				<div class="lock" v-if="data[item.flag] == 1">
@@ -62,6 +66,7 @@ import awardicon5 from "../image/awardicon5.png";
 import awardicon6 from "../image/awardicon6.png";
 import awardicon7 from "../image/awardicon7.png";
 import awardicon8 from "../image/awardicon8.png";
+import Common from "/@/utils/common";
 const props = defineProps({
 	data: {} as any,
 	vipRankCode: Number,

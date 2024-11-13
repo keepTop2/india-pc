@@ -3,7 +3,7 @@
 		<div class="wallet_container">
 			<div class="wallet_main">
 				<div class="wallet_container_header">
-					<svg-icon name="close" size="30px" class="close pointer" @click="isModalVisible = false" />
+					<svg-icon name="common-close" size="30px" class="close pointer" @click="isModalVisible = false" />
 					<div class="tabs">
 						<div class="tab" :class="{ tab_active: activeTab === 'recharge' }" @click="setComponent('recharge')">{{ $t(`wallet['存款']`) }}</div>
 						<div class="tab" :class="{ tab_active: activeTab === 'withdrawal' }" @click="setComponent('withdrawal')">{{ $t(`wallet['提款']`) }}</div>

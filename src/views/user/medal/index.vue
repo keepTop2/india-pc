@@ -3,7 +3,7 @@
 		<div class="flex_space-between Text_s p_24">
 			<svg-icon name="common-arrow_left" width="13px" height="24px" class="curp" @click="emit('update:modelValue', 0)"></svg-icon>
 			<span class="fs_18">勋章收藏者</span>
-			<svg-icon name="close" size="30px" class="curp" @click="useModalStore().closeModal()"></svg-icon>
+			<svg-icon name="common-close" size="30px" class="curp" @click="useModalStore().closeModal()"></svg-icon>
 		</div>
 		<div class="content">
 			<div class="treasureChest">

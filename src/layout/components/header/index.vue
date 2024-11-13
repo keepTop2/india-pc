@@ -6,14 +6,28 @@
 			</div>
 			<div class="flex-center" v-if="isLogin">
 				<div class="balance_box flex-center">
-					<div class="balance">
-						<img src="/@/assets/common/coin.png" alt="" style="height: 16px" class="mr_4" />
+					<div class="balance" @click="isOpenplatCurrency = true">
+						<img :src="UserStore.getUserInfo.currencyIconFileUrl" alt="" style="height: 16px" class="mr_4" />
 						<span>{{ Common.thousands(UserStore.getUserInfo.totalBalance) }}</span>
+						<svg-icon name="common-arrow_down" size="16px" class="curp ml_8" />
 					</div>
 					<div class="recharge" @click="openWalletDialog">{{ $t(`common['充值']`) }}</div>
+
+					<div class="platAmount find-in" v-if="isOpenplatCurrency" ref="platCurrency">
+						<div class="mb_12">
+							<img v-lazy-load="UserStore.getUserInfo.currencyIconFileUrl" alt="" style="height: 16px" class="mr_4" />
+							<span>{{ Common.thousands(UserStore.getUserInfo.totalBalance) }}</span>
+						</div>
+						<div class="line"></div>
+						<div class="mt_12">
+							<img v-lazy-load="UserStore.getUserInfo.platCurrencyIconFileUrl" alt="" style="height: 16px" class="mr_4" />
+							<span>{{ Common.thousands(UserStore.getUserInfo.platAvailableAmount) }}</span>
+							<Button>转换</Button>
+						</div>
+					</div>
 				</div>
-				<div class="flex-center message" @click="openMessageCenter">
-					<svg-icon name="message" size="32px" v-hover-svg />
+				<div class="flex-center message" @click="openMessageCenter" v-hover-svg>
+					<svg-icon name="message" size="32px" />
 					<span class="notice"></span>
 				</div>
 				<div class="lang user">
@@ -126,9 +140,11 @@ const modalStore = useModalStore();
 const MenuStore = useMenuStore();
 const UserStore = useUserStore();
 const userMenu = ref(null);
+const platCurrency = ref(null);
 const currentHover = ref();
 
 const isOpenMenu = ref(false);
+const isOpenplatCurrency = ref(false);
 
 const collapse = computed(() => {
 	return MenuStore.getCollapse;
@@ -146,6 +162,9 @@ const openUserMenu = () => {
 };
 onClickOutside(userMenu, () => {
 	isOpenMenu.value = false;
+});
+onClickOutside(platCurrency, () => {
+	isOpenplatCurrency.value = false;
 });
 
 // 消息中心
@@ -232,7 +251,7 @@ const logOut = () => {
 			padding: 3px;
 			gap: 0;
 			border-radius: 4px;
-
+			position: relative;
 			.recharge {
 				border-radius: 4px;
 				width: 78px;
@@ -247,6 +266,36 @@ const logOut = () => {
 				margin: 0 18px 0 12px;
 				display: flex;
 				align-items: center;
+			}
+			.platAmount {
+				position: absolute;
+				top: 60px;
+				left: 0;
+				width: 284px;
+				padding: 12px 14px;
+				background-color: var(--Bg-1);
+				color: var(--Text-s);
+				font-weight: 500;
+				border-radius: 4px;
+				.line {
+					height: 1px;
+					background: var(--Line-2);
+				}
+				> div {
+					display: flex;
+					align-items: center;
+					img {
+						border-radius: 50%;
+					}
+					button {
+						height: 26px;
+						padding: 5px 14px;
+						font-size: 12px;
+						width: auto;
+						margin-left: auto;
+						color: var(--Text-a);
+					}
+				}
 			}
 		}
 
