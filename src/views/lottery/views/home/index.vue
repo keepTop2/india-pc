@@ -156,18 +156,20 @@ watch(
 	}
 );
 
-const maps = {
+interface Maps {
+	[key: string]: string;
+}
+const maps: Maps = {
 	K3: "/lottery/kuaisan",
 	SSQ: "/lottery/unionLotto",
 };
+
 const pushView = (game) => {
 	console.log("game", game);
 	const { gameCategoryCode, venueCode, gameCode } = game;
-	const searchParams = { venueCode, gameCode };
+	const { maxWin = 0 } = game.data;
+	const searchParams = { venueCode, gameCode, maxWin };
 	const targetView = maps[gameCategoryCode];
-	console.log("gameCategoryCode", gameCategoryCode);
-	console.log("targetView", targetView);
-	console.log("searchParams", searchParams);
 	if (!targetView) {
 		showToast("Error: Path Not Found!");
 		return;

@@ -1,6 +1,7 @@
 import "./index.scss";
 
 import { defineComponent } from "vue";
+import { useRoute } from "vue-router";
 import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息 store
 import Common from "/@/utils/common";
 import useTimer from "/@/views/lottery/components/Tools/Timer";
@@ -22,7 +23,7 @@ export default () => {
 			const { ClockTime } = useTimer({ value: props });
 			console.log(props.icon, "=======icon");
 			return () => (
-				<div class="card-header">	
+				<div class="card-header">
 					{/* 左侧图片 */}
 					<div class="left">
 						<img src={props.icon} alt="Header Image" />
@@ -62,10 +63,9 @@ export default () => {
 	// 定义卡片底部组件
 	const Footer = defineComponent({
 		name: "Footer",
-		props: {
-			maxWin: { type: Number, required: true },
-		},
 		setup(props) {
+			const route = useRoute();
+			const maxWin = +(route.query.maxWin || 0);
 			return () => (
 				<div class="card-footer">
 					<div class="left">
@@ -73,7 +73,7 @@ export default () => {
 					</div>
 					<div class="right">
 						<span>
-							{Common.thousands(props.maxWin)} {mainCurrency}
+							{Common.thousands(maxWin)} {mainCurrency}
 						</span>
 					</div>
 				</div>

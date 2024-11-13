@@ -54,9 +54,7 @@ instance.interceptors.response.use(
 			showToast(String(status));
 		}
 
-		if (response.config.headers.showLoading !== false) {
-			stopLoading();
-		}
+		stopLoading();
 
 		return data;
 	},

@@ -5,7 +5,7 @@ export const lotteryApi = {
 	 * @description 查询开盘信息
 	 * @param data 的字段举例：{ gameCodes: "5FK3", lang: "zh" }
 	 */
-	beginPageData: (data = {}, headers = { showLoading: true }) => {
+	beginPageData: (data = {}, headers = { showLoading: false }) => {
 		return useAxiosLottery(`/openApi/v2/issue/beginPageData`, {
 			method: "POST",
 			data,
