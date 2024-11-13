@@ -80,21 +80,22 @@
 		</div>
 		<!-- 验证码容器 -->
 		<p>
-			<p id="captcha-element" ref="captchaBtn" />
+			<div id="captcha-element" ref="captchaBtn" />
 			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript" v-if="HcaptchaMounted" />
 		</p>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { loginApi } from "/@/api/login";
-import { userApi } from "/@/api/user";
-import Common from "/@/utils/common";
 import showToast from "/@/hooks/useToast";
-import { useUserStore } from "/@/stores/modules/user";
-import CommonRegex from "/@/utils/CommonRegex";
 import { useModalStore } from "/@/stores/modules/modalStore";
+import { useUserStore } from "/@/stores/modules/user";
+import Common from "/@/utils/common";
+import CommonRegex from "/@/utils/CommonRegex";
+import { loginCallback } from '/@/views/lottery/utils/loginCallback';
+import { useRoute } from 'vue-router'
 const HcaptchaMounted = ref(false);
 const modalStore = useModalStore();
 const UserStore = useUserStore();
@@ -102,6 +103,7 @@ const hcaptcha: any = ref(null);
 const isOnloadScript = ref(false);
 const captchaBtn: any = ref(null);
 const disabledBtn = ref(false);
+const route=useRoute()
 // 表单数据
 const payLoad = reactive({
 	userAccount: "",
@@ -166,15 +168,20 @@ const onSubmit = async () => {
 	const certifyId = hcaptcha.value.certifyId;
 	const res = await loginApi.userLogin({ ...payLoad, certifyId }).catch((err) => err);
 	const { code, data, message } = res;
-	if (code === Common.ResCode.SUCCESS) {
-		await UserStore.setUserInfo(data);
-		localStorage.setItem("userInfo", JSON.stringify(data));
-		UserStore.initUserInfo();
-		rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
-		modalStore.closeModal();
-	} else {
+	if (code !== Common.ResCode.SUCCESS) {
 		showToast(message, 1500);
-	}
+		return;
+	} 
+
+	await UserStore.setUserInfo(data);
+	localStorage.setItem("userInfo", JSON.stringify(data));
+	UserStore.initUserInfo();
+	rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
+	modalStore.closeModal();
+
+
+	loginCallback(route);
+
 };
 
 // 获取用户信息

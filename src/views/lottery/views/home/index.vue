@@ -69,7 +69,6 @@ import { gameApi } from "/@/api/game";
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
-import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import Common from "/@/views/sports/utils/common";
 
 const $: any = i18n.global;
@@ -79,8 +78,6 @@ const { LotteryCard, HotLotteryCard } = useLotteryCard();
 const currentTab = ref<string | undefined>("0");
 const searchQuery = ref<string>(""); // 搜索关键词
 const searchinputFocus = ref(false);
-
-useWebSocket({});
 
 const gameData = ref<any[]>([]);
 
@@ -156,18 +153,20 @@ watch(
 	}
 );
 
-const maps = {
+interface Maps {
+	[key: string]: string;
+}
+const maps: Maps = {
 	K3: "/lottery/kuaisan",
 	SSQ: "/lottery/unionLotto",
 };
+
 const pushView = (game) => {
 	console.log("game", game);
 	const { gameCategoryCode, venueCode, gameCode } = game;
-	const searchParams = { venueCode, gameCode };
+	const { maxWin = 0 } = game.data;
+	const searchParams = { venueCode, gameCode, maxWin };
 	const targetView = maps[gameCategoryCode];
-	console.log("gameCategoryCode", gameCategoryCode);
-	console.log("targetView", targetView);
-	console.log("searchParams", searchParams);
 	if (!targetView) {
 		showToast("Error: Path Not Found!");
 		return;
