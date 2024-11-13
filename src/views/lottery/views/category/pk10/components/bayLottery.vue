@@ -40,7 +40,7 @@
 										v-for="(subOddsItem, subIndex) in oddsListItem.oddsList"
 										:key="subOddsItem.id"
 										:actived="currentK10OddsList.includes(subOddsItem.optionCode)"
-										@select="(status) => handleSelectBallsK10(subOddsItem)"
+										@select="(status) => handleSelectBallsK10(subOddsItem, oddsListItem)"
 										:title="subOddsItem.optionName"
 										:info="subOddsItem.desc"
 										:odds="subOddsItem.itemOdds"

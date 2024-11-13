@@ -24,7 +24,7 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 	};
 
 	// k10 选择球
-	const handleSelectBallsK10 = (childData: any) => {
+	const handleSelectBallsK10 = (childData: any, parentData: any) => {
 		if (currentK10OddsList.value.includes(childData.optionCode)) {
 			balls.value = [];
 			currentK10OddsList.value = [];
@@ -33,7 +33,11 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 		}
 		balls.value = [childData.optionName];
 		currentK10OddsList.value = [childData.optionCode];
-		currentOddsListItem.value = childData;
+		currentOddsListItem.value = {
+			...parentData,
+			...childData,
+		};
+		console.log("currentOddsListItem.value", currentOddsListItem.value);
 	};
 
 	/**
