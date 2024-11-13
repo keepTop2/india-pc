@@ -29,8 +29,8 @@
 							<img v-lazy-load="item.iconFileUrl" alt="" />
 						</div>
 						<div class="onHover">
-							<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>
-							<div>{{ item.name }}</div>
+							<svg-icon name="common-play_icon" size="44px" @click.self="Common.goToGame(item)" />
+							<div class="gameName">{{ item.name }}</div>
 						</div>
 						<div class="collect" @click="collectGame(item)">
 							<svg-icon :name="collectGamesStore.getCollectGamesList.some((game:any) => game.id === item.id) ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
@@ -211,22 +211,18 @@ const goToPrevSlide = () => {
 			left: 0;
 			width: 100%;
 			height: 151px;
-			background: rgba(0, 0, 0, 0.5);
+			background: rgba(0, 0, 0, 0.7);
+			backdrop-filter: blur(5px);
 			border-radius: 8px;
 			display: block;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			.playBtn {
-				border-radius: 4px;
-				width: 130px;
-				height: 34px;
-				line-height: 34px;
-				text-align: center;
-				background: var(--Theme);
-				margin: auto;
-				cursor: pointer;
+			font-size: 14px;
+			color: var(--Text-a);
+			.gameName {
+				margin-top: 10px;
 			}
 		}
 	}

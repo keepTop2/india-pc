@@ -540,8 +540,6 @@ class Common {
 	 */
 
 	static goToGame(gameinfo: any) {
-		console.log(gameinfo, 999999999999);
-
 		const params = {
 			venueCode: gameinfo.venueCode,
 			gameCode: gameinfo.gameCode,
@@ -619,6 +617,22 @@ class Common {
 		if (res.code == 10000) {
 			pubsub.publish("showCustomer", res.data.channelAddr);
 		}
+	}
+	static formatTimestamp(timestamp: number): string {
+		// 转换为秒数
+		const totalSeconds = Math.floor(timestamp / 1000);
+
+		// 计算天数、小时、分钟、秒
+		const days = Math.floor(totalSeconds / (24 * 3600));
+		const hours = Math.floor((totalSeconds % (24 * 3600)) / 3600);
+		const minutes = Math.floor((totalSeconds % 3600) / 60);
+		const seconds = totalSeconds % 60;
+
+		// 格式化为两位数
+		const pad = (num: number) => String(num).padStart(2, "0");
+
+		// 返回格式化后的字符串
+		return `${days}天${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
 	}
 }
 

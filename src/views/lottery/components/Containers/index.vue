@@ -1,7 +1,7 @@
 <template>
 	<div class="lottery-type-containers" :class="class">
 		<!-- 头部组件 -->
-		<LotteryHeader :data="props.data" :class="props.class" />
+		<LotteryHeader :data="props.data" :class="props.class" :timer-end-callback="timerEndCallback" />
 
 		<!-- 分割线 -->
 		<div class="line" />
@@ -18,7 +18,8 @@ import { PropType } from "vue";
 import useLotteryHeader from "/@/views/lottery/components/LotteryHeader/Index";
 const props = defineProps({
 	class: { type: String, default: "" },
-	data: { type: Object },
+	data: { type: Object as PropType<LotteryInfo> },
+	timerEndCallback: { type: Function, default: Function.prototype },
 });
 const { LotteryHeader } = useLotteryHeader();
 </script>

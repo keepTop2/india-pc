@@ -1,5 +1,8 @@
 <template>
-	<div class="loginWrapper">
+	<div class="loginWrapper"  
+		:style="{backgroundImage:`url(${headerBg}),url(${Common.getThemeImgPath('bottomBg.png')})` }"
+	
+	>
 		<div class="login_right_form">
 			<!-- 登录标题 -->
 			<div class="login_text fs_24 mb_27">
@@ -80,21 +83,22 @@
 		</div>
 		<!-- 验证码容器 -->
 		<p>
-			<p id="captcha-element" ref="captchaBtn" />
+			<div id="captcha-element" ref="captchaBtn" />
 			<Hcaptcha :onSubmit="onSubmit" ref="hcaptcha" v-model="isOnloadScript" v-if="HcaptchaMounted" />
 		</p>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { loginApi } from "/@/api/login";
-import { userApi } from "/@/api/user";
-import Common from "/@/utils/common";
 import showToast from "/@/hooks/useToast";
-import { useUserStore } from "/@/stores/modules/user";
-import CommonRegex from "/@/utils/CommonRegex";
 import { useModalStore } from "/@/stores/modules/modalStore";
+import { useUserStore } from "/@/stores/modules/user";
+import Common from "/@/utils/common";
+import CommonRegex from "/@/utils/CommonRegex";
+import { loginCallback } from '/@/views/lottery/utils/loginCallback';
+import { useRoute } from 'vue-router'
 const HcaptchaMounted = ref(false);
 const modalStore = useModalStore();
 const UserStore = useUserStore();
@@ -102,6 +106,7 @@ const hcaptcha: any = ref(null);
 const isOnloadScript = ref(false);
 const captchaBtn: any = ref(null);
 const disabledBtn = ref(false);
+const route=useRoute()
 // 表单数据
 const payLoad = reactive({
 	userAccount: "",
@@ -166,15 +171,20 @@ const onSubmit = async () => {
 	const certifyId = hcaptcha.value.certifyId;
 	const res = await loginApi.userLogin({ ...payLoad, certifyId }).catch((err) => err);
 	const { code, data, message } = res;
-	if (code === Common.ResCode.SUCCESS) {
-		await UserStore.setUserInfo(data);
-		localStorage.setItem("userInfo", JSON.stringify(data));
-		UserStore.initUserInfo();
-		rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
-		modalStore.closeModal();
-	} else {
+	if (code !== Common.ResCode.SUCCESS) {
 		showToast(message, 1500);
-	}
+		return;
+	} 
+
+	await UserStore.setUserInfo(data);
+	localStorage.setItem("userInfo", JSON.stringify(data));
+	UserStore.initUserInfo();
+	rememberPassword.value ? UserStore.setLoginInfo(payLoad) : UserStore.setLoginInfo();
+	modalStore.closeModal();
+
+
+	loginCallback(route);
+
 };
 
 // 获取用户信息
@@ -205,8 +215,7 @@ const toRegister = () => {
 	width: 436px;
 	height: 542px;
 	border-radius: 12px;
-
-	background-image: url("./image/headerBg.png"), url("./image/bottomBg.png");
+	// background-image: url("./image/headerBg.png"), url("./image/bottomBg.png");
 	background-repeat: no-repeat no-repeat;
 	background-size: 100% auto, 320px;
 	background-position: top, bottom left;

@@ -10,10 +10,11 @@
 			<!-- 热门推荐 -->
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
 			<hotGame :hotGameList="hotGameList" v-else-if="hotGameList.length" />
-			<!-- 我们的游戏 -->
-			<SportGame />
 			<!-- 收藏的游戏 -->
 			<collectGames :gameList="collectGamesStore.getCollectGamesList" title="喜欢的游戏" v-if="collectGamesStore.getCollectGamesList?.length" />
+			<!-- 我们的游戏 -->
+			<!-- <SportGame /> -->
+
 			<div v-if="isLoading">
 				<lobbyGameSkeleton v-for="(count, index) in [6, 3, 6, 1, 5]" :key="index" :skeletonCount="count" />
 			</div>
@@ -46,6 +47,7 @@ import { useActivityStore } from "/@/stores/modules/activity";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
 import SportGame from "./components/SportGame.vue";
 import { bannerApi } from "/@/api/banner";
+import { redbagRainSingleton } from "/@/hooks/useRedbagRain";
 const activityStore = useActivityStore();
 const collectGamesStore = useCollectGamesStore();
 const websocketService: any = activitySocketService.getInstance();

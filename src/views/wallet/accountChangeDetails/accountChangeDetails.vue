@@ -132,7 +132,7 @@
 				<div class="Proof_header">
 					<span>{{ $t(`wallet['上传凭证']`) }}</span>
 					<i @click="isProofModalVisible = false">
-						<svg-icon class="icon" name="close" />
+						<svg-icon class="icon" name="common-close" />
 					</i>
 				</div>
 				<div class="Proof_main">

@@ -4,8 +4,15 @@
 			<img src="./image/getReadyCountdown3.png" alt="" v-if="getReadyCountdown == 3" />
 			<img src="./image/getReadyCountdown2.png" alt="" v-if="getReadyCountdown == 2" />
 			<img src="./image/getReadyCountdown1.png" alt="" v-if="getReadyCountdown == 1" @click="startRedbagRain" class="animate" />
+			<img src="./image/close2.png" alt="" class="close" @click="redbagRainSingleton.hideCountdown()" />
 		</div>
 	</div>
+
+	<!-- 结算弹窗 -->
+	<RED_BAG_RAIN_Dialog v-model="showDialog" title="温馨提示" :confirm="confirmDialog" class="redBagRainResult">
+		<div class="Text3">{{ dialogInfo.message }}</div>
+		<template v-slot:footer v-if="[30045, 30053].includes(dialogInfo.status)"> 去绑定 </template>
+	</RED_BAG_RAIN_Dialog>
 </template>
 
 <script lang="ts" setup>
@@ -13,12 +20,14 @@ import { onMounted, ref } from "vue";
 import { useActivityStore } from "/@/stores/modules/activity";
 import { redbagRainSingleton } from "/@/hooks/useRedbagRain";
 import { activityApi } from "/@/api/activity";
+import RED_BAG_RAIN_Dialog from "./RED_BAG_RAIN_Dialog/index.vue";
 import Common from "/@/utils/common";
 
 const activityStore = useActivityStore();
 const setp: any = ref(null);
 const getReadyCountdown = ref(3);
-
+const showDialog = ref(false);
+const dialogInfo = ref({});
 const initReadyTime = () => {
 	setp.value = 0;
 	const timer = setInterval(() => {
@@ -29,15 +38,27 @@ const initReadyTime = () => {
 		}
 	}, 1000);
 };
-
-const startRedbagRain = () => {
-	activityApi.getRedBagInfo().then(async (res) => {
-		if (res.code == Common.ResCode.SUCCESS) {
-			await activityStore.setCurrentActivityData({ ...res.data });
-			redbagRainSingleton.hideCountdown();
-			redbagRainSingleton.showRedbagRain();
+const confirmDialog = () => {
+	showDialog.value = false;
+};
+const startRedbagRain = async () => {
+	await activityApi.redBagParticipate({ redbagSessionId: activityStore.getCurrentActivityData.redbagSessionId }).then((res) => {
+		if (res.code === 10000) {
+			if (res.data.status === 10000) {
+				redbagRainSingleton.showRedbagRain();
+			} else {
+				dialogInfo.value = res.data;
+				showDialog.value = true;
+			}
 		}
 	});
+	redbagRainSingleton.hideCountdown();
+	// activityApi.getRedBagInfo().then(async (res) => {
+	// 	if (res.code == Common.ResCode.SUCCESS) {
+	// 		await activityStore.setCurrentActivityData({ ...res.data });
+
+	// 	}
+	// });
 };
 // 生命周期管理
 onMounted(async () => {
@@ -60,13 +81,17 @@ onMounted(async () => {
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-
+		flex-direction: column;
 		img {
 			width: 500px;
 			cursor: pointer;
 		}
 		img.animate {
 			animation: shake 1s ease infinite;
+		}
+		.close {
+			width: 48px;
+			cursor: pointer;
 		}
 	}
 	.redbag-rain-wrapper {

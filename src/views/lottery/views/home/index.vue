@@ -21,7 +21,7 @@
 					"
 				/>
 				<div class="close_icon curp" v-if="searchQuery">
-					<svg-icon name="close" size="18px" @click="searchQuery = ''" v-hover-svg></svg-icon>
+					<svg-icon name="common-close" size="18px" @click="searchQuery = ''" v-hover-svg></svg-icon>
 				</div>
 			</div>
 			<div class="tabs curp">
@@ -69,7 +69,6 @@ import { gameApi } from "/@/api/game";
 import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
-import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import Common from "/@/views/sports/utils/common";
 import { GameBaseInfo, GameListItem } from "../../types/game";
 
@@ -80,8 +79,6 @@ const { LotteryCard, HotLotteryCard } = useLotteryCard();
 const currentTab = ref<string | undefined>("0");
 const searchQuery = ref<string>(""); // 搜索关键词
 const searchinputFocus = ref(false);
-
-useWebSocket({});
 
 const gameData = ref<any[]>([]);
 
@@ -140,10 +137,6 @@ const filterGames = Common.debounce(() => {
 
 const games = computed(() => {
 	if (currentTab.value === "0") return gameData.value;
-	console.log(
-		gameData.value.filter((game) => game._key === currentTab.value),
-		"=======currentTab.value"
-	);
 	return gameData.value.filter((game) => game._key === currentTab.value);
 });
 
@@ -164,10 +157,13 @@ const maps: Maps = {
 	K3: "/lottery/kuaisan",
 	SSQ: "/lottery/unionLotto",
 	PK10: "/lottery/pk10",
+	_28: "/lottery/lucky28",
+	SSC: "/lottery/shishicai",
 };
 
 const pushView = (game: GameListItem) => {
 	console.log("game", game);
+
 	const { gameCategoryCode, venueCode, gameCode } = game;
 	const { maxWin = 0 } = game.data;
 	const searchParams = { venueCode, gameCode, maxWin };

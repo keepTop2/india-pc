@@ -32,6 +32,12 @@ const lotteryRoutes = {
 			component: () => import("/@/views/lottery/views/category/kuaisan/index.vue"),
 		},
 		{
+			path: "/lottery/lucky28",
+			name: "Lucky28",
+			meta: { name: "Lucky28", title: "幸运28" },
+			component: () => import("/@/views/lottery/views/category/lucky28/index.vue"),
+		},
+		{
 			path: "/lottery/unionLotto",
 			name: "UnionLotto",
 			meta: { name: "UnionLotto", title: "双色球" },

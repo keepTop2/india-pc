@@ -4,7 +4,7 @@
 		<div class="customeWindow" v-if="showCustomeWindow">
 			<iframe :src="customeUrl" frameborder="0"> </iframe>
 			<div class="closeBtn curp">
-				<svg-icon name="close" size="30px" @click="showCustomeWindow = false"></svg-icon>
+				<svg-icon name="common-close" size="30px" @click="showCustomeWindow = false"></svg-icon>
 			</div>
 		</div>
 	</div>
