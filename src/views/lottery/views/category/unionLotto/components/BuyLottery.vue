@@ -4,7 +4,7 @@
 			<div style="width: 100%; flex: 1">
 				<!-- 玩法选择区 -->
 				<Accordion
-					v-for="(item, index) in mergedLotteryList"
+					v-for="(item, index) in mergedGameplayList"
 					:key="item.id"
 					:isExpanded="item.actived"
 					@change="(status) => clearAccordionStatus(status, index)"
@@ -99,8 +99,8 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import { mergeLotteryList } from "../../../../utils/mergeLotteryList";
-import { lotteryList, queryGamePlayOddsListParams } from "./playsConfig";
+import { mergeGameplayList } from "../../../../utils/mergeGameplayList";
+import { gameplayList, queryGamePlayOddsListParams } from "./playsConfig";
 import { lotteryApi } from "/@/api/lottery";
 import showToast from "/@/hooks/useToast";
 import Common from "/@/utils/common";
@@ -109,7 +109,7 @@ import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
-import { type MergedLotteryList, type OddsListItem } from "/@/views/lottery/types/index";
+import { type MergedGameplayList, type OddsListItem } from "/@/views/lottery/types/index";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
 
 const props = defineProps({
@@ -124,7 +124,7 @@ const { satoken } = useLoginGame();
 useWebSocket();
 
 // 状态管理
-const mergedLotteryList = ref<MergedLotteryList>([]);
+const mergedGameplayList = ref<MergedGameplayList>([]);
 const redBalls = ref<number[]>([]); // 红球
 const blueBalls = ref<number[]>([]); // 蓝球
 const gameInfo = ref();
@@ -155,7 +155,7 @@ const updateFormStatus = (childData: any, data: any) => {
 
 // 展开处理
 const handleExpanded = (status: boolean, childData: any, data: any) => {
-	mergedLotteryList.value.forEach((v) => {
+	mergedGameplayList.value.forEach((v) => {
 		v.oddsList.forEach((w) => (w.actived = false));
 	});
 	childData.actived = status;
@@ -171,7 +171,7 @@ const handleExpanded = (status: boolean, childData: any, data: any) => {
 
 // 清除状态
 const clearAccordionStatus = (status: boolean, index: number) => {
-	mergedLotteryList.value.forEach((item, i) => {
+	mergedGameplayList.value.forEach((item, i) => {
 		item.actived = index === i && status;
 	});
 };
@@ -239,7 +239,7 @@ const handleSubmit = async ({ stake: betMoney, maxOdds }: { stake: number; maxOd
 
 onMounted(async () => {
 	const res = await lotteryApi.queryGamePlayOddsList(queryGamePlayOddsListParams);
-	mergedLotteryList.value = mergeLotteryList(lotteryList, res.data) as MergedLotteryList;
+	mergedGameplayList.value = mergeGameplayList(gameplayList, res.data) as MergedGameplayList;
 });
 </script>
 

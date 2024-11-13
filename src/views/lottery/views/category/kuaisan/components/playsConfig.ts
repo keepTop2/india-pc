@@ -1,7 +1,7 @@
-import { type LotteryList } from "/@/views/lottery/types/index";
+import { type GameplayList } from "/@/views/lottery/types/index";
 // 投注项
 
-export const lotteryList: LotteryList = [
+export const gameplayList: GameplayList = [
 	{
 		id: "1",
 		gamePlayName: "三军 总和大小",

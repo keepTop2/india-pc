@@ -1,4 +1,4 @@
-import { type LotteryList } from "/@/views/lottery/types/index";
+import { type GameplayList } from "/@/views/lottery/types/index";
 
 /**
  * @description 接口参数配置
@@ -15,7 +15,7 @@ export const queryGamePlayOddsListParams = {
 /**
  * @description 双色球玩法配置
  */
-export const lotteryList: LotteryList = [
+export const gameplayList: GameplayList = [
 	{
 		id: "1",
 		gamePlayName: "红球",
@@ -24,7 +24,7 @@ export const lotteryList: LotteryList = [
 		actived: false,
 		oddsList: [
 			{
-				id: "1-1", 
+				id: "1-1",
 				title: "大",
 				desc: "开奖的6个红球号码中≥17的号码数量比≤16的的号码数量多为“大多”",
 				itemOdds: 1.995,
@@ -32,7 +32,7 @@ export const lotteryList: LotteryList = [
 				optionCode: "大",
 				gamePlayCode: "smp_hq_sm_dxd",
 				minBet: 2,
-				maxBet: 10000
+				maxBet: 10000,
 			},
 			{
 				id: "1-2",
@@ -43,7 +43,7 @@ export const lotteryList: LotteryList = [
 				optionCode: "小",
 				gamePlayCode: "smp_hq_sm_dxd",
 				minBet: 2,
-				maxBet: 10000
+				maxBet: 10000,
 			},
 			{
 				id: "1-3",
@@ -54,7 +54,7 @@ export const lotteryList: LotteryList = [
 				optionCode: "和",
 				gamePlayCode: "smp_hq_sm_dxd",
 				minBet: 2,
-				maxBet: 10000
+				maxBet: 10000,
 			},
 			{
 				id: "1-4",
@@ -65,7 +65,7 @@ export const lotteryList: LotteryList = [
 				optionCode: "单",
 				gamePlayCode: "smp_hq_sm_dsd",
 				minBet: 2,
-				maxBet: 10000
+				maxBet: 10000,
 			},
 			{
 				id: "1-5",
@@ -76,7 +76,7 @@ export const lotteryList: LotteryList = [
 				optionCode: "双",
 				gamePlayCode: "smp_hq_sm_dsd",
 				minBet: 2,
-				maxBet: 10000
+				maxBet: 10000,
 			},
 			{
 				id: "1-6",
@@ -87,7 +87,7 @@ export const lotteryList: LotteryList = [
 				optionCode: "和",
 				gamePlayCode: "smp_hq_sm_dsd",
 				minBet: 2,
-				maxBet: 10000
+				maxBet: 10000,
 			},
 			{
 				id: "1-7",
@@ -99,9 +99,9 @@ export const lotteryList: LotteryList = [
 				gamePlayCode: "smp_hq_rx1",
 				type: "selectBall",
 				ballNum: 33,
-				maxSelect: 1
-			}
-		]
+				maxSelect: 1,
+			},
+		],
 	},
 	{
 		id: "2",
@@ -119,7 +119,7 @@ export const lotteryList: LotteryList = [
 				optionCode: "大",
 				gamePlayCode: "smp_lq_sm",
 				minBet: 2,
-				maxBet: 10000
+				maxBet: 10000,
 			},
 			{
 				id: "2-2",
@@ -130,7 +130,7 @@ export const lotteryList: LotteryList = [
 				optionCode: "小",
 				gamePlayCode: "smp_lq_sm",
 				minBet: 2,
-				maxBet: 10000
+				maxBet: 10000,
 			},
 			{
 				id: "2-3",
@@ -141,7 +141,7 @@ export const lotteryList: LotteryList = [
 				optionCode: "单",
 				gamePlayCode: "smp_lq_sm",
 				minBet: 2,
-				maxBet: 10000
+				maxBet: 10000,
 			},
 			{
 				id: "2-4",
@@ -152,7 +152,7 @@ export const lotteryList: LotteryList = [
 				optionCode: "双",
 				gamePlayCode: "smp_lq_sm",
 				minBet: 2,
-				maxBet: 10000
+				maxBet: 10000,
 			},
 			{
 				id: "2-5",
@@ -164,10 +164,10 @@ export const lotteryList: LotteryList = [
 				gamePlayCode: "smp_lq_lqxh",
 				type: "selectBall",
 				ballNum: 16,
-				maxSelect: 1
-			}
-		]
-	}
+				maxSelect: 1,
+			},
+		],
+	},
 ];
 
 /**
@@ -176,16 +176,16 @@ export const lotteryList: LotteryList = [
 export enum GameCode {
 	HTSSQ = "HTSSQ", // 极速双色球
 	XYSSQ = "3FSSQ", // 幸运双色球
-	SSQ = "5FSSQ"    // 双色球
+	SSQ = "5FSSQ", // 双色球
 }
 
 /**
  * @description 玩法代码类型
  */
 export enum PlayCode {
-	RED_DS = "smp_hq_sm_dsd",  // 红球单双多
-	RED_DX = "smp_hq_sm_dxd",  // 红球大小多
-	RED_RX = "smp_hq_rx1",     // 红球任选一
-	BLUE_SM = "smp_lq_sm",     // 蓝球双面
-	BLUE_XH = "smp_lq_lqxh"    // 蓝球选号
+	RED_DS = "smp_hq_sm_dsd", // 红球单双多
+	RED_DX = "smp_hq_sm_dxd", // 红球大小多
+	RED_RX = "smp_hq_rx1", // 红球任选一
+	BLUE_SM = "smp_lq_sm", // 蓝球双面
+	BLUE_XH = "smp_lq_lqxh", // 蓝球选号
 }
