@@ -62,7 +62,7 @@ watch(
 	// margin-bottom: 4px;
 	padding: 4px 19px 4px 28px;
 	border-radius: 8px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	cursor: pointer;
 
 	.select_left {
@@ -83,7 +83,7 @@ watch(
 		margin-left: 32px;
 
 		.icon {
-			color: var(--Icon_1);
+			color: var(--Icon-1);
 			transition: transform 0.3s ease;
 			display: inline-block;
 			&.icon-expanded {

@@ -134,7 +134,7 @@ const isBright = () => {
 
 <style scoped lang="scss">
 .oddsUp {
-	color: var(--Warn) !important;
+	color: var(--F-1) !important;
 }
 
 .oddsDown {
@@ -145,7 +145,7 @@ const isBright = () => {
 	width: 100%;
 	height: 34px;
 	border-radius: 2px;
-	background: var(--Bg3);
+	background: var(--Bg-3);
 	overflow: hidden;
 	cursor: pointer;
 	&:hover {
@@ -161,9 +161,9 @@ const isBright = () => {
 		padding: 6px 10px;
 	}
 	.isBright {
-		background: var(--Bg5);
+		background: var(--Bg-5);
 		.label {
-			color: var(--Text_a) !important;
+			color: var(--Text-a) !important;
 		}
 	}
 
@@ -175,7 +175,7 @@ const isBright = () => {
 		justify-content: space-between;
 
 		.label {
-			color: var(--Text1);
+			color: var(--Text-1);
 			text-align: center;
 			font-family: "PingFang SC";
 			font-size: 14px;
@@ -185,7 +185,7 @@ const isBright = () => {
 		}
 
 		.value {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-family: "PingFang SC";
 			font-size: 14px;
 			font-style: normal;
@@ -198,7 +198,7 @@ const isBright = () => {
 		margin: 0 auto;
 		width: 14px;
 		height: 1px;
-		background: var(--Text1);
+		background: var(--Text-1);
 	}
 }
 </style>

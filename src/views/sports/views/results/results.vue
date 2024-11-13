@@ -226,7 +226,7 @@ const sizeChange = (pageSize: number) => {
 		margin-bottom: 130px;
 		p {
 			// line-height: 30px;
-			color: var(--Text2);
+			color: var(--Text-2);
 			font-size: 14px;
 			font-weight: 400;
 		}
@@ -283,11 +283,11 @@ const sizeChange = (pageSize: number) => {
 				border-radius: 10px;
 
 				th {
-					background: var(--Bg3);
-					color: var(--Text1);
+					background: var(--Bg-3);
+					color: var(--Text-1);
 					font-weight: normal;
 					border: 0;
-					border-right: 1px solid var(--Line_2);
+					border-right: 1px solid var(--Line-2);
 					// border-left: none;
 				}
 
@@ -314,15 +314,15 @@ const sizeChange = (pageSize: number) => {
 			.el-table__row {
 				&:hover {
 					.el-table__cell {
-						background: var(--Bg1);
+						background: var(--Bg-1);
 					}
 				}
 
 				.el-table__cell {
-					border: 1px solid var(--Line_2);
+					border: 1px solid var(--Line-2);
 					// border-left: none;
-					background: var(--Bg1);
-					color: var(--Text1);
+					background: var(--Bg-1);
+					color: var(--Text-1);
 				}
 
 				& > .el-table__cell:first-child {
@@ -367,9 +367,9 @@ const sizeChange = (pageSize: number) => {
 		.el-table__expanded-cell {
 			// border: none;
 			padding: 0;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			&:hover {
-				background: var(--Bg1) !important;
+				background: var(--Bg-1) !important;
 			}
 		}
 	}

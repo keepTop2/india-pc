@@ -2,7 +2,7 @@
 	<div class="detail-container">
 		<div class="top">
 			<div class="back" @click="handleGoBack">
-				<svg-icon class="icon" name="arrow_left" size="13" />
+				<svg-icon class="icon" name="common-arrow_left" size="13" />
 				<span>返回</span>
 			</div>
 			<div class="title">{{ sportInfo.leagueName }}</div>
@@ -209,11 +209,11 @@ const { VideoSource } = useVideo();
 	width: 100%;
 	// margin-bottom: 20px;
 	border-radius: 0 0 8px 8px;
-	color: var(--Text1);
+	color: var(--Text-1);
 
 	.title {
 		font-size: 16px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 
 	.handle {
@@ -226,12 +226,12 @@ const { VideoSource } = useVideo();
 			align-items: center;
 			font-size: 14px;
 			gap: 8px;
-			color: var(--Text1);
+			color: var(--Text-1);
 			cursor: pointer;
 		}
 
 		.saveFollow {
-			color: var(--Warn);
+			color: var(--F-1);
 		}
 	}
 
@@ -264,7 +264,7 @@ const { VideoSource } = useVideo();
 	align-items: center;
 	padding: 0 12px 0 6px;
 	height: 52px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	border-radius: 8px 8px 0 0;
 	margin-top: 5px;
 	.back {

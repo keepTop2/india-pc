@@ -86,7 +86,7 @@ var apple_vue_vue_type_script_setup_true_lang_default = defineComponent({
   }
 });
 var apple_default = apple_vue_vue_type_script_setup_true_lang_default;
-var arrow_down_bold_vue_vue_type_script_setup_true_lang_default = defineComponent({
+var common-arrow_down_bold_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "ArrowDownBold",
   __name: "arrow-down-bold",
   setup(__props) {
@@ -101,8 +101,8 @@ var arrow_down_bold_vue_vue_type_script_setup_true_lang_default = defineComponen
     ]));
   }
 });
-var arrow_down_bold_default = arrow_down_bold_vue_vue_type_script_setup_true_lang_default;
-var arrow_down_vue_vue_type_script_setup_true_lang_default = defineComponent({
+var common-arrow_down_bold_default = common-arrow_down_bold_vue_vue_type_script_setup_true_lang_default;
+var common-arrow_down_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "ArrowDown",
   __name: "arrow-down",
   setup(__props) {
@@ -117,8 +117,8 @@ var arrow_down_vue_vue_type_script_setup_true_lang_default = defineComponent({
     ]));
   }
 });
-var arrow_down_default = arrow_down_vue_vue_type_script_setup_true_lang_default;
-var arrow_left_bold_vue_vue_type_script_setup_true_lang_default = defineComponent({
+var common-arrow_down_default = common-arrow_down_vue_vue_type_script_setup_true_lang_default;
+var common-arrow_left_bold_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "ArrowLeftBold",
   __name: "arrow-left-bold",
   setup(__props) {
@@ -133,8 +133,8 @@ var arrow_left_bold_vue_vue_type_script_setup_true_lang_default = defineComponen
     ]));
   }
 });
-var arrow_left_bold_default = arrow_left_bold_vue_vue_type_script_setup_true_lang_default;
-var arrow_left_vue_vue_type_script_setup_true_lang_default = defineComponent({
+var common-arrow_left_bold_default = common-arrow_left_bold_vue_vue_type_script_setup_true_lang_default;
+var common-arrow_left_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "ArrowLeft",
   __name: "arrow-left",
   setup(__props) {
@@ -149,8 +149,8 @@ var arrow_left_vue_vue_type_script_setup_true_lang_default = defineComponent({
     ]));
   }
 });
-var arrow_left_default = arrow_left_vue_vue_type_script_setup_true_lang_default;
-var arrow_right_bold_vue_vue_type_script_setup_true_lang_default = defineComponent({
+var common-arrow_left_default = common-arrow_left_vue_vue_type_script_setup_true_lang_default;
+var common-arrow_right_bold_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "ArrowRightBold",
   __name: "arrow-right-bold",
   setup(__props) {
@@ -165,8 +165,8 @@ var arrow_right_bold_vue_vue_type_script_setup_true_lang_default = defineCompone
     ]));
   }
 });
-var arrow_right_bold_default = arrow_right_bold_vue_vue_type_script_setup_true_lang_default;
-var arrow_right_vue_vue_type_script_setup_true_lang_default = defineComponent({
+var common-arrow_right_bold_default = common-arrow_right_bold_vue_vue_type_script_setup_true_lang_default;
+var common-arrow_right_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "ArrowRight",
   __name: "arrow-right",
   setup(__props) {
@@ -181,8 +181,8 @@ var arrow_right_vue_vue_type_script_setup_true_lang_default = defineComponent({
     ]));
   }
 });
-var arrow_right_default = arrow_right_vue_vue_type_script_setup_true_lang_default;
-var arrow_up_bold_vue_vue_type_script_setup_true_lang_default = defineComponent({
+var common-arrow_right_default = common-arrow_right_vue_vue_type_script_setup_true_lang_default;
+var common-arrow_up_bold_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "ArrowUpBold",
   __name: "arrow-up-bold",
   setup(__props) {
@@ -197,8 +197,8 @@ var arrow_up_bold_vue_vue_type_script_setup_true_lang_default = defineComponent(
     ]));
   }
 });
-var arrow_up_bold_default = arrow_up_bold_vue_vue_type_script_setup_true_lang_default;
-var arrow_up_vue_vue_type_script_setup_true_lang_default = defineComponent({
+var common-arrow_up_bold_default = common-arrow_up_bold_vue_vue_type_script_setup_true_lang_default;
+var common-arrow_up_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "ArrowUp",
   __name: "arrow-up",
   setup(__props) {
@@ -213,7 +213,7 @@ var arrow_up_vue_vue_type_script_setup_true_lang_default = defineComponent({
     ]));
   }
 });
-var arrow_up_default = arrow_up_vue_vue_type_script_setup_true_lang_default;
+var common-arrow_up_default = common-arrow_up_vue_vue_type_script_setup_true_lang_default;
 var avatar_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "Avatar",
   __name: "avatar",
@@ -1296,7 +1296,7 @@ var crop_vue_vue_type_script_setup_true_lang_default = defineComponent({
   }
 });
 var crop_default = crop_vue_vue_type_script_setup_true_lang_default;
-var d_arrow_left_vue_vue_type_script_setup_true_lang_default = defineComponent({
+var d_common-arrow_left_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "DArrowLeft",
   __name: "d-arrow-left",
   setup(__props) {
@@ -1311,8 +1311,8 @@ var d_arrow_left_vue_vue_type_script_setup_true_lang_default = defineComponent({
     ]));
   }
 });
-var d_arrow_left_default = d_arrow_left_vue_vue_type_script_setup_true_lang_default;
-var d_arrow_right_vue_vue_type_script_setup_true_lang_default = defineComponent({
+var d_common-arrow_left_default = d_common-arrow_left_vue_vue_type_script_setup_true_lang_default;
+var d_common-arrow_right_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "DArrowRight",
   __name: "d-arrow-right",
   setup(__props) {
@@ -1327,7 +1327,7 @@ var d_arrow_right_vue_vue_type_script_setup_true_lang_default = defineComponent(
     ]));
   }
 });
-var d_arrow_right_default = d_arrow_right_vue_vue_type_script_setup_true_lang_default;
+var d_common-arrow_right_default = d_common-arrow_right_vue_vue_type_script_setup_true_lang_default;
 var d_caret_vue_vue_type_script_setup_true_lang_default = defineComponent({
   name: "DCaret",
   __name: "d-caret",
@@ -5184,14 +5184,14 @@ export {
   aim_default,
   alarm_clock_default,
   apple_default,
-  arrow_down_bold_default,
-  arrow_down_default,
-  arrow_left_bold_default,
-  arrow_left_default,
-  arrow_right_bold_default,
-  arrow_right_default,
-  arrow_up_bold_default,
-  arrow_up_default,
+  common-arrow_down_bold_default,
+  common-arrow_down_default,
+  common-arrow_left_bold_default,
+  common-arrow_left_default,
+  common-arrow_right_bold_default,
+  common-arrow_right_default,
+  common-arrow_up_bold_default,
+  common-arrow_up_default,
   avatar_default,
   back_default,
   baseball_default,
@@ -5251,8 +5251,8 @@ export {
   cpu_default,
   credit_card_default,
   crop_default,
-  d_arrow_left_default,
-  d_arrow_right_default,
+  d_common-arrow_left_default,
+  d_common-arrow_right_default,
   d_caret_default,
   data_analysis_default,
   data_board_default,

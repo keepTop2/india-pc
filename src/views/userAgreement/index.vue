@@ -29,15 +29,15 @@ onMounted(() => {
 
 <style scoped>
 .title {
-	color: var(--Text_s);
+	color: var(--Text-s);
 	font-size: 20px;
 }
 .content {
 	border-radius: 8px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	min-height: 200px;
 	padding: 39px;
-	color: var(--Text1);
+	color: var(--Text-1);
 	font-size: 14px;
 }
 </style>

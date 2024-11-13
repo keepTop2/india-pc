@@ -62,26 +62,26 @@ const getMarketItemStyle = (index: number) => {
 .selectCard {
 	width: 100%;
 	height: 34px;
-	background: var(--Bg1);
+	background: var(--Bg-1);
 	border-radius: 4px;
 	margin: 4px 0;
 	padding: 0px 19px;
 	line-height: 34px;
 	:deep(.el-skeleton__item) {
 		// background: linear-gradient(90deg, #8c8c8c 25%, #737373 37%, #8a8a8a 63%);
-		background: linear-gradient(90deg, var(--Bg3) 25%, var(--Bg1) 37%, var(--Bg3) 63%);
+		background: linear-gradient(90deg, var(--Bg-3) 25%, var(--Bg-1) 37%, var(--Bg-3) 63%);
 
 		background-size: 400% 100%;
 	}
 }
 .skeleton-card {
 	margin-bottom: 5px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	border-radius: 8px;
 	overflow: hidden;
 	:deep(.el-skeleton__item) {
 		// background: linear-gradient(90deg, #8c8c8c 25%, #737373 37%, #8a8a8a 63%);
-		background: linear-gradient(90deg, var(--Bg3) 25%, var(--Bg1) 37%, var(--Bg3) 63%);
+		background: linear-gradient(90deg, var(--Bg-3) 25%, var(--Bg-1) 37%, var(--Bg-3) 63%);
 
 		background-size: 400% 100%;
 	}
@@ -91,7 +91,7 @@ const getMarketItemStyle = (index: number) => {
 	display: flex;
 	align-items: center;
 	padding: 8px;
-	background: var(--Bg6);
+	background: var(--Bg-6);
 	height: 34px;
 }
 
@@ -118,8 +118,8 @@ const getMarketItemStyle = (index: number) => {
 	display: flex;
 	padding: 8px;
 	height: 120px;
-	background: var(--Bg1);
-	border-bottom: 1px solid var(--Line_2);
+	background: var(--Bg-1);
+	border-bottom: 1px solid var(--Line-2);
 	.skeleton-event-content {
 		// display: flex;
 		.skeleton-event-left {
@@ -155,13 +155,13 @@ const getMarketItemStyle = (index: number) => {
 	display: flex;
 	// justify-content: space-between;
 	align-items: center;
-	background: var(--Bg3);
+	background: var(--Bg-3);
 	height: 30px;
 	margin-top: 8px;
 	margin-right: 4px;
 	padding-left: 9px;
 	// animation: el-skeleton-loading 1.4s ease infinite;
-	// background: linear-gradient(90deg, var(--Bg3) 25%, var(--Bg1) 37%, var(--Bg3) 63%);
+	// background: linear-gradient(90deg, var(--Bg-3) 25%, var(--Bg-1) 37%, var(--Bg-3) 63%);
 	// background-size: 300% 100%;
 }
 
@@ -187,7 +187,7 @@ const getMarketItemStyle = (index: number) => {
 .skeleton-market-card {
 	width: 78px;
 	height: 32px;
-	background-color: var(--Bg3);
+	background-color: var(--Bg-3);
 	border-radius: 4px;
 	padding: 6px;
 	display: flex;
@@ -209,7 +209,7 @@ const getMarketItemStyle = (index: number) => {
 	justify-content: space-between;
 	padding: 6px;
 	border-radius: 4px;
-	background: var(--Bg3);
+	background: var(--Bg-3);
 	box-sizing: border-box;
 }
 

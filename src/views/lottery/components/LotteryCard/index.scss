@@ -1,5 +1,5 @@
 .lottery-card {
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	border-radius: 8px;
 	height: 183px;
 	cursor: pointer;
@@ -61,11 +61,11 @@
 			flex-direction: column;
 			flex: 1;
 			.type-name {
-				color: var(--Text_a);
+				color: var(--Text-a);
 				font-size: 20px;
 			}
 			.title {
-				color: var(--Text1);
+				color: var(--Text-1);
 				font-size: 14px;
 			}
 		}
@@ -77,15 +77,15 @@
 		justify-content: space-between;
 		align-items: center;
 		height: 36px;
-		background-color: var(--Bg4);
+		background-color: var(--Bg-4);
 		border-radius: 8px;
 		.left {
 			font-size: 12px;
-			color: var(--Text1);
+			color: var(--Text-1);
 		}
 		.right {
 			font-size: 14px;
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 	}
 }
@@ -128,7 +128,7 @@
 		height: 44px;
 		line-height: 44px;
 		text-align: center;
-		color: var(--Text_a);
+		color: var(--Text-a);
 		border-radius: 4px;
 		font-size: 16px;
 		margin: 8px 12px 0 12px;

@@ -142,7 +142,7 @@ const computedStatusLabel = computed(() => {
 	return {
 		[SportStatusEnum.HalfWon]: {
 			label: "半赢",
-			className: "text-theme", // 字体颜色 var(--Success)
+			className: "text-theme", // 字体颜色 var(--success)
 		},
 		[SportStatusEnum.HalfLose]: {
 			label: "半输",
@@ -150,7 +150,7 @@ const computedStatusLabel = computed(() => {
 		},
 		[SportStatusEnum.Won]: {
 			label: "赢",
-			className: "text-theme", // 字体颜色 var(--Success)
+			className: "text-theme", // 字体颜色 var(--success)
 		},
 		[SportStatusEnum.Lose]: {
 			label: "输",
@@ -158,27 +158,27 @@ const computedStatusLabel = computed(() => {
 		},
 		[SportStatusEnum.Void]: {
 			label: "作废",
-			className: "text-success", // 字体颜色 var(--Text1)
+			className: "text-success", // 字体颜色 var(--Text-1)
 		},
 		[SportStatusEnum.Running]: {
 			label: "进行中",
-			className: "text-text1", // 字体颜色 var(--Text1)
+			className: "text-text1", // 字体颜色 var(--Text-1)
 		},
 		[SportStatusEnum.Draw]: {
 			label: "和局",
-			className: "text-f1", // 字体颜色 var(--F1)
+			className: "text-f1", // 字体颜色 var(--F-1)
 		},
 		[SportStatusEnum.Reject]: {
 			label: "已取消",
-			className: "text-success", // 字体颜色 var(--Text1)
+			className: "text-success", // 字体颜色 var(--Text-1)
 		},
 		[SportStatusEnum.Refund]: {
 			label: "已退款",
-			className: "text-success", // 字体颜色 var(--Text1)
+			className: "text-success", // 字体颜色 var(--Text-1)
 		},
 		[SportStatusEnum.Waiting]: {
 			label: "等待中",
-			className: "text-text1", // 字体颜色 var(--Text1)
+			className: "text-text1", // 字体颜色 var(--Text-1)
 		},
 	} as any;
 });
@@ -212,19 +212,19 @@ function formatDateTime(dateTimeStr: Date | string): string {
 
 <style scoped lang="scss">
 .text-success {
-	color: var(--Success);
+	color: var(--success);
 }
 .text-theme {
 	color: var(--Theme);
 }
 .text-f2 {
-	color: var(--F2);
+	color: var(--F-2);
 }
 .text-text1 {
-	color: var(--Text1);
+	color: var(--Text-1);
 }
 .text-f1 {
-	color: var(--F1);
+	color: var(--F-1);
 }
 
 .container {
@@ -241,21 +241,21 @@ function formatDateTime(dateTimeStr: Date | string): string {
 
 	// 头部字体样式调整
 	:deep(.table-header-cell) {
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-family: "PingFang SC";
 		font-size: 14px;
 		font-weight: 400;
 	}
 
 	.serial-number {
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-family: "PingFang SC";
 		font-size: 14px;
 		font-weight: 400;
 	}
 	.bet-details {
 		text-align: left;
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
@@ -267,7 +267,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 	}
 	.betting {
 		text-align: left;
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
@@ -279,7 +279,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 	.options {
 		text-align: left;
 		.events-name {
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-family: "PingFang SC";
 			font-size: 12px;
 			font-weight: 500;
@@ -289,7 +289,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 			align-items: center;
 			gap: 6px;
 			.market-name {
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 12px;
 				font-weight: 400;
@@ -315,7 +315,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 		}
 	}
 	.bet-amount {
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
@@ -326,13 +326,13 @@ function formatDateTime(dateTimeStr: Date | string): string {
 		font-weight: 400;
 	}
 	.maximum-win {
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
 	}
 	.bet-status {
-		// color: var(--Text1);
+		// color: var(--Text-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
@@ -353,12 +353,12 @@ function formatDateTime(dateTimeStr: Date | string): string {
 // 修改头部背景色
 :deep(.table-header-cell) {
 	height: 44px;
-	background: var(--Bg3) !important;
+	background: var(--Bg-3) !important;
 }
 // 修改鼠标移入表格行背景色
 :deep(.el-table--enable-row-hover) {
 	.el-table__body tr:hover > td.el-table__cell {
-		background-color: var(--Bg1);
+		background-color: var(--Bg-1);
 	}
 }
 
@@ -366,16 +366,16 @@ function formatDateTime(dateTimeStr: Date | string): string {
 	height: 100%;
 	max-height: inherit;
 	background-color: transparent;
-	--el-table-row-hover-bg-color: var(--Line_2);
+	--el-table-row-hover-bg-color: var(--Line-2);
 	border-radius: 8px;
-	border: 1px solid var(--Line_2);
+	border: 1px solid var(--Line-2);
 
 	.el-table__inner-wrapper {
 		max-height: inherit;
 	}
 
 	th.is-leaf {
-		border-bottom: 1px solid var(--Line_2) !important;
+		border-bottom: 1px solid var(--Line-2) !important;
 	}
 
 	.el-table__body-wrapper {
@@ -388,7 +388,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 	th.is-leaf,
 	.el-table--border,
 	.el-table--group {
-		border-color: var(--Line_2);
+		border-color: var(--Line-2);
 	}
 
 	.el-table__cell:last-child {
@@ -398,7 +398,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 	// 行内样式
 	.row-cell,
 	tr {
-		background: var(--Bg1) !important;
+		background: var(--Bg-1) !important;
 		background-color: transparent;
 	}
 

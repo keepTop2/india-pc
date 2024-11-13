@@ -81,7 +81,7 @@ const props = defineProps({
 			background: url("../../vip/image/levelText_bg.png") no-repeat;
 			background-size: auto 100%;
 			padding: 8px 21px;
-			color: var(--Text_a);
+			color: var(--Text-a);
 			font-weight: 500;
 		}
 		.vipLevelIcon {
@@ -94,7 +94,7 @@ const props = defineProps({
 		.experience {
 			padding-left: 34px;
 			margin: 22px 0 12px 0;
-			color: var(--Text_a);
+			color: var(--Text-a);
 			.tooltipImg {
 				width: 16px;
 				height: 16px;
@@ -117,7 +117,7 @@ const props = defineProps({
 					width: 100%;
 					text-align: center;
 					line-height: 38px;
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-size: 12px;
 				}
 			}
@@ -166,14 +166,14 @@ const props = defineProps({
 	.kefu {
 		width: 176px;
 		height: 195px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		border-radius: 12px;
 		overflow: hidden;
 		position: relative;
 
 		.kefuTagBg {
 			font-size: 16px;
-			color: var(--Text_a);
+			color: var(--Text-a);
 			padding-left: 5px;
 			background: url("../image/kefuTagBg.png") no-repeat;
 			background-size: auto 100%;

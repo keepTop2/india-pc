@@ -95,7 +95,7 @@ const linkDetail = () => {
 			.team-name {
 				max-width: 286px;
 				flex: 1;
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;
 				font-weight: 400;

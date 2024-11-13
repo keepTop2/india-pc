@@ -103,19 +103,19 @@ const updateModelValue = (e: any) => {
 
 <style scoped lang="scss">
 :deep(.vc-popover-content) {
-	background: var(--light-ok-Bg-4-4, #212328);
+	background: var(--Bg-4);
 	border-radius: 8px;
-	border: 1px solid var(--light-ok-Line-2-, #373a40);
+	border: 1px solid var(--Line-2);
 }
 :deep(.vc-container) {
 	width: 268px;
 	height: 232px;
-	background: var(--light-ok-Bg-4-4, #212328);
+	background: var(--Bg-4);
 	.vc-header {
 		height: 22px;
 		margin-top: 4px;
 		padding: 0px 6px;
-		// border-bottom: 1px solid var(--Line_2);
+		// border-bottom: 1px solid var(--Line-2);
 		.vc-arrow {
 			width: 20px;
 			height: 20px;
@@ -127,7 +127,7 @@ const updateModelValue = (e: any) => {
 			box-shadow: 0 0 0 2px rgba(255, 40, 75, 0.5);
 		}
 		.vc-title-wrapper {
-			color: var(--Text1);
+			color: var(--Text-1);
 			font-family: "PingFang SC";
 			font-size: 12px;
 			font-weight: 500;
@@ -144,7 +144,7 @@ const updateModelValue = (e: any) => {
 				align-items: center;
 				justify-content: center;
 				padding: 0px;
-				color: var(--Text2_1);
+				color: var(--Text-2-1);
 				font-family: "PingFang SC";
 				font-size: 12px;
 				font-weight: 500;
@@ -166,21 +166,21 @@ const updateModelValue = (e: any) => {
 					align-items: center;
 					justify-content: center;
 					padding: 0px;
-					color: var(--Text_s);
+					color: var(--Text-s);
 					font-family: "PingFang SC";
 					font-size: 12px;
 					font-weight: 500;
 				}
 
 				.vc-highlight-content-solid {
-					color: var(--Text_s);
+					color: var(--Text-s);
 				}
 				.vc-day-content:hover {
 					width: 26px;
 					height: 26px;
 					background-color: var(--Theme);
 					border-radius: 4px;
-					color: var(--Text_s);
+					color: var(--Text-s);
 				}
 
 				.vc-highlight-bg-solid {
@@ -188,7 +188,7 @@ const updateModelValue = (e: any) => {
 					height: 26px;
 					background-color: var(--Theme);
 					border-radius: 4px;
-					color: var(--Text_s);
+					color: var(--Text-s);
 				}
 				.vc-highlight-bg-light {
 					background: rgba(255, 40, 75, 0.5);
@@ -205,7 +205,7 @@ const updateModelValue = (e: any) => {
 			// .is-not-in-month {
 			// 	* {
 			// 		opacity: 1;
-			// 		color: var(--Text2_2) !important;
+			// 		color: var(--Text-2_2) !important;
 			// 	}
 			// }
 
@@ -227,7 +227,7 @@ const updateModelValue = (e: any) => {
 		display: inline-block;
 		margin-right: 8px;
 		white-space: nowrap;
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
@@ -242,8 +242,8 @@ const updateModelValue = (e: any) => {
 		gap: 8px;
 		padding: 5px 12px;
 		border-radius: 4px;
-		background: var(--Bg2);
-		color: var(--Text1);
+		background: var(--Bg-2);
+		color: var(--Text-1);
 		font-family: "PingFang SC";
 		font-size: 14px;
 		font-weight: 400;

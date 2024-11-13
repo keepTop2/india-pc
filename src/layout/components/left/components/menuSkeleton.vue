@@ -21,7 +21,7 @@ const props = defineProps<{
 	align-items: center;
 	padding: 0 20px;
 	box-sizing: border-box;
-	background: var(--Bg3);
+	background: var(--Bg-3);
 	border-radius: 4px;
 	margin: 4px 0;
 	position: relative; /* Added for pseudo-element positioning */
@@ -30,7 +30,7 @@ const props = defineProps<{
 	.skeleton-icon {
 		width: 18px;
 		height: 18px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		margin-right: 16px;
 		border-radius: 50%; /* Added for circular icon */
 	}
@@ -44,7 +44,7 @@ const props = defineProps<{
 		.skeleton-name {
 			width: 100px;
 			height: 18px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			border-radius: 4px;
 			margin-bottom: 4px;
 		}
@@ -75,7 +75,7 @@ const props = defineProps<{
 	.skeleton-icon {
 		width: 18px;
 		height: 18px;
-		background: var(--Bg1);
+		background: var(--Bg-1);
 		margin-right: 0;
 		border-radius: 4px; /* Added for circular icon */
 	}
@@ -89,7 +89,7 @@ const props = defineProps<{
 		.skeleton-name {
 			width: 100px;
 			height: 18px;
-			background: var(--Bg1);
+			background: var(--Bg-1);
 			border-radius: 4px;
 			margin-bottom: 4px;
 		}

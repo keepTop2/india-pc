@@ -71,7 +71,7 @@ console.log(props.teamData, "teamData.teamInfo");
 			.team-name {
 				max-width: 200px;
 				flex: 1;
-				color: var(--Text_s);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 12px;
 				font-weight: 400;

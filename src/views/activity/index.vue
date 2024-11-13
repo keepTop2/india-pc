@@ -1,6 +1,6 @@
 <template>
 	<div class="mb_49">
-		<venueBanner></venueBanner>
+		<venueBanner :bannerList="bannerList"></venueBanner>
 		<div class="max-width">
 			<div class="tabs mt_40 mb_40 mr_10 ml_10">
 				<div v-for="(item, index) in activityTabsList" :key="index" class="tab" @click.stop="setCurrentTab(index)">
@@ -22,10 +22,12 @@ import activityCard from "./components/activityCard.vue";
 import { activityApi } from "/@/api/activity";
 import Common from "/@/utils/common";
 import { useUserStore } from "/@/stores/modules/user";
+import { bannerApi } from "/@/api/banner";
 const activityList = ref([]);
 const activityTabsList: any = ref([]);
 const currentTab = ref(0);
 const finished = ref(false);
+const bannerList = ref([]);
 const params = reactive({
 	pageNumber: 1,
 	pageSize: 10,
@@ -36,8 +38,17 @@ const isLoading = ref(false); // Track loading status
 // Fetch activity tabs on mount
 onMounted(() => {
 	getactivityTabsList();
+	getBannerList();
 });
-
+const getBannerList = () => {
+	bannerApi
+		.queryBannerList({
+			gameOneClassId: 0,
+		})
+		.then((res) => {
+			bannerList.value = res.data;
+		});
+};
 // Load activity list based on current tab
 const getactivityList = async () => {
 	if (finished.value || isLoading.value) return; // Prevent fetching if already finished or loading
@@ -86,17 +97,17 @@ const setCurrentTab = async (index: number) => {
 	gap: 7px;
 	flex-wrap: wrap;
 	.btn {
-		background: var(--butter);
+		background: var(--Butter);
 		padding: 7px 12px;
 		border: none;
 		cursor: pointer;
 		border-radius: 4px;
-		color: var(--Text1);
+		color: var(--Text-1);
 	}
 	.btn:hover,
 	.active {
 		background: var(--Theme);
-		color: var(--Text_s);
+		color: var(--Text-s);
 	}
 }
 </style>

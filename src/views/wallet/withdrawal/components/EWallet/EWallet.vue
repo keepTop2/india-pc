@@ -36,7 +36,7 @@
 						<div class="cell phone" :class="{ error: field.code === 'userPhone' && !isPhoneValid && formParams['userPhone'] }">
 							<div class="area_code" @click="toggleDropdown">
 								<span class="value">+{{ formParams["areaCode"] }}</span>
-								<svg-icon class="icon" name="arrow_down" />
+								<svg-icon class="icon" name="common-arrow_down" />
 							</div>
 							<input v-model="formParams[field.model as keyof formParamsRootObject]" :type="field.type" :placeholder="$t(`wallet['${field.placeholder}']`)" name="" id="" />
 						</div>
@@ -188,7 +188,7 @@ defineExpose({
 
 	.label,
 	.value {
-		color: var(--Text2_1);
+		color: var(--Text-2-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
@@ -201,7 +201,7 @@ defineExpose({
 	&:hover {
 		.label,
 		.value {
-			color: var(--Text_s);
+			color: var(--Text-s);
 		}
 	}
 }

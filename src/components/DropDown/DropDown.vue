@@ -108,7 +108,7 @@ onBeforeUnmount(() => {
 	margin-top: 5px;
 	/* padding: 10px 0; */
 	border-radius: 8px;
-	background-color: var(--Bg3);
+	background-color: var(--Bg-3);
 	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
 	overflow: hidden;
 	z-index: 1000;
@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
 	align-items: center;
 	gap: 10px;
 	padding: 8px 10px;
-	border-bottom: 1px solid var(--Line_2);
+	border-bottom: 1px solid var(--Line-2);
 }
 
 input {
@@ -129,13 +129,13 @@ input {
 	margin: 0px;
 	padding: 0px;
 	border: 0px;
-	background-color: var(--Bg3);
-	color: var(--Text_s);
+	background-color: var(--Bg-3);
+	color: var(--Text-s);
 	font-family: "PingFang SC";
 	font-size: 12px;
 	font-weight: 400;
 	&::placeholder {
-		color: var(--Text2_1);
+		color: var(--Text-2-1);
 	}
 }
 
@@ -163,7 +163,7 @@ input {
 	padding: 8px 12px;
 	cursor: pointer;
 	.dropdown-item-value {
-		color: var(--Text2_1);
+		color: var(--Text-2-1);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;
@@ -171,9 +171,9 @@ input {
 }
 
 .dropdown-item:hover {
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	.dropdown-item-value {
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 12px;
 		font-weight: 400;

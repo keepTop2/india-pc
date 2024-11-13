@@ -19,14 +19,14 @@
 				<img src="./image/titleRight.png" alt="" />
 			</div>
 			<div class="vipRank">
-				<div>
+				<slide>
 					<div v-for="(item, index) in vipRankList" :key="index">
 						<div @click="changeVip(item, index)" :class="index == currentVipIndex ? 'active' : ''" class="vipRankItem curp">
 							<img :src="getVipRankImg(item.vipRankCode)" alt="" />
 						</div>
 						<div class="vipRankItemLabel">{{ item.vipRankNameI18nCode }}</div>
 					</div>
-				</div>
+				</slide>
 			</div>
 			<div class="vipLevelText">
 				<img :src="getRankTextIcon(vipRankList[currentVipIndex]?.vipRankCode)" alt="" />
@@ -118,7 +118,7 @@ onMounted(() => {
 			padding-bottom: 20px;
 			width: 100%;
 			text-align: center;
-			color: var(--Text_s);
+			color: var(--Text-s);
 			font-size: 20px;
 			background: url("./image/header_bg.png") center no-repeat;
 			background-size: 366px 34px;
@@ -136,7 +136,7 @@ onMounted(() => {
 	}
 	.card1 {
 		width: 486px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		margin: 0 auto 30px;
 		text-align: center;
 		.goToVipRule {
@@ -202,7 +202,7 @@ onMounted(() => {
 				text-align: center;
 				margin-top: 10px;
 				margin: 0 30px;
-				color: var(--Text1);
+				color: var(--Text-1);
 				font-size: 14px;
 			}
 		}
@@ -210,7 +210,7 @@ onMounted(() => {
 			height: 46px;
 			margin: 16px 24px;
 			font-size: 14px;
-			color: var(--Text_s);
+			color: var(--Text-s);
 
 			line-height: 46px;
 			border-radius: 12px;
@@ -222,8 +222,11 @@ onMounted(() => {
 			}
 		}
 	}
-	.content::-webkit-scrollbar {
-		display: none;
-	}
+}
+:deep(.slider-content) {
+	padding-bottom: 10px;
+}
+:deep(.slider-content::-webkit-scrollbar) {
+	display: block;
 }
 </style>

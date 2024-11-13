@@ -102,7 +102,7 @@ onBeforeUnmount(() => {
 .lazy-load-trigger {
 	font-size: 20px;
 	text-align: center;
-	color: var(--Text1);
+	color: var(--Text-1);
 }
 .noData {
 	img {

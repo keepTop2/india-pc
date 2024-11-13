@@ -131,7 +131,7 @@ onMounted(() => {
 	box-sizing: border-box;
 	overflow-x: auto;
 	white-space: nowrap;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	border-radius: 0 0 8px 8px;
 	-ms-overflow-style: none; /* IE 和 Edge */
 	&::-webkit-scrollbar {
@@ -150,8 +150,8 @@ onMounted(() => {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		border: 1px solid var(--Line_2);
-		color: var(--Text1);
+		border: 1px solid var(--Line-2);
+		color: var(--Text-1);
 		cursor: pointer;
 
 		&.active {

@@ -43,10 +43,10 @@ const onConfirm = () => {
 .hint_dialog {
 	width: 380px;
 	border-radius: 12px;
-	background-color: var(--Bg1);
+	background-color: var(--Bg-1);
 	.dialog_header {
 		padding: 20px;
-		color: var(--Text_s);
+		color: var(--Text-s);
 		font-family: "PingFang SC";
 		font-size: 20px;
 		font-weight: 500;
@@ -59,7 +59,7 @@ const onConfirm = () => {
 		align-items: center;
 		justify-content: center;
 		padding: 0px 20px;
-		color: var(--Text1);
+		color: var(--Text-1);
 		font-family: "PingFang SC";
 		font-size: 16px;
 		font-weight: 400;
@@ -91,7 +91,7 @@ const onConfirm = () => {
 		}
 		.confirm {
 			background: var(--Theme);
-			color: var(--Text_a);
+			color: var(--Text-a);
 		}
 	}
 }

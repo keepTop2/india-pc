@@ -4,10 +4,10 @@
 			<VDatePicker v-model.range="rangeDate" :min-date="minDate" :max-date="maxDate">
 				<!-- <template #header-title-wrapper>{{ dayjs(rangeDate[0]).format("YYYY年MM月") }}</template> -->
 				<template #header-prev-button>
-					<svg-icon class="searchIcon" name="arrow_left" size="14px" />
+					<svg-icon class="searchIcon" name="common-arrow_left" size="14px" />
 				</template>
 				<template #header-next-button>
-					<svg-icon class="searchIcon" name="arrow_right" size="14px" />
+					<svg-icon class="searchIcon" name="common-arrow_right" size="14px" />
 				</template>
 			</VDatePicker>
 		</div>
@@ -38,11 +38,11 @@ const rangeDate = toRef(props.range);
 <style scoped>
 :deep(.vc-blue) {
 	--vc-accent-200: rgba(255, 40, 75, 0.5);
-	--vc-highlight-light-content-color: var(--Text_s);
+	--vc-highlight-light-content-color: var(--Text-s);
 	--vc-highlight-outline-bg: var(--Theme);
 	--vc-highlight-outline-border: transparent;
 	--vc-rounded-full: 4px;
-	--vc-accent-700: var(--Text_s);
+	--vc-accent-700: var(--Text-s);
 }
 
 .date-picker {
@@ -54,27 +54,27 @@ const rangeDate = toRef(props.range);
 :deep(.vc-pane-container) {
 	width: 268px;
 	border-radius: 8px;
-	background: var(--Bg4);
+	background: var(--Bg-4);
 }
 :deep(.vc-bordered) {
-	background: var(--Bg4);
-	border: 1px solid var(--Line_2);
+	background: var(--Bg-4);
+	border: 1px solid var(--Line-2);
 	box-shadow: 0px 0px 4px 0px rgba(255, 40, 75, 0.08);
 }
 :deep(.vc-light) {
-	color: var(--Text_s);
+	color: var(--Text-s);
 }
 :deep(.vc-header.is-lg) {
 	font-size: 14px;
-	color: var(--Text1);
+	color: var(--Text-1);
 	font-weight: 500;
 }
 :deep(.vc-header) {
 	margin-top: 0;
-	border-bottom: 1px solid var(--Line_2);
+	border-bottom: 1px solid var(--Line-2);
 }
 :deep(.vc-focus:focus-within) {
-	color: var(--Text_a);
+	color: var(--Text-a);
 	box-shadow: none;
 }
 :deep(.vc-highlight-bg-solid) {
@@ -98,6 +98,6 @@ const rangeDate = toRef(props.range);
 }
 :deep(.vc-title) {
 	background: transparent;
-	color: var(--Text_s);
+	color: var(--Text-s);
 }
 </style>
