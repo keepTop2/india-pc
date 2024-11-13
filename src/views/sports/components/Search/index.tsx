@@ -48,7 +48,7 @@ export default () => {
 									搜索
 								</h4>
 								{/* 关闭按钮 */}
-								<div className="close">
+								<div classname="common-close">
 									<SvgIcon name="sports-dlzc_gb" width={30} height={30} onClick={close} />
 								</div>
 							</div>

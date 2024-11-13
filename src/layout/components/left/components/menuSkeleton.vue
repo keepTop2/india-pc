@@ -9,8 +9,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-	hasSubItems?: boolean; // 可选的子项骨架屏
-	collapse: boolean;
+	collapse?: Boolean;
 }>();
 </script>
 

@@ -21,7 +21,7 @@
 					"
 				/>
 				<div class="close_icon curp" v-if="searchQuery">
-					<svg-icon name="close" size="18px" @click="searchQuery = ''" v-hover-svg></svg-icon>
+					<svg-icon name="common-close" size="18px" @click="searchQuery = ''" v-hover-svg></svg-icon>
 				</div>
 			</div>
 			<div class="tabs curp">
@@ -136,10 +136,6 @@ const filterGames = Common.debounce(() => {
 
 const games = computed(() => {
 	if (currentTab.value === "0") return gameData.value;
-	console.log(
-		gameData.value.filter((game) => game._key === currentTab.value),
-		"=======currentTab.value"
-	);
 	return gameData.value.filter((game) => game._key === currentTab.value);
 });
 
@@ -159,10 +155,13 @@ interface Maps {
 const maps: Maps = {
 	K3: "/lottery/kuaisan",
 	SSQ: "/lottery/unionLotto",
+	_28: "/lottery/lucky28",
+	SSC: "/lottery/shishicai",
 };
 
 const pushView = (game) => {
 	console.log("game", game);
+
 	const { gameCategoryCode, venueCode, gameCode } = game;
 	const { maxWin = 0 } = game.data;
 	const searchParams = { venueCode, gameCode, maxWin };

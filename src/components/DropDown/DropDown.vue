@@ -10,7 +10,7 @@
 				<div v-if="searchInput" class="search_input">
 					<svg-icon class="search_icon" name="search" />
 					<input type="text" v-model="searchQuery" placeholder="请输入关键字" class="dropdown-search" />
-					<svg-icon v-show="searchQuery" class="search_clear" name="close" @click="searchQuery = ''" />
+					<svg-icon v-show="searchQuery" class="search_clear" name="common-close" @click="searchQuery = ''" />
 				</div>
 				<div class="dropdown-list">
 					<li v-for="item in filteredOptions" :key="item[valueKey]" @click="selectOption(item)" class="dropdown-item">

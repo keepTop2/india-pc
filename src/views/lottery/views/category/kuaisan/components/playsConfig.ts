@@ -6,7 +6,7 @@ export const gameplayList: GameplayList = [
 		id: "1",
 		gamePlayName: "三军 总和大小",
 		gamePlayCodes: ["smp_dxtb_sj", "smp_dxtb_sjdx"],
-		desc: `选择1个号码组成1注，开奖号码包含所选号码，即中奖。<br> 总和大小：开奖号码之和≥11为“大”，≤10为“小”，若3个号码相同，则不中奖。`,
+		desc: `选择1个号码组成1注，开奖号码包含所选号码，即中奖。<br>总和大小：开奖号码之和≥11为“大”，≤10为“小”，若3个号码相同，则不中奖。`,
 		actived: false,
 		oddsList: [
 			{

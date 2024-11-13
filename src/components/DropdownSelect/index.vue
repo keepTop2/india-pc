@@ -8,7 +8,7 @@
 			<div class="flex_space-between input">
 				<svg-icon name="search" size="14px" />
 				<input v-model="searchQuery" @input="filterOptions" placeholder="搜索货币名称或简称" class="search-input common_input fs_12" />
-				<svg-icon name="close" size="14px" @click="searchQuery = ''" />
+				<svg-icon name="common-close" size="14px" @click="searchQuery = ''" />
 			</div>
 			<div class="line"></div>
 			<ul class="options-list">

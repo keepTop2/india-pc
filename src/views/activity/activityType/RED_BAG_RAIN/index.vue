@@ -65,7 +65,7 @@
 						</div>
 						<div class="winnerListBody" v-for="(item, index) in activityData.winnerList" :key="index">
 							<div>{{ item.userAccount }}</div>
-							<div>{{ item.redBagAmount }} {{ item.platCurrencySymbol }}</div>
+							<div>{{ item.redBagAmount }} {{ useUserStore().getUserInfo.platCurrencyName }}</div>
 							<div>{{ Common.parseTime(item.hitTime) }}</div>
 						</div>
 					</div>
@@ -114,6 +114,7 @@ import showToast from "/@/hooks/useToast";
 import sessionCricle from "./image/sessionCricle.png";
 import sessionCricle1 from "./image/sessionCricle1.png";
 import sessionCricle2 from "./image/sessionCricle2.png";
+import { useUserStore } from "/@/stores/modules/user";
 const { countdown, startCountdown, stopCountdown } = useCountdown();
 const activityStore = useActivityStore();
 const showDialog = ref(false);
@@ -121,9 +122,6 @@ const dialogInfo: any = ref({});
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
 const confirmDialog = () => {
 	showDialog.value = false;
-	if ([30045, 30053].includes(dialogInfo.value.status)) {
-		router.push("/user/security_center");
-	}
 };
 const status: any = {
 	0: "未开始",
@@ -146,7 +144,7 @@ const getActivityReward = async () => {
 	if (activityData.value?.clientStatus !== 1) return;
 	await activityApi.redBagParticipate({ redbagSessionId: activityData.value.redbagSessionId }).then((res) => {
 		if (res.code === 10000) {
-			if (res.data.status === 10000) {
+			if (String(res.data.status).slice(0, 2) == "13") {
 				redbagRainSingleton.showRedbagRain();
 			} else {
 				dialogInfo.value = res.data;
