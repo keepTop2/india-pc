@@ -1,4 +1,4 @@
-import { computed, defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType, watch } from "vue";
 import useHeaderTools from "/@/views/sports/components/HeaderTools";
 import SvgIcon from "/@/components/svgIcon/index.vue";
 import SportsCommonFn from "/@/views/sports/utils/common";
@@ -136,8 +136,7 @@ const EventCard = defineComponent({
 		},
 	},
 	setup(props) {
-		const events = computed(() => props.data);
-		const { Collection } = useHeaderTools(events);
+		const { Collection } = useHeaderTools({ value: props.data });
 
 		// 判断是否已开赛
 		const isStart = computed(() => SportsCommonFn.isStartMatch(props.data.globalShowTime));

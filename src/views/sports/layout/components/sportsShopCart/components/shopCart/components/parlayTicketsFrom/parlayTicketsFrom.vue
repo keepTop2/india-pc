@@ -7,12 +7,13 @@
 					<span class="value ml_6">@{{ Common.formatFloat(item.payoutRate) }}</span>
 				</div>
 				<el-input
-					v-model="combos[item.comboType]"
+					v-model.number="combos[item.comboType]"
 					type="number"
 					:min="item?.minBet"
 					:max="item?.maxBet"
 					:placeholder="`限额 ${Common.formatFloat(item.minBet) || '0.00'} ～ ${Common.formatFloat(item.maxBet) || '0.00'}`"
 					@input="onInputEnter(item)"
+					@keydown="preventDecimal"
 				>
 				</el-input>
 			</div>
@@ -38,6 +39,12 @@ const combos: any = computed(() => shopCartPubSub.betValueState.combos);
 const onInputEnter = (item: any) => {
 	// 处理对应的金额业务
 	shopCartPubSub.setParlayTicketsBetValue(item);
+};
+
+const preventDecimal = (event: KeyboardEvent) => {
+	if (event.key === "." || event.key === "-" || event.key === "+") {
+		event.preventDefault();
+	}
 };
 </script>
 
