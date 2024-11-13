@@ -29,7 +29,7 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
 	(config) => {
-		if (config.headers.showLoading !== "false") {
+		if (config.headers.showLoading !== false) {
 			startLoading();
 		}
 		return config;

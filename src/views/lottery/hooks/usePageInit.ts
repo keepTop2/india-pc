@@ -2,7 +2,7 @@ import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { lotteryApi } from "/@/api/lottery";
 import { useUserStore } from "/@/stores/modules/user";
-import { DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
+import { BEGIN_PAGE_DATA_INTERVAL, DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
 import { useTimer } from "/@/views/lottery/hooks/useTimer";
 import { useWebSocket, type WebSocketResponseData, type WebSocketResponseMessage } from "/@/views/lottery/hooks/useWebSocket";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
@@ -21,7 +21,7 @@ export function usePageInit() {
 	const route = useRoute();
 	const { loginGame } = useLoginGame();
 	const { turnOnTimer, turnOffTimer } = useTimer(loginGame);
-	const { turnOnTimer: turnOnLotteryDetailTimer, turnOffTimer: turnOffLotteryDetailTimer } = useTimer(beginPageData, 5000);
+	const { turnOnTimer: turnOnLotteryDetailTimer, turnOffTimer: turnOffLotteryDetailTimer } = useTimer(beginPageData, BEGIN_PAGE_DATA_INTERVAL);
 	const { status } = useWebSocket({ callback, fallbackFn: beginPageData });
 
 	// 这个定时器是方便调试的，可以删除没问题的
@@ -80,5 +80,5 @@ export function usePageInit() {
 		beginPageData();
 	}
 
-	return { lotteryDetail };
+	return { lotteryDetail, beginPageData };
 }
