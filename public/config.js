@@ -21,6 +21,9 @@ window.PLATFROM_CONFIG = {
 	developmentLotteryBaseURL: "https://test-cpapi.jx203.com/third/rest/third/u", // 【彩票】开发环境
 	developmentLotteryWsURL: "wss://test-websocket.jx203.com/ws", // 【彩票】WebSocket 开发环境
 
+	developmentBaseURL: "https://backend.bwsh.store", // 测试环境
+	developmentWsURL: "wss://backend.bwsh.store/ws", // 测试环境
+
 	developmentFileUrl: "http://192.168.30.72:7900", // 本地开发传文件
 	//体育本地开发地址
 	developSportUrl: "https://apistaging.wx7777.com",

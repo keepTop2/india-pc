@@ -33,16 +33,16 @@
 					<div>
 						<span>
 							<span style="color: var(--Text-2-1)">共计: </span>
-							{{ tableData.length || 0 }} 笔投入
+							{{ totalVO.betNum }} 笔投入
 						</span>
 						<span class="ml_20">
 							<span>投注金额：</span>
-							{{ tzAmount || 0 }} {{ "CNY" || pageData.mainCurrency }}
+							{{ totalVO.betAmount }} CNY
 						</span>
 						<span class="ml_20">
 							<span style="color: var(--Text-2-1)">输赢金额：</span>
-							<span :class="[String(winOrLoseAmount).indexOf('-') > -1 ? 'lose_color' : 'win_color']"
-								>{{ String(winOrLoseAmount).indexOf("-") > -1 ? winOrLoseAmount : "+" + winOrLoseAmount || 0 }} {{ "CNY" || pageData.platCurrencyCode }}</span
+							<span :class="[String(totalVO.winLoseAmount).indexOf('-') > -1 ? 'lose_color' : 'win_color']"
+								>{{ String(totalVO.winLoseAmount).indexOf("-") > -1 ? totalVO.winLoseAmount : "+" + totalVO.winLoseAmount || 0 }} CNY</span
 							>
 						</span>
 					</div>
@@ -102,7 +102,7 @@
 						<!-- 输赢金额 -->
 						<el-table-column v-else-if="item.label == '输赢金额'" :label="item.label" :prop="item.props" align="center">
 							<template #default="{ row }">
-								<div v-if="row.winLossAmount" :style="{ color: String(row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
+								<div v-if="row.orderClassify" :style="{ color: String(row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
 									{{ String(row.winLossAmount).indexOf("-") > -1 ? row.winLossAmount : "+" + row.winLossAmount }} CNY
 								</div>
 								<div v-else>-</div>
@@ -114,7 +114,7 @@
 					<template #empty>{{ $t(`common['暂无数据']`) }}</template>
 				</el-table>
 			</div>
-			<div class="flex-center Pagination" v-if="tableData.length">
+			<div class="flex-center Pagination" v-if="tableData.length && params.venueType !== '1'">
 				<Pagination v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="pageData.totalSize" @sizeChange="sizeChange" @pageChange="pageQuery" />
 			</div>
 		</div>
@@ -158,7 +158,6 @@ const maxDate = today.add(0, "day").format("YYYY/MM/DD");
 const activityReceiveStatusOptions: any = ref([]);
 const welfareCenterRewardTypeOptions = ref<{ text: string; value: string }[]>([]);
 const tzAmount = ref(0);
-const winOrLoseAmount = ref(0);
 const tableData: any = ref([]);
 const pageData = reactive({
 	totalSize: "",
@@ -197,57 +196,61 @@ onMounted(() => {
 	getDownBox();
 	pageQuery(true);
 });
+
+const totalVO = ref({
+	betAmount: 0,
+	winLoseAmount: 0,
+	betNum: 0,
+});
 const pageQuery = (type?: boolean) => {
 	if (!type) {
 		params.betStartTime = dayjs(new Date(range.start)).startOf("day").valueOf();
 		params.betEndTime = dayjs(new Date(range.end)).endOf("day").valueOf();
 	}
 
-	welfareCenterApi
-		.tzPageQuery({
-			...params,
-			venueType: +params.venueType,
-			orderClassifyList: params.receiveStatus ? [+params.receiveStatus] : [],
-		})
-		.then((res) => {
-			if (!res.data) return;
-			console.log(params.venueType, "params.venueType");
-			let rows = res.data[fieldMap[params.venueType]];
+	const data = {
+		...params,
+		venueType: +params.venueType,
+		orderClassifyList: params.receiveStatus ? [+params.receiveStatus] : [],
+	};
+	delete data.receiveStatus;
+	delete data.welfareCenterRewardType;
 
-			console.log(fieldMap[params.venueType], "rows");
-			tableData.value = rows.records || rows;
-			pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
-			pageData.waitReceiveTotal = res.data.waitReceiveTotal;
-			pageData.platCurrencyTotal = res.data.platCurrencyTotal;
-			pageData.platCurrencyCode = res.data.platCurrencyCode;
-			pageData.mainCurrency = res.data.mainCurrency;
-			pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
+	welfareCenterApi.tzPageQuery(data).then((res) => {
+		if (!res.data) return;
+		totalVO.value = res.data.totalVO;
+		console.log("=>(bettingRecords.vue:223) totalVO", totalVO);
 
-			tzAmount.value = tableData.value.reduce((a: any, b: any) => {
-				return a + b.betAmount;
-			}, 0);
+		let rows = res.data[fieldMap[params.venueType]];
 
-			winOrLoseAmount.value = tableData.value
-				.reduce((a: any, b: any) => {
-					return a + b.winLossAmount;
-				}, 0)
-				?.toFixed(2);
+		tableData.value = rows.records || rows;
+		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
+		pageData.waitReceiveTotal = res.data.waitReceiveTotal;
+		pageData.platCurrencyTotal = res.data.platCurrencyTotal;
+		pageData.platCurrencyCode = res.data.platCurrencyCode;
+		pageData.mainCurrency = res.data.mainCurrency;
+		pageData.mainCurrencyTotal = res.data.mainCurrencyTotal;
 
-			tableData.value.forEach((item: any) => {
-				if (item.betAmount) {
-					item.betAmount = item.betAmount.toFixed(2);
-				} else {
-					item.betAmount = "";
-				}
-				if (item.winLossAmount) {
-					item.winLossAmount = item.winLossAmount.toFixed(2);
-				} else {
-					item.winLossAmount = "";
-				}
-			});
+		tzAmount.value = tableData.value.reduce((a: any, b: any) => {
+			return a + b.betAmount;
+		}, 0);
 
-			getTableType();
+		tableData.value.forEach((item: any) => {
+			if (item.betAmount) {
+				item.betAmount = item.betAmount.toFixed(2);
+			} else {
+				item.betAmount = "";
+			}
+			// 0被判定成false了 0也为true
+			if (typeof item.winLossAmount === "number") {
+				item.winLossAmount = item.winLossAmount.toFixed(2);
+			} else {
+				item.winLossAmount = "";
+			}
 		});
+
+		getTableType();
+	});
 };
 
 // 複製id
@@ -476,8 +479,9 @@ function getTableType() {
 	.firLine {
 		width: 100%;
 		display: grid;
-		grid-template-columns: 2fr 2fr 1fr 1fr;
+		grid-template-columns: 3fr 1fr 1fr 1fr;
 		font-size: 14px;
+		gap: 15px;
 
 		& > div {
 			display: flex;
