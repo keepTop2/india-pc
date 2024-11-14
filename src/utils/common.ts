@@ -142,7 +142,7 @@ class Common {
 	static formatFloat(num: number | string, n: number = 2) {
 		const f_x = parseFloat(num);
 		if (isNaN(f_x)) {
-			return 0;
+			return "0.00";
 		}
 		let s_x = num.toString();
 		let pos_decimal = s_x.indexOf(".");

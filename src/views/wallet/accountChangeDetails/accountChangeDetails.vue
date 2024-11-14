@@ -3,8 +3,8 @@
 		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
 				<div class="header">
-					<span class="label">{{ !route.query.tradeType ? $t(`wallet['存款']`) : "" }}</span>
-					<span class="label">{{ route.query.tradeType ? $t(`wallet['交易记录']`) : "" }}</span>
+					<span class="label" @click="router.back()">{{ !route.query.tradeType ? $t(`wallet['存款']`) : "" }}</span>
+					<span class="label" @click="router.back()">{{ route.query.tradeType ? $t(`wallet['交易记录']`) : "" }}</span>
 					<svg-icon class="icon" name="wallet-header_arrow" />
 					<span class="type_label">{{ navTitle }}</span>
 				</div>
@@ -55,10 +55,25 @@
 						<!-- 复制处理 -->
 						<span v-else-if="item.key == 'orderNo'" class="value">
 							<span>{{ depositOrderDetail[item.key as keyof depositOrderDetailRootObject] }}</span>
-							<svg-icon class="copy_icon curp ml_12" name="copy" size="16px" v-hover-svg @click="common.copy(depositOrderDetail[item.key as keyof depositOrderDetailRootObject])" />
+							<svg-icon
+								v-if="depositOrderDetail[item.key as keyof depositOrderDetailRootObject]"
+								class="copy_icon curp ml_12"
+								name="copy"
+								size="16px"
+								v-hover-svg
+								@click="common.copy(depositOrderDetail[item.key as keyof depositOrderDetailRootObject])"
+							/>
 						</span>
 						<!-- 币种处理 -->
-						<span v-else-if="item.key == 'feeAmount' || item.key == 'arriveAmount'" class="value">
+						<span v-else-if="item.key == 'feeAmount'" class="value">
+							<span>{{ common.formatFloat(depositOrderDetail[item.key as keyof depositOrderDetailRootObject]) }}</span>
+							<span>{{ UserStore.userInfo.mainCurrency }}</span>
+						</span>
+						<!-- 到账金额 -->
+						<span
+							v-else-if="(item.key == 'arriveAmount' || item.key == 'applyAmount' || item.key == 'tradeCurrencyAmount') && route.query.tradeWayType !== 'crypto_currency_withdraw'"
+							class="value"
+						>
 							<span>{{ common.formatFloat(depositOrderDetail[item.key as keyof depositOrderDetailRootObject]) }}</span>
 							<span>{{ UserStore.userInfo.mainCurrency }}</span>
 						</span>
@@ -146,6 +161,11 @@
 						</template>
 					</div>
 				</template>
+				<template v-else>
+					<div class="btns">
+						<div class="cancel" @click="router.back()">{{ $t(`wallet['返回']`) }}</div>
+					</div>
+				</template>
 			</div>
 		</Card>
 
@@ -229,28 +249,28 @@ const router = useRouter();
 const UserStore = useUserStore();
 
 interface depositOrderDetailRootObject {
-	arriveAmount: string;
-	orderNo: string;
-	depositWithdrawWay: string;
-	depositWithdrawTypeCode: string;
-	depositWithdrawChannelType: string;
-	tradeCurrencyAmount: number;
-	applyAmount: number;
+	arriveAmount?: string;
+	orderNo?: string;
+	depositWithdrawWay?: string;
+	depositWithdrawTypeCode?: string;
+	depositWithdrawChannelType?: string;
+	tradeCurrencyAmount?: number;
+	applyAmount?: number;
 	exchangeRate?: any;
-	feeRate: number;
-	feeAmount: number;
-	customerStatus: string | number;
-	customerStatusText: string;
-	createdTime: number;
-	updatedTime: number;
-	remindTime: number;
-	accountName: string;
+	feeRate?: number;
+	feeAmount?: number;
+	customerStatus?: string | number;
+	customerStatusText?: string;
+	createdTime?: number;
+	updatedTime?: number;
+	remindTime?: number;
+	accountName?: string;
 	accountAddress?: any;
-	voucherFlag: number;
+	voucherFlag?: number;
 	cashFlowFile?: any;
 	cashFlowFileList?: any;
 	thirdPayUrl?: any;
-	urgeOrder: number;
+	urgeOrder?: number;
 }
 
 const props = withDefaults(
@@ -322,7 +342,7 @@ const fromFieldsList = {
 	// 手动存款
 	manual_up: [
 		{ label: "状态", key: "customerStatus" }, // 订单状态
-		{ label: "转入时间", key: "到账时间" }, // 转入时间
+		{ label: "转入时间", key: "updatedTime" }, // 转入时间
 		{ label: "订单号", key: "orderNo" }, // 订单编号
 		{ label: "存款方式", key: "tradeWayTypeText" }, // 存款方式
 	],
@@ -699,6 +719,7 @@ onUnmounted(() => {
 		font-family: "PingFang SC";
 		font-size: 24px;
 		font-weight: 500;
+		cursor: pointer;
 	}
 	.type_label {
 		color: var(--Text-s);
