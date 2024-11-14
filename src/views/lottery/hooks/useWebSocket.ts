@@ -26,6 +26,9 @@ interface InstancesMap {
 	[key: string]: WSReturn<WebSocketResponseMessage>;
 }
 
+let dynamicCallback = Function.prototype;
+let dynamicFallbackFn = Function.prototype;
+
 /**
  * @description 彩种详情页切换购买彩票、开奖结果的 tabs 逻辑。一个 url 一个实例，不同的 url 支持多实例
  * @param
@@ -35,8 +38,9 @@ const BASE_URL = (window as any)["PLATFROM_CONFIG"].developmentLotteryWsURL;
 const instancesMap: InstancesMap = {};
 export function useWebSocket({ callback = Function.prototype, fallbackFn = Function.prototype, baseURL = BASE_URL }) {
 	let websocketInstance = instancesMap[baseURL];
-	const dynamicCallback = callback;
-	const dynamicFallbackFn = fallbackFn;
+
+	dynamicCallback = callback;
+	dynamicFallbackFn = fallbackFn;
 
 	if (websocketInstance) {
 		return websocketInstance;
