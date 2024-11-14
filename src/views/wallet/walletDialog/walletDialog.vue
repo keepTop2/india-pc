@@ -56,9 +56,9 @@ const activeTab = ref(route.query.walletDialogName || "recharge");
 const currentComponent = computed(() => componentMap[activeTab.value as string] || Recharge);
 
 // 订单充值成功回调
-const RechargeSuccess = (orderNo: string) => {
+const RechargeSuccess = (routerParams: any) => {
 	setComponent("accountChangeDetails");
-	router.replace({ query: { walletDialogName: "accountChangeDetails", orderNo } });
+	router.replace({ query: { walletDialogName: "accountChangeDetails", orderNo: routerParams.orderNo, tradeWayType: routerParams.tradeWayType } });
 };
 
 // 撤销订单成功回调
