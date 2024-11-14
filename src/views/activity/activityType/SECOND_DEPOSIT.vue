@@ -119,12 +119,14 @@ const apply = async () => {
 			if (String(res.data.status).slice(0, 2) == "13") {
 				dialogInfo.value = res.data;
 				showCommonDialog.value = true;
-			} else {
-				activityApi.getActivityReward({ id: activityData.value.id }).then((res: any) => {
-					showToast(res.data.message);
-					activityStore.updateCurrentActivityData();
-				});
 			}
+			// else
+			// {
+			// 	activityApi.getActivityReward({ id: activityData.value.id }).then((res: any) => {
+			// 		showToast(res.data.message);
+			// 		activityStore.updateCurrentActivityData();
+			// 	});
+			// }
 		}
 	});
 };
