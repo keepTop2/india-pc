@@ -21,7 +21,7 @@ export default () => {
 		},
 		setup(props) {
 			const { ClockTime } = useTimer({ value: props });
-			console.log(props.icon, "=======icon");
+
 			return () => (
 				<div class="card-header">
 					{/* 左侧图片 */}
@@ -99,7 +99,7 @@ export default () => {
 			return () => (
 				<div onClick={() => emit("select")} class="lottery-card">
 					{/* 卡片头部 */}
-					<Header data={props.data} />
+					<Header {...props.data} />
 					{/* 分割线 */}
 					<div class="line"></div>
 					{/* 卡片内容 */}
@@ -122,7 +122,7 @@ export default () => {
 			return () => (
 				<div class="lottery-card hot-lottery-card">
 					{/* 卡片头部 */}
-					<Header data={props.data} />
+					<Header {...props.data} />
 					{/* 卡片内容 */}
 					<Content data={props.data} />
 					{/* 卡片底部 */}
