@@ -10,7 +10,11 @@ window.PLATFROM_CONFIG = {
 	/** ws 打包编译后地址(运维专用) */
 	productionWsUrl: "wss://gw.playesoversea.store/ws",
 
-	developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
+	// developmentBaseURL: "http://192.168.30.117:9999", // 尔顿本地地址
+	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
+	developmentBaseURL: "https://backend.bwsh.store", // 测试环境
+	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
+	// developmentBaseURL: "https://backend.bwsh.store", // 测试环境
 	developmentWsURL: "wss://gw.playesoversea.store/ws", // 开发环境
 	developmentWsURL: "wss://backend.bwsh.store/ws", // 测试环境
 
@@ -18,7 +22,7 @@ window.PLATFROM_CONFIG = {
 	developmentLotteryWsURL: "wss://test-websocket.jx203.com/ws", // 【彩票】WebSocket 开发环境
 
 	// developmentBaseURL: "https://backend.bwsh.store", // 测试环境
-	// developmentWsURL: "wss://backend.bwsh.store/ws", // 测试环境
+	developmentWsURL: "wss://backend.bwsh.store/ws", // 测试环境
 
 	developmentFileUrl: "http://192.168.30.72:7900", // 本地开发传文件
 	//体育本地开发地址

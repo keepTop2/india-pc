@@ -1,4 +1,4 @@
-import { reactive, defineComponent, computed } from "vue";
+import { reactive, defineComponent, computed, watch } from "vue";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useSidebarStore } from "/@/stores/modules/sports/sidebarData";
 import { Refresh as RefreshIcon } from "@element-plus/icons-vue";
@@ -157,7 +157,7 @@ export default (eventsInfo: any): HeaderTools => {
 			const SportAttentionStore = useSportAttentionStore();
 			// 判断是否收藏
 			const isAttention = computed(() => {
-				return SportAttentionStore.attentionEventIdList.includes(eventsInfo.eventId);
+				return SportAttentionStore.attentionEventIdList.includes(eventsInfo?.value?.eventId);
 			});
 
 			// 处理收藏或取消收藏操作
@@ -182,9 +182,9 @@ export default (eventsInfo: any): HeaderTools => {
 					return;
 				}
 				if (isAttention.value) {
-					handleCollection(() => SportsApi.unFollow({ thirdId: [eventsInfo.eventId] }), "取消收藏成功！", "取消收藏失败！");
+					handleCollection(() => SportsApi.unFollow({ thirdId: [eventsInfo?.value?.eventId] }), "取消收藏成功！", "取消收藏失败！");
 				} else {
-					handleCollection(() => SportsApi.saveFollow({ thirdId: eventsInfo.eventId, type: 2 }), "收藏成功！", "收藏失败！");
+					handleCollection(() => SportsApi.saveFollow({ thirdId: eventsInfo?.value?.eventId, type: 2 }), "收藏成功！", "收藏失败！");
 				}
 			};
 

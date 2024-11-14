@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<SvgIcon class="icon" iconName="arrow" :size="18" />
+		<SvgIcon class="icon" name="arrow" :size="18" />
 	</div>
 </template>
 
