@@ -1,7 +1,9 @@
-import { defineComponent, onBeforeMount, reactive, watch } from "vue";
+import { defineComponent, onBeforeMount, reactive, watch, ref, onMounted } from "vue";
 import BannerCom from "./banner.vue";
 import SvgIcon from "/@/components/svgIcon/index.vue";
+import VenueBanner from "/@/components/venueBanner.vue";
 import Common from "/@/views/sports/utils/common";
+import { bannerApi } from "/@/api/banner";
 import { useRoute } from "vue-router";
 import "./style/bannerController.scss";
 export default () => {
@@ -28,7 +30,20 @@ export default () => {
 	// banner
 	const Banner = defineComponent({
 		setup() {
-			return () => (state.show ? <BannerCom /> : <></>);
+			const bannerList = ref([]);
+			const getBannerList = () => {
+				bannerApi
+					.queryBannerList({
+						gameOneClassId: "SBA",
+					})
+					.then((res) => {
+						bannerList.value = res.data;
+					});
+			};
+			onMounted(() => {
+				getBannerList();
+			});
+			return () => (state.show ? <VenueBanner bannerList={bannerList.value} /> : <></>);
 		},
 	});
 
@@ -44,8 +59,6 @@ export default () => {
 			immediate: true,
 		}
 	);
-
-	onBeforeMount(() => {});
 
 	return {
 		BannerController,

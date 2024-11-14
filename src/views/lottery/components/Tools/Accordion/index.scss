@@ -11,8 +11,10 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 8px 12px;
-		&:expanded {
-			color: var(--Text-a);
+		&.expanded {
+			.header-title {
+				color: var(--Text-a);
+			}
 		}
 		.header-title {
 			font-size: 16px;
@@ -42,7 +44,7 @@
 		}
 		.accordion-content-item-box {
 			&.actived {
-				>.accordion-content-item {
+				> .accordion-content-item {
 					background-color: var(--Theme);
 					.info {
 						color: var(--Text-a);

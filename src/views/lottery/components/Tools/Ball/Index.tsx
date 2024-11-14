@@ -78,10 +78,12 @@ export default () => {
 					<div className="control">
 						{/* 清除全部选中 */}
 						<div className="clear">
+							<img src="/@/assets/zh-CN/lottery/clear.svg" alt="" />
 							<span onClick={() => emit("clear")}>清除全部</span>
 						</div>
 						{/* 快速选择区域 */}
 						<div className="other">
+							<img src="/@/assets/zh-CN/lottery/ksxz.svg" alt="" />
 							<span>快速选择</span>
 						</div>
 					</div>

@@ -55,6 +55,12 @@ const lotteryRoutes = {
 			meta: { name: "Pk10", title: "pk10" },
 			component: () => import("/@/views/lottery/views/category/pk10/pk10.vue"),
 		},
+		{
+			path: "/lottery/3D",
+			name: "3D",
+			meta: { name: "3D", title: "3D" },
+			component: () => import("/@/views/lottery/views/category/3D/index.vue"),
+		},
 	],
 };
 
