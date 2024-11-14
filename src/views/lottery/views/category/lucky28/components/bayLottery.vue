@@ -40,6 +40,7 @@
 										:renderBallNum="(oddsListItem.ballNum as number)"
 										:maxLeng="1"
 										:value="balls"
+										:startIndex="oddsListItem.startIndex"
 									/>
 								</div>
 							</template>
@@ -49,7 +50,7 @@
 			</div>
 
 			<!-- 投注表单组件 -->
-			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived">
+			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsListItem="currentOddsListItem">
 				<!-- 表单激活时显示的插槽内容 -->
 				<template v-if="formActived" #default>
 					<div class="bet-form-slot-header">
@@ -86,7 +87,7 @@ const { BetForm } = useBetForm();
 // hooks
 const { mergedGameplayList } = useGameplayList(gameplayList);
 const { formActived, balls, clearAccordionStatus, handleSelectBalls, handleExpanded, currentGameplayItem, currentOddsListItem } = useAccordionHook(mergedGameplayList);
-const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsListItem, props as Props);
+const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsListItem, props as Props, balls);
 </script>
 
 <style lang="scss" scoped></style>

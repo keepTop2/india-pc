@@ -19,6 +19,7 @@ export function mergeGameplayList(gameplayList: GameplayList, dynamicGameplayLis
 function mergeGameplayItem(gameplayItem: GameplayItem, dynamicGameplayList: DynamicGameplayList) {
 	const { gamePlayCodes } = gameplayItem;
 	const filterList = dynamicGameplayList.filter((v) => gamePlayCodes.includes(v.gamePlayCode));
+	console.log("filterList", filterList);
 	if (filterList.length === 0) return {};
 	const { oddsList, ...restGameplayItem } = gameplayItem;
 	const mergedDynamicGameplayItem = filterList.reduce((prev, next) => {

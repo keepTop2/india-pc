@@ -4,7 +4,7 @@ import showToast from "/@/hooks/useToast";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
 import { SUCCESS_CODE } from "/@/utils/useAxiosLottery";
-import { DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
+import { DEFAULT_LANG, langMaps, SELECT_BALL } from "/@/views/lottery/constant/index";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { type LotteryDetail, type MergedGameplayItem, type OddsListItem } from "/@/views/lottery/types/index";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
@@ -18,7 +18,9 @@ export function useBet(
 
 	currentOddsListItem: Ref<OddsListItem>,
 
-	props: Props
+	props: Props,
+
+	balls: Ref<number[]>
 ) {
 	const betFormRef = ref(); // 提交表单的处理方法
 	const userStore = useUserStore();
@@ -68,7 +70,12 @@ export function useBet(
 
 		// 2. 下注
 		// 2.1 准备一下入参
-		const { gameCode, gamePlayCode, optionCode: nums } = currentOddsListItem.value;
+		const { gameCode, gamePlayCode, type = "" } = currentOddsListItem.value;
+		let { optionCode: nums } = currentOddsListItem.value;
+		// 选择球
+		if (SELECT_BALL === type) {
+			nums = String(balls.value.pop());
+		}
 		const { issueNum: issueNo } = props.lotteryDetail;
 		const { merchantNo: operatorId, userAccount: operatorAccount } = merchantInfo.value;
 		const language = userStore.getLang;
