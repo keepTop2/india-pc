@@ -74,7 +74,8 @@ export function useBet(
 		let { optionCode: nums } = currentOddsListItem.value;
 		// 选择球
 		if (SELECT_BALL === type) {
-			nums = String(balls.value.pop());
+			console.log("if", balls);
+			nums = String(balls.value[0]);
 		}
 		const { issueNum: issueNo } = props.lotteryDetail;
 		const { merchantNo: operatorId, userAccount: operatorAccount } = merchantInfo.value;
@@ -88,7 +89,7 @@ export function useBet(
 			token: satoken.value,
 			list: [{ betCount: 1, multiple: 1, betMoney, nums, gameCode, gamePlayCode, issueNo }],
 		};
-
+		console.log("submitData", submitData);
 		// 2.2 准备好了，发送请求
 		const res = await lotteryApi.betting(submitData);
 		const { code, msg } = res;
