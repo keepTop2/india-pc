@@ -1,6 +1,7 @@
 <template>
 	<div class="lottery-home">
-		<div class="mt_40 pr_10 pl_10">
+		<div class="mt_24 pr_10 pl_10">
+			<VenueBanner :bannerList="bannerList" />
 			<div class="search-component" ref="resultList">
 				<!-- 搜索框 -->
 				<div class="search_icon">
@@ -49,11 +50,17 @@
 							<img :src="item.iconFileUrl" alt="" />
 							<span className="name">{{ item.name }}</span>
 						</div>
-						<span @click="currentTab = item._key" class="more">更多</span>
+						<span v-if="item.gameInfoList.length > column" @click="currentTab = item._key" class="more">更多</span>
 					</div>
 					<div class="content">
-						<HotLotteryCard v-if="item.label === 1" :data="game.data" :key="item._key" v-for="game in item.gameInfoList.slice(0, 4)" @select="pushView(game)" />
-						<LotteryCard v-else :data="game.data" v-for="game in item.gameInfoList?.slice(0, 4)" @select="pushView(game)" />
+						<HotLotteryCard
+							v-if="item.label === 1"
+							:data="game.data"
+							:key="game.data.currentTime + game.data.id"
+							v-for="game in item.gameInfoList.slice(0, column)"
+							@select="pushView(game)"
+						/>
+						<LotteryCard v-else :data="game.data" v-for="(game, index) in item.gameInfoList?.slice(0, column)" :key="game.data.currentTime + index" @select="pushView(game)" />
 					</div>
 				</div>
 			</div>
@@ -62,92 +69,83 @@
 </template>
 
 <script setup lang="ts">
-import { stringify } from "qs";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, onMounted, watch, onUnmounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { debounce } from "lodash-es";
 import { gameApi } from "/@/api/game";
-import showToast from "/@/hooks/useToast";
-import { i18n } from "/@/i18n/index";
+import { bannerApi } from "/@/api/banner";
+import VenueBanner from "/@/components/venueBanner.vue";
+import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
+import showToast from "/@/hooks/useToast";
 import Common from "/@/views/sports/utils/common";
-
-const $: any = i18n.global;
+import { stringify } from "qs";
 
 const { LotteryCard, HotLotteryCard } = useLotteryCard();
+const route = useRoute();
+const router = useRouter();
 
-const currentTab = ref<string | undefined>("0");
-const searchQuery = ref<string>(""); // 搜索关键词
+const currentTab = ref<string>("0");
+const searchQuery = ref<string>("");
 const searchinputFocus = ref(false);
-
+const isLoading = ref(false);
 const gameData = ref<any[]>([]);
+const bannerList = ref([]);
 
+// 获取 Banner 列表
+const getBannerList = async () => {
+	const { data } = await bannerApi.queryBannerList({ gameOneClassId: "ACELT" });
+	bannerList.value = data;
+};
+
+// 根据分类 ID 查询游戏信息
+const queryGameInfoByOneClassId = debounce(async () => {
+	const gameOneId = route.query.gameOneId as string;
+	const { data } = await gameApi.queryGameInfoByOneClassId({ gameOneId }, { showLoading: false });
+	gameData.value = data.map((item: any) => ({
+		...item,
+		_key: item.label == 1 ? "1" : item.label == 2 ? "2" : item.id,
+		name: item.label == 1 ? "热门推荐" : item.label == 2 ? "新游戏" : item.name,
+		gameInfoList: item.gameInfoList?.map((game: any) => ({
+			...game,
+			data: { ...game.data, seconds: Math.floor((game.data.lotteryDate - game.data.currentTime) / 1000) },
+		})),
+	}));
+}, 200);
+
+// 初始化 WebSocket，监听数据更新
+useWebSocket({
+	callback: queryGameInfoByOneClassId,
+	fallbackFn: () => {},
+});
+
+// 处理输入框内容变化
+const handleSearchInput = debounce(() => {
+	isLoading.value = true;
+	filterGames();
+}, 300);
+
+// 过滤游戏列表（搜索功能）
+const searchGames = ref<any[]>([]);
+const filterGames = () => {
+	if (!searchQuery.value.trim()) {
+		searchGames.value = [];
+	} else {
+		const filteredData =
+			currentTab.value === "0" ? gameData.value.flatMap((item) => item.gameInfoList) : gameData.value.find((item) => item._key === currentTab.value)?.gameInfoList || [];
+		searchGames.value = filteredData.filter((game) => game.data.gameName.includes(searchQuery.value));
+	}
+	isLoading.value = false;
+};
+
+// 处理标签切换
 const clickTab = (id: string) => {
 	currentTab.value = id;
 	filterGames();
 };
-const isLoading = ref(false);
-// 根据标签添加预定义的选项
-onMounted(async () => {
-	await queryGameInfoByOneClassId();
-	currentTab.value = route.query.gameTwoId as string;
-});
-const route = useRoute();
-const router = useRouter();
-const queryGameInfoByOneClassId = async () => {
-	const gameOneId = route.query.gameOneId;
-	await gameApi
-		.queryGameInfoByOneClassId({ gameOneId })
-		.then((res) => {
-			gameData.value = res.data.map((item: any) => {
-				const _key = (item.id || "") + "-" + item.label;
-				return {
-					...item,
-					_key: item.label == 1 ? 1 : item.label == 2 ? 2 : item.id,
-					name: item.label == 1 ? "热门推荐" : item.label == 2 ? "新游戏" : item.name,
-					gameInfoList: item.gameInfoList?.map((game) => ({ ...game, data: { ...game.data, seconds: Math.floor((game.data.lotteryDate - game.data.lotteryTime) / 1000) } })),
-				};
-			});
-		})
-		.finally(() => {})
-		.catch((err) => {
-			err;
-		});
-};
-// 模糊查询
-const searchGames = ref<any[]>([]);
-const filterGames = Common.debounce(() => {
-	isLoading.value = true;
-	if (!searchQuery.value.trim()) {
-		searchGames.value = [];
-		isLoading.value = false;
-	} else {
-		const curData =
-			currentTab.value === "0"
-				? gameData.value.flatMap((item) => item.gameInfoList)
-				: gameData.value.filter((item) => item._key === currentTab.value).flatMap((item) => item.gameInfoList);
 
-		searchGames.value = curData.filter((game) => game.data.gameName.includes(searchQuery.value));
-	}
-
-	setTimeout(() => {
-		isLoading.value = false;
-	}, 500);
-}, 300);
-
-const games = computed(() => {
-	if (currentTab.value === "0") return gameData.value;
-	return gameData.value.filter((game) => game._key === currentTab.value);
-});
-
-const handleSelect = (game) => {};
-
-// 监听 query 参数变化
-watch(
-	() => route.query.gameTwoId,
-	async () => {
-		currentTab.value = route.query.gameTwoId as string;
-	}
-);
+// 游戏卡片数据展示
+const games = computed(() => (currentTab.value === "0" ? gameData.value : gameData.value.filter((item) => item._key === currentTab.value)));
 
 interface Maps {
 	[key: string]: string;
@@ -158,26 +156,51 @@ const maps: Maps = {
 	_28: "/lottery/lucky28",
 	SSC: "/lottery/shishicai",
 };
-
-const pushView = (game) => {
-	console.log("game", game);
-
-	const { gameCategoryCode, venueCode, gameCode } = game;
-	const { maxWin = 0 } = game.data;
-	const searchParams = { venueCode, gameCode, maxWin };
+// 路由跳转
+const pushView = (game: any) => {
+	const { gameCategoryCode, venueCode, gameCode, data } = game;
+	const searchParams = { venueCode, gameCode, maxWin: data.maxWin || 0 };
 	const targetView = maps[gameCategoryCode];
-	if (!targetView) {
+	if (targetView) {
+		router.push(`${targetView}?${stringify(searchParams)}`);
+	} else {
 		showToast("Error: Path Not Found!");
-		return;
 	}
-	router.push(`${targetView}?${stringify(searchParams)}`);
 };
+
+// 媒体查询 1920四列 1440三列  1024二列
+const column = ref(4);
+const changeColumn = () => {
+	const screenWidth = window.screen.width;
+	if (screenWidth >= 1920) {
+		column.value = 4;
+	} else if (screenWidth < 1920 && screenWidth >= 1440) {
+		column.value = 3;
+	} else {
+		column.value = 2;
+	}
+};
+
+// 页面加载时执行
+onMounted(async () => {
+	await getBannerList();
+	await queryGameInfoByOneClassId();
+
+	window.addEventListener("resize", changeColumn);
+});
+
+onBeforeUnmount(() => {
+	window.removeEventListener("resize", changeColumn);
+});
 </script>
 
 <style scoped lang="scss">
 .lottery-home {
 	width: 1308px;
 	margin: 24px auto;
+	:deep(.swiper-box) {
+		padding: 0;
+	}
 }
 .tabs {
 	display: flex;
@@ -276,6 +299,15 @@ const pushView = (game) => {
 			p {
 				color: var(--Text-1);
 			}
+		}
+		.lottery-card.hot-lottery-card:nth-child(2) {
+			background: linear-gradient(180deg, #1e2127 0%, #2a3438 100%) !important;
+		}
+		.lottery-card.hot-lottery-card:nth-child(3) {
+			background: linear-gradient(180deg, #1e2127 0%, #35382a 100%) !important;
+		}
+		.lottery-card.hot-lottery-card:nth-child(4) {
+			background: linear-gradient(180deg, #1e2127 0%, #2a3833 100%) !important;
 		}
 	}
 }

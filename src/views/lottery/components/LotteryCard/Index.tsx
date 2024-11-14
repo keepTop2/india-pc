@@ -9,7 +9,7 @@ import useTimer from "/@/views/lottery/components/Tools/Timer";
 export default () => {
 	// 获取用户信息 store
 	const {
-		getUserInfo: { mainCurrency },
+		getUserInfo: { currencySymbol },
 	} = useUserStore();
 
 	// 定义卡片头部组件
@@ -24,7 +24,7 @@ export default () => {
 				<div class="card-header">
 					{/* 左侧图片 */}
 					<div class="left">
-						<img src={props.data?.icon} alt="Header Image" />
+						<img src={props.data?.icon || "/@/assets/zh-CN/lottery/national.png"} alt="Header Image" />
 					</div>
 					{/* 右侧倒计时 */}
 					<div class="right">
@@ -72,7 +72,7 @@ export default () => {
 					</div>
 					<div class="right">
 						<span>
-							{Common.thousands(props.data.maxWin)} {mainCurrency}
+							{currencySymbol} {Common.thousands(props.data.maxWin)}
 						</span>
 					</div>
 				</div>
