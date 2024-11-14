@@ -18,6 +18,7 @@ import { LangType, EnableStatus, GameAreaType } from "./base";
  * @property {number} isEnabled - 是否启用
  * @property {string} lang - 语言
  * @property {string} optionGroup - 选项组
+ * @property {boolean} isSpecialPlay - 是否为特殊玩法
  */
 export interface LotteryOption {
 	id: string;
@@ -36,6 +37,11 @@ export interface LotteryOption {
 	isEnabled: number;
 	lang: string;
 	optionGroup: string;
+	// 额外增加的类型项，用于展示投注项列表
+	title?: string;
+	desc?: string;
+	actived?: boolean;
+	isSpecialPlay?: boolean;
 }
 
 /**
@@ -88,6 +94,25 @@ export interface LotteryPlay {
 	oddsPosition: string;
 	oddsList: LotteryOption[];
 	multiList: any[] | null;
+}
+
+/**
+ * @description 彩票玩法组类型
+ * @property {string} id - 玩法组ID
+ * @property {string} title - 玩法组标题
+ * @property {string} gamePlayName - 玩法组名称
+ * @property {string[]} gamePlayCodes - 玩法组包含的玩法代码
+ * @property {string} desc - 玩法组描述
+ * @property {boolean} actived - 是否激活
+ * @property {LotteryOption[]} oddsList - 玩法组包含的赔率列表
+ */
+export interface LotteryPlayGroup {
+	id: string;
+	gamePlayName: string;
+	gamePlayCodes: string[];
+	desc: string;
+	actived: boolean;
+	oddsList: LotteryOption[];
 }
 
 /**

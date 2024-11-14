@@ -24,7 +24,7 @@ export enum GameStateEnum {
  * @description 游戏基础信息
  */
 export interface GameBaseInfo {
-	id: number; // 游戏ID
+	id: string; // 游戏ID
 	gameCode: LotteryCode; // 游戏编号
 	gameName: string; // 游戏名称
 	state: number; // 游戏状态
@@ -42,6 +42,7 @@ export interface GameBaseInfo {
 	areaType: GameAreaType; // 地区类型
 	gameDesc: string; // 游戏描述
 	currentTime: number; // 系统当前时间
+	maxWin: number; // 最大赢额
 }
 
 /**
@@ -61,4 +62,58 @@ export interface GameQueryResponse {
 	code: string; // 操作结果编号，0成功
 	msg: string; // 异常消息，成功则为空
 	data: GameBaseInfo[]; // 游戏数据列表
+}
+
+/**
+ * @description 游戏列表项
+ */
+/**
+ * @description 游戏列表项接口定义
+ * @property {string} id - 游戏ID
+ * @property {string} name - 游戏名称
+ * @property {string} icon - 游戏图标
+ * @property {string} iconFileUrl - 游戏图标文件URL
+ * @property {number} status - 游戏状态
+ * @property {string} remark - 游戏备注
+ * @property {number} sort - 排序值
+ * @property {string} venueCode - 场馆代码
+ * @property {string} gameCode - 游戏代码
+ * @property {string} gameCategoryCode - 游戏分类代码
+ * @property {GameBaseInfo} data - 游戏基础信息
+ * @property {number} label - 标签值
+ * @property {number} cornerLabels - 角标标签
+ * @property {string | null} maintenanceStartTime - 维护开始时间
+ * @property {string | null} maintenanceEndTime - 维护结束时间
+ * @property {boolean} collect - 是否收藏
+ */
+export interface GameListItem {
+	id: string;
+	name: string;
+	icon: string;
+	iconFileUrl: string;
+	status: number;
+	remark: string;
+	sort: number;
+	venueCode: string;
+	gameCode: string;
+	gameCategoryCode: string;
+	data: GameBaseInfo;
+	label: number;
+	cornerLabels: number;
+	maintenanceStartTime: string | null;
+	maintenanceEndTime: string | null;
+	collect: boolean;
+}
+
+/**
+ * @description 游戏分类
+ */
+export interface GameCategory {
+	id: string | null;
+	name: string | null;
+	label: number;
+	hasMoreGames: boolean;
+	icon: string | null;
+	iconFileUrl: string | null;
+	gameInfoList: GameListItem[];
 }

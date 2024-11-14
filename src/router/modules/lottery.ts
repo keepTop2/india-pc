@@ -43,6 +43,12 @@ const lotteryRoutes = {
 			meta: { name: "UnionLotto", title: "双色球" },
 			component: () => import("/@/views/lottery/views/category/unionLotto/unionLotto.vue"),
 		},
+		{
+			path: "/lottery/pk10",
+			name: "Pk10",
+			meta: { name: "Pk10", title: "pk10" },
+			component: () => import("/@/views/lottery/views/category/pk10/pk10.vue"),
+		},
 	],
 };
 
