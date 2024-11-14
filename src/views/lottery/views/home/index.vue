@@ -57,7 +57,7 @@
 							v-if="item.label === 1"
 							:data="game.data"
 							:key="game.data.currentTime + game.data.id"
-							v-for="game in item.gameInfoList.slice(0, column)"
+							v-for="game in item.gameInfoList.slice(0, currentTab === '0' ? column : item.gameInfoList.length)"
 							@select="pushView(game)"
 						/>
 						<LotteryCard v-else :data="game.data" v-for="(game, index) in item.gameInfoList?.slice(0, column)" :key="game.data.currentTime + index" @select="pushView(game)" />
@@ -157,6 +157,7 @@ const maps: Maps = {
 	_28: "/lottery/lucky28", // 幸运 28
 	SSC: "/lottery/shishicai",
 	SYXW: "/lottery/elevenChooseFive", // 11 选 5
+	_3D: "/lottery/3D",
 };
 
 const pushView = (game: GameListItem) => {
@@ -190,7 +191,7 @@ const changeColumn = () => {
 onMounted(async () => {
 	await getBannerList();
 	await queryGameInfoByOneClassId();
-
+	changeColumn();
 	window.addEventListener("resize", changeColumn);
 });
 
@@ -313,6 +314,32 @@ onBeforeUnmount(() => {
 		}
 		.lottery-card.hot-lottery-card:nth-child(4) {
 			background: linear-gradient(180deg, #1e2127 0%, #2a3833 100%) !important;
+		}
+	}
+}
+
+@media (min-width: 1440px) and (max-width: 1919px) {
+	.lottery-home {
+		width: 1176px !important;
+	}
+	.containers {
+		.games-module {
+			.content > div {
+				width: calc((100% - 32px) / 3);
+			}
+		}
+	}
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+	.lottery-home {
+		width: 931px !important;
+	}
+	.containers {
+		.games-module {
+			.content > div {
+				width: calc((100% - 16px) / 2);
+			}
 		}
 	}
 }
