@@ -2,16 +2,17 @@ import "./index.scss";
 
 import { computed, defineComponent, reactive, ref, watch } from "vue";
 
-import Common from "/@/views/sports/utils/common";
-import CommonFn from "/@/utils/common";
 import { ElInput } from "element-plus";
 import { useUserStore } from "/@/stores/modules/user";
+import CommonFn from "/@/utils/common";
+import Common from "/@/views/sports/utils/common";
 
 export default () => {
 	const BetForm = defineComponent({
 		props: {
 			actived: { type: Boolean, default: false }, // 控制显示投注输入框
 			value: { type: Object, default: () => ({}) },
+			currentOddsListItem: { type: Object, default: () => ({}) },
 		},
 		name: "BetForm",
 		emits: ["submit"],
@@ -109,7 +110,7 @@ export default () => {
 						<div class="default-item">
 							<span>潜在回报</span>
 							<span>
-								{maxOdds.value} {unit}
+								{+props.currentOddsListItem.itemOdds * +stake.value || 0} {unit}
 							</span>
 						</div>
 					</div>

@@ -50,7 +50,7 @@
 			</div>
 
 			<!-- 投注表单组件 -->
-			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived">
+			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsListItem="currentOddsListItem">
 				<!-- 表单激活时显示的插槽内容 -->
 				<template v-if="formActived" #default>
 					<div class="bet-form-slot-header">
