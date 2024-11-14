@@ -6,9 +6,11 @@ interface BallParams {
 	list?: number[];
 }
 
+type Balls = number[];
+
 export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 	const formActived = ref(false);
-	const balls = ref<number[]>([]);
+	const balls = ref([] as Balls);
 	const currentGameplayItem = ref(); // 当前选中的大菜单
 	const currentOddsListItem = ref({} as OddsListItem); // 当前选中高亮的项
 	const currentK10OddsList = ref<string[]>([]); // 当前选中高亮的项
@@ -25,9 +27,10 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 		console.log("oddsListItem", oddsListItem);
 		console.log("gameplayItem", gameplayItem);
 
-		formActived.value = (list as number[]).length ? true : false;
-		currentGameplayItem.value = (list as number[]).length ? { ...gameplayItem, oddsList: { ...oddsListItem } } : null;
-		balls.value = list as number[];
+		formActived.value = (list as Balls).length ? true : false;
+		currentGameplayItem.value = (list as Balls).length ? { ...gameplayItem, oddsList: { ...oddsListItem } } : null;
+
+		balls.value = list as Balls;
 	};
 
 	// const handleSelectBalls = ({ list }, childData: any, data: any) => {
