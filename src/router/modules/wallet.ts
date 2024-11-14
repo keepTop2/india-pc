@@ -147,6 +147,7 @@ const walletLayout = {
 				title: $.t("wallet['交易记录']"),
 				icon: "transactionRecords",
 				active_icon: "transactionRecords_active",
+				leaveCaches: ["accountChangeDetails"],
 			},
 		},
 		{
