@@ -1,9 +1,11 @@
+import "./index.scss";
+
 import { computed, defineComponent, reactive, ref, watch } from "vue";
-import { ElInput } from "element-plus";
-import { useUserStore } from "/@/stores/modules/user";
+
 import Common from "/@/views/sports/utils/common";
 import CommonFn from "/@/utils/common";
-import "./index.scss";
+import { ElInput } from "element-plus";
+import { useUserStore } from "/@/stores/modules/user";
 
 export default () => {
 	const BetForm = defineComponent({

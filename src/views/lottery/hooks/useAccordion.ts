@@ -1,9 +1,14 @@
 import { Ref, ref } from "vue";
-import { type MergedGameplayList, type OddsListItem } from "/@/views/lottery/types/index";
+import { type GameplayItem, type MergedGameplayList, type OddsListItem } from "/@/views/lottery/types/index";
+
+interface BallParams {
+	value?: number;
+	list?: number[];
+}
 
 export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 	const formActived = ref(false);
-	const balls = ref([]);
+	const balls = ref<number[]>([]);
 	const currentGameplayItem = ref(); // 当前选中的大菜单
 	const currentOddsListItem = ref({} as OddsListItem); // 当前选中高亮的项
 
@@ -15,11 +20,14 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 	};
 
 	// 选择球组的处理方法
-	const handleSelectBalls = ({ list }, childData: any, data: any) => {
+	const handleSelectBalls = ({ list }: BallParams, oddsListItem: OddsListItem, gameplayItem: GameplayItem) => {
 		console.log("list", list);
-		formActived.value = list.length ? true : false;
-		currentGameplayItem.value = list.length ? { ...data, oddsList: { ...childData } } : null;
-		balls.value = list;
+		console.log("oddsListItem", oddsListItem);
+		console.log("gameplayItem", gameplayItem);
+
+		formActived.value = (list as number[]).length ? true : false;
+		currentGameplayItem.value = (list as number[]).length ? { ...gameplayItem, oddsList: { ...oddsListItem } } : null;
+		balls.value = list as number[];
 	};
 
 	/**

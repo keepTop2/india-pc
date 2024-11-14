@@ -40,6 +40,7 @@
 										:renderBallNum="(oddsListItem.ballNum as number)"
 										:maxLeng="1"
 										:value="balls"
+										:startIndex="oddsListItem.startIndex"
 									/>
 								</div>
 							</template>
@@ -86,7 +87,7 @@ const { BetForm } = useBetForm();
 // hooks
 const { mergedGameplayList } = useGameplayList(gameplayList);
 const { formActived, balls, clearAccordionStatus, handleSelectBalls, handleExpanded, currentGameplayItem, currentOddsListItem } = useAccordionHook(mergedGameplayList);
-const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsListItem, props as Props);
+const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsListItem, props as Props, balls);
 </script>
 
 <style lang="scss" scoped></style>

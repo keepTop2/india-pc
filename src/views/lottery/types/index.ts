@@ -17,6 +17,7 @@ export interface OddsListItem {
 
 	type?: string;
 	ballNum?: number;
+	startIndex?: number;
 }
 export type OddsList = OddsListItem[];
 
