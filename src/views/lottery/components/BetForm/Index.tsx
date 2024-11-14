@@ -5,6 +5,7 @@ import { computed, defineComponent, reactive, ref, watch } from "vue";
 import { ElInput } from "element-plus";
 import { useUserStore } from "/@/stores/modules/user";
 import CommonFn from "/@/utils/common";
+import { formatNumberMax3Digits } from "/@/views/lottery/utils/formatNumber";
 import Common from "/@/views/sports/utils/common";
 
 export default () => {
@@ -110,7 +111,7 @@ export default () => {
 						<div class="default-item">
 							<span>潜在回报</span>
 							<span>
-								{+props.currentOddsListItem.itemOdds * +stake.value || 0} {unit}
+								{formatNumberMax3Digits(+props.currentOddsListItem.itemOdds * +stake.value || 0)} {unit}
 							</span>
 						</div>
 					</div>

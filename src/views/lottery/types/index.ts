@@ -32,6 +32,7 @@ interface BaseGameplayItem {
 	oddsList: OddsList;
 	minLimit?: number;
 	maxLimit?: number;
+	categoryCode?: string;
 }
 
 export interface GameplayItem extends BaseGameplayItem {

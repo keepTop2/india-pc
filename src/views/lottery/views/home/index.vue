@@ -154,11 +154,12 @@ interface Maps {
 	[key: string]: string;
 }
 const maps: Maps = {
-	K3: "/lottery/kuaisan",
+	K3: "/lottery/kuaisan", // 快三
 	SSQ: "/lottery/unionLotto",
 	PK10: "/lottery/pk10",
-	_28: "/lottery/lucky28",
+	_28: "/lottery/lucky28", // 幸运 28
 	SSC: "/lottery/shishicai",
+	SYXW: "/lottery/elevenChooseFive", // 11 选 5
 };
 
 const pushView = (game: GameListItem) => {

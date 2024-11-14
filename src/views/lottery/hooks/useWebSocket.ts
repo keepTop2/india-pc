@@ -35,6 +35,8 @@ const BASE_URL = (window as any)["PLATFROM_CONFIG"].developmentLotteryWsURL;
 const instancesMap: InstancesMap = {};
 export function useWebSocket({ callback = Function.prototype, fallbackFn = Function.prototype, baseURL = BASE_URL }) {
 	let websocketInstance = instancesMap[baseURL];
+	const dynamicCallback = callback;
+	const dynamicFallbackFn = fallbackFn;
 
 	if (websocketInstance) {
 		return websocketInstance;
@@ -58,7 +60,7 @@ export function useWebSocket({ callback = Function.prototype, fallbackFn = Funct
 			onFailed() {
 				// 兜底方案，wd 挂了，轮询处理
 				console.log("onFailed");
-				const { turnOnTimer } = useTimer(fallbackFn, 5000);
+				const { turnOnTimer } = useTimer(dynamicFallbackFn, 5000);
 				turnOnTimer();
 			},
 		},
@@ -70,7 +72,7 @@ export function useWebSocket({ callback = Function.prototype, fallbackFn = Funct
 				message = {} as WebSocketResponseMessage;
 			}
 
-			isValidWebSocketMessage(message.id) && callback(message);
+			isValidWebSocketMessage(message.id) && dynamicCallback(message);
 		},
 	}) as WSReturn<WebSocketResponseMessage>;
 

@@ -7,8 +7,8 @@ import { SUCCESS_CODE } from "/@/utils/useAxiosLottery";
 import { DEFAULT_LANG, langMaps, SELECT_BALL } from "/@/views/lottery/constant/index";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { type LotteryDetail, type MergedGameplayItem, type OddsListItem } from "/@/views/lottery/types/index";
+import { addZero } from "/@/views/lottery/utils/formatNumber";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
-
 export interface Props {
 	lotteryDetail: LotteryDetail;
 }
@@ -74,8 +74,15 @@ export function useBet(
 		let { optionCode: nums } = currentOddsListItem.value;
 		// 选择球
 		if (SELECT_BALL === type) {
-			nums = String(balls.value.pop());
+			console.log("if", balls);
+			nums = String(balls.value[0]);
+
+			// 这里 11 选 5 要特殊一点，下注的时候，例如 4 号球要提交 "04" 而不是 "4"
+			if (currentGameplayItem.value.categoryCode === "SYXW") {
+				nums = addZero(+nums);
+			}
 		}
+
 		const { issueNum: issueNo } = props.lotteryDetail;
 		const { merchantNo: operatorId, userAccount: operatorAccount } = merchantInfo.value;
 		const language = userStore.getLang;
@@ -88,7 +95,7 @@ export function useBet(
 			token: satoken.value,
 			list: [{ betCount: 1, multiple: 1, betMoney, nums, gameCode, gamePlayCode, issueNo }],
 		};
-
+		console.log("submitData", submitData);
 		// 2.2 准备好了，发送请求
 		const res = await lotteryApi.betting(submitData);
 		const { code, msg } = res;
