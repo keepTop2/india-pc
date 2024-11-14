@@ -38,6 +38,12 @@ const lotteryRoutes = {
 			component: () => import("/@/views/lottery/views/category/lucky28/index.vue"),
 		},
 		{
+			path: "/lottery/elevenChooseFive",
+			name: "ElevenChooseFive",
+			meta: { name: "ElevenChooseFive", title: "11选5" },
+			component: () => import("/@/views/lottery/views/category/elevenChooseFive/index.vue"),
+		},
+		{
 			path: "/lottery/unionLotto",
 			name: "UnionLotto",
 			meta: { name: "UnionLotto", title: "双色球" },
