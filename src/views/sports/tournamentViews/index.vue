@@ -68,9 +68,7 @@ const props = defineProps({
 // 获取到的数据
 const eventId = computed(() => {
 	const childrenViewData = viewSportPubSubEventData.sidebarData.childrenViewData;
-	if (childrenViewData.length) {
-		console.log(childrenViewData[0]?.events[0].eventId, "childrenViewData[0]?.events[0].eventId");
-
+	if (childrenViewData?.length) {
 		return childrenViewData[0]?.events[0].eventId;
 	}
 	return "";

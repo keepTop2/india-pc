@@ -11,7 +11,7 @@
 		<template v-if="!$slots.header">
 			<div class="my-header">
 				<h4 class="color_Text_s fs_20 fw_500">{{ title }}</h4>
-				<SvgIcon class="close" v-if="showClose" @click="onClose" iconName="dialog_close" />
+				<SvgIcon class="close" v-if="showClose" @click="onClose" name="dialog_close" />
 			</div>
 		</template>
 		<slot name="header" v-else></slot>

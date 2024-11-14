@@ -194,7 +194,7 @@ const { Collection } = useHeaderTools(props.events);
 				overflow: hidden;
 				text-overflow: ellipsis;
 				font-size: 20px;
-				color: var(--Text_a);
+				color: var(--Text-a);
 				padding-left: 12px;
 			}
 			.score {
@@ -276,7 +276,7 @@ const { Collection } = useHeaderTools(props.events);
 					justify-content: space-between;
 					padding: 6px;
 					border-radius: 4px;
-					background: var(--Bg3);
+					background: var(--Bg-3);
 					box-sizing: border-box;
 					&:hover {
 						background-color: var(--betselector-hover-bg);
