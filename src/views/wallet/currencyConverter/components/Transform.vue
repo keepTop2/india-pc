@@ -14,7 +14,7 @@
 					<span>{{ transformInfo.platCurrency }}</span>
 				</div>
 				<div class="number">
-					<el-input v-model.number="formValue" type="number"></el-input>
+					<el-input v-model.number="formValue" type="number" @input="handleInput"></el-input>
 					<div @click="formValue = transformInfo.platAvailableAmount">全部</div>
 				</div>
 				<div class="line"></div>
@@ -55,7 +55,12 @@ import { computed, ref } from "vue";
 const formValue = ref("");
 const toValue = computed(() => {
 	const transferRate = transformInfo.value?.transferRate ?? 0;
-	return (transferRate * Number(formValue.value)).toFixed(2);
+	const value = transferRate * Number(formValue.value);
+	// 当金额大于等于1百万时，转换为K单位显示
+	if (value >= 1000000) {
+		return (value / 1000).toFixed(2) + "K";
+	}
+	return value.toFixed(2);
 });
 
 // 转换信息
@@ -69,6 +74,25 @@ interface TransformInfo {
 }
 
 const transformInfo = ref<Partial<TransformInfo>>({});
+
+// 添加输入处理函数
+const handleInput = (value: string) => {
+	if (!value) return;
+
+	// 限制最大9位数，不包含小数点
+	const valueWithoutDot = value.replace(/\./g, "");
+	if (valueWithoutDot.length > 9) {
+		formValue.value = value.slice(0, value.length - 1);
+	}
+
+	// 转换为数字进行比较
+	const numValue = Number(value);
+	if (numValue > transformInfo.value?.platAvailableAmount) {
+		formValue.value = String(transformInfo.value?.platAvailableAmount);
+		ElMessage.warning("输入金额不能大于可用余额");
+	}
+};
+
 // 转换
 const handleTransform = async () => {
 	const res = await walletApi.transferAmount({ transferAmount: formValue.value });
