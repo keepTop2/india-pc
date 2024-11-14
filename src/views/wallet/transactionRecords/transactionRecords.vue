@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="header">
-			<div class="title fs_24 Text_s mb_3">福利中心</div>
+			<div class="title fs_24 Text_s mb_3">交易记录</div>
 			<div class="line"></div>
 			<div class="form flex_space-between mt_20 fs_12">
 				<div class="flex-center">
