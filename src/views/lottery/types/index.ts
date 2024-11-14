@@ -17,6 +17,8 @@ export interface OddsListItem {
 
 	type?: string;
 	ballNum?: number;
+	selectBallDesc?: string;
+	oddsList?: OddsListItem[];
 }
 export type OddsList = OddsListItem[];
 

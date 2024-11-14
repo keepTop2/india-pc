@@ -18,8 +18,7 @@
 				<el-table-column :label="$t(`lottery['中奖号码']`)" align="right" :resizable="false">
 					<template #default="{ row, column, $index }">
 						<div class="balls">
-							<!-- <Dice size="30px" :type="item === 1 ? 2 : 1" :points="item" v-for="(item, index) in row.balls" :key="index" /> -->
-							<Ball v-for="item in row.balls" :key="item" :ball-number="item" :type="2" />
+							<Dice size="30px" :type="item === 1 ? 2 : 1" :points="item" v-for="(item, index) in row.balls" :key="index" />
 						</div>
 					</template>
 				</el-table-column>
@@ -36,7 +35,6 @@ import { useRoute } from "vue-router";
 import { lotteryApi } from "/@/api/lottery";
 import { Pagination } from "/@/components/Pagination";
 import { useUserStore } from "/@/stores/modules/user";
-import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import useDice from "/@/views/lottery/components/Tools/Dice/Index";
 import { DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
@@ -55,7 +53,6 @@ interface TableDataItem {
 
 type TableData = TableDataItem[];
 
-const { Ball } = useBall();
 const { Dice } = useDice();
 const options = [
 	{ label: "排序: 抽奖时间升序", value: 1 },

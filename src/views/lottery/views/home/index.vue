@@ -70,6 +70,7 @@ import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n/index";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import Common from "/@/views/sports/utils/common";
+import { GameBaseInfo, GameListItem } from "../../types/game";
 
 const $: any = i18n.global;
 
@@ -155,11 +156,12 @@ interface Maps {
 const maps: Maps = {
 	K3: "/lottery/kuaisan",
 	SSQ: "/lottery/unionLotto",
+	PK10: "/lottery/pk10",
 	_28: "/lottery/lucky28",
 	SSC: "/lottery/shishicai",
 };
 
-const pushView = (game) => {
+const pushView = (game: GameListItem) => {
 	console.log("game", game);
 
 	const { gameCategoryCode, venueCode, gameCode } = game;
