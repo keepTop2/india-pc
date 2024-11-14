@@ -104,7 +104,7 @@ const deleteSuccess = (index: number) => {
 watch(
 	messageCenterVisible,
 	(val) => {
-		if (val) getMessageList(activeTab);
+		if (val) getMessageList(activeTab.value);
 	},
 	{ immediate: true }
 );
