@@ -78,8 +78,8 @@ import VenueBanner from "/@/components/venueBanner.vue";
 import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import showToast from "/@/hooks/useToast";
-import Common from "/@/views/sports/utils/common";
 import { stringify } from "qs";
+import { GameListItem } from "../../types/game";
 
 const { LotteryCard, HotLotteryCard } = useLotteryCard();
 const route = useRoute();
@@ -151,15 +151,20 @@ interface Maps {
 	[key: string]: string;
 }
 const maps: Maps = {
-	K3: "/lottery/kuaisan",
+	K3: "/lottery/kuaisan", // 快三
 	SSQ: "/lottery/unionLotto",
-	_28: "/lottery/lucky28",
+	PK10: "/lottery/pk10",
+	_28: "/lottery/lucky28", // 幸运 28
 	SSC: "/lottery/shishicai",
+	SYXW: "/lottery/elevenChooseFive", // 11 选 5
 };
-// 路由跳转
-const pushView = (game: any) => {
-	const { gameCategoryCode, venueCode, gameCode, data } = game;
-	const searchParams = { venueCode, gameCode, maxWin: data.maxWin || 0 };
+
+const pushView = (game: GameListItem) => {
+	console.log("game", game);
+
+	const { gameCategoryCode, venueCode, gameCode } = game;
+	const { maxWin = 0 } = game.data;
+	const searchParams = { venueCode, gameCode, maxWin };
 	const targetView = maps[gameCategoryCode];
 	if (targetView) {
 		router.push(`${targetView}?${stringify(searchParams)}`);

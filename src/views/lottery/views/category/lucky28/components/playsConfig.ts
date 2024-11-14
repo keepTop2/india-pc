@@ -1,3 +1,4 @@
+import { SELECT_BALL } from "/@/views/lottery/constant/index";
 import { type GameplayList } from "/@/views/lottery/types/index";
 // 投注项
 
@@ -169,7 +170,7 @@ export const gameplayList: GameplayList = [
 	{
 		id: "5",
 		gamePlayName: "第一位",
-		gamePlayCodes: ["smp_swzh_dxds_dyw"],
+		gamePlayCodes: ["smp_swzh_dxds_dyw", "smp_xh_d1w"],
 		desc: `选择一个位置，并投注一种属性，投注的属性与该位置的开奖号码属性相同时，即中奖<br>1.大小：开奖号码≥5为“大”，≤4为“小”<br>2.单双：开奖号码1、3、5、7、9为“单”，0、2、4、6、8为“双”<br>3.质合：开奖号码1、2、3、5、7为“质”，0、4、6、8、9为“合”`,
 		actived: false,
 		oddsList: [
@@ -221,12 +222,23 @@ export const gameplayList: GameplayList = [
 				actived: false,
 				optionCode: "合",
 			},
+			{
+				id: "5-7",
+				title: "选择球",
+				desc: "",
+				itemOdds: "1.995",
+				actived: false,
+				optionCode: "0",
+				type: SELECT_BALL,
+				ballNum: 10,
+				startIndex: 0,
+			},
 		],
 	},
 	{
 		id: "6",
 		gamePlayName: "第二位",
-		gamePlayCodes: ["smp_swzh_dxds_dew"],
+		gamePlayCodes: ["smp_swzh_dxds_dew", "smp_xh_d2w"],
 		desc: `选择一个位置，并投注一种属性，投注的属性与该位置的开奖号码属性相同时，即中奖<br>1.大小：开奖号码≥5为“大”，≤4为“小”<br>2.单双：开奖号码1、3、5、7、9为“单”，0、2、4、6、8为“双”<br>3.质合：开奖号码1、2、3、5、7为“质”，0、4、6、8、9为“合”`,
 		actived: false,
 		oddsList: [
@@ -278,12 +290,23 @@ export const gameplayList: GameplayList = [
 				actived: false,
 				optionCode: "合",
 			},
+			{
+				id: "6-7",
+				title: "选择球",
+				desc: "",
+				itemOdds: "1.995",
+				actived: false,
+				optionCode: "0",
+				type: SELECT_BALL,
+				ballNum: 10,
+				startIndex: 0,
+			},
 		],
 	},
 	{
 		id: "7",
 		gamePlayName: "第三位",
-		gamePlayCodes: ["smp_swzh_dxds_dsw"],
+		gamePlayCodes: ["smp_swzh_dxds_dsw", "smp_xh_d3w"],
 		desc: `选择一个位置，并投注一种属性，投注的属性与该位置的开奖号码属性相同时，即中奖<br>1.大小：开奖号码≥5为“大”，≤4为“小”<br>2.单双：开奖号码1、3、5、7、9为“单”，0、2、4、6、8为“双”<br>3.质合：开奖号码1、2、3、5、7为“质”，0、4、6、8、9为“合”`,
 		actived: false,
 		oddsList: [
@@ -334,6 +357,17 @@ export const gameplayList: GameplayList = [
 				itemOdds: "1.995",
 				actived: false,
 				optionCode: "合",
+			},
+			{
+				id: "7-7",
+				title: "选择球",
+				desc: "",
+				itemOdds: "1.995",
+				actived: false,
+				optionCode: "0",
+				type: SELECT_BALL,
+				ballNum: 10,
+				startIndex: 0,
 			},
 		],
 	},
