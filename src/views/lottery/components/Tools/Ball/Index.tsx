@@ -46,10 +46,10 @@ export default () => {
 			const { renderBallNum, maxLeng, type = 1, multiple = true, startIndex } = props;
 
 			// 处理球的选择逻辑
-			const handleSelect = (ballNum: number) => {
+			const handleSelect = (ballNum: number, isRandom = false) => {
 				console.log("ballNum", ballNum);
 				if (!multiple) {
-					emit("select", { value: ballNum, list: props.value.includes(ballNum) ? [] : [ballNum] });
+					emit("select", { value: ballNum, list: props.value.includes(ballNum) && !isRandom ? [] : [ballNum] });
 					return;
 				}
 				// 如果球号已经选中，移除该球号
@@ -71,6 +71,15 @@ export default () => {
 			// 生成球的数量列表
 			const balls = computed(() => new Array(renderBallNum).fill(0));
 
+			// 快速选择
+			const handleRandomBall = () => {
+				const index = Math.floor(Math.random() * balls.value.length);
+				const renderNumber = startIndex === 0 ? index : index + 1;
+				console.log(renderNumber, index);
+
+				handleSelect(renderNumber, true);
+			};
+
 			return () => (
 				<div class="select-ball-group">
 					{/* 提示信息 */}
@@ -82,7 +91,7 @@ export default () => {
 							<span onClick={() => emit("clear")}>清除全部</span>
 						</div>
 						{/* 快速选择区域 */}
-						<div className="other">
+						<div onClick={handleRandomBall} className="other">
 							<img src="/@/assets/zh-CN/lottery/ksxz.svg" alt="" />
 							<span>快速选择</span>
 						</div>

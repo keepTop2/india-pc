@@ -33,7 +33,7 @@ export default () => {
 
 			// 监听玩法 id 变化时，重置表单
 			watch(
-				() => props.value?.playMethod?.id,
+				() => props.value?.oddsList?.id,
 				() => clearForm()
 			);
 
@@ -46,7 +46,8 @@ export default () => {
 
 			// 校验投注金额输入
 			const validateStake = (price: string) => {
-				const { minBet, maxBet } = props.value?.playMethod || {};
+				const { minBet, maxBet } = props.value?.oddsList || {};
+				console.log(props.value, minBet, maxBet, "props.value");
 				const numericPrice = Number(price);
 
 				if (numericPrice === 0) {
@@ -69,7 +70,7 @@ export default () => {
 
 			// 计算潜在回报
 			const maxOdds = computed(() => {
-				const odds = props.value?.playMethod?.odds || 0;
+				const odds = props.value?.oddsList?.odds || 0;
 				return CommonFn.thousands(Number((odds * Number(stake.value)).toFixed(2)));
 			});
 
@@ -93,7 +94,7 @@ export default () => {
 						{props.actived ? (
 							<div class={`input-item ${validForm.isSuccess ? "success" : ""}`}>
 								<span>投注金额</span>
-								<ElInput v-model={stake.value} type="number" min={value?.playMethod?.minBet} max={value?.playMethod?.maxBet} placeholder="请输入投注金额" onInput={onInputEnter}>
+								<ElInput v-model={stake.value} type="number" min={value?.oddsList?.minBet} max={value?.oddsList?.maxBet} placeholder="请输入投注金额" onInput={onInputEnter}>
 									{{
 										suffix: () => <span>{unit}</span>,
 									}}
