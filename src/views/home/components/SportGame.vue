@@ -45,6 +45,7 @@ import SportsShopCart from "/@/views/sports/layout/components/sportsShopCart/spo
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 import SportGameCard from "./SportGameCard.vue";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import SportApi from "/@/api/sports/sports";
 const sportsBetEvent = useSportsBetEventStore();
 const sportsInfoStore = useSportsInfoStore();
 const { startPolling, stopPolling, initSportPubsub, unSubSport, sportsLogin, clearState } = useSportPubSubEvents();
@@ -115,7 +116,7 @@ const openSportPush = async () => {
 const initSport = async () => {
 	//开启体育线程
 	workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
-	await sportsLogin({
+	await SportApi.sportsLogin({
 		device: 1,
 		venueCode: "",
 		gameCode: "",
