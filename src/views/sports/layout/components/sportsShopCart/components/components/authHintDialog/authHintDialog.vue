@@ -1,7 +1,7 @@
 <template>
 	<div class="tips" @click="onRadio">
 		<div class="icon">
-			<svg-icon :name="sportsBetEvent.radioStatus ? 'check_icon_on' : 'check_icon'" size="14px" />
+			<svg-icon :name="sportsBetEvent.radioStatus ? 'common-check_icon_on' : 'common-check_icon'" size="14px" />
 		</div>
 		<div class="text">自动接受更好的赔率</div>
 	</div>
