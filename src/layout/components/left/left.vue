@@ -28,16 +28,9 @@
 				<!-- 菜单 -->
 				<div class="left_scroll_conatiner2">
 					<menuSkeleton v-if="isLoading" :collapse="collapse" />
-					<Menu v-else />
+					<Menu v-else :ActivitySwitch="ActivitySwitch" />
 					<!-- 左侧底步功能区 -->
 					<div class="sidebar_bttom">
-						<!-- 帮助中心 -->
-						<!-- <div class="helpcenter_container" @click="router.push('/helpCenter')">
-							<svg-icon name="help_icon" size="17px" />
-							<span class="left_text1">
-								{{ $t(`layout['layout1']['帮助中心']`) }}
-							</span>
-						</div> -->
 						<!-- 白天黑夜  打开侧边栏状态-->
 						<div class="dayOrNight mt_4" v-if="!collapse">
 							<!-- 白天 -->
@@ -84,8 +77,6 @@ import { computed, onMounted, ref } from "vue";
 import { useThemesStore } from "/@/stores/modules/themes";
 import { useMenuStore } from "/@/stores/modules/menu";
 import activityDialog from "/@/views/activity/components/activityDialog.vue";
-import useTo from "/@/hooks/ustTo";
-import PubSub from "/@/pubSub/pubSub";
 import Common from "/@/utils/common";
 import { activityApi } from "/@/api/activity";
 import { useModalStore } from "/@/stores/modules/modalStore";
@@ -113,8 +104,6 @@ const queryLobbyLabelActivitySwitch = () => {
 	});
 };
 const showSpin = () => {
-	console.log(ActivitySwitch.value);
-
 	if (ActivitySwitch.value.includes("SPIN_WHEEL")) {
 		activityApi.getSpindetail().then((res) => {
 			activityStore.setCurrentActivityData(res.data);
