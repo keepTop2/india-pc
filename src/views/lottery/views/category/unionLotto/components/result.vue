@@ -19,7 +19,7 @@
 					<template #default="{ row, column, $index }">
 						<div class="balls">
 							<!-- <Dice size="30px" :type="item === 1 ? 2 : 1" :points="item" v-for="(item, index) in row.balls" :key="index" /> -->
-							<Ball v-for="item in row.balls" :key="item" :ball-number="item" :type="2" />
+							<Ball v-for="(item, index) in row.balls" :key="item" :ball-number="item" :type="index < 6 ? 2 : 1" />
 						</div>
 					</template>
 				</el-table-column>

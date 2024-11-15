@@ -9,6 +9,7 @@ import { LotteryPlayGroup, LotteryPlay, LotteryOption } from "../types/lottery";
  * @returns {LotteryPlayGroup[]} 合并后的数据
  */
 export const ssqLotteryList = (staticList: LotteryPlayGroup[], dynamicList: LotteryPlay[]) => {
+	console.log("staticList", staticList);
 	// 遍历静态配置列表
 	return staticList.map((staticItem: LotteryPlayGroup) => {
 		// 根据gamePlayCode匹配对应的玩法
@@ -29,6 +30,7 @@ export const ssqLotteryList = (staticList: LotteryPlayGroup[], dynamicList: Lott
 					return {
 						...rest,
 						...staticOdds,
+						...(staticOdds.type !== "selectBallLine" ? oddsList[0] : {}),
 						oddsList: specialPlay.oddsList.map((odds: LotteryOption) => ({
 							...odds,
 							actived: false,
