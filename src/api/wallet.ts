@@ -160,4 +160,31 @@ export const walletApi = {
 			headers,
 		});
 	},
+
+	// 交易记录
+	tradeRecordList: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/userTradeRecord/api/tradeRecordList`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
+	// 交易记录下拉框
+	getDownBox: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/userTradeRecord/api/getDownBox`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
+
+	// 交易记录详情
+	tradeRecordDetail: (data = {}, headers = { showLoading: true }) => {
+		return useAxiosApi(`/app/userTradeRecord/api/tradeRecordDetail`, {
+			method: "POST",
+			data,
+			headers,
+		});
+	},
 };

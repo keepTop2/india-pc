@@ -142,7 +142,7 @@ class Common {
 	static formatFloat(num: number | string, n: number = 2) {
 		const f_x = parseFloat(num);
 		if (isNaN(f_x)) {
-			return 0;
+			return "0.00";
 		}
 		let s_x = num.toString();
 		let pos_decimal = s_x.indexOf(".");
@@ -544,52 +544,7 @@ class Common {
 			venueCode: gameinfo.venueCode,
 			gameCode: gameinfo.gameCode,
 		};
-		gameApi.loginGame(params).then((res) => {
-			if (res.code === this.ResCode.SUCCESS) {
-				const { source, userAccount, type } = res.data;
-				const state = {
-					source: "",
-					userAccount: "",
-					type: "",
-				};
-				switch (type) {
-					case "url": {
-						state.source = source;
-						state.userAccount = userAccount;
-						state.type = type;
-						break;
-					}
-					case "html": {
-						// 将HTML编码的文本字符串转换为Blob对象
-						const blob: any = new Blob([source], { type: "text/html" });
-						// 将Blob对象作为iframe的源
-						state.source = URL.createObjectURL(blob);
-						// window.open(state.source, "_blank");
-						// window.open(state.source, "_self");
-						state.userAccount = userAccount;
-						state.type = type;
-						break;
-					}
-					case "token": {
-						const params = {
-							session_id: source,
-							lang: "zh-CN",
-							login_id: userAccount,
-						};
-						const url = Common.getUrl();
-						state.source = url + `/api/cash/auth?${qs.stringify(params)}`;
-						state.userAccount = userAccount;
-						state.type = type;
-						break;
-					}
-					default:
-						break;
-				}
-				router.push({ path: "/game/gamepage", query: { ...state } });
-			} else {
-				showToast(res.message);
-			}
-		});
+		router.push({ path: "/game/gamepage", query: { ...params } });
 	}
 
 	/**

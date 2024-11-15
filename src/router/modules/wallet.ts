@@ -114,8 +114,20 @@ const walletLayout = {
 			component: () => import("/@/views/wallet/accountChangeDetails/accountChangeDetails.vue"),
 			meta: {
 				title: "详情",
+				// LevelOneTitle: "",
 				secondaryPage: true,
 			},
+			// beforeEnter: (to: any, from: any, next: any) => {
+			// 	if (from.meta && from.meta.title) {
+			// 		const data = {
+			// 			LevelOneTitle: from.meta.title as string,
+			// 		};
+			// 		console.log("data", data);
+			// 		const UserStore = useUserStore();
+			// 		UserStore.setUserInfo(data);
+			// 	}
+			// 	next();
+			// },
 		},
 		{
 			path: "/currencyConverter",
@@ -135,6 +147,7 @@ const walletLayout = {
 				title: $.t("wallet['交易记录']"),
 				icon: "transactionRecords",
 				active_icon: "transactionRecords_active",
+				leaveCaches: ["accountChangeDetails"],
 			},
 		},
 		{

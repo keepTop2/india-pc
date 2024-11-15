@@ -115,15 +115,16 @@ const apply = async () => {
 		return;
 	}
 	await activityApi.getToActivity({ id: activityData.value.id }).then((res: any) => {
-		if (String(res.data.status).slice(0, 2) == "13") {
+		if (String(res.data.status).slice(0, 2) !== "13" || res.data.status !== 1000) {
 			dialogInfo.value = res.data;
 			showCommonDialog.value = true;
-		} else {
-			activityApi.getActivityReward({ id: activityData.value.id }).then((res: any) => {
-				showToast(res.data.message);
-				activityStore.updateCurrentActivityData();
-			});
 		}
+		// else {
+		// 	activityApi.getActivityReward({ id: activityData.value.id }).then((res: any) => {
+		// 		showToast(res.data.message);
+		// 		activityStore.updateCurrentActivityData();
+		// 	});
+		// }
 	});
 };
 const confirmDialog = () => {

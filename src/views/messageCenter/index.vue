@@ -10,7 +10,7 @@
 			<div class="content">
 				<div class="wrapper">
 					<div class="tabs">
-						<div v-for="item in tabs" @click="activeTab = item.type" :class="activeTab === item.type && 'active'">
+						<div v-for="item in tabs" @click="handleClick(item)" :class="activeTab === item.type && 'active'">
 							{{ item.name }}
 						</div>
 					</div>
@@ -45,6 +45,10 @@ const activeTab = ref(3);
 
 const userStore = useUserStore();
 
+const handleClick = (item) => {
+	activeTab.value = item.type;
+	getMessageList(item.type);
+};
 // 消息列表
 interface MessageList {
 	targetId: string;
@@ -62,6 +66,7 @@ const params = {
 	pageSize: 10,
 };
 const getMessageList = async (type: number) => {
+	if (!userStore.getUserInfo.token) return;
 	const res = await MessageApi.messageList({ noticeType: type, ...params });
 	// if (res.code !== 10000) return ElMessage.warning(res.message);
 	messageList.value = res.data.records;
@@ -97,11 +102,9 @@ const deleteSuccess = (index: number) => {
 };
 
 watch(
-	activeTab,
+	messageCenterVisible,
 	(val) => {
-		if (userStore.getUserInfo.token) {
-			getMessageList(val);
-		}
+		if (val) getMessageList(activeTab.value);
 	},
 	{ immediate: true }
 );

@@ -114,10 +114,12 @@ const queryGameInfoByOneClassId = debounce(async () => {
 }, 200);
 
 // 初始化 WebSocket，监听数据更新
-useWebSocket({
+const { close } = useWebSocket({
 	callback: queryGameInfoByOneClassId,
 	fallbackFn: () => {},
 });
+
+onUnmounted(() => close());
 
 // 处理输入框内容变化
 const handleSearchInput = debounce(() => {
