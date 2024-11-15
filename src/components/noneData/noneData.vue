@@ -5,11 +5,8 @@
 <template>
 	<div class="noneData_container">
 		<div class="center">
-			<div class="icon" v-if="themed == 'light'">
-				<svg-icon :name="iconSvgLight" size="120px" />
-			</div>
-			<div class="icon" v-if="themed == 'dark'">
-				<svg-icon :name="iconSvgLight" size="120px" />
+			<div class="icon">
+				<svg-icon name="no_data" size="120px" />
 			</div>
 		</div>
 		<div class="text_content">

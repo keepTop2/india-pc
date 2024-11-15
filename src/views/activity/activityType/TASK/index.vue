@@ -1,16 +1,12 @@
 <template>
-	<div class="activityWrapper">
-		<div class="activityHeader">
-			{{ "任务" }}
-			<span class="closeIcon curp" @click="useModalStore().closeModal"><img src="../../components/image/close_icon.png" alt="" /></span>
-		</div>
+	<activityWrapper title="任务">
 		<div class="activityMain">
 			<div class="activityImg pt_20 pb_10">
 				<img v-lazy-load="mainImage" alt="" />
 			</div>
 			<div class="Content">
-				<div class="rewardsBg">
-					<div class="mb_11 Text_s">累计奖励</div>
+				<div class="rewardsBg" :style="{ background: `url(${Common.getThemeImgPath('task_rewardsBg.png')}) no-repeat`, backgroundSize: '100% 100%' }">
+					<div class="mb_11 Text_a">累计奖励</div>
 					<div class="color_f1">{{ taskData?.platCurrencySymbol }} {{ taskData?.totalAmount }}</div>
 				</div>
 				<div class="tabs">
@@ -22,14 +18,14 @@
 					<div v-if="currentTab == 0">
 						<div v-for="item in taskData?.dailyTask" class="card">
 							<div>
-								<img v-lazy-load="item.taskPictureI18nCode" alt="" />
+								<img v-lazy-load="item.taskPicturePcI18nCodeFileUrl" alt="" />
 							</div>
 							<div>
-								<div class="fs_14 Text_s fw_500">{{ item.taskNameI18nCode }}</div>
+								<div class="fs_14 Text_a fw_500">{{ item.taskNameI18nCode }}</div>
 								<div class="progress">
 									<div class="value" :style="{ width: calculatePercentage(item.achieveAmount, item.minBetAmount) + '%' }"></div>
 								</div>
-								<div class="fs_12 Text_s bottom">
+								<div class="fs_12 Text_a bottom">
 									<span
 										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
@@ -50,7 +46,7 @@
 					<div v-if="currentTab == 1">
 						<div v-for="item in taskData?.weeklyTask" class="card">
 							<div>
-								<img v-lazy-load="item.taskPictureI18nCode" alt="" />
+								<img v-lazy-load="item.taskPicturePcI18nCodeFileUrl" alt="" />
 							</div>
 							<div>
 								<div class="fs_14 Text_s fw_500">{{ item.taskNameI18nCode }}</div>
@@ -81,12 +77,11 @@
 						</div>
 						<div v-for="item in taskData?.noviceTask" class="card" :class="item.subTaskType">
 							<div>
-								<img v-lazy-load="item.taskPictureI18nCode" alt="" />
+								<img v-lazy-load="item.taskPicturePcI18nCodeFileUrl" alt="" />
 							</div>
 
 							<div>
 								<div class="fs_14 Text_s fw_500">{{ item.taskNameI18nCode }}</div>
-								<!-- <div class="fs_18 color_TB htmlDesc" v-html="item.taskDescI18nCode"></div> -->
 								<div class="fs_12 Text_s ellipsis pr_5" v-html="item.taskDescriptionI18nCode"></div>
 								<div class="fs_12 Text_s bottom">
 									<span
@@ -105,7 +100,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</activityWrapper>
 	<activityDialog v-model="showDialog" title="温馨提示" :closeIcon="false" type="task" :confirm="confirmDialog">
 		<div>恭喜您获得</div>
 		<div class="result">{{ dialogInfo.currencyName }} {{ dialogInfo.rewardAmount }}</div>
@@ -126,6 +121,7 @@
 
 <script setup lang="ts">
 import "../../components/common.scss";
+import activityWrapper from "../../components/activityWrapper.vue";
 import { onMounted, ref, watch } from "vue";
 import { activityApi } from "/@/api/activity";
 import { useRouter } from "vue-router";
@@ -237,7 +233,6 @@ const confirmDialog = () => {
 
 .rewardsBg {
 	height: 104px;
-	background: url("./image/rewardsBg.png") no-repeat;
 	background-size: 100% 100%;
 	padding: 26px 28px;
 	margin: 0 16px;
@@ -261,7 +256,7 @@ const confirmDialog = () => {
 	}
 	.active {
 		background-color: var(--Theme);
-		color: var(--Text-s);
+		color: var(--Text-a);
 	}
 	.active::after {
 		content: "";
@@ -330,7 +325,7 @@ const confirmDialog = () => {
 		line-height: 26px;
 		text-align: center;
 		font-size: 12px;
-		color: var(--Text-s);
+		color: var(--Text-a);
 		cursor: pointer;
 		border-radius: 6px 6px 5px 5px;
 	}

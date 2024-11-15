@@ -3,8 +3,7 @@
 		<slot></slot>
 		<div ref="trigger" class="lazy-load-trigger fade-in">
 			<div v-if="noData" class="noData">
-				<img src="/@/assets/common/nodata.png" alt="" />
-				<p class="fs_14 Text2_1 mt_10">哎呀！还没有数据</p>
+				<noneData></noneData>
 			</div>
 		</div>
 	</div>
