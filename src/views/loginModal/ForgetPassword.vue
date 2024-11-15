@@ -1,6 +1,6 @@
 <!-- src/components/RegisterForm.vue -->
 <template>
-	<div class="loginWrapper">
+	<div class="loginWrapper" :style="{ backgroundImage: `url(${headerBg}),url(${Common.getThemeImgPath('bottomBg.png')})` }">
 		<div class="login_right_form">
 			<div class="login_text fs_24 mb_27">
 				<span> {{ currentStep !== 2 ? $t(`login['忘记密码']`) : $t(`login['设置新密码']`) }}</span>
@@ -11,15 +11,18 @@
 				<div v-if="currentStep === 0">
 					<p class="Text_s mb_8 mt_8 fs_12"><span class="color_F1">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
-						<input
+						<FromInput
 							type="text"
 							v-model="payLoad.userAccount"
-							class="common_input"
 							:placeholder="$t(`login['输入账号']`)"
 							@input="userOnInput"
 							:class="userAccountVerifyError ? 'verifyError' : ''"
 							maxlength="11"
-						/>
+						>
+							<template #left>
+								<svg-icon name="userName" size="18px" />
+							</template>
+						</FromInput>
 					</p>
 					<p v-show="userAccountVerifyError" class="color_F1 fs_12 mt_2">{{ $t(`login['账号规则']`) }}</p>
 				</div>
@@ -75,19 +78,25 @@
 					<div>
 						<p class="Text_s mb_8 mt_8 fs_12"><span class="color_F1">*</span>{{ $t(`login['密码']`) }}</p>
 						<p class="common_password">
-							<input
+							<FromInput
 								:type="showPassword ? 'password' : 'text'"
 								v-model="payLoad.password"
-								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
 								@input="passOnInput"
 								maxlength="16"
 								autocomplete="new-password"
 								:class="VerifyError.passWord ? 'verifyError' : ''"
-							/>
-							<span class="eyes">
-								<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showPassword = !showPassword" />
-							</span>
+							>
+								<template #left>
+									<svg-icon name="password_icon" size="18px" />
+								</template>
+
+								<template #right>
+									<span @click="showPassword = !showPassword">
+										<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" />
+									</span>
+								</template>
+							</FromInput>
 						</p>
 						<p v-show="VerifyError.passWord" class="color_F1 fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
 					</div>
@@ -95,26 +104,32 @@
 					<div>
 						<p class="Text_s mb_8 mt_8 fs_12"><span class="color_F1">*</span>{{ $t(`login['确认密码']`) }}</p>
 						<p class="common_password">
-							<input
+							<FromInput
 								:type="showConfimPassword ? 'password' : 'text'"
 								v-model="payLoad.confirmPassword"
-								class="common_input"
 								:placeholder="$t(`login['输入密码']`)"
 								@input="confirmOnInput"
 								maxlength="16"
 								autocomplete="new-password"
 								:class="VerifyError.confirmPassword ? 'verifyError' : ''"
-							/>
-							<span class="eyes">
-								<svg-icon :name="showConfimPassword ? 'eyes_on' : 'eyes'" size="14px" @click="showConfimPassword = !showConfimPassword" />
-							</span>
+							>
+								<template #left>
+									<svg-icon name="password_icon" size="18px" />
+								</template>
+
+								<template #right>
+									<span @click="showConfimPassword = !showConfimPassword">
+										<svg-icon :name="showConfimPassword ? 'eyes_on' : 'eyes'" size="14px" />
+									</span>
+								</template>
+							</FromInput>
 						</p>
 						<p v-show="VerifyError.confirmPassword" class="color_F1 fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
 					</div>
 				</div>
 				<div class="mt_40 mb_12 text-center">
 					<Button :disabled="disabledBtn" @click="onNextStep(currentStep)" class="mb_6">{{ currentStep === 2 ? "确定" : $t(`login['下一步']`) }}</Button>
-					<div class="flex-center mt_12 color_F2 fs_12 curp" v-if="currentStep === 0" @click="Common.getSiteCustomerChannel">联系客服</div>
+					<div style="text-decoration: underline" class="flex-center mt_12 color_F2 fs_12 curp" v-if="currentStep === 0" @click="Common.getSiteCustomerChannel">联系客服</div>
 					<span @click="changeVerifyType" v-if="currentStep === 1" class="color_Theme fs_12">{{ $t(`login['其他验证方式']`) }}</span>
 				</div>
 			</div>
@@ -134,6 +149,7 @@ import showToast from "/@/hooks/useToast";
 import { CommonApi } from "/@/api/common";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import CommonRegex from "/@/utils/CommonRegex";
+import headerBg from "./image/headerBg.png";
 const modalStore = useModalStore();
 const UserStore = useUserStore();
 const currentStep = ref(0);
@@ -378,7 +394,6 @@ const onSubmit = async (token: string) => {
 	height: 472px;
 	border-radius: 12px;
 	background: var(--Bg);
-	background-image: url("./image/headerBg.png"), url("./image/bottomBg.png");
 	background-repeat: no-repeat no-repeat;
 	background-size: 100% auto, 320px;
 	background-position: top, bottom left;

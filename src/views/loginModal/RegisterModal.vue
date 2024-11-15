@@ -1,6 +1,8 @@
 <!-- src/components/RegisterForm.vue -->
 <template>
-	<div class="loginWrapper">
+	<div class="loginWrapper"  
+		:style="{backgroundImage:`url(${headerBg}),url(${Common.getThemeImgPath('bottomBg.png')})` }"
+	>
 
 		<div class="login_right_form">
 			<div class="login_text fs_24 mb_27">
@@ -11,15 +13,19 @@
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
-						<input
+						<FromInput
 							type="text"
 							v-model="payLoad.userAccount"
-							class="common_input"
 							:placeholder="$t(`login['输入账号']`)"
 							@input="userOnInput"
 									maxlength="11"
 							:class="VerifyError.userAccount ? 'verifyError' : ''"
-						/>
+						>
+						<template #left>
+							<svg-icon name="userName" size="18px" />
+						</template>
+	
+					</FromInput>
 					</p>
 					<p v-show="VerifyError.userAccount" class="Wran_text fs_10 mt_2">{{ $t(`login['账号规则']`) }}</p>
 				</div>
@@ -27,18 +33,25 @@
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
 					<p class="common_password">
-						<input
+						<FromInput
 							:type="showPassword ? 'text' : 'password'"
 							v-model="payLoad.password"
-							class="common_input"
 							:placeholder="$t(`login['输入密码']`)"
 							@input="passOnInput"
 							autocomplete="new-password"
-										maxlength="16"
-						/>
-						<span class="eyes">
-							<svg-icon :name="showPassword ? 'eyes':'eyes_on'" size="18px" @click="showPassword = !showPassword" />
-						</span>
+							maxlength="16"
+						:class="VerifyError.passWord ? 'verifyError' : ''"
+						>
+						<template #left>
+							<svg-icon name="password_icon" size="18px" />
+						</template>
+	
+						<template #right>
+							<span  @click="showPassword = !showPassword">
+								<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" />
+							</span>
+						</template>
+						</FromInput>
 					</p>
 					<p v-show="VerifyError.passWord" class="Wran_text fs_10 mt_2">{{ $t(`login['密码规则']`) }}</p>
 				</div>
@@ -46,17 +59,25 @@
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
 					<p class="common_password">
-						<input
+						<FromInput
 							:type="showConfirmPassword ? 'text' : 'password'"
 							v-model="payLoad.confirmPassword"
-							class="common_input"
 							:placeholder="$t(`login['输入确认密码']`)"
 							@input="confirmOnInput"
 								maxlength="16"
-						/>
-						<span class="eyes">
-							<svg-icon :name="showConfirmPassword ? 'eyes':'eyes_on'" size="18px" @click="showConfirmPassword = !showConfirmPassword" />
-						</span>
+										:class="VerifyError.confirmPassword ? 'verifyError' : ''"
+						>
+						<template #left>
+							<svg-icon name="password_icon" size="18px" />
+						</template>
+	
+						<template #right>
+							<span  @click="showConfirmPassword = !showConfirmPassword">
+								<svg-icon :name="showConfirmPassword ? 'eyes_on' : 'eyes'" size="14px" />
+							</span>
+						</template>
+						</FromInput>
+				
 					</p>
 					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_10 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
 				</div>
@@ -70,40 +91,40 @@
 
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_14 flex_start">{{ $t(`login['输入推荐码']`) }} 
-						<svg-icon name="common-common-common-arrow_down_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
-						<svg-icon name="common-common-arrow_up_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
+						<svg-icon name="common-arrow_down" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
+						<svg-icon name="common-arrow_up" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
 					</p>
 					<p class="common_password" v-if="openinviteCode"><input type="text" v-model="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" /></p>
 				</div>
 				<div class="fs_12 userAgreement" :class="userAgreement ? 'Text_s' : 'Text1'" >
 					<svg-icon
 						class="curp"
-						:name="userAgreement ? 'check_icon_on' : 'check_icon'"
+						:name="userAgreement ? 'common-check_icon_on' : 'common-check_icon'"
 						size="14px"
 						@click="userAgreementOnInput"
 						:style="{ color: userAgreement ? 'var(--Theme)' : '' }"
 					/>
 					<span
-						>{{ $t(`login['我同意']`) }} <span class="Wran_text curp" @click="toHelpCenter"> {{ $t(`login['用户协议']`) }}</span> {{ $t(`login['并确认我已年满18岁']`) }}</span
+						>{{ $t(`login['我同意']`) }} <span class="color_F2 curp" @click="toHelpCenter"> {{ $t(`login['用户协议']`) }}</span> {{ $t(`login['并确认我已年满18岁']`) }}</span
 					>
 				</div>
 				<div class="fs_12 userAgreement" :class="advertise ? 'Text_s' : 'Text1'">
 					<svg-icon
 						class="curp"
-						:name="advertise ? 'check_icon_on' : 'check_icon'"
+						:name="advertise ? 'common-check_icon_on' : 'common-check_icon'"
 						size="14px"
 						@click="advertise = !advertise"
 						:style="{ color: advertise ? 'var(--Theme)' : '' }"
 					/>
 
-					<span>{{ $t(`login['我同意接收']`) }}[<span class="Wran_text">oksport</span>]{{ $t(`login['的营销促销信息']`) }}</span>
+					<span>{{ $t(`login['我同意接收']`) }}[<span class="">oksport</span>]{{ $t(`login['的营销促销信息']`) }}</span>
 				</div>
 				<div class="mt_16 mb_16">
 					<Button :disabled="disabledBtn || !isOnloadScript"  @click="onLogin">{{ $t(`login['注册']`) }}</Button>
 				</div>
 				<div class="flex-center fs_12">
 					<div class="Text1">
-						{{ $t(`login['已有账号']`) }}<span class="Wran_text curp" @click="toLogin">{{ $t(`login['登录']`) }}</span>
+						{{ $t(`login['已有账号']`) }}<span class="color_Theme curp" @click="toLogin">{{ $t(`login['登录']`) }}</span>
 					</div>
 				</div>
 			</div>
@@ -126,6 +147,7 @@ import showToast from "/@/hooks/useToast";
 import { userApi } from "/@/api/user";
 import router from "/@/router";
 import { CommonApi } from "/@/api/common";
+import headerBg from './image/headerBg.png'
 import CommonRegex from "/@/utils/CommonRegex";
 const modalStore = useModalStore();
 const UserStore = useUserStore();
