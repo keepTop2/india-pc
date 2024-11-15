@@ -46,10 +46,10 @@ export default () => {
 
 			// 校验投注金额输入
 			const validateStake = (price: string) => {
-				const { minBet, maxBet } = props.value?.oddsList || {};
+				const { minBet, maxBet } = props.value?.oddsList || props.value;
 				console.log(props.value, minBet, maxBet, "props.value");
+				console.log(props.currentOddsListItem, "props.currentOddsListItem");
 				const numericPrice = Number(price);
-
 				if (numericPrice === 0) {
 					validForm.isSuccess = false;
 					validForm.errMessage = "";

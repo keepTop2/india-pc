@@ -1,7 +1,7 @@
 <template>
 	<div class="lottery-result">
 		<div class="search">
-			<el-select :teleported="false" v-model="selectValue" placeholder="排序: 按时间排序" clearable filterable @change="handleChange">
+			<el-select :teleported="false" v-model="selectValue" :placeholder="$t(`lottery['排序: 按时间排序']`)" clearable filterable @change="handleChange">
 				<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
 			</el-select>
 		</div>
