@@ -30,7 +30,7 @@
 							style="margin-bottom: 4px"
 						>
 							<!-- 显示选择球组组件，当玩法类型为 'selectBall' 且激活时渲染 -->
-							<template v-if="oddsListItem.actived && oddsListItem.type === 'selectBall'" #default>
+							<template v-if="oddsListItem.actived && oddsListItem.type === SELECT_BALL" #default>
 								<div class="accordion-content-item-balls">
 									<SelectBallGroup
 										@clear="() => (balls = [])"
@@ -74,6 +74,7 @@ import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import { useAccordion as useAccordionHook } from "/@/views/lottery/hooks/useAccordion";
 import { useBet, type Props } from "/@/views/lottery/hooks/useBet";
 import { useGameplayList } from "/@/views/lottery/hooks/useGameplayList";
+import { SELECT_BALL } from "/@/views/lottery/constant/index";
 
 const props = defineProps({
 	lotteryDetail: { type: Object, default: () => ({}) },
