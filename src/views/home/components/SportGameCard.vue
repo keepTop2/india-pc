@@ -60,7 +60,7 @@
 			</div>
 			<!-- 全场大小 -->
 			<div class="markets-item">
-				<p class="markets-item-title">全场让球</p>
+				<p class="markets-item-title">全场大小</p>
 				<div class="markets-item-content">
 					<div @click="handleBet(events.markets[3], m, 3)" :class="`${isBright(m, events.markets[3]) ? 'isBright' : ''}`" v-for="m in events.markets[3].selections">
 						<BetSelector :value="m?.oddsPrice?.decimalPrice" :id="`${events.markets[3].marketId}-${m?.key}`" :isRun="events.markets[3].marketStatus === 'running'">
@@ -93,6 +93,21 @@ const UserStore = useUserStore();
 const props = defineProps({
 	events: { type: Object, required: true },
 });
+
+console.log(props.events, "=fdsa=");
+
+const sportTypeMap = {
+	1: [
+		{ type: 5, label: "全场独赢" },
+		{ type: 1, label: "全场让球" },
+		{ type: 3, label: "全场大小" },
+	],
+	2: [
+		{ type: 20, label: "全场独赢" },
+		{ type: 1, label: "让球" },
+		{ type: 3, label: "总分" },
+	],
+};
 
 /**
  * 判断当前盘口是否高亮

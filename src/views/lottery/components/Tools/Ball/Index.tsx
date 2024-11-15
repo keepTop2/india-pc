@@ -75,7 +75,6 @@ export default () => {
 			const handleRandomBall = () => {
 				const index = Math.floor(Math.random() * balls.value.length);
 				const renderNumber = startIndex === 0 ? index : index + 1;
-				console.log(renderNumber, index);
 
 				handleSelect(renderNumber, true);
 			};
