@@ -11,13 +11,13 @@
 			</div>
 
 			<div class="dialog-footer" v-if="nofooter">
-				<button class="common_btn" @click="confirm">
+				<Button class="common_btn" @click="confirm">
 					<slot name="footer"> 确认 </slot>
-				</button>
+				</Button>
 			</div>
 			<div class="dialog-footer2" v-else>
-				<button class="common_btn" @click="goToRegister">去注册</button>
-				<button class="common_btn" @click="goToLogin">去登录</button>
+				<Button class="common_btn" @click="goToRegister">去注册</Button>
+				<Button class="common_btn" @click="goToLogin">去登录</Button>
 			</div>
 		</div>
 		<div class="closeDialog" @click="close" v-if="closeIcon">
@@ -90,6 +90,7 @@ const goToLogin = () => {
 	align-items: center;
 	flex-direction: column;
 	justify-content: center;
+
 	.dialog {
 		position: relative;
 		margin: 0 auto;

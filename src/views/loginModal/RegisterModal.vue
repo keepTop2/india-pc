@@ -70,7 +70,7 @@
 						<template #left>
 							<svg-icon name="password_icon" size="18px" />
 						</template>
-	
+			
 						<template #right>
 							<span  @click="showConfirmPassword = !showConfirmPassword">
 								<svg-icon :name="showConfirmPassword ? 'eyes_on' : 'eyes'" size="14px" />
@@ -91,10 +91,16 @@
 
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_14 flex_start">{{ $t(`login['输入推荐码']`) }} 
+			
 						<svg-icon name="common-arrow_down" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
 						<svg-icon name="common-arrow_up" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
 					</p>
-					<p class="common_password" v-if="openinviteCode"><input type="text" v-model="payLoad.inviteCode" class="common_input" placeholder="输入推荐码" /></p>
+					<p class="common_password" v-if="openinviteCode"><FromInput type="text" v-model="payLoad.inviteCode"  placeholder="输入推荐码" >
+						<template #left>
+							<svg-icon name="common-inviteCode_icon" size="18px" />
+						</template>
+
+					</FromInput></p>
 				</div>
 				<div class="fs_12 userAgreement" :class="userAgreement ? 'Text_s' : 'Text1'" >
 					<svg-icon

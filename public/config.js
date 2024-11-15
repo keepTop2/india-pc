@@ -14,7 +14,7 @@ window.PLATFROM_CONFIG = {
 	developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
 	// developmentBaseURL: "https://backend.bwsh.store", // 测试环境
 	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
-	// developmentBaseURL: "https://backend.bwsh.store", // 测试环境
+	developmentBaseURL: "https://backend.bwsh.store", // 测试环境
 	developmentWsURL: "wss://gw.playesoversea.store/ws", // 开发环境
 	developmentWsURL: "wss://backend.bwsh.store/ws", // 测试环境
 
