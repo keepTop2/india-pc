@@ -29,7 +29,6 @@ import activityWrapper from "../components/activityWrapper.vue";
 import activityBonusCard from "../components/activityBonusCard.vue";
 import activityContent from "../components/activityContent.vue";
 import activityRule from "../components/activityRule.vue";
-import showToast from "/@/hooks/useToast";
 import { useUserStore } from "/@/stores/modules/user";
 const activityStore = useActivityStore();
 const router = useRouter();
