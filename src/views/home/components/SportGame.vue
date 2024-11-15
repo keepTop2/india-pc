@@ -168,6 +168,7 @@ const eventList = ref<any[]>([]);
 //监听处理好的体育联赛数据列表 从中获取后台配置好的赛事展示在首页。
 watch(
 	() => viewSportPubSubEventData.getSportData(),
+	//看看我是否被删除
 	(newData, oldData) => {
 		// console.log(JSON.stringify(newData));
 		/**
