@@ -15,7 +15,7 @@ interface fieldMapType {
 
 export const fieldMap: fieldMapType = {
 	"1": "sabOrderList",
-	"2": "sabOrderList",
+	"2": "tableOrderPage",
 	"3": "basicOrderPage",
 	"4": "basicOrderPage",
 	"5": "ltOrderPage",

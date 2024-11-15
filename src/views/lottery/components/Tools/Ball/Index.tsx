@@ -1,5 +1,6 @@
-import { computed, defineComponent, watch } from "vue";
 import "./index.scss";
+
+import { computed, defineComponent } from "vue";
 
 export default () => {
 	// 定义 SelectBallGroup 组件，用于显示多个球的选择
@@ -10,6 +11,11 @@ export default () => {
 				// 选择球的个数
 				type: Number,
 				required: true,
+			},
+			startIndex: {
+				// 球的起始序号。例如时时彩是从 1 开始的，幸运 28 是从 0 开始的
+				type: Number,
+				default: 1,
 			},
 			maxLeng: {
 				// 最大选择个数
@@ -37,10 +43,11 @@ export default () => {
 		emits: ["select", "clear"],
 
 		setup(props, { emit }) {
-			const { renderBallNum, maxLeng, type = 1, multiple = true } = props;
+			const { renderBallNum, maxLeng, type = 1, multiple = true, startIndex } = props;
 
 			// 处理球的选择逻辑
 			const handleSelect = (ballNum: number) => {
+				console.log("ballNum", ballNum);
 				if (!multiple) {
 					emit("select", { value: ballNum, list: props.value.includes(ballNum) ? [] : [ballNum] });
 					return;
@@ -71,25 +78,30 @@ export default () => {
 					<div className="control">
 						{/* 清除全部选中 */}
 						<div className="clear">
+							<img src="/@/assets/zh-CN/lottery/clear.svg" alt="" />
 							<span onClick={() => emit("clear")}>清除全部</span>
 						</div>
 						{/* 快速选择区域 */}
 						<div className="other">
+							<img src="/@/assets/zh-CN/lottery/ksxz.svg" alt="" />
 							<span>快速选择</span>
 						</div>
 					</div>
 
 					{/* 显示球的区域 */}
 					<div className="balls-box">
-						{balls.value.map((_, index) => (
-							<Ball
-								key={index}
-								onSelect={() => handleSelect(index + 1)} // 绑定选择球的事件
-								actived={props.value.includes(index + 1)} // 判断球是否被选中
-								type={type} // 设置球的类型
-								ballNumber={index + 1} // 当前球的编号
-							/>
-						))}
+						{balls.value.map((_, index) => {
+							const renderNumber = startIndex === 0 ? index : index + 1;
+							return (
+								<Ball
+									key={renderNumber}
+									onSelect={() => handleSelect(renderNumber)} // 绑定选择球的事件
+									actived={props.value.includes(renderNumber)} // 判断球是否被选中
+									type={type} // 设置球的类型
+									ballNumber={renderNumber} // 当前球的编号
+								/>
+							);
+						})}
 					</div>
 				</div>
 			);

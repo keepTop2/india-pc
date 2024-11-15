@@ -1,25 +1,27 @@
 <template>
 	<div class="mt_40 pr_10 pl_10">
-		<div class="cardHeader">
-			<div>
-				<span class="flex-center">
-					<svg-icon name="sports-event_game" width="24px" height="24px" />
-					<span class="Text_s fs_20">我们的游戏</span>
-				</span>
+		<template v-if="eventList?.length">
+			<div class="cardHeader">
+				<div>
+					<span class="flex-center">
+						<svg-icon name="sports-event_game" width="24px" height="24px" />
+						<span class="Text_s fs_20">我们的游戏</span>
+					</span>
+				</div>
+				<div class="more Text1 fs_18 curp" @click="gotoVenue" v-if="gameList.length > 3">更多</div>
 			</div>
-			<div class="more Text1 fs_18 curp" @click="gotoVenue" v-if="gameList.length > 3">更多</div>
-		</div>
 
-		<div class="card-list">
-			<template :key="item.leagueId" v-for="item in eventList">
-				<SportGameCard :events="item" />
-			</template>
-		</div>
+			<div class="card-list">
+				<template :key="item.leagueId" v-for="item in eventList">
+					<SportGameCard :events="item" />
+				</template>
+			</div>
 
-		<!-- 购物车，特定条件下显示 -->
-		<div class="sport-car" :class="{ 'hide-sport-car': !sportsBetEvent.sportsBetEventData?.length }">
-			<SportsShopCart v-if="popularLeague.visible" />
-		</div>
+			<!-- 购物车，特定条件下显示 -->
+			<div class="sport-car" :class="{ 'hide-sport-car': !sportsBetEvent.sportsBetEventData?.length }">
+				<SportsShopCart v-if="popularLeague.visible" />
+			</div>
+		</template>
 	</div>
 </template>
 
@@ -166,8 +168,6 @@ const eventList = ref<any[]>([]);
 watch(
 	() => viewSportPubSubEventData.getSportData(),
 	(newData, oldData) => {
-		console.log(newData, oldData, "oldData==");
-
 		// console.log(JSON.stringify(newData));
 		/**
 		 * @description 根据 sportType 获取对应的数据

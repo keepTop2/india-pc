@@ -183,7 +183,7 @@ const onSecondBet = () => {
 							font-weight: 500;
 						}
 						.main-currency {
-							color: var(--Text_a);
+							color: var(--Text-a);
 						}
 						.success {
 							color: var(--success);

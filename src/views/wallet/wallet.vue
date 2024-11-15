@@ -11,7 +11,11 @@
 			</template>
 		</div>
 		<div class="main">
-			<router-view />
+			<RouterView v-slot="{ Component }">
+				<KeepAlive :include="keepAliveComps">
+					<component :is="Component" />
+				</KeepAlive>
+			</RouterView>
 		</div>
 	</div>
 </template>
@@ -19,8 +23,11 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import walletLayout from "/@/router/modules/wallet";
+import { useRouterStore } from "/@/stores/modules/cacheRouter";
+import { storeToRefs } from "pinia";
 const route = useRoute();
 const router = useRouter();
+const { keepAliveComps } = storeToRefs(useRouterStore());
 
 const toPath = (item) => {
 	router.push(item.path);

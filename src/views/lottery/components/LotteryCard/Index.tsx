@@ -1,7 +1,6 @@
 import "./index.scss";
 
 import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
 import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息 store
 import Common from "/@/utils/common";
 import useTimer from "/@/views/lottery/components/Tools/Timer";
@@ -10,23 +9,22 @@ import useTimer from "/@/views/lottery/components/Tools/Timer";
 export default () => {
 	// 获取用户信息 store
 	const {
-		getUserInfo: { mainCurrency },
+		getUserInfo: { currencySymbol },
 	} = useUserStore();
 
 	// 定义卡片头部组件
 	const Header = defineComponent({
 		props: {
-			icon: { type: String },
-			seconds: { type: Number, required: true },
+			data: { type: Object, required: true, default: () => {} },
 		},
 		setup(props) {
-			const { ClockTime } = useTimer({ value: props });
-			console.log(props.icon, "=======icon");
+			const { ClockTime } = useTimer({ value: props.data });
+
 			return () => (
 				<div class="card-header">
 					{/* 左侧图片 */}
 					<div class="left">
-						<img src={props.icon} alt="Header Image" />
+						<img src={props.data?.icon || "/@/assets/zh-CN/lottery/national.png"} alt="Header Image" />
 					</div>
 					{/* 右侧倒计时 */}
 					<div class="right">
@@ -63,9 +61,10 @@ export default () => {
 	// 定义卡片底部组件
 	const Footer = defineComponent({
 		name: "Footer",
+		props: {
+			data: { type: Object, required: true },
+		},
 		setup(props) {
-			const route = useRoute();
-			const maxWin = +(route.query.maxWin || 0);
 			return () => (
 				<div class="card-footer">
 					<div class="left">
@@ -73,7 +72,7 @@ export default () => {
 					</div>
 					<div class="right">
 						<span>
-							{Common.thousands(maxWin)} {mainCurrency}
+							{currencySymbol} {Common.thousands(props.data.maxWin)}
 						</span>
 					</div>
 				</div>
@@ -122,11 +121,11 @@ export default () => {
 			return () => (
 				<div class="lottery-card hot-lottery-card">
 					{/* 卡片头部 */}
-					<Header {...props.data} />
+					<Header data={props.data} />
 					{/* 卡片内容 */}
-					<Content {...props.data} />
+					<Content data={props.data} />
 					{/* 卡片底部 */}
-					<Footer {...props.data} />
+					<Footer data={props.data} />
 					{/* 卡片按钮 */}
 					<Button onClick={() => emit("select")} />
 				</div>

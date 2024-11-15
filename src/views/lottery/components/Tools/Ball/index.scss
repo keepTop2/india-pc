@@ -11,6 +11,8 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	cursor: pointer;
+	flex: none;
+
 	.ball {
 		font-size: 16px;
 		font-weight: 600;
@@ -46,6 +48,13 @@
 		.clear,
 		.other {
 			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 5px;
+			> img {
+				width: 20px;
+				height: 20px;
+			}
 		}
 	}
 	.balls-box {

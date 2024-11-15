@@ -9,7 +9,8 @@ export function loginCallback(route: Route) {
 	const routeName = route.name;
 	const { loginGame } = useLoginGame();
 
-	if (routeName === "Kuaisan") {
+	const routeNames = ["Shishicai", "Kuaisan", "Lucky28", "ElevenChooseFive", "UnionLotto", "Pk10"];
+	if (routeNames.includes(routeName as string)) {
 		loginGame();
 	}
 }

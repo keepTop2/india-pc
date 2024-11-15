@@ -118,6 +118,7 @@ export const useUserStore = defineStore("User", {
 		},
 		// 设置用户信息
 		setUserInfo(info: any) {
+			console.log("info", info);
 			this.token = info.token;
 			Object.assign(this.userInfo, info);
 		},

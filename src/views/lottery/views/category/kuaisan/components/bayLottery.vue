@@ -27,7 +27,7 @@
 							:title="oddsListItem.title"
 							:info="oddsListItem.desc"
 							:odds="oddsListItem.itemOdds"
-							style="margin-bottom: 4px"
+							style="margin-bottom: 8px"
 						>
 							<!-- 显示选择球组组件，当玩法类型为 'selectBall' 且激活时渲染 -->
 							<template v-if="oddsListItem.actived && oddsListItem.type === 'selectBall'" #default>
@@ -49,13 +49,13 @@
 			</div>
 
 			<!-- 投注表单组件 -->
-			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived">
+			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsListItem="currentOddsListItem">
 				<!-- 表单激活时显示的插槽内容 -->
 				<template v-if="formActived" #default>
 					<div class="bet-form-slot-header">
 						<div>{{ currentGameplayItem.gamePlayName }}</div>
 						<div>{{ currentGameplayItem.oddsList.title }}</div>
-						<div v-if="formActived" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
+						<div v-if="formActived && balls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
 							<Ball v-for="item in balls" :key="item" :ball-number="item" :type="3" />
 						</div>
 					</div>

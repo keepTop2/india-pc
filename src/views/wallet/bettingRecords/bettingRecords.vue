@@ -29,7 +29,7 @@
 		</div>
 		<div v-if="tableData.length" class="content">
 			<div>
-				<div class="flex_space-between Text_s fs_14 mb_12">
+				<div v-if="!['1', '7'].includes(params.venueType)" class="flex_space-between Text_s fs_14 mb_12">
 					<div>
 						<span>
 							<span style="color: var(--Text-2-1)">共计: </span>
@@ -54,25 +54,49 @@
 				<el-table :class="[tableColumns[0] && tableColumns[0].type == 'select' ? 'table-style-expand' : 'table-style-common']" :data="tableData" style="width: 100%" border>
 					<template v-for="(item, index) in tableColumns" :key="index">
 						<el-table-column type="expand" :label="item.label" width="164px" :prop="item.props" v-if="item.type == 'select'">
-							<template #default="props">
-								<div class="dropDown_line">
-									<div class="firLine">
-										<div>
-											<span>{{ props.row.eventInfo }}</span>
-											<span>{{ props.row.teamInfo }}</span>
-										</div>
-										<div class="p">
-											<span>投注内容</span>
-											<span>{{ props.row.betContent }}</span>
-										</div>
-										<div class="p">
-											<span>赔率</span>
-											<span>@{{ props.row.odds }}</span>
-										</div>
+							<template #default="{ row }">
+								<div class="expand-wrapper">
+									<div class="dropDown_line" style="border: none; padding: 0">
+										<div class="firLine">
+											<div>
+												<span>{{ row.eventInfo }}</span>
+												<span>{{ row.teamInfo }}</span>
+											</div>
+											<div class="p">
+												<span>投注内容</span>
+												<span>{{ row.betContent }}</span>
+											</div>
+											<div class="p">
+												<span>赔率</span>
+												<span>@{{ row.odds }}</span>
+											</div>
 
-										<div class="winlogo">
-											<img v-if="props.row.orderClassify == '1'" :src="props.row.winLossAmount > 0 ? winlogo : loselogo" alt="" />
-											<span v-else>-</span>
+											<div class="winlogo">
+												<img v-if="row.orderClassify == '1'" :src="row.winLossAmount > 0 ? winlogo : loselogo" alt="" />
+												<span v-else>-</span>
+											</div>
+										</div>
+									</div>
+
+									<div v-for="item in row.orderMultipleBetList" class="dropDown_line">
+										<div class="firLine">
+											<div>
+												<span>{{ item.eventInfo }}</span>
+												<span>{{ item.teamInfo }}</span>
+											</div>
+											<div class="p">
+												<span>投注内容</span>
+												<span>{{ item.betContent }}</span>
+											</div>
+											<div class="p">
+												<span>赔率</span>
+												<span>@{{ item.odds }}</span>
+											</div>
+
+											<div class="winlogo">
+												<img v-if="item.orderClassify == '1'" :src="item.winLossAmount > 0 ? winlogo : loselogo" alt="" />
+												<span v-else>-</span>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -217,11 +241,12 @@ const pageQuery = (type?: boolean) => {
 	delete data.welfareCenterRewardType;
 
 	welfareCenterApi.tzPageQuery(data).then((res) => {
-		if (!res.data) return;
+		if (!res.data) return (tableData.value = []);
 		totalVO.value = res.data.totalVO;
 		console.log("=>(bettingRecords.vue:223) totalVO", totalVO);
 
 		let rows = res.data[fieldMap[params.venueType]];
+    console.log("=>(bettingRecords.vue:249) rows", rows);
 
 		tableData.value = rows.records || rows;
 		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
@@ -475,9 +500,14 @@ function getTableType() {
 .dropDown_line {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
+	height: 70px;
+	border-top: 1px solid var(--light-ok-Line-2-, #373a40);
+	padding-top: 10px;
 
 	.firLine {
 		width: 100%;
+		height: 100%;
 		display: grid;
 		grid-template-columns: 3fr 1fr 1fr 1fr;
 		font-size: 14px;
@@ -486,7 +516,7 @@ function getTableType() {
 		& > div {
 			display: flex;
 			flex-direction: column;
-			justify-content: space-between;
+			justify-content: space-around;
 			gap: 10px;
 		}
 
@@ -525,5 +555,9 @@ function getTableType() {
 }
 :deep(.formItem) {
 	border-radius: 4px;
+}
+.expand-wrapper {
+	display: grid;
+	gap: 10px;
 }
 </style>

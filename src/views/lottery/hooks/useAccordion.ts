@@ -1,12 +1,19 @@
 import { Ref, ref } from "vue";
-import { type MergedGameplayList, type OddsListItem } from "/@/views/lottery/types/index";
+import { type GameplayItem, type MergedGameplayList, type OddsListItem } from "/@/views/lottery/types/index";
+
+interface BallParams {
+	value?: number;
+	list?: number[];
+}
+
+type Balls = number[];
 
 export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 	const formActived = ref(false);
-	const balls = ref([]);
+	const balls = ref([] as Balls);
 	const currentGameplayItem = ref(); // 当前选中的大菜单
 	const currentOddsListItem = ref({} as OddsListItem); // 当前选中高亮的项
-
+	const currentK10OddsList = ref<string[]>([]); // 当前选中高亮的项
 	// 清除手风琴展开状态的处理方法
 	const clearAccordionStatus = (status: boolean, index: number) => {
 		mergedGameplayList.value.forEach((item, i) => {
@@ -15,11 +22,40 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 	};
 
 	// 选择球组的处理方法
-	const handleSelectBalls = ({ list }, childData: any, data: any) => {
+	const handleSelectBalls = ({ list }: BallParams, oddsListItem: OddsListItem, gameplayItem: GameplayItem) => {
 		console.log("list", list);
-		formActived.value = list.length ? true : false;
-		currentGameplayItem.value = list.length ? { ...data, oddsList: { ...childData } } : null;
-		balls.value = list;
+		console.log("oddsListItem", oddsListItem);
+		console.log("gameplayItem", gameplayItem);
+
+		formActived.value = (list as Balls).length ? true : false;
+		currentGameplayItem.value = (list as Balls).length ? { ...gameplayItem, oddsList: { ...oddsListItem } } : null;
+
+		balls.value = list as Balls;
+	};
+
+	// const handleSelectBalls = ({ list }, childData: any, data: any) => {
+	// 	formActived.value = list.length ? true : false;
+	// 	currentGameplayItem.value = list.length ? { ...data, oddsList: { ...childData } } : null;
+	// 	console.log("currentGameplayItem.value", currentGameplayItem.value);
+	// 	balls.value = list;
+	// 	currentOddsListItem.value = childData;
+	// };
+
+	// k10 选择球
+	const handleSelectBallsK10 = (childData: any, parentData: any) => {
+		if (currentK10OddsList.value.includes(childData.optionCode)) {
+			balls.value = [];
+			currentK10OddsList.value = [];
+			currentOddsListItem.value = {} as OddsListItem;
+			return;
+		}
+		balls.value = [childData.optionName];
+		currentK10OddsList.value = [childData.optionCode];
+		currentOddsListItem.value = {
+			...parentData,
+			...childData,
+		};
+		console.log("currentOddsListItem.value", currentOddsListItem.value);
 	};
 
 	/**
@@ -35,6 +71,7 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 		childData.actived = status;
 		currentOddsListItem.value = childData;
 		balls.value = [];
+		currentK10OddsList.value = [];
 		// 排除选择球玩法
 		if (childData.type !== "selectBall") {
 			formActived.value = status;
@@ -47,6 +84,8 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 		balls,
 		clearAccordionStatus,
 		handleSelectBalls,
+		handleSelectBallsK10,
+		currentK10OddsList,
 		handleExpanded,
 		currentGameplayItem,
 		currentOddsListItem,

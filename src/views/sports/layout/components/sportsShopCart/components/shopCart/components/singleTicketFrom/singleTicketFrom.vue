@@ -28,14 +28,13 @@ const UserStore = useUserStore();
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();
 let stake = computed(() => shopCartPubSub.betValueState.singleTicketBetValue);
-
 const onInputEnter = (value: string) => {
 	// 处理对应的金额业务
 	shopCartPubSub.setSingleTicketBetValue(value);
 };
 
 const preventDecimal = (event: KeyboardEvent) => {
-	if (event.key === "." || event.key === "-") {
+	if (event.key === "." || event.key === "-" || event.key === "+") {
 		event.preventDefault();
 	}
 };

@@ -20,7 +20,7 @@
 				<div class="el-dropdown-content">
 					<span v-if="!range.start && !range.end">{{ selectDateLabel }}</span>
 					<span v-else>{{ startDate }}-{{ startEnd }}</span>
-					<SvgIcon class="icon" iconName="arrow" :size="18" />
+					<SvgIcon class="icon" name="arrow" :size="18" />
 				</div>
 				<template #dropdown>
 					<el-dropdown-menu>
@@ -42,10 +42,10 @@
 									<VDatePicker v-if="vDatePicker" class="v-Date" v-model.range.number="range" locale="en" @update:pages="handlePanelChange">
 										<template #header-title-wrapper> {{ selectDateYM }} </template>
 										<template #header-prev-button>
-											<SvgIcon style="transform: rotate(90deg)" class="icon" iconName="arrow" :size="18" />
+											<SvgIcon style="transform: rotate(90deg)" class="icon" name="arrow" :size="18" />
 										</template>
 										<template #header-next-button>
-											<SvgIcon style="transform: rotate(-90deg)" class="icon" iconName="arrow" :size="18" />
+											<SvgIcon style="transform: rotate(-90deg)" class="icon" name="arrow" :size="18" />
 										</template>
 									</VDatePicker>
 								</div>

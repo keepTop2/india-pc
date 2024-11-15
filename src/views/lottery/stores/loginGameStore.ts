@@ -38,6 +38,10 @@ const useLoginGameStore = defineStore("LoginGameStore", () => {
 		const { token } = userStore.getUserInfo;
 		const { venueCode, gameCode } = route.query;
 
+		if (!token) {
+			return;
+		}
+
 		// 任意一个没有就不发送请求了，跳转回首页去
 		if ([venueCode, gameCode, token].find((v) => !v)) {
 			return router.push("/");

@@ -14,9 +14,13 @@ export interface OddsListItem {
 	optionCode: string;
 	gameCode?: string;
 	gamePlayCode?: string;
-
+	minBet?: number;
+	maxBet?: number;
 	type?: string;
 	ballNum?: number;
+	startIndex?: number;
+	selectBallDesc?: string;
+	oddsList?: OddsListItem[];
 }
 export type OddsList = OddsListItem[];
 
@@ -29,6 +33,7 @@ interface BaseGameplayItem {
 	oddsList: OddsList;
 	minLimit?: number;
 	maxLimit?: number;
+	categoryCode?: string;
 }
 
 export interface GameplayItem extends BaseGameplayItem {

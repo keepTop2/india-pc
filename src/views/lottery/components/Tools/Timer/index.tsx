@@ -7,8 +7,15 @@ import { BEGIN_PAGE_DATA_INTERVAL } from "/@/views/lottery/constant/index";
 
 // 定义定时器组件
 export default (props?: any, callback = Function.prototype) => {
+	const seconds = computed(() => {
+		if (typeof props?.value?.seconds !== "number" || props?.value?.seconds < 0) {
+			return 0;
+		} else {
+			return props?.value?.seconds;
+		}
+	});
 	const state = reactive({
-		time: props?.value?.seconds || 0, // 当前剩余时间（秒）
+		time: seconds.value, // 当前剩余时间（秒）
 		hours: 0, // 小时
 		minutes: 0, // 分钟
 		seconds: 0, // 秒
@@ -74,14 +81,14 @@ export default (props?: any, callback = Function.prototype) => {
 	// 重置倒计时
 	const reset = () => {
 		pause(); // 暂停定时器
-		state.time = props?.value?.seconds; // 重置时间为初始秒数
+		state.time = seconds.value; // 重置时间为初始秒数
 		updateDisplay(); // 更新显示
 	};
 
 	watch(
-		() => props.value,
+		() => seconds.value,
 		(a) => {
-			state.time = props?.value?.seconds || 0;
+			reset();
 			start();
 		},
 		{ deep: true, immediate: true }
