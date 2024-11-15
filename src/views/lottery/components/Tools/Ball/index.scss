@@ -48,6 +48,13 @@
 		.clear,
 		.other {
 			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 5px;
+			> img {
+				width: 20px;
+				height: 20px;
+			}
 		}
 	}
 	.balls-box {

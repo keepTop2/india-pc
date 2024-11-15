@@ -101,12 +101,14 @@ export default () => {
 								{validForm.errMessage && <span class="error-message">{validForm.errMessage}</span>}
 							</div>
 						) : (
-							<div class="default-item">
-								<span>投注金额</span>
-								<span>0 {unit}</span>
-							</div>
+							<></>
 						)}
-
+						<div class="default-item">
+							<span>投注金额</span>
+							<span>
+								{stake.value || 0} {unit}
+							</span>
+						</div>
 						{/* 潜在回报显示 */}
 						<div class="default-item">
 							<span>潜在回报</span>
