@@ -92,7 +92,7 @@
 		<!-- 结算弹窗 -->
 		<RED_BAG_RAIN_Dialog v-model="showDialog" title="温馨提示" :confirm="confirmDialog" class="redBagRainResult">
 			<div class="Text3">{{ dialogInfo.message }}</div>
-			<template v-slot:footer v-if="[30045, 30053].includes(dialogInfo.status)"> 去绑定 </template>
+			<template v-slot:footer v-if="[30045, 30053].includes(dialogInfo.status)"> 确定 </template>
 		</RED_BAG_RAIN_Dialog>
 	</div>
 </template>
@@ -144,7 +144,7 @@ const getActivityReward = async () => {
 	if (activityData.value?.clientStatus !== 1) return;
 	await activityApi.redBagParticipate({ redbagSessionId: activityData.value.redbagSessionId }).then((res) => {
 		if (res.code === 10000) {
-			if (String(res.data.status).slice(0, 2) == "13") {
+			if (String(res.data.status).slice(0, 2) == "13" || res.data.status == 1000) {
 				redbagRainSingleton.showRedbagRain();
 			} else {
 				dialogInfo.value = res.data;

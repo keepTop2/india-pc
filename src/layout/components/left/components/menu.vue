@@ -1,6 +1,6 @@
 <template>
 	<div class="menu_row" :class="collapse ? 'collapse' : ''">
-		<div class="menu_item">
+		<div class="menu_item" v-if="ActivitySwitch?.includes('DAILY_COMPETITION')" @click="useModalStore().openModal('DAILY_COMPETITION')">
 			<span class="menu_icon"><svg-icon name="common-DAILY_COMPETITION" size="20px"></svg-icon></span>
 			<span class="menu_name ellipsis">每日竞赛</span>
 		</div>
@@ -73,6 +73,10 @@ const openMenuIndex: Ref<number | string | null> = ref(null);
 const openSubMenuIndex: any = ref(null);
 const UserStore = useUserStore();
 //菜单从缓存中拉取
+const props = defineProps({
+	ActivitySwitch: [] as any,
+});
+
 const routerObj: any = computed(() => {
 	return MenuStore.getMenu;
 });
@@ -83,9 +87,7 @@ const LangIcon = computed(() => {
 const collapse = computed(() => {
 	return MenuStore.getCollapse;
 });
-const handleHover = () => {
-	console.log(123123);
-};
+
 watch(
 	() => [route.query.gameTwoId, route.query.gameOneId, routerObj.value, route.name],
 	() => {
