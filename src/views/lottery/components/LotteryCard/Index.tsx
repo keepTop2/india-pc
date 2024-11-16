@@ -4,6 +4,7 @@ import { defineComponent } from "vue";
 import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息 store
 import Common from "/@/utils/common";
 import useTimer from "/@/views/lottery/components/Tools/Timer";
+import { useRoute } from "vue-router";
 
 // 主组件，使用 useTimer 获取计时器相关的状态和方法
 export default () => {
@@ -11,7 +12,7 @@ export default () => {
 	const {
 		getUserInfo: { currencySymbol },
 	} = useUserStore();
-
+	const route = useRoute();
 	// 定义卡片头部组件
 	const Header = defineComponent({
 		props: {
@@ -72,7 +73,7 @@ export default () => {
 					</div>
 					<div class="right">
 						<span>
-							{currencySymbol} {Common.thousands(props.data.maxWin)}
+							{currencySymbol} {Common.thousands(props.data.maxWin || Number(route.query.maxWin))}
 						</span>
 					</div>
 				</div>
