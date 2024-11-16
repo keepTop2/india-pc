@@ -100,7 +100,8 @@ export function useBet(
 		const res = await lotteryApi.betting(submitData);
 		const { code, msg } = res;
 		showToast(msg);
-
+		// 刷新余额
+		userStore.initUserInfo();
 		// 这里这个 code 需要特殊判断一下
 		if (code !== SUCCESS_CODE) {
 			return;

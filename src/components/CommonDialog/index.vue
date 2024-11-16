@@ -45,6 +45,7 @@ const close = () => {
 	bottom: 0;
 	background: rgba(0, 0, 0, 0.5);
 	display: flex;
+
 	align-items: center;
 	.dialog {
 		position: relative;

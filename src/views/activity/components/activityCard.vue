@@ -2,7 +2,7 @@
 	<div class="cardList">
 		<div v-for="(item, index) in activityList" :key="index" class="cardBox">
 			<div>
-				<img v-lazy-load="item.entrancePicturePcI18nCode" alt="" />
+				<img v-lazy-load="item.entrancePicturePcI18nCodeFileUrl" alt="" />
 			</div>
 			<div class="itemDetails">
 				<div>
@@ -27,7 +27,6 @@ import { useModalStore } from "/@/stores/modules/modalStore";
 import activityDialog from "./activityDialog.vue";
 import { onMounted, ref } from "vue";
 import { useUserStore } from "/@/stores/modules/user";
-
 const modalStore = useModalStore();
 const activityStore = useActivityStore();
 const showCommonDialog = ref(false);

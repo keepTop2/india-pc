@@ -6,9 +6,15 @@
 				<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="../../components/image/close_icon.png" alt="" /></span>
 			</div>
 			<div class="activityMain">
-				<div class="spinContainer">
+				<div class="spinContainer" :style="{ background: `url(${Common.getThemeImgPath('spinContentBg.png')})`, backgroundSize: '100% 100%' }">
 					<div class="tabs">
-						<div v-for="(item, index) in tabs" :key="index" :class="currentTab == item.value ? 'tab tab' + item.value + '_active' : 'tab'" @click="selectTab(item.value)">
+						<div
+							v-for="(item, index) in tabs"
+							:key="index"
+							:class="currentTab == item.value ? 'tab tab' + item.value + '_active' : 'tab'"
+							@click="selectTab(item.value)"
+							:style="{ background: currentTab == item.value ? `url(${Common.getThemeImgPath('spinTabBg' + item.value + '.png')})` : '', backgroundSize: '100% 100%' }"
+						>
 							{{ item.name }}
 						</div>
 					</div>
@@ -20,37 +26,27 @@
 						:balanceCount="activityData?.balanceCount"
 						ref="SpinRef"
 					/>
-					<div class="vipLevel color_TB fw_600" :class="'vip' + currentTab">{{ activityData?.vipRankConfig?.[currentTab - 1]?.minVipGradeName }}级或以上</div>
+					<div class="vipLevel Text_a fw_600" :class="'vip' + currentTab">{{ activityData?.vipRankConfig?.[currentTab - 1]?.minVipGradeName }}级或以上</div>
 				</div>
-				<div class="p_20 remaining_times_bg">剩余抽奖次数： {{ activityData?.balanceCount || 0 }}</div>
+				<div class="p_20 remaining_times_bg" :style="{ background: `url(${Common.getThemeImgPath('remaining_times_bg.png')})`, backgroundSize: '100% 100%' }">
+					剩余抽奖次数： {{ activityData?.balanceCount || 0 }}
+				</div>
 				<div class="flex_space-between">
-					<div class="bonus">
+					<div class="bonus" :style="{ background: `url(${Common.getThemeImgPath('spinbonus_bg.png')})`, backgroundSize: '100% 100%' }">
 						<div>转盘奖金总计</div>
 						<div class="fs_14 color_Theme">{{ activityData?.totalAmount }}</div>
 					</div>
-					<div class="record" @click="handleRecord">我的抽奖记录 <svg-icon name="common-arrow_right" size="16px"></svg-icon></div>
-				</div>
-				<div class="activityContent">
-					<div class="activityContentHeader">
-						<div class="flex-center">
-							<img src="../image/activityContentHeaderLeft2.svg" alt="" />
-							<span>活动规则</span>
-							<img src="../image/activityContentHeaderRight2.svg" alt="" />
-						</div>
+					<div class="record" @click="handleRecord" :style="{ background: `url(${Common.getThemeImgPath('spinrecord_bg.png')})`, backgroundSize: '100% 100%' }">
+						我的抽奖记录 <svg-icon name="common-arrow_right" size="16px"></svg-icon>
 					</div>
-					<div class="activityContentCenter ruleCenter">
-						<div class="ruleDetails">
-							<div v-html="activityData?.activityRuleI18nCode"></div>
-						</div>
-					</div>
-					<div class="activityContentFooter" />
 				</div>
+				<activityRule :rule="activityData?.activityRuleI18nCode"></activityRule>
 			</div>
 		</div>
 
 		<!-- 中奖记录 -->
 		<CommonDialog v-model="showRecord">
-			<div class="dialogCenter">
+			<div class="dialogCenter" :style="{ background: `url(${Common.getThemeImgPath('spin_record_dialog_bg.png')})`, backgroundSize: '100% 100%' }">
 				<div class="dialogHeader">抽奖记录</div>
 				<div class="dialogTable" v-if="recordList.length > 0">
 					<LazyLoadList :loadMore="getRecordList" :finished="recordFinished" :loading="recordIsLoading">
@@ -80,7 +76,7 @@
 		<CommonDialog v-model="showbetResult">
 			<div class="betResult">
 				<img :src="reward.prizePictureUrl" alt="" />
-				<div class="Text_s fs_20 fw_600">恭喜您获得</div>
+				<div class="Text_a fs_20 fw_600 mt_10">恭喜您获得</div>
 				<div class="amunt mt_40 mb_33">{{ useUserStore().getUserInfo.platCurrencySymbol }}{{ reward.prizeAmount }}</div>
 				<div class="againBtn">
 					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
@@ -99,7 +95,7 @@
 				<div class="mt_80 mb_80 color_Theme fs_20">谢谢惠顾</div>
 				<div class="againBtn">
 					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
-					<button class="common_btn active" @click="startVerification">再抽一次：1</button>
+					<Button class="active" @click="startVerification">再抽一次：1</Button>
 				</div>
 			</div>
 			<div class="closeRecord" @click="showLosserbetResult = false">
@@ -113,7 +109,7 @@
 				<div class="Text_s fs_20 tishi">温馨提示</div>
 				<div class="mt_80 mb_80 Text1">您的抽奖次数不足</div>
 				<div class="againBtn">
-					<button class="common_btn active fs_16" @click="goToDeposit">去获取</button>
+					<Button class="active fs_16" @click="goToDeposit">去获取</Button>
 				</div>
 			</div>
 			<div class="closeRecord" @click="showNoMoreBet = false">
@@ -141,9 +137,10 @@ import activityDialog from "../../components/activityDialog.vue";
 import { ref, onMounted } from "vue";
 import Spin from "./spin.vue";
 import { useModalStore } from "/@/stores/modules/modalStore";
-import "../../components/common.scss";
+
 import router from "/@/router";
 import { useUserStore } from "/@/stores/modules/user";
+import activityRule from "../../components/activityRule.vue";
 import dayjs from "dayjs";
 const activityStore = useActivityStore();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
@@ -278,26 +275,27 @@ const goToDeposit = () => {
 <style scoped lang="scss">
 .activityWrapper {
 	background: none;
+	width: 444px;
+	.activityMain {
+		width: 444px;
+	}
 	.activityCenter {
 		background: url("../image/commonBg2.png") no-repeat;
 		background-size: 100% 100%;
-		width: 444px;
 	}
-	.activityContent {
-		width: 444px;
-	}
+
 	.activityHeader {
 		background: none;
 		height: 80px;
 		line-height: 80px;
 		font-size: 20px;
 		margin: 0 auto;
+		color: var(--Text-s);
 	}
 	.remaining_times_bg {
 		width: 404px;
 		height: 58px;
 		line-height: 26px;
-		background: url("./images/remaining_times_bg.png") no-repeat;
 		background-size: 100% 100%;
 		margin: 20px;
 		color: var(--Text-s);
@@ -321,12 +319,10 @@ const goToDeposit = () => {
 			cursor: pointer;
 		}
 		.bonus {
-			background: url("./images/bonus_bg.png") no-repeat;
 			background-size: 100% 100%;
 			flex-direction: column;
 		}
 		.record {
-			background: url("./images/record_bg.png") no-repeat;
 			background-size: 100% 100%;
 		}
 	}
@@ -338,18 +334,19 @@ const goToDeposit = () => {
 
 	.spinContainer {
 		width: 404px;
-		background: url("./images/contentBg.png") no-repeat;
-		background-size: 100% 100%;
+
 		background-position: 0 20px;
 		margin: 0 20px;
 		padding-bottom: 16px;
 		position: relative;
+		border-radius: 15px;
+		background-repeat: no-repeat;
 		.tabs {
 			display: flex;
 			justify-content: space-around;
 			height: 50px;
 			line-height: 50px;
-			color: var(--Text-s);
+			color: var(--Text-a);
 			border-radius: 16px 16px 0px 0px;
 			background: linear-gradient(90deg, #a0b9b9 0%, #536a6a 100%);
 			.tab {
@@ -358,18 +355,18 @@ const goToDeposit = () => {
 				cursor: pointer;
 			}
 		}
-		.tab1_active {
-			background: url("./images/tab_bg1.png");
-			background-size: 100% 100%;
-		}
-		.tab2_active {
-			background: url("./images/tab_bg2.png");
-			background-size: 100% 100%;
-		}
-		.tab3_active {
-			background: url("./images/tab_bg3.png");
-			background-size: 100% 100%;
-		}
+		// .tab1_active {
+		// 	background: url("./images/tab_bg1.png");
+		// 	background-size: 100% 100%;
+		// }
+		// .tab2_active {
+		// 	background: url("./images/tab_bg2.png");
+		// 	background-size: 100% 100%;
+		// }
+		// .tab3_active {
+		// 	background: url("./images/tab_bg3.png");
+		// 	background-size: 100% 100%;
+		// }
 		.vipLevel {
 			position: absolute;
 			right: 0;
@@ -379,7 +376,7 @@ const goToDeposit = () => {
 			line-height: 32px;
 			text-align: center;
 			font-size: 14px;
-			color: var(--Text-s);
+			color: var(--Text-a);
 		}
 		.vip1 {
 			background: url("./images/vipbg_1.png");
@@ -400,7 +397,6 @@ const goToDeposit = () => {
 		margin: 0 auto;
 		height: 80vh;
 		min-height: 500px;
-		background: url("./images/record_dialog_bg.png") no-repeat;
 		background-color: var(--Bg-1);
 		background-size: 100% 100%;
 		position: relative;

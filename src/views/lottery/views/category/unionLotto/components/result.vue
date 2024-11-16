@@ -1,7 +1,7 @@
 <template>
 	<div class="lottery-result">
 		<div class="search">
-			<el-select :teleported="false" v-model="selectValue" placeholder="排序: 按时间排序" clearable filterable @change="handleChange">
+			<el-select :teleported="false" v-model="selectValue" :placeholder="$t(`lottery['排序: 按时间排序']`)" clearable filterable @change="handleChange">
 				<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
 			</el-select>
 		</div>
@@ -19,7 +19,7 @@
 					<template #default="{ row, column, $index }">
 						<div class="balls">
 							<!-- <Dice size="30px" :type="item === 1 ? 2 : 1" :points="item" v-for="(item, index) in row.balls" :key="index" /> -->
-							<Ball v-for="item in row.balls" :key="item" :ball-number="item" :type="2" />
+							<Ball v-for="(item, index) in row.balls" :key="item" :ball-number="item" :type="index < 6 ? 2 : 1" />
 						</div>
 					</template>
 				</el-table-column>

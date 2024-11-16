@@ -29,7 +29,7 @@ export function useAccordion(mergedGameplayList: Ref<MergedGameplayList>) {
 
 		formActived.value = (list as Balls).length ? true : false;
 		currentGameplayItem.value = (list as Balls).length ? { ...gameplayItem, oddsList: { ...oddsListItem } } : null;
-
+		console.log("currentGameplayItem.value", currentGameplayItem.value);
 		balls.value = list as Balls;
 	};
 

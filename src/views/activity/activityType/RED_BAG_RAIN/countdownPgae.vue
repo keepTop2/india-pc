@@ -21,13 +21,11 @@ import { useActivityStore } from "/@/stores/modules/activity";
 import { redbagRainSingleton } from "/@/hooks/useRedbagRain";
 import { activityApi } from "/@/api/activity";
 import RED_BAG_RAIN_Dialog from "./RED_BAG_RAIN_Dialog/index.vue";
-import Common from "/@/utils/common";
-
 const activityStore = useActivityStore();
 const setp: any = ref(null);
 const getReadyCountdown = ref(3);
 const showDialog = ref(false);
-const dialogInfo = ref({});
+const dialogInfo: any = ref({});
 const initReadyTime = () => {
 	setp.value = 0;
 	const timer = setInterval(() => {
@@ -40,19 +38,21 @@ const initReadyTime = () => {
 };
 const confirmDialog = () => {
 	showDialog.value = false;
+	redbagRainSingleton.hideCountdown();
 };
 const startRedbagRain = async () => {
 	await activityApi.redBagParticipate({ redbagSessionId: activityStore.getCurrentActivityData.redbagSessionId }).then((res) => {
 		if (res.code === 10000) {
-			if (res.data.status === 10000) {
+			if (String(res.data.status).slice(0, 2) == "13" || res.data.status == 10000) {
 				redbagRainSingleton.showRedbagRain();
+				redbagRainSingleton.hideCountdown();
 			} else {
 				dialogInfo.value = res.data;
 				showDialog.value = true;
 			}
 		}
 	});
-	redbagRainSingleton.hideCountdown();
+
 	// activityApi.getRedBagInfo().then(async (res) => {
 	// 	if (res.code == Common.ResCode.SUCCESS) {
 	// 		await activityStore.setCurrentActivityData({ ...res.data });
@@ -74,7 +74,7 @@ onMounted(async () => {
 	transform: translateX(-50%);
 	width: 100%;
 	height: 100vh;
-	z-index: 1200;
+	z-index: 100;
 	background: rgba(0, 0, 0, 0.5);
 	.getReadyCountdown {
 		display: flex;

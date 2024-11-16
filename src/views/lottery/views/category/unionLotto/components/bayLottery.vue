@@ -34,29 +34,45 @@
 								<div class="accordion-content-item-balls">
 									<SelectBallGroup
 										@clear="() => (balls = [])"
-										:type="oddsListItem.id"
+										:type="Number(oddsListItem.iconType)"
 										@select="(data) => handleSelectBalls(data, oddsListItem, gameplayItem)"
 										:multiple="false"
 										:renderBallNum="(oddsListItem.ballNum as number)"
 										:maxLeng="1"
 										:value="balls"
+										:startIndex="oddsListItem.startIndex"
 									/>
 								</div>
 							</template>
+						
+							<!-- 显示选择球组组件，当玩法类型为 'selectBall' 且激活时渲染 -->
+							<!-- <template v-if="oddsListItem.actived && oddsListItem.type === 'selectBall'" #default>
+								<div class="accordion-content-item-balls">
+									<SSQBall
+										@clear="() => (balls = [])"
+										:type="Number(oddsListItem.iconType)"
+										@select="(data) => handleSelectBalls(data, oddsListItem, gameplayItem)"
+										:multiple="false"
+										:oddsList="oddsListItem.oddsList"
+										:maxLeng="1"
+										:value="balls"
+									/>
+								</div>
+							</template> -->
 						</AccordionItem>
 					</template>
 				</Accordion>
 			</div>
 
 			<!-- 投注表单组件 -->
-			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived">
+			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsListItem="currentOddsListItem">
 				<!-- 表单激活时显示的插槽内容 -->
 				<template v-if="formActived" #default>
 					<div class="bet-form-slot-header">
 						<div>{{ currentGameplayItem.gamePlayName }}</div>
 						<div>{{ currentGameplayItem.oddsList.title }}</div>
 						<div v-if="formActived && balls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
-							<Ball v-for="item in balls" :key="item" :ball-number="item" :type="currentOddsListItem.id" />
+							<Ball v-for="item in balls" :key="item" :ball-number="item" :type="Number(currentOddsListItem.iconType)" />
 						</div>
 					</div>
 				</template>
@@ -70,6 +86,7 @@ import { gameplayList } from "./playsConfig";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
+// import SSQBall from "/@/views/lottery/components/Tools/SSQball/Index.tsx";
 import { useAccordion as useAccordionHook } from "/@/views/lottery/hooks/useAccordion";
 import { useBet, type Props } from "/@/views/lottery/hooks/useBet";
 import { useGameplayList } from "/@/views/lottery/hooks/useGameplayList";

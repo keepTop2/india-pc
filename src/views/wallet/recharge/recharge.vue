@@ -111,7 +111,13 @@
 							</template>
 						</i18n-t>
 						<div class="tips">
-							<svg-icon class="pointer" :name="checkbox ? 'check_icon_on' : 'check_icon'" size="14px" @click="checkbox = !checkbox" :style="{ color: 'var(--Theme)' }" />
+							<svg-icon
+								class="pointer"
+								:name="checkbox ? 'common-check_icon_on' : 'common-check_icon'"
+								size="14px"
+								@click="checkbox = !checkbox"
+								:style="{ color: 'var(--Theme)' }"
+							/>
 							<span>{{ $t(`wallet['24小时内不再提示']`) }}</span>
 						</div>
 					</div>

@@ -107,7 +107,7 @@ const setCurrentTab = async (index: number) => {
 	.btn:hover,
 	.active {
 		background: var(--Theme);
-		color: var(--Text-s);
+		color: var(--Text-a);
 	}
 }
 </style>

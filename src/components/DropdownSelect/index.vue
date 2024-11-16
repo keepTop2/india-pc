@@ -1,12 +1,16 @@
 <template>
 	<div class="dropdown-select" ref="dropdown">
 		<button class="trigger" @click="toggleDropdown">
-			<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''"> {{ selectedOptionLabel || placeholder }} </span>
+			<div class="flex-center" style="gap: 10px">
+				<svg-icon name="currency" size="16px" />
+				<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''">{{ selectedOptionLabel || placeholder }} </span>
+			</div>
+
 			<svg-icon name="common-arrow_right" size="14px" />
 		</button>
 		<div v-if="isOpen" class="dropdown-menu">
 			<div class="flex_space-between input">
-				<svg-icon name="search" size="14px" />
+				<svg-icon name="common-search" size="14px" />
 				<input v-model="searchQuery" @input="filterOptions" placeholder="搜索货币名称或简称" class="search-input common_input fs_12" />
 				<svg-icon name="common-close" size="14px" @click="searchQuery = ''" />
 			</div>

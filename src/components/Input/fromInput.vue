@@ -1,9 +1,19 @@
 <template>
 	<div class="from-input">
-		<slot name="left"></slot>
-
-		<input @input="emit('update:modelValue', $event.target.value)" :value="props.modelValue" :type="props.type" :readonly="props.readonly" :placeholder="props.placeholder" />
-		<slot name="right"></slot>
+		<slot name="left" class="left"></slot>
+		<input
+			class="common_input"
+			@input="emit('update:modelValue', $event.target.value)"
+			:value="props.modelValue"
+			:type="props.type"
+			:readonly="props.readonly"
+			:placeholder="props.placeholder"
+			:maxlength="props.maxlength"
+		/>
+		<div class="flex-center pr_10 curp" style="gap: 5px">
+			<svg-icon name="common-close" size="20px" v-if="props.modelValue" @click="emit('update:modelValue', '')" />
+			<slot name="right"></slot>
+		</div>
 	</div>
 </template>
 
@@ -14,12 +24,14 @@ const props = withDefaults(
 		type?: string;
 		placeholder?: string;
 		readonly?: boolean;
+		maxlength?: string | number;
 	}>(),
 	{
 		modelValue: "",
 		type: "text",
 		placeholder: "",
 		readonly: false,
+		maxlength: "",
 	}
 );
 
@@ -31,23 +43,22 @@ const emit = defineEmits(["update:modelValue"]);
 	position: relative;
 	display: flex;
 	align-items: center;
-	height: 46px;
-	padding: 13px 10px;
+
+	margin-top: 8px;
 	border-radius: 4px;
-	background: var(--Bg-2);
+	background: var(--Bg-1);
 	box-sizing: border-box;
+	padding-left: 13px;
 	input {
-		flex: 1;
 		font-family: "PingFang SC";
-		padding: 0;
-		color: var(--Text-s);
-		background: var(--Bg-2);
 		font-size: 14px;
 		font-weight: 400;
-		border: 0;
+		padding-left: 10px;
+		color: var(--Text-s);
 	}
+
 	::-webkit-input-placeholder {
-		color: var(--Text4);
+		color: var(--Text-2);
 	}
 }
 </style>

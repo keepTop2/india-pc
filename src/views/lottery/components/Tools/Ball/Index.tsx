@@ -44,7 +44,6 @@ export default () => {
 
 		setup(props, { emit }) {
 			const { renderBallNum, maxLeng, type = 1, multiple = true, startIndex } = props;
-
 			// 处理球的选择逻辑
 			const handleSelect = (ballNum: number, isRandom = false) => {
 				console.log("ballNum", ballNum);
@@ -152,7 +151,7 @@ export default () => {
 				[2, "redBall"], // 红球
 				[3, "defBall"], //默认球
 			]);
-
+			console.log("bgTypeMap==========ball", bgTypeMap.get(props.type));
 			// 根据球的类型选择不同的 SVG 图标
 			const ballSvg = computed(() => `/@/assets/svg/dark/sports/${bgTypeMap.get(props.type)}.svg`);
 

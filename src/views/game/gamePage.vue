@@ -41,9 +41,16 @@ const state: any = reactive({
 });
 const gameFrame: any = ref(null);
 const route = useRoute();
-
+watch(
+	() => route.query,
+	async () => {
+		loginGame();
+	}
+);
 onMounted(() => {
-	state.source = route.query.source;
+	loginGame();
+});
+const loginGame = () => {
 	const params = route.query;
 
 	gameApi.loginGame(params).then((res) => {
@@ -82,7 +89,7 @@ onMounted(() => {
 			showToast(res.message);
 		}
 	});
-});
+};
 onBeforeRouteLeave(() => {
 	useUserStore().initUserInfo();
 });
