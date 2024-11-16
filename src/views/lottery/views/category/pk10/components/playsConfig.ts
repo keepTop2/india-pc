@@ -9,6 +9,8 @@ export const gameplayList: LotteryPlayGroup[] = [
 	{
 		id: "1",
 		gamePlayName: "冠亚军和",
+		type: "selectBallLine",
+		isSpecialPlay: true,
 		gamePlayCodes: ["smp_gyjh_dxds", "smp_gyh3d19"],
 		desc: "冠亚和大小：开奖号码中冠军与亚军之和>11为“大”，≤11为“小”<br />冠亚和单双：开奖号码中冠军与亚军之和的个位数为1、3、5、7、9为“单”，0、2、4、6、8为“双”",
 		actived: false,

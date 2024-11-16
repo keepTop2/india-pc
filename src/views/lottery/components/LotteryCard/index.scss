@@ -60,6 +60,8 @@
 			row-gap: 2px;
 			flex-direction: column;
 			flex: 1;
+			height: 54px;
+			justify-content: space-between;
 			.type-name {
 				color: var(--Text-a);
 				font-size: 20px;

@@ -2,7 +2,7 @@
 	<div class="card-list-item">
 		<!-- 头部信息 -->
 		<header class="card-header">
-			<svg-icon width="20px" height="20px" style="color: var(--theme)" name="sports-football" />
+			<svg-icon width="20px" height="20px" style="color: var(--theme)" :name="sportType === 1 ? 'sports-football' : 'sports-basketball'" />
 			<span class="name">
 				<span v-ok-tooltip>{{ events.leagueName }}</span>
 			</span>
@@ -36,35 +36,20 @@
 		<div class="line"></div>
 		<!-- 盘口 -->
 		<div class="markets">
-			<!-- 全场独赢 -->
-			<div class="markets-item">
-				<p class="markets-item-title">全场独赢</p>
+			<div class="markets-item" v-for="item in sportTypeMap[sportType]">
+				<p class="markets-item-title">{{ item.label }}</p>
 				<div class="markets-item-content">
-					<div @click="handleBet(events.markets[5], m, 5)" :class="`${isBright(m, events.markets[5]) ? 'isBright' : ''}`" v-for="m in events.markets[5].selections">
-						<BetSelector :value="m?.oddsPrice?.decimalPrice" :id="`${events.markets[5].marketId}-${m?.key}`" :isRun="events.markets[5].marketStatus === 'running'">
-							<BettingCom betType="moneyline" :cardData="m" :market="events.markets[5]" />
-						</BetSelector>
-					</div>
-				</div>
-			</div>
-			<!-- 全场让球 -->
-			<div class="markets-item">
-				<p class="markets-item-title">全场让球</p>
-				<div class="markets-item-content">
-					<div @click="handleBet(events.markets[1], m, 1)" :class="`${isBright(m, events.markets[1]) ? 'isBright' : ''}`" v-for="m in events.markets[1].selections">
-						<BetSelector :value="m?.oddsPrice?.decimalPrice" :id="`${events.markets[1].marketId}-${m?.key}`" :isRun="events.markets[1].marketStatus === 'running'">
-							<BettingCom betType="pointSpread" :cardData="m" :market="events.markets[1]" />
-						</BetSelector>
-					</div>
-				</div>
-			</div>
-			<!-- 全场大小 -->
-			<div class="markets-item">
-				<p class="markets-item-title">全场让球</p>
-				<div class="markets-item-content">
-					<div @click="handleBet(events.markets[3], m, 3)" :class="`${isBright(m, events.markets[3]) ? 'isBright' : ''}`" v-for="m in events.markets[3].selections">
-						<BetSelector :value="m?.oddsPrice?.decimalPrice" :id="`${events.markets[3].marketId}-${m?.key}`" :isRun="events.markets[3].marketStatus === 'running'">
-							<BettingCom betType="totalPoints" :cardData="m" :market="events.markets[3]" />
+					<div
+						@click="handleBet(events.markets[item.type], m, 5)"
+						:class="`${isBright(m, events.markets[item.type]) ? 'isBright' : ''}`"
+						v-for="m in events.markets[item.type]?.selections || new Array(sportType == 1 ? 2 : 3).fill({})"
+					>
+						<BetSelector
+							:value="m?.oddsPrice?.decimalPrice"
+							:id="`${events.markets[item.type]?.marketId}-${m?.key}`"
+							:isRun="events.markets[item.type]?.marketStatus === 'running'"
+						>
+							<BettingCom :betType="item.betType" :cardData="m" :market="events.markets[item.type]" />
 						</BetSelector>
 					</div>
 				</div>
@@ -87,12 +72,30 @@ import { GameTime } from "/@/views/sports/components/Search/EventCard";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useUserStore } from "/@/stores/modules/user";
 import { useRouter } from "vue-router";
+import { computed } from "vue";
 const router = useRouter();
 const sportsBetEvent = useSportsBetEventStore();
 const UserStore = useUserStore();
 const props = defineProps({
 	events: { type: Object, required: true },
 });
+
+console.log(props.events, "=fdsa=");
+
+const sportType = computed(() => props.events.sportType as 1 | 2);
+
+const sportTypeMap = {
+	1: [
+		{ type: 5, label: "全场独赢", betType: "moneyline" },
+		{ type: 1, label: "全场让球", betType: "pointSpread" },
+		{ type: 3, label: "全场大小", betType: "totalPoints" },
+	],
+	2: [
+		{ type: 20, label: "全场独赢", betType: "moneyline" },
+		{ type: 1, label: "让球", betType: "pointSpread" },
+		{ type: 3, label: "总分", betType: "totalPoints" },
+	],
+};
 
 /**
  * 判断当前盘口是否高亮

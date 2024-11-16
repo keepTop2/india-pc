@@ -33,7 +33,7 @@ const AccordionItem = defineComponent({
 			// 通过事件传递新的激活状态
 			emit("select", !props.actived);
 		};
-
+		console.log(props,'=====props');
 		return () => (
 			<div class={`accordion-content-item-box${props.actived ? " actived" : ""}`}>
 				<div onClick={handleClick} className="accordion-content-item">

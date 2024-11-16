@@ -55,7 +55,7 @@
 							<div class="td Text1" style="width: 15%" @click="showDetails(item)">{{ item.welfareCenterRewardTypeText }}</div>
 							<div class="td Text1" style="width: 14%" @click="showDetails(item)">{{ item.detailType }}</div>
 
-							<div class="td Text_s" style="width: 13%" @click="showDetails(item)">{{ item.amount }}{{ item.currencyCode }}</div>
+							<div class="td Text_s" style="width: 13%" @click="showDetails(item)">{{ item.amount }} {{ item.currencyCode }}</div>
 							<div class="td Text1" style="width: 18%" @click="showDetails(item)">{{ dayjs(item.pfTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
 							<div class="td" style="width: 15%; flex-direction: column">
 								<span class="btn curp" :class="'status' + item.receiveStatus" @click="handleReceive(item)">{{ receiveStatus[item.receiveStatus] }}</span>

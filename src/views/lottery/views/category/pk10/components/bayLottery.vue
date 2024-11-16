@@ -27,10 +27,9 @@
 							:title="oddsListItem.title"
 							:info="oddsListItem.desc"
 							:odds="oddsListItem.itemOdds"
-							style="margin-bottom: 4px"
+							style="margin-bottom: 8px"
 						>
 							<template v-if="oddsListItem.actived && oddsListItem.type == 'selectBallLine'" #default>
-								
 								<div class="accordion-content-item-balls">
 									<div class="gameplay gameplay-description">
 										<!-- 使用 v-html 渲染描述内容，支持 HTML 标签如 <br> -->
@@ -44,7 +43,7 @@
 										:title="subOddsItem.optionName"
 										:info="subOddsItem.desc"
 										:odds="subOddsItem.itemOdds"
-										style="margin-bottom: 4px"
+										style="margin-bottom: 8px"
 									/>
 								</div>
 							</template>
@@ -68,13 +67,13 @@
 			</div>
 
 			<!-- 投注表单组件 -->
-			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived">
+			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsListItem="currentOddsListItem">
 				<!-- 表单激活时显示的插槽内容 -->
 				<template v-if="formActived" #default>
 					<div class="bet-form-slot-header">
 						<div>{{ currentGameplayItem.gamePlayName }}</div>
 						<div>{{ currentGameplayItem.oddsList.title }}</div>
-						<div v-if="formActived" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
+						<div v-if="formActived && balls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
 							<Ball v-for="item in balls" :key="item" :ball-number="item" :type="3" />
 						</div>
 					</div>
@@ -106,7 +105,8 @@ const { BetForm } = useBetForm();
 
 // hooks
 const { mergedGameplayList } = useGameplayList(gameplayList as GameplayList);
-const { formActived, balls, clearAccordionStatus, handleSelectBalls, handleSelectBallsK10, currentK10OddsList, handleExpanded, currentGameplayItem, currentOddsListItem } = useAccordionHook(mergedGameplayList);
+const { formActived, balls, clearAccordionStatus, handleSelectBalls, handleSelectBallsK10, currentK10OddsList, handleExpanded, currentGameplayItem, currentOddsListItem } =
+	useAccordionHook(mergedGameplayList);
 const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsListItem, props as Props);
 </script>
 

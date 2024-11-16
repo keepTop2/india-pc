@@ -14,7 +14,8 @@ export interface OddsListItem {
 	optionCode: string;
 	gameCode?: string;
 	gamePlayCode?: string;
-
+	minBet?: number;
+	maxBet?: number;
 	type?: string;
 	ballNum?: number;
 	startIndex?: number;

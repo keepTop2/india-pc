@@ -111,7 +111,13 @@
 							</template>
 						</i18n-t>
 						<div class="tips">
-							<svg-icon class="pointer" :name="checkbox ? 'check_icon_on' : 'check_icon'" size="14px" @click="checkbox = !checkbox" :style="{ color: 'var(--Theme)' }" />
+							<svg-icon
+								class="pointer"
+								:name="checkbox ? 'common-check_icon_on' : 'common-check_icon'"
+								size="14px"
+								@click="checkbox = !checkbox"
+								:style="{ color: 'var(--Theme)' }"
+							/>
 							<span>{{ $t(`wallet['24小时内不再提示']`) }}</span>
 						</div>
 					</div>
@@ -260,7 +266,6 @@ const onRechargeWay = (item: rechargeWayDataRootObject) => {
 
 // 点击充值
 const onRecharge = async () => {
-	console.log("rechargeWayData.value.id", rechargeWayData.value.id);
 	const params = {
 		depositWayId: rechargeWayData.value.id,
 		amount: requestParams.amount,
@@ -273,16 +278,26 @@ const onRecharge = async () => {
 		params.depositName = requestParams.depositName;
 	}
 	const res = await walletApi.userRecharge(params).catch((err) => err);
+	const routerParams = {
+		orderNo: res.data.orderNo,
+		tradeWayType: "",
+	};
+	if (rechargeWayData.value.rechargeTypeCode === "bank_card") {
+		routerParams.tradeWayType = "bank_card_recharge";
+	} else if (rechargeWayData.value.rechargeTypeCode === "electronic_wallet") {
+		routerParams.tradeWayType = "electronic_wallet_recharge";
+	}
 	if (res.code === common.ResCode.SUCCESS) {
 		if (!props.dialogType) {
 			router.replace({
 				path: "/accountChangeDetails",
 				query: {
-					orderNo: res.data.orderNo,
+					orderNo: routerParams.orderNo,
+					tradeWayType: routerParams.tradeWayType,
 				},
 			});
 		} else {
-			emit("RechargeSuccess", res.data.orderNo);
+			emit("RechargeSuccess", routerParams);
 		}
 
 		if (res.data.thirdIsUrl == 1) {

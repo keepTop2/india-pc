@@ -1,100 +1,79 @@
 <template>
-	<div class="activityWrapper">
-		<div class="activityHeader">
-			{{ activityData?.activityNameI18nCode || "红包雨" }}
-			<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="../../components/image/close_icon.png" alt="" /></span>
+	<activityWrapper :title="activityData.activityNameI18nCode">
+		<div class="activityImg">
+			<img v-lazy-load="activityData?.headPicturePcI18nCodeFileUrl" alt="" />
 		</div>
-
-		<div class="activityMain">
-			<div class="activityImg">
-				<img v-lazy-load="activityData?.headPicturePcI18nCodeFileUrl" alt="" />
-			</div>
-			<div class="activityContent">
-				<div class="bonus_card">
-					<div class="bonus_card_title">红包雨</div>
-					<div class="mt_20 mb_20">
-						{{ activityData?.clientStatus == 1 ? "距离本场红包雨结束" : "距离下一场红包雨还有" }}
-					</div>
-					<div class="countdown mb_20">
-						<span>{{ Common.convertMilliseconds(countdown * 1000) }}</span>
-					</div>
-					<div class="apply_btn">
-						<div class="curp" :class="activityData?.clientStatus == 1 ? 'active' : ''" @click="getActivityReward">抢</div>
-					</div>
+		<div class="activityContent">
+			<div class="bonus_card">
+				<div class="bonus_card_title">红包雨</div>
+				<div class="mt_20 mb_20">
+					{{ activityData?.clientStatus == 1 ? "距离本场红包雨结束" : "距离下一场红包雨还有" }}
 				</div>
-			</div>
-
-			<div class="activityContent">
-				<div class="activityContentHeader">
-					<div class="flex-center">
-						<img src="../image/activityContentHeaderLeft.svg" alt="" />
-						<span>红包雨场次</span>
-						<img src="../image/activityContentHeaderRight.svg" alt="" />
-					</div>
+				<div class="countdown mb_20">
+					<span>{{ Common.convertMilliseconds(countdown * 1000) }}</span>
 				</div>
-				<div class="activityContentCenter">
-					<slide class="sessions">
-						<div v-for="(item, index) in activityData?.sessionInfoList" class="session" :key="index">
-							<div>{{ Common.parseHm(item.startTime) }}</div>
-							<div class="sideBox">
-								<img :src="sessionCricle" alt="" v-if="item.status == 0" />
-								<img :src="sessionCricle1" alt="" v-if="item.status == 1" />
-								<img :src="sessionCricle2" alt="" v-if="item.status == 2" />
-							</div>
-							<div :class="'status' + item.status">{{ status[item.status] }}</div>
-							<span class="side" v-if="index !== activityData.sessionInfoList.length - 1" :class="'type' + item.status"></span>
-						</div>
-					</slide>
+				<div class="apply_btn">
+					<div class="curp" :class="activityData?.clientStatus == 1 ? 'active' : ''" @click="getActivityReward">抢</div>
 				</div>
-				<div class="activityContentFooter" />
-			</div>
-			<div class="activityContent" v-if="activityData?.winnerList.length > 0">
-				<div class="activityContentHeader">
-					<div class="flex-center">
-						<img src="../image/activityContentHeaderLeft.svg" alt="" />
-						<span>中奖名单</span>
-						<img src="../image/activityContentHeaderRight.svg" alt="" />
-					</div>
-				</div>
-				<div class="activityContentCenter">
-					<div class="winnerListTable">
-						<div class="winnerListHeader">
-							<div>会员账号</div>
-							<div>获得红包</div>
-							<div>时间</div>
-						</div>
-						<div class="winnerListBody" v-for="(item, index) in activityData.winnerList" :key="index">
-							<div>{{ item.userAccount }}</div>
-							<div>{{ item.redBagAmount }} {{ useUserStore().getUserInfo.platCurrencyName }}</div>
-							<div>{{ Common.parseTime(item.hitTime) }}</div>
-						</div>
-					</div>
-				</div>
-				<div class="activityContentFooter" />
-			</div>
-			<div class="activityContent">
-				<div class="activityContentHeader">
-					<div class="flex-center">
-						<img src="../image/activityContentHeaderLeft.svg" alt="" />
-						<span>活动规则</span>
-						<img src="../image/activityContentHeaderRight.svg" alt="" />
-					</div>
-				</div>
-				<div class="activityContentCenter ruleCenter">
-					<div class="ruleDetails">
-						<div v-html="activityData?.ruleDesc"></div>
-					</div>
-				</div>
-				<div class="activityContentFooter" />
 			</div>
 		</div>
 
-		<!-- 结算弹窗 -->
-		<RED_BAG_RAIN_Dialog v-model="showDialog" title="温馨提示" :confirm="confirmDialog" class="redBagRainResult">
-			<div class="Text3">{{ dialogInfo.message }}</div>
-			<template v-slot:footer v-if="[30045, 30053].includes(dialogInfo.status)"> 去绑定 </template>
-		</RED_BAG_RAIN_Dialog>
-	</div>
+		<div class="activityContent">
+			<div class="activityContentHeader" :style="{ background: `url(${Common.getThemeImgPath('activityContentHeader.png')}) no-repeat`, backgroundSize: '100% 100%' }">
+				<div class="flex-center">
+					<img :src="Common.getThemeImgPath('activityContentHeaderLeft.svg')" alt="" />
+					<span>红包雨场次</span>
+					<img :src="Common.getThemeImgPath('activityContentHeaderRight.svg')" alt="" />
+				</div>
+			</div>
+			<div class="activityContentCenter" :style="{ background: `url(${Common.getThemeImgPath('activityContentCenter.png')}) no-repeat`, backgroundSize: '100% 100%' }">
+				<slide class="sessions">
+					<div v-for="(item, index) in activityData?.sessionInfoList" class="session" :key="index">
+						<div>{{ Common.parseHm(item.startTime) }}</div>
+						<div class="sideBox">
+							<img :src="sessionCricle" alt="" v-if="item.status == 0" />
+							<img :src="sessionCricle1" alt="" v-if="item.status == 1" />
+							<img :src="sessionCricle2" alt="" v-if="item.status == 2" />
+						</div>
+						<div :class="'status' + item.status">{{ status[item.status] }}</div>
+						<span class="side" v-if="index !== activityData.sessionInfoList.length - 1" :class="'type' + item.status"></span>
+					</div>
+				</slide>
+			</div>
+			<div class="activityContentFooter" :style="{ background: `url(${Common.getThemeImgPath('activityContentFooter.png')}) no-repeat`, backgroundSize: '100% 100%' }" />
+		</div>
+		<div class="activityContent" v-if="activityData?.winnerList.length > 0">
+			<div class="activityContentHeader">
+				<div class="flex-center">
+					<img src="../image/activityContentHeaderLeft.svg" alt="" />
+					<span>中奖名单</span>
+					<img src="../image/activityContentHeaderRight.svg" alt="" />
+				</div>
+			</div>
+			<div class="activityContentCenter">
+				<div class="winnerListTable">
+					<div class="winnerListHeader">
+						<div>会员账号</div>
+						<div>获得红包</div>
+						<div>时间</div>
+					</div>
+					<div class="winnerListBody" v-for="(item, index) in activityData.winnerList" :key="index">
+						<div>{{ item.userAccount }}</div>
+						<div>{{ item.redBagAmount }} {{ useUserStore().getUserInfo.platCurrencyName }}</div>
+						<div>{{ Common.parseTime(item.hitTime) }}</div>
+					</div>
+				</div>
+			</div>
+			<div class="activityContentFooter" />
+		</div>
+		<activityRule :rule="activityData?.ruleDesc"></activityRule>
+	</activityWrapper>
+
+	<!-- 结算弹窗 -->
+	<RED_BAG_RAIN_Dialog v-model="showDialog" title="温馨提示" :confirm="confirmDialog" class="redBagRainResult">
+		<div class="Text3">{{ dialogInfo.message }}</div>
+		<template v-slot:footer v-if="[30045, 30053].includes(dialogInfo.status)"> 确定 </template>
+	</RED_BAG_RAIN_Dialog>
 </template>
 
 <script setup lang="ts">
@@ -114,6 +93,10 @@ import showToast from "/@/hooks/useToast";
 import sessionCricle from "./image/sessionCricle.png";
 import sessionCricle1 from "./image/sessionCricle1.png";
 import sessionCricle2 from "./image/sessionCricle2.png";
+import activityWrapper from "../../components/activityWrapper.vue";
+import activityBonusCard from "../../components/activityBonusCard.vue";
+import activityContent from "../../components/activityContent.vue";
+import activityRule from "../../components/activityRule.vue";
 import { useUserStore } from "/@/stores/modules/user";
 const { countdown, startCountdown, stopCountdown } = useCountdown();
 const activityStore = useActivityStore();
@@ -144,7 +127,7 @@ const getActivityReward = async () => {
 	if (activityData.value?.clientStatus !== 1) return;
 	await activityApi.redBagParticipate({ redbagSessionId: activityData.value.redbagSessionId }).then((res) => {
 		if (res.code === 10000) {
-			if (String(res.data.status).slice(0, 2) == "13") {
+			if (String(res.data.status).slice(0, 2) == "13" || res.data.status == 1000) {
 				redbagRainSingleton.showRedbagRain();
 			} else {
 				dialogInfo.value = res.data;

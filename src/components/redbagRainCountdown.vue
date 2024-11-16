@@ -51,11 +51,11 @@ const confirmDialog = () => {
 };
 //点击闹钟
 const handleClickCountdown = async () => {
+	await activityApi.getRedBagInfo().then(async (res: any) => {
+		await activityStore.setCurrentActivityData(res.data);
+	});
 	if (countdown.value > 0) {
-		activityApi.getRedBagInfo().then(async (res: any) => {
-			await activityStore.setCurrentActivityData(res.data);
-			modalStore.openModal("RED_BAG_RAIN");
-		});
+		modalStore.openModal("RED_BAG_RAIN");
 	} else if (!clickDisabled.value) {
 		await activityApi.redBagParticipate({ redbagSessionId: redBagInfo.value.redbagSessionId }).then((res) => {
 			if (res.code === 10000) {

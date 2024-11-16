@@ -1,7 +1,6 @@
 <template>
 	<div class="loginWrapper"  
 		:style="{backgroundImage:`url(${headerBg}),url(${Common.getThemeImgPath('bottomBg.png')})` }"
-	
 	>
 		<div class="login_right_form">
 			<!-- 登录标题 -->
@@ -15,15 +14,18 @@
 				<div class="mb_12">
 					<p class="Text_s fs_14"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
-						<input
-							type="text"
+						<FromInput
 							v-model="payLoad.userAccount"
-							class="common_input mt_8"
 							:placeholder="$t(`login['输入账号']`)"
 							@input="userOnInput"
 							autocomplete="new-password"
 							maxlength="11"
-						/>
+						>
+						<template #left>
+							<svg-icon name="userName" size="18px" />
+						</template>
+	
+						</FromInput>
 					</p>
 				</div>
 
@@ -31,18 +33,25 @@
 				<div class="mb_12">
 					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
 					<p class="common_password">
-						<input
+						<FromInput
 							:type="showPassword ? 'password' : 'text'"
 							v-model="payLoad.password"
-							class="common_input"
 							:placeholder="$t(`login['输入密码']`)"
 							@input="passOnInput"
 							autocomplete="new-password"
 							maxlength="16"
-						/>
-						<span class="eyes" @click="showPassword = !showPassword">
-							<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" />
-						</span>
+						>
+						<template #left>
+							<svg-icon name="password_icon" size="18px" />
+						</template>
+	
+						<template #right>
+							<span  @click="showPassword = !showPassword">
+								<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" />
+							</span>
+						</template>
+		
+					</FromInput>
 					</p>
 				</div>
 
@@ -50,14 +59,14 @@
 				<div class="flex_space-between fs_12 mt_10">
 					<div class="Text1 curp flex-center" style="gap: 6px">
 						<svg-icon
-							:name="rememberPassword ? 'check_icon_on' : 'check_icon'"
+							:name="rememberPassword ? 'common-check_icon_on' : 'common-check_icon'"
 							size="14px"
 							@click="rememberPassword = !rememberPassword"
 							:style="{ color: rememberPassword ? 'var(--Theme)' : '' }"
 						/>
 						{{ $t(`login['记住密码']`) }}
 					</div>
-					<div class="Text_s curp fs_12" @click="forgetPassword">{{ $t(`login['忘记密码']`) }}？</div>
+					<div class="Text_s curp fs_12 ForgetPassword" @click="forgetPassword">{{ $t(`login['忘记密码']`) }}？</div>
 				</div>
 
 				<!-- 登录按钮 -->
@@ -99,6 +108,7 @@ import Common from "/@/utils/common";
 import CommonRegex from "/@/utils/CommonRegex";
 import { loginCallback } from '/@/views/lottery/utils/loginCallback';
 import { useRoute } from 'vue-router'
+import headerBg from './image/headerBg.png'
 const HcaptchaMounted = ref(false);
 const modalStore = useModalStore();
 const UserStore = useUserStore();
@@ -237,6 +247,9 @@ const toRegister = () => {
 			font-weight: 500;
 			text-align: center;
 		}
+	}
+	.ForgetPassword{
+		text-decoration: underline;
 	}
 }
 </style>

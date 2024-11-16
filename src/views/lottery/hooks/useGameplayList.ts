@@ -33,8 +33,9 @@ export function useGameplayList(gameplayList: GameplayList) {
 		 * @param {LotteryPlayGroup[]} lotteryList 彩种玩法列表
 		 * @param {any} res.data 接口返回的玩法数据
 		 */
-		// 目前只对 双色球 和 pk 10 相关彩种做处理
-		const codes = ["FCSSQ", "HTSSQ", "3FSSQ", "5FSSQ", "FSSQ", "MYPK10", "3FPK10", "5FPK10", "LUCKYPK10"];
+		// 目前只对 pk 10 相关彩种做处理
+		// 双色球 和 "FCSSQ", "HTSSQ", "3FSSQ", "5FSSQ", "FSSQ",
+		const codes = ["MYPK10", "3FPK10", "5FPK10", "LUCKYPK10"];
 		const isGameCode = codes.includes(gameCode as string);
 		if (isGameCode) {
 			mergedGameplayList.value = ssqLotteryList(gameplayList as LotteryPlayGroup[], res.data) as MergedGameplayList;

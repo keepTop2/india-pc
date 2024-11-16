@@ -80,11 +80,11 @@ export const activityApi = {
 	},
 	// 领取活动
 	getActivityReward: (data = {}, headers = {}) => {
-		return useAxiosApi(`/app/activityParticipate/api/getActivityReward`, {
-			method: "POST",
-			data,
-			headers,
-		});
+		// return useAxiosApi(`/app/activityParticipate/api/getActivityReward`, {
+		// 	method: "POST",
+		// 	data,
+		// 	headers,
+		// });
 	},
 	// 红包雨活动信息
 	getRedBagInfo: (data = {}, headers = {}) => {

@@ -18,7 +18,7 @@ import { PropType } from "vue";
 import useLotteryHeader from "/@/views/lottery/components/LotteryHeader/Index";
 const props = defineProps({
 	class: { type: String, default: "" },
-	data: { type: Object as PropType<LotteryInfo> },
+	data: { type: Object as PropType<any> },
 	timerEndCallback: { type: Function, default: Function.prototype },
 });
 const { LotteryHeader } = useLotteryHeader();
@@ -32,7 +32,7 @@ const { LotteryHeader } = useLotteryHeader();
 	background-color: var(--Bg-1);
 	border-radius: 12px;
 	padding: 20px;
-
+	min-height: calc(100vh - 88px);
 	.line {
 		border: 1px solid var(--lineBg);
 		margin: 16px 0;
@@ -68,6 +68,13 @@ const { LotteryHeader } = useLotteryHeader();
 				border: 1px solid var(--Line-2);
 				border-radius: 8px;
 				margin-top: 4px;
+				.lottery-ball.actived {
+					background-image: none !important;
+					background-color: var(--Theme);
+					.ball {
+						color: var(--Text-a) !important;
+					}
+				}
 			}
 
 			.bet-form-slot-header {
@@ -95,6 +102,9 @@ const { LotteryHeader } = useLotteryHeader();
 					&.is-focused {
 						border-color: var(--Line-2);
 						box-shadow: 0 0 0 1px var(--Line-2);
+					}
+					.el-select__placeholder {
+						color: var(--Text-1);
 					}
 				}
 				.el-popper.is-light {
@@ -132,14 +142,13 @@ const { LotteryHeader } = useLotteryHeader();
 					column-gap: 8px;
 					align-items: center;
 				}
-				.table-header-cell .el-table__body {
-					.el-table__cell {
-						padding: 0px;
-						.cell {
-							width: 100%;
-							height: 100%;
-							padding: 15px;
-						}
+				.table-header-cell {
+					padding: 0px;
+					.cell {
+						padding: 12px;
+						width: 100%;
+						height: 100%;
+						color: var(--Text-a);
 					}
 				}
 
@@ -193,6 +202,9 @@ const { LotteryHeader } = useLotteryHeader();
 					tr {
 						background: var(--Bg-1) !important;
 						background-color: transparent;
+						.serial-number {
+							color: var(--Text-1);
+						}
 					}
 
 					tr td:nth-child(1),
@@ -213,6 +225,17 @@ const { LotteryHeader } = useLotteryHeader();
 				}
 			}
 		}
+	}
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+	.lottery-type-containers {
+		width: 1176px;
+	}
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+	.lottery-type-containers {
+		width: 932px;
 	}
 }
 </style>
