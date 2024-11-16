@@ -6,7 +6,7 @@
 				<div class="search-component" ref="resultList">
 					<!-- 搜索框 -->
 					<div class="search_icon">
-						<svg-icon name="search" size="18px"></svg-icon>
+						<svg-icon name="common-search" size="18px"></svg-icon>
 					</div>
 					<input
 						type="text"
@@ -160,7 +160,7 @@ const clickTab = (index: number) => {
 	}
 	.active {
 		background-color: var(--Theme);
-		color: var(--Text-s);
+		color: var(--Text-a);
 	}
 }
 .search-component {

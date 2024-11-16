@@ -92,6 +92,7 @@ const close = () => {
 				height: 46px;
 				margin: 0 auto;
 				border-radius: 10px;
+				color: var(--Text-a);
 				background: linear-gradient(278deg, #ff284b 4.74%, #fd677f 92.73%);
 			}
 		}

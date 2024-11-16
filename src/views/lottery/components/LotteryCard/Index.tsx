@@ -8,11 +8,6 @@ import { useRouter } from "vue-router";
 
 // 主组件，使用 useTimer 获取计时器相关的状态和方法
 export default () => {
-	// 获取用户信息 store
-	const {
-		getUserInfo: { currencySymbol },
-	} = useUserStore();
-	const route = useRoute();
 	// 定义卡片头部组件
 	const Header = defineComponent({
 		props: {
@@ -65,16 +60,18 @@ export default () => {
 		props: {
 			data: { type: Object, required: true },
 		},
-		setup(props) {
+		setup(props, { slots }) {
 			return () => (
 				<div class="card-footer">
 					<div class="left">
 						<span>最近获奖</span>
 					</div>
 					<div class="right">
-						<span>
-							{currencySymbol} {Common.thousands(route.query.maxWin)}
-						</span>
+						{slots?.maxWin?.() || (
+							<span>
+								{useUserStore().getUserInfo.currencySymbol || "$"} {Common.thousands(props.data.maxWin)}
+							</span>
+						)}
 					</div>
 				</div>
 			);

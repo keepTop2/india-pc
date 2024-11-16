@@ -43,7 +43,7 @@ const activityData: any = computed(() => activityStore.getCurrentActivityData);
 const showCommonDialog = ref(false);
 const apply = () => {
 	activityApi.getToActivity({ id: activityData.value.id }).then((res: any) => {
-		if (String(res.data.status).slice(0, 2) !== "13" || res.data.status !== 1000) {
+		if (String(res.data.status).slice(0, 2) !== "13" || res.data.status !== 10000) {
 			dialogInfo.value = res.data;
 			showCommonDialog.value = true;
 		} else {

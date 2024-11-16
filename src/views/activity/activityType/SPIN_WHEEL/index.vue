@@ -76,7 +76,7 @@
 		<CommonDialog v-model="showbetResult">
 			<div class="betResult">
 				<img :src="reward.prizePictureUrl" alt="" />
-				<div class="Text_s fs_20 fw_600">恭喜您获得</div>
+				<div class="Text_a fs_20 fw_600 mt_10">恭喜您获得</div>
 				<div class="amunt mt_40 mb_33">{{ useUserStore().getUserInfo.platCurrencySymbol }}{{ reward.prizeAmount }}</div>
 				<div class="againBtn">
 					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
@@ -137,12 +137,9 @@ import activityDialog from "../../components/activityDialog.vue";
 import { ref, onMounted } from "vue";
 import Spin from "./spin.vue";
 import { useModalStore } from "/@/stores/modules/modalStore";
-import "../../components/common.scss";
+
 import router from "/@/router";
 import { useUserStore } from "/@/stores/modules/user";
-import activityWrapper from "../../components/activityWrapper.vue";
-import activityBonusCard from "../../components/activityBonusCard.vue";
-import activityContent from "../../components/activityContent.vue";
 import activityRule from "../../components/activityRule.vue";
 import dayjs from "dayjs";
 const activityStore = useActivityStore();
@@ -279,14 +276,14 @@ const goToDeposit = () => {
 .activityWrapper {
 	background: none;
 	width: 444px;
+	.activityMain {
+		width: 444px;
+	}
 	.activityCenter {
 		background: url("../image/commonBg2.png") no-repeat;
 		background-size: 100% 100%;
-		width: 444px;
 	}
-	.activityContent {
-		width: 444px;
-	}
+
 	.activityHeader {
 		background: none;
 		height: 80px;

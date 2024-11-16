@@ -29,7 +29,6 @@ import activityWrapper from "../components/activityWrapper.vue";
 import activityBonusCard from "../components/activityBonusCard.vue";
 import activityContent from "../components/activityContent.vue";
 import activityRule from "../components/activityRule.vue";
-import showToast from "/@/hooks/useToast";
 import { useUserStore } from "/@/stores/modules/user";
 const activityStore = useActivityStore();
 const router = useRouter();
@@ -43,7 +42,7 @@ const apply = async () => {
 		return;
 	}
 	await activityApi.getToActivity({ id: activityData.value.id }).then((res: any) => {
-		if (String(res.data.status).slice(0, 2) !== "13" || res.data.status !== 1000) {
+		if (String(res.data.status).slice(0, 2) !== "13" || res.data.status !== 10000) {
 			dialogInfo.value = res.data;
 			showCommonDialog.value = true;
 		}

@@ -5,7 +5,7 @@
 			<div class="fade-in center">
 				<div class="cell Text_s"><span class="color_Theme">*</span>问题类型</div>
 				<div class="cell mt_14 mb_20">
-					<Dropdown :options="typeList" v-model="state.type"></Dropdown>
+					<Dropdown :options="typeList" v-model="state.type" placeholder="请选择问题类型"></Dropdown>
 				</div>
 				<div class="cell mb_20" v-if="state.type == '1'">
 					<div class="Text_s mb_16">相关订单</div>
@@ -26,10 +26,10 @@
 					<ImgUpload :files="files" :max="3" @update:files="updateFiles" />
 				</div>
 				<div class="Text2_1 mt_10 mb_40"></div>
-				<Button class="common_btn" @click="onSubmit" :disabled="disabledBtn">提交</Button>
+				<Button @click="onSubmit" style="width: 360px" :disabled="disabledBtn">提交</Button>
 			</div>
 		</div>
-		<div class="right p_12 Text_s">
+		<div class="right p_12 Text_s fade-in">
 			<div class="flex_space-between mb_12">
 				<span>我的反馈</span>
 				<span @click="router.push('/user/feedback/feedbackList')" class="flex_space-between fs_14 Text1 curp"
@@ -37,7 +37,9 @@
 				></span>
 			</div>
 			<div class="rightScroll" v-ok-loading="listLoading">
-				<div v-if="FeedbackList.length < 1" class="noMoreData">暂时没有新的反馈</div>
+				<div v-if="FeedbackList.length < 1" class="noMoreData">
+					<noneData></noneData>
+				</div>
 				<div class="card curp" v-for="item in FeedbackList.slice(0, 7)" @click="goToDetails(item)" v-else>
 					<div class="ellipsis fs_16">{{ item.typeText }}</div>
 					<div class="line"></div>
@@ -183,6 +185,7 @@ const getfeedbackList = () => {
 			height: 100%;
 			.noMoreData {
 				min-height: 300px;
+				margin-top: 100px;
 				color: var(--Text-2);
 				font-size: 12px;
 				line-height: 300px;
