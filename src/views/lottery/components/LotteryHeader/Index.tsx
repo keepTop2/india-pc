@@ -1,10 +1,10 @@
 import "./index.scss";
 
 import { computed, defineComponent } from "vue";
-
+import Common from "/@/utils/common";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import useTimer from "/@/views/lottery/components/Tools/Timer";
-
+import { useUserStore } from "/@/stores/modules/user";
 // 定义主组件
 export default () => {
 	// 使用自定义的 LotteryCard hook，获取组件内容和页脚
@@ -18,6 +18,9 @@ export default () => {
 		},
 		setup(props) {
 			const propsData = computed(() => props.data);
+			const {
+				getUserInfo: { mainCurrency },
+			} = useUserStore();
 			// 使用自定义的定时器 hook，获取时间相关的状态和方法
 			const { TimeGroup } = useTimer(propsData, props.timerEndCallback);
 			return () => (
@@ -31,7 +34,15 @@ export default () => {
 							<TimeGroup data={props.data} />
 						</div>
 						{/* 彩票卡片的页脚 */}
-						<Footer data={props.data} />
+						<Footer data={props.data}>
+							{{
+								maxWin: (
+									<span>
+										{Common.thousands(props.data.maxWin)} {useUserStore().getUserInfo.mainCurrency || "USD"}
+									</span>
+								),
+							}}
+						</Footer>
 					</div>
 
 					{/* 右侧部分，展示彩票信息图片 */}

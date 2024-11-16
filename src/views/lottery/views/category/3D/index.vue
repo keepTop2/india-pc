@@ -15,7 +15,6 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from "vue";
-import iconPc from "/@/assets/zh-CN/lottery/shishicai.png";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
 import { usePageInit } from "/@/views/lottery/hooks/usePageInit";
 import { useTab } from "/@/views/lottery/hooks/useTab";
@@ -30,7 +29,7 @@ const { lotteryDetail, beginPageData } = usePageInit(); // 这个 hook 是重点
 
 // 这里其实就是在 lotteryDetail 的基础上加了个彩种的图片。因为涉及单个业务彩种，因此不在 hook 里面处理
 const renderLotteryDetail = computed(() => {
-	return { ...lotteryDetail.value, iconPc, maxWin: route.query.maxWin || 0 };
+	return { ...lotteryDetail.value, iconPc: `/@/assets/zh-CN/lottery/${route.query.gameCode}.jpeg`, maxWin: route.query.maxWin || 0 };
 });
 
 const renderComponent = computed(() => {
