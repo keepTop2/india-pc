@@ -1,5 +1,5 @@
 <template>
-	<div class="home-wrapper">
+	<div class="home-wrapper pr_10 pl_10">
 		<bannerSkeleton v-if="isLoading" />
 		<banner :bannerList="bannerList" v-else></banner>
 
