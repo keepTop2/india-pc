@@ -1,4 +1,5 @@
 import { RouteLocationNormalizedLoaded as Route } from "vue-router";
+import lotteryRoutes from "/@/router/modules/lottery";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 
 /**
@@ -9,7 +10,7 @@ export function loginCallback(route: Route) {
 	const routeName = route.name;
 	const { loginGame } = useLoginGame();
 
-	const routeNames = ["Shishicai", "Kuaisan", "Lucky28", "ElevenChooseFive", "UnionLotto", "Pk10"];
+	const routeNames = lotteryRoutes.children.map((v) => v.name);
 	if (routeNames.includes(routeName as string)) {
 		loginGame();
 	}
