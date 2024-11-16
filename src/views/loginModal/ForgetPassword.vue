@@ -32,15 +32,18 @@
 					<div>
 						<p class="Text_s mb_8 mt_8 fs_14"><span class="color_F1">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
 						<p>
-							<input
+							<FromInput
 								type="text"
 								v-model="payLoad.email"
-								class="common_input"
 								:placeholder="$t(`login['输入邮箱']`)"
 								@input="emailOnInput"
 								v-if="verifyType == 'email'"
 								:class="userVerifyTypeVerifyError ? 'verifyError' : ''"
-							/>
+							>
+								<template #left>
+									<svg-icon name="common-email" size="18px" />
+								</template>
+							</FromInput>
 							<AreaCode v-else @update:modelValue="areaCodeInput" :options="AreaCodeOptions" :type="verifyType" :class="userVerifyTypeVerifyError ? 'verifyError' : ''"></AreaCode>
 						</p>
 						<p v-show="userVerifyTypeVerifyError" class="color_F1 fs_12 mt_2">
@@ -48,7 +51,7 @@
 						</p>
 					</div>
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_14"><span class="color_F1">*</span>{{ $t(`login['验证码']`) }}</p>
+						<p class="Text_s mt_8 fs_14"><span class="color_F1">*</span>{{ $t(`login['验证码']`) }}</p>
 						<p>
 							<VerificationCode
 								@VerificationCodeInput="VerificationCodeInput"

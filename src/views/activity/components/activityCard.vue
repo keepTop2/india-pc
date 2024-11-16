@@ -94,7 +94,7 @@ const getConfigDetail = async (item: any) => {
 	.btn {
 		border-radius: 4px;
 		padding: 8px 22px;
-		color: var(--Text-s);
+		color: var(--Text-a);
 		font-weight: 400;
 		cursor: pointer;
 		white-space: nowrap;

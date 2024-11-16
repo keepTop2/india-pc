@@ -127,7 +127,7 @@ const getActivityReward = async () => {
 	if (activityData.value?.clientStatus !== 1) return;
 	await activityApi.redBagParticipate({ redbagSessionId: activityData.value.redbagSessionId }).then((res) => {
 		if (res.code === 10000) {
-			if (String(res.data.status).slice(0, 2) == "13" || res.data.status == 1000) {
+			if (String(res.data.status).slice(0, 2) == "13" || res.data.status == 10000) {
 				redbagRainSingleton.showRedbagRain();
 			} else {
 				dialogInfo.value = res.data;
@@ -209,13 +209,13 @@ const initCountown = () => {
 				transform: translateY(-50%);
 			}
 			.type2 {
-				background-color: var(--Theme);
+				background-color: var(--success);
 			}
 			.status2 {
-				color: var(--Theme);
+				color: var(--success);
 			}
 			.status1 {
-				color: var(--F-1);
+				color: var(--F-2);
 			}
 		}
 	}

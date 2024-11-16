@@ -48,7 +48,7 @@
 	
 						<template #right>
 							<span  @click="showPassword = !showPassword">
-								<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" />
+								<svg-icon :name="!showPassword ? 'eyes_on' : 'eyes'" size="14px" />
 							</span>
 						</template>
 						</FromInput>
@@ -73,7 +73,7 @@
 			
 						<template #right>
 							<span  @click="showConfirmPassword = !showConfirmPassword">
-								<svg-icon :name="showConfirmPassword ? 'eyes_on' : 'eyes'" size="14px" />
+								<svg-icon :name="!showConfirmPassword ? 'eyes_on' : 'eyes'" size="14px" />
 							</span>
 						</template>
 						</FromInput>
@@ -92,12 +92,12 @@
 				<div>
 					<p class="Text_s mb_8 mt_8 fs_14 flex_start">{{ $t(`login['输入推荐码']`) }} 
 			
-						<svg-icon name="common-arrow_down" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
-						<svg-icon name="common-arrow_up" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
+						<svg-icon name="common-arrow_up" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
+						<svg-icon name="common-arrow_down" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
 					</p>
 					<p class="common_password" v-if="openinviteCode"><FromInput type="text" v-model="payLoad.inviteCode"  placeholder="输入推荐码" >
 						<template #left>
-							<svg-icon name="common-inviteCode_icon" size="18px" />
+							<svg-icon name="common-inviteCode_icon" size="18px"  style="color: var(--Icon-1)"/>
 						</template>
 
 					</FromInput></p>
@@ -111,7 +111,7 @@
 						:style="{ color: userAgreement ? 'var(--Theme)' : '' }"
 					/>
 					<span
-						>{{ $t(`login['我同意']`) }} <span class="color_F2 curp" @click="toHelpCenter"> {{ $t(`login['用户协议']`) }}</span> {{ $t(`login['并确认我已年满18岁']`) }}</span
+						>{{ $t(`login['我同意']`) }} <span class="color_F2 curp userAgreementText" @click="toHelpCenter"> {{ $t(`login['用户协议']`) }}</span> {{ $t(`login['并确认我已年满18岁']`) }}</span
 					>
 				</div>
 				<div class="fs_12 userAgreement" :class="advertise ? 'Text_s' : 'Text1'">
@@ -311,6 +311,9 @@ const toLogin = () => {
 			display: flex;
 			gap: 4px;
 			margin: 6px 0;
+			.userAgreementText:hover{
+				text-decoration: underline;
+			}
 		}
 	}
 	.login_right_form::-webkit-scrollbar {

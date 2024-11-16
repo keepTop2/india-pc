@@ -3,7 +3,7 @@
 		<input class="trigger common_input fs_12" @input="onInput" placeholder="输入手机号" />
 		<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between" @click="toggleDropdown">
 			<span class="fs_12">+{{ selectedOptionLabel }}</span>
-			<svg-icon name="common-common-common-arrow_down_on" size="14px" fill="#fff" class="ml_10" />
+			<svg-icon name="common-arrow_down" size="14px" fill="#fff" class="ml_10" />
 		</span>
 		<div v-if="isOpen" class="dropdown-menu">
 			<div class="flex_space-between input">
