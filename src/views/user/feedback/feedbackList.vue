@@ -9,6 +9,7 @@
 				<span class="Text_s fs_18">我的反馈</span>
 			</div>
 			<div class="center" v-ok-loading="listLoading">
+				<noneData v-if="FeedbackList.length < 1"></noneData>
 				<div class="card curp" v-for="item in FeedbackList" @click="goToDetails(item)">
 					<div class="icon">
 						<img v-lazy-load="imgObj['type' + item.type]" alt="" />

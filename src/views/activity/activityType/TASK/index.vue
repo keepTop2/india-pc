@@ -18,7 +18,7 @@
 					<div v-if="currentTab == 0">
 						<div v-for="item in taskData?.dailyTask" class="card">
 							<div>
-								<img v-lazy-load="item.taskPicturePcI18nCodeFileUrl" alt="" />
+								<img v-lazy-load="item.taskPictureI18nCodeFileUrl" alt="" />
 							</div>
 							<div>
 								<div class="fs_14 Text_a fw_500">{{ item.taskNameI18nCode }}</div>
@@ -49,11 +49,11 @@
 								<img v-lazy-load="item.taskPicturePcI18nCodeFileUrl" alt="" />
 							</div>
 							<div>
-								<div class="fs_14 Text_s fw_500">{{ item.taskNameI18nCode }}</div>
+								<div class="fs_14 Text_a fw_500">{{ item.taskNameI18nCode }}</div>
 								<div class="progress">
 									<div class="value" :style="{ width: calculatePercentage(item.achieveAmount, item.minBetAmount) + '%' }"></div>
 								</div>
-								<div class="fs_12 Text_s bottom">
+								<div class="fs_12 Text_a bottom">
 									<span
 										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
