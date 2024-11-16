@@ -200,6 +200,14 @@ onMounted(async () => {
 onBeforeUnmount(() => {
 	window.removeEventListener("resize", changeColumn);
 });
+
+// 监听 query 参数变化
+watch(
+	() => route.query.gameTwoId,
+	async () => {
+		currentTab.value = route.query.gameTwoId as string;
+	}
+);
 </script>
 
 <style scoped lang="scss">

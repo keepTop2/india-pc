@@ -30,7 +30,11 @@ const { lotteryDetail, beginPageData } = usePageInit(); // 这个 hook 是重点
 
 // 这里其实就是在 lotteryDetail 的基础上加了个彩种的图片。因为涉及单个业务彩种，因此不在 hook 里面处理
 const renderLotteryDetail = computed(() => {
-	return { ...lotteryDetail.value, iconPc, maxWin: route.query.maxWin || 0 };
+	return {
+		...lotteryDetail.value,
+		maxWin: route.query.maxWin || 0,
+		iconPc: `/@/assets/zh-CN/lottery/${route.query.gameCode}.jpeg`,
+	};
 });
 
 const renderComponent = computed(() => {

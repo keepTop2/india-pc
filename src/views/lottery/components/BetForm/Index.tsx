@@ -7,7 +7,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import CommonFn from "/@/utils/common";
 import { formatNumberMax3Digits } from "/@/views/lottery/utils/formatNumber";
 import Common from "/@/views/sports/utils/common";
-
+import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 export default () => {
 	const BetForm = defineComponent({
 		props: {
@@ -22,7 +22,8 @@ export default () => {
 
 			// 用户信息 store
 			const UserStore = useUserStore();
-			const unit = UserStore.getUserInfo.mainCurrency;
+			const SportsBetInfoStore = useSportsBetInfoStore();
+			const unit = computed(() => UserStore.getUserInfo.mainCurrency || "USD");
 
 			// 定义投注金额和表单校验
 			const stake = ref("");
@@ -46,19 +47,23 @@ export default () => {
 
 			// 校验投注金额输入
 			const validateStake = (price: string) => {
-				const { minBet, maxBet } = props.value?.oddsList || props.value;
-				console.log(props.value, minBet, maxBet, "props.value");
-				console.log(props.currentOddsListItem, "props.currentOddsListItem");
+				// 优先判断余额
+				if (Number(price) > Number(SportsBetInfoStore.balance)) {
+					validForm.isSuccess = false;
+					validForm.errMessage = `余额不足！`;
+					return;
+				}
+				const { minLimit, maxLimit } = props.value;
 				const numericPrice = Number(price);
 				if (numericPrice === 0) {
 					validForm.isSuccess = false;
 					validForm.errMessage = "";
-				} else if (numericPrice < minBet) {
+				} else if (numericPrice < minLimit) {
 					validForm.isSuccess = false;
-					validForm.errMessage = `投注金额不能小于 ${minBet}${unit}`;
-				} else if (numericPrice > maxBet) {
+					validForm.errMessage = `投注金额不能小于 ${minLimit}${unit.value}`;
+				} else if (numericPrice > maxLimit) {
 					validForm.isSuccess = false;
-					validForm.errMessage = `投注金额不能大于 ${maxBet}${unit}`;
+					validForm.errMessage = `投注金额不能大于 ${maxLimit}${unit.value}`;
 				} else {
 					validForm.isSuccess = true;
 					validForm.errMessage = "";
@@ -81,6 +86,12 @@ export default () => {
 				}
 			};
 
+			const preventDecimal = (event: KeyboardEvent) => {
+				if (event.key === "." || event.key === "-" || event.key === "+") {
+					event.preventDefault();
+				}
+			};
+
 			// 暴露给父组件的方法
 			expose({ clearForm });
 
@@ -94,9 +105,27 @@ export default () => {
 						{props.actived ? (
 							<div class={`input-item ${validForm.isSuccess ? "success" : ""}`}>
 								<span>投注金额</span>
-								<ElInput v-model={stake.value} type="number" min={value?.oddsList?.minBet} max={value?.oddsList?.maxBet} placeholder="请输入投注金额" onInput={onInputEnter}>
+								<ElInput
+									v-model={stake.value}
+									type="number"
+									min={value?.minLimit}
+									max={value?.maxLimit}
+									placeholder="请输入投注金额"
+									onInput={(inputValue: string) => {
+										// 过滤非数字字符
+										stake.value = inputValue.replace(/[^\d]/g, "");
+										// 校验金额
+										onInputEnter(stake.value);
+									}}
+									onKeydown={(event: KeyboardEvent) => {
+										// 禁止输入小数点、负号、加号、空格等
+										if (event.key === "." || event.key === "-" || event.key === "+" || event.key === " " || (event.key.length === 1 && !/[0-9]/.test(event.key))) {
+											event.preventDefault();
+										}
+									}}
+								>
 									{{
-										suffix: () => <span>{unit}</span>,
+										suffix: () => <span>{unit.value}</span>,
 									}}
 								</ElInput>
 								{validForm.errMessage && <span class="error-message">{validForm.errMessage}</span>}
@@ -107,14 +136,14 @@ export default () => {
 						<div class="default-item">
 							<span>投注金额</span>
 							<span>
-								{stake.value || 0} {unit}
+								{stake.value || 0} {unit.value}
 							</span>
 						</div>
 						{/* 潜在回报显示 */}
 						<div class="default-item">
 							<span>潜在回报</span>
 							<span>
-								{formatNumberMax3Digits(+props.currentOddsListItem.itemOdds * +stake.value || 0)} {unit}
+								{formatNumberMax3Digits(+props.currentOddsListItem.itemOdds * +stake.value || 0)} {unit.value}
 							</span>
 						</div>
 					</div>
