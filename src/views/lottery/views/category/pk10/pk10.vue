@@ -15,13 +15,11 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from "vue";
-import { useRoute } from "vue-router";
 import iconPc from "./images/iconPc.png";
 import Containers from "/@/views/lottery/components/Containers/index.vue";
 import { usePageInit } from "/@/views/lottery/hooks/usePageInit";
 import { useTab } from "/@/views/lottery/hooks/useTab";
 import { useRoute } from "vue-router";
-const route = useRoute();
 const BayLottery = defineAsyncComponent(() => import("./components/bayLottery.vue"));
 const Result = defineAsyncComponent(() => import("./components/result.vue"));
 const route = useRoute();

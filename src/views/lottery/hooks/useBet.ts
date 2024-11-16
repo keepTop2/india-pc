@@ -78,7 +78,7 @@ export function useBet(
 			nums = String(balls.value[0]);
 
 			// 这里 11 选 5 要特殊一点，下注的时候，例如 4 号球要提交 "04" 而不是 "4"
-			if (currentGameplayItem.value.categoryCode === "SYXW") {
+			if (currentGameplayItem.value.categoryCode === "SYXW" || currentGameplayItem.value.categoryCode === "SSQ") {
 				nums = addZero(+nums);
 			}
 		}

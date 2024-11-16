@@ -104,7 +104,7 @@ const { BetForm } = useBetForm();
 // hooks
 const { mergedGameplayList } = useGameplayList(gameplayList as GameplayList);
 const { formActived, balls, clearAccordionStatus, handleSelectBalls, handleExpanded, currentGameplayItem, currentOddsListItem } = useAccordionHook(mergedGameplayList);
-const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsListItem, props as Props);
+const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsListItem, props as Props, balls);
 </script>
 
 <style lang="scss" scoped></style>
