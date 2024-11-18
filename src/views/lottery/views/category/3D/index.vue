@@ -28,8 +28,14 @@ const { tabs, tabsActived, handleTabChange } = useTab(BayLottery, Result);
 const { lotteryDetail, beginPageData } = usePageInit(); // 这个 hook 是重点。主要就是 onMounted onBeforeUnmount watch 里面需要做的事情
 
 // 这里其实就是在 lotteryDetail 的基础上加了个彩种的图片。因为涉及单个业务彩种，因此不在 hook 里面处理
+const lotteryIcons = {
+	"3F_3D": new URL("/src/assets/zh-CN/lottery/3F_3D.jpeg", import.meta.url).href,
+	HT_3D: new URL("/src/assets/zh-CN/lottery/HT_3D.jpeg", import.meta.url).href,
+	"5F_3D": new URL("/src/assets/zh-CN/lottery/5F_3D.jpeg", import.meta.url).href,
+};
+const gameCode = route.query.gameCode as "3F_3D" | "HT_3D" | "5F_3D";
 const renderLotteryDetail = computed(() => {
-	return { ...lotteryDetail.value, iconPc: `/@/assets/zh-CN/lottery/${route.query.gameCode}.jpeg`, maxWin: route.query.maxWin || 0 };
+	return { ...lotteryDetail.value, maxWin: route.query.maxWin || 0, iconPc: lotteryIcons[gameCode] };
 });
 
 const renderComponent = computed(() => {

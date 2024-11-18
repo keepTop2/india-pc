@@ -28,18 +28,17 @@ export default () => {
 			const handleClick = () => {
 				emit("select"); // 通过事件向父组件传递选择的信息
 			};
-
-			// 根据骰子的类型来动态计算骰子的背景图
-			const pointsSvg = computed(() => `/@/assets/svg/dark/sports/dice_${props.type === 2 ? "red" : "blue"}.svg`);
-
+			const DiceBg = new URL("/src/assets/svg/dark/sports/dice_bg.svg", import.meta.url).href;
+			const DiceBlack = new URL("/src/assets/svg/dark/sports/dice_black.svg", import.meta.url).href;
+			const DiceRed = new URL("/src/assets/svg/dark/sports/dice_red.svg", import.meta.url).href;
 			// 根据传入的点数动态生成点数数组
 			const pointsArr = computed(() => new Array(props.points).fill(0).map((_, index) => index + 1));
 
 			return () => (
-				<div style={{ "background-image": `url(/@/assets/svg/dark/sports/dice_bg.svg)` }} onClick={handleClick} class={`lottery-dice${props.actived ? " actived" : ""}`}>
+				<div style={{ "background-image": `url(${DiceBg})` }} onClick={handleClick} class={`lottery-dice${props.actived ? " actived" : ""}`}>
 					{/* 渲染点数对应的骰子点 */}
 					{pointsArr.value.map(() => (
-						<span class={`dice dice-${props.points}`} style={{ "background-image": `url(/@/assets/svg/dark/sports/dice_${props.type === 1 ? "black" : "red"}.svg)` }} />
+						<span class={`dice dice-${props.points}`} style={{ "background-image": `url(${props.type === 1 ? DiceBlack : DiceRed})` }} />
 					))}
 				</div>
 			);

@@ -5,6 +5,7 @@ import Common from "/@/utils/common";
 import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import useTimer from "/@/views/lottery/components/Tools/Timer";
 import { useUserStore } from "/@/stores/modules/user";
+import HeaderRightIcon from "/@/assets/zh-CN/lottery/lottery-info.png";
 // 定义主组件
 export default () => {
 	// 使用自定义的 LotteryCard hook，获取组件内容和页脚
@@ -47,7 +48,7 @@ export default () => {
 
 					{/* 右侧部分，展示彩票信息图片 */}
 					<div class="right">
-						<img src="/@/assets/zh-CN/lottery/lottery-info.png" alt="Lottery Info" />
+						<img src={HeaderRightIcon} alt="Lottery Info" />
 					</div>
 				</div>
 			);
