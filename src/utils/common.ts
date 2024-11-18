@@ -64,6 +64,7 @@ class Common {
 		}
 		return "";
 	}
+
 	/**
 	 * @description 转换电子钱包地址
 	 */

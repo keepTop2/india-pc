@@ -11,13 +11,14 @@
 			</template>
 			<div class="container">
 				<div class="info">
-					<div class="amount_info">
+					<div class="amount_info" v-if="displayedAmount">
 						<img class="icon" :src="amount_icon" alt="" />
 						<!-- 动态显示金额 -->
-						<span class="value" v-if="displayedAmount">
+						<span class="value">
 							<!-- 显示正负号和格式化后的金额 -->
 							{{ getPlusMinusSign() }}{{ common.thousands(common.formatAmount(Number(common.formatFloat(displayedAmount)))) }}
 						</span>
+						<span class="label ml_12">{{ mainCurrency }}</span>
 					</div>
 					<template
 						v-if="
