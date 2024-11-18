@@ -13,7 +13,7 @@ function getUrl() {
 		case "development":
 			return (window as any)["PLATFROM_CONFIG"].developmentLotteryBaseURL;
 		case "production":
-			return (window as any)["PLATFROM_CONFIG"].developmentLotteryBaseURL;
+			return (window as any)["PLATFROM_CONFIG"].productionLotteryBaseUrl;
 		default:
 			return "";
 	}
