@@ -9,11 +9,17 @@ window.PLATFROM_CONFIG = {
 	productionS128Url: "https://kss.cfb2.net",
 	/** ws 打包编译后地址(运维专用) */
 	productionWsUrl: "wss://gw.playesoversea.store/ws",
+	//彩票编译后的请求地址 (运维专用)
+	productionLotteryBaseUrl: "",
+	//彩票编译后的ws请求地址 (运维专用)
+	productionLotteryWsUrl: "",
 
 	// developmentBaseURL: "http://192.168.30.117:9999", // 尔顿本地地址
+	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
+	// developmentBaseURL: "https://backend.bwsh.store", // 测试环境
 	developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
 	// developmentBaseURL: "https://backend.bwsh.store", // 测试环境
-	developmentWsURL: "wss://gw.playesoversea.store/ws", // 开发环境
+	// developmentWsURL: "wss://gw.playesoversea.store/ws", // 开发环境
 	developmentWsURL: "wss://backend.bwsh.store/ws", // 测试环境
 
 	developmentLotteryBaseURL: "https://test-cpapi.jx203.com/third/rest/third/u", // 【彩票】开发环境
