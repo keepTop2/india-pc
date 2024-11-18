@@ -21,7 +21,7 @@
 					></textarea>
 					<div class="textLength">{{ state.content.length }}/500</div>
 				</div>
-				<div class="cell Text_s mb_16 mt_20"><span class="color_Theme">*</span>问题截图 <span class="fs_12 Text2">最大不超过5 M，最多3张， 支持格式：jpg.png.jpeg</span></div>
+				<div class="cell Text_s mb_16 mt_20">问题截图 <span class="fs_12 Text2">最大不超过5 M，最多3张， 支持格式：jpg.png.jpeg</span></div>
 				<div>
 					<ImgUpload :files="files" :max="3" @update:files="updateFiles" />
 				</div>
@@ -32,8 +32,8 @@
 		<div class="right p_12 Text_s fade-in">
 			<div class="flex_space-between mb_12">
 				<span>我的反馈</span>
-				<span @click="router.push('/user/feedback/feedbackList')" class="flex_space-between fs_14 Text1 curp"
-					>查看更多 <svg-icon name="common-arrow_right" size="14px" class="mr_10 Text2"></svg-icon
+				<span v-if="FeedbackList.length > 0" @click="router.push('/user/feedback/feedbackList')" class="flex_space-between fs_14 Text1 curp"
+					>查看更多<svg-icon name="common-arrow_right" size="14px" class="mr_10 Text2"></svg-icon
 				></span>
 			</div>
 			<div class="rightScroll" v-ok-loading="listLoading">
