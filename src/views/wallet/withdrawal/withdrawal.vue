@@ -84,6 +84,7 @@
 							class="bold_input"
 							v-model="state.amount"
 							type="text"
+							@input="state.amount = ($event.target as HTMLInputElement).value.replace(/[^\d]/g, '')"
 							:placeholder="`${withdrawWayConfig.withdrawMinAmount ?? 0} ${UserStore.userInfo.mainCurrency} ~ ${withdrawWayConfig.withdrawMaxAmount ?? 0} ${
 								UserStore.userInfo.mainCurrency
 							} `"
