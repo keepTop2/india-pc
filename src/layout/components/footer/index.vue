@@ -34,7 +34,7 @@
 			<div class="footer2_1">
 				<div class="aboutUs footer2_1_item">
 					<div>
-						<img :src="Common.getCommonImgPath('logo2.png')" alt="" />
+						<img src="../../../assets/theme/common/logo2.png" alt="" style="height: 126px" />
 					</div>
 					<div class="aboutUs_2">
 						<div class="fs_20">关于我们</div>
@@ -49,9 +49,15 @@
 				</div>
 				<div class="aboutUs_2">
 					<div>app下载</div>
-					<div class="fs_16 Text1">
-						<span>IOS下载</span>
-						<span>Andiriod下载</span>
+					<div class="fs_16 Text1 flex-center">
+						<span class="flex-center mr_0" style="gap: 8px">
+							<svg-icon name="common-ios" size="18px"></svg-icon>
+							IOS下载</span
+						>
+						<span class="flex-center" style="gap: 8px">
+							<svg-icon name="common-andiriod" size="18px"></svg-icon>
+							Andiriod下载</span
+						>
 					</div>
 				</div>
 			</div>
@@ -120,7 +126,7 @@ const getlist = () => {
 	}
 	.responsibleGameIcon {
 		display: flex;
-		gap: 40px;
+		gap: 60px;
 		height: 82px;
 		align-items: center;
 		img {
@@ -131,10 +137,10 @@ const getlist = () => {
 .footer2 {
 	color: var(--Text-s);
 	background: var(--Bg-3, rgba(223, 229, 236, 1));
-
+	height: 237px;
 	.footer2_1 {
 		display: flex;
-		padding: 20px 0;
+		padding: 20px 0 0;
 		.footer2_1_item {
 			width: 50%;
 			> div {
@@ -144,16 +150,16 @@ const getlist = () => {
 		.aboutUs_2 {
 			display: flex;
 			flex-direction: column;
-			justify-content: center;
+			margin-top: 10px;
 			gap: 20px;
-			margin-left: 50px;
+			margin-left: 10px;
 			span {
 				margin-right: 15px;
 			}
 		}
 	}
 	.footer2_2 {
-		padding: 35px 0;
+		padding: 5px 0 35px 0;
 	}
 	.aboutUs {
 		display: flex;

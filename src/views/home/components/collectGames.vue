@@ -1,16 +1,16 @@
 <template>
-	<div class="mt_40 pr_10 pl_10" v-if="gameList?.length">
+	<div class="mt_36">
 		<div class="cardHeader">
 			<div>
-				<span class="flex-center">
+				<span class="flex-center" style="gap: 12px">
 					<img v-lazy-load="collectGames_icon" alt="" />
-					<span class="Text_s fs_20">{{ "喜欢的游戏" }}</span>
+					<span class="Text_s fs_20">喜欢的游戏</span>
 				</span>
 			</div>
 		</div>
 		<div class="lobbyGameList">
-			<slide>
-				<div v-for="(item, index) in gameList" :key="index" class="lobbyGameItem">
+			<Swiper :slidesPerView="8" :spaceBetween="15" :modules="modules" class="swiper-container curp" @swiper="onSwiper">
+				<SwiperSlide v-for="(item, index) in gameList" :key="index" class="lobbyGameItem">
 					<div class="cornerMark">
 						<svg-icon name="new_game_icon" v-if="item.cornerLabels == 1" size="60" />
 						<svg-icon name="hot_game_icon" v-else-if="item.cornerLabels == 2" size="60" />
@@ -18,15 +18,15 @@
 					<div class="imgBox">
 						<img v-lazy-load="item.iconFileUrl" alt="" />
 					</div>
-					<div class="gameInfo">{{ item.name }}</div>
 					<div class="onHover">
-						<div class="playBtn fs_15 Text_s" @click.self="Common.goToGame(item)">Play</div>
+						<svg-icon name="common-play_icon" size="44px" @click.self="Common.goToGame(item)" />
+						<div class="gameName">{{ item.name }}</div>
 					</div>
 					<div class="collect" @click="collectGame(item)">
-						<svg-icon name="collect_on" size="19.5px"></svg-icon>
+						<svg-icon :name="collectGamesStore.getCollectGamesList.some((game:any) => game.id === item.id) ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
 					</div>
-				</div>
-			</slide>
+				</SwiperSlide>
+			</Swiper>
 		</div>
 	</div>
 </template>
@@ -38,10 +38,15 @@ import router from "/@/router";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
 import Common from "/@/utils/common";
+import { Swiper, SwiperSlide } from "swiper/vue";
 import { useRoute } from "vue-router";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
 import collectGames_icon from "/@/assets/common/collectGames_icon.png";
+import { ref } from "vue";
+import { Autoplay, Navigation } from "swiper/modules";
+import newGameIcon from "/@/assets/common/newGame_icon.png";
 const collectGamesStore = useCollectGamesStore();
+const modules = ref([Autoplay, Navigation]);
 interface gameInfo {
 	id: string;
 	name: string;
@@ -57,6 +62,9 @@ interface gameInfo {
 	maintenanceEndTime: string;
 	collect: boolean;
 }
+const isEnd = ref(false);
+const isBeginning = ref(true);
+const swiperRef: any = ref(null);
 const route = useRoute();
 const props = defineProps({
 	gameList: {
@@ -65,11 +73,16 @@ const props = defineProps({
 	title: {
 		type: String,
 	},
+	newGame: {
+		type: Boolean,
+		default: false,
+	},
 	bigOneItem: {
 		type: Boolean,
 		default: true,
 	},
 });
+
 const collectGame = (game: gameInfo) => {
 	if (useUserStore().getLogin) {
 		const params = {
@@ -94,6 +107,22 @@ const gotoVenue = (gameInfo: any) => {
 		router.push({ path: "/game/venue", query: { gameOneId: gameInfo.gameOneId, gameTwoId: 0 } });
 	}
 };
+
+const onSwiper = (swiper: any) => {
+	swiperRef.value = swiper;
+};
+const goToNextSlide = () => {
+	if (isEnd.value) return;
+	isEnd.value = swiperRef.value.isEnd;
+	isBeginning.value = swiperRef.value.isBeginning;
+	swiperRef.value.slideNext();
+};
+const goToPrevSlide = () => {
+	if (isBeginning.value) return;
+	isEnd.value = swiperRef.value.isEnd;
+	isBeginning.value = swiperRef.value.isBeginning;
+	swiperRef.value.slidePrev();
+};
 </script>
 
 <style scoped lang="scss">
@@ -106,23 +135,32 @@ const gotoVenue = (gameInfo: any) => {
 		width: 24px;
 	}
 	margin-bottom: 12px;
+	.arrow {
+		background-color: var(--Butter);
+		width: 28px;
+		height: 28px;
+		display: inline-block;
+		text-align: center;
+		margin: 0 4px;
+		line-height: 28px;
+		border-radius: 4px;
+	}
 }
 .lobbyGameList {
-	display: flex;
 	.lobbyGameItem {
-		margin-right: 15px;
 		padding-top: 4px;
 		position: relative;
+		.imgBox {
+			width: 151px;
+			height: 151px;
+		}
 		.cornerMark {
 			position: absolute;
 			top: 0px;
 			left: -4px;
 			z-index: 30;
 		}
-		.imgBox {
-			height: 190px;
-			width: 190px;
-		}
+
 		.onHover {
 			display: none;
 		}
@@ -134,23 +172,21 @@ const gotoVenue = (gameInfo: any) => {
 			cursor: pointer;
 		}
 		img {
-			width: 190px;
-			height: 190px;
+			width: 151px;
+			height: 151px;
 			object-fit: cover;
-			border-top-left-radius: 12px;
-			border-top-right-radius: 12px;
+			border-radius: 8px;
 			pointer-events: none;
 		}
 		.gameInfo {
-			height: 52px;
-			width: 190px;
+			width: 151px;
+			height: 151px;
 			background: var(--Bg-1);
 			font-size: 14px;
 			color: var(--Text-1);
 			padding: 6px 12px;
 			line-height: 22px;
-			border-bottom-left-radius: 12px;
-			border-bottom-right-radius: 12px;
+			border-radius: 8px;
 			word-break: break-all;
 			display: -webkit-box; /* 必须使用 Webkit 特性布局 */
 			-webkit-line-clamp: 2; /* 限制行数为 2 行 */
@@ -167,35 +203,31 @@ const gotoVenue = (gameInfo: any) => {
 			position: absolute;
 			top: 4px;
 			left: 0;
-			width: 100%;
-			height: 190px;
-			background: rgba(0, 0, 0, 0.5);
-			border-top-left-radius: 12px;
-			border-top-right-radius: 12px;
+			width: 151px;
+			height: 151px;
+			background: rgba(0, 0, 0, 0.7);
+			backdrop-filter: blur(5px);
+			border-radius: 8px;
 			display: block;
 			display: flex;
-			.playBtn {
-				border-radius: 4px;
-				width: 130px;
-				height: 34px;
-				line-height: 34px;
-				text-align: center;
-				background: var(--Theme);
-				margin: auto;
-				cursor: pointer;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			font-size: 14px;
+			color: var(--Text-a);
+			.gameName {
+				margin-top: 10px;
 			}
 		}
 	}
-	.lobbyGameItem:first-child {
-		margin-left: 4px;
-	}
+
 	.onlyOneGame {
 		flex: 1;
 		width: 100%;
 		cursor: pointer;
 		img {
 			width: 100%;
-			height: 242px;
+			height: 334px;
 			border-radius: 12px;
 			object-fit: cover;
 		}
