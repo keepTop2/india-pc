@@ -128,9 +128,12 @@ getUserPlatformBalance();
 	.card-style {
 		width: 100%; /* 确保元素宽度为100% */
 		height: 100%;
-		padding: 18px 32px;
+		padding: 18px 32px;	
+		background: var(--Bg);  
+		border-radius: 16px;
+		position: relative;
 		//padding-bottom: 0;
-		overflow: hidden;
+		/* overflow: hidden; */
 
 		.balance {
 			display: flex;
@@ -220,23 +223,35 @@ getUserPlatformBalance();
 	}
 
 	.form {
-		background: url("../images/form.png") no-repeat;
-		background-size: 100% 100%;
+		/* background: url("../images/form.png") no-repeat;
+		background-size: 100% 100%; */
+	
+
+		&::after{
+			$height:64px;
+			content:"";
+			display: block;
+			position: absolute;
+			width: $height;
+			height: $height;
+			border-radius: $height;
+			background: var(--Bg-1); 
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 1;
+			bottom: -16%;
+		}
 	}
 
-	.icon {
-		//display: flex;
-		//align-items: center;
-		//justify-content: center;
+	.icon { 
 		position: absolute;
 		left: 50%;
-		top: 50.6%;
-		transform: translate(-50%, -50%);
+		top: 50.2%;
+		transform: translate(-50%, -50%);  
+		z-index: 2;
 	}
 
-	.to {
-		background: url("../images/to.png") no-repeat;
-		background-size: 100% 100%;
+	.to { 
 		margin-top: 10px;
 	}
 }
