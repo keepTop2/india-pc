@@ -13,25 +13,18 @@
 				<div class="info">
 					<div class="amount_info">
 						<img class="icon" :src="amount_icon" alt="" />
-						<!-- <span class="value">{{ depositOrderDetail.tradeCurrencyAmount }}</span>
-						<span class="label ml_12s">{{ UserStore.userInfo.mainCurrency }}</span> -->
-						<!-- 虚拟货币单独判断 -->
-						<template v-if="route.query.tradeWayType === 'electronic_wallet_recharge' || route.query.tradeWayType === 'crypto_currency_withdraw'">
-							<span class="value" v-if="depositOrderDetail.applyAmount">{{ getPlusMinusSign() }}{{ depositOrderDetail.applyAmount }}</span>
-							<span class="label ml_12">{{ UserStore.userInfo.mainCurrency }}</span>
-						</template>
-						<!-- 银行卡存款电子钱包存款 -->
-						<template v-else-if="!route.query.tradeWayType || route.query.tradeWayType === 'bank_card_recharge' || route.query.tradeWayType === 'electronic_wallet_recharge'">
-							<span class="value" v-if="depositOrderDetail.tradeCurrencyAmount">{{ getPlusMinusSign() }}{{ depositOrderDetail.tradeCurrencyAmount }}</span>
-							<span class="label ml_12">{{ UserStore.userInfo.mainCurrency }}</span>
-						</template>
-						<!-- 其余方式都显示  -- arriveAmount -->
-						<template v-else>
-							<span class="value" v-if="depositOrderDetail.arriveAmount">{{ getPlusMinusSign() }}{{ depositOrderDetail.arriveAmount }}</span>
-							<span class="label ml_12">{{ UserStore.userInfo.mainCurrency }}</span>
-						</template>
+						<!-- 动态显示金额 -->
+						<span class="value" v-if="displayedAmount">
+							<!-- 显示正负号和格式化后的金额 -->
+							{{ getPlusMinusSign() }}{{ common.thousands(common.formatAmount(Number(common.formatFloat(displayedAmount)))) }}
+						</span>
 					</div>
-					<template v-if="depositOrderDetail.customerStatus == '0'">
+					<template
+						v-if="
+							depositOrderDetail.customerStatus == '0' &&
+							(depositOrderDetail.depositWithdrawTypeCode == 'bank_card' || depositOrderDetail.depositWithdrawTypeCode == 'electronic_wallet')
+						"
+					>
 						<div class="date">
 							<span>{{ formattedTime }}</span>
 						</div>
@@ -44,50 +37,49 @@
 				</div>
 
 				<div class="form_info">
-					<div class="cell" v-for="item in fromFieldsList[route.query.tradeWayType]">
+					<div class="cell" v-for="item in fromFieldsList[route.query.tradeWayType]" :key="item.key">
 						<span class="label">{{ $t(`wallet['${item.label}']`) }}</span>
-						<!-- 状态处理 -->
-						<span v-if="item.key == 'customerStatus'" class="value" :class="getClass">{{ getStatusLabel() }}</span>
-						<!-- 时间处理 -->
-						<span v-else-if="item.key == 'createdTime' || item.key == 'cratedTime' || item.key == 'updatedTime'" class="value">{{
-							common.getYMDHms(depositOrderDetail[item.key as keyof depositOrderDetailRootObject], "YYYY/MM/DD HH:mm:ss")
-						}}</span>
-						<!-- 复制处理 -->
-						<span v-else-if="item.key == 'orderNo'" class="value">
-							<span>{{ depositOrderDetail[item.key as keyof depositOrderDetailRootObject] }}</span>
-							<svg-icon
-								v-if="depositOrderDetail[item.key as keyof depositOrderDetailRootObject]"
-								class="copy_icon curp ml_12"
-								name="copy"
-								size="16px"
-								v-hover-svg
-								@click="common.copy(depositOrderDetail[item.key as keyof depositOrderDetailRootObject])"
-							/>
+						<!-- 值处理 -->
+						<span class="value" :class="item.key === 'customerStatus' ? getClass : ''">
+							<!-- 状态处理 -->
+							<template v-if="item.key === 'customerStatus'">
+								{{ getStatusLabel }}
+							</template>
+							<!-- 时间处理 -->
+							<template v-else-if="timeKeys.includes(item.key)">
+								{{ common.getYMDHms(depositOrderDetail[item.key as keyof typeof depositOrderDetail], "YYYY/MM/DD HH:mm:ss") }}
+							</template>
+							<!-- 复制处理 -->
+							<template v-else-if="item.key === 'orderNo'">
+								<span>{{ depositOrderDetail[item.key as keyof typeof depositOrderDetail] }}</span>
+								<svg-icon
+									v-if="depositOrderDetail[item.key as keyof typeof depositOrderDetail]"
+									class="copy_icon curp"
+									name="copy"
+									size="16px"
+									v-hover-svg
+									@click="common.copy(depositOrderDetail[item.key as keyof typeof depositOrderDetail])"
+								/>
+							</template>
+							<!-- 手续费处理 -->
+							<template v-else-if="item.key === 'feeAmount'">
+								{{ common.thousands(common.formatFloat(depositOrderDetail[item.key as keyof typeof depositOrderDetail])) }}
+								<span>{{ mainCurrency }}</span>
+							</template>
+							<!-- 金额处理 -->
+							<template v-else-if="amountKeys.includes(item.key)">
+								{{ common.thousands(common.formatAmount(Number(common.formatFloat(depositOrderDetail[item.key as keyof typeof depositOrderDetail])))) }}
+								<span>{{ getCurrencyLabel(item.key) }}</span>
+							</template>
+							<!-- 脱敏处理 -->
+							<template v-else-if="item.key in maskKeys">
+								{{ maskFunctions[item.key as MaskFieldKey](depositOrderDetail[item.key as keyof typeof depositOrderDetail]) }}
+							</template>
+							<!-- 默认展示 -->
+							<template v-else>
+								{{ depositOrderDetail[item.key as keyof typeof depositOrderDetail] }}
+							</template>
 						</span>
-						<!-- 币种处理 -->
-						<span v-else-if="item.key == 'feeAmount'" class="value">
-							<span>{{ common.formatFloat(depositOrderDetail[item.key as keyof depositOrderDetailRootObject]) }}</span>
-							<span>{{ UserStore.userInfo.mainCurrency }}</span>
-						</span>
-						<!-- 到账金额 -->
-						<span
-							v-else-if="(item.key == 'arriveAmount' || item.key == 'applyAmount' || item.key == 'tradeCurrencyAmount') && route.query.tradeWayType !== 'crypto_currency_withdraw'"
-							class="value"
-						>
-							<span>{{ common.formatFloat(depositOrderDetail[item.key as keyof depositOrderDetailRootObject]) }}</span>
-							<span>{{ UserStore.userInfo.mainCurrency }}</span>
-						</span>
-						<!-- U到账金额处理 -->
-						<span v-else-if="item.key == 'arriveAmount' && route.query.tradeWayType === 'crypto_currency_withdraw'" class="value">
-							<span>{{ common.formatFloat(depositOrderDetail[item.key as keyof depositOrderDetailRootObject]) }}</span>
-							<span>USDT</span>
-						</span>
-						<!-- 平台币转换金额处理 -->
-						<span v-else-if="item.key == 'transferAmount'" class="value">
-							<span>{{ common.formatFloat(depositOrderDetail[item.key as keyof depositOrderDetailRootObject]) }}</span>
-							<span>{{ UserStore.userInfo.platCurrencyName }}</span>
-						</span>
-						<span v-else class="value">{{ depositOrderDetail[item.key as keyof depositOrderDetailRootObject] }}</span>
 					</div>
 
 					<!-- 银行卡提现 -->
@@ -117,7 +109,7 @@
 								<div class="line line_success"></div>
 							</div>
 							<div class="label">{{ $t(`wallet['创建充值订单']`) }}</div>
-							<div class="value">{{ common.getYMDHms(depositOrderDetail.createdTime, "YYYY/MM/DD HH:mm:ss") }}</div>
+							<div class="value">{{ common.getYMDHms(depositOrderDetail?.createdTime, "YYYY/MM/DD HH:mm:ss") }}</div>
 						</div>
 						<div class="step">
 							<div class="icon">
@@ -127,7 +119,7 @@
 								<div class="line" :class="{ line_success: depositOrderDetail.customerStatus != 0 }"></div>
 							</div>
 							<div class="label">{{ $t(`wallet['第三方商户处理中']`) }}</div>
-							<div class="value">{{ $t(`wallet['更新于']`) }}{{ common.getYMDHms(depositOrderDetail.updatedTime, "YYYY/MM/DD HH:mm:ss") }}</div>
+							<div class="value">{{ $t(`wallet['更新于']`) }}{{ common.getYMDHms(depositOrderDetail?.updatedTime, "YYYY/MM/DD HH:mm:ss") }}</div>
 						</div>
 						<div class="step">
 							<div class="icon">
@@ -189,15 +181,15 @@
 					<div class="form">
 						<div class="cell">
 							<div class="label">{{ $t(`wallet['状态']`) }}</div>
-							<div class="value" :class="getClass">{{ getStatusLabel() }}</div>
+							<div class="value" :class="getClass">{{ getStatusLabel }}</div>
 						</div>
 						<div class="cell">
 							<div class="label">{{ $t(`wallet['金额']`) }}</div>
-							<div class="value">{{ common.formatFloat(depositOrderDetail.applyAmount) }} {{ UserStore.userInfo.mainCurrency }}</div>
+							<div class="value">{{ common.formatFloat(depositOrderDetail?.applyAmount) }} {{ mainCurrency }}</div>
 						</div>
 						<div class="cell">
 							<div class="label">{{ $t(`wallet['时间']`) }}</div>
-							<div class="value">{{ common.getYMDHms(depositOrderDetail.createdTime, "YYYY/MM/DD HH:mm:ss") }}</div>
+							<div class="value">{{ common.getYMDHms(depositOrderDetail?.createdTime, "YYYY/MM/DD HH:mm:ss") }}</div>
 						</div>
 					</div>
 					<div class="cell_input">
@@ -271,6 +263,8 @@ interface depositOrderDetailRootObject {
 	cashFlowFileList?: any;
 	thirdPayUrl?: any;
 	urgeOrder?: number;
+	tradeWayType?: string;
+	transferAmount?: number;
 }
 
 const props = withDefaults(
@@ -286,6 +280,9 @@ const emit = defineEmits<{
 	(e: "CancelDepositOrder"): void;
 	(e: "ContinueRecharge"): void;
 }>();
+
+// 获取主货币类型
+const mainCurrency = computed(() => UserStore.userInfo.mainCurrency);
 
 const depositOrderDetail = ref({} as depositOrderDetailRootObject); // 订单接口详情
 const formattedTime = ref<string>(""); // 格式化倒计时为时分秒格式的响应式变量
@@ -397,7 +394,7 @@ const fromFieldsList = {
 	platform_transfer: [
 		{ label: "转换时间", key: "updatedTime" }, // 转换时间
 		{ label: "订单号", key: "orderNo" }, // 订单编号
-		{ label: "平台币转换金额", key: "transferAmount" }, // 转换金额
+		{ label: "平台币转换金额", key: "arriveAmount" }, // 转换金额
 		{ label: "汇率", key: "transferRate" }, // 转换汇率
 	],
 };
@@ -444,6 +441,122 @@ const EWalletList = [
 		key: "userPhone",
 	},
 ];
+
+// 定义通道方式映射表
+const tradeWayConfig = {
+	// 存款类型，包括银行卡充值、电子钱包充值、虚拟货币充值、人工充值、上级转账
+	deposit: [
+		"bank_card_recharge", // 银行卡充值
+		"electronic_wallet_recharge", // 电子钱包充值
+		"crypto_currency_recharge", // 虚拟货币充值
+		"manual_up", // 人工充值
+		"superior_transfer", // 上级转账
+	],
+	// 提款类型，包括人工提款、银行卡提款、电子钱包提款、虚拟货币提款
+	withdraw: [
+		"manual_down", // 人工提款
+		"bank_card_withdraw", // 银行卡提款
+		"electronic_wallet_withdraw", // 电子钱包提款
+		"crypto_currency_withdraw", // 虚拟货币提款
+	],
+	// 平台币转换类型
+	platformTransfer: ["platform_transfer"], // 平台币转换
+};
+
+// 提取通用映射表，分别对应金额字段、标题
+const fieldMap: Record<string, keyof typeof depositOrderDetail.value> = {
+	crypto_currency_recharge: "applyAmount", // 虚拟货币充值时显示的申请金额字段
+	crypto_currency_withdraw: "applyAmount", // 虚拟货币提现时显示的申请金额字段
+	bank_card_recharge: "tradeCurrencyAmount", // 银行卡充值时显示的交易货币金额字段
+	electronic_wallet_recharge: "tradeCurrencyAmount", // 电子钱包充值时显示的交易货币金额字段
+	platform_transfer: "transferAmount", // 平台币转换时显示的转账金额字段
+};
+
+const titleMap: Record<string, string> = {
+	...Object.fromEntries(tradeWayConfig.deposit.map((type) => [type, "存款详情"])),
+	...Object.fromEntries(tradeWayConfig.withdraw.map((type) => [type, "提款详情"])),
+	platform_transfer: "平台币转换详情",
+};
+
+// 通用函数：根据 tradeWayType 获取对应值
+const getMappedValue = <T>(map: Record<string, T>, defaultValue: T): T => {
+	return map[route.query.tradeWayType as string] || defaultValue;
+};
+
+// 计算显示的金额
+const displayedAmount = computed(() => {
+	const field = getMappedValue(fieldMap, "arriveAmount"); // 默认显示实际到账金额
+	return depositOrderDetail.value[field];
+});
+
+// 获取页面标题
+const navTitle = computed(() => {
+	return getMappedValue(titleMap, ""); // 默认返回空字符串
+});
+
+// 判断加减符号
+const getPlusMinusSign = () => {
+	if (tradeWayConfig.deposit.includes(route.query.tradeWayType as string)) {
+		return "+";
+	}
+	if (tradeWayConfig.withdraw.includes(route.query.tradeWayType as string)) {
+		return "-";
+	}
+	return ""; // 默认返回空字符串
+};
+
+// 状态映射表
+type Status = "0" | "1" | "2";
+const statusMap: Record<Status, { label: string; className: string }> = {
+	"0": { label: $.t('wallet["处理中"]'), className: "hint" },
+	"1": { label: $.t('wallet["成功"]'), className: "success" },
+	"2": { label: $.t('wallet["失败"]'), className: "error" },
+};
+
+// 获取状态名称
+const getStatusLabel = computed(() => {
+	const status = depositOrderDetail.value.customerStatus as Status | undefined; // 强制类型声明为 Status 或 undefined
+	return (status && statusMap[status].label) || "";
+});
+
+// 根据状态返回对应的类名
+const getClass = computed(() => {
+	const status = depositOrderDetail.value.customerStatus as Status | undefined; // 强制类型声明为 Status 或 undefined
+	return (status && statusMap[status].className) || "";
+});
+
+// 时间字段配置
+const timeKeys = ["createdTime", "cratedTime", "updatedTime"];
+
+// 金额字段配置
+const amountKeys = ["arriveAmount", "applyAmount", "tradeCurrencyAmount"];
+
+// 定义通用键类型
+type MaskFieldKey = "bankCard" | "userAccount" | "addressNo" | "userPhone";
+
+// 脱敏字段配置的类型
+const maskKeys: Record<MaskFieldKey, boolean> = {
+	bankCard: true, // 银行卡
+	userAccount: true, // 电子钱包
+	addressNo: true, // 虚拟货币地址
+	userPhone: true, // 手机号
+};
+
+// 脱敏处理方法的类型
+const maskFunctions: Record<MaskFieldKey, (value: any) => string> = {
+	bankCard: common.bankCardHiding,
+	userAccount: common.EWalletHiding,
+	addressNo: common.USDTAddressHiding,
+	userPhone: common.maskString,
+};
+
+// 根据字段动态获取货币单位
+const getCurrencyLabel = (key: string) => {
+	if (route.query.tradeWayType === "crypto_currency_withdraw" && key === "arriveAmount") {
+		return "USDT";
+	}
+	return route.query.tradeWayType === "platform_transfer" ? UserStore.userInfo.platCurrencyName : UserStore.userInfo.mainCurrency;
+};
 
 onMounted(() => {
 	if (route.query.tradeWayType === "bank_card_recharge" || route.query.tradeWayType === "electronic_wallet_recharge") {
@@ -495,19 +608,19 @@ const tradeRecordDetail = async () => {
 			route.query.tradeWayType === "crypto_currency_withdraw" ||
 			route.query.tradeWayType === "crypto_currency_recharge"
 		) {
-			depositOrderDetail.value = res.data.withdrawOrderDetailVO;
+			depositOrderDetail.value = res.data.withdrawOrderDetailVO || {};
 		}
 		// 人工加额
 		if (route.query.tradeWayType === "manual_up" || route.query.tradeWayType === "manual_down") {
-			depositOrderDetail.value = res.data.manualUpDownDetailVO;
+			depositOrderDetail.value = res.data.manualUpDownDetailVO || {};
 		}
 		// 上级转入转出
 		if (route.query.tradeWayType === "superior_transfer") {
-			depositOrderDetail.value = res.data.superTransferDetailVO;
+			depositOrderDetail.value = res.data.superTransferDetailVO || {};
 		}
 		// 平台币转换
 		if (route.query.tradeWayType === "platform_transfer") {
-			depositOrderDetail.value = res.data.platformTransferDetailVO;
+			depositOrderDetail.value = res.data.platformTransferDetailVO || {};
 		}
 	}
 };
@@ -548,7 +661,6 @@ const onUrgeOrder = async () => {
 
 // 撤销充值订单
 const onCancelDepositOrder = async () => {
-	console.log("route.query.orderNo", route.query.orderNo);
 	const params = {
 		orderNo: route.query.orderNo,
 		channelType: depositOrderDetail.value.depositWithdrawChannelType,
@@ -619,74 +731,6 @@ function formatTime(seconds: number): string {
 	const secs = seconds % 60;
 	return `${hrs.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 }
-
-// 获取页面title
-const navTitle = computed(() => {
-	if (
-		route.query.tradeWayType === "bank_card_recharge" ||
-		route.query.tradeWayType === "electronic_wallet_recharge" ||
-		route.query.tradeWayType === "crypto_currency_recharge" ||
-		route.query.tradeWayType === "manual_up" ||
-		route.query.tradeWayType === "superior_transfer"
-	) {
-		return "存款详情";
-	} else if (
-		route.query.tradeWayType === "manual_down" ||
-		route.query.tradeWayType === "bank_card_withdraw" ||
-		route.query.tradeWayType === "electronic_wallet_withdraw" ||
-		route.query.tradeWayType === "crypto_currency_withdraw"
-	) {
-		return "提款详情";
-	} else if (route.query.tradeWayType === "platform_transfer") {
-		return "平台币转换详情";
-	}
-});
-
-//  判断加减符号
-const getPlusMinusSign = () => {
-	if (
-		route.query.tradeWayType === "bank_card_recharge" ||
-		route.query.tradeWayType === "electronic_wallet_recharge" ||
-		route.query.tradeWayType === "crypto_currency_recharge" ||
-		route.query.tradeWayType === "manual_up" ||
-		route.query.tradeWayType === "superior_transfer" ||
-		route.query.tradeWayType === "platform_transfer"
-	) {
-		return "+";
-	} else if (
-		route.query.tradeWayType === "manual_down" ||
-		route.query.tradeWayType === "bank_card_withdraw" ||
-		route.query.tradeWayType === "electronic_wallet_withdraw" ||
-		route.query.tradeWayType === "crypto_currency_withdraw"
-	) {
-		return "-";
-	}
-};
-
-// 获取状态名称
-const getStatusLabel = () => {
-	if (depositOrderDetail.value.customerStatus == "0") {
-		return $.t('wallet["处理中"]');
-	} else if (depositOrderDetail.value.customerStatus == "1") {
-		return $.t('wallet["成功"]');
-	} else if (depositOrderDetail.value.customerStatus == "2") {
-		return $.t('wallet["失败"]');
-	}
-};
-
-// 根据状态返回对应的类名
-const getClass = computed(() => {
-	switch (depositOrderDetail.value.customerStatus) {
-		case "0":
-			return "hint"; // 处理中
-		case "1":
-			return "success"; // 成功
-		case "2":
-			return "error"; // 失败
-		default:
-			return ""; // 默认类
-	}
-});
 
 // 清除参数
 const clearParams = () => {
@@ -835,6 +879,7 @@ onUnmounted(() => {
 			.value {
 				display: flex;
 				align-items: center;
+				gap: 8px;
 				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;
