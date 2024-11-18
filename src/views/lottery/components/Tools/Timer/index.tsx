@@ -4,7 +4,8 @@ import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref, w
 
 import SvgIcon from "/@/components/svgIcon/index.vue";
 import { BEGIN_PAGE_DATA_INTERVAL } from "/@/views/lottery/constant/index";
-
+import { i18n } from "/@/i18n";
+const $: any = i18n.global;
 // 定义定时器组件
 export default (props?: any, callback = Function.prototype) => {
 	const seconds = computed(() => {
@@ -175,7 +176,9 @@ export default (props?: any, callback = Function.prototype) => {
 							{/* 显示日期标签 */}
 							<SvgIcon name="sports-date_tag" width="119px" height="36px" />
 						</div>
-						<div className="bet-status">{isAllowed.value ? <span class="allowed"> 投注中</span> : <span class="not-allowed">封盘中</span>}</div>
+						<div className="bet-status">
+							{isAllowed.value ? <span class="allowed">{$.t(`lottery['投注中']`)} </span> : <span class="not-allowed">{$.t(`lottery['封盘中']`)}</span>}
+						</div>
 					</div>
 
 					{/* 显示 ClockTime 组件 */}
