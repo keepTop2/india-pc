@@ -116,6 +116,21 @@ const sizeChange = (pageSize: number) => {
 			background: var(--Bg-1);
 			position: relative;
 			border-radius: 12px 12px 0 0;
+			position: relative; 
+
+			&::after{
+				content:"";
+				display: block;
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				height: 1px;
+				width: calc(100% - 65px);
+				margin-top: 6px;
+				background: var(--Line-1);
+				box-shadow: 0px 1px 0px 0px #343d48;
+				bottom: 0;
+			}
 		}
 		.title::before {
 			content: "";
