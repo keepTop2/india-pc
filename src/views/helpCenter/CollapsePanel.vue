@@ -2,13 +2,15 @@
 	<div class="collapse-panel">
 		<div class="header pr_24" @click="handleClick" :class="isOpen ? 'isOpen' : ''">
 			<div>
+				<img v-lazy-load="panel.icon" alt="" />
 				<span>{{ panel.name }}</span>
 			</div>
-			<!-- <svg-icon :name="!isOpen ? 'common-arrow_down' : 'common-common-arrow_up_on'" size="14px" /> -->
+			<svg-icon v-if="panel?.subset.length > 0" :name="!isOpen ? 'common-arrow_down' : 'common-arrow_up'" size="14px" />
 		</div>
 		<div v-show="isOpen" class="collapse-content">
 			<div v-for="(item, index) in panel?.subset" class="cell" @click="selectClass(index)" :class="subindex == index ? 'active' : ''">
-				<div class="fs_16">
+				<div class="fs_14">
+					<img v-lazy-load="item.icon" alt="" />
 					{{ item?.name }}
 				</div>
 			</div>
@@ -20,7 +22,7 @@
 const props = defineProps<{
 	isOpen: boolean; // 是否展开，由父组件控制
 	subindex: number;
-	panel: {};
+	panel: any;
 }>();
 const emit = defineEmits(["toggle", "selectClass"]); // 发送 toggle 事件
 const selectClass = (index) => {
@@ -34,7 +36,8 @@ const handleClick = () => {
 <style scoped lang="scss">
 .collapse-panel {
 	border-radius: 4px;
-	margin-bottom: 16px;
+	margin-bottom: 8px;
+	width: 216px;
 }
 
 .header {
@@ -45,15 +48,15 @@ const handleClick = () => {
 	font-weight: bold;
 	height: 44px;
 	font-size: 14px;
-	color: var(--Text-s);
+	color: var(--Text-1);
 	line-height: 44px;
 	background: var(--Bg-3);
 	border-radius: 4px;
 	padding-left: 24px;
 	img {
 		margin-right: 10px;
-		width: 4px;
-		height: 26px;
+
+		height: 18px;
 	}
 }
 .header.isOpen {
@@ -76,14 +79,15 @@ const handleClick = () => {
 		line-height: 46px;
 		border-radius: 8px;
 		color: var(--Text-1);
-		padding-left: 20px;
+		padding-left: 24px;
 		cursor: pointer;
+		width: 200px;
 		> div {
 			flex: 1;
 		}
 		img {
-			width: 22.261px;
-			height: 21.217px;
+			width: 18px;
+			height: 18px;
 		}
 		.flex-center {
 			gap: 3px;

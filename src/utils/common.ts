@@ -64,6 +64,7 @@ class Common {
 		}
 		return "";
 	}
+
 	/**
 	 * @description 转换电子钱包地址
 	 */
@@ -513,11 +514,12 @@ class Common {
 	static getCommonImgPath(path: string) {
 		return new URL(`../assets/${i18n.global.locale.value}/common/${path}`, import.meta.url).href;
 	}
+
 	static getThemeImgPath(path: string) {
 		const themesStore = useThemesStore();
-
 		return new URL(`../assets/theme/${themesStore.themeName}/${path}`, import.meta.url).href;
 	}
+
 	static getlangImgPath(path: string) {
 		const themesStore = useThemesStore();
 		return new URL(`../assets/lang/${i18n.global.locale.value}/${themesStore.themeName}/${path}`, import.meta.url).href;

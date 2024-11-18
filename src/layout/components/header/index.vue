@@ -4,14 +4,14 @@
 			<div class="login_plan">
 				<svg-icon name="common-logo" width="132px" height="16px" v-if="collapse" class="curp" @click="router.push('/')" />
 			</div>
-			<div class="flex-center" v-if="isLogin">
+			<div class="flex-center" v-if="isLogin" style="gap: 0">
 				<div class="balance_box flex-center">
 					<div class="balance" @click="isOpenplatCurrency = true">
 						<img :src="UserStore.getUserInfo.currencyIconFileUrl" alt="" style="height: 16px" class="mr_4" />
 						<span>{{ Common.thousands(UserStore.getUserInfo.totalBalance) }}</span>
 						<svg-icon name="common-arrow_down" size="16px" class="curp ml_8" />
 					</div>
-					<div class="recharge" @click="openWalletDialog">{{ $t(`common['充值']`) }}</div>
+					<div class="recharge" @click="openWalletDialog">{{ $t(`common['存款']`) }}</div>
 
 					<div class="platAmount find-in" v-if="isOpenplatCurrency" ref="platCurrency">
 						<div class="mb_12">
@@ -26,9 +26,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="flex-center message" @click="openMessageCenter" v-hover-svg>
-					<svg-icon name="message" size="32px" />
-					<span class="notice"></span>
+				<div class="flex-center message ml_24 mr_16" @click="openMessageCenter" v-hover-svg>
+					<svg-icon name="message" size="36px" />
+					<!-- <span class="notice"></span> -->
 				</div>
 				<div class="lang user">
 					<div>
@@ -47,8 +47,8 @@
 				</div>
 			</div>
 
-			<div class="flex-center" v-else>
-				<div class="loginBtn btn" @click="openLoginModal">{{ $t(`common['登录']`) }}</div>
+			<div class="flex-center" v-else style="gap: 16px">
+				<div class="loginBtn btn fs_14" @click="openLoginModal">{{ $t(`common['登录']`) }}</div>
 				<div class="registerBtn btn" @click="openRegisterModal">{{ $t(`common['注册']`) }}</div>
 			</div>
 
@@ -224,7 +224,7 @@ const logOut = () => {
 	box-shadow: 0px 4px 12px 0px rgba(14, 16, 19, 0.25);
 	color: var(--Text-1);
 	z-index: 100;
-	padding-left: 260px;
+	padding-left: 224px;
 	transition: all 0.2s ease;
 	.login_plan {
 		height: 16px;
@@ -254,10 +254,8 @@ const logOut = () => {
 			position: relative;
 			.recharge {
 				border-radius: 4px;
-				width: 78px;
-				height: 38px;
+				padding: 6px 11px;
 				text-align: center;
-				line-height: 38px;
 				background: linear-gradient(180deg, rgba(255, 40, 75, 0.1) 0%, rgba(255, 40, 75, 0.8) 100%);
 				color: var(--Text-a);
 			}
@@ -289,7 +287,7 @@ const logOut = () => {
 					}
 					button {
 						height: 26px;
-						padding: 5px 14px;
+						padding: 6px 11px;
 						font-size: 12px;
 						width: auto;
 						margin-left: auto;
@@ -356,7 +354,6 @@ const logOut = () => {
 		}
 
 		> div {
-			margin: 8px;
 			cursor: pointer;
 		}
 
@@ -371,33 +368,35 @@ const logOut = () => {
 
 		.registerBtn {
 			color: var(--Text-a);
+			height: 44px;
 			background: linear-gradient(180deg, rgba(255, 40, 75, 0.1) 0%, rgba(255, 40, 75, 0.8) 100%);
+			border-bottom: 2px solid var(--Theme);
 		}
 
 		.lang {
 			position: relative;
 
 			img {
-				width: 27px;
-				height: 27px;
+				width: 36px;
+				height: 36px;
 				border-radius: 50%;
 				padding: 2px;
-				border: 1px solid var(--light-Theme-, #ff284b);
+				border: 1px solid var(--Theme);
 			}
 		}
 	}
 }
 
-.lang::after {
-	content: "";
-	position: absolute;
-	bottom: 0px;
-	left: 50%;
-	transform: translate(-50%, 50%);
-	display: inline-block;
-	height: 14px;
-	width: 14px;
-	background: url("/@/assets/svg/dark/lang_down_icon.svg");
-	background-size: cover;
-}
+// .lang::after {
+// 	content: "";
+// 	position: absolute;
+// 	bottom: 0px;
+// 	left: 50%;
+// 	transform: translate(-50%, 50%);
+// 	display: inline-block;
+// 	height: 14px;
+// 	width: 14px;
+// 	background: url("/@/assets/svg/dark/lang_down_icon.svg");
+// 	background-size: cover;
+// }
 </style>

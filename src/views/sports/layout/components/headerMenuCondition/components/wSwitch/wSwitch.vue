@@ -69,15 +69,29 @@ const handleSwitch = (key: string) => {
 		font-weight: 400;
 		cursor: pointer;
 
+		&.tab_active {
+			position: relative;
+			z-index: 1;
+			color: var(--Text-a);
+			&::after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: var(--Theme);
+				color: var(--Text-a);
+				opacity: 0.6;
+				border-radius: 3px;
+				z-index: -1;
+			}
+		}
+
 		&.disabled {
 			opacity: 0.5;
 			cursor: not-allowed;
 		}
-	}
-
-	.tab_active {
-		background: var(--Theme);
-		color: var(--Text-a);
 	}
 	.disabled {
 		cursor: not-allowed;

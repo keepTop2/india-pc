@@ -2,7 +2,7 @@
 	<div class="banner max-width">
 		<img class="max-width mt_24" src="./image/image.png" alt="" style="width: 100%" v-if="!useUserStore().getLogin" />
 		<div class="swiper-box max-width" v-else>
-			<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="15" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
+			<Swiper :autoplay="true" :slidesPerView="3" :spaceBetween="18" :loop="true" :modules="modules" :pagination="true" class="swiper-container curp" @swiper="onSwiper">
 				<SwiperSlide v-for="(item, index) in bannerList?.length > 0 ? bannerList : 3" :key="index">
 					<img v-lazy-load="item.iconFileUrl" alt="" />
 				</SwiperSlide>
@@ -46,7 +46,6 @@ const onSwiper = (swiper: any) => {
 
 		margin: 0 auto;
 		margin-top: 20px;
-		padding: 0 10px;
 	}
 	.swiper {
 		max-width: 1308px;

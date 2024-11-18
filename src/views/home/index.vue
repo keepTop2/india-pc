@@ -1,5 +1,5 @@
 <template>
-	<div class="home-wrapper pr_10 pl_10">
+	<div class="home-wrapper">
 		<bannerSkeleton v-if="isLoading" />
 		<banner :bannerList="bannerList" v-else></banner>
 
@@ -11,7 +11,16 @@
 			<hotGameSkeleton :skeletonCount="5" v-if="isLoading" />
 			<hotGame :hotGameList="hotGameList" v-else-if="hotGameList.length" />
 			<!-- 收藏的游戏 -->
-			<collectGames :gameList="collectGamesStore.getCollectGamesList" title="喜欢的游戏" v-if="collectGamesStore.getCollectGamesList?.length" />
+
+			<!-- <lobbyGameCard
+				v-for="(item, index) in collectGamesStore.getCollectGamesList"
+				:key="index"
+				:gameList="item"
+				title="喜欢的游戏"
+				v-if="collectGamesStore.getCollectGamesList?.length"
+			/> -->
+
+			<collectGames :gameList="collectGamesStore.getCollectGamesList" title="喜欢的游戏" />
 			<!-- 我们的游戏 -->
 			<!-- <SportGame /> -->
 

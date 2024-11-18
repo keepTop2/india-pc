@@ -4,9 +4,9 @@
 			<div class="dialog-header">
 				<img src="./image/taskHeader.png" alt="" v-if="type === 'task'" />
 				<img src="./image/header.png" alt="" v-else />
-				<div class="Text3 fs_16">{{ title }}</div>
+				<div class="Text3 fs_16 pt_16 pb_14">{{ title }}</div>
 			</div>
-			<div class="dialog-content fs_14">
+			<div class="dialog-content fs_14 pb_24">
 				<slot></slot>
 			</div>
 
@@ -98,18 +98,18 @@ const goToLogin = () => {
 		padding-bottom: 10px;
 		.dialog-header {
 			text-align: center;
-			height: 101px;
 			background: url("./image/image.png") no-repeat;
 			background-size: 100% 100%;
 			font-weight: 500;
 			img {
-				width: 146px;
+				width: 174px;
 				height: 116px;
 				margin-top: -46px;
 			}
 		}
 		.dialog-content {
-			padding: 20px;
+			padding: 0 20px;
+
 			background: white;
 			text-align: center;
 			color: var(--Text3);
@@ -121,6 +121,7 @@ const goToLogin = () => {
 			width: 100%;
 			text-align: center;
 			padding: 0 20px 20px;
+
 			.common_btn {
 				width: 158px;
 				height: 46px;

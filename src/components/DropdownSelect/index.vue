@@ -8,11 +8,11 @@
 
 			<svg-icon name="common-arrow_right" size="14px" />
 		</button>
-		<div v-if="isOpen" class="dropdown-menu">
+		<div v-if="isOpen" class="dropdown-menu mt_3">
 			<div class="flex_space-between input">
-				<svg-icon name="common-search" size="14px" />
-				<input v-model="searchQuery" @input="filterOptions" placeholder="搜索货币名称或简称" class="search-input common_input fs_12" />
-				<svg-icon name="common-close" size="14px" @click="searchQuery = ''" />
+				<svg-icon name="common-search" size="14px" class="search" />
+				<input v-model="searchQuery" @input="filterOptions" placeholder="请输入货币名称或简称" class="search-input common_input fs_12" />
+				<svg-icon name="common-close" size="18px" @click="searchQuery = ''" class="close" />
 			</div>
 			<div class="line"></div>
 			<ul class="options-list">
@@ -20,11 +20,11 @@
 					v-for="option in filteredOptions"
 					:key="option.currencyCode"
 					@click="selectOption(option)"
-					class="option-item fs_10"
+					class="option-item fs_12"
 					:class="option.currencyCode == selectedOption?.currencyCode ? 'active' : ''"
 				>
-					<span> {{ option.currencyCode }}</span>
-					<span> {{ option.currencyNameI18 }}</span>
+					<span> {{ option.currencyNameI18 }}/{{ option.currencyCode }}</span>
+					<span><svg-icon :name="selectedOptionLabel == option.currencyCode ? 'common-cricle_theme' : 'common-cricle'" size="16px"> </svg-icon> </span>
 				</li>
 				<li v-if="filteredOptions.length === 0" class="no-results">暂不支持此货币</li>
 			</ul>
@@ -134,21 +134,28 @@ onUnmounted(() => {
 
 .dropdown-menu {
 	position: absolute;
-	top: calc(100% + 3px);
 	left: 0;
 	width: 100%;
+	min-height: 180px;
 	border: none;
 	border-radius: 4px;
 	background-color: var(--Bg-1);
 	z-index: 10;
 	color: var(--Text-2);
-	padding: 0 16px;
 
 	.input {
+		position: reactive;
 		background-color: var(--Bg-3);
-		margin: 5px 0;
+
 		border-radius: 4px;
-		padding: 0px 8px;
+	}
+	.close {
+		position: absolute;
+		right: 12px;
+	}
+	.search {
+		position: absolute;
+		left: 12px;
 	}
 	.line {
 		height: 1px;
@@ -157,12 +164,12 @@ onUnmounted(() => {
 	.search-input {
 		width: 100%;
 		padding: 8px;
+		padding-left: 36px;
 		box-sizing: border-box;
 		height: 34px;
 		outline: none;
-
 		border-radius: 4px;
-		background-color: var(--Bg-3);
+		background-color: var(--Bg-2);
 	}
 }
 
@@ -185,6 +192,10 @@ onUnmounted(() => {
 .option-item.active,
 .option-item:hover {
 	color: var(--Text-s);
+	background-color: var(--Bg-4);
+	svg {
+		color: var(--Theme);
+	}
 }
 
 .no-results {

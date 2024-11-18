@@ -1,6 +1,6 @@
 <template>
 	<div class="max-width security_center">
-		<div class="mt_28 mb_24 title">
+		<div class="mt_24 mb_20 title">
 			<svg-icon name="user-security" color="#fff" size="24px" />
 			<span> {{ $t(`security_center['安全中心']`) }}</span>
 		</div>
@@ -88,13 +88,13 @@ const modifyHandle = (type: string) => {
 	}
 	.content {
 		background: var(--Bg-1);
-		padding: 40px 28px;
+		padding: 30px 28px 10px;
 		border-radius: 12px;
 
 		> div {
 			height: 88px;
 			background: var(--Bg-3);
-			margin-bottom: 16px;
+			margin-bottom: 20px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;

@@ -33,11 +33,11 @@
 				</div>
 				<div class="flex_space-between">
 					<div class="bonus" :style="{ background: `url(${Common.getThemeImgPath('spinbonus_bg.png')})`, backgroundSize: '100% 100%' }">
-						<div>转盘奖金总计</div>
-						<div class="fs_14 color_Theme">{{ activityData?.totalAmount }}</div>
+						<div class="pr_18">转盘奖金总计</div>
+						<div class="fs_14 color_Theme pr_18">{{ activityData?.totalAmount }}</div>
 					</div>
 					<div class="record" @click="handleRecord" :style="{ background: `url(${Common.getThemeImgPath('spinrecord_bg.png')})`, backgroundSize: '100% 100%' }">
-						我的抽奖记录 <svg-icon name="common-arrow_right" size="16px"></svg-icon>
+						<span class="flex-center pl_18" style="gap: 5px"> 我的抽奖记录 <svg-icon name="common-arrow_right_on" size="16px"></svg-icon></span>
 					</div>
 				</div>
 				<activityRule :rule="activityData?.activityRuleI18nCode"></activityRule>
