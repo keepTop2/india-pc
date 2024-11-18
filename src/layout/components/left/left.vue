@@ -234,6 +234,7 @@ const changeCollpase = () => {
 						color: var(--Text-a);
 					}
 					img {
+						width: 34px;
 						height: 34px;
 						margin-top: 3px;
 						margin-right: 3px;

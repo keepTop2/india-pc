@@ -3,7 +3,7 @@
 		<div class="left">
 			<div class="title mb_14 fs_24 Text_s pl_20 fw_500">意见反馈</div>
 			<div class="fade-in center">
-				<div class="cell Text_s"><span class="color_Theme">*</span>问题类型</div>
+				<div class="cell Text_s"><span class="color_f1">*</span>问题类型</div>
 				<div class="cell mt_14 mb_20">
 					<Dropdown :options="typeList" v-model="state.type" placeholder="请选择问题类型"></Dropdown>
 				</div>
@@ -11,7 +11,7 @@
 					<div class="Text_s mb_16">相关订单</div>
 					<input type="text " class="common_input" placeholder="请输入相关订单号" />
 				</div>
-				<div class="cell Text_s mb_16"><span class="color_Theme">*</span>问题描述 <span class="fs_12 Text2">内容介于10~500字</span></div>
+				<div class="cell Text_s mb_16"><span class="color_f1">*</span>问题描述 <span class="fs_12 Text2">内容介于10~500字</span></div>
 				<div class="textareaBox">
 					<textarea
 						v-model="state.content"
@@ -206,6 +206,10 @@ const getfeedbackList = () => {
 	padding: 14px;
 	color: var(--Text-s);
 	border: 1px solid var(--Bg-3);
+
+	&::placeholder{ 
+		color: var(--Text-2-1); 
+	}
 }
 .textareaBox {
 	position: relative;

@@ -47,8 +47,8 @@
 				</div>
 			</div>
 
-			<div class="flex-center" v-else>
-				<div class="loginBtn btn" @click="openLoginModal">{{ $t(`common['登录']`) }}</div>
+			<div class="flex-center" v-else style="gap: 16px">
+				<div class="loginBtn btn fs_14" @click="openLoginModal">{{ $t(`common['登录']`) }}</div>
 				<div class="registerBtn btn" @click="openRegisterModal">{{ $t(`common['注册']`) }}</div>
 			</div>
 
@@ -371,7 +371,9 @@ const logOut = () => {
 
 		.registerBtn {
 			color: var(--Text-a);
+			height: 44px;
 			background: linear-gradient(180deg, rgba(255, 40, 75, 0.1) 0%, rgba(255, 40, 75, 0.8) 100%);
+			border-bottom: 2px solid var(--Theme);
 		}
 
 		.lang {
@@ -382,7 +384,7 @@ const logOut = () => {
 				height: 27px;
 				border-radius: 50%;
 				padding: 2px;
-				border: 1px solid var(--light-Theme-, #ff284b);
+				border: 1px solid var(--Theme);
 			}
 		}
 	}

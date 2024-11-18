@@ -92,7 +92,8 @@ function selectOption(option: any) {
 .dropdown-item {
 	padding: 8px 0;
 	cursor: pointer;
-	color: var(--Text-1);
+	color: var(--Text-1); 
+	font-size: 14px;
 }
 .select {
 	background-color: var(--Bg-2);

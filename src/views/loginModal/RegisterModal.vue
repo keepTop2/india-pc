@@ -27,11 +27,11 @@
 	
 					</FromInput>
 					</p>
-					<p v-show="VerifyError.userAccount" class="Wran_text fs_10 mt_2">{{ $t(`login['账号规则']`) }}</p>
+					<p v-show="VerifyError.userAccount" class="Wran_text fs_12 mt_2">{{ $t(`login['账号规则']`) }}</p>
 				</div>
 				<!-- 密码 -->
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
+					<p class="Text_s mb_8 mt_16 fs_14"><span class="Wran_text">*</span>{{ $t(`login['登录密码']`) }}</p>
 					<p class="common_password">
 						<FromInput
 							:type="showPassword ? 'text' : 'password'"
@@ -47,17 +47,15 @@
 						</template>
 	
 						<template #right>
-							<span  @click="showPassword = !showPassword">
-								<svg-icon :name="!showPassword ? 'eyes_on' : 'eyes'" size="14px" />
-							</span>
+							<svg-icon :name="!showPassword ? 'eyes_on' : 'eyes'" size="18px"  @click="showPassword = !showPassword"/>
 						</template>
 						</FromInput>
 					</p>
-					<p v-show="VerifyError.passWord" class="Wran_text fs_10 mt_2">{{ $t(`login['密码规则']`) }}</p>
+					<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
 				</div>
 				<!-- 确认密码 -->
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
+					<p class="Text_s mb_8 mt_16 fs_14"><span class="Wran_text">*</span>{{ $t(`login['确认密码']`) }}</p>
 					<p class="common_password">
 						<FromInput
 							:type="showConfirmPassword ? 'text' : 'password'"
@@ -72,20 +70,18 @@
 						</template>
 			
 						<template #right>
-							<span  @click="showConfirmPassword = !showConfirmPassword">
-								<svg-icon :name="!showConfirmPassword ? 'eyes_on' : 'eyes'" size="14px" />
-							</span>
+							<svg-icon :name="!showConfirmPassword ? 'eyes_on' : 'eyes'" size="18px"  @click="showConfirmPassword = !showConfirmPassword"/>
 						</template>
 						</FromInput>
 				
 					</p>
-					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_10 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
+					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
 				</div>
 
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_14"><span class="Wran_text">*</span>{{ $t(`login['主货币']`) }}</p>
+					<p class="Text_s mb_8 mt_16 fs_14"><span class="Wran_text">*</span>{{ $t(`login['主货币']`) }}</p>
 					<p style="height: 46px">
-						<DropdownSelect :options="options" :placeholder="$t(`login['选择货币']`)" @update:modelValue="handleSelect" :model="payLoad.mainCurrency" />
+						<DropdownSelect :options="options" :placeholder="$t(`login['请选择']`)" @update:modelValue="handleSelect" :model="payLoad.mainCurrency" />
 					</p>
 				</div>
 
@@ -125,10 +121,10 @@
 
 					<span>{{ $t(`login['我同意接收']`) }}[<span class="">oksport</span>]{{ $t(`login['的营销促销信息']`) }}</span>
 				</div>
-				<div class="mt_16 mb_16">
+				<div class="mt_32 mb_12">
 					<Button :disabled="disabledBtn || !isOnloadScript"  @click="onLogin">{{ $t(`login['注册']`) }}</Button>
 				</div>
-				<div class="flex-center fs_12">
+				<div class="flex-center fs_14">
 					<div class="Text1">
 						{{ $t(`login['已有账号']`) }}<span class="color_Theme curp" @click="toLogin">{{ $t(`login['登录']`) }}</span>
 					</div>
@@ -290,7 +286,7 @@ const toLogin = () => {
 	}
 	.login_right_form {
 		height: 100%;
-		padding: 18px 25px;
+		padding: 24px;
 		overflow-y: auto;
 		.common_password {
 			position: relative;

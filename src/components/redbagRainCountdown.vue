@@ -109,14 +109,14 @@ const onMouseMove = (event: MouseEvent) => {
 		isDragging.value = true;
 		clickDisabled.value = true;
 		// 获取父元素的父元素
-		const grandParentElement: any = draggable.value?.parentElement;
+		const grandParentElement: any = document.documentElement.querySelector(".home-wrapper");
 		if (grandParentElement) {
 			const grandParentRect = grandParentElement?.getBoundingClientRect(); // 获取父元素的父元素的边界
 			position.value.x = event.clientX - offset.value.x;
 			position.value.y = event.clientY - offset.value.y;
 			// 限制拖动范围在父元素的父元素的 x 轴范围内
 			position.value.x = Math.max(grandParentRect.left, Math.min(grandParentRect.right - 100, position.value.x));
-			position.value.y = Math.max(64, Math.min(window.innerHeight - 100, position.value.y)); // Y 轴限制
+			position.value.y = Math.min(window.innerHeight - 100, position.value.y); // Y 轴限制
 		}
 	}
 };
@@ -131,13 +131,13 @@ const onMouseUp = () => {
 };
 // 拖拽功能
 const updatePosition = () => {
-	const parentElement = draggable.value?.parentElement; // 获取父元素
+	const parentElement = document.documentElement.querySelector(".home-wrapper");
 	const grandParentElement: any = draggable.value?.parentElement;
 	const grandParentRect = grandParentElement?.getBoundingClientRect(); // 获取父元素的父元素的边界
 	if (parentElement) {
 		// 设置初始 Y 轴位置
 		position.value.x = Math.max(grandParentRect.left, Math.min(grandParentRect.right - 100, position.value.x));
-		position.value.y = Math.max(64, Math.min(window.innerHeight - 100, position.value.y)); // Y 轴限制
+		position.value.y = Math.min(window.innerHeight - 100, position.value.y); // Y 轴限制
 	}
 };
 const closeRedbagRainCountdown = () => {
@@ -145,10 +145,10 @@ const closeRedbagRainCountdown = () => {
 };
 // 初始化
 onMounted(() => {
-	const parentElement = draggable.value?.parentElement;
+	const parentElement = document.documentElement.querySelector(".home-wrapper");
 	if (parentElement) {
-		const parentRect = parentElement?.getBoundingClientRect();
 		// 初始化位置靠右对齐
+		const parentRect = parentElement?.getBoundingClientRect();
 		position.value.x = parentRect.right - 115; // 右对齐
 		position.value.y = 500; // Y 轴限制仍在窗口内
 	}

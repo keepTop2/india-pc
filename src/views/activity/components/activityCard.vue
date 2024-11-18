@@ -1,6 +1,6 @@
 <template>
 	<div class="cardList">
-		<div v-for="(item, index) in activityList" :key="index" class="cardBox">
+		<div v-for="(item, index) in activityList" :key="index" class="cardBox" @click="showDetails(item)">
 			<div>
 				<img v-lazy-load="item.entrancePicturePcI18nCodeFileUrl" alt="" />
 			</div>
@@ -10,7 +10,7 @@
 					<p class="fs_14 Text2" v-else>长期活动</p>
 					<p class="fs_14">{{ item.activityNameI18nCode }}</p>
 				</div>
-				<div class="btn" @click="showDetails(item)">查看详情</div>
+				<div class="btn">查看详情</div>
 			</div>
 		</div>
 	</div>

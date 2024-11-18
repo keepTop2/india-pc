@@ -129,7 +129,7 @@ const onSubmit = async () => {
 <style lang="scss" scoped>
 .ChangePasswordWrapper {
 	width: 448px;
-	height: 542px;
+	height: 602px;
 	border-radius: 12px;
 	.ChangePassword_form {
 		padding: 25px 32px;
