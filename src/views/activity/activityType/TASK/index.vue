@@ -224,8 +224,14 @@ const confirmDialog = () => {
 <style scoped lang="scss">
 .activityMain {
 	background: linear-gradient(180deg, rgba(239, 139, 73, 0.3) -1.74%, rgba(27, 27, 27, 0) 101.62%);
+	.Content {
+		margin-top: -105px;
+		position: absolute;
+		width: 100%;
+	}
 }
 .activityImg {
+	z-index: -1;
 	img {
 		height: 384px;
 	}
