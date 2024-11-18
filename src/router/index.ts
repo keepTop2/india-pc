@@ -108,7 +108,6 @@ const routes = [
 				component: () => import("/@/views/helpCenter/index.vue"),
 				meta: {
 					title: "helpCenter",
-					idx: 1,
 				},
 			},
 			{

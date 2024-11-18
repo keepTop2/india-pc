@@ -1,7 +1,7 @@
 <template>
 	<div class="max-width pl_10 pr_10">
 		<div class="title mt_15 mb_15">
-			<span class="fs_20 Text_s"> 帮助中心 </span>
+			<span class="fs_20 Text_s fw_500"> 帮助中心 </span>
 		</div>
 		<div class="wrapper">
 			<div class="tabs">
@@ -17,14 +17,16 @@
 			</div>
 			<div class="content" v-ok-loading="contentLoading">
 				<div class="tabs2">
-					<div v-for="(item, index) in subClassList" :class="activeTab == index ? 'active' : ''" class="curp" @click="setActiveTab(index)">{{ item.name }}</div>
+					<div v-for="(item, index) in subClassList" :class="activeTab == index ? 'active' : ''" class="curp" @click="setActiveTab(index)">
+						<img v-lazy-load="item.icon" alt="" />{{ item.name }}
+					</div>
 				</div>
 				<div class="line"></div>
 				<div class="mt_16 valueBox">
 					<div class="card mb_32" v-for="item in subClassList[activeTab]?.subset">
 						<div class="title">{{ item.name }}</div>
 						<div class="value Text1">
-							<p v-for="item in 100">123123</p>
+							{{ item.value }}
 						</div>
 					</div>
 				</div>
@@ -50,6 +52,7 @@ onMounted(() => {
 });
 const setActivePanel = (index: number) => {
 	if (activeIndex.value === index) {
+		activeIndex.value = null;
 		return;
 	} else {
 		activeIndex.value = index;
@@ -119,15 +122,24 @@ const getContent = () => {
 		color: var(--Text-s);
 		border-bottom: 2px solid var(--Theme);
 	}
+	> div {
+		display: flex;
+		align-items: center;
+		img {
+			width: 24px;
+			height: 24px;
+			margin-right: 8px;
+		}
+	}
 }
 .line {
 	height: 1px;
 	background: var(--Line-1);
-	box-shadow: 0px 1px 0px 0px #343d48;
+	box-shadow: 0px 1px 0px 0px var(--lineBg);
 }
 .content {
 	padding: 20px;
-	width: 100%;
+	width: calc(100% - 240px);
 	border-radius: 12px;
 	min-height: calc(100vh - 210px);
 	background: var(--Bg-1);

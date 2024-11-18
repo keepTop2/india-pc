@@ -1,6 +1,6 @@
 <template>
 	<div class="menu_row" :class="collapse ? 'collapse' : ''">
-		<div class="menu_item" v-if="ActivitySwitch?.includes('DAILY_COMPETITION')" @click="useModalStore().openModal('DAILY_COMPETITION')">
+		<div class="menu_item" v-if="ActivitySwitch?.includes('DAILY_COMPETITION')" @click="openDAILY_COMPETITION">
 			<span class="menu_icon"><svg-icon name="common-DAILY_COMPETITION" size="20px"></svg-icon></span>
 			<span class="menu_name ellipsis">每日竞赛</span>
 		</div>
@@ -87,7 +87,13 @@ const LangIcon = computed(() => {
 const collapse = computed(() => {
 	return MenuStore.getCollapse;
 });
-
+const openDAILY_COMPETITION = () => {
+	if (!UserStore.getLogin) {
+		useModalStore().openModal("LoginModal");
+	} else {
+		useModalStore().openModal("DAILY_COMPETITION");
+	}
+};
 watch(
 	() => [route.query.gameTwoId, route.query.gameOneId, routerObj.value, route.name],
 	() => {
@@ -166,7 +172,7 @@ const selectMenu = (item: any, index: number, isArrow?: boolean) => {
 	.menu_item {
 		height: 40px;
 		margin-top: 4px;
-		padding: 0 20px;
+		padding: 0 13px;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
@@ -190,7 +196,7 @@ const selectMenu = (item: any, index: number, isArrow?: boolean) => {
 		.menu_name {
 			flex: 4;
 			overflow: hidden;
-			padding: 0 16px;
+			padding: 0 12px;
 			box-sizing: border-box;
 			text-align: left;
 		}
@@ -229,6 +235,7 @@ const selectMenu = (item: any, index: number, isArrow?: boolean) => {
 			display: flex;
 			align-items: center;
 			padding: 0 25px;
+			height: 46px;
 			color: var(--Text-1);
 			font-size: 13px;
 			border-bottom: 2px solid transparent;
@@ -248,16 +255,10 @@ const selectMenu = (item: any, index: number, isArrow?: boolean) => {
 	}
 
 	.menu_icon {
-		width: 40px;
 		height: 100%;
 		text-align: center;
-		display: flex;
-		img {
-			margin: 13px auto;
-		}
-		svg {
-			margin: 13px auto;
-		}
+		width: 20px;
+		height: 20px;
 	}
 	&.collapse {
 		width: 52px;

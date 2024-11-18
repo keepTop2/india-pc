@@ -9,7 +9,7 @@
 			<div class="login_form">
 				<!-- 第一步 -->
 				<div v-if="currentStep === 0">
-					<p class="Text_s mb_8 mt_8 fs_12"><span class="color_F1">*</span>{{ $t(`login['账号']`) }}</p>
+					<p class="Text_s mb_8 mt_8 fs_14"><span class="color_F1">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
 						<FromInput
 							type="text"
@@ -30,12 +30,12 @@
 				<!-- 第二步 -->
 				<div v-else-if="currentStep === 1">
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_14"><span class="color_F1">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
+						<p class="Text_s mb_6 mt_8 fs_14"><span class="color_F1">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
 						<p>
 							<FromInput
 								type="text"
 								v-model="payLoad.email"
-								:placeholder="$t(`login['输入邮箱']`)"
+								:placeholder="$t(`login['请输入电子邮箱']`)"
 								@input="emailOnInput"
 								v-if="verifyType == 'email'"
 								:class="userVerifyTypeVerifyError ? 'verifyError' : ''"
@@ -47,11 +47,11 @@
 							<AreaCode v-else @update:modelValue="areaCodeInput" :options="AreaCodeOptions" :type="verifyType" :class="userVerifyTypeVerifyError ? 'verifyError' : ''"></AreaCode>
 						</p>
 						<p v-show="userVerifyTypeVerifyError" class="color_F1 fs_12 mt_2">
-							{{ verifyType == "email" ? $t(`login['电子邮箱不正确']`) : $t(`security_center['请输入8-12位数字']`, { min: minLength, max: maxLength }) }}
+							{{ verifyType == "email" ? $t(`login['电子邮箱格式不正确']`) : $t(`security_center['请输入8-12位数字']`, { min: minLength, max: maxLength }) }}
 						</p>
 					</div>
 					<div>
-						<p class="Text_s mt_8 fs_14"><span class="color_F1">*</span>{{ $t(`login['验证码']`) }}</p>
+						<p class="Text_s mt_16 fs_14"><span class="color_F1">*</span>{{ $t(`login['验证码']`) }}</p>
 						<p>
 							<VerificationCode
 								@VerificationCodeInput="VerificationCodeInput"
@@ -71,8 +71,8 @@
 							/>
 						</p>
 					</div>
-					<p class="fs_12 Text1 mt_16 fw_200">
-						{{ $t(`login['有效时间']`) }}<span class="color_F2" @click="Common.getSiteCustomerChannel">{{ $t(`login['联系客服']`) }}</span>
+					<p class="fs_12 Text1 mt_6 fw_200">
+						{{ $t(`login['有效时间']`) }}<span class="color_F2 ml_4" @click="Common.getSiteCustomerChannel">{{ $t(`login['联系客服']`) }}</span>
 					</p>
 				</div>
 				<!-- 第三步 -->
@@ -133,7 +133,7 @@
 				<div class="mt_40 mb_12 text-center">
 					<Button :disabled="disabledBtn" @click="onNextStep(currentStep)" class="mb_6">{{ currentStep === 2 ? "确定" : $t(`login['下一步']`) }}</Button>
 					<div style="text-decoration: underline" class="flex-center mt_12 color_F2 fs_12 curp" v-if="currentStep === 0" @click="Common.getSiteCustomerChannel">联系客服</div>
-					<span @click="changeVerifyType" v-if="currentStep === 1" class="color_Theme fs_12">{{ $t(`login['其他验证方式']`) }}</span>
+					<span style="text-decoration: underline" @click="changeVerifyType" v-if="currentStep === 1" class="color_Theme fs_12">{{ $t(`login['其他验证方式']`) }}</span>
 				</div>
 			</div>
 		</div>
@@ -402,7 +402,7 @@ const onSubmit = async (token: string) => {
 	background-position: top, bottom left;
 
 	.login_right_form {
-		padding: 25px 32px;
+		padding: 25px 24px;
 		.common_password {
 			position: relative;
 			.eyes {

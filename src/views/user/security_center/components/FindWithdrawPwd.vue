@@ -301,7 +301,7 @@ const onSubmit = async (token: string) => {
 <style lang="scss" scoped>
 .loginWrapper {
 	width: 448px;
-	height: 542px;
+	height: 602px;
 
 	.login_left_img {
 		img {

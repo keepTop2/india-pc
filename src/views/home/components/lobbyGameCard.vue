@@ -1,14 +1,14 @@
 <template>
-	<div class="mt_40 pr_10 pl_10" v-if="gameList?.gameInfoList?.length">
+	<div class="mt_36" v-if="gameList?.gameInfoList?.length">
 		<div class="cardHeader">
 			<div>
-				<span class="flex-center">
+				<span class="flex-center" style="gap: 12px">
 					<img v-lazy-load="newGame ? newGameIcon : gameList?.iconFileUrl" alt="" />
 					<span class="Text_s fs_20">{{ title ? title : gameList?.name ? gameList?.name : "热门推荐" }}</span>
 				</span>
 			</div>
 			<div class="more Text1 fs_18 curp" v-if="gameList?.gameInfoList?.length !== 1">
-				<span @click="gotoVenue(gameList)">更多</span>
+				<span @click="gotoVenue(gameList)" class="mr_4">更多</span>
 				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'common-arrow_left' : 'common-arrow_left_on'" width="8" height="12" /></span>
 				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'common-arrow_right' : 'common-arrow_right_on'" width="8" height="12" /></span>
 			</div>
@@ -160,6 +160,10 @@ const goToPrevSlide = () => {
 	.lobbyGameItem {
 		padding-top: 4px;
 		position: relative;
+		.imgBox {
+			width: 151px;
+			height: 151px;
+		}
 		.cornerMark {
 			position: absolute;
 			top: 0px;
@@ -178,14 +182,14 @@ const goToPrevSlide = () => {
 			cursor: pointer;
 		}
 		img {
-			width: 100%;
+			width: 151px;
 			height: 151px;
 			object-fit: cover;
 			border-radius: 8px;
 			pointer-events: none;
 		}
 		.gameInfo {
-			width: 100%;
+			width: 151px;
 			height: 151px;
 			background: var(--Bg-1);
 			font-size: 14px;
@@ -209,7 +213,7 @@ const goToPrevSlide = () => {
 			position: absolute;
 			top: 4px;
 			left: 0;
-			width: 100%;
+			width: 151px;
 			height: 151px;
 			background: rgba(0, 0, 0, 0.7);
 			backdrop-filter: blur(5px);
@@ -233,7 +237,7 @@ const goToPrevSlide = () => {
 		cursor: pointer;
 		img {
 			width: 100%;
-			height: 242px;
+			height: 334px;
 			border-radius: 12px;
 			object-fit: cover;
 		}

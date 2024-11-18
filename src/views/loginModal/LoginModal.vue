@@ -46,9 +46,7 @@
 						</template>
 	
 						<template #right>
-							<span  @click="showPassword = !showPassword">
-								<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" />
-							</span>
+							<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="18px"  @click="showPassword = !showPassword"/>
 						</template>
 		
 					</FromInput>
@@ -66,7 +64,7 @@
 						/>
 						{{ $t(`login['记住密码']`) }}
 					</div>
-					<div class="Text_s curp fs_12 ForgetPassword" @click="forgetPassword">{{ $t(`login['忘记密码']`) }}？</div>
+					<div class="Text1 curp fs_12 ForgetPassword" @click="forgetPassword">{{ $t(`login['忘记密码']`) }}？</div>
 				</div>
 
 				<!-- 登录按钮 -->
@@ -80,7 +78,7 @@
 				<div class="flex_space-between fs_14">
 					<div class="Text1">
 						{{ $t(`login['新用户']`) }}？
-						<span class="Wran_text curp" @click="toRegister">
+						<span class="color_Theme curp" @click="toRegister">
 							{{ $t(`login['创建账号']`) }}
 						</span>
 					</div>
@@ -231,7 +229,7 @@ const toRegister = () => {
 	background-position: top, bottom left;
 	position: relative;
 	.login_right_form {
-		padding: 18px 25px;
+		padding: 24px 24px;
 		.common_password {
 			position: relative;
 			.eyes {
