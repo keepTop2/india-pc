@@ -45,10 +45,9 @@ const toPath = (item) => {
 		gap: 18px;
 		margin: 0 auto;
 		padding: 24px 20px;
-		box-sizing: border-box;
-
+		box-sizing: content-box;
 		.Menu_Bar {
-			width: 240px;
+			min-width: 240px;
 			height: 100%;
 			display: grid;
 			gap: 8px;
@@ -56,6 +55,7 @@ const toPath = (item) => {
 			border-radius: 12px;
 			background: var(--Bg-1);
 			user-select: none;
+			box-sizing: border-box;
 			.menu {
 				width: 100%;
 				height: 44px;
@@ -97,7 +97,8 @@ const toPath = (item) => {
 		}
 
 		.main {
-			flex: 1;
+			// flex: 1;
+			min-width: 1050px;
 		}
 	}
 }

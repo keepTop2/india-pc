@@ -374,7 +374,7 @@ getRechargeWayList();
 		height: 164px;
 	}
 	p {
-		color: var(--Text2_2);
+		color: var(--Text-2);
 		text-align: center;
 		font-family: "PingFang SC";
 		font-size: 14px;

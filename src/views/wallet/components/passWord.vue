@@ -12,7 +12,10 @@
 				</div>
 				<div class="main">
 					<div class="cell">
-						<input v-model="password" @input="onPasswordInput" type="password" maxlength="6" />
+						<input v-model="password" @input="onPasswordInput" :type="showPassword ? 'password' : 'text'" maxlength="6" />
+						<span @click="showPassword = !showPassword" class="pointer">
+							<svg-icon :name="showPassword ? 'eyes' : 'eyes_on'" size="14px" />
+						</span>
 					</div>
 				</div>
 				<!-- 确认按钮 -->
@@ -54,6 +57,8 @@ const emit = defineEmits<{
 
 // 内部管理 password
 const password = ref(props.password || "");
+// 显示密码
+const showPassword = ref(true);
 
 // 监听 props.password 的变化
 watch(
