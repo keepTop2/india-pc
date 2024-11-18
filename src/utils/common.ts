@@ -64,6 +64,24 @@ class Common {
 		}
 		return "";
 	}
+	/**
+	 * @description 转换电子钱包地址
+	 */
+	static EWalletHiding(value: string) {
+		if (value) {
+			const length = value.length;
+			if (length > 6) {
+				const hiddenChars = " **** **** ";
+				return value.slice(0, 3) + hiddenChars + value.slice(-3);
+			} else if (length <= 6) {
+				const hiddenChars = " ** ";
+				return value.slice(0, 2) + hiddenChars + value.slice(-2);
+			} else {
+				return value; // 如果长度不足3位，返回原值
+			}
+		}
+		return "";
+	}
 
 	/**
 	 * @description 转换USDT地址
@@ -139,8 +157,9 @@ class Common {
 	 * @param n 几位小数
 	 * @returns
 	 */
-	static formatFloat(num: number | string, n: number = 2) {
-		const f_x = parseFloat(num);
+	static formatFloat(num: number | string | null | undefined, n: number = 2) {
+		if (!num) return;
+		const f_x = parseFloat(String(num));
 		if (isNaN(f_x)) {
 			return "0.00";
 		}
@@ -210,8 +229,9 @@ class Common {
 	 * @params timeStamp 时间戳
 	 * @params format 格式 默认'YYYY-MM-DD HH:mm:ss'
 	 */
-	static getYMDHms(timeStamp: number, format?: string) {
-		return moment(timeStamp).format(format || "YYYY-MM-DD HH:mm:ss");
+	static getYMDHms(timeStamp: number | null | undefined, format?: string) {
+		if (!timeStamp) return;
+		if (timeStamp) return moment(timeStamp).format(format || "YYYY-MM-DD HH:mm:ss");
 	}
 
 	/**
@@ -344,7 +364,8 @@ class Common {
 	/**
 	 *  @describe 三位数分割逗号
 	 */
-	static thousands(num: number) {
+	static thousands(num: number | string | null | undefined) {
+		if (!num) return;
 		if (num || num == 0) {
 			var str = String(num);
 			var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;

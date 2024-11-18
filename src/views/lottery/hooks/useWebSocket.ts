@@ -34,7 +34,17 @@ let dynamicFallbackFn = Function.prototype;
  * @param
  * @returns
  */
-const BASE_URL = (window as any)["PLATFROM_CONFIG"].developmentLotteryWsURL;
+const getPrefix = () => {
+	switch (import.meta.env.VITE_BASEENV) {
+		case "development":
+			return (window as any)["PLATFROM_CONFIG"].developmentLotteryWsURL;
+		case "production":
+			return (window as any)["PLATFROM_CONFIG"].productionLotteryWsUrl;
+		default:
+			return "";
+	}
+};
+const BASE_URL = getPrefix();
 const instancesMap: InstancesMap = {};
 export function useWebSocket({ callback = Function.prototype, fallbackFn = Function.prototype, baseURL = BASE_URL }) {
 	let websocketInstance = instancesMap[baseURL];

@@ -205,7 +205,7 @@ const updateModelValue = (e: any) => {
 			// .is-not-in-month {
 			// 	* {
 			// 		opacity: 1;
-			// 		color: var(--Text-2_2) !important;
+			// 		color: var(--Text-2) !important;
 			// 	}
 			// }
 

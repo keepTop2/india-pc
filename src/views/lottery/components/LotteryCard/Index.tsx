@@ -4,6 +4,7 @@ import { defineComponent } from "vue";
 import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息 store
 import Common from "/@/utils/common";
 import useTimer from "/@/views/lottery/components/Tools/Timer";
+import { useRouter } from "vue-router";
 
 // 主组件，使用 useTimer 获取计时器相关的状态和方法
 export default () => {

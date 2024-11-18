@@ -155,7 +155,7 @@ const walletLayout = {
 			name: "bettingRecords",
 			component: () => import("/@/views/wallet/bettingRecords/bettingRecords.vue"),
 			meta: {
-				title: $.t("wallet['投注纪录']"),
+				title: $.t("wallet['投注记录']"),
 				icon: "bettingRecords",
 				active_icon: "bettingRecords_active",
 			},
