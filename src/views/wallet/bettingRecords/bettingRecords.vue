@@ -127,7 +127,7 @@
 						<el-table-column v-else-if="item.label == '输赢金额'" :label="item.label" :prop="item.props" align="center">
 							<template #default="{ row }">
 								<div v-if="row.orderClassify" :style="{ color: String(row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
-									{{ String(row.winLossAmount).indexOf("-") > -1 ? row.winLossAmount : "+" + row.winLossAmount }} CNY
+									{{ row.winLossAmount ? (String(row.winLossAmount).indexOf("-") > -1 ? row.winLossAmount : "+" + row.winLossAmount) : "-" }} CNY
 								</div>
 								<div v-else>-</div>
 							</template>
@@ -244,9 +244,8 @@ const pageQuery = (type?: boolean) => {
 		if (!res.data) return (tableData.value = []);
 		totalVO.value = res.data.totalVO;
 		console.log("=>(bettingRecords.vue:223) totalVO", totalVO);
-
 		let rows = res.data[fieldMap[params.venueType]];
-    console.log("=>(bettingRecords.vue:249) rows", rows);
+		console.log("=>(bettingRecords.vue:249) rows", rows);
 
 		tableData.value = rows.records || rows;
 		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
@@ -347,7 +346,10 @@ handleQuery();
 function getTableType() {
 	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.welfareCenterRewardType[0]);
 	if (!selectCurrent || !selectCurrent.text) return;
+	console.log(colmunsrow, "colmunsrow====");
+
 	tableColumns.value = colmunsrow.value[selectCurrent.text];
+	console.log(tableColumns.value, "tableColumns.value");
 }
 </script>
 
