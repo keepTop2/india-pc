@@ -16,6 +16,9 @@
 						<div class="tag" v-if="item.recommendFlag == 1">{{ $t(`wallet['推荐']`) }}</div>
 						<img class="icon" v-lazy-load="item.wayIconUrl" alt="" />
 						<div class="label">{{ item.rechargeWay }}</div>
+						<transition name="active_icon">
+							<img v-if="item.rechargeTypeCode == rechargeWayData?.rechargeTypeCode && item.networkType == rechargeWayData?.networkType" class="active_icon" :src="active_icon" />
+						</transition>
 					</div>
 				</div>
 			</div>
@@ -51,7 +54,8 @@
 									}
 								"
 							>
-								{{ item }}
+								<span>{{ item }}</span>
+								<transition name="active_icon"><img v-if="amountItemActive === index" class="active_icon" :src="active2_icon" /></transition>
 							</div>
 						</div>
 						<div class="cell mt_16">
@@ -135,6 +139,8 @@ import { computed, reactive, ref } from "vue";
 import QrcodeVue from "qrcode.vue";
 import Card from "../components/card.vue";
 import noData from "/@/assets/zh-CN/wallet/noData.png";
+import active_icon from "/@/assets/zh-CN/wallet/active.png";
+import active2_icon from "/@/assets/zh-CN/wallet/active2.png";
 import { walletApi } from "/@/api/wallet";
 import common from "/@/utils/common";
 import { useUserStore } from "/@/stores/modules/user";
@@ -453,6 +459,7 @@ getRechargeWayList();
 		flex-wrap: wrap;
 		gap: 16px;
 		.amount_item {
+			position: relative;
 			width: 120px;
 			height: 38px;
 			display: flex;
@@ -475,6 +482,25 @@ getRechargeWayList();
 		}
 	}
 
+	.active_icon {
+		position: absolute;
+		bottom: 0px;
+		right: 0px;
+		width: 28px;
+		height: 24px;
+		opacity: 1;
+	}
+
+	/* 过渡效果 */
+	.active_icon-enter-active,
+	.active_icon-leave-active {
+		transition: opacity 0.2s;
+	}
+
+	.active_icon-enter-from,
+	.active_icon-leave-to {
+		opacity: 0;
+	}
 	.cell {
 		max-width: 450px;
 		height: 40px;
@@ -497,6 +523,7 @@ getRechargeWayList();
 			font-weight: 500;
 			&::placeholder {
 				color: var(--Text-2);
+				font-weight: 400;
 			}
 		}
 		.label {

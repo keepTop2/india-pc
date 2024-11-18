@@ -39,67 +39,76 @@ const toPath = (item) => {
 @media (min-width: 1100px) {
 	.wallet_container {
 		max-width: 1308px;
-		// height: 100%;
 		display: flex;
 		justify-content: space-between;
 		gap: 18px;
 		margin: 0 auto;
 		padding: 24px 20px;
 		box-sizing: content-box;
-		.Menu_Bar {
-			min-width: 240px;
-			height: 100%;
-			display: grid;
-			gap: 8px;
-			padding: 12px;
-			border-radius: 12px;
-			background: var(--Bg-1);
-			user-select: none;
-			box-sizing: border-box;
-			.menu {
-				width: 100%;
-				height: 44px;
-				display: flex;
-				align-items: center;
-				gap: 18px;
-				padding: 10px 24px;
-				border-radius: 4px;
-				cursor: pointer;
-				transition: all 0.2s;
-				.icon {
-					width: 18px;
-					height: 18px;
-					svg {
-						width: 100%;
-						height: 100%;
-						color: #67707b;
-					}
-				}
-				.name {
-					color: var(--Text-1);
-					font-family: "PingFang SC";
-					font-size: 14px;
-					font-weight: 400;
-				}
-			}
-			.menu:hover,
-			.menu_active {
-				background: var(--Bg-3);
-				.icon {
-					svg {
-						color: var(--Text-s);
-					}
-				}
-				.name {
-					color: var(--Text-s);
-				}
-			}
-		}
+		position: relative; /* Relative positioning for the container */
+	}
 
-		.main {
-			// flex: 1;
-			min-width: 1050px;
-		}
+	.Menu_Bar {
+		position: fixed;
+		min-width: 240px;
+		display: grid;
+		gap: 8px;
+		padding: 12px;
+		border-radius: 12px;
+		background: var(--Bg-1);
+		user-select: none;
+		box-sizing: border-box;
+		overflow-y: auto;
+		z-index: 10;
+	}
+
+	.menu {
+		width: 100%;
+		height: 44px;
+		display: flex;
+		align-items: center;
+		gap: 18px;
+		padding: 10px 24px;
+		border-radius: 4px;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.menu:hover,
+	.menu_active {
+		background: var(--Bg-3);
+	}
+
+	.icon {
+		width: 18px;
+		height: 18px;
+	}
+
+	.icon svg {
+		width: 100%;
+		height: 100%;
+		color: #67707b;
+	}
+
+	.name {
+		color: var(--Text-1);
+		font-family: "PingFang SC";
+		font-size: 14px;
+		font-weight: 400;
+	}
+
+	.menu_active .icon svg {
+		color: var(--Text-s);
+	}
+
+	.menu_active .name {
+		color: var(--Text-s);
+	}
+
+	.main {
+		margin-left: 258px; /* Adjust the space for the sticky Menu_Bar */
+		flex: 1;
+		max-width: 1050px;
 	}
 }
 
