@@ -129,7 +129,7 @@ watch(
 			justify-content: center;
 
 			.title {
-				color: var(--Text_s);
+				color: var(--Text-s); 
 				font-size: 20px;
 			}
 
@@ -175,7 +175,7 @@ watch(
 
 					.active {
 						background-color: var(--Bg-3);
-						color: var(--Text_s);
+						color: var(--Text-s);
 					}
 				}
 
