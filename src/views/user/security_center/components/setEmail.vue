@@ -2,39 +2,37 @@
 <template>
 	<div class="ChangePasswordWrapper">
 		<div class="ChangePassword_form">
-			<div class="login_text fs_20 mb_20">
-				<span v-if="isCreate && !isEdit"> {{ $t(`security_center['绑定邮箱']`) }}</span>
+			<div class="login_text fs_20 mb_33">
+				<span v-if="isCreate && !isEdit"> {{ $t(`security_center['绑定电子邮箱']`) }}</span>
 				<span v-else> {{ $t(`security_center['修改邮箱']`) }}</span>
 			</div>
 			<div class="login_form">
 				<div v-if="isCreate">
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['新邮箱账号']`) }}</p>
-						<p class="common_password">
-							<input
-								type="text"
-								v-model="payLoad.email"
-								class="common_input"
-								:placeholder="$t(`security_center['输入邮箱']`)"
-								@input="emailOnInput"
-								:class="userVerifyTypeVerifyError ? 'verifyError' : ''"
-							/>
-						</p>
+						<p class="Text_s mb_8">{{ $t(`security_center['新邮箱账号']`) }}</p>
+						<FromInput
+							type="text"
+							v-model="payLoad.email"
+							:placeholder="$t(`security_center['请输入电子邮箱']`)"
+							@input="emailOnInput"
+							:class="userVerifyTypeVerifyError ? 'verifyError' : ''"
+							:hideLeftIcon="true"
+						>
+						</FromInput>
 						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['邮箱格式不正确']`) }}</p>
 					</div>
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['验证码']`) }}</p>
-						<p class="common_password">
-							<VerificationCode
-								@VerificationCodeInput="VerificationCodeInput"
-								@sendVerificationCode="sendVerificationCode"
-								v-model="verificationBtn"
-								:disabled="verificationBtn && payLoad.email"
-								ref="VerificationCodeRef"
-							/>
-						</p>
-						<p class="fs_14 Text1 mt_16 fw_200">
-							{{ $t(`security_center['有效时间']`) }}<span class="color_Theme" @click="Common.getSiteCustomerChannel">{{ $t(`security_center['联系客服']`) }}</span>
+						<p class="Text_s mt_16">{{ $t(`security_center['验证码']`) }}</p>
+						<VerificationCode
+							@VerificationCodeInput="VerificationCodeInput"
+							@sendVerificationCode="sendVerificationCode"
+							v-model="verificationBtn"
+							:disabled="verificationBtn && payLoad.email"
+							ref="VerificationCodeRef"
+							:hideLeftIcon="true"
+						/>
+						<p class="fs_14 Text1 mt_8 fw_200">
+							{{ $t(`security_center['有效时间']`) }}<span class="color_F2 ml_4" @click="Common.getSiteCustomerChannel">{{ $t(`security_center['联系客服']`) }}</span>
 						</p>
 					</div>
 				</div>
@@ -49,12 +47,13 @@
 						v-model="verificationBtn"
 						:disabled="verificationBtn"
 						ref="VerificationCodeRef"
+						:hideLeftIcon="true"
 					/>
 				</div>
-				<div class="mt_40 mb_12">
-					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">
+				<div class="mt_32 mb_12">
+					<Button disabled="disabledBtn" @click="onSubmit">
 						{{ isCreate ? $t(`security_center['确定']`) : $t(`security_center['下一步']`) }}
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>
@@ -169,20 +168,11 @@ onMounted(() => {
 <style lang="scss" scoped>
 .ChangePasswordWrapper {
 	width: 448px;
-	height: 542px;
+	height: 602px;
 	border-radius: 12px;
 	.ChangePassword_form {
 		padding: 25px 32px;
-		.common_password {
-			position: relative;
-			.eyes {
-				position: absolute;
-				right: 16px;
-				top: 50%;
-				transform: translateY(-50%);
-				cursor: pointer;
-			}
-		}
+
 		.login_text {
 			color: var(--Text-s);
 			font-weight: 500;
@@ -196,7 +186,7 @@ onMounted(() => {
 				left: 50%;
 				transform: translateX(-50%);
 				right: 0;
-				width: 18px;
+				width: 50%;
 				height: 2px;
 				background-color: var(--Theme);
 			}

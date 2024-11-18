@@ -1,8 +1,8 @@
 <template>
-	<div class="pr_10 pl_10 mt_40" v-if="hotGameList?.length">
+	<div class="mt_10" v-if="hotGameList?.length">
 		<div class="cardHeader">
 			<div>
-				<span class="flex-center">
+				<span class="flex-center" style="gap: 12px">
 					<img v-lazy-load="hotGameIcon" alt="" />
 					<span class="Text_s fs_20">热门推荐</span>
 				</span>
@@ -28,9 +28,9 @@
 							<button class="common_btn" @click="Common.goToGame(item)">进入游戏</button>
 						</div>
 					</div>
-					<div class="collect" @click="collectGame(item)">
+					<!-- <div class="collect" @click="collectGame(item)">
 						<svg-icon :name="collectGamesStore.getCollectGamesList.some((game:any) => game.id === item.id) ? 'collect_on' : 'collect'" size="19.5px"></svg-icon>
-					</div>
+					</div> -->
 				</SwiperSlide>
 			</Swiper>
 		</div>
@@ -135,7 +135,7 @@ const goToPrevSlide = () => {
 	.hotGameItem {
 		margin-right: 15px;
 		position: relative;
-		border-radius: 12px;
+
 		.collect {
 			position: absolute;
 			top: 10px;
@@ -158,6 +158,8 @@ const goToPrevSlide = () => {
 			background: rgba(0, 0, 0, 0.05);
 			backdrop-filter: blur(13.298970222473145px);
 			padding: 12px 14px;
+			border-radius: 0 0 12px 12px;
+			overflow: hidden;
 			img {
 				height: 20px;
 				width: 20px;

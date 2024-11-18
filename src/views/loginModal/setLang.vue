@@ -5,11 +5,11 @@
 
 		<div class="langList">
 			<div v-for="item in userStore.getLangList" class="flex_space-between langItem" :class="userStore.getLang == item.code ? 'active' : ''" @click="setLang(item.code)">
-				<span>
+				<span class="flex-center" style="gap: 4px">
 					<img v-lazy-load="item.iconFileUrl" alt="" />
 					{{ item.name }}</span
 				>
-				<span><svg-icon :name="userStore.getLang == item.code ? 'common-cricle_theme' : 'common-cricle'" size="16px"> </svg-icon> </span>
+				<svg-icon :name="userStore.getLang == item.code ? 'common-cricle_theme' : 'common-cricle'" size="16px"> </svg-icon>
 			</div>
 		</div>
 	</div>
@@ -86,11 +86,12 @@ const filteredResults = computed(() => {
 		cursor: pointer;
 		margin: 0 24px;
 		padding: 0 12px;
+		font-size: 14px;
 		img {
 			width: 14px;
 			height: 14px;
 			border-radius: 50%;
-			margin-right: 8px;
+			margin-right: 4px;
 		}
 	}
 	.langItem:hover {

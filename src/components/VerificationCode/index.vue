@@ -1,8 +1,8 @@
 <template>
 	<div class="verification-code">
 		<div class="input-container">
-			<FromInput placeholder="验证码" @input="validateInput" class="contact-input common_input" :disabled="sendCodeText == '发送'" :maxlength="6">
-				<template #left>
+			<FromInput placeholder="请输入验证码" @input="validateInput" :disabled="sendCodeText == '发送'" :maxlength="6" style="width: 100%" :hideLeftIcon="hideLeftIcon">
+				<template #left v-if="!hideLeftIcon">
 					<svg-icon name="common-VerificationCode" size="18px" />
 				</template>
 			</FromInput>
@@ -25,6 +25,9 @@ const emit = defineEmits<{
 }>();
 const props = defineProps({
 	disabled: {
+		type: Boolean,
+	},
+	hideLeftIcon: {
 		type: Boolean,
 	},
 });
@@ -64,11 +67,10 @@ defineExpose({
 .send-button {
 	position: absolute;
 	right: 8px;
-	top: 18px;
-	bottom: 5px;
-	padding: 0 10px;
+	top: 15px;
+	padding: 6px 12px;
 	border: none;
-	height: 28px;
+	height: 32px;
 	border-radius: 4px;
 	background: var(--Bg-1);
 	border: 1px solid var(--Theme);
@@ -86,6 +88,6 @@ defineExpose({
 .iscountdown.send-button:disabled {
 	border: 1px solid var(--Theme);
 	color: var(--Theme);
-	opacity: 0.3;
+	opacity: 0.4;
 }
 </style>

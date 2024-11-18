@@ -1,6 +1,8 @@
 <template>
 	<div class="from-input">
-		<slot name="left" class="left"></slot>
+		<div class="left ml_13" v-if="!hideLeftIcon">
+			<slot name="left"></slot>
+		</div>
 		<input
 			class="common_input"
 			@input="emit('update:modelValue', $event.target.value)"
@@ -9,9 +11,10 @@
 			:readonly="props.readonly"
 			:placeholder="props.placeholder"
 			:maxlength="props.maxlength"
+			:style="{ paddingLeft: hideLeftIcon ? '16px' : '8px' }"
 		/>
 		<div class="flex-center pr_10 curp" style="gap: 5px">
-			<svg-icon name="common-close" size="20px" v-if="props.modelValue" @click="emit('update:modelValue', '')" />
+			<svg-icon name="common-close" size="24px" v-if="props.modelValue" @click="emit('update:modelValue', '')" />
 			<slot name="right"></slot>
 		</div>
 	</div>
@@ -25,6 +28,7 @@ const props = withDefaults(
 		placeholder?: string;
 		readonly?: boolean;
 		maxlength?: string | number;
+		hideLeftIcon?: boolean;
 	}>(),
 	{
 		modelValue: "",
@@ -32,6 +36,7 @@ const props = withDefaults(
 		placeholder: "",
 		readonly: false,
 		maxlength: "",
+		hideLeftIcon: false,
 	}
 );
 
@@ -43,17 +48,15 @@ const emit = defineEmits(["update:modelValue"]);
 	position: relative;
 	display: flex;
 	align-items: center;
-
-	margin-top: 8px;
+	margin-top: 6px;
 	border-radius: 4px;
 	background: var(--Bg-1);
 	box-sizing: border-box;
-	padding-left: 13px;
+
 	input {
 		font-family: "PingFang SC";
 		font-size: 14px;
 		font-weight: 400;
-		padding-left: 10px;
 		color: var(--Text-s);
 	}
 

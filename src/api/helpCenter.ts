@@ -6,9 +6,7 @@ export const helpCenterApi = {
 		return useAxiosApi(`/app/tutorial-display/api/showTutorialPreLayer`, {
 			method: "POST",
 			data,
-			headers: {
-				needLogin: true,
-			},
+			headers: {},
 		});
 	},
 	//  二级分类
