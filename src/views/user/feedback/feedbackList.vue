@@ -15,11 +15,11 @@
 						<img v-lazy-load="imgObj['type' + item.type]" alt="" />
 					</div>
 					<div class="text ml_10">
-						<div class="ellipsis fs_16 flex_space-between Text_s">
+						<div class="ellipsis fs_14 flex_space-between Text_s">
 							{{ item.typeText || "意见反馈" }}
 						</div>
 
-						<div class="fs_12 Text1 content">
+						<div class="fs_14 Text1 content">
 							{{ item.content }}
 						</div>
 					</div>
@@ -116,6 +116,21 @@ const sizeChange = (pageSize: number) => {
 			background: var(--Bg-1);
 			position: relative;
 			border-radius: 12px 12px 0 0;
+			position: relative; 
+
+			&::after{
+				content:"";
+				display: block;
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				height: 1px;
+				width: calc(100% - 65px);
+				margin-top: 6px;
+				background: var(--Line-1);
+				box-shadow: 0px 1px 0px 0px #343d48;
+				bottom: 0;
+			}
 		}
 		.title::before {
 			content: "";
@@ -136,7 +151,8 @@ const sizeChange = (pageSize: number) => {
 			display: flex;
 			flex-direction: column;
 			.text {
-				flex: 1;
+				flex: 1; 
+				font-weight: bold;
 			}
 		}
 		.common_input {
@@ -175,6 +191,7 @@ const sizeChange = (pageSize: number) => {
 			line-height: 1.5; /* 行高 */
 			max-height: 3em; /* 限制最大高度 */
 			max-width: 704px;
+			font-weight: normal;
 		}
 		.icon {
 			width: 32px;

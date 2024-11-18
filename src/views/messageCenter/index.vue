@@ -38,10 +38,10 @@ import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息状�
 
 const messageCenterVisible = defineModel();
 const tabs = [
-	{ name: "通知", type: 3 },
+	{ name: "通知", type: 1 },
 	{ name: "活动", type: 2 },
 ];
-const activeTab = ref(3);
+const activeTab = ref(1);
 
 const userStore = useUserStore();
 
