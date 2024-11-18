@@ -161,7 +161,11 @@ const Markets = ({ cardData: sportInfo, sportType }: { cardData: any; sportType:
 				);
 
 				if (typeof item.type === "number") {
-					const market = marketsMatchData(sportInfo.markets, item.type, item.selectionsLength);
+					let market = marketsMatchData(sportInfo.markets, item.type, item.selectionsLength);
+					if (item.selectionsLength == 3) {
+						// 针对足球  主和客 =》 主客和
+						// market
+					}
 					return market ? renderMarket(market, item.class) : <div className="market-column" key={item.class} />;
 				} else {
 					return (

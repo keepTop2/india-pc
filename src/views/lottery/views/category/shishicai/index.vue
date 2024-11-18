@@ -20,6 +20,13 @@ import Containers from "/@/views/lottery/components/Containers/index.vue";
 import { usePageInit } from "/@/views/lottery/hooks/usePageInit";
 import { useTab } from "/@/views/lottery/hooks/useTab";
 import { useRoute } from "vue-router";
+
+const lotteryIcons = {
+	MYSSC: new URL("/src/assets/zh-CN/lottery/MYSSC.jpeg", import.meta.url).href,
+	"3FSSC": new URL("/src/assets/zh-CN/lottery/3FSSC.jpeg", import.meta.url).href,
+	"5FSSC": new URL("/src/assets/zh-CN/lottery/5FSSC.jpeg", import.meta.url).href,
+};
+
 const route = useRoute();
 const BayLottery = defineAsyncComponent(() => import("./components/bayLottery.vue"));
 const Result = defineAsyncComponent(() => import("./components/result.vue"));
@@ -29,11 +36,13 @@ const { tabs, tabsActived, handleTabChange } = useTab(BayLottery, Result);
 const { lotteryDetail, beginPageData } = usePageInit(); // 这个 hook 是重点。主要就是 onMounted onBeforeUnmount watch 里面需要做的事情
 
 // 这里其实就是在 lotteryDetail 的基础上加了个彩种的图片。因为涉及单个业务彩种，因此不在 hook 里面处理
+const gameCode = route.query.gameCode as "MYSSC" | "3FSSC" | "5FSSC";
+
 const renderLotteryDetail = computed(() => {
 	return {
 		...lotteryDetail.value,
 		maxWin: route.query.maxWin || 0,
-		iconPc: `/@/assets/zh-CN/lottery/${route.query.gameCode}.jpeg`,
+		iconPc: lotteryIcons[gameCode],
 	};
 });
 

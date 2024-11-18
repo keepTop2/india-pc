@@ -8,8 +8,8 @@
 		<div v-if="isOpen" class="dropdown-menu">
 			<div class="flex_space-between input">
 				<svg-icon name="search" size="14px" color="#fff" />
-				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`login['搜索国家和地区']`)" class="search-input common_input" />
-				<svg-icon name="common-close" size="14px" @click="searchQuery = ''" color="#fff" />
+				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`login['搜索区号']`)" class="search-input common_input" />
+				<svg-icon name="common-close" size="18px" @click="searchQuery = ''" color="#fff" />
 			</div>
 			<div class="line"></div>
 			<ul class="options-list">
@@ -22,10 +22,9 @@
 				>
 					<span>
 						<img :src="option.icon" alt="" />
-						{{ option.countryCode }}
-						{{ option.countryName }}
+						{{ option.countryCode }}{{ option.countryName }}(+{{ option.areaCode }})
 					</span>
-					<span>+{{ option.areaCode }}</span>
+					<svg-icon :name="option.countryCode == selectedOptionLabel ? 'common-cricle_theme' : 'common-cricle'" size="16px"> </svg-icon>
 				</li>
 				<li v-if="filteredOptions.length === 0" class="no-results fs_12">{{ $t(`login["未搜索到相关区号"]`) }}</li>
 			</ul>
@@ -244,6 +243,9 @@ onUnmounted(() => {
 .option-item.active,
 .option-item:hover {
 	color: var(--Text-s);
+	svg {
+		color: var(--Theme);
+	}
 }
 
 .no-results {

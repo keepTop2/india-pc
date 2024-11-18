@@ -243,7 +243,7 @@ const selectMenu = (item: any, index: number, isArrow?: boolean) => {
 		.subItem.activeMenu,
 		.subItem:hover {
 			border-radius: 6px;
-			background: linear-gradient(to top, rgba(255, 40, 75, 0.2), rgba(255, 40, 75, 0.05));
+			background: linear-gradient(0deg, rgba(255, 97, 123, 0.15) 0%, rgba(255, 97, 123, 0.15) 100%), var(--Bg-3);
 			border-bottom: 2px solid rgba(#ff284b, 0.5);
 			.menu_name {
 				color: var(--Text-1);

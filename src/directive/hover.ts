@@ -1,5 +1,6 @@
 // src/directives/hover.ts
 import { DirectiveBinding } from "vue";
+import { useMenuStore } from "../stores/modules/menu";
 
 export const Hover = {
 	mounted(el: HTMLElement, binding: DirectiveBinding) {
@@ -62,6 +63,8 @@ export const Hover = {
 
 		// 绑定鼠标事件
 		const onMouseEnter = () => {
+			const MenuStore = useMenuStore();
+			if (!MenuStore.getCollapse) return;
 			createTooltip();
 			updateTooltipPosition();
 			if (callback) callback(true);

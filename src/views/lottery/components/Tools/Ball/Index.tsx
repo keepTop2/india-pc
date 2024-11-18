@@ -1,6 +1,7 @@
 import "./index.scss";
-
 import { computed, defineComponent } from "vue";
+const ClearIcon = new URL("/src/assets/zh-CN/lottery/clear.svg", import.meta.url).href;
+const KsxzIcon = new URL("/src/assets/zh-CN/lottery/ksxz.svg", import.meta.url).href;
 
 export default () => {
 	// 定义 SelectBallGroup 组件，用于显示多个球的选择
@@ -85,12 +86,12 @@ export default () => {
 					<div className="control">
 						{/* 清除全部选中 */}
 						<div className="clear">
-							<img src="/@/assets/zh-CN/lottery/clear.svg" alt="" />
+							<img src={ClearIcon} alt="" />
 							<span onClick={() => emit("clear")}>清除全部</span>
 						</div>
 						{/* 快速选择区域 */}
 						<div onClick={handleRandomBall} className="other">
-							<img src="/@/assets/zh-CN/lottery/ksxz.svg" alt="" />
+							<img src={KsxzIcon} alt="" />
 							<span>快速选择</span>
 						</div>
 					</div>
@@ -145,15 +146,15 @@ export default () => {
 			const handleClick = () => {
 				emit("select");
 			};
-
 			const bgTypeMap = new Map([
-				[1, "blueBall"], // 蓝球
-				[2, "redBall"], // 红球
-				[3, "defBall"], //默认球
+				[1, new URL("/src/assets/svg/dark/sports/blueBall.svg", import.meta.url).href], // 蓝球
+				[2, new URL("/src/assets/svg/dark/sports/redBall.svg", import.meta.url).href], // 红球
+				[3, new URL("/src/assets/svg/dark/sports/defBall.svg", import.meta.url).href], //默认球
 			]);
+
 			console.log("bgTypeMap==========ball", bgTypeMap.get(props.type));
 			// 根据球的类型选择不同的 SVG 图标
-			const ballSvg = computed(() => `/@/assets/svg/dark/sports/${bgTypeMap.get(props.type)}.svg`);
+			const ballSvg = computed(() => bgTypeMap.get(props.type));
 
 			// 渲染球组件
 			return () => (

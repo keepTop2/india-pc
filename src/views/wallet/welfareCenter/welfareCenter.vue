@@ -23,7 +23,7 @@
 			</div>
 		</div>
 		<div class="content" v-if="tableData.length > 0">
-			<div>
+			<div class="scrollBox">
 				<div class="flex_space-between Text_s fs_14 mb_12">
 					<div>
 						<span>笔数: {{ pageData.totalSize || 0 }}</span>
@@ -48,7 +48,7 @@
 					<div class="tbody">
 						<div class="tr" v-for="item in tableData">
 							<div class="td Text1 td1 curp" style="width: 25%">
-								<svg-icon name="add_icon" size="16px" @click="showDetails(item)"></svg-icon>
+								<svg-icon name="add_icon" color="#67707B" size="16px" @click="showDetails(item)"></svg-icon>
 								<div class="ellipsis">{{ item.orderNo }}</div>
 								<svg-icon name="copy" size="16px" @click="common.copy(item.orderNo)"></svg-icon>
 							</div>
@@ -284,6 +284,7 @@ const handleQuery = () => {
 		width: 268px;
 	}
 }
+
 .content {
 	min-height: calc(100vh - 260px);
 	margin-top: 20px;
@@ -291,12 +292,20 @@ const handleQuery = () => {
 	border-radius: 12px;
 	padding: 20px;
 	display: flex;
+	overflow-x: auto;
 	flex-direction: column;
 	justify-content: space-between;
+	.scrollBox {
+		width: 1010px;
+	}
+	.scrollBox ::-webkit-scrollbar {
+		overflow: auto;
+	}
 	.table {
 		border: 1px solid var(--Line-2);
 		border-radius: 8px;
 	}
+
 	.tr {
 		display: flex;
 		justify-content: space-around;

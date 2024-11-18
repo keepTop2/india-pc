@@ -81,7 +81,8 @@ watch([() => props.total, () => props.pageSize], () => {
 		display: flex;
 		align-items: center;
 		.el-pager li.is-active {
-			color: var(--Theme);
+			color: var(--Text-a);
+			background: var(--Icon-1);
 		}
 		.el-pager {
 			margin: 0 10px;
