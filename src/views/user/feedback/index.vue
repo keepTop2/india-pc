@@ -206,6 +206,10 @@ const getfeedbackList = () => {
 	padding: 14px;
 	color: var(--Text-s);
 	border: 1px solid var(--Bg-3);
+
+	&::placeholder{ 
+		color: var(--Text-2-1); 
+	}
 }
 .textareaBox {
 	position: relative;
