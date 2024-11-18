@@ -7,7 +7,7 @@
 			<svg-icon name="delete2" size="18px" @click.stop="handleDelete"></svg-icon>
 			<div class="unfold" @click="isUnfold = !isUnfold">
 				{{ isUnfold ? "收起" : "展开" }}
-				<svg-icon name="common-common-common-arrow_down_on" size="14px" class="icon" :class="isUnfold && 'fold'" />
+				<svg-icon name="common-arrow_down_message" size="14px" class="icon" :class="isUnfold && 'fold'" />
 			</div>
 		</div>
 	</div>
@@ -100,15 +100,14 @@ const handleDelete = async () => {
 			align-items: center;
 			gap: 5px;
 			color: var(--Theme);
-			text-transform: uppercase;
-			text-decoration: underline;
+			text-transform: uppercase; 
 			text-underline-offset: 3px;
 			font-size: 14px;
 			user-select: none;
 
 			.icon {
 				transition: 0.2s;
-				fill: var(--Bg-5);
+				fill: var(--Bg-5); 	 
 			}
 
 			.fold {
