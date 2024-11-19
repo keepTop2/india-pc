@@ -2,7 +2,8 @@ import "./index.scss";
 import { computed, defineComponent } from "vue";
 const ClearIcon = new URL("/src/assets/zh-CN/lottery/clear.svg", import.meta.url).href;
 const KsxzIcon = new URL("/src/assets/zh-CN/lottery/ksxz.svg", import.meta.url).href;
-
+import { i18n } from "/@/i18n";
+const $: any = i18n.global;
 export default () => {
 	// 定义 SelectBallGroup 组件，用于显示多个球的选择
 	const SelectBallGroup = defineComponent({
@@ -82,17 +83,17 @@ export default () => {
 			return () => (
 				<div class="select-ball-group">
 					{/* 提示信息 */}
-					<div class="warn">请{props.multiple ? "至少" : ""}选择1个球号</div>
+					<div class="warn">{$.t(`lottery['请选择1个球号']`)}</div>
 					<div className="control">
 						{/* 清除全部选中 */}
 						<div className="clear">
 							<img src={ClearIcon} alt="" />
-							<span onClick={() => emit("clear")}>清除全部</span>
+							<span onClick={() => emit("clear")}>{$.t(`lottery['清除全部']`)}</span>
 						</div>
 						{/* 快速选择区域 */}
 						<div onClick={handleRandomBall} className="other">
 							<img src={KsxzIcon} alt="" />
-							<span>快速选择</span>
+							<span>{$.t(`lottery['快速选择']`)}</span>
 						</div>
 					</div>
 

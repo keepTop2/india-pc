@@ -1,13 +1,14 @@
 import "./index.scss";
 
 import { computed, defineComponent, reactive, ref, watch } from "vue";
-
 import { ElInput } from "element-plus";
 import { useUserStore } from "/@/stores/modules/user";
 import CommonFn from "/@/utils/common";
 import { formatNumberMax3Digits } from "/@/views/lottery/utils/formatNumber";
 import Common from "/@/views/sports/utils/common";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
+import { i18n } from "/@/i18n";
+const $: any = i18n.global;
 export default () => {
 	const BetForm = defineComponent({
 		props: {
@@ -50,7 +51,7 @@ export default () => {
 				// 优先判断余额
 				if (Number(price) > Number(SportsBetInfoStore.balance)) {
 					validForm.isSuccess = false;
-					validForm.errMessage = `余额不足！`;
+					validForm.errMessage = $.t(`lottery['余额不足']`) + "!";
 					return;
 				}
 				const { minLimit, maxLimit } = props.value;
@@ -60,10 +61,10 @@ export default () => {
 					validForm.errMessage = "";
 				} else if (numericPrice < minLimit) {
 					validForm.isSuccess = false;
-					validForm.errMessage = `投注金额不能小于 ${minLimit}${unit.value}`;
+					validForm.errMessage = $.t(`lottery['投注金额不能小于']`) + minLimit + unit.value;
 				} else if (numericPrice > maxLimit) {
 					validForm.isSuccess = false;
-					validForm.errMessage = `投注金额不能大于 ${maxLimit}${unit.value}`;
+					validForm.errMessage = $.t(`lottery['投注金额不能大于']`) + maxLimit + unit.value;
 				} else {
 					validForm.isSuccess = true;
 					validForm.errMessage = "";
@@ -98,19 +99,19 @@ export default () => {
 			return () => (
 				<div class={`lottery-bet-form ${props.actived ? "actived" : ""}`}>
 					{/* 渲染插槽内容 */}
-					<div class="bet-form-header">{slots.default ? slots.default() : <span>请选择你的赌注</span>}</div>
+					<div class="bet-form-header">{slots.default ? slots.default() : <span>{$.t(`lottery['请选择你的赌注']`)}</span>}</div>
 
 					{/* 投注输入区域 */}
 					<div class="bet-form-content">
 						{props.actived ? (
 							<div class={`input-item ${validForm.isSuccess ? "success" : ""}`}>
-								<span>投注金额</span>
+								<span>{$.t(`lottery['投注金额']`)}</span>
 								<ElInput
 									v-model={stake.value}
 									type="number"
 									min={value?.minLimit}
 									max={value?.maxLimit}
-									placeholder="请输入投注金额"
+									placeholder={$.t(`lottery['请输入投注金额']`)}
 									onInput={(inputValue: string) => {
 										// 过滤非数字字符
 										stake.value = inputValue.replace(/[^\d]/g, "");
@@ -134,14 +135,14 @@ export default () => {
 							<></>
 						)}
 						<div class="default-item">
-							<span>投注金额</span>
+							<span>{$.t(`lottery['投注金额']`)}</span>
 							<span>
 								{stake.value || 0} {unit.value}
 							</span>
 						</div>
 						{/* 潜在回报显示 */}
 						<div class="default-item">
-							<span>潜在回报</span>
+							<span>{$.t(`lottery['潜在回报']`)}</span>
 							<span>
 								{formatNumberMax3Digits(+props.currentOddsListItem.itemOdds * +stake.value || 0)} {unit.value}
 							</span>
@@ -151,7 +152,7 @@ export default () => {
 					{/* 提交按钮 */}
 					<div class="bet-form-btn">
 						<div class={`now-bet ${validForm.isSuccess ? "actived" : ""}`} onClick={handleSubmit}>
-							<span>立即投注</span>
+							<span>{$.t(`lottery['立即投注']`)}</span>
 						</div>
 					</div>
 				</div>
