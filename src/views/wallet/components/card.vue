@@ -27,7 +27,7 @@ const props = defineProps({
 .card {
 	border-radius: 12px;
 	background: var(--Bg-1);
-	// overflow: hidden;
+	overflow: hidden;
 	.header {
 		position: relative;
 		padding: 20px 20px 0px;
