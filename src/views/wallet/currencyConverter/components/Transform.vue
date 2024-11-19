@@ -43,7 +43,7 @@
 				<div class="rate">汇率：{{ transformInfo.transferRate }}</div>
 			</div>
 		</div>
-		<el-button class="transform-button" @click="handleTransform" :disabled="!formValue" color="#ff284b">一键转换</el-button>
+		<el-button class="transform-button" @click="handleTransform" :disabled="!!!formValue" color="#ff284b">一键转换</el-button>
 	</div>
 </template>
 
@@ -96,7 +96,7 @@ const handleInput = (value: string) => {
 // 转换
 const handleTransform = async () => {
 	const res = await walletApi.transferAmount({ transferAmount: formValue.value });
-	if (res.code !== 10000) return ElMessage.error(res.message);
+	// if (res.code !== 10000) return ElMessage.error(res.message);
 	ElMessage.success("转账成功");
 	formValue.value = "";
 	await getUserPlatformBalance();
@@ -128,8 +128,8 @@ getUserPlatformBalance();
 	.card-style {
 		width: 100%; /* 确保元素宽度为100% */
 		height: 100%;
-		padding: 18px 32px;	
-		background: var(--Bg);  
+		padding: 18px 32px;
+		background: var(--Bg);
 		border-radius: 16px;
 		position: relative;
 		//padding-bottom: 0;
@@ -225,17 +225,16 @@ getUserPlatformBalance();
 	.form {
 		/* background: url("../images/form.png") no-repeat;
 		background-size: 100% 100%; */
-	
 
-		&::after{
-			$height:64px;
-			content:"";
+		&::after {
+			$height: 64px;
+			content: "";
 			display: block;
 			position: absolute;
 			width: $height;
 			height: $height;
 			border-radius: $height;
-			background: var(--Bg-1); 
+			background: var(--Bg-1);
 			left: 50%;
 			transform: translateX(-50%);
 			z-index: 1;
@@ -243,15 +242,15 @@ getUserPlatformBalance();
 		}
 	}
 
-	.icon { 
+	.icon {
 		position: absolute;
 		left: 50%;
 		top: 50.2%;
-		transform: translate(-50%, -50%);  
+		transform: translate(-50%, -50%);
 		z-index: 2;
 	}
 
-	.to { 
+	.to {
 		margin-top: 10px;
 	}
 }
@@ -266,5 +265,12 @@ getUserPlatformBalance();
 	background: var(--Theme);
 	color: var(--Text-a);
 	font-size: 16px;
+
+	// 添加这些样式来禁用hover效果
+	&:hover {
+		background: var(--Theme) !important; // 使用 !important 确保覆盖 element-plus 的默认样式
+		opacity: 1 !important;
+		border-color: var(--Theme) !important;
+	}
 }
 </style>
