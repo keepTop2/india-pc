@@ -14,7 +14,7 @@
 					<span>{{ transformInfo.platCurrency }}</span>
 				</div>
 				<div class="number">
-					<el-input v-model.number="formValue" type="number" @input="handleInput"></el-input>
+					<el-input v-model.number="formValue" type="number" :min="0" @input="handleInput" @keypress="validateNumber"></el-input>
 					<div @click="formValue = transformInfo.platAvailableAmount">全部</div>
 				</div>
 				<div class="line"></div>
@@ -75,18 +75,31 @@ interface TransformInfo {
 
 const transformInfo = ref<Partial<TransformInfo>>({});
 
+// 添加数字验证函数
+const validateNumber = (e: KeyboardEvent) => {
+	// 阻止负号输入
+	if (e.key === "-") {
+		e.preventDefault();
+		return false;
+	}
+};
+
 // 添加输入处理函数
 const handleInput = (value: string) => {
 	if (!value) return;
 
+	// 确保值为正数
+	let newValue = value.replace(/-/g, "");
+	formValue.value = newValue;
+
 	// 限制最大9位数，不包含小数点
-	const valueWithoutDot = value.replace(/\./g, "");
+	const valueWithoutDot = newValue.replace(/\./g, "");
 	if (valueWithoutDot.length > 9) {
-		formValue.value = value.slice(0, value.length - 1);
+		formValue.value = newValue.slice(0, newValue.length - 1);
 	}
 
 	// 转换为数字进行比较
-	const numValue = Number(value);
+	const numValue = Number(newValue);
 	if (numValue > transformInfo.value?.platAvailableAmount) {
 		formValue.value = String(transformInfo.value?.platAvailableAmount);
 		ElMessage.warning("输入金额不能大于可用余额");
