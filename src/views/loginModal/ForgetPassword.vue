@@ -132,7 +132,9 @@
 				</div>
 				<div class="mt_40 mb_12 text-center">
 					<Button :disabled="disabledBtn" @click="onNextStep(currentStep)" class="mb_6">{{ currentStep === 2 ? "确定" : $t(`login['下一步']`) }}</Button>
-					<div style="text-decoration: underline" class="flex-center mt_12 color_F2 fs_12 curp" v-if="currentStep === 0" @click="Common.getSiteCustomerChannel">联系客服</div>
+					<div style="text-decoration: underline" class="flex-center mt_12 color_F2 fs_12 curp" v-if="currentStep === 0" @click="Common.getSiteCustomerChannel">
+						{{ $t(`login['联系客服']`) }}
+					</div>
 					<span style="text-decoration: underline" @click="changeVerifyType" v-if="currentStep === 1" class="color_Theme fs_12">{{ $t(`login['其他验证方式']`) }}</span>
 				</div>
 			</div>
@@ -333,7 +335,6 @@ const VerificationCodeInput = (verifyCode: string) => {
 const sendVerificationCode = async () => {
 	if (verifyType.value == verifyTypeEnum.email) {
 		if (!CommonRegex.userEmailRegex.test(payLoad.email)) {
-			showToast("邮箱格式不正确", 1500);
 			verificationBtn.value = true;
 		} else {
 			const params = {
@@ -353,7 +354,6 @@ const sendVerificationCode = async () => {
 	} else {
 		const userPhoneRegex = new RegExp(`^\\d{${minLength.value},${maxLength.value}}$`);
 		if (!userPhoneRegex.test(payLoad.phone)) {
-			showToast("手机号不正确", 1500);
 			verificationBtn2.value = true;
 			return;
 		} else {
@@ -383,7 +383,6 @@ const onSubmit = async (token: string) => {
 		modalStore.closeModal();
 		localStorage.setItem("userInfo", JSON.stringify(data));
 		UserStore.setUserInfo(data);
-		showToast("登录成功");
 	} else {
 		payLoad.userAccount = "";
 		showToast(message);

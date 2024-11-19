@@ -2,7 +2,7 @@
 	<div class="activityWrapper">
 		<div class="activityCenter">
 			<div class="activityHeader">
-				{{ activityData?.activityNameI18nCode || "幸运转盘" }}
+				{{ activityData?.activityNameI18nCode || $t(`activity['幸运转盘']`) }}
 				<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="../../components/image/close_icon.png" alt="" /></span>
 			</div>
 			<div class="activityMain">
@@ -26,18 +26,20 @@
 						:balanceCount="activityData?.balanceCount"
 						ref="SpinRef"
 					/>
-					<div class="vipLevel Text_a fw_600" :class="'vip' + currentTab">{{ activityData?.vipRankConfig?.[currentTab - 1]?.minVipGradeName }}级或以上</div>
+					<div class="vipLevel Text_a fw_600" :class="'vip' + currentTab">
+						{{ activityData?.vipRankConfig?.[currentTab - 1]?.minVipGradeName }} {{ $t(`activity['级或以上']`) }}
+					</div>
 				</div>
 				<div class="p_20 remaining_times_bg" :style="{ background: `url(${Common.getThemeImgPath('remaining_times_bg.png')})`, backgroundSize: '100% 100%' }">
-					剩余抽奖次数： {{ activityData?.balanceCount || 0 }}
+					{{ $t(`activity['剩余抽奖次数']`) }}： {{ activityData?.balanceCount || 0 }}
 				</div>
 				<div class="flex_space-between">
 					<div class="bonus" :style="{ background: `url(${Common.getThemeImgPath('spinbonus_bg.png')})`, backgroundSize: '100% 100%' }">
-						<div class="pr_18">转盘奖金总计</div>
+						<div class="pr_18">{{ $t(`activity['转盘奖金总计']`) }}</div>
 						<div class="fs_14 color_Theme pr_18">{{ activityData?.totalAmount }}</div>
 					</div>
 					<div class="record" @click="handleRecord" :style="{ background: `url(${Common.getThemeImgPath('spinrecord_bg.png')})`, backgroundSize: '100% 100%' }">
-						<span class="flex-center pl_18" style="gap: 5px"> 我的抽奖记录 <svg-icon name="common-arrow_right_on" size="16px"></svg-icon></span>
+						<span class="flex-center pl_18" style="gap: 5px"> {{ $t(`activity['我的抽奖记录']`) }} <svg-icon name="common-arrow_right_on" size="16px"></svg-icon></span>
 					</div>
 				</div>
 				<activityRule :rule="activityData?.activityRuleI18nCode"></activityRule>
@@ -47,15 +49,15 @@
 		<!-- 中奖记录 -->
 		<CommonDialog v-model="showRecord">
 			<div class="dialogCenter" :style="{ background: `url(${Common.getThemeImgPath('spin_record_dialog_bg.png')})`, backgroundSize: '100% 100%' }">
-				<div class="dialogHeader">抽奖记录</div>
+				<div class="dialogHeader">{{ $t(`activity['抽奖记录']`) }}</div>
 				<div class="dialogTable" v-if="recordList.length > 0">
 					<LazyLoadList :loadMore="getRecordList" :finished="recordFinished" :loading="recordIsLoading">
 						<div class="dialogTableBody">
 							<div class="dialogTableHeader">
-								<span>转盘</span>
-								<span>奖品名称</span>
-								<span>奖品价值</span>
-								<span>中奖时间</span>
+								<span>{{ $t(`activity['转盘']`) }}</span>
+								<span>{{ $t(`activity['奖品名称']`) }}</span>
+								<span>{{ $t(`activity['奖品价值']`) }}</span>
+								<span>{{ $t(`activity['中奖时间']`) }}</span>
 							</div>
 							<div v-for="(item, index) in recordList" :key="index" class="dialogTableItem">
 								<span>{{ item.rewardRankText }}</span>
@@ -76,11 +78,11 @@
 		<CommonDialog v-model="showbetResult">
 			<div class="betResult">
 				<img :src="reward.prizePictureUrl" alt="" />
-				<div class="Text_a fs_20 fw_600 mt_10">恭喜您获得</div>
+				<div class="Text_a fs_20 fw_600 mt_10">{{ $t(`activity['恭喜您获得']`) }}</div>
 				<div class="amunt mt_40 mb_33">{{ useUserStore().getUserInfo.platCurrencySymbol }}{{ reward.prizeAmount }}</div>
 				<div class="againBtn">
-					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
-					<button class="common_btn active" @click="palyAgain">再抽一次：1</button>
+					<div class="bubble">{{ $t(`activity['剩余次数']`) }} {{ activityData?.balanceCount }}</div>
+					<button class="common_btn active" @click="palyAgain">{{ $t(`activity['再抽一次']`) }}：1</button>
 				</div>
 			</div>
 			<div class="closeRecord" @click="showbetResult = false">
@@ -91,11 +93,11 @@
 		<!-- 没中奖 -->
 		<CommonDialog v-model="showLosserbetResult">
 			<div class="losserbetResult pt_240">
-				<div class="Text_s fs_20 tishi">没有中奖</div>
-				<div class="mt_80 mb_80 color_Theme fs_20">谢谢惠顾</div>
+				<div class="Text_s fs_20 tishi">{{ $t(`activity['没有中奖']`) }}</div>
+				<div class="mt_80 mb_80 color_Theme fs_20">{{ $t(`activity['谢谢惠顾']`) }}</div>
 				<div class="againBtn">
-					<div class="bubble">剩余次数 {{ activityData?.balanceCount }}</div>
-					<Button class="active" @click="startVerification">再抽一次：1</Button>
+					<div class="bubble">{{ $t(`activity['剩余次数']`) }} {{ activityData?.balanceCount }}</div>
+					<Button class="active" @click="startVerification">{{ $t(`activity['再抽一次']`) }}：1</Button>
 				</div>
 			</div>
 			<div class="closeRecord" @click="showLosserbetResult = false">
@@ -106,10 +108,10 @@
 		<!-- 抽奖次数不足 -->
 		<CommonDialog v-model="showNoMoreBet">
 			<div class="losserbetResult pt_240">
-				<div class="Text_s fs_20 tishi">温馨提示</div>
-				<div class="mt_80 mb_80 Text1">您的抽奖次数不足</div>
+				<div class="Text_s fs_20 tishi">{{ $t(`activity['温馨提示']`) }}</div>
+				<div class="mt_80 mb_80 Text1">{{ $t(`activity['您的抽奖次数不足']`) }}</div>
 				<div class="againBtn">
-					<Button class="active fs_16" @click="goToDeposit">去获取</Button>
+					<Button class="active fs_16" @click="goToDeposit">{{ $t(`activity['去获取']`) }}</Button>
 				</div>
 			</div>
 			<div class="closeRecord" @click="showNoMoreBet = false">
@@ -118,11 +120,11 @@
 		</CommonDialog>
 
 		<!-- 验证不通过 -->
-		<activityDialog v-model="showVerificationDialog" title="温馨提示">
+		<activityDialog v-model="showVerificationDialog" :title="$t(`activity['温馨提示']`)">
 			<div v-html="VerificationInfo.message"></div>
 		</activityDialog>
 		<!-- 需要登录 -->
-		<activityDialog v-model="showNeedLogin" title="温馨提示" :nofooter="false">
+		<activityDialog v-model="showNeedLogin" :title="$t(`activity['温馨提示']`)" :nofooter="false">
 			<div>{{ $t(`activity['您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册']`) }}</div>
 		</activityDialog>
 	</div>
@@ -137,11 +139,12 @@ import activityDialog from "../../components/activityDialog.vue";
 import { ref, onMounted } from "vue";
 import Spin from "./spin.vue";
 import { useModalStore } from "/@/stores/modules/modalStore";
-
 import router from "/@/router";
 import { useUserStore } from "/@/stores/modules/user";
 import activityRule from "../../components/activityRule.vue";
 import dayjs from "dayjs";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const activityStore = useActivityStore();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
 const showRecord = ref(false);
@@ -164,15 +167,15 @@ const currentTab: any = ref(activityData.value.vipRankCode >= 3 ? 3 : activityDa
 // 标签列表
 const tabs = ref([
 	{
-		name: "青铜",
+		name: $.t(`activity['青铜']`),
 		value: "1",
 	},
 	{
-		name: "白银",
+		name: $.t(`activity['白银']`),
 		value: "2",
 	},
 	{
-		name: "黄金",
+		name: $.t(`activity['黄金']`),
 		value: "3",
 	},
 ]);

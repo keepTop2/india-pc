@@ -165,11 +165,7 @@ const verifyBtn = () => {
 
 // 登录处理
 const onLogin = async () => {
-	if (CommonRegex.userAccountRegex.test(payLoad.userAccount) && CommonRegex.passWordregex.test(payLoad.password)) {
-		captchaBtn.value?.click();
-	} else {
-		showToast("用户名或密码错误", 1500);
-	}
+	captchaBtn.value?.click();
 };
 
 // 前端验证通过，提交表单

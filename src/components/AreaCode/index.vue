@@ -1,6 +1,6 @@
 <template>
 	<div class="dropdown-select" ref="dropdown">
-		<input class="trigger fs_14 common_input" @input="onInput" placeholder="请输入手机号" />
+		<input class="trigger fs_14 common_input" @input="onInput" :placeholder="$t(`login['请输入手机号']`)" />
 		<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between fs_14" @click="toggleDropdown">
 			<span class="fs_14">+{{ selectedOptionLabel }}</span>
 			<svg-icon name="common-arrow_down_on" size="14px" fill="#fff" class="ml_10" />

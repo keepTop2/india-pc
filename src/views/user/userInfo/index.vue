@@ -2,7 +2,7 @@
 	<div>
 		<div class="wrapper" v-show="showMedal == 0">
 			<div class="flex_space-between Text_s">
-				<span class="fs_18">用户信息</span>
+				<span class="fs_18">{{ $t(`user['用户信息']`) }}</span>
 				<svg-icon name="common-close" size="30px" class="curp" @click="useModalStore().closeModal()"></svg-icon>
 			</div>
 			<div class="userinfo flex-center">
@@ -17,7 +17,7 @@
 					<svg-icon name="copy" size="12px" />
 				</div>
 			</div>
-			<VipCard :vipInfo="vipInfo" class="mt_12"></VipCard>
+			<vipCard :vipInfo="vipInfo" class="mt_12"></vipCard>
 			<medalCard :canLightNum="canLightNum" :medalList="medalList" class="mt_12" v-model="showMedal" @updateList="updateList"></medalCard>
 			<walletCard class="mt_12 mb_82"></walletCard>
 		</div>
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { useUserStore } from "/@/stores/modules/user";
-import VipCard from "./compoents/vipCard.vue";
+import vipCard from "./compoents/vipCard.vue";
 import medalCard from "./compoents/medalCard.vue";
 import walletCard from "./compoents/walletCard.vue";
 import medalPage from "../medal/index.vue";

@@ -11,7 +11,7 @@
 		<div v-if="isOpen" class="dropdown-menu mt_3">
 			<div class="flex_space-between input">
 				<svg-icon name="common-search" size="14px" class="search" />
-				<input v-model="searchQuery" @input="filterOptions" placeholder="请输入货币名称或简称" class="search-input common_input fs_14" />
+				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`common['请输入货币名称或简称']`)" class="search-input common_input fs_14" />
 				<svg-icon name="common-close" size="18px" @click="searchQuery = ''" class="close" />
 			</div>
 			<div class="line"></div>
@@ -26,7 +26,7 @@
 					<span> {{ option.currencyNameI18 }}/{{ option.currencyCode }}</span>
 					<span><svg-icon :name="selectedOptionLabel == option.currencyCode ? 'common-cricle_theme' : 'common-cricle'" size="16px"> </svg-icon> </span>
 				</li>
-				<li v-if="filteredOptions.length === 0" class="no-results">暂不支持此货币</li>
+				<li v-if="filteredOptions.length === 0" class="no-results">{{ $t(`common['暂不支持此货币']`) }}</li>
 			</ul>
 		</div>
 	</div>

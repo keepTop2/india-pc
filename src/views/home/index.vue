@@ -20,7 +20,7 @@
 				v-if="collectGamesStore.getCollectGamesList?.length"
 			/> -->
 
-			<collectGames :gameList="collectGamesStore.getCollectGamesList" title="喜欢的游戏" />
+			<collectGames :gameList="collectGamesStore.getCollectGamesList" :title="$t(`home['喜欢的游戏']`)" />
 			<!-- 我们的游戏 -->
 			<SportGame />
 

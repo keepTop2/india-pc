@@ -8,7 +8,7 @@
 			<div class="dialog-content"><slot></slot></div>
 			<div class="dialog-footer">
 				<button class="common_btn" @click="close">
-					<slot name="footer">确认</slot>
+					<slot name="footer">{{ $t(`activity['确定']`) }}</slot>
 				</button>
 			</div>
 		</div>

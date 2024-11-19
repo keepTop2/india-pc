@@ -7,11 +7,11 @@
 		<activityContent :activityData="activityData"></activityContent>
 		<activityRule :rule="activityData.activityRuleI18nCode"></activityRule>
 	</activityWrapper>
-	<CommonDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
+	<CommonDialog v-model="showCommonDialog" :title="$t(`activity['温馨提示']`)" :confirm="confirmDialog">
 		{{ dialogInfo.message }}
-		<template v-slot:footer v-if="dialogInfo.status == 30049"> 去存款 </template>
+		<template v-slot:footer v-if="dialogInfo.status == 30049"> {{ $t(`activity['去存款']`) }}</template>
 	</CommonDialog>
-	<CommonDialog v-model="showNeedLogin" title="温馨提示" :confirm="confirmDialog" :nofooter="false">
+	<CommonDialog v-model="showNeedLogin" :title="$t(`activity['温馨提示']`)" :confirm="confirmDialog" :nofooter="false">
 		<div>{{ $t(`activity['您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册']`) }}</div>
 	</CommonDialog>
 </template>

@@ -512,7 +512,7 @@ class Common {
 	 * @description 获取根据主题语言获取图片
 	 */
 	static getCommonImgPath(path: string) {
-		return new URL(`../assets/${i18n.global.locale.value}/common/${path}`, import.meta.url).href;
+		return new URL(`../assets/theme/common/${path}`, import.meta.url).href;
 	}
 
 	static getThemeImgPath(path: string) {

@@ -91,7 +91,7 @@
 						<svg-icon name="common-arrow_up" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
 						<svg-icon name="common-arrow_down" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
 					</p>
-					<p class="common_password" v-if="openinviteCode"><FromInput type="text" v-model="payLoad.inviteCode"  placeholder="输入推荐码" >
+					<p class="common_password" v-if="openinviteCode"><FromInput type="text" v-model="payLoad.inviteCode"  :placeholder="$t(`login['输入推荐码']`)" >
 						<template #left>
 							<svg-icon name="common-inviteCode_icon" size="18px"  style="color: var(--Icon-1)"/>
 						</template>
