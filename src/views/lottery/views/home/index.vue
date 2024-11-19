@@ -108,10 +108,12 @@ const queryGameInfoByOneClassId = debounce(async () => {
 		...item,
 		_key: item.label == 1 ? "1" : item.label == 2 ? "2" : item.id,
 		name: item.label == 1 ? $.t("lottery['热门推荐']") : item.label == 2 ? $.t("lottery['新游戏']") : item.name,
-		gameInfoList: item.gameInfoList?.map((game: any) => ({
-			...game,
-			data: { ...game.data, seconds: Math.floor((game.data.lotteryDate - game.data.currentTime) / 1000) },
-		})),
+		gameInfoList: item.gameInfoList
+			.filter((game: any) => game.data)
+			?.map((game: any) => ({
+				...game,
+				data: { ...game.data, seconds: Math.floor((game.data.lotteryDate - game.data.currentTime) / 1000) },
+			})),
 	}));
 }, 200);
 
