@@ -24,7 +24,7 @@
 					</span>
 				</div>
 			</div>
-			<i class="line"></i>
+			<!-- <i class="line"></i> -->
 			<!-- 右侧菜单项 -->
 			<div class="left">
 				<div v-for="(item, index) in Menu" @click="handleRightMenuClick(item.name)" :key="index" class="nva-item" :class="{ active: item.name === route.name }">
@@ -195,12 +195,14 @@ watch(sportsData, () => {
 		justify-content: center;
 		background-color: var(--Butter);
 		cursor: pointer;
+		border-radius: 4px;
 		z-index: 1;
+		box-shadow: 0 0 5px 5px var(--popoverShadow);
 		&.common-arrow_left {
 			left: 4px;
 		}
 		&.common-arrow_right {
-			right: 0;
+			right: 6px;
 		}
 		.icon {
 			color: var(--Icon-1);
@@ -233,6 +235,17 @@ watch(sportsData, () => {
 			width: 100%;
 			// padding-right: 12px;
 			overflow: hidden;
+			position: relative;
+			padding-right: 6px;
+			&::after {
+				content: "";
+				position: absolute;
+				right: 1px;
+				height: 100%;
+				width: 1px;
+				background-color: var(--Line-1);
+				box-shadow: 1px 0px 0px 0px var(--Text-a);
+			}
 
 			.nva-item-container {
 				display: flex;
