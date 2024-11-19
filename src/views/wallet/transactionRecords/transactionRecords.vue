@@ -44,7 +44,7 @@
 							<div class="td Text_s" style="width: 174px">{{ common.formatAmount(item.tradeAmount) }}</div>
 							<!-- <div class="td Text_s" style="width: 174px">{{ common.formatAmount(item.arriveAmount) }}</div> -->
 							<div class="td Text_s" :class="'status' + item.tradeStatus" style="width: 90px">{{ item.tradeStatusText }}</div>
-							<div class="td Text1" style="width: 181px">{{ dayjs(item.tradeTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
+							<div class="td Text1" style="width: 181px">{{ common.getYMDHms(item.tradeTime) || "--" }}</div>
 							<div class="td operate status0" style="width: 79px; flex-direction: column" @click="showDetails(item)">详情</div>
 						</div>
 					</div>
@@ -159,7 +159,7 @@ const showDetails = (item: any) => {
 	});
 };
 const handleQuery = () => {
-	params.pageNumber = 1;
+	// params.pageNumber = 1;
 	pageQuery();
 };
 </script>
@@ -185,8 +185,8 @@ const handleQuery = () => {
 	}
 	.line {
 		height: 1px;
-		background: var(--Line-1);
-		box-shadow: 0px 1px 0px 0px #343d48;
+		border-bottom: 1px solid var(--Line-1);
+		box-shadow: 0px 1px 0px 0px var(--Shadow-1);
 	}
 	.btn {
 		background: var(--Theme);
