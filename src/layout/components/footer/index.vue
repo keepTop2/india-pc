@@ -39,11 +39,11 @@
 					<div class="aboutUs_2">
 						<div class="fs_20">{{ $t(`home['关于我们']`) }}</div>
 						<div class="fs_16 Text1">
-							<span>{{ $t(`home['关于我们']`) }}</span>
-							<span>{{ $t(`home['帮助中心']`) }}</span>
-							<span>{{ $t(`home['隐私政策']`) }}</span>
-							<span>{{ $t(`home['规则与条款']`) }}</span>
-							<span>{{ $t(`home['联系我们']`) }}</span>
+							<span @click="router.push('/helpCenter?id=1')">{{ $t(`home['关于我们']`) }}</span>
+							<span @click="router.push('/helpCenter')">{{ $t(`home['帮助中心']`) }}</span>
+							<span @click="router.push('/helpCenter?id=3')">{{ $t(`home['隐私政策']`) }}</span>
+							<span @click="router.push('/helpCenter?id=4')">{{ $t(`home['规则与条款']`) }}</span>
+							<span @click="router.push('/helpCenter?id=5')">{{ $t(`home['联系我们']`) }}</span>
 						</div>
 					</div>
 				</div>
@@ -73,6 +73,7 @@ import { onMounted, ref } from "vue";
 import { CommonApi } from "/@/api/common";
 import Common from "/@/utils/common";
 import { helpCenterApi } from "/@/api/helpCenter";
+import router from "/@/router";
 const partnerList: any = ref([]);
 const vendorList: any = ref([]);
 const helpValue: any = ref([]);
@@ -158,6 +159,7 @@ const getlist = () => {
 			margin-left: 10px;
 			span {
 				margin-right: 15px;
+				cursor: pointer;
 			}
 		}
 	}

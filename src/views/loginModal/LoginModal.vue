@@ -12,7 +12,7 @@
 			<div class="login_form">
 				<!-- 账号输入 -->
 				<div class="mb_12">
-					<p class="Text_s fs_14"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
+					<p class="Text_s fs_14 mb_8"><span class="Wran_text">*</span>{{ $t(`login['账号']`) }}</p>
 					<p>
 						<FromInput
 							v-model="payLoad.userAccount"
@@ -69,7 +69,7 @@
 
 				<!-- 登录按钮 -->
 				<div class="mt_40 mb_12">
-					<Button class="fs_12" @click="onLogin" :disabled="disabledBtn || !isOnloadScript">
+					<Button  @click="onLogin" :disabled="disabledBtn || !isOnloadScript">
 						{{ $t(`login['登录']`) }}
 					</Button>
 				</div>
@@ -217,7 +217,7 @@ const toRegister = () => {
 <style lang="scss" scoped>
 .loginWrapper {
 	width: 436px;
-	height: 542px;
+	height: 472px;
 	border-radius: 12px;
 	// background-image: url("./image/headerBg.png"), url("./image/bottomBg.png");
 	background-repeat: no-repeat no-repeat;

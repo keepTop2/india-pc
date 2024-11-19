@@ -60,10 +60,10 @@
 						<FromInput
 							:type="showConfirmPassword ? 'text' : 'password'"
 							v-model="payLoad.confirmPassword"
-							:placeholder="$t(`login['输入确认密码']`)"
+							:placeholder="$t(`login['输入密码']`)"
 							@input="confirmOnInput"
-								maxlength="16"
-										:class="VerifyError.confirmPassword ? 'verifyError' : ''"
+							maxlength="16"
+							:class="VerifyError.confirmPassword ? 'verifyError' : ''"
 						>
 						<template #left>
 							<svg-icon name="password_icon" size="18px" />
@@ -75,7 +75,7 @@
 						</FromInput>
 				
 					</p>
-					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次密码不一致']`) }}</p>
+					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
 				</div>
 
 				<div>
@@ -86,10 +86,10 @@
 				</div>
 
 				<div>
-					<p class="Text_s mb_8 mt_8 fs_14 flex_start">{{ $t(`login['输入推荐码']`) }} 
+					<p class="Text_s mb_8 mt_16 fs_14 flex_start">{{ $t(`login['输入推荐码']`) }} 
 			
-						<svg-icon name="common-arrow_up" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
-						<svg-icon name="common-arrow_down" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
+						<svg-icon name="common-arrow_up_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-if="openinviteCode"/>
+						<svg-icon name="common-arrow_down_on" size="14px" class="ml_4 curp" @click="openinviteCode = !openinviteCode" v-else/>
 					</p>
 					<p class="common_password" v-if="openinviteCode"><FromInput type="text" v-model="payLoad.inviteCode"  :placeholder="$t(`login['输入推荐码']`)" >
 						<template #left>

@@ -2,7 +2,7 @@
 	<div class="dropdown-select" ref="dropdown">
 		<button class="trigger" @click="toggleDropdown">
 			<div class="flex-center" style="gap: 10px">
-				<svg-icon name="currency" size="16px" />
+				<svg-icon name="currency" size="18px" />
 				<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''">{{ selectedOptionLabel || placeholder }} </span>
 			</div>
 
@@ -14,7 +14,6 @@
 				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`common['请输入货币名称或简称']`)" class="search-input common_input fs_14" />
 				<svg-icon name="common-close" size="18px" @click="searchQuery = ''" class="close" />
 			</div>
-			<div class="line"></div>
 			<ul class="options-list">
 				<li
 					v-for="option in filteredOptions"
@@ -24,7 +23,7 @@
 					:class="option.currencyCode == selectedOption?.currencyCode ? 'active' : ''"
 				>
 					<span> {{ option.currencyNameI18 }}/{{ option.currencyCode }}</span>
-					<span><svg-icon :name="selectedOptionLabel == option.currencyCode ? 'common-cricle_theme' : 'common-cricle'" size="16px"> </svg-icon> </span>
+					<svg-icon :name="selectedOptionLabel == option.currencyCode ? 'common-cricle_theme' : 'common-cricle'" size="16px"> </svg-icon>
 				</li>
 				<li v-if="filteredOptions.length === 0" class="no-results">{{ $t(`common['暂不支持此货币']`) }}</li>
 			</ul>
@@ -145,9 +144,6 @@ onUnmounted(() => {
 
 	.input {
 		position: reactive;
-		background-color: var(--Bg-3);
-
-		border-radius: 4px;
 	}
 	.close {
 		position: absolute;
@@ -168,9 +164,9 @@ onUnmounted(() => {
 		box-sizing: border-box;
 		height: 34px;
 		outline: none;
-		border-radius: 4px;
 		background-color: var(--Bg-2);
-		color: var(--Text-s);
+		color: var(--Text-2-1);
+		border-radius: 0;
 	}
 }
 
@@ -179,7 +175,6 @@ onUnmounted(() => {
 	overflow-y: auto;
 	margin: 0;
 	padding: 0;
-	list-style: none;
 }
 .options-list::-webkit-scrollbar {
 	display: none;
@@ -189,19 +184,27 @@ onUnmounted(() => {
 	cursor: pointer;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+	color: var(--Text-1);
+	svg {
+		color: var(--Icon-1);
+	}
 }
 .option-item.active,
 .option-item:hover {
 	color: var(--Text-s);
-	background-color: var(--Bg-4);
+	background-color: var(--Bg-3);
 	svg {
 		color: var(--Theme);
 	}
 }
-
+.option-item:hover {
+	background-color: var(--Bg-4);
+}
 .no-results {
 	padding: 8px;
 	text-align: center;
 	font-size: 12px;
+	color: var(--Text-2-1);
 }
 </style>
