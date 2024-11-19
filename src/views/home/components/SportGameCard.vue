@@ -283,6 +283,9 @@ const { Collection } = useHeaderTools(props.events);
 					box-sizing: border-box;
 					&:hover {
 						background-color: var(--betselector-hover-bg);
+						.label {
+							color: var(--Text-a) !important;
+						}
 					}
 					.label {
 						max-width: 60%;

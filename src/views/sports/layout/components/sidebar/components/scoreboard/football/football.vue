@@ -63,7 +63,8 @@
 			</div>
 			<div class="event-info">
 				<div class="date">
-					<span class="red">{{ getEventsTitle(eventsInfo) }} {{ gameTime }}</span>
+					<span class="title">{{ getEventsTitle(eventsInfo) }}</span
+					><span class="red">{{ gameTime }}</span>
 					<!-- <span class="red">89:26</span> -->
 				</div>
 				<div class="score">
@@ -298,6 +299,9 @@ const { gameTime } = useGameTimer(gameState);
 				font-weight: 400;
 				.red {
 					color: var(--Theme);
+				}
+				.title {
+					color: var(--Text-s);
 				}
 			}
 			.score {

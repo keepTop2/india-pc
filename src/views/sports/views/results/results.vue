@@ -73,8 +73,12 @@
 				</template>
 			</el-table>
 		</div>
-
-		<Pagination class="pagination" v-if="eventResultData?.length" v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="total" @sizeChange="sizeChange" />
+		<div class="bottom" v-if="eventResultData?.length">
+			<div class="order-total">
+				<span>{{ $t(`sports.betRecord['总计单数']`) }} {{ total }}</span>
+			</div>
+			<Pagination class="pagination" v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="total" @sizeChange="sizeChange" />
+		</div>
 	</div>
 </template>
 
@@ -237,9 +241,25 @@ const sizeChange = (pageSize: number) => {
 		width: 100%;
 		max-height: calc(100vh - 240px);
 	}
-	.pagination {
-		margin-top: 15px;
+	.bottom {
+		margin-top: 14px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		width: 100%;
+		.order-total {
+			display: flex;
+			gap: 24px;
+			color: var(--Text-1);
+			font-family: "PingFang SC";
+			font-size: 14px;
+			font-weight: 400;
+			position: absolute;
+			left: 0;
+		}
 	}
+
 	.col-box {
 		display: flex;
 		align-items: center;

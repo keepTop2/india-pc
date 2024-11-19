@@ -5,7 +5,7 @@
 
 	<!-- 联赛数据统计卡片 -->
 	<div v-if="listData.length" :style="computedHeight" class="box-content">
-		<DynamicScroller :items="listData" :min-item-size="154" class="scroller" key-field="leagueId">
+		<DynamicScroller itemClass="scroller-item" :items="listData" :min-item-size="154" class="scroller" key-field="leagueId">
 			<template v-slot="{ item, index, active }">
 				<DynamicScrollerItem :item="item" :key="item.leagueId" :active="active" :data-index="index" :data-active="active">
 					<!-- <component
@@ -119,9 +119,14 @@ const { expandedPanels, onToggleAllStates, toggleDisplay } = useExpandPanels();
 .box-content {
 	width: 100%;
 	// height: calc(100vh - 227px);
-
+	:deep(.scroller-item) {
+		margin-bottom: 4px;
+	}
 	.scroller {
 		height: 100%;
+	}
+	:deep(.scroller-item) {
+		margin-bottom: 4px;
 	}
 	:deep(.market-item) {
 		&:hover {

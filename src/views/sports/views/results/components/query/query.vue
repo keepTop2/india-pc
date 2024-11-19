@@ -7,7 +7,7 @@
 			<span>{{ $t(`matchResult['体育']`) }}</span>
 			<Select :options="ballOptions" v-model="modelValue.ballType" />
 			<span>{{ $t(`matchResult['日期']`) }} </span>
-			<el-dropdown ref="selectRef" trigger="click" :teleported="false" placement="bottom-end" popper-class="popperClass" @visible-change="visibleChange" @command="onCommand">
+			<!-- <el-dropdown ref="selectRef" trigger="click" :teleported="false" placement="bottom-end" popper-class="popperClass" @visible-change="visibleChange" @command="onCommand">
 				<div class="el-dropdown-content">
 					<span>{{ startDate }} - {{ endDate }}</span>
 					<svg-icon class="searchIcon" name="common-arrow_down" size="14" />
@@ -23,8 +23,14 @@
 						</template>
 					</VDatePicker>
 				</template>
-			</el-dropdown>
-
+			</el-dropdown> -->
+			<div class="time formItem pl_14 pr_14" @click="showDatePicker = true" style="position: relative">
+				<div class="flex_space-between curp">
+					<span>{{ dayjs(range.start).format("YYYY/MM/DD") }} - {{ dayjs(range.end).format("YYYY/MM/DD") }}</span>
+					<svg-icon name="common-arrow_down" width="12px" height="8px"></svg-icon>
+				</div>
+				<DatePicker :range="range" v-model="showDatePicker" @updateRange="updateRange" />
+			</div>
 			<span>{{ $t(`matchResult['联赛']`) }}</span>
 			<el-input v-model="modelValue.league" :placeholder="$t(`matchResult['请输入关键字搜索']`)" />
 
@@ -85,10 +91,14 @@ const handleSearch = () => emits("search");
 /**
  * @description 监听 range 变化
  */
-watch(range, () => {
-	console.log(range.value, "=range", props.modelValue);
-	emits("updateModel", { ...props.modelValue, date: [range.value.start, range.value.end] });
-});
+watch(
+	range,
+	() => {
+		console.log(range.value, "=range", props.modelValue);
+		emits("updateModel", { ...props.modelValue, date: [range.value.start, range.value.end] });
+	},
+	{ deep: true }
+);
 
 /**
  * @description 处理下拉菜单命令
@@ -127,6 +137,11 @@ const handlePanelChange = (newPanel: any) => {
 const formatDate = (date: any) => {
 	console.log(date, "=====date");
 	return date ? Common.getYMD(date, "YYYY/MM/DD") : "";
+};
+
+const updateRange = (value: any) => {
+	range.value.start = value[0];
+	range.value.end = value[1];
 };
 </script>
 
@@ -363,6 +378,18 @@ const formatDate = (date: any) => {
 			color: var(--Text-1);
 			font-weight: normal;
 		}
+	}
+}
+.formItem {
+	height: 30px;
+	background: var(--Bg-2);
+	color: var(--Text-s);
+	line-height: 30px;
+	min-width: 140px;
+	border-radius: 6px;
+	width: 211px;
+	:deep(.date-picker) {
+		z-index: 9;
 	}
 }
 </style>

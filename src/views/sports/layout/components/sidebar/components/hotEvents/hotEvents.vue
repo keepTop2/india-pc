@@ -293,7 +293,19 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 						cursor: pointer;
 					}
 					.isBright {
-						background: var(--Bg-5) !important;
+						position: relative;
+						&::after {
+							content: "";
+							position: absolute;
+							width: 100%;
+							height: 100%;
+							border-radius: 8px;
+							border: 2px solid;
+							box-sizing: border-box;
+							border: 1px solid var(--Theme);
+							left: 0;
+							top: 0;
+						}
 						.label_one {
 							color: var(--Text-s) !important;
 						}
@@ -308,6 +320,10 @@ const isBright = (market: { marketId: any; eventId: string }, selection: { key: 
 						border-radius: 4px;
 						background-color: var(--Bg-3);
 						cursor: pointer;
+						overflow: hidden;
+						&:not(.isBright):hover {
+							background-color: var(--betselector-hover-bg);
+						}
 						.label {
 							width: 50%;
 							height: 100%;
