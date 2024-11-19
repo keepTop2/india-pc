@@ -16,7 +16,6 @@ export default () => {
 	const BetForm = defineComponent({
 		props: {
 			value: { type: Object, default: () => ({}) },
-			currentOddsItem: { type: Object, default: () => ({}) },
 		},
 		name: "BetForm",
 		emits: ["submit"],
@@ -27,8 +26,8 @@ export default () => {
 			const userStore = useUserStore();
 			const modalStore = useModalStore();
 			const SportsBetInfoStore = useSportsBetInfoStore();
-			const { currentOddsItem, currentGameplayItem, curretnBalls, formActived } = useLottery();
-			const { satoken, isThirdPartyLoggedin, merchantInfo } = useLoginGame();
+			const { currentOddsItem, formActived } = useLottery();
+			const { isThirdPartyLoggedin } = useLoginGame();
 
 			const unit = computed(() => userStore.getUserInfo.mainCurrency || "USD");
 
@@ -55,7 +54,8 @@ export default () => {
 			// 校验投注金额输入
 			const validateStake = (price: string) => {
 				const { getUserInfo = {} } = userStore;
-				const { token = "", totalBalance = 0 } = getUserInfo;
+				const { token = "" } = getUserInfo;
+
 				// 1. 校验是否登录 token 和 satoken
 				if (![token, isThirdPartyLoggedin.value].every(Boolean)) {
 					modalStore.openModal("LoginModal"); // 弹出登录框

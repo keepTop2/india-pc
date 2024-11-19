@@ -33,13 +33,13 @@
 							<template v-if="oddsItem.actived && oddsItem.type === SELECT_BALL" #default>
 								<div class="accordion-content-item-balls">
 									<SelectBallGroup
-										@clear="() => (balls = [])"
+										@clear="() => (currentBalls = [])"
 										:type="3"
-										@select="(balls) => chooseBalls(balls, gameplayIndex, oddsIndex)"
+										@select="(params) => chooseBalls(params)"
 										:multiple="false"
 										:renderBallNum="(oddsItem.ballNum as number)"
 										:maxLeng="1"
-										:value="balls"
+										:value="currentBalls"
 									/>
 								</div>
 							</template>
@@ -55,8 +55,8 @@
 					<div class="bet-form-slot-header">
 						<div>{{ currentGameplayItem.gamePlayName }}</div>
 						<div>{{ currentOddsItem.title }}</div>
-						<div v-if="formActived && curretnBalls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
-							<Ball v-for="item in curretnBalls" :key="item" :ball-number="item" :type="3" />
+						<div v-if="formActived && currentBalls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
+							<Ball v-for="item in currentBalls" :key="item" :ball-number="item" :type="3" />
 						</div>
 					</div>
 				</template>
@@ -83,12 +83,12 @@ const { Ball, SelectBallGroup } = useBall();
 const { BetForm } = useBetForm();
 
 // hooks
-const { gameplayList, queryGamePlayOddsList } = useGameplayList(l1);
+const { gameplayList, queryGamePlayOddsList } = useGameplayList();
 const { toggleAccordion, chooseBalls, chooseOddsItem } = useAccordionHook(gameplayList);
-const { currentOddsItem, currentGameplayItem, curretnBalls, formActived } = useLottery();
+const { setCurrentBalls, currentOddsItem, currentGameplayItem, currentBalls, formActived } = useLottery();
 const { betFormRef, handleSubmit } = useBet();
 
-onMounted(queryGamePlayOddsList);
+onMounted(() => queryGamePlayOddsList(l1));
 </script>
 
 <style lang="scss" scoped></style>

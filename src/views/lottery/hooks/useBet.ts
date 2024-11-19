@@ -20,7 +20,7 @@ export function useBet() {
 	const userStore = useUserStore();
 	const { satoken, isThirdPartyLoggedin, merchantInfo } = useLoginGame();
 	const modalStore = useModalStore();
-	const { lotteryDetail, currentOddsItem, currentGameplayItem, curretnBalls } = useLottery();
+	const { lotteryDetail, currentOddsItem, currentGameplayItem, currentBalls } = useLottery();
 
 	// 校验函数
 	function verify(stake: number) {
@@ -69,7 +69,7 @@ export function useBet() {
 		let { optionCode: nums } = currentOddsItem.value;
 		// 选择球
 		if (SELECT_BALL === type) {
-			nums = String(curretnBalls.value[0]);
+			nums = String(currentBalls.value[0]);
 
 			// 这里 11 选 5 要特殊一点，下注的时候，例如 4 号球要提交 "04" 而不是 "4"
 			if (["SYXW", "SSQ"].includes(currentGameplayItem.value.categoryCode as string)) {

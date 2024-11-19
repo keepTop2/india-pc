@@ -17,19 +17,19 @@ const useLotteryStore = defineStore("LotteryStore", () => {
 	const lotteryDetail = ref({} as LotteryDetail); // 单个彩种的详情，例如期号、名字、多少分钟一期
 	const currentOddsItem = ref({} as OddsItem); // 当前选中的赔率
 	const currentGameplayItem = ref({} as GameplayItem); // 当前选中的玩法
-	const curretnBalls = ref({} as number[]); // 当前选中的球
+	const currentBalls = ref([] as number[]); // 当前选中的球
 
 	const formActived = computed(() => {
 		const { type } = currentOddsItem.value;
 		if (SELECT_BALL === type) {
-			return true;
+			return currentBalls.value.length > 0;
 		}
 		return Boolean(currentOddsItem.value.optionCode);
 	});
 
 	const setOddsItem = (o: OddsItem) => (currentOddsItem.value = o);
 	const setGameplayItem = (o: GameplayItem) => (currentGameplayItem.value = o);
-	const setCurretnBalls = (balls: number[]) => (curretnBalls.value = balls);
+	const setCurrentBalls = (balls: number[]) => (currentBalls.value = balls);
 
 	async function beginPageData() {
 		// 3.1 准备一下入参 gameCode lang 两个入参
@@ -51,12 +51,12 @@ const useLotteryStore = defineStore("LotteryStore", () => {
 		lotteryDetail,
 		currentOddsItem,
 		currentGameplayItem,
-		curretnBalls,
+		currentBalls,
 		formActived,
 		beginPageData,
 		setOddsItem,
 		setGameplayItem,
-		setCurretnBalls,
+		setCurrentBalls,
 	};
 });
 
@@ -65,6 +65,6 @@ const useLotteryStore = defineStore("LotteryStore", () => {
  */
 export function useLottery() {
 	const lotteryStore = useLotteryStore();
-	const { beginPageData, setOddsItem, setGameplayItem, setCurretnBalls } = lotteryStore;
-	return { ...storeToRefs(lotteryStore), beginPageData, setOddsItem, setGameplayItem, setCurretnBalls };
+	const { beginPageData, setOddsItem, setGameplayItem, setCurrentBalls } = lotteryStore;
+	return { ...storeToRefs(lotteryStore), beginPageData, setOddsItem, setGameplayItem, setCurrentBalls };
 }

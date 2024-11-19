@@ -3,6 +3,7 @@ import "./index.scss";
 import { computed, defineComponent } from "vue";
 
 import { i18n } from "/@/i18n";
+import { useLottery } from "/@/views/lottery/stores/lotteryStore";
 
 const ClearIcon = new URL("/src/assets/zh-CN/lottery/clear.svg", import.meta.url).href;
 const KsxzIcon = new URL("/src/assets/zh-CN/lottery/ksxz.svg", import.meta.url).href;
@@ -49,9 +50,12 @@ export default () => {
 
 		setup(props, { emit }) {
 			const { renderBallNum, maxLeng, type = 1, multiple = true, startIndex } = props;
+			const { currentBalls } = useLottery();
+
 			// 处理球的选择逻辑
 			const handleSelect = (ballNum: number, isRandom = false) => {
 				console.log("ballNum", ballNum);
+
 				if (!multiple) {
 					emit("select", {
 						value: ballNum,
