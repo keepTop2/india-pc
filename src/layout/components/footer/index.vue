@@ -34,7 +34,7 @@
 			<div class="footer2_1">
 				<div class="aboutUs footer2_1_item">
 					<div>
-						<img src="../../../assets/theme/common/logo2.png" alt="" style="height: 126px" />
+						<img v-lazy-load="Common.getThemeImgPath('logo2.png')" alt="" style="height: 126px" />
 					</div>
 					<div class="aboutUs_2">
 						<div class="fs_20">关于我们</div>
@@ -62,8 +62,7 @@
 				</div>
 			</div>
 			<div class="Text1 fs_14 footer2_2">
-				OKSPORT 由 Medium Rare N.V. 所属和经营，注册编号： 145353，注册地址： Korporaalweg 10, Willemstad, Curaçao。请通过 support@stake.com 与我们联系。 支付代理公司是 Medium Rare
-				Limited，地址于 7-9 Riga Feraiou, LIZANTIA COURT, Office 310, Agioi Omologites, 1087 Nicosia, Cyprus 以及注册号：HE 410775
+				<div v-html="helpValue.find((item:any) => item.code == 8)?.valueDetail"></div>
 			</div>
 		</div>
 	</div>
@@ -73,9 +72,10 @@
 import { onMounted, ref } from "vue";
 import { CommonApi } from "/@/api/common";
 import Common from "/@/utils/common";
+import { helpCenterApi } from "/@/api/helpCenter";
 const partnerList: any = ref([]);
 const vendorList: any = ref([]);
-
+const helpValue: any = ref([]);
 onMounted(() => {
 	getlist();
 });
@@ -86,6 +86,9 @@ const getlist = () => {
 	});
 	CommonApi.queryPaymentVendorList().then((res) => {
 		vendorList.value = res.data || [];
+	});
+	helpCenterApi.getHelpCenterConfigList().then((res) => {
+		helpValue.value = res.data || [];
 	});
 };
 </script>

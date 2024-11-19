@@ -28,7 +28,7 @@
 				<!-- 菜单 -->
 				<div class="left_scroll_conatiner2">
 					<menuSkeleton v-if="isLoading" :collapse="collapse" />
-					<Menu v-else :ActivitySwitch="ActivitySwitch" />
+					<Menu v-else :ActivitySwitch="ActivitySwitch" @showDAILY_COMPETITION="showDAILY_COMPETITION" />
 					<!-- 左侧底步功能区 -->
 					<div class="sidebar_bttom">
 						<!-- 白天黑夜  打开侧边栏状态-->
@@ -119,6 +119,13 @@ const confirmDialog = () => {
 const showTask = () => {
 	if (useUserStore().getLogin) {
 		modalStore.openModal("TASK");
+	} else {
+		showNeedLogin.value = true;
+	}
+};
+const showDAILY_COMPETITION = () => {
+	if (useUserStore().getLogin) {
+		modalStore.openModal("DAILY_COMPETITION");
 	} else {
 		showNeedLogin.value = true;
 	}

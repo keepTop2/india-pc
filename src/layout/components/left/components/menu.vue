@@ -1,6 +1,6 @@
 <template>
 	<div class="menu_row" :class="collapse ? 'collapse' : ''">
-		<div class="menu_item" v-if="ActivitySwitch?.includes('DAILY_COMPETITION')" @click="openDAILY_COMPETITION">
+		<div class="menu_item" v-if="ActivitySwitch?.includes('DAILY_COMPETITION')" @click="emit('showDAILY_COMPETITION')">
 			<span class="menu_icon"><svg-icon name="common-DAILY_COMPETITION" size="20px"></svg-icon></span>
 			<span class="menu_name ellipsis">每日竞赛</span>
 		</div>
@@ -76,7 +76,7 @@ const UserStore = useUserStore();
 const props = defineProps({
 	ActivitySwitch: [] as any,
 });
-
+const emit = defineEmits(["showDAILY_COMPETITION"]);
 const routerObj: any = computed(() => {
 	return MenuStore.getMenu;
 });

@@ -366,13 +366,13 @@ class Common {
 	 *  @describe 三位数分割逗号
 	 */
 	static thousands(num: number | string | null | undefined) {
-		if (!num) return;
+		if (!num) return "0";
 		if (num || num == 0) {
 			var str = String(num);
 			var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
 			return str.replace(reg, "$1,");
 		}
-		return "";
+		return "0";
 	}
 
 	/**
