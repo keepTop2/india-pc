@@ -18,7 +18,7 @@ export default () => {
 
 	const LotteryHeader = defineComponent({
 		name: "LotteryHeader",
-		setup(props) {
+		setup() {
 			const {
 				getUserInfo: { mainCurrency },
 			} = useUserStore();
@@ -32,12 +32,12 @@ export default () => {
 					<div class="left lottery-card">
 						<div class="lottery-card-box">
 							{/* 彩票卡片内容 */}
-							<Content data={lotteryDetail} />
+							<Content data={lotteryDetail.value} />
 							{/* 倒计时组件 */}
-							<TimeGroup data={lotteryDetail} />
+							<TimeGroup data={lotteryDetail.value} />
 						</div>
 						{/* 彩票卡片的页脚 */}
-						<Footer />
+						<Footer maxWin={maxWin} />
 					</div>
 
 					{/* 右侧部分，展示彩票信息图片 */}
