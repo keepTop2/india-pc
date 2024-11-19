@@ -4,27 +4,29 @@
 			<template #header>
 				<div class="header">{{ $t(`wallet['提款']`) }}</div>
 			</template>
-			<div class="container">
-				<div class="amount_list">
-					<div class="amount_info">
-						<div class="label">{{ $t(`wallet['中心钱包']`) }}</div>
-						<div class="value">{{ common.formatAmount(Number(state.totalBalance), 8) }}</div>
-						<div class="icon">
-							<img :src="balance_icon" alt="" />
+			<div class="container" :class="{ dialogType_fixed: dialogType }">
+				<div :class="{ dialogType_fixed_container: dialogType }">
+					<div class="amount_list">
+						<div class="amount_info">
+							<div class="label">{{ $t(`wallet['中心钱包']`) }}</div>
+							<div class="value">{{ common.formatAmount(Number(state.totalBalance), 8) }}</div>
+							<div class="icon">
+								<img :src="balance_icon" alt="" />
+							</div>
 						</div>
-					</div>
-					<div class="amount_info">
-						<div class="label">{{ $t(`wallet['冻结金额']`) }}</div>
-						<div class="value">{{ common.formatFloat(state.freezeAmount) }}</div>
-						<div class="icon">
-							<img :src="freeze_balance_icon" alt="" />
+						<div class="amount_info">
+							<div class="label">{{ $t(`wallet['冻结金额']`) }}</div>
+							<div class="value">{{ common.formatFloat(state.freezeAmount) }}</div>
+							<div class="icon">
+								<img :src="freeze_balance_icon" alt="" />
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</Card>
 
-		<Card class="mt_20">
+		<Card :class="!dialogType ? 'mt_20' : 'mt_166'">
 			<div class="container">
 				<!-- 提款方式 -->
 				<div class="title">{{ $t(`wallet['提款方式']`) }}</div>
@@ -534,8 +536,25 @@ const clearParams = () => {
 	font-weight: 500;
 }
 
+.dialogType_fixed {
+	position: fixed;
+	width: calc(100% - 40px);
+	background: var(--Bg);
+	padding: 0px !important;
+	padding-bottom: 20px !important;
+	// margin-top: 1px;
+	z-index: 10;
+	.dialogType_fixed_container {
+		padding: 20px;
+		height: 146px;
+		background: var(--Bg-1);
+		border-radius: 0px 0px 12px 12px;
+	}
+}
+
 .container {
 	padding: 20px;
+
 	.amount_list {
 		display: flex;
 		gap: 16px;

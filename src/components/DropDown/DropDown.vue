@@ -111,7 +111,7 @@ onBeforeUnmount(() => {
 	background-color: var(--Bg-3);
 	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
 	overflow: hidden;
-	z-index: 1000;
+	z-index: 9;
 }
 
 .search_input {
