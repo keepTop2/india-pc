@@ -212,9 +212,18 @@ const { Banner, BannerController } = userBanner();
 			box-sizing: border-box;
 			.line {
 				width: 100%;
-				height: 1px;
-				background: var(--Line-1);
-				box-shadow: 0px 1px 0px 0px #343d48;
+				position: relative;
+				height: 2px;
+				&::after {
+					position: absolute;
+					content: "";
+					top: 0px;
+					left: 0px;
+					width: 100%;
+					height: 1px;
+					background-color: var(--Line-1);
+					box-shadow: 0px 1px 0px 0px var(--Line-1-bs);
+				}
 			}
 		}
 

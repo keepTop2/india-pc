@@ -1,7 +1,7 @@
 <template>
 	<div class="lottery-result">
 		<div class="search">
-			<el-select :teleported="false" v-model="selectValue" placeholder="排序: 按时间排序" clearable filterable @change="handleChange">
+			<el-select :teleported="false" v-model="selectValue" :placeholder="$t(`lottery['排序: 按时间排序']`)" clearable filterable @change="handleChange">
 				<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
 			</el-select>
 		</div>
@@ -39,7 +39,8 @@ import useBall from "/@/views/lottery/components/Tools/Ball/Index";
 import useDice from "/@/views/lottery/components/Tools/Dice/Index";
 import { DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
-
+import { i18n } from "/@/i18n";
+const $: any = i18n.global;
 interface TableDataItem {
 	endTime: number;
 	gameCode: string;
@@ -56,8 +57,8 @@ type TableData = TableDataItem[];
 
 const { Ball } = useBall();
 const options = [
-	{ label: "排序: 抽奖时间升序", value: 1 },
-	{ label: "排序: 抽奖时间降序", value: 0 },
+	{ label: $.t(`lottery['排序: 抽奖时间升序']`), value: 1 },
+	{ label: $.t(`lottery['排序: 抽奖时间降序']`), value: 0 },
 ];
 const selectValue = ref(0);
 const tableData = ref<TableData>([]);

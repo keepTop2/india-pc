@@ -1,7 +1,7 @@
 <template>
 	<div class="lottery-result">
 		<div class="search">
-			<el-select :teleported="false" v-model="selectValue" placeholder="排序: 按时间排序" clearable filterable @change="handleChange">
+			<el-select :teleported="false" v-model="selectValue" :placeholder="$t(`lottery['排序: 按时间排序']`)" clearable filterable @change="handleChange">
 				<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
 			</el-select>
 		</div>
@@ -40,7 +40,8 @@ import { DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
 import { usePagination } from "/@/views/lottery/hooks/usePagination";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { chunk, sum } from "lodash-es";
-
+import { i18n } from "/@/i18n";
+const $: any = i18n.global;
 interface TableDataItem {
 	endTime: number;
 	gameCode: string;
@@ -63,8 +64,8 @@ const route = useRoute();
 const { pagination, handleChange, sizeChange, pageChange } = usePagination(issueHistory);
 
 const options = [
-	{ label: "排序: 抽奖时间升序", value: 1 },
-	{ label: "排序: 抽奖时间降序", value: 0 },
+	{ label: $.t(`lottery['排序: 抽奖时间升序']`), value: 1 },
+	{ label: $.t(`lottery['排序: 抽奖时间降序']`), value: 0 },
 ];
 
 const selectValue = ref(0);
