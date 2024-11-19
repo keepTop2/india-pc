@@ -9,14 +9,14 @@ import { LotteryPlayGroup } from "/@/views/lottery/types/lottery";
 import { mergeGameplayList } from "/@/views/lottery/utils/mergeGameplayList";
 import { ssqLotteryList } from "/@/views/lottery/utils/ssqLotteryList";
 
-export function useGameplayList(l1: GameplayList) {
+export function useGameplayList() {
 	const route = useRoute();
 	const userStore = useUserStore();
 
 	const gameplayList = ref<GameplayList>([]); // 合并后的玩法列表
 
 	// 拉接口玩法
-	async function queryGamePlayOddsList() {
+	async function queryGamePlayOddsList(l1: GameplayList) {
 		// 1. 获取 单个彩种的动态的玩法与赔率信息
 
 		// 1.1 准备一下入参 gameCode lang 两个入参

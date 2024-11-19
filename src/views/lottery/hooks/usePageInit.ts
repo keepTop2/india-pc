@@ -22,11 +22,6 @@ export function usePageInit() {
 	const { turnOnTimer: turnOnLotteryDetailTimer, turnOffTimer: turnOffLotteryDetailTimer } = useTimer(beginPageData, BEGIN_PAGE_DATA_INTERVAL);
 	const { status } = useWebSocket({ callback, fallbackFn: beginPageData });
 
-	// 这个定时器是方便调试的，可以删除没问题的
-	setInterval(() => {
-		console.log("WebSocket Status", status.value);
-	}, 1000);
-
 	// 标签栏的配置数据
 	onMounted(async () => {
 		// 1. 登录第三方拿 token
