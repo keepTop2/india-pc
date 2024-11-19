@@ -88,7 +88,18 @@
 						<template v-for="item in BankCardWithdrawalList">
 							<div class="cell" v-if="depositOrderDetail[item.key as keyof depositOrderDetailRootObject]">
 								<span class="label">{{ $t(`wallet['${item.label}']`) }}</span>
-								<span class="value">{{ depositOrderDetail[item.key as keyof depositOrderDetailRootObject] }}</span>
+								<span class="value">
+									<!-- 脱敏处理 -->
+									<template v-if="item.key in maskKeys">
+										<!-- 手机号拼接区号 -->
+										<span v-if="item.key === 'userPhone'">{{ "+" + depositOrderDetail.areaCode }}</span>
+										<span>{{ maskFunctions[item.key as MaskFieldKey](depositOrderDetail[item.key as keyof typeof depositOrderDetail]) }}</span>
+									</template>
+									<!-- 默认展示 -->
+									<template v-else>
+										{{ depositOrderDetail[item.key as keyof typeof depositOrderDetail] }}
+									</template>
+								</span>
 							</div>
 						</template>
 					</template>
@@ -98,7 +109,18 @@
 						<template v-for="item in EWalletList">
 							<div class="cell" v-if="depositOrderDetail[item.key as keyof depositOrderDetailRootObject]">
 								<span class="label">{{ $t(`wallet['${item.label}']`) }}</span>
-								<span class="value">{{ depositOrderDetail[item.key as keyof depositOrderDetailRootObject] }}</span>
+								<span class="value">
+									<!-- 脱敏处理 -->
+									<template v-if="item.key in maskKeys">
+										<!-- 手机号拼接区号 -->
+										<span v-if="item.key === 'userPhone'">{{ "+" + depositOrderDetail.areaCode }}</span>
+										<span>{{ maskFunctions[item.key as MaskFieldKey](depositOrderDetail[item.key as keyof typeof depositOrderDetail]) }}</span>
+									</template>
+									<!-- 默认展示 -->
+									<template v-else>
+										{{ depositOrderDetail[item.key as keyof typeof depositOrderDetail] }}
+									</template>
+								</span>
 							</div>
 						</template>
 					</template>
@@ -270,6 +292,7 @@ interface depositOrderDetailRootObject {
 	urgeOrder?: number;
 	tradeWayType?: string;
 	transferAmount?: number;
+	areaCode?: string;
 }
 
 const props = withDefaults(
@@ -325,11 +348,11 @@ const fromFieldsList = {
 		{ label: "状态", key: "customerStatus" }, // 充值状态
 		{ label: "到账时间", key: "updatedTime" }, // 到账时间
 		{ label: "订单号", key: "orderNo" }, // 订单编号
-		{ label: "存款方式", key: "tradeWayTypeText" }, // 存款方式
-		{ label: "到账金额", key: "applyAmount" }, // 申请金额
+		{ label: "存款方式", key: "depositWithdrawWay" }, // 存款方式
+		{ label: "到账金额", key: "tradeCurrencyAmount" }, // 申请金额
 		{ label: "手续费", key: "feeAmount" }, // 充值手续费
 		{ label: "汇率", key: "exchangeRate" }, // 汇率
-		{ label: "实际到账", key: "arriveAmount" }, // 实际到账金额
+		{ label: "实际到账", key: "applyAmount" }, // 实际到账金额
 	],
 
 	// 上级转账
@@ -558,19 +581,27 @@ const maskFunctions: Record<MaskFieldKey, (value: any) => string> = {
 
 // 根据字段动态获取货币单位
 const getCurrencyLabel = (key: string) => {
-	if (route.query.tradeWayType === "crypto_currency_withdraw" && key === "arriveAmount") {
+	if (
+		(route.query.tradeWayType === "crypto_currency_withdraw" && key === "arriveAmount") ||
+		(route.query.tradeWayType === "crypto_currency_recharge" && key === "tradeCurrencyAmount")
+	) {
 		return "USDT";
 	}
 	return route.query.tradeWayType === "platform_transfer" ? UserStore.userInfo.platCurrencyName : UserStore.userInfo.mainCurrency;
 };
 
 onMounted(() => {
-	if (route.query.tradeWayType === "bank_card_recharge" || route.query.tradeWayType === "electronic_wallet_recharge") {
+	const { query } = route;
+	// 定义支持的充值类型
+	const depositTypes = ["bank_card_recharge", "electronic_wallet_recharge"];
+	const allRechargeTypes = [...depositTypes, "crypto_currency_recharge"];
+	if (allRechargeTypes.includes(query.tradeWayType as string)) {
 		nextTick(() => {
 			getDepositOrderDetail();
 		});
-		pubsub.subscribe("/wallet/rechargeSuccessFail", rechargeSuccessFail);
-		pubsub.subscribe("/wallet/rechargeSuccessFail", rechargeSuccessFail);
+		if (depositTypes.includes(query.tradeWayType as string)) {
+			pubsub.subscribe("/wallet/rechargeSuccessFail", rechargeSuccessFail);
+		}
 	} else {
 		tradeRecordDetail();
 	}
@@ -608,12 +639,7 @@ const tradeRecordDetail = async () => {
 	const res = await walletApi.tradeRecordDetail(params).catch((err) => err);
 	if (res.code === common.ResCode.SUCCESS) {
 		// 银行卡 电子钱包 虚拟货币 取款
-		if (
-			route.query.tradeWayType === "bank_card_withdraw" ||
-			route.query.tradeWayType === "electronic_wallet_withdraw" ||
-			route.query.tradeWayType === "crypto_currency_withdraw" ||
-			route.query.tradeWayType === "crypto_currency_recharge"
-		) {
+		if (route.query.tradeWayType === "bank_card_withdraw" || route.query.tradeWayType === "electronic_wallet_withdraw" || route.query.tradeWayType === "crypto_currency_withdraw") {
 			depositOrderDetail.value = res.data.withdrawOrderDetailVO || {};
 		}
 		// 人工加额
@@ -762,7 +788,7 @@ onUnmounted(() => {
 	gap: 10px;
 	padding-bottom: 6px;
 	border-bottom: 1px solid var(--Line-1);
-	box-shadow: 0px 1px 0px 0px #343d48;
+	box-shadow: 0px 1px 0px 0px var(--Shadow-1);
 
 	.label {
 		color: var(--Text-s);
@@ -885,7 +911,7 @@ onUnmounted(() => {
 			.value {
 				display: flex;
 				align-items: center;
-				gap: 8px;
+				gap: 10px;
 				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 14px;

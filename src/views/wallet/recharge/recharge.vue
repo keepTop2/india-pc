@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="recharge_container">
 		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
 				<div class="header">{{ $t(`wallet['存款']`) }}</div>
@@ -29,7 +29,7 @@
 		</Card>
 
 		<template v-if="rechargeWayList.length > 0">
-			<Card class="mt_14" v-okLoading="loadingShow">
+			<Card class="mt_14" :class="{ flex: rechargeWayData.rechargeTypeCode !== 'crypto_currency' }" v-okLoading="loadingShow">
 				<div class="container">
 					<!-- 银行卡 / 电子钱包 -->
 					<template v-if="rechargeWayData.rechargeTypeCode === 'bank_card' || rechargeWayData.rechargeTypeCode === 'electronic_wallet'">
@@ -87,7 +87,7 @@
 			</Card>
 			<!-- 虚拟币 -->
 			<template v-if="rechargeWayData.rechargeTypeCode === 'crypto_currency'">
-				<Card class="mt_14">
+				<Card class="mt_14 flex">
 					<div class="container">
 						<div class="title">{{ $t(`wallet['温馨提示']`) }}</div>
 						<div class="tips">
@@ -354,6 +354,15 @@ getRechargeWayList();
 </script>
 
 <style scoped lang="scss">
+.recharge_container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	.flex {
+		flex: 1;
+	}
+}
+
 .half_round_corner {
 	border-radius: 0px 0px 12px 12px;
 }
@@ -361,7 +370,7 @@ getRechargeWayList();
 .header {
 	padding-bottom: 6px;
 	border-bottom: 1px solid var(--Line-1);
-	box-shadow: 0px 1px 0px 0px #343d48;
+	box-shadow: 0px 1px 0px 0px var(--Shadow-1);
 	color: var(--Text-s);
 	font-family: "PingFang SC";
 	font-size: 24px;
