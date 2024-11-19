@@ -123,7 +123,7 @@
 		</activityDialog>
 		<!-- 需要登录 -->
 		<activityDialog v-model="showNeedLogin" title="温馨提示" :nofooter="false">
-			<div>您的账号暂未登录无法参与活动，如已有账号请登录，如还未有账号请前往注册</div>
+			<div>{{ $t(`activity['您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册']`) }}</div>
 		</activityDialog>
 	</div>
 </template>

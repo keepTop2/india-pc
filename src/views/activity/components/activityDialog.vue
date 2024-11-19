@@ -12,12 +12,12 @@
 
 			<div class="dialog-footer" v-if="nofooter">
 				<Button class="common_btn" @click="confirm">
-					<slot name="footer"> 确认 </slot>
+					<slot name="footer"> {{ $t(`activity['确认']`) }} </slot>
 				</Button>
 			</div>
 			<div class="dialog-footer2" v-else>
-				<Button class="common_btn" @click="goToRegister">去注册</Button>
-				<Button class="common_btn" @click="goToLogin">去登录</Button>
+				<Button class="common_btn" @click="goToRegister">{{ $t(`activity['去注册']`) }}</Button>
+				<Button class="common_btn" @click="goToLogin">{{ $t(`activity['去登录']`) }}</Button>
 			</div>
 		</div>
 		<div class="closeDialog" @click="close" v-if="closeIcon">

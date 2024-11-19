@@ -4,7 +4,7 @@
 		<div class="ChangePassword_form">
 			<div class="login_text fs_20 mb_33">
 				<span v-if="isCreate && !isEdit"> {{ $t(`security_center['绑定电子邮箱']`) }}</span>
-				<span v-else> {{ $t(`security_center['修改邮箱']`) }}</span>
+				<span v-else> {{ $t(`security_center['修改电子邮箱']`) }}</span>
 			</div>
 			<div class="login_form">
 				<div v-if="isCreate">
@@ -30,6 +30,7 @@
 							:disabled="verificationBtn && payLoad.email"
 							ref="VerificationCodeRef"
 							:hideLeftIcon="true"
+							:noColse="true"
 						/>
 						<p class="fs_14 Text1 mt_8 fw_200">
 							{{ $t(`security_center['有效时间']`) }}<span class="color_F2 ml_4" @click="Common.getSiteCustomerChannel">{{ $t(`security_center['联系客服']`) }}</span>
@@ -37,10 +38,10 @@
 					</div>
 				</div>
 				<div v-else>
-					<div class="Text_s mb_8">{{ $t(`security_center['原邮箱账号']`) }}</div>
-					<div class="Text1">{{ $t(`security_center['验证码将发送至邮箱账号：']`) }}{{ Common.maskEmail(userStore.getUserGlobalSetInfo.email) }}</div>
+					<div class="Text_s mb_8">{{ $t(`security_center['原电子邮箱']`) }}</div>
+					<div class="Text1">{{ $t(`security_center['验证码将发送至电子邮箱：']`) }}{{ Common.maskEmail(userStore.getUserGlobalSetInfo.email) }}</div>
 					<div class="Text1">{{ $t(`security_center['有效时间：10分钟']`) }}</div>
-					<div class="Text_s mt_16 mb_8">{{ $t(`security_center['验证码']`) }}</div>
+					<div class="Text_s mt_16 mb_2">{{ $t(`security_center['验证码']`) }}</div>
 					<VerificationCode
 						@VerificationCodeInput="VerificationCodeInput"
 						@sendVerificationCode="sendVerificationCode"
@@ -48,7 +49,11 @@
 						:disabled="verificationBtn"
 						ref="VerificationCodeRef"
 						:hideLeftIcon="true"
+						:noColse="true"
 					/>
+					<p class="fs_14 Text1 mt_8 fw_200">
+						{{ $t(`security_center['有效时间']`) }}<span class="color_F2 ml_4" @click="Common.getSiteCustomerChannel">{{ $t(`security_center['联系客服']`) }}</span>
+					</p>
 				</div>
 				<div class="mt_32 mb_12">
 					<Button disabled="disabledBtn" @click="onSubmit">

@@ -30,7 +30,7 @@
 				<!-- 第二步 -->
 				<div v-else-if="currentStep === 1">
 					<div>
-						<p class="Text_s mb_6 mt_8 fs_14"><span class="color_F1">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
+						<p class="Text_s mb_2 mt_8 fs_14"><span class="color_F1">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
 						<p>
 							<FromInput
 								type="text"
@@ -79,7 +79,7 @@
 				<div v-else-if="currentStep === 2">
 					<!-- 密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_12"><span class="color_F1">*</span>{{ $t(`login['密码']`) }}</p>
+						<p class="Text_s mb_2 mt_16 fs_14"><span class="color_F1">*</span>{{ $t(`login['新密码']`) }}</p>
 						<p class="common_password">
 							<FromInput
 								:type="showPassword ? 'password' : 'text'"
@@ -96,16 +96,16 @@
 
 								<template #right>
 									<span @click="showPassword = !showPassword">
-										<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="14px" />
+										<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="18px" />
 									</span>
 								</template>
 							</FromInput>
 						</p>
-						<p v-show="VerifyError.passWord" class="color_F1 fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
+						<p v-show="VerifyError.passWord" class="color_F1 fs_12 mt_2">{{ $t(`login['请输入8-16位字母+数字的组合']`) }}</p>
 					</div>
 					<!-- 确认密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_12"><span class="color_F1">*</span>{{ $t(`login['确认密码']`) }}</p>
+						<p class="Text_s mt_16 fs_14"><span class="color_F1">*</span>{{ $t(`login['确认密码']`) }}</p>
 						<p class="common_password">
 							<FromInput
 								:type="showConfimPassword ? 'password' : 'text'"
@@ -122,12 +122,12 @@
 
 								<template #right>
 									<span @click="showConfimPassword = !showConfimPassword">
-										<svg-icon :name="showConfimPassword ? 'eyes_on' : 'eyes'" size="14px" />
+										<svg-icon :name="showConfimPassword ? 'eyes_on' : 'eyes'" size="18px" />
 									</span>
 								</template>
 							</FromInput>
 						</p>
-						<p v-show="VerifyError.confirmPassword" class="color_F1 fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
+						<p v-show="VerifyError.confirmPassword" class="color_F1 fs_12 mt_2">{{ $t(`login['两次密码不一致']`) }}</p>
 					</div>
 				</div>
 				<div class="mt_40 mb_12 text-center">

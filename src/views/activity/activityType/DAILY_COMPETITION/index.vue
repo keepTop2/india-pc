@@ -1,5 +1,5 @@
 <template>
-	<activityWrapper :title="activityData.activityNameI18nCode || '每日竞赛'">
+	<activityWrapper :title="activityData.activityNameI18nCode || $t(`activity['每日竞赛']`)">
 		<div class="activityMain">
 			<div class="tabs">
 				<slide>
@@ -11,7 +11,7 @@
 			<div class="PrizePool">
 				<div>
 					<div class="fs_16 Texta fw_300">
-						比赛奖池
+						{{ $t(`activity['比赛奖池']`) }}
 						<img src="./images/help.png" alt="" class="help curp" @click="openRule" />
 					</div>
 					<img src="./images/line.png" alt="" class="line" />
@@ -23,7 +23,7 @@
 			</div>
 			<div class="card2">
 				<div class="countDown">
-					<div class="fs_14 Texta">剩余时间</div>
+					<div class="fs_14 Texta">{{ $t(`activity['剩余时间']`) }}</div>
 					<countDown v-model="countDownTime" />
 				</div>
 				<!-- 上届冠军信息 -->
@@ -33,10 +33,10 @@
 					</div>
 					<div class="winnerInfo">
 						<img src="./images/winnerInfoIcon.png" alt="" class="jiaobiao" />
-						<span class="fs_14 mb_5 mt_5 color_f1">上届冠军</span>
+						<span class="fs_14 mb_5 mt_5 color_f1">{{ $t(`activity['上届冠军']`) }}</span>
 						<img src="./images/line.png" alt="" class="line mb_5 mt_5" />
 						<h3 class="fs_12 Texta">{{ currentData.previous?.userAccount }}</h3>
-						<p class="fs_12 Texta">奖金</p>
+						<p class="fs_12 Texta">{{ $t(`activity['奖金']`) }}</p>
 						<span class="fs_12 flex Texta">
 							<span class="color_sussess">{{ currentData.previous?.awardAmount }}</span
 							><span></span> ({{ currentData.previous?.activityAmountPer }}%)
@@ -49,29 +49,29 @@
 			<div class="userInfo">
 				<div class="userInfo_Top pt_20 pb_10">
 					<img src="/@/assets/common/userIcon.png" alt="" class="userIcon mr_10" />
-					<span class="userName Texta">用户昵称</span>
+					<span class="userName Texta">{{}}</span>
 				</div>
 				<div class="userInfo_Bottom">
 					<div class="userInfo_Bottom_left">
-						<p class="fs_14 Texta mb_5 fw_400">我的位置</p>
+						<p class="fs_14 Texta mb_5 fw_400">{{ $t(`activity['我的位置']`) }}</p>
 						<p class="fw_400 color_f1">{{ currentData.user?.ranking > 100 ? "100+" : currentData.user?.ranking || 0 }}</p>
 					</div>
 					<img src="./images/line2.png" alt="" style="height: 49px" />
 					<div class="userInfo_Bottom_right" style="text-align: center">
-						<h3 class="fs_14 Texta mb_5 fw_400">投注金额</h3>
-						<span class="color_f1">${{ currentData.user?.betAmount }}</span>
+						<h3 class="fs_14 Texta mb_5 fw_400">{{ $t(`activity['投注金额']`) }}</h3>
+						<span class="color_f1">{{ currentData?.currencySymbol }} {{ currentData.user?.betAmount }}</span>
 					</div>
 				</div>
 				<img src="./images/line.png" alt="" class="line" />
 				<p class="fs_12 Text2">
-					距离上榜还需 <span class="Texta">${{ currentData.user?.lackBetAmount }}</span> 投注金额
+					{{ $t(`activity['距离上榜还需']`) }} <span class="Texta">{{ currentData?.currencySymbol }} {{ currentData.user?.lackBetAmount }}</span> {{ $t(`activity['投注金额']`) }}
 				</p>
 			</div>
 
 			<div class="table">
 				<div class="headearea Text_s fs_14">
 					<div>
-						<span class="today Texta" v-if="currentDay === maxDate">今日</span> <span @click="showDate = true" class="curp">{{ currentDay }}</span>
+						<span class="today Texta" v-if="currentDay === maxDate">{{ $t(`activity['今日']`) }}</span> <span @click="showDate = true" class="curp">{{ currentDay }}</span>
 					</div>
 					<div>
 						<img src="./images/time_icon.png" alt="" @click="showDate = true" />
@@ -121,7 +121,7 @@
 	<CommonDialog v-model="showCommonDialog">
 		<div class="dialogWrapper">
 			<div class="title">
-				规则说明
+				{{ $t(`activity['规则说明']`) }}
 				<span class="closeIcon curp" @click="showCommonDialog = false"><img src="../../components/image/close_icon.svg" alt="" /></span>
 			</div>
 			<div class="rule">
@@ -196,8 +196,8 @@ const selectToday = () => {
 };
 const queryActivityDailyContestVenueCode = async () => {
 	await activityApi.queryActivityDailyContestVenueCode().then((res) => {
-		currentVenueCode.value = res.data[0].id;
-		tabList.value = res.data.map((item: any, index: any) => {
+		currentVenueCode.value = res.data.list[0].id;
+		tabList.value = res.data.list.map((item: any, index: any) => {
 			return {
 				value: item.activityName,
 				code: index,
@@ -517,6 +517,9 @@ onBeforeUnmount(() => {
 		padding: 10px 20px;
 		color: var(--Text-1);
 		font-size: 14px;
+		:deep(img) {
+			max-width: 100%;
+		}
 	}
 	.rule::-webkit-scrollbar {
 		width: 6px;
