@@ -1,9 +1,9 @@
 import { defineStore, storeToRefs } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { lotteryApi } from "/@/api/lottery";
 import { useUserStore } from "/@/stores/modules/user";
-import { DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
+import { DEFAULT_LANG, langMaps, SELECT_BALL } from "/@/views/lottery/constant/index";
 import { useFallBack } from "/@/views/lottery/hooks/useFallback";
 import { type GameplayItem, type LotteryDetail, type OddsItem } from "/@/views/lottery/types/index";
 
@@ -18,6 +18,14 @@ const useLotteryStore = defineStore("LotteryStore", () => {
 	const currentOddsItem = ref({} as OddsItem); // 当前选中的赔率
 	const currentGameplayItem = ref({} as GameplayItem); // 当前选中的玩法
 	const curretnBalls = ref({} as number[]); // 当前选中的球
+
+	const formActived = computed(() => {
+		const { type } = currentOddsItem.value;
+		if (SELECT_BALL === type) {
+			return true;
+		}
+		return Boolean(currentOddsItem.value.optionCode);
+	});
 
 	const setOddsItem = (o: OddsItem) => (currentOddsItem.value = o);
 	const setGameplayItem = (o: GameplayItem) => (currentGameplayItem.value = o);
@@ -44,6 +52,7 @@ const useLotteryStore = defineStore("LotteryStore", () => {
 		currentOddsItem,
 		currentGameplayItem,
 		curretnBalls,
+		formActived,
 		beginPageData,
 		setOddsItem,
 		setGameplayItem,

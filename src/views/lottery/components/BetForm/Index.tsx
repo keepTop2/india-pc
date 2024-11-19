@@ -3,10 +3,11 @@ import "./index.scss";
 import { computed, defineComponent, reactive, ref, watch } from "vue";
 
 import Common from "/@/views/sports/utils/common";
-import CommonFn from "/@/utils/common";
 import { ElInput } from "element-plus";
-import { formatNumberMax3Digits } from "/@/views/lottery/utils/formatNumber";
 import { i18n } from "/@/i18n";
+import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
+import { useLottery } from "/@/views/lottery/stores/lotteryStore";
+import { useModalStore } from "/@/stores/modules/modalStore";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import { useUserStore } from "/@/stores/modules/user";
 
@@ -14,7 +15,6 @@ const $: any = i18n.global;
 export default () => {
 	const BetForm = defineComponent({
 		props: {
-			actived: { type: Boolean, default: false }, // 控制显示投注输入框
 			value: { type: Object, default: () => ({}) },
 			currentOddsItem: { type: Object, default: () => ({}) },
 		},
@@ -24,9 +24,13 @@ export default () => {
 			const { value } = props;
 
 			// 用户信息 store
-			const UserStore = useUserStore();
+			const userStore = useUserStore();
+			const modalStore = useModalStore();
 			const SportsBetInfoStore = useSportsBetInfoStore();
-			const unit = computed(() => UserStore.getUserInfo.mainCurrency || "USD");
+			const { currentOddsItem, currentGameplayItem, curretnBalls, formActived } = useLottery();
+			const { satoken, isThirdPartyLoggedin, merchantInfo } = useLoginGame();
+
+			const unit = computed(() => userStore.getUserInfo.mainCurrency || "USD");
 
 			// 定义投注金额和表单校验
 			const stake = ref("");
@@ -50,6 +54,14 @@ export default () => {
 
 			// 校验投注金额输入
 			const validateStake = (price: string) => {
+				const { getUserInfo = {} } = userStore;
+				const { token = "", totalBalance = 0 } = getUserInfo;
+				// 1. 校验是否登录 token 和 satoken
+				if (![token, isThirdPartyLoggedin.value].every(Boolean)) {
+					modalStore.openModal("LoginModal"); // 弹出登录框
+					return { message: "", isPassed: false };
+				}
+
 				// 优先判断余额
 				if (Number(price) > Number(SportsBetInfoStore.balance)) {
 					validForm.isSuccess = false;
@@ -78,8 +90,9 @@ export default () => {
 
 			// 计算潜在回报
 			const maxOdds = computed(() => {
-				const odds = props.value?.oddsList?.odds || 0;
-				return CommonFn.thousands(Number((odds * Number(stake.value)).toFixed(2)));
+				const odds = +currentOddsItem.value.itemOdds || 0;
+				const num = odds * Number(stake.value);
+				return num.toLocaleString(undefined, { maximumFractionDigits: 3 });
 			});
 
 			// 提交投注
@@ -89,23 +102,17 @@ export default () => {
 				}
 			};
 
-			const preventDecimal = (event: KeyboardEvent) => {
-				if (event.key === "." || event.key === "-" || event.key === "+") {
-					event.preventDefault();
-				}
-			};
-
 			// 暴露给父组件的方法
 			expose({ clearForm });
 
 			return () => (
-				<div class={`lottery-bet-form ${props.actived ? "actived" : ""}`}>
+				<div class={`lottery-bet-form ${formActived.value ? "actived" : ""}`}>
 					{/* 渲染插槽内容 */}
 					<div class="bet-form-header">{slots.default ? slots.default() : <span>{$.t(`lottery['请选择你的赌注']`)}</span>}</div>
 
 					{/* 投注输入区域 */}
 					<div class="bet-form-content">
-						{props.actived ? (
+						{formActived.value ? (
 							<div class={`input-item ${validForm.isSuccess ? "success" : ""}`}>
 								<span>{$.t(`lottery['投注金额']`)}</span>
 								<ElInput
@@ -146,7 +153,7 @@ export default () => {
 						<div class="default-item">
 							<span>{$.t(`lottery['潜在回报']`)}</span>
 							<span>
-								{formatNumberMax3Digits(+props.currentOddsItem.itemOdds * +stake.value || 0)} {unit.value}
+								{maxOdds.value} {unit.value}
 							</span>
 						</div>
 					</div>

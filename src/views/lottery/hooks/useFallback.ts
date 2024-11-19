@@ -1,7 +1,6 @@
-import { useRouter } from "vue-router";
+import router from "/@/router/index";
 
 export function useFallBack(...conditionList: any[]) {
-	const router = useRouter();
 	if (conditionList.some((v) => !Boolean(v))) {
 		router.push("/");
 	}

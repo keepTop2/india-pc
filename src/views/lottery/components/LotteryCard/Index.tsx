@@ -1,6 +1,6 @@
 import "./index.scss";
 
-import { computed, defineComponent, toRaw } from "vue";
+import { computed, defineComponent } from "vue";
 
 import { BEGIN_PAGE_DATA_INTERVAL } from "/@/views/lottery/constant/index";
 import Common from "/@/utils/common";
@@ -80,7 +80,7 @@ export default () => {
 		name: "Footer",
 		props: {
 			data: { type: Object, default: () => ({}) },
-			maxWin: { type: Number, default: 0 },
+			maxWin: { type: String, default: "" },
 		},
 		setup(props) {
 			const { maxWin } = props;

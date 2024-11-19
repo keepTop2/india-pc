@@ -1,4 +1,4 @@
-import { ref, Ref } from "vue";
+import { ref } from "vue";
 import { lotteryApi } from "/@/api/lottery";
 import showToast from "/@/hooks/useToast";
 import { useModalStore } from "/@/stores/modules/modalStore";
@@ -6,26 +6,21 @@ import { useUserStore } from "/@/stores/modules/user";
 import { SUCCESS_CODE } from "/@/utils/useAxiosLottery";
 import { DEFAULT_LANG, langMaps, SELECT_BALL } from "/@/views/lottery/constant/index";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
-import { type LotteryDetail, type MergedGameplayItem, type OddsItem } from "/@/views/lottery/types/index";
+import { useLottery } from "/@/views/lottery/stores/lotteryStore";
+import { type LotteryDetail } from "/@/views/lottery/types/index";
 import { addZero } from "/@/views/lottery/utils/formatNumber";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
+
 export interface Props {
 	lotteryDetail: LotteryDetail;
 }
 
-export function useBet(
-	currentGameplayItem: Ref<MergedGameplayItem>,
-
-	currentOddsItem: Ref<OddsItem>,
-
-	props: Props,
-
-	balls: Ref<number[]>
-) {
+export function useBet() {
 	const betFormRef = ref(); // 提交表单的处理方法
 	const userStore = useUserStore();
 	const { satoken, isThirdPartyLoggedin, merchantInfo } = useLoginGame();
 	const modalStore = useModalStore();
+	const { lotteryDetail, currentOddsItem, currentGameplayItem, curretnBalls } = useLottery();
 
 	// 校验函数
 	function verify(stake: number) {
@@ -70,20 +65,19 @@ export function useBet(
 
 		// 2. 下注
 		// 2.1 准备一下入参
-		const { gameCode, gamePlayCode, type = "" } = currentOddsItem.value;
+		const { gameCode, gamePlayCode, type } = currentOddsItem.value;
 		let { optionCode: nums } = currentOddsItem.value;
 		// 选择球
 		if (SELECT_BALL === type) {
-			console.log("if", balls);
-			nums = String(balls.value[0]);
+			nums = String(curretnBalls.value[0]);
 
 			// 这里 11 选 5 要特殊一点，下注的时候，例如 4 号球要提交 "04" 而不是 "4"
-			if (currentGameplayItem.value.categoryCode === "SYXW" || currentGameplayItem.value.categoryCode === "SSQ") {
+			if (["SYXW", "SSQ"].includes(currentGameplayItem.value.categoryCode as string)) {
 				nums = addZero(+nums);
 			}
 		}
 
-		const { issueNum: issueNo } = props.lotteryDetail;
+		const { issueNum: issueNo } = lotteryDetail.value;
 		const { merchantNo: operatorId, userAccount: operatorAccount } = merchantInfo.value;
 		const language = userStore.getLang;
 		const lang = (langMaps as any)[language] || DEFAULT_LANG;
@@ -101,7 +95,7 @@ export function useBet(
 		const { code, msg } = res;
 		showToast(msg);
 		// 刷新余额
-		userStore.initUserInfo();
+		// userStore.initUserInfo();
 		// 这里这个 code 需要特殊判断一下
 		if (code !== SUCCESS_CODE) {
 			return;

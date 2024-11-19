@@ -49,14 +49,14 @@
 			</div>
 
 			<!-- 投注表单组件 -->
-			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsItem="currentOddsItem">
+			<BetForm ref="betFormRef" @submit="handleSubmit">
 				<!-- 表单激活时显示的插槽内容 -->
 				<template v-if="formActived" #default>
 					<div class="bet-form-slot-header">
 						<div>{{ currentGameplayItem.gamePlayName }}</div>
-						<div>{{ currentGameplayItem.oddsList.title }}</div>
-						<div v-if="formActived && balls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
-							<Ball v-for="item in balls" :key="item" :ball-number="item" :type="3" />
+						<div>{{ currentOddsItem.title }}</div>
+						<div v-if="formActived && curretnBalls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
+							<Ball v-for="item in curretnBalls" :key="item" :ball-number="item" :type="3" />
 						</div>
 					</div>
 				</template>
@@ -75,10 +75,7 @@ import { useBet, type Props } from "/@/views/lottery/hooks/useBet";
 import { useGameplayList } from "/@/views/lottery/hooks/useGameplayList";
 import { SELECT_BALL } from "/@/views/lottery/constant/index";
 import { onMounted } from "vue";
-
-const props = defineProps({
-	lotteryDetail: { type: Object, default: () => ({}) },
-});
+import { useLottery } from "/@/views/lottery/stores/lotteryStore";
 
 // 使用各自的组件
 const { Accordion, AccordionItem } = useAccordion();
@@ -87,8 +84,9 @@ const { BetForm } = useBetForm();
 
 // hooks
 const { gameplayList, queryGamePlayOddsList } = useGameplayList(l1);
-const { formActived, balls, toggleAccordion, chooseBalls, chooseOddsItem, currentGameplayItem, currentOddsItem } = useAccordionHook(gameplayList);
-const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsItem, props as Props);
+const { toggleAccordion, chooseBalls, chooseOddsItem } = useAccordionHook(gameplayList);
+const { currentOddsItem, currentGameplayItem, curretnBalls, formActived } = useLottery();
+const { betFormRef, handleSubmit } = useBet();
 
 onMounted(queryGamePlayOddsList);
 </script>
