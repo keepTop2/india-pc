@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="header">
-			<div class="title fs_24 Text_s mb_3">交易记录</div>
+			<div class="title fs_24 Text_s mb_3">{{ $t(`transactionRecords['交易记录']`) }}</div>
 			<div class="line"></div>
 			<div class="form flex_space-between mt_20 fs_12">
 				<div class="flex-center">
@@ -16,7 +16,7 @@
 					<div class="formItem"><Dropdown :options="activityReceiveStatusOptions" v-model="params.tradeStatus"></Dropdown></div>
 				</div>
 				<div class="flex-center btns">
-					<Button class="curp" @click="handleQuery"><svg-icon name="search_on" size="14px"></svg-icon> 查询</Button>
+					<Button class="curp" @click="handleQuery"><svg-icon name="search_on" size="14px"></svg-icon>{{ $t(`transactionRecords['查询']`) }}</Button>
 				</div>
 			</div>
 		</div>
@@ -24,14 +24,13 @@
 			<div>
 				<div class="table">
 					<div class="tr theader">
-						<div class="td" style="width: 186px">订单号</div>
-						<div class="td" style="width: 142px">类型</div>
-						<div class="td" style="width: 158px">方式</div>
-						<div class="td" style="width: 174px">金额</div>
-						<!-- <div class="td" style="width: 174px">到账金额</div> -->
-						<div class="td" style="width: 90px">状态</div>
-						<div class="td" style="width: 181px">时间</div>
-						<div class="td" style="width: 79px">操作</div>
+						<div class="td" style="width: 186px">{{ $t(`transactionRecords['订单号']`) }}</div>
+						<div class="td" style="width: 142px">{{ $t(`transactionRecords['类型']`) }}</div>
+						<div class="td" style="width: 158px">{{ $t(`transactionRecords['方式']`) }}</div>
+						<div class="td" style="width: 174px">{{ $t(`transactionRecords['金额']`) }}</div>
+						<div class="td" style="width: 90px">{{ $t(`transactionRecords['状态']`) }}</div>
+						<div class="td" style="width: 181px">{{ $t(`transactionRecords['时间']`) }}</div>
+						<div class="td" style="width: 79px">{{ $t(`transactionRecords['操作']`) }}</div>
 					</div>
 					<div class="tbody">
 						<div class="tr" v-for="item in tableData">
@@ -42,10 +41,9 @@
 							<div class="td Text1" style="width: 142px">{{ item.tradeTypeText }}</div>
 							<div class="td Text1" style="width: 158px">{{ item.tradeWayTypeText }}</div>
 							<div class="td Text_s" style="width: 174px">{{ common.formatAmount(item.tradeAmount) }}</div>
-							<!-- <div class="td Text_s" style="width: 174px">{{ common.formatAmount(item.arriveAmount) }}</div> -->
 							<div class="td Text_s" :class="'status' + item.tradeStatus" style="width: 90px">{{ item.tradeStatusText }}</div>
-							<div class="td Text1" style="width: 181px">{{ dayjs(item.tradeTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
-							<div class="td operate status0" style="width: 79px; flex-direction: column" @click="showDetails(item)">详情</div>
+							<div class="td Text1" style="width: 181px">{{ common.getYMDHms(item.tradeTime) || "--" }}</div>
+							<div class="td operate status0" style="width: 79px; flex-direction: column" @click="showDetails(item)">{{ $t(`transactionRecords['详情']`) }}</div>
 						</div>
 					</div>
 				</div>
@@ -64,12 +62,12 @@
 import { onMounted, reactive, ref } from "vue";
 import { walletApi } from "/@/api/wallet";
 import dayjs from "dayjs";
-import showToast from "/@/hooks/useToast";
 import common from "/@/utils/common";
-import Common from "/@/utils/common";
 import { useRouter } from "vue-router";
+import { i18n } from "/@/i18n/index";
 const showDatePicker = ref(false);
 const router = useRouter();
+const $: any = i18n.global;
 
 const params: any = reactive({
 	startTime: "",
@@ -80,38 +78,24 @@ const params: any = reactive({
 	tradeType: "",
 });
 const today = dayjs();
-const detailsInfo: any = ref({});
 const range = reactive({
 	start: new Date(today.subtract(89, "day").format("YYYY/MM/DD")),
 	end: new Date(today.add(0, "day").format("YYYY/MM/DD")),
 });
 const minDate = today.subtract(89, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
-const tradeStatus: any = {
-	0: "领取",
-	1: "已领取",
-	2: "已过期",
-};
+
 const activityReceiveStatusOptions: any = ref([]);
 const welfareCenterRewardTypeOptions: any = ref([]);
 const tableData: any = ref([]);
 const pageData = reactive({
 	totalSize: "",
 });
-const total = ref(0);
 const updateRange = (value: any) => {
 	range.start = value[0];
 	range.end = value[1];
 };
-const typeList: any = ref([
-	{ text: "财务问题", value: "1" },
-	{ text: "账号问题", value: "2" },
-	{ text: "游戏问题", value: "3" },
-	{ text: "活动问题", value: "4" },
-	{ text: "其他问题", value: "5" },
-]);
 
-const type = ref("1");
 onMounted(() => {
 	getDownBox();
 	pageQuery();
@@ -130,14 +114,14 @@ const getDownBox = () => {
 			return { text: item.value, value: item.code };
 		});
 		activityReceiveStatusOptions.value.unshift({
-			text: "全部状态",
+			text: $.t(`transactionRecords["全部状态"]`),
 			value: "",
 		});
 		welfareCenterRewardTypeOptions.value = res.data.trade_type.map((item: any) => {
 			return { text: item.value, value: item.code };
 		});
 		welfareCenterRewardTypeOptions.value.unshift({
-			text: "全部类型",
+			text: $.t(`transactionRecords["全部类型"]`),
 			value: "",
 		});
 	});
@@ -159,7 +143,7 @@ const showDetails = (item: any) => {
 	});
 };
 const handleQuery = () => {
-	params.pageNumber = 1;
+	// params.pageNumber = 1;
 	pageQuery();
 };
 </script>
@@ -185,8 +169,8 @@ const handleQuery = () => {
 	}
 	.line {
 		height: 1px;
-		background: var(--Line-1);
-		box-shadow: 0px 1px 0px 0px #343d48;
+		border-bottom: 1px solid var(--Line-1);
+		box-shadow: 0px 1px 0px 0px var(--Shadow-1);
 	}
 	.btn {
 		background: var(--Theme);

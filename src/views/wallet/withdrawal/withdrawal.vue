@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="withdrawal_container">
 		<Card :header="dialogType ? false : true" :class="{ half_round_corner: dialogType }">
 			<template #header>
 				<div class="header">{{ $t(`wallet['提款']`) }}</div>
@@ -7,14 +7,14 @@
 			<div class="container" :class="{ dialogType_fixed: dialogType }">
 				<div :class="{ dialogType_fixed_container: dialogType }">
 					<div class="amount_list">
-						<div class="amount_info">
+						<div class="amount_info" :style="{ backgroundImage: `url(${resources.amount_info_bg})` }">
 							<div class="label">{{ $t(`wallet['中心钱包']`) }}</div>
 							<div class="value">{{ common.formatAmount(Number(state.totalBalance), 8) }}</div>
 							<div class="icon">
 								<img :src="balance_icon" alt="" />
 							</div>
 						</div>
-						<div class="amount_info">
+						<div class="amount_info" :style="{ backgroundImage: `url(${resources.amount_info_bg})` }">
 							<div class="label">{{ $t(`wallet['冻结金额']`) }}</div>
 							<div class="value">{{ common.formatFloat(state.freezeAmount) }}</div>
 							<div class="icon">
@@ -26,7 +26,7 @@
 			</div>
 		</Card>
 
-		<Card :class="!dialogType ? 'mt_20' : 'mt_166'">
+		<Card :class="!dialogType ? 'mt_20' : 'mt_166'" class="flex">
 			<div class="container">
 				<!-- 提款方式 -->
 				<div class="title">{{ $t(`wallet['提款方式']`) }}</div>
@@ -165,6 +165,8 @@ import { i18n } from "/@/i18n/index";
 import showToast from "/@/hooks/useToast";
 import { useTipsDialog } from "/@/hooks/useTipsDialog";
 import pubsub from "/@/pubSub/pubSub";
+import { useThemeResources } from "/@/views/wallet/utils/themeResources";
+const resources = useThemeResources();
 const UserStore = useUserStore();
 const $: any = i18n.global;
 const router = useRouter();
@@ -522,6 +524,15 @@ const clearParams = () => {
 <style scoped lang="scss">
 @import url("./components/formScss.scss");
 
+.withdrawal_container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	.flex {
+		flex: 1;
+	}
+}
+
 .half_round_corner {
 	border-radius: 0px 0px 12px 12px;
 }
@@ -529,7 +540,7 @@ const clearParams = () => {
 .header {
 	padding-bottom: 6px;
 	border-bottom: 1px solid var(--Line-1);
-	box-shadow: 0px 1px 0px 0px #343d48;
+	box-shadow: 0px 1px 0px 0px var(--Shadow-1);
 	color: var(--Text-s);
 	font-family: "PingFang SC";
 	font-size: 24px;
@@ -563,10 +574,12 @@ const clearParams = () => {
 			display: grid;
 			grid-template-columns: 1fr auto; /* 左侧自适应，右侧固定 */
 			padding: 20px 30px;
-			background: url("../../../assets/zh-CN/wallet/amount_info_bg.png") center center / 100% 100% no-repeat;
+			background-position: center center;
+			background-size: 100% 100%;
+			background-repeat: no-repeat;
 			.label {
 				grid-column: 1 / 2; /* 在左侧 */
-				color: var(--Text-a, #fff);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;

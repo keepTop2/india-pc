@@ -4,7 +4,7 @@
 			<template v-for="item in walletLayout.children">
 				<div v-if="!item.meta.secondaryPage" class="menu" :class="{ menu_active: item.path === route.path }" @click="toPath(item)">
 					<div class="icon">
-						<SvgIcon :name="`wallet-${item.meta.icon}`" v-hover-svg />
+						<SvgIcon :name="`wallet-${item.path !== route.path ? item.meta.icon : item.meta.active_icon}`" />
 					</div>
 					<div class="name">{{ item.meta.title }}</div>
 				</div>
@@ -39,20 +39,26 @@ const toPath = (item) => {
 @media (min-width: 1100px) {
 	.wallet_container {
 		max-width: 1308px;
+		// height: 100%;
 		display: flex;
 		justify-content: space-between;
 		gap: 18px;
 		margin: 0 auto;
 		padding: 24px 20px;
-		box-sizing: content-box;
+		box-sizing: border-box;
 		position: relative; /* Relative positioning for the container */
 	}
 
 	.Menu_Bar {
 		position: fixed;
 		min-width: 240px;
-		display: grid;
+		height: calc(100% - 112px);
+		// display: grid;
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: column;
 		gap: 8px;
+		flex: 1;
 		padding: 12px;
 		border-radius: 12px;
 		background: var(--Bg-1);
@@ -77,6 +83,14 @@ const toPath = (item) => {
 	.menu:hover,
 	.menu_active {
 		background: var(--Bg-3);
+		.icon {
+			svg {
+				color: var(--Text-s);
+			}
+		}
+		.name {
+			color: var(--Text-s);
+		}
 	}
 
 	.icon {
@@ -106,9 +120,10 @@ const toPath = (item) => {
 	}
 
 	.main {
-		margin-left: 258px; /* Adjust the space for the sticky Menu_Bar */
 		flex: 1;
 		max-width: 1050px;
+		min-height: calc(100vh - 112px);
+		margin-left: 258px;
 	}
 }
 
