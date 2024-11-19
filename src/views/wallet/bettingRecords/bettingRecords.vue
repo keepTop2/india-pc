@@ -78,7 +78,7 @@
 										</div>
 									</div>
 
-									<div v-for="item in row.orderMultipleBetList" class="dropDown_line">
+									<div v-for="(item, i) in row.orderMultipleBetList" class="dropDown_line" :key="i">
 										<div class="firLine">
 											<div>
 												<span>{{ item.eventInfo }}</span>
