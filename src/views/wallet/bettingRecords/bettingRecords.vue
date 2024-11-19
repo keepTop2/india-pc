@@ -33,11 +33,11 @@
 					<div>
 						<span>
 							<span style="color: var(--Text-2-1)">共计: </span>
-							{{ totalVO.betNum }} 笔投入
+							{{ totalVO.betNum }} 投注
 						</span>
 						<span class="ml_20">
-							<span>投注金额：</span>
-							{{ totalVO.betAmount }} CNY
+							<span style="color: var(--Text-2-1)">投注金额：</span>
+							{{ totalVO.betAmount.toFixed(2) }} CNY
 						</span>
 						<span class="ml_20">
 							<span style="color: var(--Text-2-1)">输赢金额：</span>
@@ -56,10 +56,10 @@
 						<el-table-column type="expand" :label="item.label" width="164px" :prop="item.props" v-if="item.type == 'select'">
 							<template #default="{ row }">
 								<div class="expand-wrapper">
-									<div class="dropDown_line" style="border: none; padding: 0">
+									<div v-if="row.eventInfo !== '串关'" class="dropDown_line" style="border: none; padding: 0">
 										<div class="firLine">
 											<div>
-												<span>{{ row.eventInfo }}</span>
+												<span>{{ row.eventInfo }}13</span>
 												<span>{{ row.teamInfo }}</span>
 											</div>
 											<div class="p">
@@ -78,7 +78,7 @@
 										</div>
 									</div>
 
-									<div v-for="item in row.orderMultipleBetList" class="dropDown_line">
+									<div v-for="(item, i) in row.orderMultipleBetList" class="dropDown_line" :key="i">
 										<div class="firLine">
 											<div>
 												<span>{{ item.eventInfo }}</span>
@@ -499,13 +499,18 @@ function getTableType() {
 	}
 }
 
+.dropDown_line:last-child {
+	border: none;
+	padding-bottom: 0;
+}
+
 .dropDown_line {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	height: 70px;
-	border-top: 1px solid var(--light-ok-Line-2-, #373a40);
-	padding-top: 10px;
+	border-bottom: 1px solid var(--light-ok-Line-2-, #373a40);
+	padding-bottom: 10px;
 
 	.firLine {
 		width: 100%;
