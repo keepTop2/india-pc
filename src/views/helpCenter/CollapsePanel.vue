@@ -5,7 +5,7 @@
 				<img v-lazy-load="panel.icon" alt="" />
 				<span>{{ panel.name }}</span>
 			</div>
-			<svg-icon v-if="panel?.subset.length > 0" :name="!isOpen ? 'common-arrow_down' : 'common-arrow_up'" size="14px" />
+			<svg-icon v-if="panel?.subset?.length > 0" :name="!isOpen ? 'common-arrow_down' : 'common-arrow_up'" size="14px" />
 		</div>
 		<div v-show="isOpen" class="collapse-content">
 			<div v-for="(item, index) in panel?.subset" class="cell" @click="selectClass(index)" :class="subindex == index ? 'active' : ''">

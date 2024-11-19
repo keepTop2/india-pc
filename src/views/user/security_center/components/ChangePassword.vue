@@ -2,54 +2,72 @@
 <template>
 	<div class="ChangePasswordWrapper">
 		<div class="ChangePassword_form">
-			<div class="login_text fs_20 mb_20">
+			<div class="login_text fs_20 mb_33">
 				<span> {{ $t(`security_center['修改密码']`) }}</span>
 			</div>
 			<div class="login_form">
 				<div>
 					<!-- 旧密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8">{{ $t(`security_center['旧密码']`) }}</p>
+						<p class="Text_s mb_2">{{ $t(`security_center['旧密码']`) }}</p>
 						<p class="common_password">
-							<input
+							<FromInput
 								:type="showOldPassword ? 'text' : 'password'"
 								v-model="payLoad.oldPassword"
-								class="common_input"
 								@input="oldPasswordOnInput"
 								autocomplete="new-password"
 								:maxlength="16"
+								:hideLeftIcon="true"
+								:noColse="true"
+								:class="VerifyError.oldPassword ? 'verifyError' : ''"
 							/>
 							<span class="eyes">
-								<svg-icon :name="showOldPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showOldPassword = !showOldPassword" />
+								<svg-icon :name="showOldPassword ? 'eyes' : 'eyes_on'" size="18px" @click="showOldPassword = !showOldPassword" />
 							</span>
 						</p>
-						<p v-show="VerifyError.oldPassword" class="Wran_text fs_12 mt_2">{{ $t(`security_center['8-16位，必须包含 数字和字母']`) }}</p>
+						<p v-show="VerifyError.oldPassword" class="Wran_text fs_12 mt_2">{{ $t(`security_center['请输入8-16位字母+数字的组合']`) }}</p>
 					</div>
 					<!-- 新密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8">{{ $t(`security_center['新密码']`) }}</p>
+						<p class="Text_s mb_2 mt_16">{{ $t(`security_center['新密码']`) }}</p>
 						<p class="common_password">
-							<input :type="showNewPassword ? 'text' : 'password'" v-model="payLoad.newPassword" class="common_input" @input="newPasswordOnInput" :maxlength="16" />
+							<FromInput
+								:type="showNewPassword ? 'text' : 'password'"
+								v-model="payLoad.newPassword"
+								@input="newPasswordOnInput"
+								:maxlength="16"
+								:hideLeftIcon="true"
+								:noColse="true"
+								:class="VerifyError.newPassword ? 'verifyError' : ''"
+							/>
 							<span class="eyes">
-								<svg-icon :name="showNewPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showNewPassword = !showNewPassword" />
+								<svg-icon :name="showNewPassword ? 'eyes' : 'eyes_on'" size="18px" @click="showNewPassword = !showNewPassword" />
 							</span>
 						</p>
-						<p v-show="VerifyError.newPassword" class="Wran_text fs_12 mt_2">{{ $t(`security_center['8-16位，必须包含 数字和字母']`) }}</p>
+						<p v-show="VerifyError.newPassword" class="Wran_text fs_12 mt_2">{{ $t(`security_center['请输入8-16位字母+数字的组合']`) }}</p>
 					</div>
 					<!-- 确认密码 -->
 					<div>
-						<p class="Text_s mb_8 mt_8">{{ $t(`security_center['确认密码']`) }}</p>
+						<p class="Text_s mb_2 mt_16">{{ $t(`security_center['确认密码']`) }}</p>
 						<p class="common_password">
-							<input :type="showConfirmPassword ? 'text' : 'password'" v-model="payLoad.confirmPassword" class="common_input" @input="confirmOnInput" :maxlength="16" />
+							<FromInput
+								:type="showConfirmPassword ? 'text' : 'password'"
+								v-model="payLoad.confirmPassword"
+								@input="confirmOnInput"
+								:maxlength="16"
+								:hideLeftIcon="true"
+								:noColse="true"
+								:class="VerifyError.confirmPassword ? 'verifyError' : ''"
+							/>
 							<span class="eyes">
-								<svg-icon :name="showConfirmPassword ? 'eyes' : 'eyes_on'" size="14px" @click="showConfirmPassword = !showConfirmPassword" />
+								<svg-icon :name="showConfirmPassword ? 'eyes' : 'eyes_on'" size="18px" @click="showConfirmPassword = !showConfirmPassword" />
 							</span>
 						</p>
 						<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`security_center['两次密码不一致']`) }}</p>
 					</div>
 				</div>
-				<div class="mt_40 mb_12">
-					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">{{ $t(`security_center['确定']`) }}</button>
+				<div class="mt_32 mb_12">
+					<Button :disabled="disabledBtn" @click="onSubmit">{{ $t(`security_center['确定']`) }}</Button>
 				</div>
 			</div>
 		</div>
@@ -156,7 +174,7 @@ const onSubmit = async () => {
 				left: 50%;
 				transform: translateX(-50%);
 				right: 0;
-				width: 18px;
+				width: 50%;
 				height: 2px;
 				background-color: var(--Theme);
 			}

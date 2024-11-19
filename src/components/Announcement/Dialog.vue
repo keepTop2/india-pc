@@ -2,7 +2,7 @@
 	<div>
 		<el-dialog v-model="visible" :show-close="false" width="480">
 			<template #header>
-				公告
+				<span class="Text_s">公告</span>
 				<svg-icon name="common-close" size="30px" class="close" @click="visible = false" />
 			</template>
 			<div class="announcement">

@@ -4,7 +4,7 @@
 			<span class="fs_20 Texts"> 用户协议 </span>
 		</div>
 		<div class="content" v-ok-loading="loading">
-			<div v-html="Agreement?.agreement"></div>
+			<div v-html="Agreement?.valueDetail"></div>
 		</div>
 	</div>
 </template>
@@ -12,14 +12,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { loginApi } from "/@/api/login";
+import { helpCenterApi } from "/@/api/helpCenter";
 const Agreement: any = ref({});
 const loading = ref(false);
 onMounted(() => {
 	loading.value = true;
-	loginApi
-		.getAgreement()
+	helpCenterApi
+		.getHelpCenterConfigList()
 		.then((res) => {
-			Agreement.value = res.data;
+			Agreement.value = res.data.find((item: any) => item.code == 9);
 		})
 		.finally(() => {
 			loading.value = false;

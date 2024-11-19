@@ -12,7 +12,7 @@
 		<template v-slot:footer v-if="dialogInfo.status == 30049"> 去存款 </template>
 	</CommonDialog>
 	<CommonDialog v-model="showNeedLogin" title="温馨提示" :confirm="confirmDialog" :nofooter="false">
-		<div>您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册</div>
+		<div>{{ $t(`activity['您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册']`) }}</div>
 	</CommonDialog>
 </template>
 

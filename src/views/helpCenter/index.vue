@@ -37,8 +37,6 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { i18n } from "/@/i18n/index";
-import { useRoute } from "vue-router";
 import { helpCenterApi } from "/@/api/helpCenter";
 import CollapsePanel from "./CollapsePanel.vue";
 const classList: any = ref([]);
@@ -47,6 +45,7 @@ const activeIndex: any = ref(0);
 const subindex: any = ref(0);
 const activeTab = ref(0);
 const contentLoading = ref(false);
+const helpData = ref([]);
 onMounted(() => {
 	getClassOne();
 });
@@ -70,18 +69,23 @@ const selectClass = (index: number) => {
 const getClassOne = () => {
 	helpCenterApi.showTutorialPreLayer().then((res) => {
 		classList.value = res.data;
-
 		getContent();
 	});
+	helpCenterApi
+		.getHelpCenterConfigList()
+		.then((res) => {
+			helpData.value = res.data;
+		})
+		.finally(() => {});
 };
 const getContent = () => {
 	contentLoading.value = true;
 	helpCenterApi
 		.showTutorialTurnLayer({
 			categoryId: classList.value[activeIndex.value].id,
-			classId: classList.value[activeIndex.value].subset[subindex.value].id,
-			categoryName: classList.value[activeIndex.value].name,
-			className: classList.value[activeIndex.value].subset[subindex.value].name,
+			classId: classList.value[activeIndex.value].subset[subindex.value]?.id,
+			categoryName: classList.value[activeIndex.value]?.name,
+			className: classList.value[activeIndex.value].subset[subindex.value]?.name,
 		})
 		.then((res) => {
 			subClassList.value = res.data;
