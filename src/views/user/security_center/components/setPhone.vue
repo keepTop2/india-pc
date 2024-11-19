@@ -9,14 +9,14 @@
 			<div class="login_form">
 				<div v-if="isCreate">
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['新手机号']`) }}</p>
+						<p class="Text_s mb_8 mt_8">{{ $t(`security_center['新手机号']`) }}</p>
 						<p class="common_password">
 							<AreaCode @update:modelValue="areaCodeInput" :options="AreaCodeOptions" :class="userVerifyTypeVerifyError ? 'verifyError' : ''"></AreaCode>
 						</p>
 						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['请输入8-12位数字']`, { min: minLength, max: maxLength }) }}</p>
 					</div>
 					<div>
-						<p class="Text_s mb_8 mt_8"><span class="Wran_text">*</span>{{ $t(`security_center['验证码']`) }}</p>
+						<p class="Text_s mt_16">{{ $t(`security_center['验证码']`) }}</p>
 						<p class="common_password">
 							<VerificationCode
 								@VerificationCodeInput="VerificationCodeInput"
@@ -24,20 +24,22 @@
 								v-model="verificationBtn"
 								:disabled="verificationBtn && payLoad.phone !== ''"
 								ref="VerificationCodeRef"
+								:hideLeftIcon="true"
+								:noColse="true"
 							/>
 						</p>
-						<p class="fs_14 Text1 mt_16 fw_200">
-							{{ $t(`security_center['有效时间']`) }}<span class="color_Theme curp" @click="Common.getSiteCustomerChannel">{{ $t(`security_center['联系客服']`) }}</span>
+						<p class="fs_14 Text1 mt_8 fw_200">
+							{{ $t(`security_center['有效时间']`) }}<span class="color_F2 curp ml_4" @click="Common.getSiteCustomerChannel">{{ $t(`security_center['联系客服']`) }}</span>
 						</p>
 					</div>
 				</div>
 				<div v-else>
 					<div class="Text_s mb_8">{{ $t(`security_center['原手机号']`) }}</div>
 					<div class="Text1">
-						{{ $t(`security_center['验证码将发送至手机号']`) }}+{{ userStore.getUserGlobalSetInfo.areaCode }} {{ Common.maskString(userStore.getUserGlobalSetInfo.phone) }}
+						{{ $t(`security_center['验证码已发送至手机号']`) }}+{{ userStore.getUserGlobalSetInfo.areaCode }} {{ Common.maskString(userStore.getUserGlobalSetInfo.phone) }}
 					</div>
 					<div class="Text1">{{ $t(`security_center['有效时间：10分钟']`) }}</div>
-					<div class="Text_s mt_16 mb_8">{{ $t(`security_center['验证码']`) }}</div>
+					<div class="Text_s mt_16 mb_2">{{ $t(`security_center['验证码']`) }}</div>
 					<p class="common_password">
 						<VerificationCode
 							@VerificationCodeInput="VerificationCodeInput"
@@ -45,17 +47,19 @@
 							v-model="verificationBtn"
 							:disabled="verificationBtn"
 							ref="VerificationCodeRef"
+							:hideLeftIcon="true"
+							:noColse="true"
 						/>
 					</p>
 
-					<p class="fs_14 Text1 mt_16 fw_200">
-						{{ $t(`security_center['有效时间']`) }}<span class="color_Theme curp" @click="Common.getSiteCustomerChannel">{{ $t(`security_center['联系客服']`) }}</span>
+					<p class="fs_14 Text1 mt_8 fw_200">
+						{{ $t(`security_center['有效时间']`) }}<span class="color_F2 curp ml_4" @click="Common.getSiteCustomerChannel">{{ $t(`security_center['联系客服']`) }}</span>
 					</p>
 				</div>
-				<div class="mt_40 mb_12">
-					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">
+				<div class="mt_32 mb_12">
+					<Button :disabled="disabledBtn" @click="onSubmit">
 						{{ isCreate ? $t(`security_center['确定']`) : $t(`security_center['下一步']`) }}
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>
@@ -237,7 +241,7 @@ onMounted(() => {
 				left: 50%;
 				transform: translateX(-50%);
 				right: 0;
-				width: 18px;
+				width: 50%;
 				height: 2px;
 				background-color: var(--Theme);
 			}

@@ -16,6 +16,7 @@ window.PLATFROM_CONFIG = {
 
 	// developmentBaseURL: "http://192.168.30.117:9999", // 尔顿本地地址
 	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
+	developmentBaseURL: "https://backend.bwsh.store", // 测试环境
 	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
 
 	developmentBaseURL: "https://backend.bwsh.store", // 测试环境

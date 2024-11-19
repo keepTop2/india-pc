@@ -57,10 +57,13 @@ const SportAttentionStore = useSportAttentionStore();
 
 //获取推荐赛事列表
 const eventIDList = ref("");
-const getSportEventsRecommend = () => {
-	HomeApi.querySportEventsRecommend().then((res) => {
+const getSportEventsRecommend = async () => {
+	try {
+		const res = await HomeApi.querySportEventsRecommend();
 		eventIDList.value = res.data?.map((item) => item.eventsId).join();
-	});
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 // 获取用户关注的体育列表

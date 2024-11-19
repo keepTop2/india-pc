@@ -22,7 +22,7 @@
 
 			<collectGames :gameList="collectGamesStore.getCollectGamesList" title="喜欢的游戏" />
 			<!-- 我们的游戏 -->
-			<!-- <SportGame /> -->
+			<SportGame />
 
 			<div v-if="isLoading">
 				<lobbyGameSkeleton v-for="(count, index) in [6, 3, 6, 1, 5]" :key="index" :skeletonCount="count" />

@@ -14,7 +14,7 @@
 			:style="{ paddingLeft: hideLeftIcon ? '16px' : '8px' }"
 		/>
 		<div class="flex-center pr_10 curp" style="gap: 5px">
-			<svg-icon name="common-close" size="24px" v-if="props.modelValue" @click="emit('update:modelValue', '')" />
+			<svg-icon name="common-close" size="24px" v-if="props.modelValue && !props.noColse" @click="emit('update:modelValue', '')" />
 			<slot name="right"></slot>
 		</div>
 	</div>
@@ -29,6 +29,7 @@ const props = withDefaults(
 		readonly?: boolean;
 		maxlength?: string | number;
 		hideLeftIcon?: boolean;
+		noColse?: boolean;
 	}>(),
 	{
 		modelValue: "",
@@ -37,6 +38,7 @@ const props = withDefaults(
 		readonly: false,
 		maxlength: "",
 		hideLeftIcon: false,
+		noColse: false,
 	}
 );
 
