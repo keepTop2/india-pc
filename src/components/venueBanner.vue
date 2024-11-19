@@ -55,10 +55,11 @@ const onSwiper = (swiper: any) => {
 			width: 12px !important;
 			border-radius: 2px !important;
 			height: 4px;
-		}
-		:deep(.swiper-pagination-bullet-active) {
-			width: 26px !important;
-			background: var(--Theme) !important;
+			background-color: var(--Bg-3) !important;
+			&.swiper-pagination-bullet-active {
+				width: 26px !important;
+				background: var(--Theme) !important;
+			}
 		}
 		:deep(.swiper-slide) {
 			height: 204px;

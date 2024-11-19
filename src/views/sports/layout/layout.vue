@@ -183,7 +183,7 @@ const { Banner, BannerController } = userBanner();
 @import "./media/media-1024.scss";
 .base-body {
 	width: 1308px;
-	height: calc(100vh - 88px);
+	height: calc(100vh - 62px);
 	margin: 0 auto;
 	:deep(.banner-controller) {
 		position: fixed;
@@ -222,7 +222,7 @@ const { Banner, BannerController } = userBanner();
 					width: 100%;
 					height: 1px;
 					background-color: var(--Line-1);
-					box-shadow: 0px 1px 0px 0px var(--Line-1-bs);
+					box-shadow: 0px 1px 0px 0px var(--lineBg);
 				}
 			}
 		}

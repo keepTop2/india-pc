@@ -1,5 +1,10 @@
 .card-container {
 	overflow: hidden;
+	&:not(.expanded) {
+		.card-header {
+			margin-bottom: 4px;
+		}
+	}
 	.card-header {
 		display: flex;
 		width: 100%;
@@ -48,7 +53,7 @@
 					color: var(--Text-1);
 					text-align: center;
 					font-family: "PingFang SC";
-					font-size: 14px;
+					font-size: 12px;
 					font-weight: 400;
 				}
 				.large {
@@ -83,6 +88,7 @@
 		padding-top: 8px;
 		&:last-child {
 			border-bottom: none;
+			margin-bottom: 4px;
 		}
 		// 赛事球队信息
 		.content-left {
@@ -300,9 +306,12 @@
 							left: 0;
 							top: 0;
 						}
-						.label {
-							color: var(--Text-a);
+						&.isBright {
+							.label {
+								color: var(--Text-a) !important;
+							}
 						}
+
 						.market-item {
 							position: relative;
 							width: 100%;
@@ -316,6 +325,9 @@
 							box-sizing: border-box;
 							&:hover {
 								background-color: var(--betselector-hover-bg);
+								.label {
+									color: var(--Text-a) !important;
+								}
 							}
 							.label {
 								max-width: 60%;

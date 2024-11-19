@@ -18,7 +18,10 @@
 				</el-input>
 			</div>
 			<div v-if="combos[item.comboType]" class="singlePass_buttom">
-				<span>小计:{{ Common.mul(combos[item.comboType], item.betCount) }}{{ UserStore.getUserInfo.mainCurrency }}</span>
+				<span
+					>小计:{{ Common.mul(combos[item.comboType], item.betCount) }}
+					<!-- {{ UserStore.getUserInfo.mainCurrency }} -->
+				</span>
 			</div>
 		</div>
 	</div>
