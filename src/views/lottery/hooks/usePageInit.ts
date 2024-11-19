@@ -1,11 +1,10 @@
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { onBeforeUnmount, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-import { lotteryApi } from "/@/api/lottery";
-import { useUserStore } from "/@/stores/modules/user";
-import { BEGIN_PAGE_DATA_INTERVAL, DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
+import { BEGIN_PAGE_DATA_INTERVAL } from "/@/views/lottery/constant/index";
 import { useTimer } from "/@/views/lottery/hooks/useTimer";
 import { useWebSocket, type WebSocketResponseData, type WebSocketResponseMessage } from "/@/views/lottery/hooks/useWebSocket";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
+import { useLottery } from "/@/views/lottery/stores/lotteryStore";
 
 // 这个 hook 要注意，不能涉及单个彩种的业务。都是所有彩种通用的逻辑才能放在这里
 
@@ -15,12 +14,11 @@ import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
  * @returns
  */
 export function usePageInit() {
-	const lotteryDetail = ref({}); // 单个彩种的详情，例如期号、名字、多少分钟一期
-
 	// 这些都是 hooks
 	const route = useRoute();
 	const { loginGame } = useLoginGame();
 	const { turnOnTimer, turnOffTimer } = useTimer(loginGame);
+	const { beginPageData } = useLottery();
 	const { turnOnTimer: turnOnLotteryDetailTimer, turnOffTimer: turnOffLotteryDetailTimer } = useTimer(beginPageData, BEGIN_PAGE_DATA_INTERVAL);
 	const { status } = useWebSocket({ callback, fallbackFn: beginPageData });
 
@@ -56,22 +54,6 @@ export function usePageInit() {
 		}
 	);
 
-	async function beginPageData() {
-		// 3.1 准备一下入参 gameCode lang 两个入参
-		const { gameCode = "" } = route.query;
-		const userStore = useUserStore();
-		const language = userStore.getLang;
-		const lang = (langMaps as any)[language] || DEFAULT_LANG;
-		const submitData = { gameCode, lang };
-
-		// 3.2 准备好了，发送请求
-		const res = await lotteryApi.beginPageData(submitData);
-		const resData = (res.data || []).shift() || {}; // 有时候会有两条数据，始终取下标为 0 的那一条数据
-
-		const seconds = Math.floor((resData.endTime - resData.currentTime) / 1000);
-		lotteryDetail.value = { ...resData, seconds };
-	}
-
 	function callback(message: WebSocketResponseMessage) {
 		const { data } = message;
 		const { gameCode: wsGameCode } = data as WebSocketResponseData;
@@ -80,5 +62,5 @@ export function usePageInit() {
 		beginPageData();
 	}
 
-	return { lotteryDetail, beginPageData };
+	return {};
 }

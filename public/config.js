@@ -15,11 +15,11 @@ window.PLATFROM_CONFIG = {
 	productionLotteryWsUrl: "",
 
 	// developmentBaseURL: "http://192.168.30.117:9999", // 尔顿本地地址
-	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
-	// developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
+	developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
+	developmentBaseURL: "https://gw.playesoversea.store", // 开发环境
 
-	developmentBaseURL: "https://backend.bwsh.store", // 测试环境
-	developmentBaseURL: "https://backend.bwsh.store", // 测试环境
+	// developmentBaseURL: "https://backend.bwsh.store", // 测试环境
+	// developmentBaseURL: "https://backend.bwsh.store", // 测试环境
 
 	developmentLotteryBaseURL: "https://test-cpapi.jx203.com/third/rest/third/u", // 【彩票】开发环境
 	developmentLotteryWsURL: "wss://test-websocket.jx203.com/ws", // 【彩票】WebSocket 开发环境

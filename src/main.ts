@@ -1,17 +1,20 @@
-import { createApp, Directive } from "vue";
-import store from "/@/stores/index";
-import App from "/@/App.vue";
-import router from "/@/router";
-import "/@/permission";
-import directives from "./directive/index";
-import { i18n } from "/@/i18n/index";
+import "v-calendar/style.css";
 import "virtual:svg-icons-register";
+import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
+import "/@/permission";
 import "/@/styles/app.css";
 import "/@/styles/index.scss";
+
+import { Directive, createApp } from "vue";
+
+import App from "/@/App.vue";
 import VCalendar from "v-calendar";
-import "v-calendar/style.css";
 import VueVirtualScroller from "vue-virtual-scroller";
-import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
+import directives from "./directive/index";
+import { i18n } from "/@/i18n/index";
+import router from "/@/router";
+import store from "/@/stores/index";
+
 window.__VUE_PROD_DEVTOOLS__ = false;
 window.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
 const app = createApp(App);
@@ -24,10 +27,7 @@ app.use(VueVirtualScroller);
 app.use(VCalendar, {});
 app.use(store);
 
-app
-	.use(i18n)
-	// .use(VueGridLayout)
-	.use(router)
-	.mount("#app");
+app.use(i18n).use(router).mount("#app");
+// .use(VueGridLayout)
 
 export default app;

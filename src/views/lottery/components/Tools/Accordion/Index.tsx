@@ -1,6 +1,7 @@
-import { ref, defineComponent } from "vue";
-import SvgIcon from "/@/components/svgIcon/index.vue"; // 引入 SvgIcon 组件用于显示图标
 import "./index.scss";
+
+import { defineComponent } from "vue";
+import SvgIcon from "/@/components/svgIcon/index.vue"; // 引入 SvgIcon 组件用于显示图标
 
 const AccordionItem = defineComponent({
 	name: "AccordionItem",
@@ -33,7 +34,6 @@ const AccordionItem = defineComponent({
 			// 通过事件传递新的激活状态
 			emit("select", !props.actived);
 		};
-		console.log(props,'=====props');
 		return () => (
 			<div class={`accordion-content-item-box${props.actived ? " actived" : ""}`}>
 				<div onClick={handleClick} className="accordion-content-item">
