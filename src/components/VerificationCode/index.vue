@@ -1,6 +1,6 @@
 <template>
 	<div class="verification-code">
-		<div class="input-container">
+		<div class="input-container mt_6">
 			<FromInput
 				placeholder="请输入验证码"
 				@input="validateInput"
@@ -12,7 +12,7 @@
 				:noColse="true"
 			>
 				<template #left v-if="!hideLeftIcon">
-					<svg-icon name="common-VerificationCode" size="18px" />
+					<svg-icon name="common-VerificationCode" size="18px" style="color: #67707b" />
 				</template>
 			</FromInput>
 			<button @click="sendVerificationCode" class="send-button" :disabled="disabled && countdown > 0" :class="countdown > 0 ? 'iscountdown' : ''">
@@ -78,7 +78,6 @@ defineExpose({
 .send-button {
 	position: absolute;
 	right: 8px;
-	top: 15px;
 	padding: 6px 12px;
 	border: none;
 	height: 32px;
@@ -88,11 +87,13 @@ defineExpose({
 	color: var(--Theme);
 	cursor: pointer;
 	z-index: 1;
+	min-width: 76px;
 	font-size: 12px;
 }
 .send-button:disabled {
 	cursor: not-allowed;
 	background: var(--Bg);
+
 	border: 1px solid var(--Line-2);
 	color: var(--Text-2);
 }

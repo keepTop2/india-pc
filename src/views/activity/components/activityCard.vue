@@ -7,15 +7,15 @@
 			<div class="itemDetails">
 				<div>
 					<p class="fs_14 Text2" v-if="item.activityDeadline !== 1">{{ Common.parseTime(item.activityStartTime) }}～{{ Common.parseTime(item.activityEndTime) }}</p>
-					<p class="fs_14 Text2" v-else>长期活动</p>
+					<p class="fs_14 Text2" v-else>{{ $t(`activity['长期活动']`) }}</p>
 					<p class="fs_14">{{ item.activityNameI18nCode }}</p>
 				</div>
-				<div class="btn">查看详情</div>
+				<div class="btn">{{ $t(`activity['查看详情']`) }}</div>
 			</div>
 		</div>
 	</div>
-	<activityDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog" :nofooter="false">
-		<div>您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册</div>
+	<activityDialog v-model="showCommonDialog" :title="$t(`activity['温馨提示']`)" :confirm="confirmDialog" :nofooter="false">
+		<div>{{ $t(`activity['您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册']`) }}</div>
 	</activityDialog>
 </template>
 

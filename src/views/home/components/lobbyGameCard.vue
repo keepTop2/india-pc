@@ -4,11 +4,11 @@
 			<div>
 				<span class="flex-center" style="gap: 12px">
 					<img v-lazy-load="newGame ? newGameIcon : gameList?.iconFileUrl" alt="" />
-					<span class="Text_s fs_20">{{ title ? title : gameList?.name ? gameList?.name : "热门推荐" }}</span>
+					<span class="Text_s fs_20">{{ title ? title : gameList?.name ? gameList?.name : $t(`home['热门推荐']`) }}</span>
 				</span>
 			</div>
 			<div class="more Text1 fs_18 curp" v-if="gameList?.gameInfoList?.length !== 1">
-				<span @click="gotoVenue(gameList)" class="mr_4">更多</span>
+				<span @click="gotoVenue(gameList)" class="mr_4">{{ $t(`home['更多']`) }}</span>
 				<span class="arrow" @click="goToPrevSlide"> <svg-icon :name="isBeginning ? 'common-arrow_left' : 'common-arrow_left_on'" width="8" height="12" /></span>
 				<span class="arrow" @click="goToNextSlide"> <svg-icon :name="isEnd ? 'common-arrow_right' : 'common-arrow_right_on'" width="8" height="12" /></span>
 			</div>
@@ -55,6 +55,8 @@ import { useCollectGamesStore } from "/@/stores/modules/collectGames";
 import { ref } from "vue";
 import { Autoplay, Navigation } from "swiper/modules";
 import newGameIcon from "/@/assets/common/newGame_icon.png";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const collectGamesStore = useCollectGamesStore();
 const modules = ref([Autoplay, Navigation]);
 interface gameInfo {
@@ -102,7 +104,7 @@ const collectGame = (game: gameInfo) => {
 		game.collect = !game.collect;
 		HomeApi.collection(params).then((res) => {
 			if (res.code === Common.ResCode.SUCCESS) {
-				showToast(!game.collect ? "取消收藏成功" : "收藏成功");
+				showToast(!game.collect ? $.t(`home['取消收藏成功']`) : $.t(`home['收藏成功']`));
 			}
 			collectGamesStore.setCollectGamesList();
 		});

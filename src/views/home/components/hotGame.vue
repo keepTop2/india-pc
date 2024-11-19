@@ -4,7 +4,7 @@
 			<div>
 				<span class="flex-center" style="gap: 12px">
 					<img v-lazy-load="hotGameIcon" alt="" />
-					<span class="Text_s fs_20">热门推荐</span>
+					<span class="Text_s fs_20">{{ $t(`home['热门推荐']`) }}</span>
 				</span>
 			</div>
 			<div class="more Text1 fs_18 curp" v-if="hotGameList?.length !== 1">
@@ -25,7 +25,7 @@
 							{{ item.name }}
 						</div>
 						<div class="gotoGameBtn mt_9">
-							<button class="common_btn" @click="Common.goToGame(item)">进入游戏</button>
+							<button class="common_btn" @click="Common.goToGame(item)">{{ $t(`home['进入游戏']`) }}</button>
 						</div>
 					</div>
 					<!-- <div class="collect" @click="collectGame(item)">
@@ -48,6 +48,8 @@ import { useUserStore } from "/@/stores/modules/user";
 import { useCollectGamesStore } from "/@/stores/modules/collectGames";
 import { Autoplay, Navigation } from "swiper/modules";
 import { computed, ref } from "vue";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const modules = ref([Autoplay, Navigation]);
 const swiperRef: any = ref(null);
 interface gameInfo {
@@ -83,7 +85,7 @@ const collectGame = (game: gameInfo) => {
 		game.collect = !game.collect;
 		HomeApi.collection(params).then((res) => {
 			if (res.code === Common.ResCode.SUCCESS) {
-				showToast(!game.collect ? "取消收藏成功" : "收藏成功");
+				showToast(!game.collect ? $.t(`home['取消收藏成功']`) : $.t(`home['收藏成功']`));
 			}
 			collectGamesStore.setCollectGamesList();
 		});

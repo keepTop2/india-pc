@@ -6,7 +6,9 @@
 		<activityContent :activityData="activityData"></activityContent>
 		<activityRule :rule="activityData.activityRuleI18nCode"></activityRule>
 		<div class="apply_btn" v-if="activityData.participationMode == 0">
-			<div class="curp" :class="activityData.status == 10000 ? 'active' : ''" @click="apply">{{ activityData.status == 10000 ? "立即申请" : "您已申请" }}</div>
+			<div class="curp" :class="activityData.status == 10000 ? 'active' : ''" @click="apply">
+				{{ activityData.status == 10000 ? $t(`activity['立即申请']`) : $t(`activity['您已申请']`) }}
+			</div>
 		</div>
 	</activityWrapper>
 	<CommonDialog v-model="showCommonDialog" :title="$t(`activity['温馨提示']`)" :confirm="confirmDialog">

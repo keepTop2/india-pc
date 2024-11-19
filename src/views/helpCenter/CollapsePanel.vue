@@ -1,15 +1,15 @@
 <template>
 	<div class="collapse-panel">
 		<div class="header pr_24" @click="handleClick" :class="isOpen ? 'isOpen' : ''">
-			<div>
+			<div class="ellipsis" style="width: 150px">
 				<img v-lazy-load="panel.icon" alt="" />
 				<span>{{ panel.name }}</span>
 			</div>
-			<svg-icon v-if="panel?.subset?.length > 0" :name="!isOpen ? 'common-arrow_down' : 'common-arrow_up'" size="14px" />
+			<svg-icon v-if="panel?.subset?.length > 0" :name="!isOpen ? 'common-arrow_down' : 'common-arrow_up_on'" size="14px" />
 		</div>
-		<div v-show="isOpen" class="collapse-content">
+		<div v-show="isOpen && panel?.subset?.length > 0" class="collapse-content">
 			<div v-for="(item, index) in panel?.subset" class="cell" @click="selectClass(index)" :class="subindex == index ? 'active' : ''">
-				<div class="fs_14">
+				<div class="fs_14 ellipsis">
 					<img v-lazy-load="item.icon" alt="" />
 					{{ item?.name }}
 				</div>
@@ -50,17 +50,17 @@ const handleClick = () => {
 	font-size: 14px;
 	color: var(--Text-1);
 	line-height: 44px;
-	background: var(--Bg-3);
+
 	border-radius: 4px;
 	padding-left: 24px;
 	img {
 		margin-right: 10px;
-
 		height: 18px;
 	}
 }
 .header.isOpen {
 	border-radius: 4px 4px 0 0;
+	background: var(--Bg-3);
 }
 
 .arrow {
@@ -74,6 +74,7 @@ const handleClick = () => {
 .collapse-content {
 	background: var(--Bg-4);
 	padding: 8px;
+	height: auto;
 	> div {
 		height: 46px;
 		line-height: 46px;

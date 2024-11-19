@@ -4,7 +4,7 @@
 			<div>
 				<span class="flex-center" style="gap: 12px">
 					<img v-lazy-load="collectGames_icon" alt="" />
-					<span class="Text_s fs_20">喜欢的游戏</span>
+					<span class="Text_s fs_20">{{ $t(`home['喜欢的游戏']`) }}</span>
 				</span>
 			</div>
 		</div>
@@ -45,6 +45,8 @@ import collectGames_icon from "/@/assets/common/collectGames_icon.png";
 import { ref } from "vue";
 import { Autoplay, Navigation } from "swiper/modules";
 import newGameIcon from "/@/assets/common/newGame_icon.png";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const collectGamesStore = useCollectGamesStore();
 const modules = ref([Autoplay, Navigation]);
 interface gameInfo {
@@ -92,7 +94,7 @@ const collectGame = (game: gameInfo) => {
 		game.collect = !game.collect;
 		HomeApi.collection(params).then((res) => {
 			if (res.code === Common.ResCode.SUCCESS) {
-				showToast(!game.collect ? "取消收藏成功" : "收藏成功");
+				showToast(!game.collect ? $.t(`home['取消收藏成功']`) : $.t(`home['收藏成功']`));
 			}
 			collectGamesStore.setCollectGamesList();
 		});

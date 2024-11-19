@@ -148,6 +148,8 @@ import Common from "/@/utils/common";
 import showToast from "/@/hooks/useToast";
 import dayjs from "dayjs";
 import { onClickOutside } from "@vueuse/core";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const activityStore = useActivityStore();
 const router = useRouter();
 const activityData: any = computed(() => activityStore.getCurrentActivityData);
@@ -169,19 +171,19 @@ const minDate = today.subtract(30, "day").format("YYYY/MM/DD");
 const maxDate = today.add(0, "day").format("YYYY/MM/DD");
 const currentDay = ref(today.add(0, "day").format("YYYY/MM/DD"));
 const columns = [
-	{ field: "name", label: "排行" },
-	{ field: "userAccount", label: "玩家" },
-	{ field: "betAmount", label: "投注金额" },
-	{ field: "awardAmount", label: "奖金" },
+	{ field: "name", label: $.t(`activity['排行']`) },
+	{ field: "userAccount", label: $.t(`activity['玩家']`) },
+	{ field: "betAmount", label: $.t(`activity['投注金额']`) },
+	{ field: "awardAmount", label: $.t(`activity['奖金']`) },
 ];
 const showDate = ref(false);
 // 标签页列表
 const tabList: any = ref([]);
 
-const changeTab = (item, index) => {
+const changeTab = (index: any) => {
 	currentTab.value = index;
 };
-const dayclick = (value) => {
+const dayclick = (value: any) => {
 	if (value.isDisabled) return;
 	currentDay.value = dayjs(value.id).format("YYYY/MM/DD");
 	showDate.value = false;

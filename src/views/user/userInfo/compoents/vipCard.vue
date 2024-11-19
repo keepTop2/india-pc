@@ -7,12 +7,12 @@
 			<div class="experience">
 				<div class="fs_20 mb_5">{{ vipInfo.vipGradeName }}</div>
 				<div class="flex-alignCenter">
-					<span v-if="vipInfo.vipGradeUp !== vipInfo.vipGradeCode">升级所需经验:</span>
+					<span v-if="vipInfo.vipGradeUp !== vipInfo.vipGradeCode">{{ $t(`user['升级所需经验']`) }}:</span>
 					<span v-if="vipInfo.vipGradeUp !== vipInfo.vipGradeCode"
 						><span class="color_Theme">{{ vipInfo.currentExp }}</span
 						>/{{ vipInfo.currentVipExp }}</span
 					>
-					<span v-else-if="vipInfo.vipGradeUp">您已到达最高等级</span>
+					<span v-else-if="vipInfo.vipGradeUp">{{ $t(`user['您已到达最高等级']`) }}</span>
 				</div>
 			</div>
 
@@ -42,7 +42,6 @@
 </template>
 
 <script setup>
-import ClickTooltip from "/@/components/ClickTooltip.vue";
 import level1 from "../../vip/image/level1.png";
 import level2 from "../../vip/image/level2.png";
 import level3 from "../../vip/image/level3.png";
@@ -53,7 +52,6 @@ import rank2 from "../../vip/image/rank2.png";
 import rank3 from "../../vip/image/rank3.png";
 import rank4 from "../../vip/image/rank4.png";
 import rank5 from "../../vip/image/rank5.png";
-import { useUserStore } from "/@/stores/modules/user";
 const getViplevelImg = (vipRankCode) => {
 	return vipRankCode == 1 ? level1 : vipRankCode == 2 ? level2 : vipRankCode == 3 ? level3 : vipRankCode == 4 ? level4 : vipRankCode == 5 ? level4 : level5;
 };

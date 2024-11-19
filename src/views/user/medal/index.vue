@@ -2,7 +2,7 @@
 	<div class="wrapper2">
 		<div class="flex_space-between Text_s p_24">
 			<svg-icon name="common-arrow_left" width="13px" height="24px" class="curp" @click="emit('update:modelValue', 0)"></svg-icon>
-			<span class="fs_18">勋章收藏者</span>
+			<span class="fs_18">{{ $t(`user['勋章收藏者']`) }}</span>
 			<svg-icon name="common-close" size="30px" class="curp" @click="useModalStore().closeModal()"></svg-icon>
 		</div>
 		<div class="content">
@@ -25,7 +25,9 @@
 				<div class="medalRewardList">
 					<div v-for="(item, index) in medalRewardRespVOS" class="pl_16">
 						<div>
-							解锁<span class="color_Theme">{{ item.unlockMedalNum }}枚</span> 勋章:获得 {{ useUserStore().getUserInfo.platCurrencySymbol }} {{ item.rewardAmount }}
+							{{ $t(`user['解锁']`) }}<span class="color_Theme">{{ item.unlockMedalNum }}{{ $t(`user['枚']`) }}</span> {{ $t(`user['勋章']`) }}:{{ $t(`user['获得']`) }}
+							{{ useUserStore().getUserInfo.platCurrencySymbol }}
+							{{ item.rewardAmount }}
 						</div>
 					</div>
 					<div class="mark">
@@ -34,21 +36,25 @@
 								<svg-icon name="mark " size="20px"></svg-icon>
 							</template>
 							<template v-slot:message>
-								宝箱奖励流水倍数{{
-									medalRewardRespVOS.find((item: any) => item.openStatus !== 1)?.typingMultiple || medalRewardRespVOS[medalRewardRespVOS.length - 1]?.typingMultiple
-								}}为倍
+								{{ $t(`user['宝箱奖励流水倍数为']`)
+								}}{{ medalRewardRespVOS.find((item: any) => item.openStatus !== 1)?.typingMultiple || medalRewardRespVOS[medalRewardRespVOS.length - 1]?.typingMultiple }}
+								{{ $t(`user['倍']`) }}
 							</template>
 						</ClickTooltip>
 					</div>
 				</div>
 			</div>
 			<div class="title flex_space-between Text_s">
-				<span>已解锁 <span class="fs_14 Text1" v-if="hasUnlockList.length < 1">(您还未获得任何勋章，积极玩游戏获得更多勋章)</span></span>
+				<span
+					>{{ $t(`user['已解锁']`) }} <span class="fs_14 Text1" v-if="hasUnlockList.length < 1">({{ $t(`user['您还未获得任何勋章，积极玩游戏获得更多勋章']`) }})</span></span
+				>
 			</div>
 			<medalCard :medalList="hasUnlockList" class="mt_12" @gotoDetails="gotoDetails"></medalCard>
 			<div class="line"></div>
 			<div class="title flex_space-between Text_s">
-				<span>未解锁 <span class="fs_14 Text1">(提示：点击勋章图标查看勋章奖励和详情)</span></span>
+				<span
+					>{{ $t(`user['未解锁']`) }} <span class="fs_14 Text1">({{ $t(`user['提示：点击勋章图标查看勋章奖励和详情']`) }} )</span></span
+				>
 			</div>
 			<medalCard :medalList="notUnlockList" class="mt_12" @gotoDetails="gotoDetails" @updateList="getUserMedalInfo"></medalCard>
 		</div>
@@ -77,7 +83,8 @@ import status2_3 from "./image/status2_3.png";
 import status2_4 from "./image/status2_4.png";
 import status2_5 from "./image/status2_5.png";
 import showToast from "/@/hooks/useToast";
-
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const imgObj: any = {
 	status0_1,
 	status0_2,
@@ -144,7 +151,11 @@ const findInterval = () => {
 const openMedalReward = (item: any) => {
 	if (item.openStatus === 0) {
 		MedalApi.openMedalReward({ rewardNo: item.rewardNo }).then(async (res) => {
-			showToast(`恭喜你获得${res.data.unlockMedalNum}个勋章，解锁宝箱，奖励${useUserStore().getUserInfo.platCurrencySymbol} ${res.data.rewardAmount}已发送到您的账号`);
+			showToast(
+				`${$.t(`user['恭喜您获得']`)}${res.data.unlockMedalNum}${$.t(`user['个勋章，解锁宝箱，奖励']`)}${useUserStore().getUserInfo.platCurrencySymbol} ${
+					res.data.rewardAmount
+				}${$.t(`user['已发送到您的账号']`)}}`
+			);
 			await getUserMedalInfo();
 			findInterval();
 		});

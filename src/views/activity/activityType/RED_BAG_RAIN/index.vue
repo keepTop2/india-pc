@@ -5,15 +5,15 @@
 		</div>
 		<div class="activityContent">
 			<div class="bonus_card">
-				<div class="bonus_card_title">红包雨</div>
+				<div class="bonus_card_title">{{ $t(`activity['红包雨']`) }}</div>
 				<div class="mt_20 mb_20">
-					{{ activityData?.clientStatus == 1 ? "距离本场红包雨结束" : "距离下一场红包雨还有" }}
+					{{ activityData?.clientStatus == 1 ? $t(`activity['距离本场红包雨结束']`) : $t(`activity['距离下一场红包雨还有']`) }}
 				</div>
 				<div class="countdown mb_20">
 					<span>{{ Common.convertMilliseconds(countdown * 1000) }}</span>
 				</div>
 				<div class="apply_btn">
-					<div class="curp" :class="activityData?.clientStatus == 1 ? 'active' : ''" @click="getActivityReward">抢</div>
+					<div class="curp" :class="activityData?.clientStatus == 1 ? 'active' : ''" @click="getActivityReward">{{ $t(`activity['抢']`) }}</div>
 				</div>
 			</div>
 		</div>
@@ -22,7 +22,7 @@
 			<div class="activityContentHeader" :style="{ background: `url(${Common.getThemeImgPath('activityContentHeader.png')}) no-repeat`, backgroundSize: '100% 100%' }">
 				<div class="flex-center">
 					<img :src="Common.getThemeImgPath('activityContentHeaderLeft.svg')" alt="" />
-					<span>红包雨场次</span>
+					<span>{{ $t(`activity['红包雨场次']`) }}</span>
 					<img :src="Common.getThemeImgPath('activityContentHeaderRight.svg')" alt="" />
 				</div>
 			</div>
@@ -46,16 +46,16 @@
 			<div class="activityContentHeader">
 				<div class="flex-center">
 					<img src="../image/activityContentHeaderLeft.svg" alt="" />
-					<span>中奖名单</span>
+					<span>{{ $t(`activity['中奖名单']`) }}</span>
 					<img src="../image/activityContentHeaderRight.svg" alt="" />
 				</div>
 			</div>
 			<div class="activityContentCenter">
 				<div class="winnerListTable">
 					<div class="winnerListHeader">
-						<div>会员账号</div>
-						<div>获得红包</div>
-						<div>时间</div>
+						<div>{{ $t(`activity['会员账号']`) }}</div>
+						<div>{{ $t(`activity['获得红包']`) }}</div>
+						<div>{{ $t(`activity['时间']`) }}</div>
 					</div>
 					<div class="winnerListBody" v-for="(item, index) in activityData.winnerList" :key="index">
 						<div>{{ item.userAccount }}</div>
@@ -70,9 +70,8 @@
 	</activityWrapper>
 
 	<!-- 结算弹窗 -->
-	<RED_BAG_RAIN_Dialog v-model="showDialog" title="温馨提示" :confirm="confirmDialog" class="redBagRainResult">
+	<RED_BAG_RAIN_Dialog v-model="showDialog" :title="$t(`activity['温馨提示']`)" :confirm="confirmDialog" class="redBagRainResult">
 		<div class="Text3">{{ dialogInfo.message }}</div>
-		<template v-slot:footer v-if="[30045, 30053].includes(dialogInfo.status)"> 确定 </template>
 	</RED_BAG_RAIN_Dialog>
 </template>
 
@@ -98,6 +97,8 @@ import activityBonusCard from "../../components/activityBonusCard.vue";
 import activityContent from "../../components/activityContent.vue";
 import activityRule from "../../components/activityRule.vue";
 import { useUserStore } from "/@/stores/modules/user";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const { countdown, startCountdown, stopCountdown } = useCountdown();
 const activityStore = useActivityStore();
 const showDialog = ref(false);
@@ -107,9 +108,9 @@ const confirmDialog = () => {
 	showDialog.value = false;
 };
 const status: any = {
-	0: "未开始",
-	1: "进行中",
-	2: "已结束",
+	0: $.t(`activity['未开始']`),
+	1: $.t(`activity['进行中']`),
+	2: $.t(`activity['已结束']`),
 };
 onMounted(() => {
 	initCountown();

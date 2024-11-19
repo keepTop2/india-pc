@@ -43,7 +43,6 @@ const onSwiper = (swiper: any) => {
 
 		margin: 0 auto;
 		margin-top: 20px;
-		padding: 0 10px;
 	}
 	.swiper {
 		max-width: 1308px;
