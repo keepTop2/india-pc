@@ -114,7 +114,7 @@
 						}
 						.name {
 							font-size: 14px;
-							color: var(--Text-a);
+							color: var(--Text-s);
 							white-space: nowrap; /* 不换行 */
 							overflow: hidden; /* 超出内容隐藏 */
 							text-overflow: ellipsis;
@@ -329,9 +329,10 @@
 							}
 							.value {
 								position: relative;
-								color: var(--Text-a);
+								color: var(--Text-s);
 								font-family: PingFang SC;
-								font-size: 12px;
+								font-size: 14px;
+								font-weight: 500;
 								font-weight: 400;
 							}
 							.noData {

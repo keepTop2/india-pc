@@ -11,13 +11,14 @@
 			</template>
 			<div class="container">
 				<div class="info">
-					<div class="amount_info">
+					<div class="amount_info" v-if="displayedAmount">
 						<img class="icon" :src="amount_icon" alt="" />
 						<!-- 动态显示金额 -->
-						<span class="value" v-if="displayedAmount">
+						<span class="value">
 							<!-- 显示正负号和格式化后的金额 -->
 							{{ getPlusMinusSign() }}{{ common.thousands(common.formatAmount(Number(common.formatFloat(displayedAmount)))) }}
 						</span>
+						<span class="label ml_12">{{ mainCurrency }}</span>
 					</div>
 					<template
 						v-if="
@@ -47,7 +48,7 @@
 							</template>
 							<!-- 时间处理 -->
 							<template v-else-if="timeKeys.includes(item.key)">
-								{{ common.getYMDHms(depositOrderDetail[item.key as keyof typeof depositOrderDetail], "YYYY/MM/DD HH:mm:ss") }}
+								{{ common.getYMDHms(depositOrderDetail[item.key as keyof typeof depositOrderDetail], "YYYY/MM/DD HH:mm:ss") || "--" }}
 							</template>
 							<!-- 复制处理 -->
 							<template v-else-if="item.key === 'orderNo'">
@@ -84,18 +85,22 @@
 
 					<!-- 银行卡提现 -->
 					<template v-if="route.query.tradeWayType === 'bank_card_withdraw'">
-						<div class="cell" v-for="item in BankCardWithdrawalList">
-							<span class="label">{{ $t(`wallet['${item.label}']`) }}</span>
-							<span class="value">{{ depositOrderDetail.tradeCurrencyAmount }}</span>
-						</div>
+						<template v-for="item in BankCardWithdrawalList">
+							<div class="cell" v-if="depositOrderDetail[item.key as keyof depositOrderDetailRootObject]">
+								<span class="label">{{ $t(`wallet['${item.label}']`) }}</span>
+								<span class="value">{{ depositOrderDetail[item.key as keyof depositOrderDetailRootObject] }}</span>
+							</div>
+						</template>
 					</template>
 
 					<!-- 电子钱包提现 -->
 					<template v-if="route.query.tradeWayType === 'electronic_wallet_withdraw'">
-						<div class="cell" v-for="item in EWalletList">
-							<span class="label">{{ $t(`wallet['${item.label}']`) }}</span>
-							<span class="value">{{ depositOrderDetail[item.key as keyof depositOrderDetailRootObject] }}</span>
-						</div>
+						<template v-for="item in EWalletList">
+							<div class="cell" v-if="depositOrderDetail[item.key as keyof depositOrderDetailRootObject]">
+								<span class="label">{{ $t(`wallet['${item.label}']`) }}</span>
+								<span class="value">{{ depositOrderDetail[item.key as keyof depositOrderDetailRootObject] }}</span>
+							</div>
+						</template>
 					</template>
 				</div>
 				<!-- 只有银行卡 电子钱包 存款才显示进度 -->
@@ -451,6 +456,7 @@ const tradeWayConfig = {
 		"crypto_currency_recharge", // 虚拟货币充值
 		"manual_up", // 人工充值
 		"superior_transfer", // 上级转账
+		"platform_transfer", // 平台币转换
 	],
 	// 提款类型，包括人工提款、银行卡提款、电子钱包提款、虚拟货币提款
 	withdraw: [

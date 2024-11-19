@@ -4,8 +4,9 @@ import { defineComponent } from "vue";
 import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息 store
 import Common from "/@/utils/common";
 import useTimer from "/@/views/lottery/components/Tools/Timer";
-import { useRouter } from "vue-router";
-
+import HeaderLeftIcon from "/@/assets/zh-CN/lottery/national.png";
+import { i18n } from "/@/i18n";
+const $: any = i18n.global;
 // 主组件，使用 useTimer 获取计时器相关的状态和方法
 export default () => {
 	// 定义卡片头部组件
@@ -20,7 +21,7 @@ export default () => {
 				<div class="card-header">
 					{/* 左侧图片 */}
 					<div class="left">
-						<img src={props.data?.icon || "/@/assets/zh-CN/lottery/national.png"} alt="Header Image" />
+						<img src={props.data?.icon || HeaderLeftIcon} alt="Header Image" />
 					</div>
 					{/* 右侧倒计时 */}
 					<div class="right">
@@ -64,7 +65,7 @@ export default () => {
 			return () => (
 				<div class="card-footer">
 					<div class="left">
-						<span>最近获奖</span>
+						<span>{$.t(`lottery['最近获奖']`)}</span>
 					</div>
 					<div class="right">
 						{slots?.maxWin?.() || (
@@ -81,7 +82,7 @@ export default () => {
 	// 定义卡片按钮组件
 	const Button = defineComponent({
 		setup() {
-			return () => <div class="card-button">立即投注</div>;
+			return () => <div class="card-button">{$.t(`lottery['立即投注']`)}</div>;
 		},
 	});
 

@@ -300,7 +300,7 @@ const { VideoSource } = useVideo();
 				width: 100%;
 				height: 1px;
 				background-color: var(--Line-1);
-				box-shadow: 0px 1px 0px 0px #343d48;
+				box-shadow: 0px 1px 0px 0px var(--Line-1-bs);
 			}
 
 			.events-header {
@@ -367,6 +367,54 @@ const { VideoSource } = useVideo();
 		}
 		&::-webkit-scrollbar {
 			width: 6px;
+		}
+	}
+	:deep(.scoreboard-center) {
+		> .row.cell {
+			position: relative;
+			.label,
+			.value {
+				color: var(--Text-s) !important;
+				z-index: 1;
+			}
+			&::after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: var(--Bg-3);
+				opacity: 0.6; /* 背景透明度 */
+				z-index: 0; /* 背景置于文字下方 */
+			}
+		}
+		> .line {
+			background: initial !important;
+			width: 100% !important;
+			position: relative;
+			box-shadow: none !important;
+			opacity: 1 !important;
+			&::after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: var(--Bg-3);
+				opacity: 0.6;
+				z-index: 0;
+			}
+			&::before {
+				content: "";
+				position: absolute;
+				width: calc(100% - 24px);
+				left: 12px;
+				background-color: var(--Line-2);
+				height: 1px;
+				opacity: 0.5;
+			}
 		}
 	}
 }

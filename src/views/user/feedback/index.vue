@@ -26,7 +26,7 @@
 					<ImgUpload :files="files" :max="3" @update:files="updateFiles" />
 				</div>
 				<div class="Text2_1 mt_10 mb_40"></div>
-				<Button @click="onSubmit" style="width: 360px" :disabled="disabledBtn">提交</Button>
+				<Button @click="onSubmit" :disabled="disabledBtn">提交</Button>
 			</div>
 		</div>
 		<div class="right p_12 Text_s fade-in">

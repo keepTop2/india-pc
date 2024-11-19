@@ -26,7 +26,7 @@
 				</div>
 			</div>
 			<div class="tabs curp">
-				<span :class="currentTab == '0' ? 'active tab' : 'tab'" @click="clickTab('0')">全部</span>
+				<span :class="currentTab == '0' ? 'active tab' : 'tab'" @click="clickTab('0')">{{ $.t("lottery.全部") }}</span>
 				<span v-for="(item, index) in gameData" class="tab" :class="currentTab == item._key ? 'active' : ''" @click="clickTab(item._key)" :key="index">{{ item.name }}</span>
 			</div>
 
@@ -39,7 +39,7 @@
 						</div>
 						<div class="empty" v-else-if="!searchGames.length && !isLoading">
 							<svg-icon name="sports-empty" width="142px" height="120px" />
-							<p>哎呀！还没有数据！</p>
+							<p>{{ $.t("lottery['哎呀！还没有数据！']") }}</p>
 						</div>
 					</div>
 				</div>
@@ -50,7 +50,7 @@
 							<img :src="item.iconFileUrl" alt="" />
 							<span className="name">{{ item.name }}</span>
 						</div>
-						<span v-if="item.gameInfoList.length > column" @click="currentTab = item._key" class="more">更多</span>
+						<span @click="currentTab = item._key" class="more">{{ $.t("lottery.更多") }}</span>
 					</div>
 					<div class="content">
 						<HotLotteryCard
@@ -80,6 +80,8 @@ import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
 import showToast from "/@/hooks/useToast";
 import { stringify } from "qs";
 import { GameListItem } from "../../types/game";
+import { i18n } from "/@/i18n";
+const $: any = i18n.global;
 
 const { LotteryCard, HotLotteryCard } = useLotteryCard();
 const route = useRoute();
@@ -105,11 +107,13 @@ const queryGameInfoByOneClassId = debounce(async () => {
 	gameData.value = data.map((item: any) => ({
 		...item,
 		_key: item.label == 1 ? "1" : item.label == 2 ? "2" : item.id,
-		name: item.label == 1 ? "热门推荐" : item.label == 2 ? "新游戏" : item.name,
-		gameInfoList: item.gameInfoList?.map((game: any) => ({
-			...game,
-			data: { ...game.data, seconds: Math.floor((game.data.lotteryDate - game.data.currentTime) / 1000) },
-		})),
+		name: item.label == 1 ? $.t("lottery['热门推荐']") : item.label == 2 ? $.t("lottery['新游戏']") : item.name,
+		gameInfoList: item.gameInfoList
+			.filter((game: any) => game.data)
+			?.map((game: any) => ({
+				...game,
+				data: { ...game.data, seconds: Math.floor((game.data.lotteryDate - game.data.currentTime) / 1000) },
+			})),
 	}));
 }, 200);
 
@@ -163,11 +167,9 @@ const maps: Maps = {
 };
 
 const pushView = (game: GameListItem) => {
-	console.log("game", game);
-
 	const { gameCategoryCode, venueCode, gameCode } = game;
 	const { maxWin = 0 } = game.data;
-	const searchParams = { venueCode, gameCode, maxWin };
+	const searchParams = { venueCode, gameCode, maxWin, lotteryIcon: game.data.iconPc };
 	const targetView = maps[gameCategoryCode];
 	if (targetView) {
 		router.push(`${targetView}?${stringify(searchParams)}`);
