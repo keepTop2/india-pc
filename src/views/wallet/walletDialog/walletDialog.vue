@@ -171,6 +171,7 @@ const closeDialog = () => {
 		padding: 0; // 移除内边距
 		border-radius: 12px;
 		overflow-y: auto; // 允许纵向滚动
+		z-index: 2;
 		/* 自定义滚动条样式 */
 		::-webkit-scrollbar {
 			width: 8px; // 滚动条的宽度
@@ -205,6 +206,7 @@ const closeDialog = () => {
 		background-color: var(--Bg-1);
 		border-top-left-radius: 12px;
 		border-top-right-radius: 12px;
+		z-index: 11;
 	}
 	.close {
 		position: absolute;
@@ -214,11 +216,13 @@ const closeDialog = () => {
 
 	.tabs {
 		width: 100%;
+		height: 40px;
 		display: flex;
 		gap: 10px;
 		padding-right: 30px;
 		border-bottom: 1px solid var(--Line-1);
 		box-shadow: 0px 1px 0px 0px #343d48;
+		box-sizing: border-box;
 
 		.tab {
 			min-width: 120px;
