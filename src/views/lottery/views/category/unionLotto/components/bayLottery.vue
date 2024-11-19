@@ -44,7 +44,7 @@
 									/>
 								</div>
 							</template>
-						
+
 							<!-- 显示选择球组组件，当玩法类型为 'selectBall' 且激活时渲染 -->
 							<!-- <template v-if="oddsListItem.actived && oddsListItem.type === 'selectBall'" #default>
 								<div class="accordion-content-item-balls">
@@ -65,14 +65,14 @@
 			</div>
 
 			<!-- 投注表单组件 -->
-			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsListItem="currentOddsListItem">
+			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsItem="currentOddsItem">
 				<!-- 表单激活时显示的插槽内容 -->
 				<template v-if="formActived" #default>
 					<div class="bet-form-slot-header">
 						<div>{{ currentGameplayItem.gamePlayName }}</div>
 						<div>{{ currentGameplayItem.oddsList.title }}</div>
 						<div v-if="formActived && balls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
-							<Ball v-for="item in balls" :key="item" :ball-number="item" :type="Number(currentOddsListItem.iconType)" />
+							<Ball v-for="item in balls" :key="item" :ball-number="item" :type="Number(currentOddsItem.iconType)" />
 						</div>
 					</div>
 				</template>
@@ -103,8 +103,8 @@ const { BetForm } = useBetForm();
 
 // hooks
 const { mergedGameplayList } = useGameplayList(gameplayList as GameplayList);
-const { formActived, balls, clearAccordionStatus, handleSelectBalls, handleExpanded, currentGameplayItem, currentOddsListItem } = useAccordionHook(mergedGameplayList);
-const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsListItem, props as Props, balls);
+const { formActived, balls, clearAccordionStatus, handleSelectBalls, handleExpanded, currentGameplayItem, currentOddsItem } = useAccordionHook(mergedGameplayList);
+const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsItem, props as Props, balls);
 </script>
 
 <style lang="scss" scoped></style>

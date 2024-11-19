@@ -6,7 +6,7 @@ import { useUserStore } from "/@/stores/modules/user";
 import { SUCCESS_CODE } from "/@/utils/useAxiosLottery";
 import { DEFAULT_LANG, langMaps, SELECT_BALL } from "/@/views/lottery/constant/index";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
-import { type LotteryDetail, type MergedGameplayItem, type OddsListItem } from "/@/views/lottery/types/index";
+import { type LotteryDetail, type MergedGameplayItem, type OddsItem } from "/@/views/lottery/types/index";
 import { addZero } from "/@/views/lottery/utils/formatNumber";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
 export interface Props {
@@ -16,7 +16,7 @@ export interface Props {
 export function useBet(
 	currentGameplayItem: Ref<MergedGameplayItem>,
 
-	currentOddsListItem: Ref<OddsListItem>,
+	currentOddsItem: Ref<OddsItem>,
 
 	props: Props,
 
@@ -70,8 +70,8 @@ export function useBet(
 
 		// 2. 下注
 		// 2.1 准备一下入参
-		const { gameCode, gamePlayCode, type = "" } = currentOddsListItem.value;
-		let { optionCode: nums } = currentOddsListItem.value;
+		const { gameCode, gamePlayCode, type = "" } = currentOddsItem.value;
+		let { optionCode: nums } = currentOddsItem.value;
 		// 选择球
 		if (SELECT_BALL === type) {
 			console.log("if", balls);

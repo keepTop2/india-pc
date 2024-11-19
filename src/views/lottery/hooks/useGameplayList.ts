@@ -1,17 +1,19 @@
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { lotteryApi } from "/@/api/lottery";
 import { useUserStore } from "/@/stores/modules/user";
 import { DEFAULT_LANG, isSmp, langMaps } from "/@/views/lottery/constant/index";
-import { type GameplayList, type MergedGameplayList } from "/@/views/lottery/types/index";
+import { useFallBack } from "/@/views/lottery/hooks/useFallback";
+import { type GameplayList } from "/@/views/lottery/types/index";
+import { LotteryPlayGroup } from "/@/views/lottery/types/lottery";
 import { mergeGameplayList } from "/@/views/lottery/utils/mergeGameplayList";
 import { ssqLotteryList } from "/@/views/lottery/utils/ssqLotteryList";
-import { LotteryPlayGroup } from "/@/views/lottery/types/lottery";
 
-export function useGameplayList(gameplayList: GameplayList) {
-	const mergedGameplayList = ref<MergedGameplayList>([]); // 合并后的玩法列表
+export function useGameplayList(l1: GameplayList) {
 	const route = useRoute();
 	const userStore = useUserStore();
+
+	const gameplayList = ref<GameplayList>([]); // 合并后的玩法列表
 
 	// 拉接口玩法
 	async function queryGamePlayOddsList() {
@@ -19,6 +21,7 @@ export function useGameplayList(gameplayList: GameplayList) {
 
 		// 1.1 准备一下入参 gameCode lang 两个入参
 		const { gameCode = "" } = route.query;
+		useFallBack(gameCode);
 		const language = userStore.getLang;
 		const lang = (langMaps as any)[language] || DEFAULT_LANG;
 		const submitData = { gameCode, isSmp, lang };
@@ -38,13 +41,11 @@ export function useGameplayList(gameplayList: GameplayList) {
 		const codes = ["MYPK10", "3FPK10", "5FPK10", "LUCKYPK10"];
 		const isGameCode = codes.includes(gameCode as string);
 		if (isGameCode) {
-			mergedGameplayList.value = ssqLotteryList(gameplayList as LotteryPlayGroup[], res.data) as MergedGameplayList;
+			gameplayList.value = ssqLotteryList(l1 as LotteryPlayGroup[], res.data) as GameplayList;
 		} else {
-			mergedGameplayList.value = mergeGameplayList(gameplayList, res.data) as MergedGameplayList;
+			gameplayList.value = mergeGameplayList(l1, res.data) as GameplayList;
 		}
 	}
 
-	onMounted(queryGamePlayOddsList);
-
-	return { mergedGameplayList };
+	return { gameplayList, queryGamePlayOddsList };
 }

@@ -50,7 +50,7 @@
 			</div>
 
 			<!-- 投注表单组件 -->
-			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsListItem="currentOddsListItem">
+			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsItem="currentOddsItem">
 				<!-- 表单激活时显示的插槽内容 -->
 				<template v-if="formActived" #default>
 					<div class="bet-form-slot-header">
@@ -88,8 +88,8 @@ const { BetForm } = useBetForm();
 const { mergedGameplayList } = useGameplayList(gameplayList);
 console.log(mergedGameplayList, "mergedGameplayList");
 
-const { formActived, balls, clearAccordionStatus, handleSelectBalls, handleExpanded, currentGameplayItem, currentOddsListItem } = useAccordionHook(mergedGameplayList);
-const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsListItem, props as Props, balls);
+const { formActived, balls, clearAccordionStatus, handleSelectBalls, handleExpanded, currentGameplayItem, currentOddsItem } = useAccordionHook(mergedGameplayList);
+const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsItem, props as Props, balls);
 </script>
 
 <style lang="scss" scoped></style>

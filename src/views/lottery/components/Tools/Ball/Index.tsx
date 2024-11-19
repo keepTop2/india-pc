@@ -1,8 +1,11 @@
 import "./index.scss";
+
 import { computed, defineComponent } from "vue";
+
+import { i18n } from "/@/i18n";
+
 const ClearIcon = new URL("/src/assets/zh-CN/lottery/clear.svg", import.meta.url).href;
 const KsxzIcon = new URL("/src/assets/zh-CN/lottery/ksxz.svg", import.meta.url).href;
-import { i18n } from "/@/i18n";
 const $: any = i18n.global;
 export default () => {
 	// 定义 SelectBallGroup 组件，用于显示多个球的选择
@@ -50,7 +53,10 @@ export default () => {
 			const handleSelect = (ballNum: number, isRandom = false) => {
 				console.log("ballNum", ballNum);
 				if (!multiple) {
-					emit("select", { value: ballNum, list: props.value.includes(ballNum) && !isRandom ? [] : [ballNum] });
+					emit("select", {
+						value: ballNum,
+						list: props.value.includes(ballNum) && !isRandom ? [] : [ballNum],
+					});
 					return;
 				}
 				// 如果球号已经选中，移除该球号

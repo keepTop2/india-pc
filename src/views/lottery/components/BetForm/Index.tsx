@@ -1,20 +1,22 @@
 import "./index.scss";
 
 import { computed, defineComponent, reactive, ref, watch } from "vue";
-import { ElInput } from "element-plus";
-import { useUserStore } from "/@/stores/modules/user";
-import CommonFn from "/@/utils/common";
-import { formatNumberMax3Digits } from "/@/views/lottery/utils/formatNumber";
+
 import Common from "/@/views/sports/utils/common";
-import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
+import CommonFn from "/@/utils/common";
+import { ElInput } from "element-plus";
+import { formatNumberMax3Digits } from "/@/views/lottery/utils/formatNumber";
 import { i18n } from "/@/i18n";
+import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
+import { useUserStore } from "/@/stores/modules/user";
+
 const $: any = i18n.global;
 export default () => {
 	const BetForm = defineComponent({
 		props: {
 			actived: { type: Boolean, default: false }, // 控制显示投注输入框
 			value: { type: Object, default: () => ({}) },
-			currentOddsListItem: { type: Object, default: () => ({}) },
+			currentOddsItem: { type: Object, default: () => ({}) },
 		},
 		name: "BetForm",
 		emits: ["submit"],
@@ -144,7 +146,7 @@ export default () => {
 						<div class="default-item">
 							<span>{$.t(`lottery['潜在回报']`)}</span>
 							<span>
-								{formatNumberMax3Digits(+props.currentOddsListItem.itemOdds * +stake.value || 0)} {unit.value}
+								{formatNumberMax3Digits(+props.currentOddsItem.itemOdds * +stake.value || 0)} {unit.value}
 							</span>
 						</div>
 					</div>
