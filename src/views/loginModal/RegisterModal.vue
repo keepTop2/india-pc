@@ -51,7 +51,7 @@
 						</template>
 						</FromInput>
 					</p>
-					<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">{{ $t(`login['密码规则']`) }}</p>
+					<p v-show="VerifyError.passWord" class="Wran_text fs_12 mt_2">{{ $t(`login['请输入8-16位字母+数字的组合']`) }}</p>
 				</div>
 				<!-- 确认密码 -->
 				<div>
@@ -75,7 +75,7 @@
 						</FromInput>
 				
 					</p>
-					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
+					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次密码不一致']`) }}</p>
 				</div>
 
 				<div>

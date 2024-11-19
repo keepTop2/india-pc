@@ -1,15 +1,15 @@
 <template>
 	<div class="dropdown-select" ref="dropdown">
-		<input class="trigger common_input fs_12" @input="onInput" placeholder="输入手机号" />
-		<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between" @click="toggleDropdown">
-			<span class="fs_12">+{{ selectedOptionLabel }}</span>
-			<svg-icon name="common-arrow_down" size="14px" fill="#fff" class="ml_10" />
+		<input class="trigger fs_14 common_input" @input="onInput" placeholder="请输入手机号" />
+		<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between fs_14" @click="toggleDropdown">
+			<span class="fs_14">+{{ selectedOptionLabel }}</span>
+			<svg-icon name="common-arrow_down_on" size="14px" fill="#fff" class="ml_10" />
 		</span>
 		<div v-if="isOpen" class="dropdown-menu">
 			<div class="flex_space-between input">
-				<svg-icon name="search" size="14px" color="#fff" />
+				<svg-icon name="search" size="14px" color="#fff" class="search" />
 				<input v-model="searchQuery" @input="filterOptions" :placeholder="$t(`login['搜索区号']`)" class="search-input common_input" />
-				<svg-icon name="common-close" size="18px" @click="searchQuery = ''" color="#fff" />
+				<svg-icon name="common-close" size="24px" @click="searchQuery = ''" color="#fff" class="close" />
 			</div>
 			<div class="line"></div>
 			<ul class="options-list">
@@ -26,7 +26,7 @@
 					</span>
 					<svg-icon :name="option.countryCode == selectedOptionLabel ? 'common-cricle_theme' : 'common-cricle'" size="16px"> </svg-icon>
 				</li>
-				<li v-if="filteredOptions.length === 0" class="no-results fs_12">{{ $t(`login["未搜索到相关区号"]`) }}</li>
+				<li v-if="filteredOptions.length === 0" class="no-results fs_12 flex-center mt_8 Text2">{{ $t(`login["未搜索到相关区号"]`) }}</li>
 			</ul>
 		</div>
 	</div>
@@ -154,7 +154,7 @@ onUnmounted(() => {
 .trigger {
 	width: 100%;
 	padding: 8px 16px;
-	padding-left: 80px;
+	padding-left: 85px;
 	border: none;
 	height: 100%;
 	border-radius: 4px;
@@ -180,14 +180,13 @@ onUnmounted(() => {
 	top: 8px;
 	bottom: 8px;
 	left: 12px;
-	width: 60px;
+	width: 65px;
 	padding-right: 8px;
 	color: var(--Text-s);
 	border-right: 1px solid var(--Line-2);
 }
 .dropdown-menu {
 	position: absolute;
-	top: calc(100% + 3px);
 	left: 0;
 	width: 100%;
 	border: none;
@@ -195,13 +194,22 @@ onUnmounted(() => {
 	background-color: var(--Bg-1);
 	z-index: 10;
 	color: var(--Text-2);
-	padding: 0 16px;
-
+	margin-top: 3px;
+	min-height: 200px;
 	.input {
-		background-color: var(--Bg-3);
-		margin: 5px 0;
+		background-color: var(--Bg-2);
+		height: 34px;
 		border-radius: 4px;
 		padding: 0px 8px;
+		position: reactive;
+		.close {
+			position: absolute;
+			right: 12px;
+		}
+		.search {
+			position: absolute;
+			left: 12px;
+		}
 	}
 	.line {
 		height: 1px;
@@ -210,12 +218,13 @@ onUnmounted(() => {
 	.search-input {
 		width: 100%;
 		padding: 8px;
+		padding-left: 36px;
 		box-sizing: border-box;
 		height: 34px;
 		outline: none;
-
 		border-radius: 4px;
-		background-color: var(--Bg-3);
+		background-color: var(--Bg-2);
+		color: var(--Text-s);
 	}
 }
 
@@ -243,6 +252,7 @@ onUnmounted(() => {
 .option-item.active,
 .option-item:hover {
 	color: var(--Text-s);
+	background-color: var(--Bg-4);
 	svg {
 		color: var(--Theme);
 	}

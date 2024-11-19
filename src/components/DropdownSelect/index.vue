@@ -11,7 +11,7 @@
 		<div v-if="isOpen" class="dropdown-menu mt_3">
 			<div class="flex_space-between input">
 				<svg-icon name="common-search" size="14px" class="search" />
-				<input v-model="searchQuery" @input="filterOptions" placeholder="请输入货币名称或简称" class="search-input common_input fs_12" />
+				<input v-model="searchQuery" @input="filterOptions" placeholder="请输入货币名称或简称" class="search-input common_input fs_14" />
 				<svg-icon name="common-close" size="18px" @click="searchQuery = ''" class="close" />
 			</div>
 			<div class="line"></div>
@@ -170,6 +170,7 @@ onUnmounted(() => {
 		outline: none;
 		border-radius: 4px;
 		background-color: var(--Bg-2);
+		color: var(--Text-s);
 	}
 }
 

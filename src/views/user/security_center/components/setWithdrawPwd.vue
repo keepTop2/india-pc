@@ -88,7 +88,7 @@
 						<p v-show="confirmPasswordVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['两次交易密码不一致']`) }}</p>
 					</div>
 				</div>
-				<div class="mt_40 mb_12">
+				<div class="mt_32 mb_12">
 					<button class="common_btn" :disabled="disabledBtn" type="button" @click="onSubmit">{{ $t(`security_center['确定']`) }}</button>
 					<div class="findOldPwd">
 						{{ $t(`security_center['忘记了旧交易密码？']`) }}
