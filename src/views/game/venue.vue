@@ -151,9 +151,9 @@ const clickTab = (index: number) => {
 	display: flex;
 	margin-top: 12px;
 	.tab {
-		padding: 12px 22px;
+		padding: 7px 12px;
 		margin-right: 8px;
-		background: var(--Bg-2);
+		background: var(--Button);
 		font-size: 14px;
 		color: var(--Text-1);
 		border-radius: 4px;

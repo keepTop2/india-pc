@@ -357,6 +357,9 @@ const { VideoSource } = useVideo();
 				.F2 {
 					color: var(--Theme) !important;
 				}
+				.label {
+					color: var(--Text-1);
+				}
 			}
 			.line {
 				width: 100% !important;

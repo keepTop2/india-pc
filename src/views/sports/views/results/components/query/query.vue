@@ -6,7 +6,7 @@
 		<div class="condition">
 			<span>{{ $t(`matchResult['体育']`) }}</span>
 			<Select :options="ballOptions" v-model="modelValue.ballType" />
-			<span>{{ $t(`matchResult['日期']`) }}</span>
+			<span>{{ $t(`matchResult['日期']`) }} </span>
 			<el-dropdown ref="selectRef" trigger="click" :teleported="false" placement="bottom-end" popper-class="popperClass" @visible-change="visibleChange" @command="onCommand">
 				<div class="el-dropdown-content">
 					<span>{{ startDate }} - {{ endDate }}</span>
@@ -31,6 +31,9 @@
 			<span>{{ $t(`matchResult['赛事']`) }}</span>
 			<el-input v-model="modelValue.competition" :placeholder="$t(`matchResult['请输入']`)" />
 
+			<!-- <div @click="() => (modelValue.isLive = !modelValue.isLive)" class="running-ball" :class="{ actived: modelValue.isLive }">
+				{{ $t(`matchResult['滚球']`) }}
+			</div> -->
 			<!-- <el-checkbox v-model="modelValue.isLive">{{ $t(`matchResult['滚球']`) }}</el-checkbox> -->
 		</div>
 		<el-button class="query-button" @click="handleSearch" :disabled="loading">
@@ -141,6 +144,7 @@ const formatDate = (date: any) => {
 	:deep(.el-dropdown) {
 		background: var(--Bg-2);
 		height: 30px;
+		border-radius: 4px;
 		.el-dropdown-content {
 			width: 230px;
 			height: 100%;
@@ -262,6 +266,30 @@ const formatDate = (date: any) => {
 		& > * {
 			flex-shrink: 0;
 		}
+		.running-ball {
+			position: relative;
+			color: var(--Text-1);
+			font-size: 12px;
+			margin-left: 25px;
+			cursor: pointer;
+			&.actived {
+				&::after {
+					background: url("/@/assets/zh-CN/sports/select-running-ball.png") 100% 100%;
+					border-width: 0;
+				}
+			}
+			&::after {
+				position: absolute;
+				content: "";
+				left: -26px;
+				border: 1px solid var(--Line-2);
+				border-radius: 2px;
+				top: 50%;
+				transform: translateY(-50%);
+				height: 18px;
+				width: 18px;
+			}
+		}
 	}
 
 	.query-button {
@@ -296,8 +324,9 @@ const formatDate = (date: any) => {
 	}
 
 	.select-date {
-		width: 110px;
+		width: 120px;
 		height: 30px;
+		border-radius: 4px;
 	}
 
 	.el-input__wrapper {

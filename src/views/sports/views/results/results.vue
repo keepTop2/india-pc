@@ -4,11 +4,21 @@
 		<query v-model:modelValue="queryForm" :ballOptions="ballOptions" :loading="loading" @search="getEventResultsData" @updateModel="handleUpdateModel" />
 		<div class="result_content">
 			<el-table :data="paginatedData" :highlight-current-row="false">
-				<el-table-column prop="date" :label="$t(`matchResult['日期']`)" width="200" />
+				<el-table-column prop="date" :label="$t(`matchResult['日期']`)" width="200">
+					<template #header>
+						<span>{{ $t(`matchResult['日期']`) }}</span>
+						<span @click="handleSort" class="sort">
+							<svg-icon :class="{ actived: !isSort }" name="sports-sort-time" />
+							<svg-icon :class="{ actived: isSort }" name="sports-sort-time" />
+						</span>
+					</template>
+				</el-table-column>
 				<el-table-column prop="league" :label="$t(`matchResult['联赛']`)">
 					<template #default="{ row }">
 						<div class="col-box">
-							{{ row.leagueName }}
+							<!-- 联赛图标 -->
+							<img class="league_icon" v-if="row.leagueIconUrl" :src="row.leagueIconUrl" alt="" />
+							<span>{{ row.leagueName }}</span>
 						</div>
 					</template>
 				</el-table-column>
@@ -78,7 +88,6 @@ import sportsApi from "/@/api/sports/sports";
 import { usePopularLeague } from "/@/stores/modules/sports/popularLeague";
 import { QueryFormType, QueryOptionItemType } from "/@/views/sports/models/sportResultModel";
 import { useResultHook } from "./useResultHook";
-
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import useSportPubSubEvents from "../../hooks/useSportPubSubEvents";
 import dayjs from "dayjs";
@@ -145,6 +154,21 @@ const paginatedData = computed(() => {
 	const end = start + params.pageSize;
 	return eventResultData.value?.slice(start, end) || [];
 });
+
+// 默认时间最近
+const isSort = ref(true);
+const handleSort = () => {
+	isSort.value = !isSort.value;
+	eventResultData.value = eventResultData.value?.sort((a, b) => {
+		const aTime = moment(a.eventTime).valueOf();
+		const bTime = moment(b.eventTime).valueOf();
+		if (isSort.value) {
+			return aTime - bTime;
+		} else {
+			return bTime - aTime;
+		}
+	});
+};
 
 onMounted(async () => {
 	await sportsLogin();
@@ -219,7 +243,13 @@ const sizeChange = (pageSize: number) => {
 	.col-box {
 		display: flex;
 		align-items: center;
-		gap: 12px;
+		gap: 10px;
+		width: 100%;
+		img {
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+		}
 	}
 	.custom-empty {
 		margin-top: 160px;
@@ -288,7 +318,27 @@ const sizeChange = (pageSize: number) => {
 					font-weight: normal;
 					border: 0;
 					border-right: 1px solid var(--Line-2);
+					position: relative;
 					// border-left: none;
+					.sort {
+						position: absolute;
+						right: 12px;
+						top: 50%;
+						transform: translateY(-50%);
+						color: var(--Text-1);
+						> svg {
+							width: 4px;
+							height: 11px;
+							cursor: pointer;
+						}
+						> svg:last-child {
+							transform: rotate(180deg);
+							margin-left: 2px;
+						}
+						svg.actived {
+							color: var(--Theme) !important;
+						}
+					}
 				}
 
 				& > .el-table__cell:first-child {

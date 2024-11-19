@@ -9,7 +9,7 @@
 			@input="onInputEnter"
 			@keydown="preventDecimal"
 		>
-			<template #suffix>{{ UserStore.getUserInfo.mainCurrency }}</template>
+			<!-- <template #suffix>{{ UserStore.getUserInfo.mainCurrency }}</template> -->
 		</el-input>
 	</div>
 </template>

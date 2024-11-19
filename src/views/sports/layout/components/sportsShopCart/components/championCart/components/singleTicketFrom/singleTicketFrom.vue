@@ -8,7 +8,7 @@
 			:placeholder="`限额 ${common.formatFloat(sportsBetInfo.championSingleTicketInfo.minBet)} ～ ${common.formatFloat(sportsBetInfo.championSingleTicketInfo.maxBet)}`"
 			@input="onInputEnter"
 		>
-			<template #suffix>{{ UserStore.getUserInfo.mainCurrency }}</template>
+			<!-- <template #suffix>{{ UserStore.getUserInfo.mainCurrency }}</template> -->
 		</el-input>
 	</div>
 </template>

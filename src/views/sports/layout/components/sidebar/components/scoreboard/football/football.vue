@@ -23,7 +23,7 @@
 						<div class="num">{{ eventsInfo?.soccerInfo?.homeRedCard }}</div>
 						<div class="num">{{ eventsInfo?.soccerInfo?.homeYellowCard }}</div>
 						<div class="num">{{ 0 }}</div>
-						<div class="num">{{ eventsInfo?.gameInfo?.liveHomeScore }}</div>
+						<div class="num F2">{{ eventsInfo?.gameInfo?.liveHomeScore }}</div>
 					</div>
 				</div>
 				<div class="line"></div>
@@ -39,7 +39,7 @@
 						<div class="num">{{ eventsInfo?.soccerInfo?.awayRedCard }}</div>
 						<div class="num">{{ eventsInfo?.soccerInfo?.awayYellowCard }}</div>
 						<div class="num">{{ 0 }}</div>
-						<div class="num">{{ eventsInfo?.gameInfo?.liveAwayScore }}</div>
+						<div class="num F2">{{ eventsInfo?.gameInfo?.liveAwayScore }}</div>
 					</div>
 				</div>
 			</div>
