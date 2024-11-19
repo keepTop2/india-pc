@@ -241,10 +241,11 @@ watch(sportsData, () => {
 				content: "";
 				position: absolute;
 				right: 1px;
-				height: 100%;
+				height: calc(100% - 16px);
+				top: 8px;
 				width: 1px;
 				background-color: var(--Line-1);
-				box-shadow: 1px 0px 0px 0px var(--Text-a);
+				box-shadow: 1px 0px 0px 0px var(--lineBg);
 			}
 
 			.nva-item-container {

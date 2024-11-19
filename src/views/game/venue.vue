@@ -2,7 +2,7 @@
 	<div>
 		<venueBanner :bannerList="bannerList"></venueBanner>
 		<div class="max-width">
-			<div class="mt_40 pr_10 pl_10">
+			<div class="mt_22">
 				<div class="search-component" ref="resultList">
 					<!-- 搜索框 -->
 					<div class="search_icon">

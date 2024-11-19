@@ -296,7 +296,7 @@ watch(
 				color: var(--Text-1);
 			}
 			:last-child {
-				color: var(--Text-a);
+				color: var(--Text-s);
 			}
 		}
 	}
@@ -326,7 +326,7 @@ watch(
 			}
 
 			.tournament-name {
-				color: var(--Text-a);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;
@@ -399,7 +399,7 @@ watch(
 				.price {
 					position: relative;
 					display: inline-block;
-					color: var(--Text-a);
+					color: var(--Text-s);
 					display: flex;
 					align-items: center;
 					gap: 5px;

@@ -222,7 +222,7 @@ const { Banner, BannerController } = userBanner();
 					width: 100%;
 					height: 1px;
 					background-color: var(--Line-1);
-					box-shadow: 0px 1px 0px 0px var(--Line-1-bs);
+					box-shadow: 0px 1px 0px 0px var(--lineBg);
 				}
 			}
 		}
