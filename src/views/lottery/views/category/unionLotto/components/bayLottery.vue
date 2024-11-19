@@ -4,10 +4,10 @@
 			<div style="width: 100%; flex: 1">
 				<!-- 展示玩法配置的 Accordion 手风琴组件 -->
 				<Accordion
-					v-for="(gameplayItem, index) in mergedGameplayList"
+					v-for="(gameplayItem, gameplayIndex) in gameplayList"
 					:key="gameplayItem.id"
 					:isExpanded="gameplayItem.actived"
-					@change="(status) => clearAccordionStatus(status, index)"
+					@change="(status) => toggleAccordion(status, gameplayIndex)"
 					:title="gameplayItem.gamePlayName"
 					style="margin-bottom: 4px"
 				>
@@ -20,59 +20,43 @@
 
 						<!-- 展示每个玩法项 -->
 						<AccordionItem
-							v-for="(oddsListItem, i) in gameplayItem.oddsList"
-							:key="oddsListItem.id"
-							:actived="oddsListItem.actived"
-							@select="(status) => handleExpanded(status, oddsListItem, gameplayItem)"
-							:title="oddsListItem.title"
-							:info="oddsListItem.desc"
-							:odds="oddsListItem.itemOdds"
+							v-for="(oddsItem, oddsIndex) in gameplayItem.oddsList"
+							:key="oddsItem.id"
+							:actived="oddsItem.actived"
+							@select="(status) => chooseOddsItem(status, gameplayIndex, oddsIndex)"
+							:title="oddsItem.title"
+							:info="oddsItem.desc"
+							:odds="oddsItem.itemOdds"
 							style="margin-bottom: 8px"
 						>
 							<!-- 显示选择球组组件，当玩法类型为 'selectBall' 且激活时渲染 -->
-							<template v-if="oddsListItem.actived && oddsListItem.type === 'selectBall'" #default>
+							<template v-if="oddsItem.actived && oddsItem.type === SELECT_BALL" #default>
 								<div class="accordion-content-item-balls">
 									<SelectBallGroup
-										@clear="() => (balls = [])"
-										:type="Number(oddsListItem.iconType)"
-										@select="(data) => handleSelectBalls(data, oddsListItem, gameplayItem)"
+										@clear="() => (currentBalls = [])"
+										:type="3"
+										@select="(params) => chooseBalls(params)"
 										:multiple="false"
-										:renderBallNum="(oddsListItem.ballNum as number)"
+										:renderBallNum="(oddsItem.ballNum as number)"
 										:maxLeng="1"
-										:value="balls"
-										:startIndex="oddsListItem.startIndex"
+										:value="currentBalls"
 									/>
 								</div>
 							</template>
-
-							<!-- 显示选择球组组件，当玩法类型为 'selectBall' 且激活时渲染 -->
-							<!-- <template v-if="oddsListItem.actived && oddsListItem.type === 'selectBall'" #default>
-								<div class="accordion-content-item-balls">
-									<SSQBall
-										@clear="() => (balls = [])"
-										:type="Number(oddsListItem.iconType)"
-										@select="(data) => handleSelectBalls(data, oddsListItem, gameplayItem)"
-										:multiple="false"
-										:oddsList="oddsListItem.oddsList"
-										:maxLeng="1"
-										:value="balls"
-									/>
-								</div>
-							</template> -->
 						</AccordionItem>
 					</template>
 				</Accordion>
 			</div>
 
 			<!-- 投注表单组件 -->
-			<BetForm ref="betFormRef" @submit="handleSubmit" :value="currentGameplayItem" :actived="formActived" :currentOddsItem="currentOddsItem">
+			<BetForm ref="betFormRef" @submit="handleSubmit">
 				<!-- 表单激活时显示的插槽内容 -->
 				<template v-if="formActived" #default>
 					<div class="bet-form-slot-header">
 						<div>{{ currentGameplayItem.gamePlayName }}</div>
-						<div>{{ currentGameplayItem.oddsList.title }}</div>
-						<div v-if="formActived && balls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
-							<Ball v-for="item in balls" :key="item" :ball-number="item" :type="Number(currentOddsItem.iconType)" />
+						<div>{{ currentOddsItem.title }}</div>
+						<div v-if="formActived && currentBalls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
+							<Ball v-for="item in currentBalls" :key="item" :ball-number="item" :type="3" />
 						</div>
 					</div>
 				</template>
@@ -82,19 +66,16 @@
 </template>
 
 <script setup lang="ts">
-import { gameplayList } from "./playsConfig";
+import { gameplayList as l1 } from "./playsConfig";
 import useBetForm from "/@/views/lottery/components/BetForm/Index";
 import useAccordion from "/@/views/lottery/components/Tools/Accordion/Index";
 import useBall from "/@/views/lottery/components/Tools/Ball/Index";
-// import SSQBall from "/@/views/lottery/components/Tools/SSQball/Index.tsx";
 import { useAccordion as useAccordionHook } from "/@/views/lottery/hooks/useAccordion";
 import { useBet, type Props } from "/@/views/lottery/hooks/useBet";
 import { useGameplayList } from "/@/views/lottery/hooks/useGameplayList";
-import { GameplayList } from "/@/views/lottery/types";
-
-const props = defineProps({
-	lotteryDetail: { type: Object, default: () => ({}) },
-});
+import { SELECT_BALL } from "/@/views/lottery/constant/index";
+import { onMounted } from "vue";
+import { useLottery } from "/@/views/lottery/stores/lotteryStore";
 
 // 使用各自的组件
 const { Accordion, AccordionItem } = useAccordion();
@@ -102,9 +83,12 @@ const { Ball, SelectBallGroup } = useBall();
 const { BetForm } = useBetForm();
 
 // hooks
-const { mergedGameplayList } = useGameplayList(gameplayList as GameplayList);
-const { formActived, balls, clearAccordionStatus, handleSelectBalls, handleExpanded, currentGameplayItem, currentOddsItem } = useAccordionHook(mergedGameplayList);
-const { betFormRef, handleSubmit } = useBet(currentGameplayItem, currentOddsItem, props as Props, balls);
+const { gameplayList, queryGamePlayOddsList } = useGameplayList();
+const { toggleAccordion, chooseBalls, chooseOddsItem } = useAccordionHook(gameplayList);
+const { setCurrentBalls, currentOddsItem, currentGameplayItem, currentBalls, formActived } = useLottery();
+const { betFormRef, handleSubmit } = useBet();
+
+onMounted(() => queryGamePlayOddsList(l1));
 </script>
 
 <style lang="scss" scoped></style>
