@@ -346,11 +346,54 @@ const { VideoSource } = useVideo();
 			width: 100%;
 			// width: 892px !important;
 		}
-		.scoreboard-info {
-			height: 130px !important;
-			.home-team-name,
-			.away-team-name {
-				max-width: 100% !important;
+
+		.scoreboard-center {
+			background-color: initial !important;
+			.header.cell {
+				.label,
+				.value {
+					font-size: 14px;
+				}
+				.F2 {
+					color: var(--Theme) !important;
+				}
+				.label {
+					color: var(--Text-1);
+				}
+			}
+			.line {
+				width: 100% !important;
+			}
+			.row.cell {
+				z-index: 1;
+				position: relative;
+				&::after {
+					content: "";
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					background-color: var(--Bg-2);
+					opacity: 0.7;
+					z-index: 0;
+				}
+				.label {
+					z-index: 1;
+					.name {
+						color: var(--Text-s);
+						font-size: 16px;
+					}
+				}
+				.value {
+					z-index: 1;
+					.num:not(.F2) {
+						color: var(--Text-1);
+					}
+				}
+				.F2 {
+					color: var(--Theme) !important;
+				}
 			}
 		}
 	}

@@ -7,15 +7,15 @@
 				</div>
 				<img class="CountdownImg" src="/@/assets/common/redbagRainCountdown.png" alt="" @click.self="handleClickCountdown" />
 				<div class="countdown" @click="handleClickCountdown">
-					<p v-if="countdown > 0">倒计时</p>
-					<p>{{ countdown > 0 ? Common.convertMilliseconds(countdown * 1000) : "进行中" }}</p>
+					<p v-if="countdown > 0">{{ $t(`common['倒计时']`) }}</p>
+					<p>{{ countdown > 0 ? Common.convertMilliseconds(countdown * 1000) : $t(`common['进行中']`) }}</p>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- 结算弹窗 -->
-	<RED_BAG_RAIN_Dialog v-model="showDialog" title="温馨提示" :confirm="confirmDialog" class="redBagRainResult">
+	<RED_BAG_RAIN_Dialog v-model="showDialog" :title="$t(`activity['温馨提示']`)" :confirm="confirmDialog" class="redBagRainResult">
 		<div class="Text3">{{ dialogInfo.message }}</div>
 	</RED_BAG_RAIN_Dialog>
 </template>

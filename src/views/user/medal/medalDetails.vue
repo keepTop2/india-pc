@@ -2,7 +2,7 @@
 	<div class="wrapper3">
 		<div class="flex_space-between Text_s p_24">
 			<svg-icon name="common-arrow_left" width="13px" height="24px" class="curp" @click="emit('update:modelValue', 1)"></svg-icon>
-			<span class="fs_18">勋章详情</span>
+			<span class="fs_18">{{ $t(`user['勋章详情']`) }}</span>
 			<svg-icon name="common-close" size="30px" class="curp" @click="useModalStore().closeModal()"></svg-icon>
 		</div>
 		<div class="center">
@@ -13,17 +13,17 @@
 			</div>
 		</div>
 		<div class="Desc">
-			<div class="mb_14">{{ currentMedal.unlockTime ? currentMedal.unlockTime + "获得" : "" }}</div>
+			<div class="mb_14">{{ currentMedal.unlockTime ? currentMedal.unlockTime + $t(`user['获得']`) : "" }}</div>
 			<div v-html="currentMedal.medalDescI18"></div>
 		</div>
 		<div class="p_24">
 			<div class="cell flex_space-between">
-				<span>奖励</span>
+				<span>{{ $t(`user['奖励']`) }}</span>
 				<span class="Text_s">{{ useUserStore().getUserInfo.platCurrencySymbol }} {{ currentMedal.rewardAmount }}</span>
 			</div>
 			<div class="line"></div>
 			<div class="cell flex_space-between">
-				<span>流水倍数</span>
+				<span>{{ $t(`user['流水倍数']`) }}</span>
 				<span class="Text_s">{{ currentMedal.typingMultiple }}</span>
 			</div>
 		</div>

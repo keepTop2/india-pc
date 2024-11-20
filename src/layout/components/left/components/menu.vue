@@ -2,7 +2,7 @@
 	<div class="menu_row" :class="collapse ? 'collapse' : ''">
 		<div class="menu_item" v-if="ActivitySwitch?.includes('DAILY_COMPETITION')" @click="emit('showDAILY_COMPETITION')">
 			<span class="menu_icon"><svg-icon name="common-DAILY_COMPETITION" size="20px"></svg-icon></span>
-			<span class="menu_name ellipsis">每日竞赛</span>
+			<span class="menu_name ellipsis">{{ $t(`home['每日竞赛']`) }}</span>
 		</div>
 
 		<div v-for="(item, index) in routerObj" :key="index">
@@ -33,24 +33,24 @@
 		</div>
 		<div class="menu_item" :class="openMenuIndex == 'activity' ? 'activeMenu' : ''" @click="router.push('/activity')">
 			<span class="menu_icon"><svg-icon name="activity_icon" size="17px"></svg-icon></span>
-			<span class="menu_name ellipsis">优惠活动</span>
+			<span class="menu_name ellipsis">{{ $t(`home['优惠活动']`) }}</span>
 		</div>
 
 		<div class="menu_item" :class="openMenuIndex == 'helpCenter' ? 'activeMenu' : ''" @click="router.push('/helpCenter')">
 			<span class="menu_icon"><svg-icon name="common-help_icon" size="17px"></svg-icon></span>
-			<span class="menu_name ellipsis">帮助中心</span>
+			<span class="menu_name ellipsis">{{ $t(`home['帮助中心']`) }}</span>
 		</div>
 		<div class="menu_item" @click="Common.getSiteCustomerChannel">
 			<span class="menu_icon"><svg-icon name="common-kefu_icon" size="17px"></svg-icon></span>
-			<span class="menu_name ellipsis">线上客服</span>
+			<span class="menu_name ellipsis">{{ $t(`home['线上客服']`) }}</span>
 		</div>
 		<div class="menu_item" @click="router.push('/helpCenter')">
 			<span class="menu_icon"><svg-icon name="common-join_us_icon" size="17px"></svg-icon></span>
-			<span class="menu_name ellipsis">加入我们</span>
+			<span class="menu_name ellipsis">{{ $t(`home['加入我们']`) }}</span>
 		</div>
 		<div class="menu_item" @click="useModalStore().openModal('setLang')">
 			<span class="menu_icon"><img :src="LangIcon" alt="" class="langIcon" /></span>
-			<span class="menu_name ellipsis">语言切换</span>
+			<span class="menu_name ellipsis">{{ $t(`home['语言切换']`) }}</span>
 			<span class="arrow">
 				<svg-icon name="common-arrow_right" height="8px" width="14px" />
 			</span>

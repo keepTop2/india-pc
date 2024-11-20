@@ -30,7 +30,7 @@
 				<!-- 第二步 -->
 				<div v-else-if="currentStep === 1">
 					<div>
-						<p class="Text_s mb_2 mt_8 fs_14"><span class="color_F1">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
+						<p class="Text_s mb_8 mt_8 fs_14"><span class="color_F1">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
 						<p>
 							<FromInput
 								type="text"
@@ -79,12 +79,12 @@
 				<div v-else-if="currentStep === 2">
 					<!-- 密码 -->
 					<div>
-						<p class="Text_s mb_2 mt_16 fs_14"><span class="color_F1">*</span>{{ $t(`login['新密码']`) }}</p>
+						<p class="Text_s mb_8 mt_16 fs_14"><span class="color_F1">*</span>{{ $t(`login['新密码']`) }}</p>
 						<p class="common_password">
 							<FromInput
 								:type="showPassword ? 'password' : 'text'"
 								v-model="payLoad.password"
-								:placeholder="$t(`login['输入密码']`)"
+								:placeholder="$t(`login['请输入新密码']`)"
 								@input="passOnInput"
 								maxlength="16"
 								autocomplete="new-password"
@@ -93,24 +93,18 @@
 								<template #left>
 									<svg-icon name="password_icon" size="18px" />
 								</template>
-
-								<template #right>
-									<span @click="showPassword = !showPassword">
-										<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="18px" />
-									</span>
-								</template>
 							</FromInput>
 						</p>
 						<p v-show="VerifyError.passWord" class="color_F1 fs_12 mt_2">{{ $t(`login['请输入8-16位字母+数字的组合']`) }}</p>
 					</div>
 					<!-- 确认密码 -->
 					<div>
-						<p class="Text_s mt_16 fs_14"><span class="color_F1">*</span>{{ $t(`login['确认密码']`) }}</p>
+						<p class="Text_s mt_16 fs_14 mb_8"><span class="color_F1">*</span>{{ $t(`login['确认新密码']`) }}</p>
 						<p class="common_password">
 							<FromInput
 								:type="showConfimPassword ? 'password' : 'text'"
 								v-model="payLoad.confirmPassword"
-								:placeholder="$t(`login['输入密码']`)"
+								:placeholder="$t(`login['请输入新密码']`)"
 								@input="confirmOnInput"
 								maxlength="16"
 								autocomplete="new-password"
@@ -119,20 +113,16 @@
 								<template #left>
 									<svg-icon name="password_icon" size="18px" />
 								</template>
-
-								<template #right>
-									<span @click="showConfimPassword = !showConfimPassword">
-										<svg-icon :name="showConfimPassword ? 'eyes_on' : 'eyes'" size="18px" />
-									</span>
-								</template>
 							</FromInput>
 						</p>
-						<p v-show="VerifyError.confirmPassword" class="color_F1 fs_12 mt_2">{{ $t(`login['两次密码不一致']`) }}</p>
+						<p v-show="VerifyError.confirmPassword" class="color_F1 fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
 					</div>
 				</div>
-				<div class="mt_40 mb_12 text-center">
+				<div class="mt_64 mb_12 text-center">
 					<Button :disabled="disabledBtn" @click="onNextStep(currentStep)" class="mb_6">{{ currentStep === 2 ? "确定" : $t(`login['下一步']`) }}</Button>
-					<div style="text-decoration: underline" class="flex-center mt_12 color_F2 fs_12 curp" v-if="currentStep === 0" @click="Common.getSiteCustomerChannel">联系客服</div>
+					<div style="text-decoration: underline" class="flex-center mt_12 color_F2 fs_12 curp" v-if="currentStep === 0" @click="Common.getSiteCustomerChannel">
+						{{ $t(`login['联系客服']`) }}
+					</div>
 					<span style="text-decoration: underline" @click="changeVerifyType" v-if="currentStep === 1" class="color_Theme fs_12">{{ $t(`login['其他验证方式']`) }}</span>
 				</div>
 			</div>
@@ -333,7 +323,6 @@ const VerificationCodeInput = (verifyCode: string) => {
 const sendVerificationCode = async () => {
 	if (verifyType.value == verifyTypeEnum.email) {
 		if (!CommonRegex.userEmailRegex.test(payLoad.email)) {
-			showToast("邮箱格式不正确", 1500);
 			verificationBtn.value = true;
 		} else {
 			const params = {
@@ -353,7 +342,6 @@ const sendVerificationCode = async () => {
 	} else {
 		const userPhoneRegex = new RegExp(`^\\d{${minLength.value},${maxLength.value}}$`);
 		if (!userPhoneRegex.test(payLoad.phone)) {
-			showToast("手机号不正确", 1500);
 			verificationBtn2.value = true;
 			return;
 		} else {
@@ -383,7 +371,6 @@ const onSubmit = async (token: string) => {
 		modalStore.closeModal();
 		localStorage.setItem("userInfo", JSON.stringify(data));
 		UserStore.setUserInfo(data);
-		showToast("登录成功");
 	} else {
 		payLoad.userAccount = "";
 		showToast(message);

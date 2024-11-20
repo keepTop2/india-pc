@@ -212,7 +212,6 @@ watch(
 	}
 	.isBright {
 		position: relative;
-		background: var(--Bg-5) !important;
 		&::after {
 			content: "";
 			position: absolute;
@@ -221,6 +220,7 @@ watch(
 			border-radius: 8px;
 			border: 2px solid;
 			box-sizing: border-box;
+			border: 1px solid var(--Theme);
 		}
 		.label_one {
 			color: var(--Text-s) !important;
@@ -296,7 +296,7 @@ watch(
 				color: var(--Text-1);
 			}
 			:last-child {
-				color: var(--Text-a);
+				color: var(--Text-s);
 			}
 		}
 	}
@@ -326,7 +326,7 @@ watch(
 			}
 
 			.tournament-name {
-				color: var(--Text-a);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;
@@ -396,10 +396,14 @@ watch(
 				flex-basis: calc(50% - 5px); /* 每个元素占据50%，减去10px的间隔 */
 				font-size: 14px;
 				margin-bottom: 10px;
+				overflow: hidden;
+				&:hover {
+					background-color: var(--betselector-hover-bg);
+				}
 				.price {
 					position: relative;
 					display: inline-block;
-					color: var(--Text-a);
+					color: var(--Text-s);
 					display: flex;
 					align-items: center;
 					gap: 5px;

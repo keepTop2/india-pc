@@ -2,7 +2,7 @@
 	<div class="footer1 mt_40">
 		<div class="max-width">
 			<div class="footer1Item">
-				<p class="mb_19">合作商</p>
+				<p class="mb_19">{{ $t(`home['合作商']`) }}</p>
 				<div class="partnersIcon">
 					<slide>
 						<img v-lazy-load="item.iconFileUrl" alt="" v-for="(item, index) in partnerList" :key="index" />
@@ -11,14 +11,14 @@
 			</div>
 			<div class="line"></div>
 			<div class="footer1Item">
-				<p class="mb_19">支付方式</p>
+				<p class="mb_19">{{ $t(`home['支付方式']`) }}</p>
 				<slide class="paymentMethodIcon">
 					<img v-lazy-load="item.iconFileUrl" alt="" v-for="(item, index) in vendorList" :key="index" />
 				</slide>
 			</div>
 			<div class="line"></div>
 			<div class="footer1Item">
-				<p class="mb_19">负责任的游戏</p>
+				<p class="mb_19">{{ $t(`home['负责任的游戏']`) }}</p>
 				<div class="responsibleGameIcon">
 					<img src="../../../assets/common/responsibleGameIcon/image1.png" alt="" />
 					<img src="../../../assets/common/responsibleGameIcon/image2.png" alt="" />
@@ -37,26 +37,26 @@
 						<img v-lazy-load="Common.getThemeImgPath('logo2.png')" alt="" style="height: 126px" />
 					</div>
 					<div class="aboutUs_2">
-						<div class="fs_20">关于我们</div>
+						<div class="fs_20">{{ $t(`home['关于我们']`) }}</div>
 						<div class="fs_16 Text1">
-							<span>关于我们</span>
-							<span>帮助中心</span>
-							<span>隐私政策</span>
-							<span>规则与条款</span>
-							<span>联系我们</span>
+							<span @click="router.push('/helpCenter?id=1')">{{ $t(`home['关于我们']`) }}</span>
+							<span @click="router.push('/helpCenter')">{{ $t(`home['帮助中心']`) }}</span>
+							<span @click="router.push('/helpCenter?id=3')">{{ $t(`home['隐私政策']`) }}</span>
+							<span @click="router.push('/helpCenter?id=4')">{{ $t(`home['规则与条款']`) }}</span>
+							<span @click="router.push('/helpCenter?id=5')">{{ $t(`home['联系我们']`) }}</span>
 						</div>
 					</div>
 				</div>
 				<div class="aboutUs_2">
-					<div>app下载</div>
+					<div>{{ $t(`home['app下载']`) }}</div>
 					<div class="fs_16 Text1 flex-center">
 						<span class="flex-center mr_0" style="gap: 8px">
 							<svg-icon name="common-ios" size="18px"></svg-icon>
-							IOS下载</span
+							{{ $t(`home['IOS下载']`) }}</span
 						>
 						<span class="flex-center" style="gap: 8px">
 							<svg-icon name="common-andiriod" size="18px"></svg-icon>
-							Andiriod下载</span
+							{{ $t(`home['Andiriod下载']`) }}</span
 						>
 					</div>
 				</div>
@@ -73,6 +73,7 @@ import { onMounted, ref } from "vue";
 import { CommonApi } from "/@/api/common";
 import Common from "/@/utils/common";
 import { helpCenterApi } from "/@/api/helpCenter";
+import router from "/@/router";
 const partnerList: any = ref([]);
 const vendorList: any = ref([]);
 const helpValue: any = ref([]);
@@ -158,6 +159,7 @@ const getlist = () => {
 			margin-left: 10px;
 			span {
 				margin-right: 15px;
+				cursor: pointer;
 			}
 		}
 	}

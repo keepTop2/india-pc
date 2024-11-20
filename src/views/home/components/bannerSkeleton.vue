@@ -1,5 +1,5 @@
 <template>
-	<div class="skeleton-loader mb_10">
+	<div class="skeleton-loader mb_10 mt_20">
 		<div class="skeleton-image"></div>
 	</div>
 </template>
@@ -10,7 +10,7 @@
 .skeleton-loader {
 	max-width: 1308px;
 	margin: 0 auto;
-	height: 345.19px; /* Adjust based on your image size */
+	height: 204px; /* Adjust based on your image size */
 	background: var(--Bg-3);
 	border-radius: 12px;
 	overflow: hidden;

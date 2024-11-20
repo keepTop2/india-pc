@@ -162,7 +162,7 @@ const formatDate = (date: number | string) => {
 							background-color: transparent;
 
 							.dropdown-item-active {
-								background-color: var(--Bg-5) !important;
+								background-color: var(--Bg-2) !important;
 								color: var(--Text-s) !important;
 								font-family: "PingFang SC";
 								font-size: 14px;

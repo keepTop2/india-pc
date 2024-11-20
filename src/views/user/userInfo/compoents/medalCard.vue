@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="title flex_space-between Text_s">
-			<span>勋章</span>
+			<span>{{ $t(`user['勋章']`) }}</span>
 			<span class="flex_space-between">
 				<span class="canLightNum" v-if="canLightNum > 0">{{ canLightNum }}</span>
 				<svg-icon name="common-arrow_right" size="12px" @click="emit('update:modelValue', true)"></svg-icon>
@@ -22,7 +22,7 @@ import router from "/@/router";
 import { MedalApi } from "/@/api/medal";
 const props = defineProps({
 	medalList: [] as any,
-	canLightNum: Number,
+	canLightNum: Number as any,
 });
 const emit = defineEmits(["updateList", "update:modelValue"]);
 const handleClick = (item: any) => {

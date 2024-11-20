@@ -3,7 +3,7 @@
 		<div class="activityContentHeader" :style="{ background: `url(${Common.getThemeImgPath('activityContentHeader.png')}) no-repeat`, backgroundSize: '100% 100%' }">
 			<div class="flex-center">
 				<img :src="Common.getThemeImgPath('activityContentHeaderLeft.svg')" alt="" />
-				<span>活动规则</span>
+				<span>{{ $t(`activity['活动规则']`) }}</span>
 				<img :src="Common.getThemeImgPath('activityContentHeaderRight.svg')" alt="" />
 			</div>
 		</div>
