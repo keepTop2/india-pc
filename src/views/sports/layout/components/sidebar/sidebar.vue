@@ -210,7 +210,32 @@ const { VideoSource } = useVideo();
 	flex-direction: column;
 	border-radius: 8px;
 	overflow: hidden;
-
+	:deep(.scoreboard-header) {
+		color: var(--Text-s) !important;
+	}
+	:deep(.scoreboard-info) {
+		z-index: 1;
+		&::after {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: var(--Bg-3);
+			opacity: 0.6;
+			z-index: 0;
+		}
+		.home-team-info,
+		.away-team-info,
+		.score-info {
+			z-index: 1;
+			.home-team-name,
+			.away-team-name {
+				color: var(--Text-1) !important;
+			}
+		}
+	}
 	.markets-list {
 		flex: 1;
 		overflow: hidden;
@@ -300,7 +325,7 @@ const { VideoSource } = useVideo();
 				width: 100%;
 				height: 1px;
 				background-color: var(--Line-1);
-				box-shadow: 0px 1px 0px 0px var(--Line-1-bs);
+				box-shadow: 0px 1px 0px 0px var(--lineBg);
 			}
 
 			.events-header {
@@ -370,12 +395,20 @@ const { VideoSource } = useVideo();
 		}
 	}
 	:deep(.scoreboard-center) {
+		background-color: initial !important;
 		> .row.cell {
 			position: relative;
 			.label,
 			.value {
-				color: var(--Text-s) !important;
 				z-index: 1;
+				.name {
+					color: var(--Text-s) !important;
+				}
+			}
+			.value {
+				.num {
+					color: var(--Text-1) !important;
+				}
 			}
 			&::after {
 				content: "";

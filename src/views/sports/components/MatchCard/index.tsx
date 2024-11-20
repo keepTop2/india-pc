@@ -164,7 +164,10 @@ const Markets = ({ cardData: sportInfo, sportType }: { cardData: any; sportType:
 					let market = marketsMatchData(sportInfo.markets, item.type, item.selectionsLength);
 					if (item.selectionsLength == 3) {
 						// 针对足球  主和客 =》 主客和
-						// market
+						if (market.selections.length === 3) {
+							const [z, h, k] = market.selections;
+							market.selections = [z, k, h];
+						}
 					}
 					return market ? renderMarket(market, item.class) : <div className="market-column" key={item.class} />;
 				} else {
@@ -203,7 +206,7 @@ const MatchCard = defineComponent({
 			ShopCatControlStore.setShopCartType("league");
 		});
 		return () => (
-			<div className={`card-container card-container-${props.sportType}`}>
+			<div className={`card-container card-container-${props.sportType}${props.isExpanded ? " expanded" : ""}`}>
 				{/* 头部 联赛名称 盘口信息 */}
 				<Header
 					handleToggle={() => {

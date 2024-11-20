@@ -27,6 +27,7 @@ declare module 'vue' {
     DropDown: typeof import('./src/components/DropDown/DropDown.vue')['default']
     DropdownSelect: typeof import('./src/components/DropdownSelect/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElInput: typeof import('element-plus/es')['ElInput']

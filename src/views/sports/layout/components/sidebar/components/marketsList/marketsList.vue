@@ -5,6 +5,7 @@
 				<li @click="changeTab('all')" key="all" :class="{ selected: activeTab == 'all' }">{{ $t('sports["所有投注"]') }}</li>
 				<!-- <li v-for="(i, index) in markets" :key="i.betTypeName" @click="changeTab(i.betTypeName)" :class="{ selected: activeTab == i.betTypeName }">{{ i.betTypeName }}</li> -->
 			</ul>
+			<svg-icon v-if="markets.length" @click="handleExplan" :class="{ 'hide-childs': activeSelection.length === markets.length }" name="sports-arrow_big" />
 		</div>
 		<div class="selections_list" v-if="markets.length">
 			<Collapse v-model="activeSelection" :accordion="false">
@@ -234,19 +235,27 @@ const isbladder = (type: number) => {
 	return arr.includes(type);
 };
 
-/**
- * @description 监听activeSelection变化
- */
-watch(
-	() => activeSelection.value.length,
-	(newValue, oldValue) => {
-		if (newValue == 0 || newValue < oldValue) {
-			isFold.value = false;
-		}
-		if (newValue >= markets.value.length) {
-			isFold.value = true;
-		}
+const handleExplan = () => {
+	isFold.value = !isFold.value;
+	if (isFold.value) {
+		activeSelection.value = [];
+	} else {
+		activeSelection.value = markets.value.map((item: any) => item.betTypeName);
 	}
+};
+watch(
+	() => activeSelection.value,
+	(ad) => {
+		console.log(ad, "===f");
+	},
+	{ deep: true, immediate: true }
+);
+watch(
+	() => markets,
+	() => {
+		activeSelection.value = [];
+	},
+	{ deep: true, immediate: true }
 );
 </script>
 
@@ -269,6 +278,10 @@ watch(
 		background-color: var(--Bg-1);
 		border-radius: 0px 0px 8px 8px;
 		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 8px;
 		.tabs {
 			width: 100%;
 			height: 100%;
@@ -276,7 +289,6 @@ watch(
 			align-items: center;
 			gap: 10px;
 			margin: 0;
-			padding: 0px 8px;
 			li {
 				display: inline-block;
 				display: flex;
@@ -295,6 +307,17 @@ watch(
 				color: var(--Text-a);
 				background-color: var(--Theme);
 				border: 1px solid var(--Theme);
+			}
+		}
+		> svg {
+			width: 20px;
+			height: 20px;
+			color: var(--Icon-1);
+			transform: rotate(0deg);
+			transition: transform 0.3s ease;
+			cursor: pointer;
+			&.hide-childs {
+				transform: rotate(180deg);
 			}
 		}
 	}
@@ -387,7 +410,10 @@ watch(
 				position: relative;
 				width: 100%;
 				height: 34px;
-
+				overflow: hidden;
+				&:hover {
+					background-color: var(--betselector-hover-bg);
+				}
 				background-color: var(--Bg-3);
 				border-radius: 4px;
 				cursor: pointer;
@@ -428,7 +454,22 @@ watch(
 			}
 
 			.isBright {
-				background: var(--Bg-5) !important;
+				position: relative;
+				&::after {
+					content: "";
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					border-radius: 8px;
+					border: 2px solid;
+					box-sizing: border-box;
+					border: 1px solid var(--Theme);
+					left: 0;
+					top: 0;
+				}
+				.label {
+					color: var(--Text-a) !important;
+				}
 				.label_one {
 					color: var(--Text-s) !important;
 				}

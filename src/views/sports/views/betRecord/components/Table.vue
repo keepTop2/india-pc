@@ -237,6 +237,7 @@ function formatDateTime(dateTimeStr: Date | string): string {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		margin-top: 160px;
 	}
 
 	// 头部字体样式调整

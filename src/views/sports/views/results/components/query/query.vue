@@ -6,8 +6,8 @@
 		<div class="condition">
 			<span>{{ $t(`matchResult['体育']`) }}</span>
 			<Select :options="ballOptions" v-model="modelValue.ballType" />
-			<span>{{ $t(`matchResult['日期']`) }}</span>
-			<el-dropdown ref="selectRef" trigger="click" :teleported="false" placement="bottom-end" popper-class="popperClass" @visible-change="visibleChange" @command="onCommand">
+			<span>{{ $t(`matchResult['日期']`) }} </span>
+			<!-- <el-dropdown ref="selectRef" trigger="click" :teleported="false" placement="bottom-end" popper-class="popperClass" @visible-change="visibleChange" @command="onCommand">
 				<div class="el-dropdown-content">
 					<span>{{ startDate }} - {{ endDate }}</span>
 					<svg-icon class="searchIcon" name="common-arrow_down" size="14" />
@@ -23,14 +23,23 @@
 						</template>
 					</VDatePicker>
 				</template>
-			</el-dropdown>
-
+			</el-dropdown> -->
+			<div class="time formItem pl_14 pr_14" @click="showDatePicker = true" style="position: relative">
+				<div class="flex_space-between curp">
+					<span>{{ dayjs(range.start).format("YYYY/MM/DD") }} - {{ dayjs(range.end).format("YYYY/MM/DD") }}</span>
+					<svg-icon name="common-arrow_down" width="12px" height="8px"></svg-icon>
+				</div>
+				<DatePicker :range="range" v-model="showDatePicker" @updateRange="updateRange" />
+			</div>
 			<span>{{ $t(`matchResult['联赛']`) }}</span>
 			<el-input v-model="modelValue.league" :placeholder="$t(`matchResult['请输入关键字搜索']`)" />
 
 			<span>{{ $t(`matchResult['赛事']`) }}</span>
 			<el-input v-model="modelValue.competition" :placeholder="$t(`matchResult['请输入']`)" />
 
+			<!-- <div @click="() => (modelValue.isLive = !modelValue.isLive)" class="running-ball" :class="{ actived: modelValue.isLive }">
+				{{ $t(`matchResult['滚球']`) }}
+			</div> -->
 			<!-- <el-checkbox v-model="modelValue.isLive">{{ $t(`matchResult['滚球']`) }}</el-checkbox> -->
 		</div>
 		<el-button class="query-button" @click="handleSearch" :disabled="loading">
@@ -82,10 +91,14 @@ const handleSearch = () => emits("search");
 /**
  * @description 监听 range 变化
  */
-watch(range, () => {
-	console.log(range.value, "=range", props.modelValue);
-	emits("updateModel", { ...props.modelValue, date: [range.value.start, range.value.end] });
-});
+watch(
+	range,
+	() => {
+		console.log(range.value, "=range", props.modelValue);
+		emits("updateModel", { ...props.modelValue, date: [range.value.start, range.value.end] });
+	},
+	{ deep: true }
+);
 
 /**
  * @description 处理下拉菜单命令
@@ -125,6 +138,11 @@ const formatDate = (date: any) => {
 	console.log(date, "=====date");
 	return date ? Common.getYMD(date, "YYYY/MM/DD") : "";
 };
+
+const updateRange = (value: any) => {
+	range.value.start = value[0];
+	range.value.end = value[1];
+};
 </script>
 
 <style scoped lang="scss">
@@ -141,6 +159,7 @@ const formatDate = (date: any) => {
 	:deep(.el-dropdown) {
 		background: var(--Bg-2);
 		height: 30px;
+		border-radius: 4px;
 		.el-dropdown-content {
 			width: 230px;
 			height: 100%;
@@ -262,6 +281,30 @@ const formatDate = (date: any) => {
 		& > * {
 			flex-shrink: 0;
 		}
+		.running-ball {
+			position: relative;
+			color: var(--Text-1);
+			font-size: 12px;
+			margin-left: 25px;
+			cursor: pointer;
+			&.actived {
+				&::after {
+					background: url("/@/assets/zh-CN/sports/select-running-ball.png") 100% 100%;
+					border-width: 0;
+				}
+			}
+			&::after {
+				position: absolute;
+				content: "";
+				left: -26px;
+				border: 1px solid var(--Line-2);
+				border-radius: 2px;
+				top: 50%;
+				transform: translateY(-50%);
+				height: 18px;
+				width: 18px;
+			}
+		}
 	}
 
 	.query-button {
@@ -296,8 +339,9 @@ const formatDate = (date: any) => {
 	}
 
 	.select-date {
-		width: 110px;
+		width: 120px;
 		height: 30px;
+		border-radius: 4px;
 	}
 
 	.el-input__wrapper {
@@ -334,6 +378,18 @@ const formatDate = (date: any) => {
 			color: var(--Text-1);
 			font-weight: normal;
 		}
+	}
+}
+.formItem {
+	height: 30px;
+	background: var(--Bg-2);
+	color: var(--Text-s);
+	line-height: 30px;
+	min-width: 140px;
+	border-radius: 6px;
+	width: 211px;
+	:deep(.date-picker) {
+		z-index: 9;
 	}
 }
 </style>
