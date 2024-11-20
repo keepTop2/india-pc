@@ -22,7 +22,7 @@
 						<p v-show="userVerifyTypeVerifyError" class="Wran_text fs_12 mt_2">{{ $t(`security_center['邮箱格式不正确']`) }}</p>
 					</div>
 					<div>
-						<p class="Text_s mt_16">{{ $t(`security_center['验证码']`) }}</p>
+						<p class="Text_s mt_16 mb_8">{{ $t(`security_center['验证码']`) }}</p>
 						<VerificationCode
 							@VerificationCodeInput="VerificationCodeInput"
 							@sendVerificationCode="sendVerificationCode"
@@ -41,7 +41,7 @@
 					<div class="Text_s mb_8">{{ $t(`security_center['原电子邮箱']`) }}</div>
 					<div class="Text1">{{ $t(`security_center['验证码将发送至电子邮箱：']`) }}{{ Common.maskEmail(userStore.getUserGlobalSetInfo.email) }}</div>
 					<div class="Text1">{{ $t(`security_center['有效时间：10分钟']`) }}</div>
-					<div class="Text_s mt_16 mb_2">{{ $t(`security_center['验证码']`) }}</div>
+					<div class="Text_s mt_16 mb_8">{{ $t(`security_center['验证码']`) }}</div>
 					<VerificationCode
 						@VerificationCodeInput="VerificationCodeInput"
 						@sendVerificationCode="sendVerificationCode"
@@ -56,7 +56,7 @@
 					</p>
 				</div>
 				<div class="mt_32 mb_12">
-					<Button disabled="disabledBtn" @click="onSubmit">
+					<Button :disabled="disabledBtn" @click="onSubmit">
 						{{ isCreate ? $t(`security_center['确定']`) : $t(`security_center['下一步']`) }}
 					</Button>
 				</div>

@@ -1,7 +1,7 @@
 <!-- src/components/RegisterForm.vue -->
 <template>
 	<div class="loginWrapper">
-		<div class="title">语言切换</div>
+		<div class="title">{{ $t(`login['语言切换']`) }}</div>
 
 		<div class="langList">
 			<div v-for="item in userStore.getLangList" class="flex_space-between langItem" :class="userStore.getLang == item.code ? 'active' : ''" @click="setLang(item.code)">
@@ -18,19 +18,11 @@
 <script setup lang="ts">
 import { useUserStore } from "/@/stores/modules/user";
 import { LangEnum } from "/@/enum/appConfigEnum";
-import { computed, ref } from "vue";
 const userStore = useUserStore();
-const searchQuery = ref("");
 const setLang = (lang: LangEnum) => {
 	userStore.setLangs(lang);
 	location.reload();
 };
-const filteredResults = computed(() => {
-	if (!searchQuery.value) {
-		return []; // 如果搜索框为空，则显示全部
-	}
-	return userStore.getLangList.items.filter((item: any) => item.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
-});
 </script>
 
 <style lang="scss" scoped>
@@ -94,8 +86,12 @@ const filteredResults = computed(() => {
 			margin-right: 4px;
 		}
 	}
+
 	.langItem:hover {
 		border-radius: 4px;
+		background: var(--Bg-4);
+	}
+	.langItem.active {
 		background: var(--Bg-3);
 	}
 	.active.langItem {

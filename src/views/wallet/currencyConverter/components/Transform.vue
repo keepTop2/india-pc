@@ -14,7 +14,7 @@
 					<span>{{ transformInfo.platCurrency }}</span>
 				</div>
 				<div class="number">
-					<el-input v-model.number="formValue" type="number" @input="handleInput"></el-input>
+					<el-input v-model.number="formValue" type="number" :min="0" @input="handleInput" @keypress="validateNumber"></el-input>
 					<div @click="formValue = transformInfo.platAvailableAmount">全部</div>
 				</div>
 				<div class="line"></div>
@@ -43,7 +43,7 @@
 				<div class="rate">汇率：{{ transformInfo.transferRate }}</div>
 			</div>
 		</div>
-		<el-button class="transform-button" @click="handleTransform" :disabled="!formValue" color="#ff284b">一键转换</el-button>
+		<el-button class="transform-button" @click="handleTransform" :disabled="!!!formValue" color="#ff284b">一键转换</el-button>
 	</div>
 </template>
 
@@ -75,18 +75,31 @@ interface TransformInfo {
 
 const transformInfo = ref<Partial<TransformInfo>>({});
 
+// 添加数字验证函数
+const validateNumber = (e: KeyboardEvent) => {
+	// 阻止负号输入
+	if (e.key === "-") {
+		e.preventDefault();
+		return false;
+	}
+};
+
 // 添加输入处理函数
 const handleInput = (value: string) => {
 	if (!value) return;
 
+	// 确保值为正数
+	let newValue = value.replace(/-/g, "");
+	formValue.value = newValue;
+
 	// 限制最大9位数，不包含小数点
-	const valueWithoutDot = value.replace(/\./g, "");
+	const valueWithoutDot = newValue.replace(/\./g, "");
 	if (valueWithoutDot.length > 9) {
-		formValue.value = value.slice(0, value.length - 1);
+		formValue.value = newValue.slice(0, newValue.length - 1);
 	}
 
 	// 转换为数字进行比较
-	const numValue = Number(value);
+	const numValue = Number(newValue);
 	if (numValue > transformInfo.value?.platAvailableAmount) {
 		formValue.value = String(transformInfo.value?.platAvailableAmount);
 		ElMessage.warning("输入金额不能大于可用余额");
@@ -96,7 +109,7 @@ const handleInput = (value: string) => {
 // 转换
 const handleTransform = async () => {
 	const res = await walletApi.transferAmount({ transferAmount: formValue.value });
-	if (res.code !== 10000) return ElMessage.error(res.message);
+	// if (res.code !== 10000) return ElMessage.error(res.message);
 	ElMessage.success("转账成功");
 	formValue.value = "";
 	await getUserPlatformBalance();
@@ -128,8 +141,8 @@ getUserPlatformBalance();
 	.card-style {
 		width: 100%; /* 确保元素宽度为100% */
 		height: 100%;
-		padding: 18px 32px;	
-		background: var(--Bg);  
+		padding: 18px 32px;
+		background: var(--Bg);
 		border-radius: 16px;
 		position: relative;
 		//padding-bottom: 0;
@@ -225,17 +238,16 @@ getUserPlatformBalance();
 	.form {
 		/* background: url("../images/form.png") no-repeat;
 		background-size: 100% 100%; */
-	
 
-		&::after{
-			$height:64px;
-			content:"";
+		&::after {
+			$height: 64px;
+			content: "";
 			display: block;
 			position: absolute;
 			width: $height;
 			height: $height;
 			border-radius: $height;
-			background: var(--Bg-1); 
+			background: var(--Bg-1);
 			left: 50%;
 			transform: translateX(-50%);
 			z-index: 1;
@@ -243,15 +255,15 @@ getUserPlatformBalance();
 		}
 	}
 
-	.icon { 
+	.icon {
 		position: absolute;
 		left: 50%;
 		top: 50.2%;
-		transform: translate(-50%, -50%);  
+		transform: translate(-50%, -50%);
 		z-index: 2;
 	}
 
-	.to { 
+	.to {
 		margin-top: 10px;
 	}
 }
@@ -266,5 +278,12 @@ getUserPlatformBalance();
 	background: var(--Theme);
 	color: var(--Text-a);
 	font-size: 16px;
+
+	// 添加这些样式来禁用hover效果
+	&:hover {
+		background: var(--Theme) !important; // 使用 !important 确保覆盖 element-plus 的默认样式
+		opacity: 1 !important;
+		border-color: var(--Theme) !important;
+	}
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<div class="dropdown-select" ref="dropdown">
-		<input class="trigger fs_14 common_input" @input="onInput" placeholder="请输入手机号" />
+		<FromInput class="trigger fs_14 common_input pl_65" @input="onInput" :placeholder="$t(`login['请输入手机号']`)" v-model="value" />
 		<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''" class="selectedOption curp flex_space-between fs_14" @click="toggleDropdown">
 			<span class="fs_14">+{{ selectedOptionLabel }}</span>
 			<svg-icon name="common-arrow_down_on" size="14px" fill="#fff" class="ml_10" />
@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
-
+const value = ref("");
 // 定义选项的接口
 interface Option {
 	areaCode: string; // 区号

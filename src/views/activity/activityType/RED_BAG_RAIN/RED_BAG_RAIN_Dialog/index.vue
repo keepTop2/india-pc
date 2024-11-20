@@ -8,7 +8,7 @@
 			<div class="dialog-content"><slot></slot></div>
 			<div class="dialog-footer">
 				<button class="common_btn" @click="close">
-					<slot name="footer">确认</slot>
+					<slot name="footer">{{ text1 }}</slot>
 				</button>
 			</div>
 		</div>
@@ -18,7 +18,9 @@
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
 import { defineProps, defineEmits } from "vue";
-
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
+const text1 = $.t(`activity['确定']`);
 // Props and emits setup
 const props = defineProps({
 	modelValue: Boolean, // The `modelValue` prop for v-model

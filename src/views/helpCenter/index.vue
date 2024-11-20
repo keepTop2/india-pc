@@ -1,7 +1,7 @@
 <template>
 	<div class="max-width pl_10 pr_10">
 		<div class="title mt_15 mb_15">
-			<span class="fs_20 Text_s fw_500"> 帮助中心 </span>
+			<span class="fs_20 Text_s fw_500"> {{ $t(`home['帮助中心']`) }} </span>
 		</div>
 		<div class="wrapper">
 			<div class="tabs">
@@ -22,12 +22,17 @@
 					</div>
 				</div>
 				<div class="line"></div>
-				<div class="mt_16 valueBox">
+				<div class="mt_16 valueBox" v-if="subClassList[0]?.id">
 					<div class="card mb_32" v-for="item in subClassList[activeTab]?.subset">
 						<div class="title">{{ item.name }}</div>
 						<div class="value Text1">
 							{{ item.value }}
 						</div>
+					</div>
+				</div>
+				<div class="mt_16 valueBox" v-else>
+					<div class="card mb_32">
+						<div class="value Text1" v-html="subClassList[0]?.value"></div>
 					</div>
 				</div>
 			</div>
@@ -45,7 +50,7 @@ const activeIndex: any = ref(0);
 const subindex: any = ref(0);
 const activeTab = ref(0);
 const contentLoading = ref(false);
-const helpData = ref([]);
+
 onMounted(() => {
 	getClassOne();
 });
@@ -55,7 +60,12 @@ const setActivePanel = (index: number) => {
 		return;
 	} else {
 		activeIndex.value = index;
-		subindex.value = 0;
+		if (classList.value[activeIndex.value].subset?.length) {
+			subindex.value = 0;
+		} else {
+			subindex.value = null;
+		}
+
 		getContent();
 	}
 };
@@ -71,28 +81,28 @@ const getClassOne = () => {
 		classList.value = res.data;
 		getContent();
 	});
-	helpCenterApi
-		.getHelpCenterConfigList()
-		.then((res) => {
-			helpData.value = res.data;
-		})
-		.finally(() => {});
 };
 const getContent = () => {
-	contentLoading.value = true;
-	helpCenterApi
-		.showTutorialTurnLayer({
-			categoryId: classList.value[activeIndex.value].id,
-			classId: classList.value[activeIndex.value].subset[subindex.value]?.id,
-			categoryName: classList.value[activeIndex.value]?.name,
-			className: classList.value[activeIndex.value].subset[subindex.value]?.name,
-		})
-		.then((res) => {
-			subClassList.value = res.data;
-		})
-		.finally(() => {
-			contentLoading.value = false;
-		});
+	if (!classList.value[activeIndex.value].id) {
+		subClassList.value = [classList.value[activeIndex.value]];
+	}
+	if (classList.value[activeIndex.value].subset?.length > 0) {
+		contentLoading.value = true;
+		helpCenterApi
+			.showTutorialTurnLayer({
+				categoryId: classList.value[activeIndex.value].id,
+				classId: classList.value[activeIndex.value].subset[subindex.value]?.id,
+				categoryName: classList.value[activeIndex.value]?.name,
+				className: classList.value[activeIndex.value].subset[subindex.value]?.name,
+			})
+			.then((res) => {
+				subClassList.value = res.data;
+			})
+			.finally(() => {
+				contentLoading.value = false;
+			});
+	} else {
+	}
 };
 </script>
 
@@ -150,6 +160,9 @@ const getContent = () => {
 	.valueBox {
 		overflow-y: auto;
 		height: calc(100vh - 210px);
+		:deep(img) {
+			max-width: 100%;
+		}
 	}
 }
 </style>

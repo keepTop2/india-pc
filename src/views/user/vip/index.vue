@@ -2,20 +2,20 @@
 	<div class="vipWrapper" v-ok-loading="loading" :style="{ background: `url(${Common.getThemeImgPath('vip_bg.png')}) no-repeat 100% 100%` }">
 		<div class="Header">
 			<div class="title">
-				{{ "VIP俱乐部" }}
+				{{ $t(`user['VIP俱乐部']`) }}
 			</div>
 			<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="./image/close_icon.png" alt="" /></span>
 		</div>
 
 		<div class="content">
 			<div class="card1">
-				<div class="fs_14">通过升级获得丰厚礼金和专属福利！加入我们精英俱乐部， 享受OKsport提供的最佳游戏体验。</div>
-				<span class="goToVipRule curp" @click="useModalStore().openModal('vipHierarchy')">查看VIP等级制度</span>
+				<div class="fs_14">{{ $t(`user['通过升级获得丰厚礼金和专属福利！加入我们精英俱乐部， 享受OKsport提供的最佳游戏体验。']`) }}</div>
+				<span class="goToVipRule curp" @click="useModalStore().openModal('vipHierarchy')"> {{ $t(`user['查看VIP等级制度']`) }}</span>
 			</div>
 			<vipCard :vipInfo="vipInfo"></vipCard>
 			<div class="title mt_30">
 				<img src="./image/titleLeft.png" alt="" />
-				VIP福利
+				{{ $t(`user['VIP福利']`) }}
 				<img src="./image/titleRight.png" alt="" />
 			</div>
 			<div class="vipRank">
@@ -34,7 +34,7 @@
 			</div>
 			<awardCardList :data="vipRankList[currentVipIndex]" :vipRankCode="vipRankList[currentVipIndex]?.vipRankCode"></awardCardList>
 			<div class="card1 mt_30">
-				<span class="goToVipRule curp" @click="goToVipBenefits">详细了解 OKsport的VIP福利系统</span>
+				<span class="goToVipRule curp" @click="goToVipBenefits"> {{ $t(`user['详细了解 OKsport的VIP福利系统']`) }}</span>
 			</div>
 		</div>
 	</div>

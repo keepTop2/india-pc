@@ -21,14 +21,14 @@
 						</template>
 						<template v-slot:message>
 							<div style="text-align: left" class="Text1">
-								<p>·7天体育赌注：</p>
+								<p>·{{ $t(`user['7天体育赌注']`) }}：</p>
 								<p v-for="i in data.vipWeekSportVOS">
-									&nbsp;&nbsp;-投注{{ useUserStore().getUserInfo.platCurrencySymbol }}&nbsp;{{ i.weekSportMin }}
-									{{ i.weekSportMax > 0 ? `至${useUserStore().getUserInfo.platCurrencySymbol} ${i.weekSportMax}` : "或以上" }} =
+									&nbsp;&nbsp;-{{ $t(`user['投注']`) }}{{ useUserStore().getUserInfo.platCurrencySymbol }}&nbsp;{{ i.weekSportMin }}
+									{{ i.weekSportMax > 0 ? $t(`user['至']`) + `${useUserStore().getUserInfo.platCurrencySymbol} ${i.weekSportMax}` : $t(`user['或以上']`) }} =
 									{{ useUserStore().getUserInfo.platCurrencySymbol }}&nbsp;{{ i.weekSportBonus }}
 								</p>
-								<p>&nbsp;&nbsp;-流水统计时间：周六00:00时～周五 23:59时（7天）</p>
-								<p>·礼金发放时间：每周六</p>
+								<p>&nbsp;&nbsp;-{{ $t(`user['流水统计时间:周六00:00时~周五 23:59时(7天)']`) }}</p>
+								<p>·{{ $t(`user['礼金发放时间：每周六']`) }}</p>
 							</div>
 						</template>
 					</ClickTooltip>

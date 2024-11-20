@@ -9,7 +9,7 @@
 				<div>
 					<!-- 旧密码 -->
 					<div>
-						<p class="Text_s mb_2">{{ $t(`security_center['旧密码']`) }}</p>
+						<p class="Text_s mb_8">{{ $t(`security_center['旧密码']`) }}</p>
 						<p class="common_password">
 							<FromInput
 								:type="showOldPassword ? 'text' : 'password'"
@@ -29,7 +29,7 @@
 					</div>
 					<!-- 新密码 -->
 					<div>
-						<p class="Text_s mb_2 mt_16">{{ $t(`security_center['新密码']`) }}</p>
+						<p class="Text_s mb_8 mt_16">{{ $t(`security_center['新密码']`) }}</p>
 						<p class="common_password">
 							<FromInput
 								:type="showNewPassword ? 'text' : 'password'"
@@ -48,7 +48,7 @@
 					</div>
 					<!-- 确认密码 -->
 					<div>
-						<p class="Text_s mb_2 mt_16">{{ $t(`security_center['确认密码']`) }}</p>
+						<p class="Text_s mb_8 mt_16">{{ $t(`security_center['确认密码']`) }}</p>
 						<p class="common_password">
 							<FromInput
 								:type="showConfirmPassword ? 'text' : 'password'"

@@ -17,12 +17,12 @@
 				<div class="task_lottery mt_15">
 					<div class="task_lottery_item" @click="showTask" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('task_bg.png')})` : '', marginRight: '5px' }">
 						<img :src="Common.getCommonImgPath('task_icon.png')" alt="" />
-						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['任务']`) }} </span>
+						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`home['任务']`) }} </span>
 					</div>
 
 					<div class="task_lottery_item" @click="showSpin" :style="{ backgroundImage: !collapse ? `url(${Common.getCommonImgPath('lottery_bg.png')})` : '' }">
 						<img :src="Common.getCommonImgPath('lottery_icon.png')" alt="" />
-						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`layout['layout1']['转盘']`) }}</span>
+						<span class="fz_14 ml_3 task_lottery_item_text1">{{ $t(`home['转盘']`) }}</span>
 					</div>
 				</div>
 				<!-- 菜单 -->
@@ -36,12 +36,12 @@
 							<!-- 白天 -->
 							<div class="dayOrNight_item" :class="{ activeBg: ThemesStore.themeName == 'light' }" @click="onSetTheme('light')">
 								<svg-icon name="light_icon" size="17px" class="mr_8" />
-								<span> {{ $t(`layout['layout1']['白天']`) }}</span>
+								<span> {{ $t(`home['白天']`) }}</span>
 							</div>
 							<!-- 黑夜 -->
 							<div class="dayOrNight_item" :class="ThemesStore.themeName == 'dark' ? 'darkbg1' : 'darkbg2'" @click="onSetTheme('dark')">
 								<svg-icon name="dark_icon" size="17px" class="mr_8" />
-								<span> {{ $t(`layout['layout1']['黑夜']`) }}</span>
+								<span> {{ $t(`home['黑夜']`) }}</span>
 							</div>
 						</div>
 
@@ -60,11 +60,11 @@
 				</div>
 			</div>
 		</div>
-		<activityDialog v-model="showCommonDialog" title="温馨提示" :confirm="confirmDialog">
+		<activityDialog v-model="showCommonDialog" :title="$t(`activity['温馨提示']`)" :confirm="confirmDialog">
 			{{ dialogInfo.message }}
 		</activityDialog>
-		<activityDialog v-model="showNeedLogin" title="温馨提示" :confirm="confirmDialog" :nofooter="false">
-			<div>您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册</div>
+		<activityDialog v-model="showNeedLogin" :title="$t(`activity['温馨提示']`)" :confirm="confirmDialog" :nofooter="false">
+			<div>{{ $t(`activity['您的账号暂未登录无法参与活动， 如已有账号请登录，如还未有账号 请前往注册']`) }}</div>
 		</activityDialog>
 	</div>
 </template>
@@ -88,6 +88,8 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "/@/stores/modules/user";
 import { useActivityStore } from "/@/stores/modules/activity";
 import showToast from "/@/hooks/useToast";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const activityStore = useActivityStore();
 const router = useRouter();
 const dialogInfo: any = ref({});
@@ -110,7 +112,7 @@ const showSpin = () => {
 			modalStore.openModal("SPIN_WHEEL");
 		});
 	} else {
-		showToast("敬请期待");
+		showToast($.t(`home['敬请期待']`));
 	}
 };
 const confirmDialog = () => {

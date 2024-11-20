@@ -2,7 +2,7 @@
 	<div class="vipWrapper" v-ok-loading="loading">
 		<div class="Header">
 			<div class="title">
-				{{ "VIP等级制度" }}
+				{{ $t(`user['VIP等级制度']`) }}
 			</div>
 			<span class="closeIcon curp" @click="useModalStore().closeModal()"><img src="./image/close_icon.png" alt="" /></span>
 		</div>
