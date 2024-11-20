@@ -1,6 +1,6 @@
 <template>
 	<div class="message" @click="readMessage">
-		<div class="time">{{ item.createdTime }}</div>
+		<div class="time">{{ Common.getYMDHms(item.createdTime) }}</div>
 		<div class="title" :class="!isUnfold && 'hidden-title'" v-html="item.noticeTitleI18nCode"></div>
 		<div class="content" :class="!isUnfold && 'hidden-content'" v-html="item.messageContentI18nCode"></div>
 		<div class="handle">
@@ -17,6 +17,7 @@
 import { ref } from "vue";
 import { MessageApi } from "/@/api/message";
 import { ElMessage, ElMessageBox } from "element-plus";
+import Common from "/@/utils/common";
 
 interface Props {
 	item: {
@@ -100,14 +101,14 @@ const handleDelete = async () => {
 			align-items: center;
 			gap: 5px;
 			color: var(--Theme);
-			text-transform: uppercase; 
+			text-transform: uppercase;
 			text-underline-offset: 3px;
 			font-size: 14px;
 			user-select: none;
 
 			.icon {
 				transition: 0.2s;
-				fill: var(--Bg-5); 	 
+				fill: var(--Bg-5);
 			}
 
 			.fold {

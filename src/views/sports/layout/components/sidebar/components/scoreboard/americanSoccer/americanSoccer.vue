@@ -8,9 +8,7 @@
 						<div class="value">
 							<!-- 渲染前两节得分 -->
 							<template v-for="(period, index) in gameSession" :key="index">
-								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">
-									{{ period }}
-								</div>
+								<div class="num" :class="{ F2: isCurrentPeriod(index + 1) }">Q{{ period }}</div>
 							</template>
 
 							<!-- 总分 -->

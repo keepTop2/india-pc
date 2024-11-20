@@ -78,7 +78,7 @@ const onCommand = (e: any) => {
 		}
 
 		.popperClass {
-			width: 160px;
+			width: 120px;
 			background-color: var(--Bg-1);
 			box-shadow: var(--popoverShadow);
 
@@ -92,14 +92,14 @@ const onCommand = (e: any) => {
 
 					.el-dropdown__list {
 						margin: 0px !important;
-						padding: 8px 12px !important;
+						// padding: 8px 12px !important;
 
 						.el-dropdown-menu {
 							padding: 0px;
 							background-color: transparent;
 
 							.dropdown-item-active {
-								background-color: var(--Bg-5) !important;
+								background-color: var(--Bg-2) !important;
 								color: var(--Text-s) !important;
 								font-family: "PingFang SC";
 								font-size: 14px;
