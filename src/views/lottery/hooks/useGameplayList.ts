@@ -1,9 +1,9 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+import { useFallBack } from "/@/views/lottery/utils/useFallback";
 import { lotteryApi } from "/@/api/lottery";
 import { useUserStore } from "/@/stores/modules/user";
 import { DEFAULT_LANG, isSmp, langMaps } from "/@/views/lottery/constant/index";
-import { useFallBack } from "/@/views/lottery/hooks/useFallback";
 import { type GameplayList } from "/@/views/lottery/types/index";
 import { LotteryPlayGroup } from "/@/views/lottery/types/lottery";
 import { mergeGameplayList } from "/@/views/lottery/utils/mergeGameplayList";

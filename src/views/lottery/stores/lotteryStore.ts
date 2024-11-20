@@ -1,10 +1,10 @@
 import { defineStore, storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import { useFallBack } from "/@/views/lottery/utils/useFallback";
 import { lotteryApi } from "/@/api/lottery";
 import { useUserStore } from "/@/stores/modules/user";
 import { DEFAULT_LANG, langMaps, SELECT_BALL, SELECT_BALL_LINE } from "/@/views/lottery/constant/index";
-import { useFallBack } from "/@/views/lottery/hooks/useFallback";
 import { type GameplayItem, type LotteryDetail, type OddsItem, type OddsList } from "/@/views/lottery/types/index";
 
 /**
