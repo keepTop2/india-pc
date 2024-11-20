@@ -3,7 +3,8 @@ import { ElDialog } from "element-plus";
 import useHotRecommend from "./HotRecommend";
 import useSearchContent from "./SearchContent";
 import SvgIcon from "/@/components/svgIcon/index.vue";
-import { useRoute } from "vue-router";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 
 import "./style/index.scss";
 
@@ -45,7 +46,7 @@ export default () => {
 							<div class="search-header">
 								{/* 标题 */}
 								<h4 id={titleId} className={titleClass}>
-									搜索
+									{$.t(`sports["搜索"]`)}
 								</h4>
 								{/* 关闭按钮 */}
 								<div classname="common-close">

@@ -6,7 +6,8 @@ import SvgIcon from "/@/components/svgIcon/index.vue";
 import { SearchResultType } from "./interface/index";
 import { useRoute } from "vue-router";
 import EventCard from "./EventCard";
-
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 interface SearchContentType {
 	SearchContent: ReturnType<typeof defineComponent>;
 	SInput: ReturnType<typeof defineComponent>;
@@ -70,7 +71,7 @@ export default (): SearchContentType => {
 					handleSearch();
 				}}
 				v-model={state.inputValue}
-				placeholder="请输入赛事名称/球队名"
+				placeholder={$.t(`sports["请输入赛事名称/球队名"]`)}
 				prefix-icon={<SvgIcon name="sports-search" size={20} />}
 			/>
 		</div>
@@ -91,7 +92,7 @@ export default (): SearchContentType => {
 			{state.inputValue.trim() && !state.results.length && !state.loading ? (
 				<div className="empty">
 					<SvgIcon name="sports-empty" width={142} height={120} />
-					<p>哎呀！还没有数据！</p>
+					<p>{$.t(`sports["哎呀！还没有数据！"]`)}</p>
 				</div>
 			) : (
 				<></>

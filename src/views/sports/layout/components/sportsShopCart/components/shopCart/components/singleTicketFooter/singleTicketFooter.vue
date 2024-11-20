@@ -21,6 +21,8 @@ import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
 import { getBetOrderId, getIndexInfo } from "/@/views/sports/utils/commonFn";
 import { useUserStore } from "/@/stores/modules/user";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();
 let stake = computed(() => shopCartPubSub.betValueState.singleTicketBetValue);
@@ -34,15 +36,15 @@ const onBet = () => {
 		return;
 	}
 	if (stake.value == "") {
-		showToast("请输入投注金额");
+		showToast($.t(`sports['请输入投注金额']`));
 		return;
 	}
 	if (Number(stake.value) < Number(sportsBetInfo.singleTicketInfo.minBet)) {
-		showToast("投注金额未达到最低限额");
+		showToast($.t(`sports['投注金额未达到最低限额']`));
 		return;
 	}
 	if (Number(stake.value) > Number(sportsBetInfo.balance)) {
-		showToast("余额不足，请先充值");
+		showToast($.t(`sports['余额不足，请先充值']`));
 		return;
 	}
 	// 单关投注
@@ -74,10 +76,10 @@ const placeBet = async () => {
 			// 刷新余额
 			await useUserStore().initUserInfo();
 		} else {
-			showToast(`投注失败！`);
+			showToast($.t(`sports['投注失败']`));
 		}
 	} catch {
-		showToast(`投注失败！`);
+		showToast($.t(`sports['投注失败']`));
 	}
 	unlickable.value = false;
 };

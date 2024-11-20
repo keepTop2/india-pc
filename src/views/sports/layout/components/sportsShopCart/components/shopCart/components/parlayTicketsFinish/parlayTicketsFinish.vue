@@ -18,7 +18,7 @@
 						<div class="cell">
 							<div class="left">
 								<span class="title">{{ SportsCommon.comboTypeNameMaps[item.comboType] }}</span>
-								<span>注单已确认</span>
+								<span>{{ $.t(`sports["注单已确认"]`) }}</span>
 							</div>
 							<div class="right">
 								<span class="unitPrice">{{ Common.formatFloat(item.stake) }} </span>
@@ -28,7 +28,7 @@
 						<!-- 可赢价格 -->
 						<div class="cell">
 							<div class="left">
-								<span>预计可赢:</span>
+								<span>{{ $.t(`sports["预计可赢"]`) }}:</span>
 								<span class="main-currency"
 									>{{ getParlayTicketsWinningAmount(item) }}
 									<!-- {{ UserStore.getUserInfo.mainCurrency }} -->
@@ -36,7 +36,7 @@
 							</div>
 							<div class="right">
 								<span
-									>小计: {{ Common.formatFloat(Common.mul(item.stake, item.betCount)) }}
+									>{{ $.t(`sports["小计"]`) }}: {{ Common.formatFloat(Common.mul(item.stake, item.betCount)) }}
 									<!-- {{ UserStore.getUserInfo.mainCurrency }} -->
 								</span>
 							</div>
@@ -47,10 +47,10 @@
 			<!--多串-->
 			<div class="moreShop">
 				<el-button @click="onOrderConfirm">
-					<span>确认</span>
-					<span v-if="props.data.betStatus == 0">&nbsp;合计:{{ singleTicketWinningAmount }}</span>
+					<span>{{ $.t(`sports["确认"]`) }}</span>
+					<span v-if="props.data.betStatus == 0">&nbsp;{{ $.t(`sports["合计"]`) }}:{{ singleTicketWinningAmount }}</span>
 				</el-button>
-				<el-button class="btnKeep" @click="onSecondBet">保留选项，继续投注</el-button>
+				<el-button class="btnKeep" @click="onSecondBet">{{ $.t(`sports["保留选项，继续投注"]`) }}</el-button>
 			</div>
 		</div>
 	</div>
@@ -63,6 +63,8 @@ import SportsCommon from "/@/views/sports/utils/common";
 import { EventCard, CardStatus } from "../index";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useUserStore } from "/@/stores/modules/user";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const UserStore = useUserStore();
 const sportsBetEvent = useSportsBetEventStore();
 

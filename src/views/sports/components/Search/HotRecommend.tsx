@@ -4,6 +4,8 @@ import EventCard from "./EventCard";
 import SvgIcon from "/@/components/svgIcon/index.vue";
 import "./style/hotRecommend.scss";
 import "./style/eventCard.scss";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 interface HotStateType {
 	list: Record<string, any>[];
 	loading: Boolean;
@@ -41,7 +43,7 @@ export default () => {
 				<div className="hot-recommend">
 					<div className="hot-title">
 						<SvgIcon size={24} name="sports-hot" />
-						<span className="name">热门推荐</span>
+						<span className="name">{$.t(`sports["热门推荐"]`)}</span>
 					</div>
 					<div className="event-card-list">
 						{hotState.list?.map((item) => (
