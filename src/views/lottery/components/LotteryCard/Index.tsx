@@ -123,7 +123,7 @@ export default () => {
 					{/* 卡片内容 */}
 					<Content data={props.data} />
 					{/* 卡片底部 */}
-					<Footer data={props.data} />
+					<Footer data={props.data} maxWin={props.data.maxWin} />
 				</div>
 			);
 		},
@@ -144,7 +144,7 @@ export default () => {
 					{/* 卡片内容 */}
 					<Content data={props.data} />
 					{/* 卡片底部 */}
-					<Footer data={props.data} />
+					<Footer data={props.data} maxWin={props.data.maxWin} />
 					{/* 卡片按钮 */}
 					<Button onClick={() => emit("select")} />
 				</div>
