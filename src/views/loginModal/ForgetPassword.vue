@@ -30,7 +30,7 @@
 				<!-- 第二步 -->
 				<div v-else-if="currentStep === 1">
 					<div>
-						<p class="Text_s mb_8 mt_8 fs_14"><span class="color_F1">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['电话号码']`) }}</p>
+						<p class="Text_s mb_8 mt_8 fs_14"><span class="color_F1">*</span>{{ verifyType == "email" ? $t(`login['电子邮箱']`) : $t(`login['手机号']`) }}</p>
 						<p>
 							<FromInput
 								type="text"
@@ -115,7 +115,7 @@
 								</template>
 							</FromInput>
 						</p>
-						<p v-show="VerifyError.confirmPassword" class="color_F1 fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
+						<p v-show="VerifyError.confirmPassword" class="color_F1 fs_12 mt_2">{{ $t(`login['两次密码不一致']`) }}</p>
 					</div>
 				</div>
 				<div class="mt_64 mb_12 text-center">

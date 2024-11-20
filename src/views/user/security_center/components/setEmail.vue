@@ -56,7 +56,7 @@
 					</p>
 				</div>
 				<div class="mt_32 mb_12">
-					<Button disabled="disabledBtn" @click="onSubmit">
+					<Button :disabled="disabledBtn" @click="onSubmit">
 						{{ isCreate ? $t(`security_center['确定']`) : $t(`security_center['下一步']`) }}
 					</Button>
 				</div>
