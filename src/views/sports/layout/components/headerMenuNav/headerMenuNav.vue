@@ -44,6 +44,8 @@ import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEvent
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData"; // 引入状态管理
 import SportsCommonFn from "/@/views/sports/utils/common";
 import pubSub from "/@/pubSub/pubSub";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const router = useRouter(); // 获取路由实例
 const route = useRoute(); // 获取当前路由实例
 const Menu = ref(MajorCategoriesMenu); // 将左侧菜单数据存储为响应式引用
@@ -79,9 +81,9 @@ const initRoute = () => {
 
 // 标签数据
 const tabData = ref([
-	{ label: "今日", type: "todayContest", path: "/sports/todayContest" },
-	{ label: "早盘", type: "morningTrading", path: "/sports/morningTrading" },
-	{ label: "冠军", type: "champion", path: "/sports/champion" },
+	{ label: $.t(`sports['今日']`), type: "todayContest", path: "/sports/todayContest" },
+	{ label: $.t(`sports['早盘']`), type: "morningTrading", path: "/sports/morningTrading" },
+	{ label: $.t(`sports['冠军']`), type: "champion", path: "/sports/champion" },
 ]);
 
 // 路由跳转函数

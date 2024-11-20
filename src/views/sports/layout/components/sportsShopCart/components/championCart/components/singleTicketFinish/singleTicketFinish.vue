@@ -17,19 +17,19 @@
 				<!--投注信息-->
 				<div class="bet-info">
 					<div class="cell">
-						<span class="label">投注金额</span>
+						<span class="label">{{ $.t(`sports['投注金额']`) }}</span>
 						<span class="value success">{{ Common.formatFloat(props.data.stake) || "0.00" }}</span>
 					</div>
 					<div class="cell">
-						<span class="label">可赢金额</span>
+						<span class="label">{{ $.t(`sports['可赢金额']`) }}</span>
 						<span class="value success">{{ Common.formatFloat(props.data.winnable) }}</span>
 					</div>
 					<div class="cell">
-						<span class="label">注单号</span>
+						<span class="label">{{ $.t(`sports['注单号']`) }}</span>
 						<span class="value">{{ sportsBetInfo.vendorTransId }}</span>
 					</div>
 				</div>
-				<el-button @click="onOrderConfirm">确认</el-button>
+				<el-button @click="onOrderConfirm">{{ $.t(`sports['确认']`) }}</el-button>
 			</div>
 		</div>
 	</div>
@@ -39,11 +39,11 @@
 import { ChampionCard, EventCard, CardStatus } from "../index";
 import Common from "/@/utils/common";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
-import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const ChampionShopCartStore = useSportsBetChampionStore();
-const ShopCatControlStore = useShopCatControlStore();
 const sportsBetInfo = useSportsBetInfoStore();
 
 const emit = defineEmits(["onOrderConfirm"]);

@@ -1,13 +1,15 @@
 <template>
 	<div class="container" @click="onClickClose">
 		<svg-icon name="sports-cart-add_icon" size="10px"></svg-icon>
-		<span>串</span>
+		<span>{{ $.t(`sports['串']`) }}</span>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 const ShopCatControlStore = useShopCatControlStore();
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 // 定义 emit 事件
 const emit = defineEmits<{
 	(e: "onClick"): void;

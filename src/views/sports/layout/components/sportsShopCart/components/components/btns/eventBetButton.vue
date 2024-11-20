@@ -2,9 +2,9 @@
 	<div class="btn-container">
 		<!-- 正常投注 -->
 		<div v-if="sportsBetEvent.bettingStatus == 0" class="btn" @click="emit('onClick')">
-			<div class="label_one">投注</div>
+			<div class="label_one">{{ $.t(`sports['投注']`) }}</div>
 			<div class="label_two">
-				<span>最高可赢</span>
+				<span>{{ $.t(`sports.betRecord['最高可赢']`) }}</span>
 				<!-- 单关最高可赢展示 -->
 				<span>{{ singleTicketWinningAmount }}</span>
 			</div>
@@ -18,6 +18,8 @@ import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { storeToRefs } from "pinia";
 const sportsBetEvent = useSportsBetEventStore();
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 
 const { combo } = storeToRefs(sportsBetEvent);
 

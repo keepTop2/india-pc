@@ -1,6 +1,7 @@
 import { defineComponent, h } from "vue";
 import SvgIcon from "/@/components/svgIcon/index.vue";
-
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 // 赔率组件
 export const OddsPrice = ({ decimalPrice, marketStatus }: { decimalPrice: number; marketStatus: string }) => {
 	return marketStatus === "running" ? (
@@ -28,7 +29,7 @@ export const Moneyline = defineComponent({
 			x: "和",
 		};
 
-		const transKey = (key: string) => transKeyMap[key] || "";
+		const transKey = (key: string) => $.t(`sports['${transKeyMap[key]}']`) || "";
 		return () => (
 			<div className="market-item">
 				<div className="label">{transKey(props.cardData?.key)}</div>

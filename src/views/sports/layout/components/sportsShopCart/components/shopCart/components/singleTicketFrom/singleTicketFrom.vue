@@ -5,7 +5,9 @@
 			type="number"
 			:min="sportsBetInfo.singleTicketInfo.minBet"
 			:max="sportsBetInfo.singleTicketInfo.maxBet"
-			:placeholder="`限额 ${common.formatFloat(sportsBetInfo.singleTicketInfo.minBet) || '0.00'} ～ ${common.formatFloat(sportsBetInfo.singleTicketInfo.maxBet) || '0.00'}`"
+			:placeholder="
+				$.t(`sports['限额']`)` ${common.formatFloat(sportsBetInfo.singleTicketInfo.minBet) || '0.00'} ～ ${common.formatFloat(sportsBetInfo.singleTicketInfo.maxBet) || '0.00'}`
+			"
 			@input="onInputEnter"
 			@keydown="preventDecimal"
 		>
@@ -24,6 +26,8 @@ import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { useUserStore } from "/@/stores/modules/user";
 import { ElMessage } from "element-plus";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const UserStore = useUserStore();
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();
@@ -43,7 +47,7 @@ watch(
 	() => sportsBetInfo.singleTicketInfo.maxBet,
 	(maxBet) => {
 		if (Number(stake.value || 0) > Number(maxBet)) {
-			ElMessage({ type: "warning", offset: 200, message: "投注金额不可以超过限红，请重新投注！" });
+			ElMessage({ type: "warning", offset: 200, message: $.t(`sports['投注金额不可以超过限红，请重新投注']`) + "!" });
 			shopCartPubSub.setSingleTicketBetValue("");
 		}
 	}

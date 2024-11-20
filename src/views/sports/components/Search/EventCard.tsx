@@ -5,7 +5,8 @@ import SportsCommonFn from "/@/views/sports/utils/common";
 import useGameTimer from "../../hooks/useGameTimer";
 import { useToolsHooks } from "/@/views/sports/hooks/scoreboardTools";
 import { useLink } from "/@/views/sports/hooks/useLink";
-
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 // TS接口定义
 interface CardData {
 	globalShowTime: string;
@@ -76,7 +77,7 @@ export const TimeTitle = defineComponent({
 	setup(props) {
 		return () => (
 			<>
-				{!props.isStart && <span className="date-title">未开赛:</span>}
+				{!props.isStart && <span className="date-title">{$.t(`sports["未开赛"]`)}:</span>}
 				<span className="date">{SportsCommonFn.getEventsTitle(props.cardData)}</span>
 			</>
 		);
