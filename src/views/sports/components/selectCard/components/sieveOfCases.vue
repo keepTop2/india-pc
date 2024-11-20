@@ -3,7 +3,7 @@
 		<el-dropdown trigger="click" :teleported="false" placement="bottom-start" :hide-on-click="true" popper-class="popperClass" @command="handleCommand">
 			<div class="el-dropdown-content">
 				<div class="left">
-					<span class="name">{{ selectedOption ? selectedOption.leagueName : "全部" }}</span>
+					<span class="name">{{ selectedOption ? selectedOption.leagueName : $.t(`sports["全部"]`) }}</span>
 					<span> ({{ selectedOption ? selectedOption.events?.length ?? selectedOption.teams?.length ?? 0 : totalEvents }}) </span>
 				</div>
 				<span class="icon"><svg-icon name="sports-arrow" width="8px" height="12px"></svg-icon></span>
@@ -32,6 +32,8 @@ import { useSportLeagueSearchStore } from "/@/stores/modules/sports/sportLeagueS
 import viewSportPubSubEventData from "/@/views/sports/hooks/viewSportPubSubEventData";
 import { useRoute } from "vue-router";
 import pubsub from "/@/pubSub/pubSub";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const SportLeagueSearchStore = useSportLeagueSearchStore();
 const route = useRoute();
 interface Option {
@@ -77,7 +79,7 @@ const totalEvents = computed(() => {
 });
 
 const optionsWithAll = computed(() => {
-	return [{ leagueId: 0, leagueName: "全部", events: [] }, ...props.options];
+	return [{ leagueId: 0, leagueName: $.t(`sports["全部"]`), events: [] }, ...props.options];
 });
 </script>
 

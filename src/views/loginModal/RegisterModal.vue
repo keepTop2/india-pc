@@ -75,7 +75,7 @@
 						</FromInput>
 				
 					</p>
-					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次输入密码不一致']`) }}</p>
+					<p v-show="VerifyError.confirmPassword" class="Wran_text fs_12 mt_2">{{ $t(`login['两次密码不一致']`) }}</p>
 				</div>
 
 				<div>

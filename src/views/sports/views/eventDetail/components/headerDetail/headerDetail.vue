@@ -3,12 +3,12 @@
 		<div class="top">
 			<div class="back" @click="handleGoBack">
 				<svg-icon class="icon" name="common-arrow_left" size="13" />
-				<span>返回</span>
+				<span>{{ $t(`sports['返回']`) }}</span>
 			</div>
 			<div class="title">{{ sportInfo.leagueName }}</div>
 			<div class="handle">
 				<div class="item curp" @click="toggleCollect">
-					<span>{{ show ? "显示" : "隐藏" }}</span>
+					<span>{{ $t(`sports['${show ? "显示" : "隐藏"}']`) }}</span>
 					<svg-icon :name="show ? 'eyes' : 'eyes_on'" size="16px"></svg-icon>
 				</div>
 				<template v-if="hideLive">

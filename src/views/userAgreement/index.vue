@@ -27,7 +27,7 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style>
 .title {
 	color: var(--Text-s);
 	font-size: 20px;
@@ -39,5 +39,7 @@ onMounted(() => {
 	padding: 39px;
 	color: var(--Text-1);
 	font-size: 14px;
+	word-wrap: break-word;
+	word-break: break-all;
 }
 </style>

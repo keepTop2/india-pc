@@ -16,7 +16,7 @@ const getlang = () => {
 	return localStorage.getItem("langInfo") ? JSON.parse(localStorage.getItem("langInfo") || "{}").code : "zh-CN";
 };
 export const i18n = createI18n({
-	// globalInjection: true,
+	globalInjection: true,
 	legacy: false,
 	locale: getlang(),
 	fallbackLocale: "zh-CN",

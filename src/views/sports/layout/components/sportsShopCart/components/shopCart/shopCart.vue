@@ -3,7 +3,7 @@
 		<!-- 头部信息 -->
 		<div class="header-container" @click="changeShopCart">
 			<div class="left">
-				<span class="label">投注单</span>
+				<span class="label">{{ $.t(`sports['投注单']`) }}</span>
 				<span v-if="sportsBetEvent.sportsBetEventData.length > 0" class="num_total" :class="{ shake: isShaking }" @animationend="totalAnimationEnd">{{
 					sportsBetEvent.sportsBetEventData.length
 				}}</span>
@@ -21,7 +21,9 @@
 			<div class="container-main" ref="containerMain">
 				<div class="main" ref="main">
 					<!-- 无赛事时展示 -->
-					<div class="noData" v-if="!sportsBetEvent.sportsBetEventData.length"><span> 请完成您的下注 </span></div>
+					<div class="noData" v-if="!sportsBetEvent.sportsBetEventData.length">
+						<span> {{ $.t(`sports['请完成您的下注']`) }} </span>
+					</div>
 					<!-- 购物车赛事列表 -->
 					<div class="shop-plan" v-else>
 						<div class="event-list" ref="container" @scroll="checkScroll">
@@ -66,6 +68,8 @@ import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import { getBetOrderId } from "/@/views/sports/utils/commonFn";
 import { useUserStore } from "/@/stores/modules/user";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const sportsBetInfo = useSportsBetInfoStore();
 const ShopCatControlStore = useShopCatControlStore();
 const sportsBetEvent = useSportsBetEventStore();

@@ -16,14 +16,14 @@
 		<!-- 结算弹窗 -->
 		<RED_BAG_RAIN_Dialog v-model="showRedBagRainResult" :title="dialogTitle" :confirm="confirmDialog" class="redBagRainResult">
 			<div v-if="settlement.amount == 0">
-				<div class="Text3">{{ $t(`activity['没有戳中有奖红包']`) }}</div>
+				<div class="Text3">{{ text1 }}</div>
 				<div>
 					<img src="./image/pityIcon.png" alt="" />
 				</div>
 			</div>
 			<div v-else>
-				<div class="Text2">{{ $t(`activity['本轮共抢到']`) }}{{ settlement.redbagCount }}{{ $t(`activity['个红包']`) }}</div>
-				<div class="result mt_20">{{ $t(`activity['共计']`) }}{{ settlement.amount }} {{ useUserStore().getUserInfo.platCurrencyName }}</div>
+				<div class="Text2">{{ text2 }}{{ settlement.redbagCount }}{{ text3 }}</div>
+				<div class="result mt_20">{{ text4 }}{{ settlement.amount }} {{ useUserStore().getUserInfo.platCurrencyName }}</div>
 			</div>
 		</RED_BAG_RAIN_Dialog>
 	</div>
@@ -56,7 +56,10 @@ const showRedBagRainResult = ref(false);
 const dialogTitle = ref($.t(`activity['温馨提示']`));
 const settlement: any = ref({});
 let ctx: CanvasRenderingContext2D | null = null;
-
+const text1 = $.t(`activity['没有戳中有奖红包']`);
+const text2 = $.t(`activity['本轮共抢到']`);
+const text3 = $.t(`activity['个红包']`);
+const text4 = $.t(`activity['共计']`);
 // 创建红包图片对象
 const img = new Image();
 img.src = redBagImg;
@@ -304,6 +307,8 @@ onMounted(async () => {
 		} else {
 			dialogTitle.value = $.t(`activity['很遗憾']`);
 		}
+		console.log(123123123123123);
+
 		settlement.value = data.data;
 		showRedBagRainResult.value = true;
 	});

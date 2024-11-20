@@ -11,7 +11,7 @@
 					type="number"
 					:min="item?.minBet"
 					:max="item?.maxBet"
-					:placeholder="`限额 ${Common.formatFloat(item.minBet) || '0.00'} ～ ${Common.formatFloat(item.maxBet) || '0.00'}`"
+					:placeholder="$.t(`sports['限额']`)` ${Common.formatFloat(item.minBet) || '0.00'} ～ ${Common.formatFloat(item.maxBet) || '0.00'}`"
 					@input="onInputEnter(item)"
 					@keydown="preventDecimal"
 				>
@@ -19,7 +19,7 @@
 			</div>
 			<div v-if="combos[item.comboType]" class="singlePass_buttom">
 				<span
-					>小计:{{ Common.mul(combos[item.comboType], item.betCount) }}
+					>{{ $.t(`sports['小计']`) }}:{{ Common.mul(combos[item.comboType], item.betCount) }}
 					<!-- {{ UserStore.getUserInfo.mainCurrency }} -->
 				</span>
 			</div>
@@ -33,6 +33,8 @@ import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { useUserStore } from "/@/stores/modules/user";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const UserStore = useUserStore();
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();

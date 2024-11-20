@@ -86,8 +86,12 @@ const setLang = (lang: LangEnum) => {
 			margin-right: 4px;
 		}
 	}
+
 	.langItem:hover {
 		border-radius: 4px;
+		background: var(--Bg-4);
+	}
+	.langItem.active {
 		background: var(--Bg-3);
 	}
 	.active.langItem {

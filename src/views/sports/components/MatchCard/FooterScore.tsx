@@ -1,5 +1,6 @@
 import { computed, defineComponent, h } from "vue";
-
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 // 获取比赛得分的通用逻辑
 const ScoreList = ({ homeScores, awayScores, currentPeriod }: { homeScores: number[]; awayScores: number[]; currentPeriod: number }) => (
 	<div className="score-list">
@@ -17,13 +18,16 @@ const RightSroce = ({ gameInfo, currentSet, gameSession }: any) => {
 	return (
 		<div className="total">
 			<span>
-				{gameSession}局{Math.ceil(gameSession / 2)}胜
+				{gameSession}
+				{$.t(`sports["局"]`)}
+				{Math.ceil(gameSession / 2)}
+				{$.t(`sports["胜"]`)}
 			</span>
 			{currentSet > 0 && (
 				<>
 					<span>|</span>
 					<span>
-						总局数&nbsp;
+						{$.t(`sports["总局数"]`)}&nbsp;
 						<span className="theme">
 							{homeTotalScore} - {awayTotalScore}
 						</span>
@@ -137,7 +141,7 @@ const Baseball = ({
 				{currentInning > 0 && (
 					<div className="current-outs">
 						<span>
-							出局：<span className="theme">{currentOuts}</span>
+							{$.t(`sports["出局"]`)}：<span className="theme">{currentOuts}</span>
 						</span>
 					</div>
 				)}

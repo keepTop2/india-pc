@@ -196,28 +196,28 @@ const onSubmit = () => {
 	overflow: hidden;
 	height: calc(100vh - 100px);
 
-	.title { 
+	.title {
 		display: flex;
 		align-items: center;
 		background: var(--Bg-1);
 		position: relative;
 		border-radius: 12px 12px 0 0;
 		padding-bottom: 0;
-		padding: 20px 0 6px; 
+		padding: 20px 0 6px;
 
-			&::after{
-				content:"";
-				display: block;
-				position: absolute;
-				left: 50%;
-				transform: translateX(-50%);
-				height: 1px;
-				width: calc(100% - 40px);
-				margin-top: 6px;
-				background: var(--Line-1);
-				box-shadow: 0px 1px 0px 0px #343d48;
-				bottom: 0;
-			}
+		&::after {
+			content: "";
+			display: block;
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			height: 1px;
+			width: calc(100% - 40px);
+			margin-top: 6px;
+			background: var(--Line-1);
+			box-shadow: 0px 1px 0px 0px #343d48;
+			bottom: 0;
+		}
 	}
 	.title::before {
 		content: "";
@@ -230,13 +230,13 @@ const onSubmit = () => {
 		background: url("./image/image.png") no-repeat;
 		background-size: 100% 100%;
 	}
-	.margin{
-	background: var(--Bg-1); 
+	.margin {
+		background: var(--Bg-1);
 		height: 29px;
 	}
 	.scrollBox {
 		height: calc(100vh - 180px);
-		overflow: auto;  
+		overflow: auto;
 	}
 	.center {
 		border-radius: 0 0 12px 12px;
@@ -246,11 +246,12 @@ const onSubmit = () => {
 		img.icon {
 			border-radius: 50%;
 		}
-		.detailsTitle { 
+		.detailsTitle {
 			padding-bottom: 6px;
 			img {
 				width: 32px;
 				height: 32px;
+				margin-right: 10px;
 			}
 		}
 		.picUrls {

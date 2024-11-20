@@ -15,8 +15,10 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const route = useRoute(); // 获取当前路由实例
-const routeNameMap = new Map([["championList", "冠军盘"]]);
+const routeNameMap = new Map([["championList", $.t('sports["冠军盘"]')]]);
 
 interface TeamDataType {
 	/** 队伍数据 */

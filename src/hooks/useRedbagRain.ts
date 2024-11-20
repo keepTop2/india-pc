@@ -2,7 +2,6 @@
 import { createVNode, render, ref } from "vue";
 import RedbagRain from "/@/views/activity/activityType/RED_BAG_RAIN/rainPage.vue";
 import Countdown from "/@/views/activity/activityType/RED_BAG_RAIN/countdownPgae.vue";
-
 let instance: any = null; // 用于保存单例实例
 
 export function useRedbagRain() {
