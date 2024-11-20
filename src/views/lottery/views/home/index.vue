@@ -35,7 +35,7 @@
 				<div v-if="searchQuery">
 					<div class="games-module">
 						<div class="content" v-if="searchGames.length">
-							<LotteryCard :key="game._key" :data="game.data" v-for="game in searchGames" @select="pushView(game)" />
+							<LotteryCard :key="game._key" :data="game.data" :maxWin="game.data.maxWin" v-for="game in searchGames" @select="pushView(game)" />
 						</div>
 						<div class="empty" v-else-if="!searchGames.length && !isLoading">
 							<svg-icon name="sports-empty" width="142px" height="120px" />
@@ -55,12 +55,20 @@
 					<div class="content">
 						<HotLotteryCard
 							v-if="item.label === 1"
-							:data="game.data"
-							:key="game.data.currentTime + game.data.id"
-							v-for="game in item.gameInfoList.slice(0, currentTab === '0' ? column : item.gameInfoList.length)"
+							:data="game.data || {}"
+							:key="game.data.lotteryDate + index"
+							:maxWin="game.data.maxWin"
+							v-for="(game, index) in item.gameInfoList.slice(0, currentTab === '0' ? column : item.gameInfoList.length)"
 							@select="pushView(game)"
 						/>
-						<LotteryCard v-else :data="game.data" v-for="(game, index) in item.gameInfoList?.slice(0, column)" :key="game.data.currentTime + index" @select="pushView(game)" />
+						<LotteryCard
+							v-else
+							:data="game.data || {}"
+							:maxWin="game.data.maxWin"
+							v-for="(game, index) in item.gameInfoList?.slice(0, column)"
+							:key="game.data.currentTime + index"
+							@select="pushView(game)"
+						/>
 					</div>
 				</div>
 			</div>
@@ -69,18 +77,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, watch, onUnmounted, onBeforeUnmount } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import { debounce } from "lodash-es";
-import { gameApi } from "/@/api/game";
-import { bannerApi } from "/@/api/banner";
-import VenueBanner from "/@/components/venueBanner.vue";
-import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
-import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
-import showToast from "/@/hooks/useToast";
 import { stringify } from "qs";
+import { computed, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { GameListItem } from "../../types/game";
+import { bannerApi } from "/@/api/banner";
+import { gameApi } from "/@/api/game";
+import VenueBanner from "/@/components/venueBanner.vue";
+import showToast from "/@/hooks/useToast";
 import { i18n } from "/@/i18n";
+import useLotteryCard from "/@/views/lottery/components/LotteryCard/Index";
+import { useWebSocket } from "/@/views/lottery/hooks/useWebSocket";
 const $: any = i18n.global;
 
 const { LotteryCard, HotLotteryCard } = useLotteryCard();

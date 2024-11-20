@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import { RouteLocationNormalized } from "vue-router";
+import { defineStore } from "pinia";
 
 export const useRouterStore = defineStore("router", {
 	state: () => ({
@@ -15,8 +15,6 @@ export const useRouterStore = defineStore("router", {
 			if (Array.isArray(to.meta.leaveCaches) && !to.meta.leaveCaches.includes(from.name) && typeof to.name === "string") {
 				this.cacheComps.delete(to.name);
 			}
-
-			console.log("this.cacheComps", this.cacheComps);
 		},
 	},
 	getters: {

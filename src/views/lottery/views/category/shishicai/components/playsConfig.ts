@@ -1,5 +1,5 @@
-import { SELECT_BALL } from "/@/views/lottery/constant/index";
 import { type GameplayList } from "/@/views/lottery/types/index";
+import { generateBalls } from "/@/views/lottery/utils/generateBalls";
 
 export const gameplayList: GameplayList = [
 	{
@@ -26,7 +26,18 @@ export const gameplayList: GameplayList = [
 			{ title: "小", optionCode: "小", desc: "开奖号码≤4为“小”", minBet: 10, maxBet: 1000, itemOdds: "2.395", id: "2-2", actived: false },
 			{ title: "单", optionCode: "单", desc: "开奖号码1、3、5、7、9为“单”", minBet: 10, maxBet: 1000, itemOdds: "1.05", id: "2-3", actived: false },
 			{ title: "双", optionCode: "双", desc: "开奖号码0、2、4、6、8为“双”", minBet: 10, maxBet: 1000, itemOdds: "1.995", id: "2-4", actived: false },
-			{ title: "选择球", optionCode: "0", desc: "", minBet: 10, maxBet: 1000, itemOdds: "7.995", id: "2-5", actived: false, type: "selectBall", ballNum: 10 },
+			{
+				title: "选择球",
+				optionCode: "0",
+				desc: "",
+				minBet: 10,
+				maxBet: 1000,
+				itemOdds: "7.995",
+				id: "2-5",
+				actived: false,
+				type: "selectBall",
+				children: generateBalls({ length: 10, hasZero: false, startIndex: 0 }),
+			},
 		],
 	},
 	{
@@ -40,7 +51,18 @@ export const gameplayList: GameplayList = [
 			{ title: "小", optionCode: "小", desc: "开奖号码≤4为“小”", minBet: 10, maxBet: 1000, itemOdds: "2.395", id: "3-2", actived: false },
 			{ title: "单", optionCode: "单", desc: "开奖号码1、3、5、7、9为“单”", minBet: 10, maxBet: 1000, itemOdds: "1.05", id: "3-3", actived: false },
 			{ title: "双", optionCode: "双", desc: "开奖号码0、2、4、6、8为“双”", minBet: 10, maxBet: 1000, itemOdds: "1.995", id: "3-4", actived: false },
-			{ title: "选择球", optionCode: "0", desc: "", minBet: 10, maxBet: 1000, itemOdds: "7.995", id: "3-5", actived: false, type: "selectBall", ballNum: 10 },
+			{
+				title: "选择球",
+				optionCode: "0",
+				desc: "",
+				minBet: 10,
+				maxBet: 1000,
+				itemOdds: "7.995",
+				id: "3-5",
+				actived: false,
+				type: "selectBall",
+				children: generateBalls({ length: 10, hasZero: false, startIndex: 0 }),
+			},
 		],
 	},
 	{
@@ -54,7 +76,18 @@ export const gameplayList: GameplayList = [
 			{ title: "小", optionCode: "小", desc: "开奖号码≤4为“小”", minBet: 10, maxBet: 1000, itemOdds: "2.395", id: "4-2", actived: false },
 			{ title: "单", optionCode: "单", desc: "开奖号码1、3、5、7、9为“单”", minBet: 10, maxBet: 1000, itemOdds: "1.05", id: "4-3", actived: false },
 			{ title: "双", optionCode: "双", desc: "开奖号码0、2、4、6、8为“双”", minBet: 10, maxBet: 1000, itemOdds: "1.995", id: "4-4", actived: false },
-			{ title: "选择球", optionCode: "0", desc: "", minBet: 10, maxBet: 1000, itemOdds: "7.995", id: "4-5", actived: false, type: "selectBall", ballNum: 10 },
+			{
+				title: "选择球",
+				optionCode: "0",
+				desc: "",
+				minBet: 10,
+				maxBet: 1000,
+				itemOdds: "7.995",
+				id: "4-5",
+				actived: false,
+				type: "selectBall",
+				children: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] as any[],
+			},
 		],
 	},
 	{
@@ -68,7 +101,18 @@ export const gameplayList: GameplayList = [
 			{ title: "小", optionCode: "小", desc: "开奖号码≤4为“小”", minBet: 10, maxBet: 1000, itemOdds: "2.395", id: "5-2", actived: false },
 			{ title: "单", optionCode: "单", desc: "开奖号码1、3、5、7、9为“单”", minBet: 10, maxBet: 1000, itemOdds: "1.05", id: "5-3", actived: false },
 			{ title: "双", optionCode: "双", desc: "开奖号码0、2、4、6、8为“双”", minBet: 10, maxBet: 1000, itemOdds: "1.995", id: "5-4", actived: false },
-			{ title: "选择球", optionCode: "0", desc: "", minBet: 10, maxBet: 1000, itemOdds: "7.995", id: "5-5", actived: false, type: "selectBall", ballNum: 10 },
+			{
+				title: "选择球",
+				optionCode: "0",
+				desc: "",
+				minBet: 10,
+				maxBet: 1000,
+				itemOdds: "7.995",
+				id: "5-5",
+				actived: false,
+				type: "selectBall",
+				children: generateBalls({ length: 10, hasZero: false, startIndex: 0 }),
+			},
 		],
 	},
 	{
@@ -82,7 +126,18 @@ export const gameplayList: GameplayList = [
 			{ title: "小", optionCode: "小", desc: "开奖号码≤4为“小”", minBet: 10, maxBet: 1000, itemOdds: "2.395", id: "6-2", actived: false },
 			{ title: "单", optionCode: "单", desc: "开奖号码1、3、5、7、9为“单”", minBet: 10, maxBet: 1000, itemOdds: "1.05", id: "6-3", actived: false },
 			{ title: "双", optionCode: "双", desc: "开奖号码0、2、4、6、8为“双”", minBet: 10, maxBet: 1000, itemOdds: "1.995", id: "6-4", actived: false },
-			{ title: "选择球", optionCode: "0", desc: "", minBet: 10, maxBet: 1000, itemOdds: "7.995", id: "6-5", actived: false, type: "selectBall", ballNum: 10 },
+			{
+				title: "选择球",
+				optionCode: "0",
+				desc: "",
+				minBet: 10,
+				maxBet: 1000,
+				itemOdds: "7.995",
+				id: "6-5",
+				actived: false,
+				type: "selectBall",
+				children: generateBalls({ length: 10, hasZero: false, startIndex: 0 }),
+			},
 		],
 	},
 ];

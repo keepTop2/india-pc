@@ -1,6 +1,8 @@
 import { LotteryPlayGroup } from "/@/views/lottery/types/lottery";
-import { i18n } from "/@/i18n/index";
 import { SELECT_BALL } from "/@/views/lottery/constant";
+import { generateBalls } from "/@/views/lottery/utils/generateBalls";
+import { i18n } from "/@/i18n/index";
+
 const $: any = i18n.global;
 /**
  * @description 双色球 静态玩法配置
@@ -51,25 +53,15 @@ export const gameplayList: LotteryPlayGroup[] = [
 				actived: false,
 				optionCode: "和",
 			},
-			// {
-			// 	iconType:'2',
-			// 	type: "selectBall",
-			// 	title: $.t("lottery.选择球"),
-			// 	actived: false,
-			// 	gamePlayCode: "smp_hq_rx1",
-			// 	isSpecialPlay: true,
-			// },
 			{
-				// type: "selectBall",
-				iconType:'2',
+				id: "5-7",
 				title: $.t("lottery.选择球"),
+				desc: "",
+				itemOdds: "1.995",
 				actived: false,
-				// gamePlayCode: "smp_hq_rx1",
-				isSpecialPlay: true,
-				ballNum: 33,
-				startIndex: 1,
-				optionCode: "01",
+				optionCode: "0",
 				type: SELECT_BALL,
+				children: generateBalls({ length: 33, hasZero: true, startIndex: 1 }),
 			},
 		],
 	},
@@ -104,26 +96,16 @@ export const gameplayList: LotteryPlayGroup[] = [
 				actived: false,
 				optionCode: "双",
 			},
-			// {
-			// 	iconType:'1',
-			// 	type: "selectBall",
-			// 	title: $.t("lottery.蓝球选号"),
-			// 	actived: false,
-			// 	gamePlayCode: "smp_lq_lqxh",
-			// 	isSpecialPlay: true,
-			// 	ballNum: 16,
-			// },
 			{
 				// type: "selectBall",
-				iconType:'1',
+				iconType: "1",
 				title: $.t("lottery.选择球"),
 				actived: false,
 				// gamePlayCode: "smp_lq_lqxh",
 				// isSpecialPlay: true,
-				ballNum: 16,
-				startIndex: 1,
 				optionCode: "01",
 				type: SELECT_BALL,
+				children: generateBalls({ length: 16, hasZero: true, startIndex: 1 }),
 			},
 		],
 	},
