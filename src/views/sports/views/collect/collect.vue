@@ -1,12 +1,12 @@
 <template>
 	<div class="box-content" v-show="isShowCollect">
 		<div v-for="(sport, index) in computedSportComponent" v-if="computedSportComponent.length" :key="index">
-			<DynamicSportList :teamName="sport.name" :teamData="sport.data" :listComponent="sport.component" @oddsChange="oddsChange" :isExpand="expandAndCollapse" />
+			<DynamicSportList :teamName="$t(`sports['${sport.name}']`)" :teamData="sport.data" :listComponent="sport.component" @oddsChange="oddsChange" :isExpand="expandAndCollapse" />
 		</div>
 
 		<div v-else class="no-data">
 			<NoneData :showText="false">
-				<el-button type="default" class="button" @click="selectEvent">选择赛事</el-button>
+				<el-button type="default" class="button" @click="selectEvent">{{ $t(`sports['选择赛事']`) }}</el-button>
 			</NoneData>
 		</div>
 	</div>

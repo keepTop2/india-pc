@@ -19,9 +19,9 @@
 			</div>
 			<div class="bet_slip_type">
 				<div>
-					<span v-if="shopData.event.isLive" class="mr_6 color-f2">[滚球]</span>
-					<span>[优胜冠军]</span>
-					<span>[欧洲盘]</span>
+					<span v-if="shopData.event.isLive" class="mr_6 color-f2">[{{ $t(`sports['滚球']`) }}]</span>
+					<span>[{{ $t(`sports['优胜冠军']`) }}]</span>
+					<span>[{{ $t(`sports['欧洲盘']`) }}]</span>
 				</div>
 
 				<div v-if="examineEventsStatus">
@@ -44,7 +44,8 @@ import { RiseOrFall } from "/@/components/Sport/index";
 import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShopCart";
 const sportsBetEvent = useSportsBetEventStore();
 const ChampionShopCartStore = useSportsBetChampionStore();
-
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const props = withDefaults(
 	defineProps<{
 		/** 选中的商品详细  */
@@ -72,12 +73,12 @@ const props = withDefaults(
  */
 const examineEventsStatus = computed(() => {
 	if (ChampionShopCartStore.championBetData.length > 1) {
-		return "不支持串关";
+		return $.t(`sports['不支持串关']`);
 	}
 	const item = props.shopData.event;
 	// 判断赛事状态 与 盘口状态
 	if (item.oddsStatus !== "running" && item.oddsStatus !== "Running") {
-		return "盘口已关闭";
+		return $.t(`sports['盘口已关闭']`);
 	}
 });
 

@@ -58,7 +58,6 @@ import workerManage from "/@/webWorker/workerManage";
 const SportAttentionStore = useSportAttentionStore();
 // 路由实例
 const route = useRoute();
-const router = useRouter();
 
 // 各种 store 实例
 const sportsBetEvent = useSportsBetEventStore();

@@ -62,25 +62,25 @@ class SportsCommonFn {
 	// 球类表头集中的字典
 	public static betTypeMap: Record<number, string[]> = {
 		// 足球
-		1: [$.t("全场独赢"), $.t("全场让球"), $.t("全场大小"), $.t("半场独赢"), $.t("半场让球"), $.t("半场大小")],
+		1: [$.t(`sports["全场独赢"]`), $.t(`sports["全场让球"]`), $.t(`sports["全场大小"]`), $.t(`sports["半场独赢"]`), $.t(`sports["半场让球"]`), $.t(`sports["半场大小"]`)],
 		// 篮球
-		2: [$.t("全场独赢"), $.t("让分"), $.t("总分"), $.t("球队总分")],
+		2: [$.t(`sports["全场独赢"]`), $.t(`sports["让分"]`), $.t(`sports["总分"]`), $.t(`sports["球队总分"]`)],
 		// 美式足球
-		3: [$.t("全场独赢"), $.t("全场让球"), $.t("全场大小")],
+		3: [$.t(`sports["全场独赢"]`), $.t(`sports["全场让球"]`), $.t(`sports["全场大小"]`)],
 		// 冰上曲球
-		4: [$.t("独赢"), $.t("让球"), $.t("大小"), $.t("单/双")],
+		4: [$.t(`sports["独赢"]`), $.t(`sports["让球"]`), $.t(`sports["大小"]`), $.t(`sports["单/双"]`)],
 		// 网球
-		5: [$.t("独赢"), $.t("让盘"), $.t("让局"), $.t("总局数")],
+		5: [$.t(`sports["独赢"]`), $.t(`sports["让盘"]`), $.t(`sports["让局"]`), $.t(`sports["总局数"]`)],
 		// 排球
-		6: [$.t("独赢"), $.t("让分"), $.t("总分")],
+		6: [$.t(`sports["独赢"]`), $.t(`sports["让分"]`), $.t(`sports["总分"]`)],
 		// 台球
-		7: [$.t("独赢"), $.t("让局"), $.t("总局数")],
+		7: [$.t(`sports["独赢"]`), $.t(`sports["让局"]`), $.t(`sports["总局数"]`)],
 		// 棒球
-		8: [$.t("独赢"), $.t("让球"), $.t("大小"), $.t("单/双")],
+		8: [$.t(`sports["独赢"]`), $.t(`sports["让球"]`), $.t(`sports["大小"]`), $.t(`sports["单/双"]`)],
 		// 羽毛球
-		9: [$.t("全场独赢"), $.t("全场让局"), $.t("让分"), $.t("全场总分")],
+		9: [$.t(`sports["全场独赢"]`), $.t(`sports["全场让局"]`), $.t(`sports["让分"]`), $.t(`sports["全场总分"]`)],
 		// 电竞
-		43: [$.t("全场独赢"), $.t("全场让球"), $.t("全场大小")],
+		43: [$.t(`sports["全场独赢"]`), $.t(`sports["全场让球"]`), $.t(`sports["全场大小"]`)],
 	};
 
 	public static getEventsTitleMap: Record<number, string> = {
@@ -258,7 +258,8 @@ class SportsCommonFn {
 					return $.t("sports['加时赛']");
 				}
 				if (!delayLive && !isHt && numMap.get(livePeriod)) {
-					return $.t(`sports['第${numMap.get(livePeriod)}节']`);
+					// 第几节
+					return $.t(`sports.whichSection]`, { livePeriod: numMap.get(livePeriod) });
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -276,7 +277,7 @@ class SportsCommonFn {
 					return $.t("sports['中场休息']");
 				}
 				if (!delayLive && !isHt && numMap.get(livePeriod)) {
-					return $.t(`sports['第${numMap.get(livePeriod)}节']`);
+					return $.t(`sports.whichSection]`, { livePeriod: numMap.get(livePeriod) });
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -315,19 +316,19 @@ class SportsCommonFn {
 			}
 			if (this.isStartMatch(globalShowTime)) {
 				if (currentSet == 1) {
-					return "第一盘";
+					return $.t("sports['第一盘']");
 				}
 				if (currentSet == 2) {
-					return "第二盘";
+					return $.t("sports['第二盘']");
 				}
 				if (currentSet == 3) {
-					return "第三盘";
+					return $.t("sports['第三盘']");
 				}
 				if (currentSet == 4) {
-					return "第四盘";
+					return $.t("sports['第四盘']");
 				}
 				if (currentSet == 5) {
-					return "第五盘";
+					return $.t("sports['第五盘']");
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -345,19 +346,19 @@ class SportsCommonFn {
 			}
 			if (this.isStartMatch(globalShowTime)) {
 				if (latestLivePeriod == 1) {
-					return "第一局";
+					return $.t("sports['第一局']");
 				}
 				if (latestLivePeriod == 2) {
-					return "第二局";
+					return $.t("sports['第二局']");
 				}
 				if (latestLivePeriod == 3) {
-					return "第三局";
+					return $.t("sports['第三局']");
 				}
 				if (latestLivePeriod == 4) {
-					return "第四局";
+					return $.t("sports['第四局']");
 				}
 				if (latestLivePeriod == 5) {
-					return "第五局";
+					return $.t("sports['第五局']");
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -392,34 +393,34 @@ class SportsCommonFn {
 			}
 			if (this.isStartMatch(globalShowTime)) {
 				if (currentInning == 1) {
-					return "第一局";
+					return $.t("sports['第一局']");
 				}
 				if (currentInning == 2) {
-					return "第二局";
+					return $.t("sports['第二局']");
 				}
 				if (currentInning == 3) {
-					return "第三局";
+					return $.t("sports['第三局']");
 				}
 				if (currentInning == 4) {
-					return "第四局";
+					return $.t("sports['第四局']");
 				}
 				if (currentInning == 5) {
-					return "第五局";
+					return $.t("sports['第五局']");
 				}
 				if (currentInning == 6) {
-					return "第六局";
+					return $.t("sports['第六局']");
 				}
 				if (currentInning == 7) {
-					return "第七局";
+					return $.t("sports['第七局']");
 				}
 				if (currentInning == 8) {
-					return "第八局";
+					return $.t("sports['第八局']");
 				}
 				if (currentInning == 9) {
-					return "第九局";
+					return $.t("sports['第九局']");
 				}
 				if (currentInning > 9) {
-					return "延长赛";
+					return $.t("sports['延长赛']");
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);
@@ -437,19 +438,19 @@ class SportsCommonFn {
 			}
 			if (this.isStartMatch(globalShowTime)) {
 				if (currentSet == 1) {
-					return "第一局";
+					return $.t("sports['第一局']");
 				}
 				if (currentSet == 2) {
-					return "第二局";
+					return $.t("sports['第二局']");
 				}
 				if (currentSet == 3) {
-					return "第三局";
+					return $.t("sports['第三局']");
 				}
 				if (currentSet == 4) {
-					return "第四局";
+					return $.t("sports['第四局']");
 				}
 				if (currentSet == 5) {
-					return "第五局";
+					return $.t("sports['第五局']");
 				}
 			}
 			return convertUtcToUtc5AndFormatMD(globalShowTime);

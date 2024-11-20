@@ -39,15 +39,15 @@ const unlickable = ref(false);
 const onEventBet = () => {
 	console.log("触发赛事投注");
 	if (stake.value == "") {
-		showToast("请输入投注金额");
+		showToast($.t(`sports['请输入投注金额']`));
 		return;
 	}
 	if (Number(stake.value) < Number(sportsBetInfo.singleTicketInfo.minBet)) {
-		showToast("投注金额未达到最低限额");
+		showToast($.t(`sports['投注金额未达到最低限额']`));
 		return;
 	}
 	if (Number(stake.value) > Number(sportsBetInfo.balance)) {
-		showToast("余额不足，请先充值");
+		showToast($.t(`sports['余额不足，请先充值']`));
 		return;
 	}
 	// 单关投注
@@ -78,12 +78,12 @@ const placeBet = async () => {
 			const result = res.data;
 			emit("singleTicketSuccess", result);
 		} else {
-			showToast(`sports['投注失败！']`);
+			showToast($.t(`sports['投注失败']`));
 			// 刷新余额
 			useUserStore().initUserInfo();
 		}
 	} catch {
-		showToast(`sports['投注失败！']`);
+		showToast($.t(`sports['投注失败']`));
 	}
 	unlickable.value = false;
 };

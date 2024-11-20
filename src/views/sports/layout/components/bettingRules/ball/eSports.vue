@@ -2,7 +2,7 @@
 <script setup lang="ts"></script>
 
 <template>
-	<div>电子竞技</div>
+	<div>{{ $t(`sports['电子竞技']`) }}</div>
 </template>
 
 <style scoped lang="scss"></style>

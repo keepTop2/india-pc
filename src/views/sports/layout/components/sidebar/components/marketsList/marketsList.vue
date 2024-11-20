@@ -359,7 +359,7 @@ watch(
 
 			.tournament-name {
 				flex: 1;
-				color: var(--Text-a);
+				color: var(--Text-s);
 				font-family: "PingFang SC";
 				font-size: 16px;
 				font-weight: 400;
@@ -448,7 +448,7 @@ watch(
 					display: inline-block;
 					font-size: 14px;
 					font-weight: 500;
-					color: var(--Text-a);
+					color: var(--Text-s);
 					text-align: right;
 				}
 			}

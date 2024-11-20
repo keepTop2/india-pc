@@ -3,7 +3,7 @@
 		<!-- 头部信息 -->
 		<div class="header-container" @click="changeShopCart">
 			<div class="left">
-				<span class="label">投注单</span>
+				<span class="label">{{ $.t(`sports['投注单']`) }}</span>
 				<span v-if="ChampionShopCartStore.championBetData.length > 0" class="num_total">{{ ChampionShopCartStore.championBetData.length }}</span>
 				<span class="arrow" :class="{ up_arrow: ShopCatControlStore.getShopCatShow }"><svg-icon name="sports-arrow_card_header" width="12px" height="8px"></svg-icon></span>
 			</div>
@@ -76,11 +76,11 @@ import { useSportsBetChampionStore } from "/@/stores/modules/sports/championShop
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import { useLoading } from "/@/directive/loading/hooks";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
-import { i18n } from "/@/i18n/index";
 import { getBetOrderId } from "/@/views/sports/utils/commonFn";
 import { useUserStore } from "/@/stores/modules/user";
 import shopCartChampionPubSub from "/@/views/sports/hooks/shopCartChampionPubSub";
 const UserStore = useUserStore();
+import { i18n } from "/@/i18n/index";
 const $: any = i18n.global;
 const { startLoading, stopLoading } = useLoading();
 const sportsBetInfo = useSportsBetInfoStore();

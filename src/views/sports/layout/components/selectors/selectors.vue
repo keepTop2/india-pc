@@ -38,7 +38,7 @@
 						<el-dropdown-item :class="{ 'dropdown-item-active': range.start && range.end }" :command="''">
 							<template #>
 								<div class="date">
-									<span>自定义</span>
+									<span>{{ $.t(`sports['自定义']`) }}</span>
 									<VDatePicker v-if="vDatePicker" class="v-Date" v-model.range.number="range" locale="en" @update:pages="handlePanelChange">
 										<template #header-title-wrapper> {{ selectDateYM }} </template>
 										<template #header-prev-button>
@@ -67,29 +67,30 @@
 <script setup lang="ts">
 import { ref, reactive, nextTick, watch } from "vue";
 import SuffixIcon from "./components/suffix-icon.vue";
-
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 import Common from "/@/utils/common";
 import moment from "moment-timezone";
 import { defineAsyncComponent } from "vue";
 // const SuffixIcon = defineAsyncComponent(() => import("/@/views/sports/layout/components/selectors/components/suffix-icon.vue"));
 const type = [
-	{ label: "充值", value: 0 },
-	{ label: "提现", value: 1 },
-	{ label: "账变", value: 2 },
-	{ label: "奖金", value: 3 },
+	{ label: $.t(`sports['充值']`), value: 0 },
+	{ label: $.t(`sports['提现']`), value: 1 },
+	{ label: $.t(`sports['账变']`), value: 2 },
+	{ label: $.t(`sports['奖金']`), value: 3 },
 ];
 const date = [
-	{ label: "24小时", value: 1 },
-	{ label: "7天", value: 2 },
-	{ label: "30天", value: 3 },
-	{ label: "60天", value: 4 },
-	{ label: "90天", value: 5 },
+	{ label: 24 + $.t(`sports['小时']`), value: 1 },
+	{ label: 7 + $.t(`sports['天']`), value: 2 },
+	{ label: 30 + $.t(`sports['天']`), value: 3 },
+	{ label: 60 + $.t(`sports['天']`), value: 4 },
+	{ label: 90 + $.t(`sports['天']`), value: 5 },
 ];
 const status = [
-	{ label: "全部", value: "" },
-	{ label: "成功", value: 1 },
-	{ label: "进行中", value: 2 },
-	{ label: "失败", value: 3 },
+	{ label: $.t(`sports['全部']`), value: "" },
+	{ label: $.t(`sports['成功']`), value: 1 },
+	{ label: $.t(`sports['进行中']`), value: 2 },
+	{ label: $.t(`sports['失败']`), value: 3 },
 ];
 
 const selectRef = ref(null);

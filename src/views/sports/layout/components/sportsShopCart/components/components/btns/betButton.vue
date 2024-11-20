@@ -2,20 +2,20 @@
 	<div class="btn-container">
 		<!-- 正常投注 -->
 		<div v-if="sportsBetEvent.bettingStatus == 0" class="btn" @click="emit('onClick')">
-			<div class="label_one">投注</div>
+			<div class="label_one">{{ $.t(`sports['投注']`) }}</div>
 			<div class="label_two">
-				<span>最高可赢</span>
+				<span>{{ $.t(`sports['最高可赢']`) }}</span>
 				<!-- 单关最高可赢展示 -->
 				<span v-if="sportsBetEvent.sportsBetEventData.length == 1">{{ singleTicketWinningAmount }}</span>
 				<!-- 串关最高可赢展示 -->
 				<span v-if="sportsBetEvent.sportsBetEventData.length > 1">{{ getParlayTicketsWinningAmount }}</span>
 			</div>
 		</div>
-		<div v-if="sportsBetEvent.bettingStatus == 1" class="disabled">盘口关闭</div>
-		<div v-if="sportsBetEvent.bettingStatus == 2" class="disabled">不支持串关</div>
-		<div v-if="sportsBetEvent.bettingStatus == 3" class="disabled">至少选择{{ combo }}场比赛</div>
-		<div v-if="sportsBetEvent.bettingStatus == 4" class="btn" @click="oddsChanges">接受赔率变化</div>
-		<div v-if="sportsBetEvent.bettingStatus == 5" class="disabled">暂不支持下注</div>
+		<div v-if="sportsBetEvent.bettingStatus == 1" class="disabled">{{ $.t(`sports['盘口关闭']`) }}</div>
+		<div v-if="sportsBetEvent.bettingStatus == 2" class="disabled">{{ $.t(`sports['不支持串关']`) }}</div>
+		<div v-if="sportsBetEvent.bettingStatus == 3" class="disabled">{{ $.t(`sports.selectSports`, { combo }) }}</div>
+		<div v-if="sportsBetEvent.bettingStatus == 4" class="btn" @click="oddsChanges">{{ $.t(`sports['接受赔率变化']`) }}</div>
+		<div v-if="sportsBetEvent.bettingStatus == 5" class="disabled">{{ $.t(`sports['暂不支持下注']`) }}</div>
 	</div>
 </template>
 
@@ -24,6 +24,8 @@ import { computed, defineEmits } from "vue";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { storeToRefs } from "pinia";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const sportsBetEvent = useSportsBetEventStore();
 
 const { combo } = storeToRefs(sportsBetEvent);

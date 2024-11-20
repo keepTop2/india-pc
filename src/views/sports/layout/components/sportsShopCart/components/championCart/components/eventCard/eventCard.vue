@@ -32,9 +32,9 @@
 			</div>
 			<div class="bet_slip_type">
 				<div>
-					<span v-if="shopData.isLive" class="mr_6 color-f2">[滚球]</span>
+					<span v-if="shopData.isLive" class="mr_6 color-f2">[{{ $.t(`sports['滚球']`) }}]</span>
 					<span class="mr_6">{{ props.shopData.betMarketInfo.betTypeName }}</span>
-					<span>[欧洲盘]</span>
+					<span>[{{ $.t(`sports['欧洲盘']`) }}]</span>
 				</div>
 
 				<div v-if="getEventsStatusText(props.shopData)">

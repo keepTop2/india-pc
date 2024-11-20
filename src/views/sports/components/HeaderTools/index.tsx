@@ -9,9 +9,9 @@ import { useUserStore } from "/@/stores/modules/user";
 import SportsApi from "/@/api/sports/sports";
 import PubSub from "/@/pubSub/pubSub";
 import { AxiosResponse } from "axios";
-import { i18n } from "/@/i18n/index";
 import showToast from "/@/hooks/useToast";
 import { useModalStore } from "/@/stores/modules/modalStore";
+import { i18n } from "/@/i18n/index";
 const $: any = i18n.global;
 import SvgIcon from "/@/components/svgIcon/index.vue";
 
@@ -182,9 +182,9 @@ export default (eventsInfo: any): HeaderTools => {
 					return;
 				}
 				if (isAttention.value) {
-					handleCollection(() => SportsApi.unFollow({ thirdId: [eventsInfo?.value?.eventId] }), "取消收藏成功！", "取消收藏失败！");
+					handleCollection(() => SportsApi.unFollow({ thirdId: [eventsInfo?.value?.eventId] }), $.t(`sports["取消收藏成功"]`), $.t(`sports["取消收藏失败"]`));
 				} else {
-					handleCollection(() => SportsApi.saveFollow({ thirdId: eventsInfo?.value?.eventId, type: 2 }), "收藏成功！", "收藏失败！");
+					handleCollection(() => SportsApi.saveFollow({ thirdId: eventsInfo?.value?.eventId, type: 2 }), $.t(`sports["收藏成功"]`), $.t(`sports['"收藏失败"']`));
 				}
 			};
 
