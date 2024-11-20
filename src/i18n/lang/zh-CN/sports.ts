@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-export default {};
-=======
 export default {
 	半场: "半场",
 	总分: "总分",
@@ -211,4 +208,3 @@ export default {
 	显示: "显示",
 	隐藏: "隐藏",
 };
->>>>>>> skylar
