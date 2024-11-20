@@ -57,13 +57,19 @@ export default () => {
 				const { token = "" } = getUserInfo;
 
 				// 1. 校验是否登录 token 和 satoken
-				if (![token, isThirdPartyLoggedin.value].every(Boolean)) {
+				console.log("token", !!token);
+				console.log("isThirdPartyLoggedin", !!isThirdPartyLoggedin.value);
+				if ([token, isThirdPartyLoggedin.value].some((v) => !v)) {
+					console.log(1);
 					modalStore.openModal("LoginModal"); // 弹出登录框
-					return { message: "", isPassed: false };
+					validForm.isSuccess = false;
+					validForm.errMessage = "";
+					return;
 				}
 
 				// 优先判断余额
 				if (Number(price) > Number(SportsBetInfoStore.balance)) {
+					console.log(2);
 					validForm.isSuccess = false;
 					validForm.errMessage = $.t(`lottery['余额不足']`) + "!";
 					return;
