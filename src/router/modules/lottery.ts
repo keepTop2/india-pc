@@ -7,12 +7,6 @@ const lotteryRoutes = {
 	},
 	children: [
 		{
-			path: "/lottery/demo",
-			name: "LotteryDemo",
-			meta: { name: "LotteryDemo", title: "组件demo" },
-			component: () => import("/@/views/lottery/views/home/demo.vue"),
-		},
-		{
 			path: "/lottery/home",
 			name: "LotteryHome",
 			meta: { name: "LotteryHome", title: "彩票大厅" },
