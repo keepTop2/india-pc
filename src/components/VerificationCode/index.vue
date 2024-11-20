@@ -15,7 +15,8 @@
 					<svg-icon name="common-VerificationCode" size="18px" style="color: #67707b" />
 				</template>
 			</FromInput>
-			<button @click="sendVerificationCode" class="send-button" :disabled="disabled && countdown > 0" :class="countdown > 0 ? 'iscountdown' : ''">
+
+			<button @click="sendVerificationCode" class="send-button" :disabled="disabled || countdown > 0" :class="countdown > 0 ? 'iscountdown' : ''">
 				{{ isCountingDown ? countdown + "s" : sendCodeText }}
 			</button>
 		</div>
@@ -93,9 +94,9 @@ defineExpose({
 .send-button:disabled {
 	cursor: not-allowed;
 	background: var(--Bg);
-
-	border: 1px solid var(--Line-2);
-	color: var(--Text-2);
+	border: 1px solid var(--Theme);
+	color: var(--Theme);
+	opacity: 0.4;
 }
 .iscountdown.send-button:disabled {
 	border: 1px solid var(--Theme);

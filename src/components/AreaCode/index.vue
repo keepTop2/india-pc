@@ -195,7 +195,7 @@ onUnmounted(() => {
 	z-index: 10;
 	color: var(--Text-2);
 	margin-top: 3px;
-	min-height: 200px;
+	min-height: 305px;
 	.input {
 		background-color: var(--Bg-2);
 		height: 34px;
@@ -226,6 +226,10 @@ onUnmounted(() => {
 		background-color: var(--Bg-2);
 		color: var(--Text-s);
 	}
+
+	.search-input::placeholder {
+		color: var(--Text-2-1) !important;
+	}
 }
 
 .options-list {
@@ -241,6 +245,7 @@ onUnmounted(() => {
 .option-item {
 	padding: 8px;
 	cursor: pointer;
+	color: var(--Text-1);
 	img {
 		width: 14px;
 		height: 14px;
@@ -248,8 +253,17 @@ onUnmounted(() => {
 		margin-right: 8px;
 		border-radius: 50%;
 	}
+	svg {
+		color: var(--Icon-1);
+	}
 }
-.option-item.active,
+.option-item.active {
+	color: var(--Text-s);
+	background-color: var(--Bg-3);
+	svg {
+		color: var(--Theme);
+	}
+}
 .option-item:hover {
 	color: var(--Text-s);
 	background-color: var(--Bg-4);
@@ -260,6 +274,6 @@ onUnmounted(() => {
 
 .no-results {
 	padding: 8px;
-	color: var(--Text-2);
+	color: var(--Text-2-1);
 }
 </style>

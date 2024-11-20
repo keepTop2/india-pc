@@ -152,9 +152,11 @@ const openMedalReward = (item: any) => {
 	if (item.openStatus === 0) {
 		MedalApi.openMedalReward({ rewardNo: item.rewardNo }).then(async (res) => {
 			showToast(
-				`${$.t(`user['恭喜您获得']`)}${res.data.unlockMedalNum}${$.t(`user['个勋章，解锁宝箱，奖励']`)}${useUserStore().getUserInfo.platCurrencySymbol} ${
-					res.data.rewardAmount
-				}${$.t(`user['已发送到您的账号']`)}}`
+				$.t(`medalCollection['恭喜您获得1个勋章，解锁宝箱，奖励 $ 1 ，已发送到您的账户']`, {
+					value1: res.data.unlockMedalNum,
+					value2: useUserStore().getUserInfo.platCurrencySymbol,
+					value3: res.data.rewardAmount,
+				})
 			);
 			await getUserMedalInfo();
 			findInterval();

@@ -60,9 +60,5 @@ const emit = defineEmits(["update:modelValue"]);
 		font-weight: 400;
 		color: var(--Text-s);
 	}
-
-	::-webkit-input-placeholder {
-		color: var(--Text-2);
-	}
 }
 </style>

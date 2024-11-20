@@ -57,7 +57,7 @@
 								@VerificationCodeInput="VerificationCodeInput"
 								@sendVerificationCode="sendVerificationCode"
 								v-model="verificationBtn"
-								:disabled="verificationBtn && !!payLoad.email"
+								:disabled="verificationBtn || !payLoad.email"
 								ref="VerificationCodeRef"
 								v-show="verifyType == 'email'"
 							/>
@@ -65,7 +65,7 @@
 								@VerificationCodeInput="VerificationCodeInput"
 								@sendVerificationCode="sendVerificationCode"
 								v-model="verificationBtn2"
-								:disabled="verificationBtn2 && !!payLoad.phone"
+								:disabled="verificationBtn2 || !payLoad.phone"
 								ref="VerificationCodeRef2"
 								v-show="verifyType == 'phone'"
 							/>
@@ -93,6 +93,11 @@
 								<template #left>
 									<svg-icon name="password_icon" size="18px" />
 								</template>
+								<template #right>
+									<span @click="showPassword = !showPassword">
+										<svg-icon :name="showPassword ? 'eyes_on' : 'eyes'" size="18px" />
+									</span>
+								</template>
 							</FromInput>
 						</p>
 						<p v-show="VerifyError.passWord" class="color_F1 fs_12 mt_2">{{ $t(`login['请输入8-16位字母+数字的组合']`) }}</p>
@@ -104,7 +109,7 @@
 							<FromInput
 								:type="showConfimPassword ? 'password' : 'text'"
 								v-model="payLoad.confirmPassword"
-								:placeholder="$t(`login['请输入新密码']`)"
+								:placeholder="$t(`login['请确认新密码']`)"
 								@input="confirmOnInput"
 								maxlength="16"
 								autocomplete="new-password"
@@ -112,6 +117,11 @@
 							>
 								<template #left>
 									<svg-icon name="password_icon" size="18px" />
+								</template>
+								<template #right>
+									<span @click="showConfimPassword = !showConfimPassword">
+										<svg-icon :name="showConfimPassword ? 'eyes_on' : 'eyes'" size="18px" />
+									</span>
 								</template>
 							</FromInput>
 						</p>
@@ -193,8 +203,8 @@ const userAccountVerifyError = ref(false);
 const userVerifyTypeVerifyError = ref(false);
 // 校验完成登录按钮可以点击
 const disabledBtn = ref(true);
-const verificationBtn = ref(true);
-const verificationBtn2 = ref(true);
+const verificationBtn = ref(false);
+const verificationBtn2 = ref(false);
 // 显示密码
 const showPassword = ref(true);
 const showConfimPassword = ref(true);
@@ -387,7 +397,7 @@ const onSubmit = async (token: string) => {
 	background-repeat: no-repeat no-repeat;
 	background-size: 100% auto, 320px;
 	background-position: top, bottom left;
-
+	overflow-y: auto;
 	.login_right_form {
 		padding: 25px 24px;
 		.common_password {

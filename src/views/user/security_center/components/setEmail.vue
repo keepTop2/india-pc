@@ -9,7 +9,7 @@
 			<div class="login_form">
 				<div v-if="isCreate">
 					<div>
-						<p class="Text_s mb_8">{{ $t(`security_center['新邮箱账号']`) }}</p>
+						<p class="Text_s mb_8">{{ $t(`security_center['电子邮箱']`) }}</p>
 						<FromInput
 							type="text"
 							v-model="payLoad.email"
