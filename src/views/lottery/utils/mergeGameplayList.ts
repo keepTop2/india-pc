@@ -1,5 +1,5 @@
+import { SELECT_BALL, SELECT_BALL_LINE } from "/@/views/lottery/constant/index";
 import { type GameplayItem, type GameplayList, type OddsList } from "/@/views/lottery/types/index";
-
 /**
  * @description 这个函数是合并本地的玩法列表 l1 和接口返回的玩法列表 l2 ，返回的列表可以直接用于渲染页面。1 都是本地的，2 都是接口返回的
  * @param l1 本地的玩法列表
@@ -46,7 +46,24 @@ function mergeGameplayItem(g1: GameplayItem, l2: GameplayList) {
  */
 function mergeOddsList(o1: OddsList, o2: OddsList) {
 	return o1.map((item) => {
+		const { type = "" } = item;
+		if ([SELECT_BALL, SELECT_BALL_LINE].includes(type) && item.children && item.children.length > 0) {
+			const firstItem = o2[0];
+			const { itemOdds } = firstItem;
+			return { ...firstItem, ...item, itemOdds, children: mergeChildrenList(item.children as any[], o2) };
+		}
+
+		// 默认
 		const findItem = o2.find((v) => v.optionCode === item.optionCode);
+		if (!findItem) return {};
+		const { itemOdds } = findItem;
+		return { ...findItem, ...item, itemOdds }; // 主要是想覆盖 itemOdds
+	});
+}
+
+function mergeChildrenList(children: OddsList, o2: OddsList) {
+	return children.map((item) => {
+		const findItem = o2.find((v) => v.optionCode === (item as any));
 		if (!findItem) return {};
 		const { itemOdds } = findItem;
 		return { ...findItem, ...item, itemOdds }; // 主要是想覆盖 itemOdds

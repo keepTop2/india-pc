@@ -18,9 +18,8 @@ export interface OddsItem {
 	maxBet?: number;
 	type?: string;
 	ballNum?: number;
-	startIndex?: number;
 	selectBallDesc?: string;
-	oddsList?: OddsItem[];
+	children?: OddsItem[];
 }
 
 export type OddsList = OddsItem[];

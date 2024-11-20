@@ -1,10 +1,10 @@
 import { type Ref } from "vue";
 import { useLottery } from "/@/views/lottery/stores/lotteryStore";
-import { type GameplayList, type OddsItem } from "/@/views/lottery/types/index";
+import { type GameplayList, type OddsItem, type OddsList } from "/@/views/lottery/types/index";
 
 interface Params {
-	value: number;
-	list: number[];
+	value: OddsItem;
+	list: OddsList;
 }
 
 export function useAccordion(gameplayList: Ref<GameplayList>) {
@@ -27,6 +27,7 @@ export function useAccordion(gameplayList: Ref<GameplayList>) {
 
 	// 选择球组的处理方法
 	const chooseBalls = ({ value, list }: Params) => {
+		console.log("list", list);
 		setCurrentBalls(list);
 	};
 
@@ -47,9 +48,28 @@ export function useAccordion(gameplayList: Ref<GameplayList>) {
 		setOddsItem(oddsItem);
 	};
 
+	// pk10 特殊玩法
+	const chooseOddsItemPK10 = (status: boolean, subIndex: number, oddsIndex: number) => {
+		console.log("status", status);
+		console.log("subIndex", subIndex);
+		console.log("oddsIndex", oddsIndex);
+		// const gameplayItem = gameplayList.value[gameplayIndex];
+		// const { oddsList } = gameplayItem;
+		// oddsList.forEach((v) => (v.actived = false));
+		// const oddsItem = oddsList[oddsIndex];
+		// oddsItem.actived = status;
+		// if (!status) {
+		// 	setOddsItem({} as OddsItem);
+		// 	return;
+		// }
+		// setCurrentBalls([]);
+		// setOddsItem(oddsItem);
+	};
+
 	return {
 		toggleAccordion,
 		chooseBalls,
 		chooseOddsItem,
+		chooseOddsItemPK10,
 	};
 }

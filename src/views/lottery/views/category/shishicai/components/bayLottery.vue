@@ -37,7 +37,7 @@
 										:type="3"
 										@select="(params) => chooseBalls(params)"
 										:multiple="false"
-										:renderBallNum="(oddsItem.ballNum as number)"
+										:children="oddsItem.children"
 										:maxLeng="1"
 										:value="currentBalls"
 									/>
@@ -56,7 +56,7 @@
 						<div>{{ currentGameplayItem.gamePlayName }}</div>
 						<div>{{ currentOddsItem.title }}</div>
 						<div v-if="formActived && currentBalls.length" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
-							<Ball v-for="item in currentBalls" :key="item" :ball-number="item" :type="3" />
+							<Ball v-for="item in currentBalls" :key="item.id" :ball-number="item.optionCode" :type="3" />
 						</div>
 					</div>
 				</template>

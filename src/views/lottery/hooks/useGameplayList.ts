@@ -7,7 +7,6 @@ import { useFallBack } from "/@/views/lottery/hooks/useFallback";
 import { type GameplayList } from "/@/views/lottery/types/index";
 import { LotteryPlayGroup } from "/@/views/lottery/types/lottery";
 import { mergeGameplayList } from "/@/views/lottery/utils/mergeGameplayList";
-import { ssqLotteryList } from "/@/views/lottery/utils/ssqLotteryList";
 
 export function useGameplayList() {
 	const route = useRoute();
@@ -36,15 +35,8 @@ export function useGameplayList() {
 		 * @param {LotteryPlayGroup[]} lotteryList 彩种玩法列表
 		 * @param {any} res.data 接口返回的玩法数据
 		 */
-		// 目前只对 pk 10 相关彩种做处理
-		// 双色球 和 "FCSSQ", "HTSSQ", "3FSSQ", "5FSSQ", "FSSQ",
-		const codes = ["MYPK10", "3FPK10", "5FPK10", "LUCKYPK10"];
-		const isGameCode = codes.includes(gameCode as string);
-		if (isGameCode) {
-			gameplayList.value = ssqLotteryList(l1 as LotteryPlayGroup[], res.data) as GameplayList;
-		} else {
-			gameplayList.value = mergeGameplayList(l1, res.data) as GameplayList;
-		}
+
+		gameplayList.value = mergeGameplayList(l1, res.data) as GameplayList;
 	}
 
 	return { gameplayList, queryGamePlayOddsList };

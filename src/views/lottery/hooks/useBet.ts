@@ -4,11 +4,10 @@ import showToast from "/@/hooks/useToast";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import { useUserStore } from "/@/stores/modules/user";
 import { SUCCESS_CODE } from "/@/utils/useAxiosLottery";
-import { DEFAULT_LANG, langMaps, SELECT_BALL } from "/@/views/lottery/constant/index";
+import { DEFAULT_LANG, langMaps, SELECT_BALL, SELECT_BALL_LINE } from "/@/views/lottery/constant/index";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { useLottery } from "/@/views/lottery/stores/lotteryStore";
 import { type LotteryDetail } from "/@/views/lottery/types/index";
-import { addZero } from "/@/views/lottery/utils/formatNumber";
 import { getIndexInfo } from "/@/views/sports/utils/commonFn";
 
 export interface Props {
@@ -65,16 +64,14 @@ export function useBet() {
 
 		// 2. 下注
 		// 2.1 准备一下入参
+		console.log("currentOddsItem.value", currentOddsItem.value);
+		console.log("currentBalls.value", currentBalls.value);
 		const { gameCode, gamePlayCode, type } = currentOddsItem.value;
 		let { optionCode: nums } = currentOddsItem.value;
 		// 选择球
-		if (SELECT_BALL === type) {
-			nums = String(currentBalls.value[0]);
-
-			// 这里 11 选 5 要特殊一点，下注的时候，例如 4 号球要提交 "04" 而不是 "4"
-			if (["SYXW", "SSQ"].includes(currentGameplayItem.value.categoryCode as string)) {
-				nums = addZero(+nums);
-			}
+		if ([SELECT_BALL, SELECT_BALL_LINE].includes(type as string)) {
+			console.log("currentBalls", currentBalls);
+			nums = currentBalls.value[0].optionCode;
 		}
 
 		const { issueNum: issueNo } = lotteryDetail.value;

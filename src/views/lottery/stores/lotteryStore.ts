@@ -3,9 +3,9 @@ import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { lotteryApi } from "/@/api/lottery";
 import { useUserStore } from "/@/stores/modules/user";
-import { DEFAULT_LANG, langMaps, SELECT_BALL } from "/@/views/lottery/constant/index";
+import { DEFAULT_LANG, langMaps, SELECT_BALL, SELECT_BALL_LINE } from "/@/views/lottery/constant/index";
 import { useFallBack } from "/@/views/lottery/hooks/useFallback";
-import { type GameplayItem, type LotteryDetail, type OddsItem } from "/@/views/lottery/types/index";
+import { type GameplayItem, type LotteryDetail, type OddsItem, type OddsList } from "/@/views/lottery/types/index";
 
 /**
  * @description 这个是基础函数，不会直接导出使用，给下面的 useLottery 钩子用的
@@ -17,11 +17,11 @@ const useLotteryStore = defineStore("LotteryStore", () => {
 	const lotteryDetail = ref({} as LotteryDetail); // 单个彩种的详情，例如期号、名字、多少分钟一期
 	const currentOddsItem = ref({} as OddsItem); // 当前选中的赔率
 	const currentGameplayItem = ref({} as GameplayItem); // 当前选中的玩法
-	const currentBalls = ref([] as number[]); // 当前选中的球
+	const currentBalls = ref([] as OddsList); // 当前选中的球
 
 	const formActived = computed(() => {
 		const { type } = currentOddsItem.value;
-		if (SELECT_BALL === type) {
+		if ([SELECT_BALL, SELECT_BALL_LINE].includes(type as string)) {
 			return currentBalls.value.length > 0;
 		}
 		return Boolean(currentOddsItem.value.optionCode);
@@ -29,7 +29,7 @@ const useLotteryStore = defineStore("LotteryStore", () => {
 
 	const setOddsItem = (o: OddsItem) => (currentOddsItem.value = o);
 	const setGameplayItem = (o: GameplayItem) => (currentGameplayItem.value = o);
-	const setCurrentBalls = (balls: number[]) => (currentBalls.value = balls);
+	const setCurrentBalls = (balls: OddsList) => (currentBalls.value = balls);
 
 	async function beginPageData() {
 		// 3.1 准备一下入参 gameCode lang 两个入参
