@@ -549,7 +549,7 @@ const clearParams = () => {
 
 .dialogType_fixed {
 	position: fixed;
-	width: calc(100% - 40px);
+	width: 940px;
 	background: var(--Bg);
 	padding: 0px !important;
 	padding-bottom: 20px !important;
