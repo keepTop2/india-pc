@@ -138,7 +138,6 @@ class RedBagImpl implements RedBag {
 		return mouseX > this.x && mouseX < this.x + this.width && mouseY > this.y && mouseY < this.y + this.height;
 	}
 }
-
 // 红包数组
 const redBags: RedBag[] = [];
 
@@ -307,8 +306,6 @@ onMounted(async () => {
 		} else {
 			dialogTitle.value = $.t(`activity['很遗憾']`);
 		}
-		console.log(123123123123123);
-
 		settlement.value = data.data;
 		showRedBagRainResult.value = true;
 	});
