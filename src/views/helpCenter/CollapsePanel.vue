@@ -78,7 +78,7 @@ const handleClick = () => {
 	> div {
 		height: 46px;
 		line-height: 46px;
-		border-radius: 8px;
+		border-radius: 4px;
 		color: var(--Text-1);
 		padding-left: 24px;
 		cursor: pointer;

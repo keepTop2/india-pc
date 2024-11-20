@@ -54,6 +54,7 @@ const apply = () => {
 			showCommonDialog.value = true;
 		} else {
 			activityStore.updateCurrentActivityData;
+			showToast(res.data.message);
 		}
 	});
 };

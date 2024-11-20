@@ -1,7 +1,7 @@
 <template>
 	<div class="dropdown-select" ref="dropdown">
 		<button class="trigger" @click="toggleDropdown">
-			<div class="flex-center" style="gap: 10px">
+			<div class="flex-center fs_14" style="gap: 10px">
 				<svg-icon name="currency" size="18px" />
 				<span :class="selectedOptionLabel ? 'selectedOptionLabel' : ''">{{ selectedOptionLabel || placeholder }} </span>
 			</div>
@@ -135,7 +135,7 @@ onUnmounted(() => {
 	position: absolute;
 	left: 0;
 	width: 100%;
-	min-height: 180px;
+	min-height: 233px;
 	border: none;
 	border-radius: 4px;
 	background-color: var(--Bg-1);
@@ -165,8 +165,9 @@ onUnmounted(() => {
 		height: 34px;
 		outline: none;
 		background-color: var(--Bg-2);
-		color: var(--Text-2-1);
-		border-radius: 0;
+		color: var(--Text-s);
+		border-radius: 4px 4px 0 0;
+		font-size: 14px;
 	}
 }
 
