@@ -33,7 +33,7 @@ const props = withDefaults(
 	color: var(--Text-a);
 	text-align: center;
 	font-family: "PingFang SC";
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: 500;
 	box-sizing: border-box;
 	transition: all 0.2s ease;

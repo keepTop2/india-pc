@@ -1,25 +1,25 @@
 <template>
 	<div>
 		<div class="title flex_space-between Text_s">
-			<span>总余额</span>
+			<span>{{ $t(`user['总余额']`) }}</span>
 			<span class="Text1 fs_10">$ 1000.00(≈￥7230.00)</span>
 		</div>
 		<div class="card">
 			<div @click="router.push('/recharge')">
 				<img src="../image/recharge.png" alt="" />
-				<span>存款</span>
+				<span>{{ $t(`user['存款']`) }}</span>
 			</div>
 			<div @click="router.push('/withdrawal')">
 				<img src="../image/withdrawal.png" alt="" />
-				<span>提现</span>
+				<span>{{ $t(`user['提现']`) }}</span>
 			</div>
 			<div @click="router.push('/transactionRecords')">
 				<img src="../image/transactionRecords.png" alt="" />
-				<span>交易</span>
+				<span>{{ $t(`user['交易']`) }}</span>
 			</div>
 			<div @click="router.push('/bettingRecords')">
 				<img src="../image/bettingRecords.png" alt="" />
-				<span>投注记录</span>
+				<span>{{ $t(`user['投注记录']`) }}</span>
 			</div>
 		</div>
 	</div>

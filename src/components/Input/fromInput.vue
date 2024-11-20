@@ -50,7 +50,6 @@ const emit = defineEmits(["update:modelValue"]);
 	position: relative;
 	display: flex;
 	align-items: center;
-	margin-top: 6px;
 	border-radius: 4px;
 	background: var(--Bg-1);
 	box-sizing: border-box;

@@ -68,68 +68,70 @@ import userRoutes from "/@/router/modules/userMenu";
 import router from "/@/router";
 import { useModalStore } from "/@/stores/modules/modalStore";
 import messageCenter from "/@/views/messageCenter/index.vue";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const userMenus = [
 	{
-		title: "个人信息",
+		title: $.t(`user['个人信息']`),
 		icon: "user_info",
 		type: "modal",
 		value: "userInfo",
 	},
 	{
-		title: "存款",
+		title: $.t(`user['存款']`),
 		icon: "deposit",
 		type: "page",
 		value: "recharge",
 	},
 	{
-		title: "提款",
+		title: $.t(`user['提款']`),
 		icon: "withdraw",
 		type: "page",
 		value: "withdrawal",
 	},
 	{
-		title: "平台币转换",
+		title: $.t(`user['平台币转换']`),
 		icon: "currencyConverter",
 		type: "page",
 		value: "currencyConverter",
 	},
 	{
-		title: "交易记录",
+		title: $.t(`user['交易记录']`),
 		icon: "transaction_history",
 		type: "page",
 		value: "transactionRecords",
 	},
 	{
-		title: "投注记录",
+		title: $.t(`user['投注记录']`),
 		icon: "bet_records",
 		type: "page",
 		value: "bettingRecords",
 	},
 	{
-		title: "安全中心",
+		title: $.t(`user['安全中心']`),
 		icon: "security_center",
 		type: "page",
 		value: "security_center",
 	},
 	{
-		title: "VIP俱乐部",
+		title: $.t(`user['VIP俱乐部']`),
 		icon: "vip",
 		type: "modal",
 		value: "vip",
 	},
 	{
-		title: "邀请好友",
+		title: $.t(`user['邀请好友']`),
 		icon: "invite_friends",
 		type: "modal",
 		value: "InviteFriends",
 	},
 	{
-		title: "联盟计划",
+		title: $.t(`user['联盟计划']`),
 		icon: "league",
 		type: "modal",
 	},
 	{
-		title: "意见反馈",
+		title: $.t(`user['意见反馈']`),
 		icon: "feedback",
 		type: "page",
 		value: "feedback",

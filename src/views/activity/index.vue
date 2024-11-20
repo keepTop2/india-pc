@@ -28,14 +28,15 @@ const activityTabsList: any = ref([]);
 const currentTab = ref(0);
 const finished = ref(false);
 const bannerList = ref([]);
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const params = reactive({
 	pageNumber: 1,
 	pageSize: 10,
 	labelId: "",
 });
-const isLoading = ref(false); // Track loading status
+const isLoading = ref(false);
 
-// Fetch activity tabs on mount
 onMounted(() => {
 	getactivityTabsList();
 	getBannerList();
@@ -49,45 +50,41 @@ const getBannerList = () => {
 			bannerList.value = res.data;
 		});
 };
-// Load activity list based on current tab
 const getactivityList = async () => {
-	if (finished.value || isLoading.value) return; // Prevent fetching if already finished or loading
+	if (finished.value || isLoading.value) return;
 
-	isLoading.value = true; // Set loading to true
+	isLoading.value = true;
 	if (currentTab.value !== 0) {
 		params.labelId = activityTabsList.value[currentTab.value].id;
 	} else {
-		params.labelId = ""; // Reset labelId if tab 0
+		params.labelId = "";
 	}
 
 	const res = await activityApi.activityPageList(params);
 	if (res.code === Common.ResCode.SUCCESS) {
 		activityList.value = activityList.value.concat(res.data.records);
 		if (res.data.records.length < params.pageSize) {
-			finished.value = true; // Mark as finished if no records are returned
+			finished.value = true;
 		}
-		params.pageNumber += 1; // Increment page number for next load
+		params.pageNumber += 1;
 	}
-	isLoading.value = false; // Reset loading status
+	isLoading.value = false;
 };
 
-// Fetch activity tabs from API
 const getactivityTabsList = async () => {
 	const res = await activityApi.activityTabsList();
 	activityTabsList.value = res.data || [];
 	activityTabsList.value.unshift({
-		labNameI18Code: "全部",
+		labNameI18Code: $.t(`activity['全部']`),
 	});
 };
-
-// Change current tab and reset activity list
 const setCurrentTab = async (index: number) => {
-	if (currentTab.value === index) return; // Prevent duplicate calls for the same tab
+	if (currentTab.value === index) return;
 	currentTab.value = index;
-	finished.value = false; // Reset finished status for new tab
-	params.pageNumber = 1; // Reset page number for new tab
-	activityList.value = []; // Clear current activity list
-	await getactivityList(); // Fetch new activity list
+	finished.value = false;
+	params.pageNumber = 1;
+	activityList.value = [];
+	await getactivityList();
 };
 </script>
 

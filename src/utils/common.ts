@@ -90,7 +90,7 @@ class Common {
 	static USDTAddressHiding(value: string) {
 		if (value) {
 			const hiddenChars = " **** **** ";
-			const visibleChars = value.slice(0, 6) + hiddenChars + value.slice(-6);
+			const visibleChars = value.slice(0, 4) + hiddenChars + value.slice(-4);
 			return visibleChars;
 		}
 	}
@@ -159,7 +159,7 @@ class Common {
 	 * @returns
 	 */
 	static formatFloat(num: number | string | null | undefined, n: number = 2) {
-		if (!num) return;
+		if (!num) return "0.00";
 		const f_x = parseFloat(String(num));
 		if (isNaN(f_x)) {
 			return "0.00";
@@ -512,7 +512,7 @@ class Common {
 	 * @description 获取根据主题语言获取图片
 	 */
 	static getCommonImgPath(path: string) {
-		return new URL(`../assets/${i18n.global.locale.value}/common/${path}`, import.meta.url).href;
+		return new URL(`../assets/theme/common/${path}`, import.meta.url).href;
 	}
 
 	static getThemeImgPath(path: string) {

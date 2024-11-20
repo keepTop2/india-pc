@@ -121,7 +121,7 @@ const initSport = async () => {
 	workerManage.startWorker(workerManage.WorkerMap.sportViewProcessWorker.workerName);
 	await SportApi.sportsLogin({
 		device: 1,
-		venueCode: "",
+		venueCode: "SBA",
 		gameCode: "",
 	}).then((res) => {
 		if (res) {

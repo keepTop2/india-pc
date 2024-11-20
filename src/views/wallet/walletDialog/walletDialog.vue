@@ -221,7 +221,7 @@ const closeDialog = () => {
 		gap: 10px;
 		padding-right: 30px;
 		border-bottom: 1px solid var(--Line-1);
-		box-shadow: 0px 1px 0px 0px #343d48;
+		box-shadow: 0px 1px 0px 0px var(--Shadow-1);
 		box-sizing: border-box;
 
 		.tab {

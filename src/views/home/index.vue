@@ -20,7 +20,7 @@
 				v-if="collectGamesStore.getCollectGamesList?.length"
 			/> -->
 
-			<collectGames :gameList="collectGamesStore.getCollectGamesList" title="喜欢的游戏" />
+			<collectGames :gameList="collectGamesStore.getCollectGamesList" :title="$t(`home['喜欢的游戏']`)" />
 			<!-- 我们的游戏 -->
 			<SportGame />
 
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import banner from "./components/banner.vue";
 import bannerSkeleton from "./components/bannerSkeleton.vue";
 import hotGame from "./components/hotGame.vue";
@@ -57,6 +57,7 @@ import { useCollectGamesStore } from "/@/stores/modules/collectGames";
 import SportGame from "./components/SportGame.vue";
 import { bannerApi } from "/@/api/banner";
 import { redbagRainSingleton } from "/@/hooks/useRedbagRain";
+import { useUserStore } from "/@/stores/modules/user";
 const activityStore = useActivityStore();
 const collectGamesStore = useCollectGamesStore();
 const websocketService: any = activitySocketService.getInstance();
@@ -77,15 +78,26 @@ const queryGameInfoDetail = async () => {
 		console.error("Error fetching hot games:", error);
 	}
 };
-
+watch(
+	() => useUserStore().getLogin,
+	() => {
+		getBannerList();
+	}
+);
 const getBannerList = () => {
-	bannerApi
-		.queryBannerList({
-			gameOneClassId: 0,
-		})
-		.then((res) => {
-			bannerList.value = res.data;
+	if (useUserStore().getLogin) {
+		bannerApi
+			.queryBannerList({
+				gameOneClassId: 0,
+			})
+			.then((res) => {
+				bannerList.value = res.data;
+			});
+	} else {
+		bannerApi.queryUnBannerList({}).then((res) => {
+			bannerList.value = [res.data];
 		});
+	}
 };
 const queryLobbyTopGame = async () => {
 	try {

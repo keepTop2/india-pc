@@ -78,7 +78,7 @@
 							{{ $t(`security_center['验证码将发送至手机号']`) }}+{{ UserStore.getUserGlobalSetInfo.areaCode }} {{ Common.maskString(UserStore.getUserGlobalSetInfo.phone) }}
 						</p>
 						<p class="Text1 mt_8" v-else>{{ $t(`security_center['验证码将发送至邮箱账号：']`) }}{{ Common.maskEmail(UserStore.getUserGlobalSetInfo.email) }}</p>
-						<p class="Text1 mb_8">有效时间：10分钟</p>
+						<p class="Text1 mb_8">{{ $t(`security_center['有效时间：10分钟']`) }}</p>
 					</div>
 					<div>
 						<p class="Text_s mb_8 mt_8">{{ $t(`security_center['验证码']`) }}</p>
@@ -136,10 +136,6 @@ const VerifyError = reactive({
 	confirmPassword: false,
 });
 
-// 验证码
-const hcaptcha: any = ref(null);
-
-const AreaCodeOptions: any = ref([]);
 // 登录表单
 const payLoad = reactive({
 	userAccount: "",

@@ -23,7 +23,7 @@
 						<div class="num">{{ eventsInfo?.soccerInfo?.homeRedCard }}</div>
 						<div class="num">{{ eventsInfo?.soccerInfo?.homeYellowCard }}</div>
 						<div class="num">{{ 0 }}</div>
-						<div class="num">{{ eventsInfo?.gameInfo?.liveHomeScore }}</div>
+						<div class="num F2">{{ eventsInfo?.gameInfo?.liveHomeScore }}</div>
 					</div>
 				</div>
 				<div class="line"></div>
@@ -39,7 +39,7 @@
 						<div class="num">{{ eventsInfo?.soccerInfo?.awayRedCard }}</div>
 						<div class="num">{{ eventsInfo?.soccerInfo?.awayYellowCard }}</div>
 						<div class="num">{{ 0 }}</div>
-						<div class="num">{{ eventsInfo?.gameInfo?.liveAwayScore }}</div>
+						<div class="num F2">{{ eventsInfo?.gameInfo?.liveAwayScore }}</div>
 					</div>
 				</div>
 			</div>
@@ -63,7 +63,8 @@
 			</div>
 			<div class="event-info">
 				<div class="date">
-					<span class="red">{{ getEventsTitle(eventsInfo) }} {{ gameTime }}</span>
+					<span class="title">{{ getEventsTitle(eventsInfo) }}</span
+					><span class="red">{{ gameTime }}</span>
 					<!-- <span class="red">89:26</span> -->
 				</div>
 				<div class="score">
@@ -298,6 +299,9 @@ const { gameTime } = useGameTimer(gameState);
 				font-weight: 400;
 				.red {
 					color: var(--Theme);
+				}
+				.title {
+					color: var(--Text-s);
 				}
 			}
 			.score {

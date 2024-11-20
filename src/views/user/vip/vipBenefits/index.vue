@@ -3,11 +3,13 @@
 		<div class="banner">
 			<img src="./image/banner.png" alt="" />
 			<div class="bannerContent">
-				<div class="bannberTitle">VIP专属福利</div>
-				<div class="bannberLabel">立即加入我们的 VIP 俱乐部，准备好享受丰厚的礼品、赠品和超棒的功能！体验更高现金返还和独家奖励带来的快感，一定会让您惊喜不已。</div>
+				<div class="bannberTitle">{{ $t(`user['VIP专属福利']`) }}</div>
+				<div class="bannberLabel">
+					{{ $t(`user['立即加入我们的 VIP 俱乐部，准备好享受丰厚的礼品、赠品和超棒的功能！体验更高现金返还和独家奖励带来的快感，一定会让您惊喜不已。']`) }}
+				</div>
 				<div class="bannberBottom">
-					<div @click="router.push('/')">去玩游戏</div>
-					<div @click="useModalStore().openModal('vipHierarchy')">查看详情</div>
+					<div @click="router.push('/')">{{ $t(`user['去玩游戏']`) }}</div>
+					<div @click="useModalStore().openModal('vipHierarchy')">{{ $t(`user['查看详情']`) }}</div>
 				</div>
 			</div>
 		</div>
@@ -22,7 +24,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="Text_s mb_16 mt_20">VIP奖励明细</div>
+		<div class="Text_s mb_16 mt_20">{{ $t(`user['VIP奖励明细']`) }}</div>
 		<div class="table">
 			<div class="row">
 				<div class="cell">&nbsp;</div>
@@ -76,23 +78,23 @@ const vipRankList: any = ref([]);
 const cradList = ref([
 	{
 		icon: card1Icon,
-		title: "加密货币免费提现",
-		label: "解锁 VIP 38 的加密货币免费提款特权轻松提取您的奖金，无需支付额外费用。",
+		title: $.t(`user['加密货币免费提现']`),
+		label: $.t(`user['解锁 VIP 38 的加密货币免费提款特权轻松提取您的奖金，无需支付额外费用']`),
 	},
 	{
 		icon: card2Icon,
-		title: "奖励幸运旋转",
-		label: "旋转轮盘，随着您等级的提高，通过我们激动人心的幸运旋转获得更大的奖品。",
+		title: $.t(`user['奖励幸运旋转']`),
+		label: $.t(`user['旋转轮盘，随着您等级的提高，通过我们激动人心的幸运旋转获得更大的奖品']`),
 	},
 	{
 		icon: card3Icon,
-		title: "惊人的升级奖金",
-		label: "惊喜的奖励正在等着你，随着你等级的提升，奖励会被多次解锁。",
+		title: $.t(`user['惊人的升级奖金']`),
+		label: $.t(`user['惊喜的奖励正在等着你，随着你等级的提升，奖励会被多次解锁。']`),
 	},
 	{
 		icon: card4Icon,
-		title: "豪华赠品",
-		label: "尊享赠送私人顶级奢华福利机会。",
+		title: $.t(`user['豪华赠品']`),
+		label: $.t(`user['尊享赠送私人顶级奢华福利机会。']`),
 	},
 ]);
 const awardList: any = [

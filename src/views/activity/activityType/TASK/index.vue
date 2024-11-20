@@ -1,12 +1,12 @@
 <template>
-	<activityWrapper title="任务">
+	<activityWrapper :title="$t(`activity['任务']`)">
 		<div class="activityMain">
 			<div class="activityImg pt_20 pb_10">
 				<img v-lazy-load="mainImage" alt="" />
 			</div>
 			<div class="Content">
 				<div class="rewardsBg" :style="{ background: `url(${Common.getThemeImgPath('task_rewardsBg.png')}) no-repeat`, backgroundSize: '100% 100%' }">
-					<div class="mb_11 Text_a">累计奖励</div>
+					<div class="mb_11 Text_a">{{ $t(`activity['累计奖励']`) }}</div>
 					<div class="color_f1">{{ taskData?.platCurrencySymbol }} {{ taskData?.totalAmount }}</div>
 				</div>
 				<div class="tabs">
@@ -27,7 +27,7 @@
 								</div>
 								<div class="fs_12 Text_a bottom">
 									<span
-										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
+										>{{ $t(`activity['奖励']`) }}：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
 									<span
 										><span class="color_Theme">{{ item.achieveAmount || 0 }}</span
@@ -55,7 +55,7 @@
 								</div>
 								<div class="fs_12 Text_a bottom">
 									<span
-										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
+										>{{ $t(`activity['奖励']`) }}：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
 									<span
 										><span class="color_Theme">{{ item.achieveAmount || 0 }}</span
@@ -73,7 +73,7 @@
 					</div>
 					<div v-if="currentTab == 2">
 						<div class="daojishiBg fs_14 mt_0 mb_14">
-							<span class="Text_s">剩余时间：</span><span class="color_Theme">{{ Common.convertMilliseconds(countdown * 1000) }}</span>
+							<span class="Text_s">{{ $t(`activity['剩余时间']`) }}：</span><span class="color_Theme">{{ Common.convertMilliseconds(countdown * 1000) }}</span>
 						</div>
 						<div v-for="item in taskData?.noviceTask" class="card" :class="item.subTaskType">
 							<div>
@@ -85,7 +85,7 @@
 								<div class="fs_12 Text_s ellipsis pr_5" v-html="item.taskDescriptionI18nCode"></div>
 								<div class="fs_12 Text_s bottom">
 									<span
-										>奖励：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
+										>{{ $t(`activity['奖励']`) }}：<span class="color_f1"> {{ item.platCurrencySymbol }} {{ item.rewardAmount }}</span></span
 									>
 								</div>
 							</div>
@@ -101,15 +101,15 @@
 			</div>
 		</div>
 	</activityWrapper>
-	<activityDialog v-model="showDialog" title="温馨提示" :closeIcon="false" type="task" :confirm="confirmDialog">
-		<div>恭喜您获得</div>
+	<activityDialog v-model="showDialog" :title="$t(`activity['温馨提示']`)" :closeIcon="false" type="task" :confirm="confirmDialog">
+		<div>{{ $t(`activity['恭喜您获得']`) }}</div>
 		<div class="result">{{ dialogInfo.currencyName }} {{ dialogInfo.rewardAmount }}</div>
-		<template v-slot:footer>关闭 </template>
+		<template v-slot:footer>{{ $t(`activity['关闭']`) }} </template>
 	</activityDialog>
 	<CommonDialog v-model="showRule">
 		<div class="Dialog">
 			<div class="title">
-				<span>任务说明</span>
+				<span>{{ $t(`activity['任务说明']`) }}</span>
 				<span @click="showRule = false"><img src="../../components/image/close_icon.png" alt="" /></span>
 			</div>
 			<div class="content">
@@ -133,22 +133,24 @@ const { countdown, startCountdown, stopCountdown } = useCountdown();
 import mainImage from "./image/image.png";
 import { useCountdown } from "/@/hooks/countdown";
 import { useUserStore } from "/@/stores/modules/user";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const modalStore = useModalStore();
 const tasktype = ref([
 	{
-		label: "每日任务",
+		label: $.t(`activity['每日任务']`),
 		value: 0,
 	},
 	{
-		label: "每周任务",
+		label: $.t(`activity['每周任务']`),
 		value: 1,
 	},
 ]);
 const taskStatus: any = {
-	3: "去完成",
-	0: "去领取",
-	1: "已领取",
-	2: "已过期",
+	3: $.t(`activity['去完成']`),
+	0: $.t(`activity['去领取']`),
+	1: $.t(`activity['已领取']`),
+	2: $.t(`activity['已过期']`),
 };
 const router = useRouter();
 const taskData: any = ref({});
@@ -183,15 +185,15 @@ const getTaskDetail = () => {
 			startCountdown(taskData.value?.noviceTask[0].expireTime);
 			tasktype.value = [
 				{
-					label: "每日任务",
+					label: $.t(`activity['每日任务']`),
 					value: 0,
 				},
 				{
-					label: "每周任务",
+					label: $.t(`activity['每周任务']`),
 					value: 1,
 				},
 				{
-					label: "新手任务",
+					label: $.t(`activity['新手任务']`),
 					value: 2,
 				},
 			];
