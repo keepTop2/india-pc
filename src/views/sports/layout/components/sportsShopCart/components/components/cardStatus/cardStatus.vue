@@ -3,17 +3,19 @@
 		<div class="status">
 			<template v-if="betStatus == 0">
 				<span class="icon"><svg-icon name="sports-success" size="22px"></svg-icon></span>
-				<span class="success">投注成功</span>
+				<span class="success">{{ $.t(`sports['投注成功']`) }}</span>
 			</template>
 			<template v-else>
 				<span class="icon"><svg-icon name="sports-error" size="22px"></svg-icon></span>
-				<span class="fail">投注失败</span>
+				<span class="fail">{{ $.t(`sports['投注失败']`) }}</span>
 			</template>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const props = withDefaults(
 	defineProps<{
 		/** 注单状态  0 ：下注成功 ；1 ：下注失败  */

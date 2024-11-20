@@ -1,6 +1,6 @@
 <template>
 	<div class="hot-event-container">
-		<div class="hot_header"><span class="header-icon"></span>热门赛事</div>
+		<div class="hot_header"><span class="header-icon"></span>{{ $t(`sports['热门赛事']`) }}</div>
 		<div class="event-list">
 			<div class="event-card" v-for="(item, index) in promotionsData" :key="index">
 				<div class="card-header">

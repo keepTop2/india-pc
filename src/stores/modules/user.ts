@@ -1,19 +1,19 @@
 // import { useCookies } from '@vueuse/integrations/useCookies';
 
+import Common from "/@/utils/common";
+import { CommonApi } from "/@/api/common";
+import EncryptionFn from "/@/utils/encryption";
+import { LangEnum } from "/@/enum/appConfigEnum";
+import activitySocketService from "/@/utils/activitySocketService";
 import { defineStore } from "pinia";
+import { loginApi } from "/@/api/login";
+import pubsub from "/@/pubSub/pubSub";
+import { setLang } from "/@/i18n/index";
+import showToast from "/@/hooks/useToast";
 import { useCollectGamesStore } from "./collectGames";
 import { useMenuStore } from "./menu";
-import { CommonApi } from "/@/api/common";
-import { loginApi } from "/@/api/login";
-import { userApi } from "/@/api/user";
-import { LangEnum } from "/@/enum/appConfigEnum";
-import showToast from "/@/hooks/useToast";
-import { setLang } from "/@/i18n/index";
-import pubsub from "/@/pubSub/pubSub";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
-import activitySocketService from "/@/utils/activitySocketService";
-import Common from "/@/utils/common";
-import EncryptionFn from "/@/utils/encryption";
+import { userApi } from "/@/api/user";
 
 // import router from '/@/router';
 
@@ -118,7 +118,6 @@ export const useUserStore = defineStore("User", {
 		},
 		// 设置用户信息
 		setUserInfo(info: any) {
-			console.log("info", info);
 			this.token = info.token;
 			Object.assign(this.userInfo, info);
 		},

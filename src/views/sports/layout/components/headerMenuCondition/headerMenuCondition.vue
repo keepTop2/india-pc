@@ -21,7 +21,7 @@
 				<!-- 搜索框占位 -->
 				<div class="search" @click="handleSearch(true)">
 					<div class="icon"><svg-icon name="sports-search" size="14px" /></div>
-					<input type="text" placeholder="请输入赛事名称/球队名" />
+					<input type="text" :placeholder="$t(`sports['请输入赛事名称/球队名']`)" />
 				</div>
 				<!-- 时间/热门开关，仅在特定条件下显示 -->
 				<wSwitch v-if="isShowTime" class="ml_12" :switchObj="switchObjRight" :disabled="switchDisable.right" @selected="wSwitchSelectRight"></wSwitch>
@@ -53,6 +53,8 @@ import pubsub from "/@/pubSub/pubSub";
 import SportsCommonFn from "/@/views/sports/utils/common";
 import { useShopCatControlStore } from "/@/stores/modules/sports/shopCatControl";
 import useSearch from "/@/views/sports/components/Search";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 
 const sportsBetEvent = useSportsBetEventStore();
 const SportAttentionStore = useSportAttentionStore();
@@ -78,21 +80,21 @@ const switchDisable = ref({
 
 // 分类数据，用于左侧按钮生成
 const MajorCategoriesMenu = ref([
-	{ label: "今日", type: "todayContest", path: "/sports/todayContest" },
-	{ label: "早盘", type: "morningTrading", path: "/sports/morningTrading" },
-	{ label: "冠军", type: "champion", path: "/sports/champion" },
+	{ label: $.t(`sports['今日']`), type: "todayContest", path: "/sports/todayContest" },
+	{ label: $.t(`sports['早盘']`), type: "morningTrading", path: "/sports/morningTrading" },
+	{ label: $.t(`sports['冠军']`), type: "champion", path: "/sports/champion" },
 ]);
 
 // 今日赛事下的开关状态配置
 const eventStatusData = ref({
-	on: { label: "滚球", type: "rollingBall", active: route.path === "/sports/todayContest/rollingBall", path: "/sports/todayContest/rollingBall" },
-	off: { label: "未开赛", type: "todayContest", active: route.path === "/sports/todayContest/notStarted", path: "/sports/todayContest/notStarted" },
+	on: { label: $.t(`sports['滚球']`), type: "rollingBall", active: route.path === "/sports/todayContest/rollingBall", path: "/sports/todayContest/rollingBall" },
+	off: { label: $.t(`sports['未开赛']`), type: "todayContest", active: route.path === "/sports/todayContest/notStarted", path: "/sports/todayContest/notStarted" },
 });
 
 // 热门/时间开关状态配置
 const switchObjRight = ref({
-	on: { label: "时间", type: "time", active: true },
-	off: { label: "热门", type: "hot", active: false },
+	on: { label: $.t(`sports['时间']`), type: "time", active: true },
+	off: { label: $.t(`sports['热门']`), type: "hot", active: false },
 });
 
 // 组件挂载前的初始化

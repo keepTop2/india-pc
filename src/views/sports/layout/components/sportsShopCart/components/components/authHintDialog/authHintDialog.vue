@@ -3,18 +3,18 @@
 		<div class="icon">
 			<svg-icon :name="sportsBetEvent.radioStatus ? 'common-check_icon_on' : 'common-check_icon'" size="14px" />
 		</div>
-		<div class="text">自动接受更好的赔率</div>
+		<div class="text">{{ $.t(`sports['自动接受更好的赔率']`) }}</div>
 	</div>
 
 	<Dialog append-to-body v-model="hintVisible" width="380" class="hint-dialog">
 		<template #header>
-			<div class="dialog-header">温馨提示</div>
+			<div class="dialog-header">{{ $.t(`sports['温馨提示']`) }}</div>
 		</template>
 
-		<div class="dialog-body">取消后您将“自动接受任何赔率”即无论下注时的赔率如何变化，系统都将默认您可以接受，页面会出现赔率变化提示，但不会中断您的下注行为。</div>
+		<div class="dialog-body">{{ $.t(`sports.betWarnText`) }}</div>
 
 		<div class="know">
-			<el-button @click="hintVisible = false">我知道了</el-button>
+			<el-button @click="hintVisible = false">{{ $.t(`sports['我知道了']`) }}</el-button>
 		</div>
 	</Dialog>
 </template>
@@ -26,6 +26,8 @@ import sportsApi from "/@/api/sports/sports";
 import { getPublicSetting } from "/@/views/sports/utils/commonFn";
 import { useSportsInfoStore } from "/@/stores/modules/sports/sportsInfo";
 import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const sportsBetEvent = useSportsBetEventStore();
 const sportsInfoStore = useSportsInfoStore();
 

@@ -40,7 +40,7 @@
 								<span class="market-point">@{{ row.price }}</span>
 							</div>
 							<div class="event-info">
-								<span>{{ "滚球" }}</span>
+								<span>{{ $t(`sports['滚球']`) }}</span>
 								<span>{{ row.betTypeName }}</span>
 								<span>[{{ row.oddsTypeName }}]</span>
 							</div>
@@ -51,7 +51,7 @@
 								<span>{{ Common.getYMDHms(row.globalShowTime) }}</span>
 							</div>
 							<div class="homeScore-info">
-								<span>全场比分</span>
+								<span>{{ $t(`sports['全场比分']`) }}</span>
 								<span>{{ row.homeScore }}-{{ row.awayScore }}</span>
 							</div>
 						</div>
@@ -64,7 +64,7 @@
 										<span class="market-point">@{{ item.price }}</span>
 									</div>
 									<div class="event-info">
-										<span>{{ "滚球" }}</span>
+										<span>{{ $t(`sports['滚球']`) }}</span>
 										<span>{{ item.betTypeName }}</span>
 										<span>{{ item.oddsTypeName }}</span>
 									</div>
@@ -75,7 +75,7 @@
 										<span>[{{ Common.getYMDHms(item.globalShowTime) }}]</span>
 									</div>
 									<div class="homeScore-info">
-										<span>全场比分</span>
+										<span>{{ $t(`sports['全场比分']`) }}</span>
 										<span>{{ item.homeScore }}-{{ item.awayScore }}</span>
 									</div>
 								</div>
@@ -110,7 +110,7 @@
 				<!-- 状态 -->
 				<el-table-column :label="$t(`sports.betRecord['状态']`)" width="192" align="center" :resizable="false">
 					<template #default="{ row, column }">
-						<div class="bet-status" :class="computedStatusLabel[row.status].className">{{ computedStatusLabel[row.status].label }}</div>
+						<div class="bet-status" :class="computedStatusLabel[row.status].className">{{ $t(`sports.betRecord['computedStatusLabel[row.status].label']`) }}</div>
 					</template>
 				</el-table-column>
 			</el-table>

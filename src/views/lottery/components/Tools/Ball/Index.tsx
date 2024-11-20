@@ -1,23 +1,25 @@
 import "./index.scss";
-import { computed, defineComponent } from "vue";
+
+import { computed, defineComponent, type Ref } from "vue";
+
+import { i18n } from "/@/i18n";
+import { useLottery } from "/@/views/lottery/stores/lotteryStore";
+import { type OddsItem, type OddsList } from "/@/views/lottery/types/index";
+
 const ClearIcon = new URL("/src/assets/zh-CN/lottery/clear.svg", import.meta.url).href;
 const KsxzIcon = new URL("/src/assets/zh-CN/lottery/ksxz.svg", import.meta.url).href;
-import { i18n } from "/@/i18n";
+
 const $: any = i18n.global;
+
 export default () => {
 	// 定义 SelectBallGroup 组件，用于显示多个球的选择
 	const SelectBallGroup = defineComponent({
 		name: "SelectBallGroup",
 		props: {
-			renderBallNum: {
+			children: {
 				// 选择球的个数
-				type: Number,
-				required: true,
-			},
-			startIndex: {
-				// 球的起始序号。例如时时彩是从 1 开始的，幸运 28 是从 0 开始的
-				type: Number,
-				default: 1,
+				type: Array,
+				default: () => [],
 			},
 			maxLeng: {
 				// 最大选择个数
@@ -45,39 +47,44 @@ export default () => {
 		emits: ["select", "clear"],
 
 		setup(props, { emit }) {
-			const { renderBallNum, maxLeng, type = 1, multiple = true, startIndex } = props;
+			const { children, maxLeng, type = 1, multiple = true } = props;
+			const { currentBalls } = useLottery();
+
 			// 处理球的选择逻辑
-			const handleSelect = (ballNum: number, isRandom = false) => {
-				console.log("ballNum", ballNum);
+			const handleSelect = (oddsItem: OddsItem, isRandom = false) => {
+				const { optionCode } = oddsItem;
+				const isIncluded = props.value.includes(optionCode);
+
 				if (!multiple) {
-					emit("select", { value: ballNum, list: props.value.includes(ballNum) && !isRandom ? [] : [ballNum] });
+					emit("select", {
+						value: oddsItem,
+						list: isIncluded && !isRandom ? [] : [oddsItem],
+					});
 					return;
 				}
 				// 如果球号已经选中，移除该球号
-				if (props.value.includes(ballNum)) {
+				if (isIncluded) {
 					emit("select", {
-						value: ballNum,
-						list: props.value.filter((item) => item !== ballNum),
+						value: oddsItem,
+						list: (props.value as OddsList).filter((v) => v.optionCode !== optionCode),
 					});
 				} else {
 					// 如果未选中，并且未超过最大选择数量，添加该球号
 					if (maxLeng && props.value.length === maxLeng) return; // 超过最大限制时不允许选择
 					emit("select", {
-						value: ballNum,
-						list: [...props.value, ballNum],
+						value: oddsItem,
+						list: [...props.value, oddsItem],
 					});
 				}
 			};
 
 			// 生成球的数量列表
-			const balls = computed(() => new Array(renderBallNum).fill(0));
+			const balls = computed(() => children) as Ref<OddsItem[]>;
 
 			// 快速选择
 			const handleRandomBall = () => {
 				const index = Math.floor(Math.random() * balls.value.length);
-				const renderNumber = startIndex === 0 ? index : index + 1;
-
-				handleSelect(renderNumber, true);
+				handleSelect(balls.value[index], true);
 			};
 
 			return () => (
@@ -99,15 +106,15 @@ export default () => {
 
 					{/* 显示球的区域 */}
 					<div className="balls-box">
-						{balls.value.map((_, index) => {
-							const renderNumber = startIndex === 0 ? index : index + 1;
+						{balls.value.map((item, index) => {
+							const { optionCode } = item;
 							return (
 								<Ball
-									key={renderNumber}
-									onSelect={() => handleSelect(renderNumber)} // 绑定选择球的事件
-									actived={props.value.includes(renderNumber)} // 判断球是否被选中
+									key={index}
+									onSelect={() => handleSelect(item)} // 绑定选择球的事件
+									actived={(props.value as OddsList).map((v) => v.optionCode).includes(optionCode)} // 判断球是否被选中
 									type={type} // 设置球的类型
-									ballNumber={renderNumber} // 当前球的编号
+									ballNumber={+optionCode} // 当前球的编号
 								/>
 							);
 						})}
@@ -133,7 +140,7 @@ export default () => {
 			},
 			ballNumber: {
 				// 球的编号
-				type: Number,
+				type: [Number, String],
 			},
 			size: {
 				type: String,
@@ -168,7 +175,7 @@ export default () => {
 					onClick={handleClick} // 点击球触发选择事件
 					class={`lottery-ball${props.actived ? " actived" : ""}`} // 根据是否选中设置不同的样式
 				>
-					<span class="ball">{props.ballNumber}</span>
+					<span class="ball">{+props.ballNumber!}</span>
 				</div>
 			);
 		},

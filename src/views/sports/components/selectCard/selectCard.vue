@@ -14,12 +14,14 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { watch } from "vue";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const route = useRoute(); // 获取当前路由实例
 
 const routeNameMap = new Map([
-	["todayContestRollingBall", "滚球盘"],
-	["todayContestNotStarted", "未开赛"],
-	["morningTradingList", "早盘"],
+	["todayContestRollingBall", $.t(`sports["滚球盘"]`)],
+	["todayContestNotStarted", $.t(`sports["未开赛"]`)],
+	["morningTradingList", $.t(`sports["早盘"]`)],
 ]);
 
 interface teamDataType {

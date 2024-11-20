@@ -5,7 +5,9 @@
 			type="number"
 			:min="common.formatFloat(sportsBetInfo.championSingleTicketInfo.minBet)"
 			:max="common.formatFloat(sportsBetInfo.championSingleTicketInfo.maxBet)"
-			:placeholder="`限额 ${common.formatFloat(sportsBetInfo.championSingleTicketInfo.minBet)} ～ ${common.formatFloat(sportsBetInfo.championSingleTicketInfo.maxBet)}`"
+			:placeholder="
+				$.t(`sports['限额']`)` ${common.formatFloat(sportsBetInfo.championSingleTicketInfo.minBet)} ～ ${common.formatFloat(sportsBetInfo.championSingleTicketInfo.maxBet)}`
+			"
 			@input="onInputEnter"
 		>
 			<!-- <template #suffix>{{ UserStore.getUserInfo.mainCurrency }}</template> -->
@@ -19,6 +21,8 @@ import common from "/@/utils/common";
 import shopCartChampionPubSub from "/@/views/sports/hooks/shopCartChampionPubSub";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import { useUserStore } from "/@/stores/modules/user";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const UserStore = useUserStore();
 const sportsBetInfo = useSportsBetInfoStore();
 let stake = computed(() => shopCartChampionPubSub.betValueState.singleTicketBetValue);

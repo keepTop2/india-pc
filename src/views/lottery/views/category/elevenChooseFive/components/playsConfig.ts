@@ -1,5 +1,7 @@
 import { SELECT_BALL } from "/@/views/lottery/constant/index";
 import { type GameplayList } from "/@/views/lottery/types/index";
+import { generateBalls } from "/@/views/lottery/utils/generateBalls";
+
 // 投注项
 
 export const gameplayList: GameplayList = [
@@ -107,7 +109,7 @@ export const gameplayList: GameplayList = [
 				actived: false,
 				optionCode: "01",
 				type: SELECT_BALL,
-				ballNum: 11,
+				children: generateBalls({ length: 11, hasZero: true, startIndex: 1 }),
 			},
 		],
 	},
@@ -158,7 +160,7 @@ export const gameplayList: GameplayList = [
 				actived: false,
 				optionCode: "01",
 				type: SELECT_BALL,
-				ballNum: 11,
+				children: generateBalls({ length: 11, hasZero: true, startIndex: 1 }),
 			},
 		],
 	},
@@ -209,7 +211,7 @@ export const gameplayList: GameplayList = [
 				actived: false,
 				optionCode: "01",
 				type: SELECT_BALL,
-				ballNum: 11,
+				children: generateBalls({ length: 11, hasZero: true, startIndex: 1 }),
 			},
 		],
 	},
@@ -260,7 +262,7 @@ export const gameplayList: GameplayList = [
 				actived: false,
 				optionCode: "01",
 				type: SELECT_BALL,
-				ballNum: 11,
+				children: generateBalls({ length: 11, hasZero: true, startIndex: 1 }),
 			},
 		],
 	},
@@ -311,7 +313,7 @@ export const gameplayList: GameplayList = [
 				actived: false,
 				optionCode: "01",
 				type: SELECT_BALL,
-				ballNum: 11,
+				children: generateBalls({ length: 11, hasZero: true, startIndex: 1 }),
 			},
 		],
 	},

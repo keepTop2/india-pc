@@ -40,7 +40,9 @@ import { DEFAULT_LANG, langMaps } from "/@/views/lottery/constant/index";
 import { usePagination } from "/@/views/lottery/hooks/usePagination";
 import { useLoginGame } from "/@/views/lottery/stores/loginGameStore";
 import { i18n } from "/@/i18n";
+
 const $: any = i18n.global;
+
 interface TableDataItem {
 	endTime: number;
 	gameCode: string;

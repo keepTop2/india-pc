@@ -22,6 +22,8 @@ import { useSportsBetEventStore } from "/@/stores/modules/sports/sportsBetData";
 import { useSportsBetInfoStore } from "/@/stores/modules/sports/sportsBetInfo";
 import shopCartPubSub from "/@/views/sports/hooks/shopCartPubSub";
 import { AuthHintDialog } from "/@/views/sports/layout/components/sportsShopCart/components/shopCart/components/index";
+import { i18n } from "/@/i18n/index";
+const $: any = i18n.global;
 const sportsBetEvent = useSportsBetEventStore();
 const sportsBetInfo = useSportsBetInfoStore();
 
@@ -39,16 +41,16 @@ const onBet = () => {
 		(item: any) => !combos.value[item.comboType] || parseFloat(combos.value[item.comboType]) >= Number(item.minBet)
 	);
 	if (hasEmpty) {
-		showToast("请输入投注金额");
+		showToast($.t(`sports["请输入投注金额"]`));
 	} else if (!hasReachedMinBet) {
-		showToast("投注金额未达到最低限额");
+		showToast($.t(`sports["投注金额未达到最低限额"]`));
 	} else {
 		// 计算总投注
 		const totalValue = sportsBetInfo.parlayTicketsInfo.combos.reduce((acc: any, obj: any) => {
 			return acc + Common.mul(obj.betCount, parseFloat(combos.value[obj.comboType]));
 		}, 0);
 		if (totalValue > sportsBetInfo.balance) {
-			showToast("余额不足，请先充值");
+			showToast($.t(`sports["余额不足，请先充值"]`));
 			return;
 		}
 		placeParlayBet();
@@ -83,10 +85,10 @@ const placeParlayBet = async () => {
 	const res: any = await sportsApi.PlaceParlayBet(params).catch((err) => {
 		const { data } = err.response;
 		if (data.errorCode == "B014") {
-			showToast("投注金额超出最大限额");
+			showToast($.t(`sports["投注金额超出最大限额"]`));
 		}
 		if (data.errorCode == "B038") {
-			showToast("超过最大赢取金额");
+			showToast($.t(`sports["超过最大赢取金额"]`));
 		}
 	});
 	if (res.data) {
