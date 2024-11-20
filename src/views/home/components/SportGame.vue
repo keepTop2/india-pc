@@ -5,10 +5,10 @@
 				<div>
 					<span class="flex-center">
 						<svg-icon name="sports-event_game" width="24px" height="24px" />
-						<span class="Text_s fs_20">我们的游戏</span>
+						<span class="Text_s fs_20">{{ $t(`sports['我们的游戏']`) }}</span>
 					</span>
 				</div>
-				<div class="more Text1 fs_18 curp" @click="gotoVenue" v-if="gameList.length > 3">更多</div>
+				<div class="more Text1 fs_18 curp" @click="gotoVenue" v-if="gameList.length > 3">{{ $t(`sports['更多']`) }}</div>
 			</div>
 
 			<div class="card-list">

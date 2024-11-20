@@ -37,7 +37,7 @@
 		<!-- 盘口 -->
 		<div class="markets">
 			<div class="markets-item" v-for="item in sportTypeMap[sportType]">
-				<p class="markets-item-title">{{ item.label }}</p>
+				<p class="markets-item-title">{{ $t(`sports['${item.label}']`) }}</p>
 				<div class="markets-item-content">
 					<div
 						@click="handleBet(events.markets[item.type], m, 5)"
@@ -58,7 +58,7 @@
 		<!-- 底部更多投注 -->
 		<footer>
 			<div @click="router.push(`/sports/detail?pageName=todayContest&sportType=1&eventId=${events.eventId}&leagueId=${events.eventId}`)">
-				更多投注 <svg-icon name="sports-arrow" width="8px" height="12px" />
+				{{ $t(`sports['更多投注']`) }} <svg-icon name="sports-arrow" width="8px" height="12px" />
 			</div>
 		</footer>
 	</div>

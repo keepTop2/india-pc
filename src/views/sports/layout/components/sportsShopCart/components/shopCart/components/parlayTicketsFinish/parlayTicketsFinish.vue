@@ -17,7 +17,7 @@
 						<!-- 赔率注单 -->
 						<div class="cell">
 							<div class="left">
-								<span class="title">{{ SportsCommon.comboTypeNameMaps[item.comboType] }}</span>
+								<span class="title">{{ $.t(`sports['${SportsCommon.comboTypeNameMaps[item.comboType] || ""}']`) }}</span>
 								<span>{{ $.t(`sports["注单已确认"]`) }}</span>
 							</div>
 							<div class="right">
