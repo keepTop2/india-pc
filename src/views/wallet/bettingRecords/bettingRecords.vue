@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="header">
-			<div class="title fs_24 Text_s mb_3">投注记录</div>
+			<div class="title fs_24 Text_s mb_3">{{ $t(`bettingRecords['投注记录']`) }}</div>
 			<div class="line"></div>
 			<div class="form flex_space-between mt_20 fs_12">
 				<div class="flex-center">
@@ -22,7 +22,7 @@
 				<div class="flex-center">
 					<div class="btn curp" @click="handleQuery">
 						<svg-icon name="search_on" size="14px"></svg-icon>
-						查询
+						{{ $t(`bettingRecords['查询']`) }}
 					</div>
 				</div>
 			</div>
@@ -32,17 +32,17 @@
 				<div v-if="!['1', '7'].includes(params.venueType)" class="flex_space-between Text_s fs_14 mb_12">
 					<div>
 						<span>
-							<span style="color: var(--Text-2-1)">共计: </span>
-							{{ totalVO.betNum }} 投注
+							<span style="color: var(--Text-2-1)">{{ $t(`bettingRecords['共计']`) }}: </span>
+							{{ totalVO.betNum }} {{ $t(`bettingRecords['投注']`) }}
 						</span>
 						<span class="ml_20">
-							<span style="color: var(--Text-2-1)">投注金额：</span>
-							{{ totalVO.betAmount.toFixed(2) }} CNY
+							<span style="color: var(--Text-2-1)">{{ $t(`bettingRecords['投注金额']`) }}: </span>
+							{{ totalVO.betAmount.toFixed(2) }} {{ mainCurrency }}
 						</span>
 						<span class="ml_20">
-							<span style="color: var(--Text-2-1)">输赢金额：</span>
+							<span style="color: var(--Text-2-1)">{{ $t(`bettingRecords['输赢金额']`) }}: </span>
 							<span :class="[String(totalVO.winLoseAmount).indexOf('-') > -1 ? 'lose_color' : 'win_color']"
-								>{{ String(totalVO.winLoseAmount).indexOf("-") > -1 ? totalVO.winLoseAmount : "+" + totalVO.winLoseAmount || 0 }} CNY</span
+								>{{ String(totalVO.winLoseAmount).indexOf("-") > -1 ? totalVO.winLoseAmount : "+" + totalVO.winLoseAmount || 0 }} {{ mainCurrency }}</span
 							>
 						</span>
 					</div>
@@ -56,27 +56,55 @@
 						<el-table-column type="expand" :label="item.label" width="164px" :prop="item.props" v-if="item.type == 'select'">
 							<template #default="{ row }">
 								<div class="expand-wrapper">
-									<div v-if="row.eventInfo !== '串关'" class="dropDown_line" style="border: none; padding: 0">
-										<div class="firLine">
-											<div>
-												<span>{{ row.eventInfo }}13</span>
-												<span>{{ row.teamInfo }}</span>
-											</div>
-											<div class="p">
-												<span>投注内容</span>
-												<span>{{ row.betContent }}</span>
-											</div>
-											<div class="p">
-												<span>赔率</span>
-												<span>@{{ row.odds }}</span>
-											</div>
+									<template v-if="row.eventInfo !== '串关'">
+										<div v-if="params.venueType === '2'" class="dropDown_line" style="border: none; padding: 0">
+											<div class="zhenRen">
+												<div>
+													<span>{{ row.gameName }}</span>
+													<span>{{ row.gameNo }}</span>
+												</div>
 
-											<div class="winlogo">
-												<img v-if="row.orderClassify == '1'" :src="row.winLossAmount > 0 ? winlogo : loselogo" alt="" />
-												<span v-else>-</span>
+												<div class="p">
+													<span>{{ $t(`bettingRecords['投注内容']`) }}</span>
+													<span>{{ row.betContent }}</span>
+												</div>
+												<div class="p">
+													<span>{{ $t(`bettingRecords['赔率']`) }}</span>
+													<span>@{{ row.odds }}</span>
+												</div>
+												<div class="p">
+													<span>{{ $t(`bettingRecords['结果']`) }}</span>
+													<span>{{ row.resultList || "-" }}</span>
+												</div>
+												<div class="winlogo">
+													<img v-if="row.orderClassify == '1'" :src="getLogo(row.winlossStatus)" alt="" />
+													<span v-else>-</span>
+												</div>
 											</div>
 										</div>
-									</div>
+
+										<div v-else class="dropDown_line" style="border: none; padding: 0">
+											<div class="firLine">
+												<div>
+													<span>{{ row.eventInfo }}</span>
+													<span>{{ row.teamInfo }}</span>
+												</div>
+												<div class="p">
+													<span>{{ $t(`bettingRecords['投注内容']`) }}</span>
+													<span>{{ row.betContent }}</span>
+												</div>
+												<div class="p">
+													<span>{{ $t(`bettingRecords['赔率']`) }}</span>
+													<span>@{{ row.odds }}</span>
+												</div>
+
+												<div class="winlogo">
+													<img v-if="row.orderClassify == '1'" :src="getLogo(row.winlossStatus)" alt="" />
+													<span v-else>-</span>
+												</div>
+											</div>
+										</div>
+									</template>
 
 									<div v-for="(item, i) in row.orderMultipleBetList" class="dropDown_line" :key="i">
 										<div class="firLine">
@@ -85,16 +113,16 @@
 												<span>{{ item.teamInfo }}</span>
 											</div>
 											<div class="p">
-												<span>投注内容</span>
+												<span>{{ $t(`bettingRecords['投注内容']`) }}</span>
 												<span>{{ item.betContent }}</span>
 											</div>
 											<div class="p">
-												<span>赔率</span>
+												<span>{{ $t(`bettingRecords['赔率']`) }}</span>
 												<span>@{{ item.odds }}</span>
 											</div>
 
 											<div class="winlogo">
-												<img v-if="item.orderClassify == '1'" :src="item.winLossAmount > 0 ? winlogo : loselogo" alt="" />
+												<img v-if="item.orderClassify == '1'" :src="getLogo(row.winlossStatus)" alt="" />
 												<span v-else>-</span>
 											</div>
 										</div>
@@ -103,7 +131,7 @@
 							</template>
 						</el-table-column>
 						<!-- 订单号 -->
-						<el-table-column v-else-if="item.label == '订单号'" width="250" :label="item.label" :prop="item.props" align="center">
+						<el-table-column v-else-if="item.label == $t(`bettingRecords['订单号']`)" width="250" :label="$t(`bettingRecords['${item.label}']`)" :prop="item.props" align="center">
 							<template #default="props">
 								<div class="orderId_style">
 									<div>{{ props.row.orderId }}</div>
@@ -112,28 +140,38 @@
 							</template>
 						</el-table-column>
 						<!-- 投注时间 -->
-						<el-table-column v-else-if="item.label == '投注时间'" :label="item.label" :prop="item.props" align="center">
+						<el-table-column v-else-if="item.label == $t(`bettingRecords['投注时间']`)" :label="$t(`bettingRecords['${item.label}']`)" :prop="item.props" align="center">
 							<template #default="props">
 								<div>{{ dayjs(props.row.betTime).format("YYYY-MM-DD HH:mm:ss") }}</div>
 							</template>
 						</el-table-column>
 						<!-- 投注金额 -->
-						<el-table-column v-else-if="item.label == '投注金额'" :label="item.label" :prop="item.props" align="center">
+						<el-table-column
+							v-else-if="$t(`bettingRecords['${item.label}']`) == $t(`bettingRecords['投注金额']`)"
+							:label="$t(`bettingRecords['${item.label}']`)"
+							:prop="item.props"
+							align="center"
+						>
 							<template #default="props">
-								<div>{{ props.row.betAmount }} CNY</div>
+								<div>{{ props.row.betAmount }} {{ mainCurrency }}</div>
 							</template>
 						</el-table-column>
 						<!-- 输赢金额 -->
-						<el-table-column v-else-if="item.label == '输赢金额'" :label="item.label" :prop="item.props" align="center">
+						<el-table-column
+							v-else-if="$t(`bettingRecords['${item.label}']`) == $t(`bettingRecords['输赢金额']`)"
+							:label="$t(`bettingRecords['${item.label}']`)"
+							:prop="item.props"
+							align="center"
+						>
 							<template #default="{ row }">
 								<div v-if="row.orderClassify" :style="{ color: String(row.winLossAmount).indexOf('-') > -1 ? '#FF8C00' : '#FF284B' }">
-									{{ row.winLossAmount ? (String(row.winLossAmount).indexOf("-") > -1 ? row.winLossAmount : "+" + row.winLossAmount) : "-" }} CNY
+									{{ row.winLossAmount ? (String(row.winLossAmount).indexOf("-") > -1 ? row.winLossAmount : "+" + row.winLossAmount) : "-" }} {{ mainCurrency }}
 								</div>
 								<div v-else>-</div>
 							</template>
 						</el-table-column>
 
-						<el-table-column v-else :label="item.label" :prop="item.props" align="center" />
+						<el-table-column v-else :label="$t(`bettingRecords['${item.label}']`)" :prop="item.props" align="center" />
 					</template>
 					<template #empty>{{ $t(`common['暂无数据']`) }}</template>
 				</el-table>
@@ -142,22 +180,34 @@
 				<Pagination v-model:current-page="params.pageNumber" :pageSize="params.pageSize" :total="pageData.totalSize" @sizeChange="sizeChange" @pageChange="pageQuery" />
 			</div>
 		</div>
-		<NoData v-else info="暂无投注记录" />
+		<NoData v-else :info="$t(`bettingRecords['暂无投注记录']`)" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from "vue";
-import { welfareCenterApi } from "/@/api/welfareCenter";
 import dayjs from "dayjs";
-import showToast from "/@/hooks/useToast";
-import { fieldMap, colmuns, columnsType, columnType } from "./bettingRecordsColumns";
+import { computed, onMounted, reactive, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { colmuns, columnsType, columnType, fieldMap } from "./bettingRecordsColumns";
+import { welfareCenterApi } from "/@/api/welfareCenter";
+import copyimg from "/@/assets/zh-CN/wallet/copy.png";
 import loselogo from "/@/assets/zh-CN/wallet/loselogo.png";
 import winlogo from "/@/assets/zh-CN/wallet/winlogo.png";
-import helogo from "/@/assets/zh-CN/wallet/he.png";
-import copyimg from "/@/assets/zh-CN/wallet/copy.png";
+import he from "/@/assets/zh-CN/wallet/he.png";
+import showToast from "/@/hooks/useToast";
+import { useUserStore } from "/@/stores/modules/user";
 import NoData from "/@/views/messageCenter/components/NoData.vue";
+const { t } = useI18n();
 
+const getLogo = (status: any) => {
+	if (status == "0") return he;
+	else if (status == "1") return winlogo;
+	else return loselogo;
+};
+
+// 获取主货币类型
+const UserStore = useUserStore();
+const mainCurrency = computed(() => UserStore.userInfo.mainCurrency);
 const showDatePicker = ref(false);
 const tableColumns = ref<columnType[]>([]);
 const colmunsrow = ref<columnsType>(colmuns);
@@ -168,7 +218,6 @@ const params = reactive({
 	pageNumber: 1,
 	pageSize: 10,
 	receiveStatus: "",
-	welfareCenterRewardType: "1",
 	venueType: "1",
 });
 
@@ -191,14 +240,12 @@ const pageData = reactive({
 	mainCurrency: "",
 	mainCurrencyTotal: "",
 });
-const total = ref(0);
 const updateRange = (value: any) => {
 	console.log(value);
 	range.start = value[0];
 	range.end = value[1];
 };
 
-const type = ref("1");
 // 获取 查询目录
 const getDownBox = () => {
 	const params = ["order_status_client", "order_date_num", "venue_type"];
@@ -211,7 +258,7 @@ const getDownBox = () => {
 			return { text: item.value, value: item.code };
 		});
 		activityReceiveStatusOptions.value.unshift({
-			text: "全部状态",
+			text: t("common['全部状态']"),
 			value: "",
 		});
 	});
@@ -237,15 +284,11 @@ const pageQuery = (type?: boolean) => {
 		venueType: +params.venueType,
 		orderClassifyList: params.receiveStatus ? [+params.receiveStatus] : [],
 	};
-	delete data.receiveStatus;
-	delete data.welfareCenterRewardType;
 
 	welfareCenterApi.tzPageQuery(data).then((res) => {
 		if (!res.data) return (tableData.value = []);
 		totalVO.value = res.data.totalVO;
-		console.log("=>(bettingRecords.vue:223) totalVO", totalVO);
 		let rows = res.data[fieldMap[params.venueType]];
-		console.log("=>(bettingRecords.vue:249) rows", rows);
 
 		tableData.value = rows.records || rows;
 		pageData.totalSize = rows.total || (rows.orderMultipleBetList ? rows.records.length : rows.length);
@@ -288,55 +331,15 @@ const copyId = (id: string) => {
 	// 移除输入框
 	document.body.removeChild(input);
 
-	showToast("复制成功");
+	showToast(t("common['复制成功']"));
 };
-
-// watch([() => params.welfareCenterRewardType, () => welfareCenterRewardTypeOptions.value], (val) => {
-// 	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == val[0]);
-//
-// 	if (!selectCurrent || !selectCurrent.text) return;
-//
-// 	tableColumns.value = colmunsrow.value[selectCurrent.text];
-// });
 
 const sizeChange = (pageSize: number) => {
 	params.pageNumber = 1;
 	params.pageSize = pageSize;
 	pageQuery();
 };
-const handleReceive = (item: any) => {
-	const params = {
-		id: item.id,
-		welfareCenterRewardType: item.welfareCenterRewardType,
-	};
-	welfareCenterApi.clickReceive(params).then((res) => {
-		if (res.code === 10000) {
-			pageQuery();
-		}
-	});
-};
 
-const headerStyle = ({ row, column, rowIndex, columnIndex }: any) => {
-	if (rowIndex == 0) {
-		row[0].colSpan = 2;
-		row[3].rowSpan = 2;
-	}
-};
-const objectSpanMethod = ({ row, column, rowIndex, columnIndex }: any) => {
-	if (columnIndex === 0) {
-		if (rowIndex === 0) {
-			return {
-				rowspan: 1,
-				colspan: 2,
-			};
-		} else {
-			return {
-				rowspan: 0,
-				colspan: 0,
-			};
-		}
-	}
-};
 const handleQuery = () => {
 	params.pageNumber = 1;
 	pageQuery();
@@ -344,12 +347,9 @@ const handleQuery = () => {
 handleQuery();
 
 function getTableType() {
-	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.welfareCenterRewardType[0]);
+	let selectCurrent = welfareCenterRewardTypeOptions.value.find((item: any) => item.value == params.venueType[0]);
 	if (!selectCurrent || !selectCurrent.text) return;
-	console.log(colmunsrow, "colmunsrow====");
-
 	tableColumns.value = colmunsrow.value[selectCurrent.text];
-	console.log(tableColumns.value, "tableColumns.value");
 }
 </script>
 
@@ -517,6 +517,41 @@ function getTableType() {
 		height: 100%;
 		display: grid;
 		grid-template-columns: 3fr 1fr 1fr 1fr;
+		font-size: 14px;
+		gap: 15px;
+
+		& > div {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+			gap: 10px;
+		}
+
+		.p {
+			text-align: center;
+			& > span:first-child {
+				color: var(--Text-s);
+			}
+		}
+
+		.winlogo {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			img {
+				width: 58px;
+			}
+
+			//width: 20%;
+			//text-align: center;
+		}
+	}
+
+	.zhenRen {
+		width: 100%;
+		height: 100%;
+		display: grid;
+		grid-template-columns: 1.9fr 1.1fr 1fr 1fr 1fr;
 		font-size: 14px;
 		gap: 15px;
 

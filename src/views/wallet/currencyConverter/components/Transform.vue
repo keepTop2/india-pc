@@ -3,7 +3,7 @@
 		<div class="wrapper">
 			<div class="form card-style">
 				<div class="balance">
-					<div>从</div>
+					<div>{{ $t(`wallet['从']`) }}</div>
 					<div>
 						<svg-icon name="wallet" size="20px" />
 						<span>{{ transformInfo.platAvailableAmount }} {{ transformInfo.platCurrency }}</span>
@@ -15,7 +15,7 @@
 				</div>
 				<div class="number">
 					<el-input v-model.number="formValue" type="number" :min="0" @input="handleInput" @keypress="validateNumber"></el-input>
-					<div @click="formValue = transformInfo.platAvailableAmount">全部</div>
+					<div @click="formValue = transformInfo.platAvailableAmount">{{ $t(`wallet['全部']`) }}</div>
 				</div>
 				<div class="line"></div>
 				<div class="rate none">1</div>
@@ -25,7 +25,7 @@
 			<!--			</div>-->
 			<div class="to card-style">
 				<div class="balance">
-					<div>到</div>
+					<div>{{ $t(`wallet['到']`) }}</div>
 					<!--					<div>-->
 					<!--						<svg-icon name="wallet" size="20px" />-->
 					<!--						<span>{{ transformInfo.userAvailableAmount }}.{{ transformInfo.userCurrencyCode }}</span>-->
@@ -40,10 +40,10 @@
 					<div></div>
 				</div>
 				<div class="line"></div>
-				<div class="rate">汇率：{{ transformInfo.transferRate }}</div>
+				<div class="rate">{{ $t(`wallet['汇率']`) }}：{{ transformInfo.transferRate }}</div>
 			</div>
 		</div>
-		<el-button class="transform-button" @click="handleTransform" :disabled="!!!formValue" color="#ff284b">一键转换</el-button>
+		<el-button class="transform-button" @click="handleTransform" :disabled="!!!formValue" color="#ff284b">{{ $t(`wallet['一键转换']`) }}</el-button>
 	</div>
 </template>
 

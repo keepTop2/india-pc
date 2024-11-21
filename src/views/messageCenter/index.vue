@@ -2,7 +2,7 @@
 	<div>
 		<el-drawer v-model="messageCenterVisible" width="348" :with-header="false" :close-on-click-modal="false">
 			<div class="header">
-				<div class="title">消息中心</div>
+				<div class="title">{{ $t(`user['消息中心']`) }}</div>
 				<div class="close" @click="messageCenterVisible = false">
 					<svg-icon name="common-close" size="20px" />
 				</div>
@@ -20,8 +20,8 @@
 					<NoData v-else />
 				</div>
 				<div class="bottom-handle">
-					<el-button color="#FF284B" class="read" plain :disabled="!hasUnread" @click="handleReadAll">一键已读 </el-button>
-					<el-button color="#FF284B" class="delete" :disabled="!hasDelete" @click="handleDeleteAll">全部删除</el-button>
+					<el-button color="#FF284B" class="read" plain :disabled="!hasUnread" @click="handleReadAll">{{ $t(`user['一键已读']`) }}</el-button>
+					<el-button color="#FF284B" class="delete" :disabled="!hasDelete" @click="handleDeleteAll">{{ $t(`user['全部删除']`) }}</el-button>
 				</div>
 			</div>
 		</el-drawer>
@@ -36,10 +36,13 @@ import { ElMessage } from "element-plus";
 import NoData from "/@/views/messageCenter/components/NoData.vue";
 import { useUserStore } from "/@/stores/modules/user"; // 引入用户信息状态
 
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 const messageCenterVisible = defineModel();
 const tabs = [
-	{ name: "通知", type: 1 },
-	{ name: "活动", type: 2 },
+	{ name: t(`user['通知']`), type: 1 },
+	{ name: t(`user['活动']`), type: 2 },
 ];
 const activeTab = ref(1);
 
@@ -129,7 +132,7 @@ watch(
 			justify-content: center;
 
 			.title {
-				color: var(--Text-s); 
+				color: var(--Text-s);
 				font-size: 20px;
 			}
 
